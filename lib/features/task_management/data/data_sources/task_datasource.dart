@@ -47,9 +47,9 @@ class TaskDatasource {
   ) async {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _apiServices.post(
+      final response = await _apiServices.get(
         endPoint: EndPoints.task.filterTasksByAll,
-        data: params.toMap,
+        queryParameters: params.toMap,
       );
 
       return PaginationResponseWrapper.fromJson(response);

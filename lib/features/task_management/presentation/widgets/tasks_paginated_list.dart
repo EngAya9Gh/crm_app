@@ -33,8 +33,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskCubit, TaskState>(
-      buildWhen: (previous, current) =>
-          previous.getTasksStatus != current.getTasksStatus,
+      buildWhen: (previous, current) => previous.getTasksStatus != current.getTasksStatus,
       builder: (context, state) {
         return AppPaginatedList(
           items: _cubit.pageVariables.allList,
@@ -49,13 +48,11 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
 
   InkWell _buildCard(int index, BuildContext context) {
     final task = _cubit.pageVariables.allList[index];
-    final assignToUserName = task.assignedToUser!.nameUser;
+    final assignToUserName = task.assignTo!.nameUser;
     final firstList = assignToUserName?.split(' ').firstOrNull;
     final secondList = assignToUserName?.split(' ').lastOrNull;
-    String? firstChar =
-        (firstList?.isNotEmpty ?? false) ? firstList?.substring(0, 1) : '';
-    String? secondChar =
-        (secondList?.isNotEmpty ?? false) ? secondList?.substring(0, 1) : '';
+    String? firstChar = (firstList?.isNotEmpty ?? false) ? firstList?.substring(0, 1) : '';
+    String? secondChar = (secondList?.isNotEmpty ?? false) ? secondList?.substring(0, 1) : '';
     StringBuffer buffer = StringBuffer();
 
     if (firstChar == null) {
@@ -67,12 +64,9 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
 
     buffer.writeAll([firstChar, secondChar], '.');
 
-    final status = TaskStatusType.values
-        .firstWhereOrNull((element) => element.name == task.name);
+    final status = TaskStatusType.values.firstWhereOrNull((element) => element.name == task.title);
     return InkWell(
-      onTap: status != null &&
-              status != TaskStatusType.Evaluated &&
-              context.read<PrivilegesCubit>().checkPrivilege('165')
+      onTap: status != null && status != TaskStatusType.Evaluated && context.read<PrivilegesCubit>().checkPrivilege('165')
           ? () {
               showDialog(
                 context: context,
@@ -129,18 +123,13 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                             Row(
                               children: [
                                 AppText(
-                                  task.assignedByUser!.nameUser,
+                                  task.assignFrom!.nameUser,
                                   color: context.colorScheme.grey500,
                                 ),
-                                if ((task.assignedByUser?.nameUser
-                                            ?.isNotEmpty ??
-                                        false) &&
-                                    (task.assignedToUser?.nameUser
-                                            ?.isNotEmpty ??
-                                        false))
+                                if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
                                   AppText(' --> '),
                                 AppText(
-                                  task.assignedToUser!.nameUser.toString(),
+                                  task.assignTo!.nameUser.toString(),
                                   color: AppColors.primaryMain,
                                 ),
                               ],
@@ -164,70 +153,78 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                         Row(
                           children: [
                             AppText(
-                              'من فرع: ',
+                              (task.assignFromModel == 'region')
+                                  ? 'من فرع : '
+                                  : (task.assignFromModel == 'managements')
+                                      ? "من قسم : "
+                                      : "من مستخدم : ",
                               color: context.colorScheme.grey500,
                             ),
                             AppText(
-                              '${task.assignedByUser?.nameRegoin == '' ? task.assigendRegionFrom.toString() : task.assignedByUser?.nameRegoin}',
+                              '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
                               color: context.colorScheme.grey800,
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            AppText(
-                              'إلى فرع: ',
-                              color: context.colorScheme.grey500,
-                            ),
-                            AppText(
-                              '${task.assignedToUser?.nameRegoin == '' ? task.assigendRegionTo.toString() : task.assignedToUser?.nameRegoin}',
-                              color: context.colorScheme.grey800,
-                            ),
-                          ],
-                        ),
+                          Row(
+                            children: [
+                              AppText(
+
+                                (task.assignToModel == 'region')
+                                    ? 'الى فرع : '
+                                    : (task.assignToModel == 'managements')
+                                    ? "الى قسم : "
+                                    : "الى مستخدم : ",
+                                color: context.colorScheme.grey500,
+                              ),
+                              AppText(
+                                '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser}',
+
+                                color: context.colorScheme.grey800,
+                              ),
+                            ],
+                          ),
                       ],
                     ),
-                    10.height,
+                    /*  10.height,
                     Wrap(
                       children: [
-                        Row(
+                        if(task.assignFromModel=='managements')        Row(
                           children: [
                             AppText(
                               'من قسم: ',
                               color: context.colorScheme.grey500,
                             ),
                             AppText(
-                              '${task.assignedByUser?.nameMange == '' ? task.assigendDepartmentFromName : task.assignedByUser?.nameMange}',
+                              '${task.assignFrom?.nameMange == '' ? task.assignFromModel : task.assignFrom?.nameMange}',
                               color: context.colorScheme.grey800,
                             ),
                           ],
                         ),
-                        Row(
+                        if(task.assignToModel=='managements')Row(
                           children: [
                             AppText(
                               'إلى قسم: ',
                               color: context.colorScheme.grey500,
                             ),
                             AppText(
-                              '${task.assignedToUser?.nameMange == '' ? task.assigendDepartmentToName : task.assignedToUser?.nameMange}',
+                              '${task.assignFrom?.nameMange == '' ? task.assignFromModel : task.assignFrom?.nameMange}',
                               color: context.colorScheme.grey800,
                             ),
                           ],
                         ),
                       ],
-                    ),
+                    ),*/
                     10.height,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        AppIcon(Icons.date_range_rounded,
-                            color: context.colorScheme.grey600),
+                        AppIcon(Icons.date_range_rounded, color: context.colorScheme.grey600),
                         5.width,
                         Directionality(
                           textDirection: TextDirection.ltr,
                           child: AppText(
-                            Intl.DateFormat('dd MMM hh:mm a')
-                                .format(task.startDate ?? DateTime.now()),
+                            Intl.DateFormat('dd MMM hh:mm a').format(task.startDate ?? DateTime.now()),
                             color: context.colorScheme.grey600,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,

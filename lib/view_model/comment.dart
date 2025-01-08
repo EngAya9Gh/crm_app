@@ -34,7 +34,7 @@ class comment_vm extends ChangeNotifier {
         queryParameters: {'fk_client': fk_client},
       );
       // todo: remove after backend changes
-      response =(response is String)?jsonDecode(response):response;
+      response = (response is String) ? jsonDecode(response) : response;
 
       final data = apiDataHandler(response);
 
@@ -63,30 +63,35 @@ class comment_vm extends ChangeNotifier {
       filteredComments = _allCommentsList;
       notifyListeners();
       return;
+    } else if (type == CommentTypeEnum.Collection.value) {
+      filteredComments = _allCommentsList
+          .where((element) => ((element.type_comment == CommentTypeEnum.Collection.value) ||
+              (element.type_comment == CommentTypeEnum.Renewal.value) ||
+              (element.type_comment == CommentTypeEnum.Withdrawal.value)))
+          .toList();
+      notifyListeners();
+      return;
     }
-    filteredComments = _allCommentsList
-        .where((element) => element.type_comment.contains(type))
-        .toList();
+    filteredComments = _allCommentsList.where((element) => element.type_comment.contains(type)).toList();
     notifyListeners();
   }
 
-  Future<String> addComment_vm(
-      Map<String, dynamic> body, String? imageurl,String clientId) async {
+  Future<String> addComment_vm(Map<String, dynamic> body, String? imageurl, String clientId) async {
     try {
       isloadadd = true;
       notifyListeners();
-      var sentBody={
+      var sentBody = {
         'content': body["content"],
-        if (body["type_comment"] != null)
-          'type_comment': body["type_comment"],
+        if (body["type_comment"] != null) 'type_comment': body["type_comment"],
       };
       var res = await GetIt.I<ApiServices>().postRequestWithFile(
-          endPoint: EndPoints.baseUrls.urlLaravel + 'addComment/$clientId', data: sentBody,);
-      if(res!="error"){
+        endPoint: EndPoints.baseUrls.urlLaravel + 'addComment/$clientId',
+        data: sentBody,
+      );
+      if (res != "error") {
         body.addAll({
-          'id_comment': res["id_comment"]!=null?res["id_comment"].toString():"",
-          'date_comment':
-              DateTime.now().toString(), //formatter.format(DateTime.now())
+          'id_comment': res["id_comment"] != null ? res["id_comment"].toString() : "",
+          'date_comment': DateTime.now().toString(), //formatter.format(DateTime.now())
         });
         _allCommentsList.insert(0, CommentModel.fromJson(body));
         filteredComments = _allCommentsList;
@@ -98,7 +103,7 @@ class comment_vm extends ChangeNotifier {
       isloadadd = false;
       notifyListeners();
       return "success";
-    } catch (e,s) {
+    } catch (e, s) {
       print(e.toString() + s.toString());
       isloadadd = false;
       notifyListeners();

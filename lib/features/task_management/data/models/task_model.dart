@@ -1,144 +1,342 @@
-// ignore_for_file: invalid_annotation_target
+// To parse this JSON data, do
+//
+//     final taskModel = taskModelFromJson(jsonString);
 
 import 'dart:convert';
-
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../../../core/common/models/page_state/bloc_status.dart';
-
-part 'task_model.freezed.dart';
-part 'task_model.g.dart';
 
 TaskModel taskModelFromJson(String str) => TaskModel.fromJson(json.decode(str));
 
 String taskModelToJson(TaskModel data) => json.encode(data.toJson());
 
-@freezed
-class TaskModel with _$TaskModel {
-  const factory TaskModel({
-    @JsonKey(name: "id") dynamic id,
-    @JsonKey(name: "title") String? title,
-    @JsonKey(name: "description") dynamic description,
-    @JsonKey(name: "public_Type") String? publicType,
-    @JsonKey(name: "main_type_task") dynamic mainTypeTask,
-    @JsonKey(name: "recive_date") dynamic reciveDate,
-    @JsonKey(name: "start_date") DateTime? startDate,
-    @JsonKey(name: "deadline") dynamic deadline,
-    @JsonKey(name: "actual_delivery_date") dynamic actualDeliveryDate,
-    @JsonKey(name: "hours") dynamic hours,
-    @JsonKey(name: "completion_percentage") dynamic completionPercentage,
-    @JsonKey(name: "recurring") dynamic recurring,
-    @JsonKey(name: "recurring_type") dynamic recurringType,
-    @JsonKey(name: "Number_Of_Recurring") dynamic numberOfRecurring,
-    @JsonKey(name: "created_at") dynamic createdAt,
-    @JsonKey(name: "updated_at") dynamic updatedAt,
-    @JsonKey(name: "dateTimeCreated") DateTime? dateTimeCreated,
-    @JsonKey(name: "changed_date") dynamic changedDate,
-    @JsonKey(name: "task_statuse_id") dynamic taskStatuseId,
-    @JsonKey(name: "changed_by") dynamic changedBy,
-    @JsonKey(name: "type") dynamic type,
-    @JsonKey(name: "priority") dynamic priority,
-    @JsonKey(name: "name") String? name,
-    @JsonKey(name: "assigned_by_name") String? assignedByName,
-    @JsonKey(name: "assigend_department_from_name")
-    String? assigendDepartmentFromName,
-    @JsonKey(name: "assigend_department_to_name")
-    String? assigendDepartmentToName,
-    @JsonKey(name: "assigend_region_from") String? assigendRegionFrom,
-    @JsonKey(name: "assigend_region_to") String? assigendRegionTo,
-    @JsonKey(name: "created_by") String? createdBy,
-    @JsonKey(name: "name_regoin") String? nameRegoin,
-    @JsonKey(name: "task_statuses") List<TaskStatus>? taskStatuses,
-    @JsonKey(name: "assignedByUser") AssignedUser? assignedByUser,
-    @JsonKey(name: "assignedToUser") AssignedUser? assignedToUser,
-    @JsonKey(name: "taskGroup") TaskGroup? taskGroup,
-    @JsonKey(name: "Clients") Clients? clients,
-    @JsonKey(name: "invoices") Invoices? invoices,
-    @JsonKey(
-      includeToJson: false,
-      includeFromJson: false,
-      required: true,
-    )
-    @Default(BlocStatus.initial())
-    BlocStatus taskBlocStatus,
-  }) = _TaskModel;
+class TaskModel {
+  final int? id;
+  final String? title;
+  final String? description;
+  final AssignFromOrToModel? assignFrom;
+  final String? assignFromModel;
+  final AssignFromOrToModel? assignTo;
+  final String? assignToModel;
+  final Status? status;
+  final dynamic client;
+  final Invoice? invoice;
+  final dynamic communicationId;
+  final dynamic group;
+  final String? code;
+  final DateTime? startDate;
+  final dynamic deadline;
+  final String? type;
+  final dynamic completionPercentage;
+  final dynamic recurringType;
+  final dynamic recurringNumber;
+  final AssignFromOrToModel? createdBy;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
-  factory TaskModel.fromJson(Map<String, dynamic> json) =>
-      _$TaskModelFromJson(json);
+  TaskModel({
+    this.id,
+    this.title,
+    this.description,
+    this.assignFrom,
+    this.assignFromModel,
+    this.assignTo,
+    this.assignToModel,
+    this.status,
+    this.client,
+    this.invoice,
+    this.communicationId,
+    this.group,
+    this.code,
+    this.startDate,
+    this.deadline,
+    this.type,
+    this.completionPercentage,
+    this.recurringType,
+    this.recurringNumber,
+    this.createdBy,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  TaskModel copyWith({
+    int? id,
+    String? title,
+    String? description,
+    AssignFromOrToModel? assignFrom,
+    String? assignFromModel,
+    AssignFromOrToModel? assignTo,
+    String? assignToModel,
+    Status? status,
+    dynamic client,
+    Invoice? invoice,
+    dynamic communicationId,
+    dynamic group,
+    String? code,
+    DateTime? startDate,
+    dynamic deadline,
+    String? type,
+    dynamic completionPercentage,
+    dynamic recurringType,
+    dynamic recurringNumber,
+    AssignFromOrToModel? createdBy,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) =>
+      TaskModel(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        description: description ?? this.description,
+        assignFrom: assignFrom ?? this.assignFrom,
+        assignFromModel: assignFromModel ?? this.assignFromModel,
+        assignTo: assignTo ?? this.assignTo,
+        assignToModel: assignToModel ?? this.assignToModel,
+        status: status ?? this.status,
+        client: client ?? this.client,
+        invoice: invoice ?? this.invoice,
+        communicationId: communicationId ?? this.communicationId,
+        group: group ?? this.group,
+        code: code ?? this.code,
+        startDate: startDate ?? this.startDate,
+        deadline: deadline ?? this.deadline,
+        type: type ?? this.type,
+        completionPercentage: completionPercentage ?? this.completionPercentage,
+        recurringType: recurringType ?? this.recurringType,
+        recurringNumber: recurringNumber ?? this.recurringNumber,
+        createdBy: createdBy ?? this.createdBy,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+
+  factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
+    id: json["id"],
+    title: json["title"],
+    description: json["description"],
+    assignFrom: json["assign_from"] == null ? null : AssignFromOrToModel.fromJson(json["assign_from"]),
+    assignFromModel: json["assign_from_model"],
+    assignTo: json["assign_to"] == null ? null : AssignFromOrToModel.fromJson(json["assign_to"]),
+    assignToModel: json["assign_to_model"],
+    status: json["status"] == null ? null : Status.fromJson(json["status"]),
+    client: json["client"],
+    invoice: json["invoice"] == null ? null : Invoice.fromJson(json["invoice"]),
+    communicationId: json["communication_id"],
+    group: json["group"],
+    code: json["code"],
+    startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
+    deadline: json["deadline"],
+    type: json["type"],
+    completionPercentage: json["completion_percentage"],
+    recurringType: json["recurring_type"],
+    recurringNumber: json["recurring_number"],
+    createdBy: json["created_by"] == null ? null : AssignFromOrToModel.fromJson(json["created_by"]),
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "title": title,
+    "description": description,
+    "assign_from": assignFrom?.toJson(),
+    "assign_from_model": assignFromModel,
+    "assign_to": assignTo?.toJson(),
+    "assign_to_model": assignToModel,
+    "status": status?.toJson(),
+    "client": client,
+    "invoice": invoice?.toJson(),
+    "communication_id": communicationId,
+    "group": group,
+    "code": code,
+    "start_date": startDate?.toIso8601String(),
+    "deadline": deadline,
+    "type": type,
+    "completion_percentage": completionPercentage,
+    "recurring_type": recurringType,
+    "recurring_number": recurringNumber,
+    "created_by": createdBy?.toJson(),
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+  };
 }
 
-@freezed
-class AssignedUser with _$AssignedUser {
-  const factory AssignedUser({
-    @JsonKey(name: "id_user") dynamic idUser,
-    @JsonKey(name: "nameUser") String? nameUser,
-    @JsonKey(name: "img_image") String? imgImage,
-    @JsonKey(name: "fk_regoin") dynamic fkRegoin,
-    @JsonKey(name: "type_administration") String? typeAdministration,
-    @JsonKey(name: "name_regoin") String? nameRegoin,
-    @JsonKey(name: "name_mange") String? nameMange,
-  }) = _AssignedUser;
+class AssignFromOrToModel {
+  final int? idMange;
+  final int? idRegion;
+  final int? idUser;
+  final String? nameMange;
+  final String? nameRegion;
+  final String? nameUser;
+  final dynamic fkCountry;
 
-  factory AssignedUser.fromJson(Map<String, dynamic> json) =>
-      _$AssignedUserFromJson(json);
+  AssignFromOrToModel({
+    this.idMange,
+    this.idRegion,
+    this.idUser,
+    this.nameMange,
+    this.nameRegion,
+    this.nameUser,
+    this.fkCountry,
+  });
+
+
+
+
+  AssignFromOrToModel copyWith({
+    int? idMange,
+    int? idRegion,
+    int? idUser,
+    String? nameMange,
+    String? nameRegion,
+    String? nameUser,
+    dynamic? fkCountry,
+  }) {
+    return AssignFromOrToModel(
+      idMange: idMange ?? this.idMange,
+      idRegion: idRegion ?? this.idRegion,
+      idUser: idUser ?? this.idUser,
+      nameMange: nameMange ?? this.nameMange,
+      nameRegion: nameRegion ?? this.nameRegion,
+      nameUser: nameUser ?? this.nameUser,
+      fkCountry: fkCountry ?? this.fkCountry,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'idmange': this.idMange,
+      'id_regoin': this.idRegion,
+      'id_user': this.idUser,
+      'name_mange': this.nameMange,
+      'name_regoin': this.nameRegion,
+      'nameUser': this.nameUser,
+      'fk_country': this.fkCountry,
+    };
+  }
+
+  factory AssignFromOrToModel.fromJson(Map<String, dynamic> map) {
+    return AssignFromOrToModel(
+      idMange: map['idmange'] as int?,
+      idRegion: map['id_regoin'] as int?,
+      idUser: map['id_user'] as int?,
+      nameMange: map['name_mange'] as String?,
+      nameRegion: map['name_regoin'] as String?,
+      nameUser: map['nameUser'] as String?,
+      fkCountry: map['fk_country'] as dynamic,
+    );
+  }
 }
 
-@freezed
-class Clients with _$Clients {
-  const factory Clients({
-    @JsonKey(name: "id_clients") dynamic idClients,
-    @JsonKey(name: "name_enterprise") String? nameEnterprise,
-    @JsonKey(name: "ismarketing") String? ismarketing,
-  }) = _Clients;
+class Invoice {
+  final int? idInvoice;
+  final String? addressInvoice;
 
-  factory Clients.fromJson(Map<String, dynamic> json) =>
-      _$ClientsFromJson(json);
+  Invoice({
+    this.idInvoice,
+    this.addressInvoice,
+  });
+
+  Invoice copyWith({
+    int? idInvoice,
+    String? addressInvoice,
+  }) =>
+      Invoice(
+        idInvoice: idInvoice ?? this.idInvoice,
+        addressInvoice: addressInvoice ?? this.addressInvoice,
+      );
+
+  factory Invoice.fromJson(Map<String, dynamic> json) => Invoice(
+    idInvoice: json["id_invoice"],
+    addressInvoice: json["address_invoice"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id_invoice": idInvoice,
+    "address_invoice": addressInvoice,
+  };
 }
 
-@freezed
-class Invoices with _$Invoices {
-  const factory Invoices({
-    @JsonKey(name: "id_invoice") dynamic idInvoice,
-    @JsonKey(name: "stateclient") String? stateclient,
-  }) = _Invoices;
+class Status {
+  final int? id;
+  final String? name;
+  final dynamic createdAt;
+  final dynamic updatedAt;
+  final Pivot? pivot;
 
-  factory Invoices.fromJson(Map<String, dynamic> json) =>
-      _$InvoicesFromJson(json);
+  Status({
+    this.id,
+    this.name,
+    this.createdAt,
+    this.updatedAt,
+    this.pivot,
+  });
+
+  Status copyWith({
+    int? id,
+    String? name,
+    dynamic createdAt,
+    dynamic updatedAt,
+    Pivot? pivot,
+  }) =>
+      Status(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        pivot: pivot ?? this.pivot,
+      );
+
+  factory Status.fromJson(Map<String, dynamic> json) => Status(
+    id: json["id"],
+    name: json["name"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    pivot: json["pivot"] == null ? null : Pivot.fromJson(json["pivot"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+    "pivot": pivot?.toJson(),
+  };
 }
 
-@freezed
-class TaskGroup with _$TaskGroup {
-  const factory TaskGroup({
-    @JsonKey(name: "id") dynamic id,
-    @JsonKey(name: "groupName") String? groupName,
-  }) = _TaskGroup;
+class Pivot {
+  final int? taskId;
+  final int? taskStatusId;
+  final DateTime? changedDate;
+  final dynamic changedBy;
 
-  factory TaskGroup.fromJson(Map<String, dynamic> json) =>
-      _$TaskGroupFromJson(json);
-}
+  Pivot({
+    this.taskId,
+    this.taskStatusId,
+    this.changedDate,
+    this.changedBy,
+  });
 
-@freezed
-class TaskStatus with _$TaskStatus {
-  const factory TaskStatus({
-    @JsonKey(name: "id") dynamic id,
-    @JsonKey(name: "name") String? name,
-    @JsonKey(name: "created_at") dynamic createdAt,
-    @JsonKey(name: "updated_at") dynamic updatedAt,
-    @JsonKey(name: "name_user") String? nameUser,
-    @JsonKey(name: "pivot") Pivot? pivot,
-  }) = _TaskStatus;
+  Pivot copyWith({
+    int? taskId,
+    int? taskStatusId,
+    DateTime? changedDate,
+    dynamic changedBy,
+  }) =>
+      Pivot(
+        taskId: taskId ?? this.taskId,
+        taskStatusId: taskStatusId ?? this.taskStatusId,
+        changedDate: changedDate ?? this.changedDate,
+        changedBy: changedBy ?? this.changedBy,
+      );
 
-  factory TaskStatus.fromJson(Map<String, dynamic> json) =>
-      _$TaskStatusFromJson(json);
-}
+  factory Pivot.fromJson(Map<String, dynamic> json) => Pivot(
+    taskId: json["task_id"],
+    taskStatusId: json["task_status_id"],
+    changedDate: json["changed_date"] == null ? null : DateTime.parse(json["changed_date"]),
+    changedBy: json["changed_by"],
+  );
 
-@freezed
-class Pivot with _$Pivot {
-  const factory Pivot({
-    @JsonKey(name: "task_id") dynamic taskId,
-    @JsonKey(name: "task_statuse_id") dynamic taskStatuseId,
-    @JsonKey(name: "changed_by") dynamic changedBy,
-  }) = _Pivot;
-
-  factory Pivot.fromJson(Map<String, dynamic> json) => _$PivotFromJson(json);
+  Map<String, dynamic> toJson() => {
+    "task_id": taskId,
+    "task_status_id": taskStatusId,
+    "changed_date": changedDate?.toIso8601String(),
+    "changed_by": changedBy,
+  };
 }

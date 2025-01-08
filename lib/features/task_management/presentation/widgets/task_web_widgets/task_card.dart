@@ -6,7 +6,7 @@ import '../../../data/models/task_model.dart';
 
 class TaskCard {
   static DragAndDropItem build(TaskModel task) {
-    final assignToUserName = task.assignedToUser!.nameUser;
+    final assignToUserName = task.assignTo!.nameUser;
     final initials = getInitials(assignToUserName);
 
     return DragAndDropItem(
@@ -25,7 +25,7 @@ class TaskCard {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CircleAvatar(
-                          backgroundColor: getColorForStatus(name: task.name),
+                          backgroundColor: getColorForStatus(name: task.title),
                           child: Text(initials, style: TextStyle(color: Colors.white, fontSize: 12)),
                           radius: 14,
                         ),
@@ -40,7 +40,7 @@ class TaskCard {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                task.assignedToUser?.nameUser ?? '',
+                                task.assignTo?.nameUser ?? '',
                                 style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -58,10 +58,10 @@ class TaskCard {
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 8),
-                    _buildInfoRow('من فرع:', '${task.assignedByUser?.nameRegoin == '' ? task.assigendRegionFrom.toString() : task.assignedByUser?.nameRegoin}'),
-                    _buildInfoRow('إلى فرع:', '${task.assignedToUser?.nameRegoin == '' ? task.assigendRegionTo.toString() : task.assignedToUser?.nameRegoin}'),
-                    _buildInfoRow('من قسم:', '${task.assignedByUser?.nameMange == '' ? task.assigendDepartmentFromName : task.assignedByUser?.nameMange}'),
-                    _buildInfoRow('إلى قسم:', '${task.assignedToUser?.nameMange == '' ? task.assigendDepartmentToName : task.assignedToUser?.nameMange}'),
+                    _buildInfoRow('من فرع:', '${task.assignFrom?.nameRegion == '' ? task.assignFromModel.toString() : task.assignFrom?.nameRegion}'),
+                    _buildInfoRow('إلى فرع:', '${task.assignFrom?.nameRegion == '' ? task.assignToModel.toString() : task.assignFrom?.nameRegion}'),
+                    _buildInfoRow('من قسم:', '${task.assignFrom?.nameMange == '' ? task.assignFromModel : task.assignFrom?.nameMange}'),
+                    _buildInfoRow('إلى قسم:', '${task.assignTo?.nameMange == '' ? task.assignToModel : task.assignTo?.nameMange}'),
                     SizedBox(height: 4),
                     Row(
                       children: [
