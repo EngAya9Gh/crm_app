@@ -29,7 +29,6 @@ import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../ui/widgets/app_file_viewer.dart';
-import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../../view_model/invoice_vm.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/client_attachments_bloc.dart';

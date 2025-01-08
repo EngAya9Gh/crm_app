@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:crm_smart/model/communication_withdrawal_reason_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,6 @@ import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/errors/base_app_exception.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/services/api/api_utils.dart';
-import '../../../../../../core/services/api/result.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/similar_client.dart';

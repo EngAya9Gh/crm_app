@@ -2,9 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
-
-import '../api/api.dart';
 import '../core/common/enums/comments/comment_type_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/errors/base_app_exception.dart';

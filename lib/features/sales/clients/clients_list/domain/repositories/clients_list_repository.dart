@@ -7,7 +7,6 @@ import '../../../../../../core/common/models/response_wrapper/response_wrapper.d
 import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/services/api/result.dart';
 import '../../../../../../model/similar_client.dart';
-import '../../../../../../model/usermodel.dart';
 import '../../data/models/client_marketing_meport_model.dart';
 import '../../data/models/client_support_file_model.dart';
 import '../../data/models/recommended_client.dart';
