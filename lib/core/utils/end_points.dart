@@ -33,6 +33,8 @@ abstract class EndPoints {
   static const management = _Management();
   static const reason = _Reason();
   static const regionAndCity = _RegionAndCities();
+  static const activities = _Activity();
+  static const branches = _Branches();
 }
 
 class _BaseUrls {
@@ -102,6 +104,7 @@ class _Users {
 
   final String updateProfileImage = "users/update_picture.php";
   final String updateUserProfile = "users/update_user.php";
+  final String getUsersSales = 'users/sales';
 }
 
 class _Links {
@@ -483,4 +486,20 @@ class _RegionAndCities {
   final String getCities = 'cities';
   final String addCities = 'cities';
   String updateCities(String id) => 'cities/$id/edit';
+}
+class _Activity {
+  const _Activity();
+
+  final String getActivities = 'activity-types';
+  final String addActivity = 'activity-types';
+  String  updateActivity(String id) => 'activity-types/$id/edit';
+
+}
+
+class _Branches {
+  const _Branches();
+
+  final String getBranches = 'branches';
+  final String addBranches = 'branches';
+  String updateBranches(String id) => 'branches/$id/edit';
 }

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
 import '../core/common/models/location/branch_model.dart';
+import '../core/services/api/api_services.dart';
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/usermodel.dart';
 
@@ -42,20 +44,21 @@ class RegionProvider extends ChangeNotifier {
     try {
       listRegionFilter = [];
       if (listRegion.isEmpty) {
-        List<dynamic> data = [];
-        data = await Api().get(
-            url: EndPoints.baseUrls.url +
-                'country/get_regoinByIdCountry.php?fk_country=${userCurrent!.fkCountry}');
-        if (data != null) {
-          for (int i = 0; i < data.length; i++) {
-            listRegion.add(BranchModel.fromJson(data[i]));
+        var data;
+        final ApiServices apiServices = getIt<ApiServices>();
+        apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+        data = await apiServices.get(endPoint: EndPoints.branches.getBranches, queryParameters: {
+          'fk_country': userCurrent!.fkCountry,
+        });
+        // data = await Api().get(url: EndPoints.baseUrls.url + 'country/get_regoinByIdCountry.php?fk_country=${userCurrent!.fkCountry}');
+        if (data['message'] != null) {
+          for (int i = 0; i < data['message'].length; i++) {
+            listRegion.add(BranchModel.fromJson(data['message'][i]));
           }
         }
       }
-      listRegionFilter =
-          List.from(listRegion); // [...listregoin];listregoin.tolist();
-      listRegionFilter.insert(
-          0, BranchModel(branchId: '0', branchName: 'الكل', countryId: ''));
+      listRegionFilter = List.from(listRegion); // [...listregoin];listregoin.tolist();
+      listRegionFilter.insert(0, BranchModel(branchId: '0', branchName: 'الكل', countryId: ''));
       notifyListeners();
       //var  data=await RegoinService().getRegoinByCountry("1");
       //listregoin= data as  List<RegoinModel>;}
@@ -70,37 +73,33 @@ class RegionProvider extends ChangeNotifier {
   Future<String> addRegionVm(Map<String, dynamic> body) async {
     isLoading = true;
     notifyListeners();
-    String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'users/add_regoin.php', //users/addmangemt.php
-        body: body);
-    if (res != "error") {
-      body.addAll({
-        'id_regoin': res,
-      });
-      listRegion.insert(0, BranchModel.fromJson(body));
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    var res = await apiServices.post(endPoint: EndPoints.branches.addBranches, data: body);
+    if (res['result'] == "success") {
+      listRegion.insert(
+          0,
+        BranchModel.convertRegionToBranch(res['message'] as Map<String, dynamic>)
+          );
       isLoading = false;
       notifyListeners();
     }
-    return res;
+    return res['result'];
   }
 
   Future<String> updateRegion(Map<String, dynamic> body, String idmanag) async {
     isLoading = true;
     notifyListeners();
-    String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'users/update_regoin.php?id_regoin=${idmanag}',
-        //users/addmangemt.php
-        body: body);
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    var res = await apiServices.post(endPoint: EndPoints.branches.updateBranches(idmanag), data: body);
 
-    final index =
-        listRegion.indexWhere((element) => element.branchId == idmanag);
-    listRegion[index] = BranchModel.fromJson(body);
+    final index = listRegion.indexWhere((element) => element.branchId == idmanag);
+    listRegion[index] = BranchModel.convertRegionToBranch(res['message'] as Map<String, dynamic>);
     // listregoin.add(RegoinModel.fromJson(body));
     isLoading = false;
     notifyListeners();
 
-    return res;
+    return res['result'];
   }
 }

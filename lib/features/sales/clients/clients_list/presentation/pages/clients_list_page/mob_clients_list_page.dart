@@ -46,7 +46,7 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
   @override
   void initState() {
     super.initState();
-    _clientsListBloc = context.read<ClientsListBloc>()..init();
+    _clientsListBloc = context.read<ClientsListBloc>()..init()..add(GetUsersSales());
     _privilegeCubit = context.read<PrivilegesCubit>();
     userModel = AppConstants.currentUser;
     _clientsListBloc.state.myclient_parm = false;

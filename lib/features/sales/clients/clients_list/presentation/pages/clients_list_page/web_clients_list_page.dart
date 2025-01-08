@@ -53,7 +53,7 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
   @override
   void initState() {
     super.initState();
-    _clientsBloc = context.read<ClientsListBloc>()..init();
+    _clientsBloc = context.read<ClientsListBloc>()..init()..add(GetUsersSales());
     _privilegeCubit = context.read<PrivilegesCubit>();
     userModel = AppConstants.currentUser;
     _clientsBloc.state.myclient_parm = false;

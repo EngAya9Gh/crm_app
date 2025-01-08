@@ -1,4 +1,6 @@
 import 'package:crm_smart/features/sales/clients/clients_list/domain/use_cases/get_high_similar_cleints_usecase.dart';
+import 'package:crm_smart/features/sales/clients/clients_list/domain/use_cases/get_users_sales_usecase.dart';
+import 'package:crm_smart/model/usermodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -6,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/services/api/api_utils.dart';
 import '../../../../../../core/services/api/result.dart';
@@ -32,14 +35,12 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   ClientsListRepositoryImpl(this.datasource);
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByRegion(
-      Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByRegion(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getClientsByRegionList(body));
   }
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByUser(
-      Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByUser(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getClientsByUserList(body));
   }
 
@@ -48,8 +49,7 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
     GetClientsWithFilterParams body,
   ) async {
     try {
-      PaginationResponseWrapper result =
-          await datasource.getClientsWithFilter(body);
+      PaginationResponseWrapper result = await datasource.getClientsWithFilter(body);
       final List<ClientModel> list = List.from(result.data.map((e) {
         return ClientModel.fromJson(e);
       }));
@@ -62,33 +62,28 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<List<RecommendedClient>>>>
-      getRecommendedClients() {
+  Future<Result<ResponseWrapper<List<RecommendedClient>>>> getRecommendedClients() {
     return toApiResult(datasource.getRecommendedClients);
   }
 
   @override
-  Future<Result<ResponseWrapper<ClientModel>>> addClient(
-      Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<ClientModel>>> addClient(Map<String, dynamic> body) {
     return toApiResult(() => datasource.addClient(body));
   }
 
   @override
-  Future<Result<ResponseWrapper<ClientModel>>> editClient(
-      Map<String, dynamic> body, Map<String, dynamic> params) {
+  Future<Result<ResponseWrapper<ClientModel>>> editClient(Map<String, dynamic> body, Map<String, dynamic> params) {
     return toApiResult(() => datasource.editClient1(body, params));
   }
 
   @override
-  Future<Result<ResponseWrapper<ClientModel>>> changeTypeClient(
-      Map<String, dynamic> body, Map<String, dynamic> params, String id) {
+  Future<Result<ResponseWrapper<ClientModel>>> changeTypeClient(Map<String, dynamic> body, Map<String, dynamic> params, String id) {
     // TODO: implement changeTypeClient
     return toApiResult(() => datasource.changeTypeClient(body, params, id));
   }
 
   @override
-  Future<Result<ResponseWrapper<CommunicationDetailModel>>> storeClientCommunication(
-      Map<String, dynamic> body, Map<String, dynamic> params) {
+  Future<Result<ResponseWrapper<CommunicationDetailModel>>> storeClientCommunication(Map<String, dynamic> body, Map<String, dynamic> params) {
     // TODO: implement changeTypeClient
     return toApiResult(() => datasource.storeClientCommunication(body, params));
   }
@@ -101,15 +96,13 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<List<SimilarClient>>>> getSimilarClients(
-      Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<List<SimilarClient>>>> getSimilarClients(Map<String, dynamic> body) {
     // TODO: implement getSimilarClients
     return toApiResult(() => datasource.getSimilarClientsList(body));
   }
 
   @override
-  Future<Result<ResponseWrapper<ClientModel>>> approveClientRejectAdmin(
-      Map<String, dynamic> body, Map<String, dynamic> params, String id) {
+  Future<Result<ResponseWrapper<ClientModel>>> approveClientRejectAdmin(Map<String, dynamic> body, Map<String, dynamic> params, String id) {
     // TODO: implement approveClientReject_admin
     return toApiResult(() => datasource.approveClient_Reject(body, params, id));
   }
@@ -122,8 +115,7 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<Either<String, List<ClientSupportFileModel>>> crudClientSupportFiles(
-      CrudClientSupportFilesParams params) {
+  Future<Either<String, List<ClientSupportFileModel>>> crudClientSupportFiles(CrudClientSupportFilesParams params) {
     return datasource.crudClientSupportFiles(params);
   }
 
@@ -149,8 +141,7 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<Either<String, List<clientMarketingReportModel>>>
-      getClientMarketingReport(GetClientMarketingReportParams params) async {
+  Future<Either<String, List<clientMarketingReportModel>>> getClientMarketingReport(GetClientMarketingReportParams params) async {
     try {
       final data = await datasource.getClientMarketingReport(params);
       final list = List<clientMarketingReportModel>.from(data.map((e) {
@@ -164,8 +155,7 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<Either<String, PaginationResponseWrapper>> getHighSimilarClients(
-      GetHighSimilarClientsParams params) async {
+  Future<Either<String, PaginationResponseWrapper>> getHighSimilarClients(GetHighSimilarClientsParams params) async {
     try {
       final data = await datasource.getHighSimilarClients(params);
       return Right(data.copyWith(data: List.from(data.data.map((e) {
@@ -178,7 +168,7 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<  List<ClientModel>>  getLinkClients(String idClient) async {
+  Future<List<ClientModel>> getLinkClients(String idClient) async {
     try {
       final data = await datasource.getLinkClients(idClient);
       final clients = data.map((e) => ClientModel.fromJson(e)).toList();
@@ -199,27 +189,24 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
       return Left(e.toString());
     }
   }
+
   @override
-  Future<ResponseWrapper<List<ClientModel>>>
-  fetchPaginatedClients(FetchPaginatedClientsParams params) async {
+  Future<ResponseWrapper<List<ClientModel>>> fetchPaginatedClients(FetchPaginatedClientsParams params) async {
     try {
+      final response = await datasource.getClientAll({
+        'page': params.page,
+        'fk_country': params.fkCountry,
+        // Add any other necessary parameters
+      });
+      // if (response.statusCode == 200) {
+      final List<ClientModel> clients = (response.data['message'] as List).map((json) => ClientModel.fromJson(json)).toList();
 
-        final response = await   datasource.getClientAll(  {
-          'page': params.page,
-          'fk_country': params.fkCountry,
-          // Add any other necessary parameters
-        });
-     // if (response.statusCode == 200) {
-        final List<ClientModel> clients = (response.data['message'] as List)
-            .map((json) => ClientModel.fromJson(json))
-            .toList();
-
-        return ResponseWrapper<List<ClientModel>>(
-          data: clients,
-          count: response.data['count'],
-          // lastPage: response.data['last_page'],
-          message: response.data['message'],
-        );
+      return ResponseWrapper<List<ClientModel>>(
+        data: clients,
+        count: response.data['count'],
+        // lastPage: response.data['last_page'],
+        message: response.data['message'],
+      );
       // } else {
       //   throw Exception('Failed to fetch paginated clients');
       // }
@@ -228,4 +215,7 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
     }
   }
 
+  @override
+  Future<Result<ResponseWrapper<List<UserEntity>>>> getUsersSales(GetUsersSalesParams params) async {
+      return toApiResult(() => datasource.getUsersSales(params));}
 }

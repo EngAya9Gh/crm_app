@@ -60,9 +60,9 @@ class manage_provider extends ChangeNotifier {
       endPoint: EndPoints.management.addManagement,
       data: body
     );
-    if (res['result'] != "error") {
+    if (res['result'] == "success") {
       body.addAll({
-        'idmange': res,
+        'idmange': res['message']['idmange'],
       });
       //listoflevel=[];
       listtext.add(ManageModel.fromMap(body));
@@ -84,7 +84,7 @@ class manage_provider extends ChangeNotifier {
     body.addAll({
       'idmange': idmanag,
     });
-    listtext.add(ManageModel.fromMap(body));
+    listtext=listtext.map((e) => e.idMange==idmanag?ManageModel.fromMap(body):e).toList();
     notifyListeners();
 
     return res['result'];

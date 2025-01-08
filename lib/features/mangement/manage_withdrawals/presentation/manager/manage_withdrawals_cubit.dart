@@ -443,8 +443,9 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         List<RejectReason> list =
             state.rejectReasonsStat.getDataWhenSuccess ?? [];
         if (isEdit()) {
+          print(rejectReasonId);
           list = list
-              .map((e) => e.idRejectClient == rejectReasonId
+              .map((e) => e.idRejectClient == int.parse(rejectReasonId!)
                   ? e.copyWith(nameReasonReject: reasonName)
                   : e)
               .toList();

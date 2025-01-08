@@ -1,5 +1,8 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
+import 'package:crm_smart/features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +29,7 @@ class FilterClientsStatusReportsSheet extends StatefulWidget {
       _FilterClientsStatusReportsSheetState();
 }
 
-class _FilterClientsStatusReportsSheetState
-    extends State<FilterClientsStatusReportsSheet> {
+class _FilterClientsStatusReportsSheetState extends State<FilterClientsStatusReportsSheet> {
   late final ClientsStatusReportsCubit _cubit;
   late final PrivilegesCubit _privilegeCubit;
 
@@ -58,9 +60,9 @@ class _FilterClientsStatusReportsSheetState
                     text: "إعادة الافتراضي",
                     onPressed: _cubit.filterEntity.checkIfFilterIsNotEmpty()
                         ? () {
-                            _cubit.filterEntity.clearFilters();
-                            _filterAndCloseDialog();
-                          }
+                      _cubit.filterEntity.clearFilters();
+                      _filterAndCloseDialog();
+                    }
                         : null,
                     appButtonStyle: AppButtonStyle.secondary,
                   );
@@ -99,7 +101,7 @@ class _FilterClientsStatusReportsSheetState
                     Flexible(
                       child: CustomDateTimePicker(
                         dateTimeController:
-                            _cubit.filterEntity.dateFromController,
+                        _cubit.filterEntity.dateFromController,
                         dateTimeType: DateTimeEnum.date,
                         hintText: 'وقت البداية',
                         style2: true,
@@ -111,7 +113,7 @@ class _FilterClientsStatusReportsSheetState
                       Flexible(
                         child: CustomDateTimePicker(
                           dateTimeController:
-                              _cubit.filterEntity.dateToController,
+                          _cubit.filterEntity.dateToController,
                           dateTimeType: DateTimeEnum.date,
                           hintText: 'وقت النهاية',
                           style2: true,
@@ -127,7 +129,7 @@ class _FilterClientsStatusReportsSheetState
               BranchSearchableDropDown(
                 hint: 'الفرع',
                 selectedBranchId:
-                    _cubit.filterEntity.regionNotifier.value?.branchId,
+                _cubit.filterEntity.regionNotifier.value?.branchId,
                 onSelected: (region) {
                   _cubit.filterEntity.regionNotifier.value = region;
                 },
@@ -136,11 +138,11 @@ class _FilterClientsStatusReportsSheetState
             if (_privilegeCubit.checkPrivilege('97') ||
                 _privilegeCubit.checkPrivilege('98')) ...[
               10.height,
-              Consumer<UserProvider>(
-                builder: (context, userVm, child) {
-                  return CustomSearchableDropDown<UserModel>(
+              BlocBuilder<ClientsListBloc, ClientsListState>(
+                builder: (context, state) {
+                  return CustomSearchableDropDown(
                     hint: 'الموظف',
-                    items: userVm.usersSalesManagement,
+                    items: state.usersSales.data??[],
                     itemAsString: (u) => u!.userAsString(),
                     onChanged: (data) {
                       if (data == null) return;

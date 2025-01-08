@@ -7,6 +7,7 @@ import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_reset_icon.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../manager/clients_debts_reports_cubit.dart';
 import '../widgets/clients_debts_reports_body.dart';
 import '../widgets/filter_clients_debts_reports_sheet.dart';
@@ -24,7 +25,7 @@ class _ClientDebtsReportsState extends State<ClientsDebtsReportsPage> {
   @override
   void initState() {
     _cubit = context.read<ClientsDebtsReportsCubit>()..init();
-
+    context.read<ClientsListBloc>()..add(GetUsersSales());
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getClientDebtsReports();
     });

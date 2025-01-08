@@ -20,11 +20,15 @@ class config_service {
   }
 
   Future<List<ActivityModel>> getactv(String type) async {
-    var data = await Api().get(url: EndPoints.baseUrls.url + 'config/getactv.php');
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    //name_mange
+    var data = await  apiServices.get(endPoint: EndPoints.activities.getActivities);
+
 
     List<ActivityModel> prodlist = [];
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(ActivityModel.fromJson(data[i]));
+    for (int i = 0; i < data['message'].length; i++) {
+      prodlist.add(ActivityModel.fromJson(data['message'][i]));
     }
 
     return prodlist;

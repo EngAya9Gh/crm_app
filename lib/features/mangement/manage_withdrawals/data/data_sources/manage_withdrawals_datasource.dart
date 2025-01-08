@@ -198,7 +198,7 @@ class ManageWithdrawalsDatasource {
     fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(
-        endPoint: EndPoints.client.editRejectReasons(params['id_rejectClient']),
+        endPoint: EndPoints.client.editRejectReasons(int.parse(params['id_rejectClient'])),
         data: data,
         queryParameters: params,
       );

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
+import '../core/services/api/api_services.dart';
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/ActivityModel.dart';
 import '../services/configService.dart';
@@ -39,29 +41,30 @@ class ActivityProvider extends ChangeNotifier {
   Future<String> addActivityVm(Map<String, dynamic> body) async {
     isLoading = true;
     notifyListeners();
-    String res = await Api()
-        .post(url: EndPoints.baseUrls.url + 'config/addactv.php', body: body);
-    if (res != "error") {
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    var res = await  apiServices.post(endPoint: EndPoints.activities.addActivity,data: body);
+    if (res['result'] == "success") {
       body.addAll({
-        'id_activity_type': res,
+        'id_activity_type': res['message']['id_activity_type'],
       });
       activitiesList.insert(0, ActivityModel.fromJson(body));
       isLoading = false;
       notifyListeners();
     }
-    return res;
+    return res['result'];
   }
 
   Future<String> updateActivity(
       Map<String, dynamic> body, String activityTypeId) async {
     isLoading = true;
     notifyListeners();
-    String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'config/update_actv.php?id_activity_type=$activityTypeId',
-        body: body);
+
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    var data = await  apiServices.post(endPoint: EndPoints.activities.updateActivity(activityTypeId),data: body);
     body.addAll({
-      'id_activity_type': activityTypeId,
+      'id_activity_type': int.parse(activityTypeId),
     });
     final index = activitiesList
         .indexWhere((element) => element.id_activity_type == activityTypeId);
@@ -69,6 +72,6 @@ class ActivityProvider extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
 
-    return res;
+    return data['result'];
   }
 }

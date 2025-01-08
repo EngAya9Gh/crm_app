@@ -517,6 +517,8 @@ import '../../../features/sales/clients/clients_list/domain/use_cases/get_recomm
     as _i143;
 import '../../../features/sales/clients/clients_list/domain/use_cases/get_similar_cleints_usecase.dart'
     as _i1047;
+import '../../../features/sales/clients/clients_list/domain/use_cases/get_users_sales_usecase.dart'
+    as _i449;
 import '../../../features/sales/clients/clients_list/domain/use_cases/link_selected_client_usecase.dart'
     as _i987;
 import '../../../features/sales/clients/clients_list/domain/use_cases/receive_client_usecase.dart'
@@ -1694,6 +1696,8 @@ _i174.GetIt $initGetIt(
       _i12.GetAttachmentsUseCase(gh<_i760.ClientsAttachmentsRepository>()));
   gh.lazySingleton<_i699.GetClientsDebtsUsecase>(
       () => _i699.GetClientsDebtsUsecase(gh<_i228.ClientsDebtsRepo>()));
+  gh.factory<_i449.GetUsersSalesUseCase>(() => _i449.GetUsersSalesUseCase(
+      repository: gh<_i952.ClientsListRepository>()));
   gh.lazySingleton<_i588.CrudClientSupportFilesUsecase>(() =>
       _i588.CrudClientSupportFilesUsecase(
           repository: gh<_i952.ClientsListRepository>()));
@@ -1780,27 +1784,6 @@ _i174.GetIt $initGetIt(
         gh<_i937.ExceededClientsUseCase>(),
         gh<_i824.TransferExceededClientsUseCase>(),
       ));
-  gh.factory<_i631.ClientsListBloc>(() => _i631.ClientsListBloc(
-        gh<_i574.GetClientsWithFilterUserUsecase>(),
-        gh<_i143.GetRecommendedClientsUsecase>(),
-        gh<_i1047.GetSimilarClientsUsecase>(),
-        gh<_i824.AddClientUserUsecase>(),
-        gh<_i190.EditClientUserUsecase>(),
-        gh<_i137.ChangeTypeClientUsecase>(),
-        gh<_i688.ChangeClientCommunicationUseCase>(),
-        gh<_i592.StoreClientCommunicationUseCase>(),
-        gh<_i34.ApproveRejectClientUsecase>(),
-        gh<_i588.CrudClientSupportFilesUsecase>(),
-        gh<_i218.GetClientSupportFilesUsecase>(),
-        gh<_i912.TransferClientUserUsecase>(),
-        gh<_i679.ReceiveClientUserUsecase>(),
-        gh<_i999.GetClientMarketingReportUsecase>(),
-        gh<_i467.GetHighSimilarClientsUsecase>(),
-        gh<_i400.FetchLinkClientsUseCase>(),
-        gh<_i314.FetchPaginatedClientsUsecase>(),
-        gh<_i987.LinkSelectedClientsUseCase>(),
-        gh<_i944.ExportClientsToExcelUseCase>(),
-      ));
   gh.factory<_i618.ManageWithdrawalsCubit>(() => _i618.ManageWithdrawalsCubit(
         gh<_i134.GetUserSeriesUsecase>(),
         gh<_i898.UpdateSeriesUsecase>(),
@@ -1868,6 +1851,28 @@ _i174.GetIt $initGetIt(
         gh<_i944.GetManagesForUserUsecase>(),
         gh<_i1026.GetLevelsForUserUsecase>(),
         gh<_i62.GetBranchesForUserUsecase>(),
+      ));
+  gh.factory<_i631.ClientsListBloc>(() => _i631.ClientsListBloc(
+        gh<_i574.GetClientsWithFilterUserUsecase>(),
+        gh<_i143.GetRecommendedClientsUsecase>(),
+        gh<_i1047.GetSimilarClientsUsecase>(),
+        gh<_i824.AddClientUserUsecase>(),
+        gh<_i190.EditClientUserUsecase>(),
+        gh<_i137.ChangeTypeClientUsecase>(),
+        gh<_i688.ChangeClientCommunicationUseCase>(),
+        gh<_i592.StoreClientCommunicationUseCase>(),
+        gh<_i34.ApproveRejectClientUsecase>(),
+        gh<_i588.CrudClientSupportFilesUsecase>(),
+        gh<_i218.GetClientSupportFilesUsecase>(),
+        gh<_i912.TransferClientUserUsecase>(),
+        gh<_i679.ReceiveClientUserUsecase>(),
+        gh<_i999.GetClientMarketingReportUsecase>(),
+        gh<_i467.GetHighSimilarClientsUsecase>(),
+        gh<_i400.FetchLinkClientsUseCase>(),
+        gh<_i314.FetchPaginatedClientsUsecase>(),
+        gh<_i987.LinkSelectedClientsUseCase>(),
+        gh<_i944.ExportClientsToExcelUseCase>(),
+        gh<_i449.GetUsersSalesUseCase>(),
       ));
   gh.factory<_i815.CompanyCubit>(() => _i815.CompanyCubit(
         gh<_i521.GetCommentUsecase>(),
