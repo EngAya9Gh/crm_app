@@ -27,76 +27,90 @@ class cardcomment extends StatelessWidget {
               SizedBox(width: 2),
               Expanded(
                 flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(offset: Offset(1.0, 1.0), blurRadius: 2.0, color: Colors.white24 //.withOpacity(0.2),
-                              ),
-                        ],
-                        color: Colors.black12,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8.0, bottom: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CircleAvatar(
-                                  radius: 20,
-                                  child: _prepareImage(),
-                                ),
-                                SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    // mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      AppText(
-                                        commentmodel.nameUser,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      2.height,
-                                      AppText(
-                                        HelperFunctions.dateTimeToString(DateTime.parse(
-                                          commentmodel.date_comment,
-                                        )),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Spacer(),
-                                AppStatusChip(status:
-                                commentmodel.type_comment,color: AppColors.primaryMain,fontSize: 13,)
-                              ],
-                            ),
-                            SizedBox(height: 15),
-                            GestureDetector(
-                              onLongPress: () async {
-                                await HelperFunctions.copyToClipboard(commentmodel.content);
-                                AppSnackbar.showSnakeBar('Copied to your clipboard!');
-                              },
-                              child: AppText(
-                                commentmodel.content,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                child: Stack(
 
-                    // Icon(
-                    //   Icons.arrow_back_ios_new_outlined,
-                    //   color: Colors.black54,
-                    // ),
-                  ],
+               children: [
+                 Positioned(
+
+                   child: Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: AppStatusChip(status:
+                     commentmodel.type_comment,color: AppColors.primaryMain,fontSize: 13,),
+                   ),
+                   left:0 ,
+                 ),
+                 Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                   children: [
+                     Container(
+                       decoration: BoxDecoration(
+                         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
+                         boxShadow: <BoxShadow>[
+                           BoxShadow(offset: Offset(1.0, 1.0), blurRadius: 2.0, color: Colors.white24 //.withOpacity(0.2),
+                           ),
+                         ],
+                         color: Colors.black12,
+                       ),
+                       child: Padding(
+                         padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Row(
+                               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                               //crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                 CircleAvatar(
+                                   radius: 20,
+                                   child: _prepareImage(),
+                                 ),
+                                 SizedBox(width: 10),
+                                 Expanded(
+                                   child: Column(
+                                     // mainAxisAlignment: MainAxisAlignment.end,
+                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                     children: [
+                                       AppText(
+                                         commentmodel.nameUser,
+                                         fontWeight: FontWeight.bold,
+                                       ),
+                                       2.height,
+                                       AppText(
+                                         HelperFunctions.dateTimeToString(DateTime.parse(
+                                           commentmodel.date_comment,
+                                         )),
+                                       ),
+                                     ],
+                                   ),
+                                 ),
+                                 Spacer(),
+
+                               ],
+                             ),
+                             SizedBox(height: 15),
+                             GestureDetector(
+                               onLongPress: () async {
+                                 await HelperFunctions.copyToClipboard(commentmodel.content);
+                                 AppSnackbar.showSnakeBar('Copied to your clipboard!');
+                               },
+                               child: AppText(
+                                 commentmodel.content,
+                                 fontSize: 18,
+                               ),
+                             ),
+                           ],
+                         ),
+                       ),
+                     ),
+
+                     // Icon(
+                     //   Icons.arrow_back_ios_new_outlined,
+                     //   color: Colors.black54,
+                     // ),
+                   ],
+                 ),
+               ],
+
                 ),
               ),
             ]));
