@@ -65,6 +65,8 @@ class InvoiceModel {
   String? mobile; //mobile client
   String? ismarketing;
   String? numbarnch;
+  String? renewInventory;
+  String? renewPos;
   String? renewPlus;
   String? numusers;
   String? nummostda;
@@ -237,6 +239,8 @@ class InvoiceModel {
     this.isCanceledWithdraw,
     this.tag,
     this.isDeleted,
+    this.renewInventory,
+    this.renewPos,
   });
 
   bool searchString(String query) {
@@ -253,6 +257,8 @@ class InvoiceModel {
     return InvoiceModel(
         tag: ApiHelper.handleString(jsondata['tag']) == "true" ? true : false,
         idInvoice: ApiHelper.handleString(jsondata['id_invoice']),
+        renewInventory: ApiHelper.handleString(jsondata['renew_inventory']),
+        renewPos: ApiHelper.handleString(jsondata['renew_pos']),
         user_delete: ApiHelper.handleString(jsondata['user_delete']),
         date_delete: ApiHelper.handleString(jsondata['date_delete']),
         dateCreate: ApiHelper.handleString(jsondata['date_create']),
@@ -514,6 +520,8 @@ class InvoiceModel {
     String? rateSupport,
     String? rateSales,
     String? deviceState,
+    String? renewInventory,
+    String? renewPos,
     bool? hasDevices,
     bool? isCanceledWithdraw,
     bool? isDeleted,
@@ -626,6 +634,8 @@ class InvoiceModel {
       hasDevices: hasDevices ?? this.hasDevices,
       isCanceledWithdraw: isCanceledWithdraw ?? this.isCanceledWithdraw,
       isDeleted: isDeleted ?? this.isDeleted,
+      renewInventory: renewInventory ?? this.renewInventory,
+      renewPos: renewPos ?? this.renewPos,
     );
   }
 //endregion

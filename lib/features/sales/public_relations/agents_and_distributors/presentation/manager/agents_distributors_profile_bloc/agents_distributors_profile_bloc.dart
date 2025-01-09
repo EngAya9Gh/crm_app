@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../../core/common/models/client_model.dart';
 import '../../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../../core/common/models/profile_invoice_model.dart';

@@ -30,7 +30,7 @@ class AddEventFormVariablesEntity {
     final DateTime selectedDate = DateTime.parse(selectedDateController.text);
     // split by : or space to be able to access the hours and minutes
     final List<String> timeList = time.split(RegExp(r'[:\s]'));
-    if(timeList[2]=="PM"){
+    if(timeList[2]=="PM"&&timeList[0]!='12'){
       var s =  int.parse(timeList[0]) +12;
       timeList[0] = s.toString();
     }

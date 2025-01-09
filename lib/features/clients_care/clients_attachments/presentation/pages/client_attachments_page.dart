@@ -146,7 +146,7 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                               return SizedBox(
                                   height: 300.scaleIconsSize,
                                   child: networkImage(
-                                      FileAttach(id: data?[index].id.toString(), fileAttach: data?[index].fileAttachInvoice, file: XFile('path')),
+                                      FileAttach(id: data?[index].id.toString(), fileAttach: data?[index].fileAttachInvoice),
                                       index,
                                       attachModel!));
                               // } else {
