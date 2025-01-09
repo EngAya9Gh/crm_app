@@ -25,10 +25,10 @@ class comment_vm extends ChangeNotifier {
       notifyListeners();
 
       final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       var response = await apiServices.get(
-        endPoint: EndPoints.care.viewComments,
-        queryParameters: {'fk_client': fk_client},
+        endPoint: EndPoints.care.viewComments+'/'+fk_client,
+
       );
       // todo: remove after backend changes
       response = (response is String) ? jsonDecode(response) : response;
