@@ -195,7 +195,7 @@ class TaskCubit extends Cubit<TaskState> {
           GetTaskParams(
             skip: pageVariables.allList.length,
             filter: pageVariables.searchController.text,
-            statusName: ((state.selectedStatus?.index??-1) +1),
+            statusName: ((state.selectedStatus?.id??1)),
             assignedTo: state.filterAssignTo?.idUser?.toString(),
             assignedBy: state.filterAssignFrom?.idUser?.toString(),
             startDateFrom: state.filterFromDate,
