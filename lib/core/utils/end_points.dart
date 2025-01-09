@@ -253,9 +253,9 @@ class _Client {
 class _Task {
   const _Task();
 
-  final addTask = 'addTask';
+  final addTask = 'tasks';
   final filterTasksByAll = 'tasks';
-  final changeStatusTask = 'changeStatuseTask/';
+  String changeStatusTask(String id) => 'tasks/$id/change-status';
   final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
 }
 
@@ -484,6 +484,7 @@ class _RegionAndCities {
 
   String updateRegion(String id) => 'main-city/$id/edit';
   final String getCities = 'cities';
+  final String getCitiesAll = 'cities/select';
   final String addCities = 'cities';
   String updateCities(String id) => 'cities/$id/edit';
 }

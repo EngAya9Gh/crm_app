@@ -26,7 +26,7 @@ class GetTaskParams {
   final int skip;
   final int limit;
   final String? filter;
-  final String? statusName;
+  final int? statusName;
   final String? assignedBy;
   final String? assignedTo;
   final String? departmentFrom;
@@ -65,7 +65,7 @@ class GetTaskParams {
         'skip': ApiHelper.calculatePage(skip: skip, limit: limit),
         'limit': limit,
         'filter': filter,
-        'status_name': statusName,
+        'status': statusName,/*
         'assigned_by': assignedBy,
         'assigned_to': assignedTo,
         'date_time_created': dateTimeCreated?.toIso8601String(),
@@ -80,7 +80,7 @@ class GetTaskParams {
         'assigend_region_to': regionTo,
         'mytasks': myTasks,
         'mydepartment': myDepartment,
-        'mybranch': myBranch,
+        'mybranch': myBranch,*/
       }..removeWhere((key, value) => value == '' || value == null);
 
   String dateToString(DateTime dateTime) =>

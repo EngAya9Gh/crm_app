@@ -181,9 +181,17 @@ class MainCityProvider extends ChangeNotifier {
     notifyListeners();
     if (listcity.isEmpty) {
       List<dynamic> data = [];
-      data = await Api().get(url: EndPoints.baseUrls.url + 'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      //name_mange
+      final response = await apiServices.get(
+        endPoint: EndPoints.regionAndCity.getCitiesAll,
+      );
+      data = response['message'];
 
-      if (data != null) {
+      // data = await Api().get(url: EndPoints.baseUrls.url + 'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
+
+      if (data.isNotEmpty) {
         for (int i = 0; i < data.length; i++) {
           listcity.add(CityModel.fromJson(data[i]));
         }

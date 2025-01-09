@@ -334,97 +334,100 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                             builder: (context) => AlertDialog(
                               insetPadding: EdgeInsets.zero,
                               title: AppText('اضافة صورة'),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      pickImage(
-                                        (context, file) {
-                                          selectedFile.value = selectedFile.value?.copyWith(file: file);
-                                        },
-                                      );
-                                    },
-                                    behavior: HitTestBehavior.opaque,
-                                    child: Container(
-                                      height: 250.scaleIconsSize,
-                                      width: .9.sw,
-                                      margin: EdgeInsetsDirectional.only(bottom: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadiusDirectional.circular(12.r), border: Border.all(color: AppColors.primaryMain)),
-                                      child: ValueListenableBuilder(
-                                        valueListenable: selectedFile,
-                                        builder: (context, value, child) {
-                                          if (value?.file != null) {
-                                            return SizedBox(height: 250.scaleIconsSize, child: fileImage(value!, filesAttach.length - 1, true));
-                                          }
-                                          return Column(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Icon(Icons.attachment),
-                                              AppText('choose image'),
-                                            ],
-                                          );
-                                        },
+                              content: SizedBox(
+                                width: .75.scaleWidth,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        pickImage(
+                                          (context, file) {
+                                            selectedFile.value = selectedFile.value?.copyWith(file: file);
+                                          },
+                                        );
+                                      },
+                                      behavior: HitTestBehavior.opaque,
+                                      child: Container(
+                                        height: 250.scaleIconsSize,
+                                        width: .9.sw,
+                                        margin: EdgeInsetsDirectional.only(bottom: 10),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadiusDirectional.circular(12.r), border: Border.all(color: AppColors.primaryMain)),
+                                        child: ValueListenableBuilder(
+                                          valueListenable: selectedFile,
+                                          builder: (context, value, child) {
+                                            if (value?.file != null) {
+                                              return SizedBox(height: 250.scaleIconsSize, child: fileImage(value!, filesAttach.length - 1, true));
+                                            }
+                                            return Column(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.attachment),
+                                                AppText('choose image'),
+                                              ],
+                                            );
+                                          },
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  ValueListenableBuilder(
-                                    valueListenable: selectedFile,
-                                    builder: (context, value, child) {
-                                      return AppDropdownButtonFormField<TypeSubClientEnum, dynamic>(
-                                        items: TypeSubClientEnum.values,
-                                        onChange: (value) {
-                                          selectedFile.value = selectedFile.value?.copyWith(type: value);
-                                        },
-                                        hint: "النوع",
-                                        itemAsValue: (TypeSubClientEnum? item) => item!.id,
-                                        itemAsString: (item) => item!.text,
-                                        value: value?.type ?? 'all',
-                                        validator: (value) {
-                                          if (value == null) {
-                                            return 'هذا الحقل مطلوب.';
-                                          }
-                                          return null;
-                                        },
-                                      );
-                                    },
-                                  ),
-                                  10.height,
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 2,
-                                          child: AppElevatedButton(
-                                            text: 'add',
-                                            onPressed: () {
-                                              if (selectedFile.value != null) {
-                                                if (selectedFile.value?.file != null) {
-                                                  addNewFilesAttached = List.of(addNewFilesAttached)..add(selectedFile.value!);
-                                                  addOnFilesAttach(
-                                                    [selectedFile.value!],
-                                                    () => AppSnackbar.showSnakeBar("أكثر عدد مسموح به هو 20 ملف."),
-                                                  );
-                                                  context.pop();
-                                                } else if (selectedFile.value?.file == null) {
-                                                  AppSnackbar.showSnakeBar('الحقل الصورة مطلوب', color: ToastColorsEnum.warning);
+                                    ValueListenableBuilder(
+                                      valueListenable: selectedFile,
+                                      builder: (context, value, child) {
+                                        return AppDropdownButtonFormField<TypeSubClientEnum, dynamic>(
+                                          items: TypeSubClientEnum.values,
+                                          onChange: (value) {
+                                            selectedFile.value = selectedFile.value?.copyWith(type: value);
+                                          },
+                                          hint: "النوع",
+                                          itemAsValue: (TypeSubClientEnum? item) => item!.id,
+                                          itemAsString: (item) => item!.text,
+                                          value: value?.type ?? 'all',
+                                          validator: (value) {
+                                            if (value == null) {
+                                              return 'هذا الحقل مطلوب.';
+                                            }
+                                            return null;
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    10.height,
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 2,
+                                            child: AppElevatedButton(
+                                              text: 'add',
+                                              onPressed: () {
+                                                if (selectedFile.value != null) {
+                                                  if (selectedFile.value?.file != null) {
+                                                    addNewFilesAttached = List.of(addNewFilesAttached)..add(selectedFile.value!);
+                                                    addOnFilesAttach(
+                                                      [selectedFile.value!],
+                                                      () => AppSnackbar.showSnakeBar("أكثر عدد مسموح به هو 20 ملف."),
+                                                    );
+                                                    context.pop();
+                                                  } else if (selectedFile.value?.file == null) {
+                                                    AppSnackbar.showSnakeBar('الحقل الصورة مطلوب', color: ToastColorsEnum.warning);
+                                                  }
                                                 }
-                                              }
-                                            },
-                                          )),
-                                      Spacer(),
-                                      Expanded(
-                                          flex: 2,
-                                          child: AppElevatedButton(
-                                            onPressed: () {
-                                              context.pop();
-                                            },
-                                            text: 'cancel',
-                                          )),
-                                    ],
-                                  )
-                                ],
+                                              },
+                                            )),
+                                        Spacer(),
+                                        Expanded(
+                                            flex: 2,
+                                            child: AppElevatedButton(
+                                              onPressed: () {
+                                                context.pop();
+                                              },
+                                              text: 'cancel',
+                                            )),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           );

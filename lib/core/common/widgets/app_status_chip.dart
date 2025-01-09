@@ -7,12 +7,12 @@ class AppStatusChip extends StatelessWidget {
   const AppStatusChip({
     super.key,
     required this.status,
-    this.color,
+    this.color, this.fontSize,
   });
 
   final String status;
   final Color? color;
-
+final double? fontSize;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,10 +23,11 @@ class AppStatusChip extends StatelessWidget {
       ),
       child: AppText(
         status,
+        softWrap: true,
         fontFamily: AppFonts.fontFamily1,
         fontWeight: FontWeight.w600,
         color: Colors.white,
-        fontSize: 18,
+        fontSize:fontSize?? 18,
       ),
     );
   }

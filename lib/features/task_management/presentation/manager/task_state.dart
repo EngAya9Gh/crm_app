@@ -47,7 +47,7 @@ class TaskState {
   final BranchModel? regionFrom;
   final BranchModel? regionTo;
   final BlocStatus changeTaskStatus;
-  final AssignedToType? selectedAssignedToType;
+  final AssignedTypeNew? selectedAssignedToType;
   final String? myTasks;
   final String? myDepartment;
   final String? myBranch;
@@ -73,7 +73,7 @@ class TaskState {
     final Nullable<ManageModel?>? departmentTo,
     final Nullable<BranchModel?>? regionFrom,
     final Nullable<BranchModel?>? regionTo,
-    final Nullable<AssignedToType?>? selectedAssignedToType,
+    final Nullable<AssignedTypeNew?>? selectedAssignedToType,
     final Nullable<String?>? myTasks,
     final Nullable<String?>? myDepartment,
     final Nullable<String?>? myBranch,
@@ -309,6 +309,10 @@ enum PublicType {
   closeTicket,
   rateTicket,
   other,
+
+
+  ///tasks
+  addTask
 }
 
 extension PublicTypeExt on PublicType {
@@ -356,6 +360,8 @@ extension PublicTypeExt on PublicType {
         return 'تقييم تذكرة';
       case PublicType.other:
         return 'آخرى';
+        case PublicType.addTask:
+        return 'اضافة مهمة';
     }
   }
 
@@ -403,6 +409,8 @@ extension PublicTypeExt on PublicType {
         return 'rateTicket';
       case PublicType.other:
         return 'other';
+        case PublicType.addTask:
+        return 'add task';
     }
   }
 }

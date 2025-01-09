@@ -96,7 +96,7 @@ class TaskCubit extends Cubit<TaskState> {
     final result = await _getTasksUsecase(
       GetTaskParams(
         skip: taskStatusInfo[status]?.tasks.length ?? 0,
-        statusName: status.name,
+        statusName: status.index+1,
         // ... other parameters ...
       ),
     );
@@ -134,29 +134,18 @@ class TaskCubit extends Cubit<TaskState> {
 
   addTaskAction({
     required VoidCallback onSuccess,
-    required String? taskName,
-    required String description,
-    required String userId,
-    PublicType? publicType,
-    String? mainTypeTask,
-    String? clientId,
-    String? invoiceId,
-    String? regionId,
-    String? departmentId,
-    String? numberOfRecurring,
+  required AddTaskParams addTaskParams,
   }) async {
     emit(state.copyWith(addTaskStatus: const BlocStatus.loading()));
 
-    final result = await _addTaskUsecase(AddTaskParams(
+    final result = await _addTaskUsecase(addTaskParams/*AddTaskParams(
       title: taskName,
       clientId: clientId,
       invoiceId: invoiceId,
       mainTypeTask: mainTypeTask,
       publicType: publicType?.value,
       file: state.attachmentFile,
-      assignTo: state.selectedAssignedToType == AssignedToType.employee
-          ? state.selectedAssignTo
-          : null,
+      assignTo: ,
       deadLineDate: state.deadLineDate,
       participants: state.selectedParticipant ?? [],
       startDate: state.startDate,
@@ -171,7 +160,7 @@ class TaskCubit extends Cubit<TaskState> {
           : null,
       description: description,
       userId: userId,
-    ));
+    )*/);
 
     result.extract(
       (exception, message) {
@@ -206,7 +195,7 @@ class TaskCubit extends Cubit<TaskState> {
           GetTaskParams(
             skip: pageVariables.allList.length,
             filter: pageVariables.searchController.text,
-            statusName: state.selectedStatus?.name,
+            statusName: ((state.selectedStatus?.index??-1) +1),
             assignedTo: state.filterAssignTo?.idUser?.toString(),
             assignedBy: state.filterAssignFrom?.idUser?.toString(),
             startDateFrom: state.filterFromDate,
@@ -347,9 +336,9 @@ class TaskCubit extends Cubit<TaskState> {
     );
   }
 
-  onChangeSelectedAssignedToType(AssignedToType? assignedToType) {
+  onChangeSelectedAssignedToType(AssignedTypeNew? assignedType) {
     emit(
-        state.copyWith(selectedAssignedToType: Nullable.value(assignedToType)));
+        state.copyWith(selectedAssignedToType: Nullable.value(assignedType)));
   }
 
   @override

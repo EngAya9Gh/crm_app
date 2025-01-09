@@ -1,10 +1,13 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
+import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
+import '../../../core/common/widgets/app_status_chip.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../model/commentmodel.dart';
@@ -50,27 +53,27 @@ class cardcomment extends StatelessWidget {
                                   child: _prepareImage(),
                                 ),
                                 SizedBox(width: 10),
-                                Column(
-                                  // mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AppText(
-                                      commentmodel.nameUser,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    2.height,
-                                    AppText(
-                                      commentmodel.type_comment,
-                                      color: AppColors.primaryMain,
-                                    ),
-                                    2.height,
-                                    AppText(
-                                      HelperFunctions.dateTimeToString(DateTime.parse(
-                                        commentmodel.date_comment,
-                                      )),
-                                    ),
-                                  ],
-                                )
+                                Expanded(
+                                  child: Column(
+                                    // mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      AppText(
+                                        commentmodel.nameUser,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      2.height,
+                                      AppText(
+                                        HelperFunctions.dateTimeToString(DateTime.parse(
+                                          commentmodel.date_comment,
+                                        )),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Spacer(),
+                                AppStatusChip(status:
+                                commentmodel.type_comment,color: AppColors.primaryMain,fontSize: 13,)
                               ],
                             ),
                             SizedBox(height: 15),

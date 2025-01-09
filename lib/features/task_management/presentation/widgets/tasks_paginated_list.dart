@@ -64,10 +64,11 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
 
     buffer.writeAll([firstChar, secondChar], '.');
 
-    final status = TaskStatusType.values.firstWhereOrNull((element) => element.name == task.title);
+    final status = TaskStatusType.values.firstWhereOrNull((element) => element.name == task.status?.name);
     return InkWell(
       onTap: status != null && status != TaskStatusType.Evaluated && context.read<PrivilegesCubit>().checkPrivilege('165')
           ? () {
+        print('object234567890-');
               showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -123,13 +124,13 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                             Row(
                               children: [
                                 AppText(
-                                  task.assignFrom!.nameUser,
+                                  task.assignFrom?.nameUser??task.assignFrom?.nameMange??task.assignFrom?.nameRegion,
                                   color: context.colorScheme.grey500,
                                 ),
-                                if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
                                   AppText(' --> '),
+                                // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
                                 AppText(
-                                  task.assignTo!.nameUser.toString(),
+                                  task.assignFrom?.nameUser??task.assignFrom?.nameMange??task.assignFrom?.nameRegion,
                                   color: AppColors.primaryMain,
                                 ),
                               ],

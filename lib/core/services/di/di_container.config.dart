@@ -1753,14 +1753,6 @@ _i174.GetIt $initGetIt(
       () => _i941.GetWaitingAgentsUsecase(gh<_i887.WaitingAgentsRepo>()));
   gh.factory<_i1003.ClientActivitiesBloc>(() =>
       _i1003.ClientActivitiesBloc(gh<_i618.GetClientActivitiesUseCase>()));
-  gh.factory<_i401.InvoicesSectionCubit>(() => _i401.InvoicesSectionCubit(
-        gh<_i351.GetInvoicesByPrivilegesUsecase>(),
-        gh<_i1046.GetAgentsAndDistributorsUseCase>(),
-        gh<_i905.ParticipateListUsecase>(),
-        gh<_i780.GetAllUsersUseCase>(),
-        gh<_i825.GetInvoiceByIdUsecase>(),
-        gh<_i568.ExportInvoicesToExcelUsecase>(),
-      ));
   gh.factory<_i412.ClientAttachmentsBloc>(() => _i412.ClientAttachmentsBloc(
         gh<_i12.GetAttachmentsUseCase>(),
         gh<_i797.GetAllClientUseCase>(),
@@ -1889,6 +1881,15 @@ _i174.GetIt $initGetIt(
         gh<_i220.CacheTokenUsecase>(),
         gh<_i882.GetTokenUsecase>(),
         gh<_i518.ValidateTokenUsecase>(),
+      ));
+  gh.factory<_i401.InvoicesSectionCubit>(() => _i401.InvoicesSectionCubit(
+        gh<_i351.GetInvoicesByPrivilegesUsecase>(),
+        gh<_i1046.GetAgentsAndDistributorsUseCase>(),
+        gh<_i905.ParticipateListUsecase>(),
+        gh<_i780.GetAllUsersUseCase>(),
+        gh<_i449.GetUsersSalesUseCase>(),
+        gh<_i825.GetInvoiceByIdUsecase>(),
+        gh<_i568.ExportInvoicesToExcelUsecase>(),
       ));
   gh.factory<_i1049.AgentsDistributorsProfileBloc>(
       () => _i1049.AgentsDistributorsProfileBloc(
