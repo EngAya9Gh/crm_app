@@ -1,11 +1,9 @@
-import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
-import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../../../core/common/widgets/custom_app_bar.dart';
@@ -15,13 +13,11 @@ import '../../../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../../core/utils/app_colors.dart';
 import '../../../../../../../core/utils/app_constants.dart';
-import '../../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../../core/utils/app_styles.dart';
 import '../../../../../../../model/usermodel.dart';
 import '../../../../../../../view_model/activity_vm.dart';
 import '../../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../../app/presentation/widgets/app_text.dart';
-import '../../../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../manager/clients_list_bloc.dart';
 import '../../widgets/clients_list_count.dart';

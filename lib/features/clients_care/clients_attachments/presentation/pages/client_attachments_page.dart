@@ -29,7 +29,6 @@ import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../ui/widgets/app_file_viewer.dart';
-import '../../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../../view_model/invoice_vm.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/client_attachments_bloc.dart';
@@ -213,7 +212,38 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: InkWell(
+              child: allowedExtensions.any((ext) => fileAttach.file?.name.ext == '.$ext') ||
+                  ((fileAttach.file?.name.ext == '.pdf' || fileAttach.file?.name.ext == '.PDF') ||
+                      (fileAttach.fileAttach == null
+                          ? false
+                          : (fileAttach.fileAttach!.endsWith('.pdf') || fileAttach.fileAttach!.endsWith('.PDF'))))
+                  ? StatefulBuilder(
+                builder: (context, refresh) {
+                  return InkWell(
+                    onTap: () async {
+                      isLoading = true;
+                      refresh(() {});
+                      await InvoiceVm().openFile(
+                        attachFile: fileAttach,
+                        baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                        context: context,
+                      );
+                      isLoading = false;
+                      refresh(() {});
+                    },
+                    child: Container(
+                        width: 110,
+                        decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                        child: isLoading
+                            ? AppLoader(padding: 12)
+                            : AppIcon(
+                          Icons.picture_as_pdf_rounded,
+                          color: Colors.grey,
+                        )),
+                  );
+                },
+              )
+              /*InkWell(
                 onTap: () => AppFileViewer(
                   imageSource: ImageSourceViewer.network,
                   urls: [EndPoints.baseUrls.laravelFilesUrl + fileAttach.fileAttach!],
@@ -222,7 +252,20 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                   imageUrl: EndPoints.baseUrls.laravelFilesUrl + (fileAttach.fileAttach ?? ""),
                   fit: BoxFit.cover,
                 ),
-              ),
+              )*/
+                  : InkWell(
+                  onTap: () => AppFileViewer(
+                    imageSource: ImageSourceViewer.network,
+                    urls: [
+                      EndPoints.baseUrls.laravelFilesUrl +(fileAttach.fileAttach??'')
+                    ],
+                    // files: [XFile()],
+                  ).show(context),
+                  child: AppPlatformImage(
+                    fileModel: FileModel(url: EndPoints.baseUrls.laravelFilesUrl + (fileAttach.fileAttach ?? "")),
+                    fit: BoxFit.cover,
+                    width: 110,
+                  )),
             ),
           ),
           if (attachModel.invoiceAddress != null) ...{

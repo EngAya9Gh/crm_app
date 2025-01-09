@@ -1,9 +1,11 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
+import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../model/commentmodel.dart';
 
@@ -27,13 +29,9 @@ class cardcomment extends StatelessWidget {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.only(bottomLeft: Radius.circular(15)),
+                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
                         boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              offset: Offset(1.0, 1.0),
-                              blurRadius: 2.0,
-                              color: Colors.white24 //.withOpacity(0.2),
+                          BoxShadow(offset: Offset(1.0, 1.0), blurRadius: 2.0, color: Colors.white24 //.withOpacity(0.2),
                               ),
                         ],
                         color: Colors.black12,
@@ -60,9 +58,14 @@ class cardcomment extends StatelessWidget {
                                       commentmodel.nameUser,
                                       fontWeight: FontWeight.bold,
                                     ),
+                                    2.height,
                                     AppText(
-                                      HelperFunctions.dateTimeToString(
-                                          DateTime.parse(
+                                      commentmodel.type_comment,
+                                      color: AppColors.primaryMain,
+                                    ),
+                                    2.height,
+                                    AppText(
+                                      HelperFunctions.dateTimeToString(DateTime.parse(
                                         commentmodel.date_comment,
                                       )),
                                     ),
@@ -73,10 +76,8 @@ class cardcomment extends StatelessWidget {
                             SizedBox(height: 15),
                             GestureDetector(
                               onLongPress: () async {
-                                await HelperFunctions.copyToClipboard(
-                                    commentmodel.content);
-                                AppSnackbar.showSnakeBar(
-                                    'Copied to your clipboard!');
+                                await HelperFunctions.copyToClipboard(commentmodel.content);
+                                AppSnackbar.showSnakeBar('Copied to your clipboard!');
                               },
                               child: AppText(
                                 commentmodel.content,

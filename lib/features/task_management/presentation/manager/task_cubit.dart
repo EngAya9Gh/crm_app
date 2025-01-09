@@ -323,8 +323,7 @@ class TaskCubit extends Cubit<TaskState> {
           taskList = taskList
               .map((e) => e.id == taskModel.id
                   ? e.copyWith(
-                      name: taskStatusType.next.name,
-                      taskStatuseId: taskStatusType.next.id)
+                      status: e.status?.copyWith(name: taskStatusType.next.name,id: taskStatusType.next.id))
                   : e)
               .toList();
         }
@@ -333,9 +332,8 @@ class TaskCubit extends Cubit<TaskState> {
         allTasks = allTasks
             .map((e) => e.id == taskModel.id
                 ? e.copyWith(
-                    name: taskStatusType.next.name,
-                    taskStatuseId: taskStatusType.next.id)
-                : e)
+            status: e.status?.copyWith(name: taskStatusType.next.name,id: taskStatusType.next.id))
+            : e)
             .toList();
 
         onSuccess();

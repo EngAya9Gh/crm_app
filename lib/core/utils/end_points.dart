@@ -254,7 +254,7 @@ class _Task {
   const _Task();
 
   final addTask = 'addTask';
-  final filterTasksByAll = 'filterTaskesByAll';
+  final filterTasksByAll = 'tasks';
   final changeStatusTask = 'changeStatuseTask/';
   final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
 }
