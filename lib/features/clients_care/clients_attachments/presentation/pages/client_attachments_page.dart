@@ -146,9 +146,7 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                               return SizedBox(
                                   height: 300.scaleIconsSize,
                                   child: networkImage(
-                                      FileAttach(id: data?[index].id.toString(), fileAttach: data?[index].fileAttachInvoice),
-                                      index,
-                                      attachModel!));
+                                      FileAttach(id: data?[index].id.toString(), fileAttach: data?[index].fileAttachInvoice), index, attachModel!));
                               // } else {
                               // return SizedBox(
                               //     height: 250.scaleIconsSize,
@@ -211,65 +209,47 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
           5.height,
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: allowedExtensions.any((ext) => fileAttach.file?.name.ext == '.$ext') ||
-                  ((fileAttach.file?.name.ext == '.pdf' || fileAttach.file?.name.ext == '.PDF') ||
-                      (fileAttach.fileAttach == null
-                          ? false
-                          : (fileAttach.fileAttach!.endsWith('.pdf') || fileAttach.fileAttach!.endsWith('.PDF'))))
-                  ? StatefulBuilder(
-                builder: (context, refresh) {
-                  return InkWell(
-                    onTap: () async {
-                      isLoading = true;
-                      refresh(() {});
-                      await InvoiceVm().openFile(
-                        attachFile: fileAttach,
-                        baseUrl: EndPoints.baseUrls.laravelFilesUrl,
-                        context: context,
-                      );
-                      isLoading = false;
-                      refresh(() {});
-                    },
-                    child: Container(
-                        width: 110,
-                        decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
-                        child: isLoading
-                            ? AppLoader(padding: 12)
-                            : AppIcon(
-                          Icons.picture_as_pdf_rounded,
-                          color: Colors.grey,
-                        )),
-                  );
-                },
-              )
-              /*InkWell(
-                onTap: () => AppFileViewer(
-                  imageSource: ImageSourceViewer.network,
-                  urls: [EndPoints.baseUrls.laravelFilesUrl + fileAttach.fileAttach!],
-                ).show(context),
-                child: FancyImageShimmerViewer(
-                  imageUrl: EndPoints.baseUrls.laravelFilesUrl + (fileAttach.fileAttach ?? ""),
-                  fit: BoxFit.cover,
+                borderRadius: BorderRadius.circular(15),
+                child: StatefulBuilder(
+                  builder: (context, refresh) {
+                    return InkWell(
+                      onTap: () async {
+                        isLoading = true;
+                        refresh(() {});
+                        await InvoiceVm().openFile(
+                          attachFile: fileAttach,
+                          baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                          context: context,
+                        );
+                        isLoading = false;
+                        refresh(() {});
+                      },
+                      child: Container(
+                          width: 110,
+                          decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                          child: isLoading
+                              ? AppLoader(padding: 12)
+                              : allowedExtensions.any((ext) => fileAttach.file?.name.ext == '.$ext') ||
+                                      ((fileAttach.file?.name.ext == '.pdf' || fileAttach.file?.name.ext == '.PDF') ||
+                                          (fileAttach.fileAttach == null
+                                              ? false
+                                              : (fileAttach.fileAttach!.endsWith('.pdf') || fileAttach.fileAttach!.endsWith('.PDF'))))
+                                  ? AppIcon(
+                                      Icons.picture_as_pdf_rounded,
+                                      color: Colors.grey,
+                                    )
+                                  : AppPlatformImage(
+                                      fileModel: FileModel(url: EndPoints.baseUrls.laravelFilesUrl + (fileAttach.fileAttach ?? "")),
+                                      fit: BoxFit.cover,
+                                      width: 110,
+                                    )),
+                    );
+                  },
+                )
                 ),
-              )*/
-                  : InkWell(
-                  onTap: () => AppFileViewer(
-                    imageSource: ImageSourceViewer.network,
-                    urls: [
-                      EndPoints.baseUrls.laravelFilesUrl +(fileAttach.fileAttach??'')
-                    ],
-                    // files: [XFile()],
-                  ).show(context),
-                  child: AppPlatformImage(
-                    fileModel: FileModel(url: EndPoints.baseUrls.laravelFilesUrl + (fileAttach.fileAttach ?? "")),
-                    fit: BoxFit.cover,
-                    width: 110,
-                  )),
-            ),
           ),
           if (attachModel.invoiceAddress != null) ...{
-          5.verticalSpacingRadius,
+            5.verticalSpacingRadius,
             Align(
               alignment: AlignmentDirectional.centerStart,
               child: Padding(
@@ -286,7 +266,6 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                 ),
               ),
             ),
-
           },
           if (type?.text != null) ...{
             5.height,

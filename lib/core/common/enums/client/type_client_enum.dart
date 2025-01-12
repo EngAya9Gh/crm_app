@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 enum TypeClientEnum {
-  all,
-  subscriber,
-  negotiation,
-  offer,
-  excluded,
-  withdrawn,
-  suspendedExclusion,
-  restrictWithdrawn,
+  all('الكل'),
+  subscriber('مشترك'),
+  negotiation("تفاوض"),
+  offer("عرض سعر"),
+  excluded("مستبعد"),
+  withdrawn("منسحب"),
+  suspendedExclusion("معلق استبعاد"),
+  restrictWithdrawn("منحسب مقيد");
+  final  String text;
+  const TypeClientEnum(this.text);
 }
 
 extension TypeOfClientFilterExtension on TypeClientEnum {

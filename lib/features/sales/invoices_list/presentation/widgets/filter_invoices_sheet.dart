@@ -91,6 +91,19 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                 _invoicesSectionCubit.getUsers();
               },
             ),
+            20.height,
+            CustomDropDown<TypeOfInvoice>(
+              hint: 'نوع الفاتورة',
+              items: TypeOfInvoice.values,
+              itemAsString: (item) => item!.text,
+              selectedItem: _invoicesSectionCubit
+                  .filtersEntity.filterInvoiceType.value,
+              onChanged: (value) async {
+                _invoicesSectionCubit
+                    .filtersEntity.filterInvoiceType.value = value;
+              },
+              // height: 70.h,
+            ),
             ListenableBuilder(
               listenable:
                   _invoicesSectionCubit.filtersEntity.filterInvoicesSellerType,
@@ -185,19 +198,6 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                   ),
                 ],
               ],
-            ),
-            20.height,
-            CustomDropDown<TypeOfInvoice>(
-              hint: 'نوع الفاتورة',
-              items: TypeOfInvoice.values,
-              itemAsString: (item) => item!.text,
-              selectedItem: _invoicesSectionCubit
-                  .filtersEntity.filterInvoiceType.value,
-              onChanged: (value) async {
-                _invoicesSectionCubit
-                    .filtersEntity.filterInvoiceType.value = value;
-              },
-              height: 70.h,
             ),
             20.height,
             AppElevatedButton(

@@ -2,6 +2,7 @@ import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +21,7 @@ import '../../../core/utils/app_fonts.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/app/presentation/widgets/app_text_button.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../features/sales/invoices_list/presentation/widgets/invoice_status_widget.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../model/invoiceModel.dart';
@@ -68,7 +70,6 @@ class _InvoiceViewState extends State<InvoiceView> {
     _invoicesCubit = context.read<InvoicesSectionCubit>();
     _privilegeCubit = context.read<PrivilegesCubit>();
     _invoiceVm = context.read<InvoiceVm>();
-
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (widget.invoice == null) {
@@ -320,58 +321,21 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       child: AppElevatedButton(
                                         text: 'الاجراءات',
                                         onPressed: () async {
-                                          if (client != null)
-                                            showDialog<void>(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      AppText('مالاجراء الذي تريد اختياره'),
-                                                    ],
-                                                  ),
-                                                  content: Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                    children: [
-                                                      AppElevatedButton(
-                                                        isLoading: _invoiceVm.isloading,
-                                                        onPressed: () async{
-                                                        await _invoiceVm
-                                                            ..RestrictedWithdrawal(invoice.idInvoice)..getInvoiceByClient(invoice.fkIdClient);
-                                                        context.read<InvoicesSectionCubit>().getInvoicesByPrivileges();
-                                                        context.pop(false);
-                                                        context.pop(false);
-                                                        },
-                                                        child: AppText('تحويل لمنسحب مقيد'),
-                                                      ),
-                                                      10.height,
-                                                      AppElevatedButton(
-                                                        onPressed: () {
-                                                        context.pop(true);
-                                                        },
-                                                        child: AppText('تحويل لمنسحب'),
-                                                      )
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            ).then(
-                                              (value) {
-                                                if (((value as bool?) ?? false)) {
-                                                  showDialog<void>(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return RejectDialog(
-                                                        invoice: invoice,
-                                                        clientModel: client!,
-                                                      );
-                                                    },
+                                          if (client != null){
+                                            if(invoice.stateclient!=StatusClient.restrictWithdrawn.text){
+                                              _showConvertToRestrictWithdrawDialog(context, invoice);
+                                            }else{
+                                              showDialog<void>(
+                                                context: context,
+                                                builder: (context) {
+                                                  return RejectDialog(
+                                                    invoice: invoice,
+                                                    clientModel: client!,
                                                   );
-                                                }
-                                              },
-                                            );
+                                                },
+                                              );
+                                            }
+                                          }
                                         },
                                       ),
                                     ),
@@ -542,6 +506,101 @@ class _InvoiceViewState extends State<InvoiceView> {
           );
         },
       ),
+    );
+  }
+
+  void _showConvertToRestrictWithdrawDialog(BuildContext context, InvoiceModel invoice) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        bool showConfirm = false;
+        bool isLoading = false;
+        print(showConfirm);
+
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppText('مالاجراء الذي تريد اختياره'),
+            ],
+          ),
+          content: StatefulBuilder(
+            builder: (context, setState) => Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppElevatedButton(
+                  isLoading: isLoading,
+                  onPressed: () async {
+                    showConfirm = true;
+                    setState(() {});
+                    print(showConfirm);
+                  },
+                  child: AppText('تحويل لمنسحب مقيد', color: AppColors.white),
+                ),
+                if (showConfirm) ...{
+                  10.height,
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppElevatedButton(
+                        text: 'رفض',
+                        backgroundColor: AppColors.statusErrorActive,
+                        onPressed: () async {
+                          showConfirm=false;
+                          setState((){});
+                          context.pop(false);
+                        },
+                      )
+                      ,
+                      AppElevatedButton(
+                        isLoading: isLoading,
+                        text: 'تاكيد',
+                        backgroundColor: AppColors.green,
+                        onPressed: () async {
+                          isLoading = true;
+                          showConfirm=false;
+                          setState(() {});
+                          await _invoiceVm
+                            ..RestrictedWithdrawal(invoice.idInvoice)
+                            ..getInvoiceByClient(invoice.fkIdClient);
+                          context.read<InvoicesSectionCubit>().getInvoicesByPrivileges().then((value) {
+                            context.pop(false);
+                            context.pop(false);
+                            return isLoading = false;
+                          });
+                        },
+                      ),],
+                  )
+                },
+                10.height,
+                AppElevatedButton(
+                  onPressed: () {
+                    context.pop(true);
+                  },
+                  child: AppText(
+                    'تحويل لمنسحب',
+                    color: AppColors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    ).then(
+          (value) {
+        if (((value as bool?) ?? false)) {
+          showDialog<void>(
+            context: context,
+            builder: (context) {
+              return RejectDialog(
+                invoice: invoice,
+                clientModel: client!,
+              );
+            },
+          );
+        }
+      },
     );
   }
 

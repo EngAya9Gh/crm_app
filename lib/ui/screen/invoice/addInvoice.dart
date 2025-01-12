@@ -643,36 +643,30 @@ class _AddInvoiceState extends State<AddInvoice> {
                       ],
                     ),
                     10.height,
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(
-                          child: Column(
-                            children: [
-                              AppText('تجديد المستودعات'),
-                              5.height,
-                              AppTextField(
-                                hintText: 'تجديد المستودعات',
-                                controller: numInvoiceController,
-                                inputType: TextInputType.number,
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                              ),
-                            ],
-                          ),
+                        AppText('تجديد المستودعات'),
+                        5.height,
+                        AppTextField(
+                          hintText: 'تجديد المستودعات',
+                          controller: numInvoiceController,
+                          inputType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                         ),
-                        10.width,
-                        Flexible(
-                          child: Column(
-                            children: [
-                              AppText('تجديد نقاط البيع'),
-                              5.height,
-                              AppTextField(
-                                hintText: 'تجديد نقاط البيع',
-                                controller: numPosController,
-                                inputType: TextInputType.number,
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                              ),
-                            ],
-                          ),
+                      ],
+                    ),
+                        10.height,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText('تجديد نقاط البيع'),
+                        5.height,
+                        AppTextField(
+                          hintText: 'تجديد نقاط البيع',
+                          controller: numPosController,
+                          inputType: TextInputType.number,
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                         ),
                       ],
                     ),
