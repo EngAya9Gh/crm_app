@@ -149,6 +149,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       from: filtersEntity.dateFromController.text,
       to: filtersEntity.dateToController.text,
       typeReadyClient: filtersEntity.filterClientStatus.value?.toParam,
+      invoiceType:() =>  filtersEntity.filterInvoiceType.value?.value,
       hasDevices: filtersEntity.filterDeviceState.value?.toParam,
       download: isDownload ? '1' : null,
     );

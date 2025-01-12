@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/enums/seller_type_enum.dart';
@@ -8,8 +9,7 @@ import '../../../../../core/utils/app_constants.dart';
 import '../repositories/invoices_section_repo.dart';
 
 @lazySingleton
-class GetInvoicesByPrivilegesUsecase extends BaseUsecase<
-    Either<String, dynamic>, GetInvoicesByPrivilegesParams> {
+class GetInvoicesByPrivilegesUsecase extends BaseUsecase<Either<String, dynamic>, GetInvoicesByPrivilegesParams> {
   GetInvoicesByPrivilegesUsecase(this._repository);
 
   final InvoicesSectionRepo _repository;
@@ -28,6 +28,7 @@ class GetInvoicesByPrivilegesParams {
   final SellerTypeEnum? typeSeller;
   final String? fkRegionInvoice;
   final String? typeReadyClient;
+  final String? invoiceType;
   final String? from;
   final String? to;
   final String? searchQuery;
@@ -43,6 +44,7 @@ class GetInvoicesByPrivilegesParams {
     this.typeSeller,
     this.fkRegionInvoice,
     this.typeReadyClient,
+    this.invoiceType,
     this.from,
     this.to,
     this.searchQuery,
@@ -59,6 +61,7 @@ class GetInvoicesByPrivilegesParams {
     SellerTypeEnum? typeSeller,
     String? fkRegionInvoice,
     String? typeReadyClient,
+    ValueGetter<String?>? invoiceType,
     String? from,
     String? to,
     String? searchQuery,
@@ -73,18 +76,16 @@ class GetInvoicesByPrivilegesParams {
       limit: limit ?? this.limit ?? AppConstants.kPerPage,
       typeSeller: typeSeller ?? this.typeSeller,
       fkRegionInvoice: fkRegionInvoice ?? this.fkRegionInvoice,
-      typeReadyClient: _assignNull(
-          currentValue: this.typeReadyClient, newValue: typeReadyClient),
+      typeReadyClient: _assignNull(currentValue: this.typeReadyClient, newValue: typeReadyClient),
       from: from ?? this.from,
       to: to ?? this.to,
       searchQuery: searchQuery ?? this.searchQuery,
       fkAgent: _assignNull(currentValue: this.fkAgent, newValue: fkAgent),
-      participateFk: _assignNull(
-          currentValue: this.participateFk, newValue: participateFk),
+      participateFk: _assignNull(currentValue: this.participateFk, newValue: participateFk),
       fkIdUser: _assignNull(currentValue: this.fkIdUser, newValue: fkIdUser),
-      hasDevices:
-          _assignNull(currentValue: this.hasDevices, newValue: hasDevices),
+      hasDevices: _assignNull(currentValue: this.hasDevices, newValue: hasDevices),
       download: download ?? this.download,
+      invoiceType: invoiceType != null ? invoiceType() : this.invoiceType,
     );
   }
 
@@ -105,6 +106,7 @@ class GetInvoicesByPrivilegesParams {
     data['type_seller'] = typeSeller?.toParam;
     data['fk_regoin_invoice'] = fkRegionInvoice;
     data['TypeReadyClient'] = typeReadyClient;
+    if (invoiceType != null) data['state_invoice'] = invoiceType;
     data['from'] = from;
     data['to'] = to;
     data['search_query'] = searchQuery;
