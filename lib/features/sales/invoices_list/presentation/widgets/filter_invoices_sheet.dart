@@ -78,6 +78,19 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
               ),
             ),
             10.height,
+            CustomDropDown<TypeOfInvoice>(
+              hint: 'نوع الفاتورة',
+              items: TypeOfInvoice.values,
+              itemAsString: (item) => item!.text,
+              selectedItem: _invoicesSectionCubit
+                  .filtersEntity.filterInvoiceType.value,
+              onChanged: (value) async {
+                _invoicesSectionCubit
+                    .filtersEntity.filterInvoiceType.value = value;
+              },
+              // height: 70.h,
+            ),
+            10.height,
             CustomDropDown<SellerTypeEnum>(
               hint: "النوع",
               items: SellerTypeEnum.values,
@@ -92,18 +105,6 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
               },
             ),
             20.height,
-            CustomDropDown<TypeOfInvoice>(
-              hint: 'نوع الفاتورة',
-              items: TypeOfInvoice.values,
-              itemAsString: (item) => item!.text,
-              selectedItem: _invoicesSectionCubit
-                  .filtersEntity.filterInvoiceType.value,
-              onChanged: (value) async {
-                _invoicesSectionCubit
-                    .filtersEntity.filterInvoiceType.value = value;
-              },
-              // height: 70.h,
-            ),
             ListenableBuilder(
               listenable:
                   _invoicesSectionCubit.filtersEntity.filterInvoicesSellerType,

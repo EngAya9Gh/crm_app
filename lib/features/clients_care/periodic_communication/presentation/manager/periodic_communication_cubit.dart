@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/enums/periodic_communication_client_type_enum.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -20,6 +21,7 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
 
   PeriodicCommunicationPageVariablesEntity pageVariables =
       PeriodicCommunicationPageVariablesEntity();
+
   FilterPeriodicCommunicationEntity filterEntity =
       FilterPeriodicCommunicationEntity();
 
@@ -53,6 +55,7 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
             fkUser: filterEntity.userIdNotifier.value,
             fkRegion: filterEntity.regionNotifier.value?.branchId,
             dateFrom: filterEntity.dateFromController.text,
+            type: filterEntity.type.value?.name.toString(),
             dateTo: filterEntity.dateToController.text,
             rate: filterEntity.rateNotifier.value,
           ),

@@ -3,11 +3,14 @@ import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import 'package:crm_smart/ui/screen/care/app_rate_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/enums/periodic_communication_client_type_enum.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
@@ -123,6 +126,15 @@ class _FilterPeriodicCommunicationSheetState
                   },
                 ),
               ),
+            ],
+            if (_cubit.pageVariables.periodicCommunicationType.isWaiting) ...[
+              CustomDropDown<PeriodicCommunicationClientTypeEnum>(
+                hint: "نوع العميل",
+                items: PeriodicCommunicationClientTypeEnum.values,
+                itemAsString: (item) => item!.value,
+                selectedItem: _cubit.filterEntity.type.value,
+                onChanged: (value) => _cubit.filterEntity.type.value = value,
+              )
             ],
             10.height,
             BranchSearchableDropDown(

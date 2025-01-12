@@ -27,8 +27,7 @@ class comment_vm extends ChangeNotifier {
       final ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       var response = await apiServices.get(
-        endPoint: EndPoints.care.viewComments+'/'+fk_client,
-
+        endPoint: EndPoints.care.viewComments + '/' + fk_client,
       );
       // todo: remove after backend changes
       response = (response is String) ? jsonDecode(response) : response;
@@ -92,6 +91,44 @@ class comment_vm extends ChangeNotifier {
         });
         _allCommentsList.insert(0, CommentModel.fromJson(body));
         filteredComments = _allCommentsList;
+        filterCommentsByType(filterCommentType.value);
+
+        isloadadd = false;
+        notifyListeners();
+      }
+      isloadadd = false;
+      notifyListeners();
+      return "success";
+    } catch (e, s) {
+      print(e.toString() + s.toString());
+      isloadadd = false;
+      notifyListeners();
+      return "error";
+    }
+  }
+
+  Future<String> editComment_vm(String content, String commentId) async {
+    try {
+      isloadadd = true;
+      notifyListeners();
+      var sentBody = {
+        'content': content,
+      };
+      var res = await GetIt.I<ApiServices>().post(
+        endPoint: EndPoints.baseUrls.urlLaravel + 'editComment/$commentId',
+        data: sentBody,
+      );
+      if (res == "success") {
+        // body.addAll({
+        //   'id_comment': res["id_comment"] != null ? res["id_comment"].toString() : "",
+        //   'date_comment': DateTime.now().toString(), //formatter.format(DateTime.now())
+        // });
+        var list=_allCommentsList
+            .map(
+              (element) => element.idComment == commentId ? element.copyWith(content: res['message']['content']) : element,
+            )
+            .toList();
+        filteredComments = list;
         filterCommentsByType(filterCommentType.value);
 
         isloadadd = false;
