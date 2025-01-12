@@ -8,6 +8,7 @@ enum TypeClientEnum {
   excluded,
   withdrawn,
   suspendedExclusion,
+  restrictWithdrawn,
 }
 
 extension TypeOfClientFilterExtension on TypeClientEnum {
@@ -27,6 +28,8 @@ extension TypeOfClientFilterExtension on TypeClientEnum {
         return 'منسحب';
       case TypeClientEnum.suspendedExclusion:
         return 'معلق استبعاد';
+        case TypeClientEnum.restrictWithdrawn:
+        return 'مقيد';
     }
   }
 }

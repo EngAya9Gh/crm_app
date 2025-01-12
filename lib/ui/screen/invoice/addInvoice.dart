@@ -648,10 +648,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                         Flexible(
                           child: Column(
                             children: [
-                              AppText('عدد الفواتير'),
+                              AppText('تجديد المستودعات'),
                               5.height,
                               AppTextField(
-                                hintText: 'عدد الفواتير',
+                                hintText: 'تجديد المستودعات',
                                 controller: numInvoiceController,
                                 inputType: TextInputType.number,
                                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -663,10 +663,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                         Flexible(
                           child: Column(
                             children: [
-                              AppText('عدد نقاط البيع'),
+                              AppText('تجديد نقاط البيع'),
                               5.height,
                               AppTextField(
-                                hintText: 'عدد نقاط البيع',
+                                hintText: 'تجديد نقاط البيع',
                                 controller: numPosController,
                                 inputType: TextInputType.number,
                                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],

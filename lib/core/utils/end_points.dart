@@ -341,6 +341,7 @@ class _Invoice {
   final String getdeletedInvoices = 'deletedInvoices';
 
   String withdrawInvoices(String id) => 'withdrawInvoice/$id';
+  String changeInvoiceStatus(String id) => 'changeInvoiceStatus/$id';
 
   String setApproveInvoice(String idInvoice) {
     return 'setApproveInvoice/${idInvoice}';

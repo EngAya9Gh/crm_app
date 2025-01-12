@@ -171,6 +171,19 @@ class Invoice_Service {
       throw e;
     }
   }
+  Future<void> changeInvoiceStatus(
+       String id_invoice) async {
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+       await apiServices.post(
+        endPoint: EndPoints.invoice.changeInvoiceStatus(id_invoice),
+      );
+    } catch (e) {
+      debugPrint("error in change status => $e");
+      throw e;
+    }
+  }
 
   Future<InvoiceModel> deleteBack(
     String id_invoice,

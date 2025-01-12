@@ -723,6 +723,19 @@ class InvoiceVm extends ChangeNotifier {
     }
   }
 
+  Future<void> RestrictedWithdrawal(
+       String? id_invoice) async {
+    try {
+      isloading = true;
+      notifyListeners();
+      await Invoice_Service().changeInvoiceStatus( id_invoice!);
+      isloading = false;
+      notifyListeners();
+    } catch (e) {
+      isloading = false;
+      notifyListeners();
+    }
+  }
 
   SellerStatus sellerStatus = SellerStatus.init;
 
