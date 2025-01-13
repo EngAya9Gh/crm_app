@@ -1,16 +1,22 @@
+import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../core/common/models/location/city_model.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
+import '../../../../../../view_model/maincity_vm.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
+import '../../../../../sales/clients/clients_list/presentation/widgets/custom_location_field.dart';
 import '../../domain/use_cases/set_date_done_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
@@ -23,14 +29,15 @@ class CustomDoneInstallButton extends StatefulWidget {
   final InvoiceModel? invoiceModel;
 
   @override
-  State<CustomDoneInstallButton> createState() =>
-      _CustomDoneInstallButtonState();
+  State<CustomDoneInstallButton> createState() => _CustomDoneInstallButtonState();
 }
 
 class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController nameUserClient = TextEditingController();
   late final SupportTabCubit supportTabCubit;
+  TextEditingController addressClientController = TextEditingController();
+  ValueNotifier<CityModel?> selectedCity = ValueNotifier(null);
 
   @override
   void initState() {
@@ -86,6 +93,11 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
                               validator: InputValidator.requiredFiled,
                             ),
                             SizedBox(height: 10),
+                            CustomLocationField(
+                              isEdit: false,
+                              locationController: addressClientController,
+                            ),
+                            SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -97,25 +109,19 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
                                 ),
                                 10.horizontalSpace,
                                 Expanded(
-                                  child: BlocBuilder<SupportTabCubit,
-                                      SupportTabState>(
+                                  child: BlocBuilder<SupportTabCubit, SupportTabState>(
                                     builder: (context, state) {
                                       return AppElevatedButton(
                                           text: 'نعم',
-                                          isLoading:
-                                              state.setDateDoneStatus.isLoading,
+                                          isLoading: state.setDateDoneStatus.isLoading,
                                           onPressed: () async {
-                                            if (!formKey.currentState!
-                                                .validate()) {
+                                            if (!formKey.currentState!.validate()) {
                                               return;
                                             }
-                                            await supportTabCubit
-                                                .setDateDone(SetDateDoneParams(
-                                              id_invoice: widget
-                                                  .invoiceModel!.idInvoice!,
-                                              clientusername:
-                                                  nameUserClient.text,
-                                            ));
+                                            await supportTabCubit.setDateDone(SetDateDoneParams(
+                                                id_invoice: widget.invoiceModel!.idInvoice!,
+                                                clientusername: nameUserClient.text,
+                                                location: addressClientController.text));
                                             nameUserClient.clear();
                                             AppNavigator.pop();
                                           });

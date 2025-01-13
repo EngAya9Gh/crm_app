@@ -2,6 +2,8 @@ import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 import '../../../../../core/common/enums/installation_type_enum.dart';
 import '../../../../../core/common/enums/toast_colors_enum.dart';
@@ -12,6 +14,8 @@ import '../../../../../core/common/models/event_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/services/maps/location_services.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
 import '../manager/dates_table_cubit.dart';
 
@@ -32,13 +36,27 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
   final TextEditingController _commentController = TextEditingController();
   late InstallationTypeEnum _installationType;
   late final DatesTableCubit datesTableCubit;
+  String? location;
+  late final LocationServices locationService;
 
   @override
   void initState() {
+    locationService = getIt<LocationServices>();
+    getLocation();
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
     _installationType = InstallationTypeEnum.fromString(widget.event.typeDate);
     super.initState();
   }
+
+  Future<void> getLocation()async {
+    final LocationData locationData = await locationService.getLocation();
+    final LatLng myLocation = LatLng(
+      locationData.latitude!,
+      locationData.longitude!,
+    );
+    location ='${myLocation.latitude},${myLocation.longitude}';
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +112,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                             await datesTableCubit.changeDateToDone(
                               ChangeDateToDoneParams(
                                 event: editedEvent,
+                                location: location!
                               ),
                               onSuccess: (value) {
                                 datesTableCubit.handleEventsMap(

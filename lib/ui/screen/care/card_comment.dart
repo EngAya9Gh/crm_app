@@ -97,6 +97,7 @@ class Cardcomment extends StatelessWidget {
                                 ),
                                 SizedBox(height: 15),
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Expanded(
                                       child: GestureDetector(
@@ -118,78 +119,81 @@ class Cardcomment extends StatelessWidget {
                                             ValueNotifier<CommentTypeEnum?> type = ValueNotifier(CommentTypeEnum.values.firstWhereOrNull((e)=>e.value==commentmodel.type_comment));
                                             showDialog(
                                               context: context,
-                                              builder: (context) => AlertDialog(
-                                                title: AppText('تعديل التعليق'),
-                                                content: Form(
-                                                  key: _key,
-                                                  child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    children: [
-                                                      AppTextField(
-                                                        validator: InputValidator.requiredFiled,
-                                                        hintText: 'إضافة تعليق',
-                                                        maxLines: 2,
-                                                        isRequired: true,
-                                                        controller: textContrller,
-                                                        contentPadding: EdgeInsets.symmetric(
-                                                          horizontal: 10,
-                                                          vertical: 15,
-                                                        ),
-                                                      ),
-                                                      10.height,
-                                                      ValueListenableBuilder(
-                                                        valueListenable: type,
-                                                        builder: (context, value, child) => CustomDropDown<CommentTypeEnum>(
-                                                          hint: 'نوع التعليق',
-                                                          items: CommentTypeEnum.values,
-                                                          itemAsString: (value) => value!.value,
-                                                          selectedItem: value,
-                                                          onChanged: (value) {
-                                                            if (value == null) {
-                                                              return;
-                                                            }
-                                                            type.value = value;
-                                                          },
+                                              builder: (context) => Directionality(
+                                                textDirection: TextDirection.rtl,
+                                                child: AlertDialog(
+                                                  title: AppText('تعديل التعليق'),
+                                                  content: Form(
+                                                    key: _key,
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        AppTextField(
                                                           validator: InputValidator.requiredFiled,
+                                                          hintText: 'إضافة تعليق',
+                                                          maxLines: 2,
+                                                          isRequired: true,
+                                                          controller: textContrller,
+                                                          contentPadding: EdgeInsets.symmetric(
+                                                            horizontal: 10,
+                                                            vertical: 15,
+                                                          ),
                                                         ),
-                                                      )
-                                                    ],
+                                                        10.height,
+                                                        ValueListenableBuilder(
+                                                          valueListenable: type,
+                                                          builder: (context, value, child) => CustomDropDown<CommentTypeEnum>(
+                                                            hint: 'نوع التعليق',
+                                                            items: CommentTypeEnum.values,
+                                                            itemAsString: (value) => value!.value,
+                                                            selectedItem: value,
+                                                            onChanged: (value) {
+                                                              if (value == null) {
+                                                                return;
+                                                              }
+                                                              type.value = value;
+                                                            },
+                                                            validator: InputValidator.requiredFiled,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                                actions: [
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                    children: [
-                                                      Consumer<comment_vm>(
-                                                        builder: (context, value, child) => AppElevatedButton(
-                                                          isLoading: value.isloadadd,
-                                                          text: 'تاكيد',
-                                                          backgroundColor: AppColors.green,
+                                                  actions: [
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                      children: [
+                                                        Consumer<comment_vm>(
+                                                          builder: (context, value, child) => AppElevatedButton(
+                                                            isLoading: value.isloadadd,
+                                                            text: 'تاكيد',
+                                                            backgroundColor: AppColors.green,
+                                                            onPressed: () async {
+                                                              if (_key.currentState!.validate()) {
+                                                                await Provider.of<comment_vm>(context, listen: false)
+                                                                    .editComment_vm(textContrller.text, commentmodel.copyWith(type_comment: type.value!.value))
+                                                                    .then(
+                                                                  (value) {
+                                                                    Provider.of<comment_vm>(context, listen: false).getComments(idClients!);
+                                                                    context.pop();
+                                                                  },
+                                                                );
+                                                              }
+                                                            },
+                                                          ),
+                                                        ),
+                                                        10.height,
+                                                        AppElevatedButton(
+                                                          text: 'رجوع',
+                                                          backgroundColor: AppColors.statusErrorActive,
                                                           onPressed: () async {
-                                                            if (_key.currentState!.validate()) {
-                                                              await Provider.of<comment_vm>(context, listen: false)
-                                                                  .editComment_vm(textContrller.text, commentmodel.copyWith(type_comment: type.value!.value))
-                                                                  .then(
-                                                                (value) {
-                                                                  Provider.of<comment_vm>(context, listen: false).getComments(idClients!);
-                                                                  context.pop();
-                                                                },
-                                                              );
-                                                            }
+                                                            context.pop(false);
                                                           },
                                                         ),
-                                                      ),
-                                                      10.height,
-                                                      AppElevatedButton(
-                                                        text: 'رجوع',
-                                                        backgroundColor: AppColors.statusErrorActive,
-                                                        onPressed: () async {
-                                                          context.pop(false);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             );
                                           },

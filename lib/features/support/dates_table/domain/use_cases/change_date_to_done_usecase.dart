@@ -24,9 +24,10 @@ class ChangeDateToDonUsecase
 class ChangeDateToDoneParams {
   late final String? isDone;
   final EventModel event;
-
+  final String location;
   ChangeDateToDoneParams({
     required this.event,
+    required this.location,
   }) {
     this.isDone = IsDoneDateEnum.done.index.toString();
   }
@@ -36,6 +37,7 @@ class ChangeDateToDoneParams {
       'is_done': isDone,
       'comment': event.comment,
       'type_date': event.typeDate,
+      'location': location,
       ..._prepareParams(),
     };
   }
