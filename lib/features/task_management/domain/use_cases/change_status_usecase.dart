@@ -26,7 +26,7 @@ class ChangeStatusTaskParams {
   final String userId;
 
   Map<String, dynamic> get toMap => {
-        'task_statuse_id': this.taskStatusId,
+        'status_id': this.taskStatusId,
         'id_user': userId,
       };
 }

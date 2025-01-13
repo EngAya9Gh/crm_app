@@ -172,9 +172,7 @@ class _addProductState extends State<addProduct> {
                           ),
                         ),
                         20.height,
-                        _isLoading
-                            ? AppLoader()
-                            : AppElevatedButton(
+                        if (_isLoading) AppLoader() else AppElevatedButton(
                                 width: MediaQuery.of(context).size.width * 0.4,
                                 text: AppStrings.labelButtonAddProduct,
                                 onPressed: () async {
@@ -221,9 +219,12 @@ class _addProductState extends State<addProduct> {
                                           .idUser
                                           .toString(),
                                       //
-                                    }).then((value) => value != "error"
+                                    }).then((value) {
+                                      print(value);
+                                      value != "error"
                                             ? clear(context)
-                                            : error());
+                                            : error();
+                                    });
 
                                   }
                                   }catch(e,s){

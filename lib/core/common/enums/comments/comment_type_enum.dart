@@ -13,6 +13,7 @@ enum CommentTypeEnum {
   returnApprove,
   Renewal,
   Withdrawal,
+  Collection
 }
 
 extension CommmentTypeExt on CommentTypeEnum {
@@ -46,6 +47,8 @@ extension CommmentTypeExt on CommentTypeEnum {
         return "التجديد"  ;
       case CommentTypeEnum.Withdrawal:
         return "الانسحاب"  ;
+      case CommentTypeEnum.Collection:
+        return "تحصيل"  ;
     }
   }
 }

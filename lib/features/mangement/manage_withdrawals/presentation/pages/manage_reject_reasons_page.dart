@@ -149,7 +149,7 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
                           }
                           _manageWithdrawalsCubit.actionReasonReject(
                             controller.text,
-                            rejectReasonId: rejectReason?.idRejectClient,
+                            rejectReasonId: rejectReason?.idRejectClient.toString(),
                             onSuccess: () => Navigator.pop(context),
                           );
                         },

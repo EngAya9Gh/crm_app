@@ -8,6 +8,7 @@ import 'package:crm_smart/core/common/widgets/app_group_button.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,6 +50,16 @@ import '../manager/task_cubit.dart';
 enum RecurringType { daily, weekly, monthly, other }
 
 enum AssignedToType { employee, department, region }
+
+enum AssignedTypeNew {
+  users(text: 'موظف'),
+  managements(text: 'قسم'),
+  region(text: 'فرع');
+
+  final String text;
+
+  const AssignedTypeNew({required this.text});
+}
 
 extension AssignedToTypeExt on AssignedToType {
   String get text {
@@ -118,18 +129,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ? '2'
         : privilegeBloc.checkPrivilege('169')
             ? null
-            : privilegeBloc.checkPrivilege('168') ||
-                    privilegeBloc.checkPrivilege('166')
+            : privilegeBloc.checkPrivilege('168') || privilegeBloc.checkPrivilege('166')
                 ? currentUser.typeAdministration
                 : null;
-    regionId =
-        privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
+    regionId = privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
 
     _usersCubit = context.read<UsersCubit>()
       ..storeCurrentUser(currentUser)
       ..getUsers()
-      ..getUsersByDepartmentAndRegion(
-          regionId: regionId, departmentId: departmentId);
+      ..getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId);
 
     _taskNameController = TextEditingController();
     _startDateController = TextEditingController();
@@ -149,18 +157,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
     super.initState();
   }
 
-  List<AssignedToType> get assignedToList {
-    final list = List.of(AssignedToType.values);
-    if (!privilegeBloc.checkPrivilege('167') &&
-        !privilegeBloc.checkPrivilege('174')) {
-      list.remove(AssignedToType.region);
+  List<AssignedTypeNew> get assignedToList {
+    final list = List.of(AssignedTypeNew.values);
+    if (!privilegeBloc.checkPrivilege('167') && !privilegeBloc.checkPrivilege('174')) {
+      list.remove(AssignedTypeNew.region);
     }
-    if (!privilegeBloc.checkPrivilege('168') &&
-        !privilegeBloc.checkPrivilege('169')) {
-      list.remove(AssignedToType.department);
+    if (!privilegeBloc.checkPrivilege('168') && !privilegeBloc.checkPrivilege('169')) {
+      list.remove(AssignedTypeNew.managements);
     }
     if (!privilegeBloc.checkPrivilege('166')) {
-      list.remove(AssignedToType.employee);
+      list.remove(AssignedTypeNew.users);
     }
 
     return list;
@@ -192,11 +198,24 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         return;
                       }
 
-                      final selectedRegionId =
-                          context.read<RegionProvider>().selectedRegionId;
-                      final selectedValueManage =
-                          context.read<manage_provider>().selectedValuemanag;
+                      final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
+                      final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
                       _taskCubit.addTaskAction(
+                          onSuccess: () => AppNavigator.pop(result: true),
+                          addTaskParams: AddTaskParams(
+                              title: _taskNameController.text,
+                              description: _taskDescriptionController.text,
+                              assignFrom: AssignedTypeNew.users.name.toString(),
+                              assignFromId: currentUser.idUser!,
+                              assignTo: state.selectedAssignedToType?.name,
+                              assignToId: state.selectedAssignTo!.idUser.toString(),
+                              userId: currentUser.idUser!,
+                              startDate: state.startDate,
+                               file: state.attachmentFile,
+                              deadLineDate: state.deadLineDate,
+                              publicType: PublicType.addTask.name.toString(),
+                              participants: state.selectedParticipant ?? [])
+/*
                         taskName: _taskNameController.text,
                         numberOfRecurring: _numberOfRecurringController.text,
                         onSuccess: () => AppNavigator.pop(result: true),
@@ -204,7 +223,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         departmentId: selectedValueManage,
                         userId: currentUser.idUser!,
                         description: _taskDescriptionController.text,
-                      );
+*/
+                          );
                     },
                     appButtonStyle: AppButtonStyle.secondary,
                     textStyle: AppStyles.textStyle.copyWith(
@@ -250,10 +270,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           selectedItems: taskState.selectedParticipant ?? [],
                           onSave: _taskCubit.onChangeParticipants,
                           itemAsString: (u) => u!.userAsString(),
-                          filterFn: (user, filter) =>
-                              user.nameUser!.contains(filter),
-                          compareFn: (item, selectedItem) =>
-                              item.idUser == selectedItem.idUser,
+                          filterFn: (user, filter) => user.nameUser!.contains(filter),
+                          compareFn: (item, selectedItem) => item.idUser == selectedItem.idUser,
                           validator: (value) {
                             if (value?.isEmpty ?? true) {
                               return 'هذا الحقل مطلوب.';
@@ -269,16 +287,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         Expanded(
                           child: InkWell(
                             onTap: () async {
-                              final selectedTime = TimeOfDay.fromDateTime(
-                                  taskState.startDate ?? DateTime.now());
+                              final selectedTime = TimeOfDay.fromDateTime(taskState.startDate ?? DateTime.now());
 
                               DateTime? date = await showDatePicker(
                                 context: context,
-                                initialDate:
-                                    taskState.startDate ?? DateTime.now(),
+                                initialDate: taskState.startDate ?? DateTime.now(),
                                 firstDate: DateTime.now(),
-                                lastDate:
-                                    DateTime.now().add(Duration(days: 365)),
+                                lastDate: DateTime.now().add(Duration(days: 365)),
                               );
                               if (date == null) return;
 
@@ -293,9 +308,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 );
                               }
 
-                              _startDateController.text =
-                                  Intl.DateFormat('dd MMM yyyy, HH:mm')
-                                      .format(date);
+                              _startDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(date);
                               _taskCubit.onChangeStartDate(date);
                             },
                             child: IgnorePointer(
@@ -317,16 +330,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           Expanded(
                             child: InkWell(
                               onTap: () async {
-                                final selectedTime = TimeOfDay.fromDateTime(
-                                    taskState.deadLineDate ?? DateTime.now());
+                                final selectedTime = TimeOfDay.fromDateTime(taskState.deadLineDate ?? DateTime.now());
 
                                 DateTime? date = await showDatePicker(
                                   context: context,
-                                  initialDate:
-                                      taskState.deadLineDate ?? DateTime.now(),
+                                  initialDate: taskState.deadLineDate ?? DateTime.now(),
                                   firstDate: DateTime.now(),
-                                  lastDate:
-                                      DateTime.now().add(Duration(days: 365)),
+                                  lastDate: DateTime.now().add(Duration(days: 365)),
                                 );
 
                                 if (date == null) return;
@@ -342,9 +352,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   );
                                 }
 
-                                _deadLineDateController.text =
-                                    Intl.DateFormat('dd MMM yyyy, HH:mm')
-                                        .format(date);
+                                _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(date);
                                 _taskCubit.onChangeDeadLineDate(date);
                               },
                               child: IgnorePointer(
@@ -393,9 +401,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 child: AppTextField(
                                   labelText: "عدد التكرارات",
                                   maxLines: 1,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
+                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                   inputType: TextInputType.number,
                                   controller: _numberOfRecurringController,
                                 ),
@@ -412,8 +418,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   itemAsString: (u) => u!,
                                   onChanged: (data) {},
                                   selectedItem: null,
-                                  filterFn: (user, filter) =>
-                                      user.contains(filter),
+                                  filterFn: (user, filter) => user.contains(filter),
                                 ),
                               ),
                               10.width,
@@ -424,8 +429,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   itemAsString: (u) => u!,
                                   onChanged: (data) {},
                                   selectedItem: null,
-                                  filterFn: (user, filter) =>
-                                      user.contains(filter),
+                                  filterFn: (user, filter) => user.contains(filter),
                                 ),
                               ),
                             ],
@@ -437,13 +441,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     AppElevatedButton(
                       text: 'إضافة مرفق',
                       onPressed: () async {
-                        final file = await FilePicker.platform
-                            .pickFiles(allowMultiple: false);
+                        final file = await FilePicker.platform.pickFiles(allowMultiple: false);
 
                         if (file == null) return;
 
-                        _taskCubit.onChangeAttachmentFile(
-                            File(file.files.first.path!));
+                        _taskCubit.onChangeAttachmentFile(File(file.files.first.path!));
                       },
                       icon: Icons.attach_file_rounded,
                     ),
@@ -452,16 +454,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     5.height,
                     AppCardContainer(
                       child: AppGroupButton(
-                        width: AppDimensions.currentWidth() /
-                            (assignedToList.length + 1),
+                        width: AppDimensions.currentWidth() / (assignedToList.length + 1),
                         groupButtonController: GroupButtonController(
-                          selectedIndex:
-                              taskState.selectedAssignedToType?.index,
+                          selectedIndex: taskState.selectedAssignedToType?.index,
                         ),
                         buttons: assignedToList.map((e) => e.text).toList(),
                         onSelected: (_, index, isSelected) {
-                          _taskCubit.onChangeSelectedAssignedToType(
-                              assignedToList[index]);
+                          _taskCubit.onChangeSelectedAssignedToType(assignedToList[index]);
                         },
                       ),
                     ),
@@ -480,7 +479,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Widget assignToEmployeeWidget(TaskState taskState) {
-    if (taskState.selectedAssignedToType == AssignedToType.employee)
+    if (taskState.selectedAssignedToType == AssignedTypeNew.users)
       return BlocBuilder<UsersCubit, UsersState>(
         builder: (context, state) {
           return CustomSearchableDropDown<UserRegionDepartment>(
@@ -506,18 +505,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Widget assignToDepartmentWidget(TaskState taskState) {
-    if (taskState.selectedAssignedToType == AssignedToType.department)
+    if (taskState.selectedAssignedToType == AssignedTypeNew.managements)
       return Consumer<manage_provider>(
         builder: (context, manageList, child) {
-          final userDepartment =
-              context.read<UserProvider>().currentUser.typeAdministration;
+          final userDepartment = context.read<UserProvider>().currentUser.typeAdministration;
           final list = getIt<PrivilegesCubit>().checkPrivilege('169')
               ? manageList.listtext
-              : getIt<PrivilegesCubit>().checkPrivilege('168') ||
-                      getIt<PrivilegesCubit>().checkPrivilege('174')
-                  ? manageList.listtext
-                      .where((element) => element.idMange == userDepartment)
-                      .toList()
+              : getIt<PrivilegesCubit>().checkPrivilege('168') || getIt<PrivilegesCubit>().checkPrivilege('174')
+                  ? manageList.listtext.where((element) => element.idMange == userDepartment).toList()
                   : manageList.listtext;
 
           return CustomDropDown<ManageModel>(
@@ -531,8 +526,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               manageList.changevalue(data!.idMange);
             },
             validator: (value) {
-              if (taskState.selectedAssignedToType !=
-                  AssignedToType.department) {
+              if (taskState.selectedAssignedToType != AssignedToType.department) {
                 return null;
               }
               if (value == null) {
@@ -554,9 +548,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           final list = privilegeBloc.checkPrivilege('169')
               ? cart.listRegion
               : privilegeBloc.checkPrivilege('167')
-                  ? cart.listRegion
-                      .where((element) => element.branchId == user.fkRegoin)
-                      .toList()
+                  ? cart.listRegion.where((element) => element.branchId == user.fkRegoin).toList()
                   : cart.listRegion;
           return CustomDropDown<BranchModel>(
             hint: 'الفرع',

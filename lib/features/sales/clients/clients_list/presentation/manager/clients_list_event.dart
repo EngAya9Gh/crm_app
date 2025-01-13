@@ -88,7 +88,7 @@ class ChangeTypeClientEvent extends ClientsListEvent {
   final ValueChanged<ClientModel>? onSuccess;
   final Function()? onFailure;
 
-  ChangeTypeClientEvent(this.changeTypeClientParams, {this.onSuccess,this.onFailure});
+  ChangeTypeClientEvent(this.changeTypeClientParams, {this.onSuccess, this.onFailure});
 
   @override
   List<Object?> get props => [changeTypeClientParams];
@@ -114,7 +114,6 @@ class ChangeClientCommunicationEvent extends ClientsListEvent {
   List<Object?> get props => [changeClientCommunicationParams];
 }
 
-
 class ApproveRejectClientEvent extends ClientsListEvent {
   final ApproveRejectClientPararm approveRejectClientParams;
   final ValueChanged<ClientModel>? onSuccess;
@@ -129,8 +128,7 @@ class GetClientSupportFilesEvent extends ClientsListEvent {
   final GetClientSupportFilesParams getClientSupportFilesParams;
   final ValueChanged<List<ClientSupportFileModel>>? onSuccess;
 
-  GetClientSupportFilesEvent(this.getClientSupportFilesParams,
-      {this.onSuccess});
+  GetClientSupportFilesEvent(this.getClientSupportFilesParams, {this.onSuccess});
 
   @override
   List<Object?> get props => [getClientSupportFilesParams];
@@ -140,8 +138,7 @@ class CrudClientSupportFilesEvent extends ClientsListEvent {
   final CrudClientSupportFilesParams crudClientSupportFilesParams;
   final ValueChanged<List<ClientSupportFileModel>>? onSuccess;
 
-  CrudClientSupportFilesEvent(this.crudClientSupportFilesParams,
-      {this.onSuccess});
+  CrudClientSupportFilesEvent(this.crudClientSupportFilesParams, {this.onSuccess});
 
   @override
   List<Object?> get props => [crudClientSupportFilesParams];
@@ -200,9 +197,17 @@ class FetchPaginatedClientsEvent extends ClientsListEvent {
   final int page;
   final String fkCountry;
 
-  const FetchPaginatedClientsEvent(
-      {required this.page, required this.fkCountry});
+  const FetchPaginatedClientsEvent({required this.page, required this.fkCountry});
 
   @override
   List<Object?> get props => [page, fkCountry];
+}
+
+class GetUsersSales extends ClientsListEvent {
+  final String? type;
+
+  const GetUsersSales({this.type});
+
+  @override
+  List<Object?> get props => [type];
 }

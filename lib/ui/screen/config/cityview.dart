@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/models/location/city_model.dart';
+import '../../../core/common/models/location/region_model.dart';
 import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/common/widgets/custom_app_bar.dart';
@@ -16,8 +17,8 @@ import '../../../view_model/maincity_vm.dart';
 import 'add_city.dart';
 
 class CityView extends StatefulWidget {
-  CityView({required this.fkmain, Key? key}) : super(key: key);
-  String fkmain;
+  CityView({required this.regionModel, Key? key}) : super(key: key);
+  RegionModel regionModel;
 
   @override
   _CityViewState createState() => _CityViewState();
@@ -28,7 +29,7 @@ class _CityViewState extends State<CityView> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<MainCityProvider>(context, listen: false)
-          .getcity(widget.fkmain);
+          .getcity(widget.regionModel);
     });
     super.initState();
   }
@@ -47,7 +48,7 @@ class _CityViewState extends State<CityView> {
                   onPressed: () {
                     AppNavigator.go(
                       AddCity(
-                        fkmain: widget.fkmain,
+                        fkmain: widget.regionModel.id_maincity,
                         idregoin: null,
                         nameregoin: null,
                       ),
@@ -68,7 +69,7 @@ class _CityViewState extends State<CityView> {
                     onTap: () {
                       AppNavigator.go(
                         AddCity(
-                          fkmain: widget.fkmain,
+                          fkmain: widget.regionModel.id_maincity,
                           nameregoin: _listlevel[index].cityName,
                           idregoin: _listlevel[index].cityId,
                         ),

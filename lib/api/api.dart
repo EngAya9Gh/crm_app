@@ -245,6 +245,7 @@ class Api {
   }) async {
     Map<String, String> headers = {
       'platform': 'mobile',
+      'Content-Type':'multipart/form-data; boundary=<calculated when request is sent>'
     };
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});

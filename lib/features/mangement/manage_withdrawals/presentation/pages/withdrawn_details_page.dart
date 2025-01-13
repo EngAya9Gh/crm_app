@@ -179,12 +179,12 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                   onTap: () => AppFileViewer(
                                     imageSource: ImageSourceViewer.network,
                                     urls: [
-                                      EndPoints.baseUrls.urlFile +
+                                      EndPoints.baseUrls.laravelFilesUrl +
                                           data.fileReject!
                                     ],
                                   ).show(context),
                                   child: FancyImageShimmerViewer(
-                                    imageUrl: EndPoints.baseUrls.urlFile +
+                                    imageUrl: EndPoints.baseUrls.laravelFilesUrl +
                                         data.fileReject!,
                                     fit: BoxFit.cover,
                                   ),

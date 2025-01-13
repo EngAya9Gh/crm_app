@@ -27,7 +27,7 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<List<UserSeries>>> getAllUsersSeries(
       Map<String, dynamic> params) async {
     fun() async {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
           endPoint: EndPoints.series.getUsersSeries, queryParameters: params);
 
@@ -47,7 +47,7 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<List<UserSeries>>> updateAllUsersSeries(
       Map<String, dynamic> data) async {
     fun() async {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(
           endPoint: EndPoints.series.updateUsersSeries, data: data);
 
@@ -153,11 +153,10 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<bool>> setApproveSeries(
       Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(
-          endPoint: EndPoints.series.setApproveSeries,
-          data: data,
-          queryParameters: params);
+          endPoint: EndPoints.series.seriesApprove(params['idApprove_series']),
+          data: data);
       return ResponseWrapper<bool>.fromJson(
           (response is String)?jsonDecode(response):response, (json) => true);
     }
@@ -167,7 +166,7 @@ class ManageWithdrawalsDatasource {
 
   Future<ResponseWrapper<List<RejectReason>>> getRejectReasons() async {
     fun() async {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response =
           await _api.get(endPoint: EndPoints.client.getRejectReasons);
       return ResponseWrapper<List<RejectReason>>.fromJson(
@@ -180,31 +179,31 @@ class ManageWithdrawalsDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<String>> addRejectReasons(
+  Future<ResponseWrapper<RejectReason>> addRejectReasons(
       Map<String, dynamic> params) async {
     fun() async {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(
         endPoint: EndPoints.client.addRejectReasons,
         data: params,
       );
-      return ResponseWrapper<String>.fromJson(response, (json) => json);
+      return ResponseWrapper.fromJson(response, (json) => RejectReason.fromJson(json));
     }
 
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<String>> editRejectReasons(
+  Future<ResponseWrapper<RejectReason>> editRejectReasons(
       Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
-      _api.changeBaseUrl(EndPoints.baseUrls.url);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(
-        endPoint: EndPoints.client.editRejectReasons,
+        endPoint: EndPoints.client.editRejectReasons(int.parse(params['id_rejectClient'])),
         data: data,
         queryParameters: params,
       );
 
-      return ResponseWrapper<String>.fromJson(response, (json) => json);
+      return ResponseWrapper<RejectReason>.fromJson(response, (json) => RejectReason.fromJson(json));
     }
 
     return throwAppException(fun);

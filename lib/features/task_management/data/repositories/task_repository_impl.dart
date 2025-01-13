@@ -28,9 +28,9 @@ class TaskRepositoryImpl extends TaskRepository {
     GetTaskParams params,
   ) async {
     try {
-      final data = await datasource.getTasks(params);
-      return Right(data.copyWith(
-        data: List<TaskModel>.from(data.data.map((e) => TaskModel.fromJson(e))),
+      final response = await datasource.getTasks(params);
+      return Right(response.copyWith(
+        data: List<TaskModel>.from(response.data.map((e) => TaskModel.fromJson(e))),
       ));
     } catch (e) {
       debugPrint("error in getTasks: in repository => $e");

@@ -7,7 +7,6 @@ import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -16,10 +15,8 @@ import '../../../../core/common/models/sections/section_model.dart';
 import '../../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../../core/common/widgets/app_card_container.dart';
 import '../../../../core/common/widgets/app_copyrights_widget.dart';
-import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../view_model/product_vm.dart';
@@ -27,11 +24,13 @@ import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../notifications/presentation/pages/notifications_page.dart';
+import '../../../versions/presentation/pages/versions_page.dart';
 import '../manager/web_home_page_cubit.dart';
 import 'app_web_side_bar.dart';
 
 class WebHomePage extends StatefulWidget {
-  WebHomePage({ this.child,super.key});
+  WebHomePage({this.child, super.key});
+
   final Widget? child;
 
   @override
@@ -39,32 +38,14 @@ class WebHomePage extends StatefulWidget {
 }
 
 class _WebHomePageState extends State<WebHomePage> {
-  late final NotificationsCubit _notificationsCubit;
   late final WebHomePageCubit _webHomePageCubit;
 
   @override
   void initState() {
     super.initState();
-    _notificationsCubit = context.read<NotificationsCubit>()..init();
+    context.read<NotificationsCubit>()..init();
     _webHomePageCubit = context.read<WebHomePageCubit>();
 
-    FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((RemoteMessage? message) {
-      if (message != null) {
-        String typeNotify = message.data['Typenotify'];
-        AppDynamicLinks.routeNotifyTo(typeNotify, context, message.data, null);
-      }
-    });
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      if (message.notification != null) {}
-      _notificationsCubit.increaseNotificationCount();
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      _notificationsCubit.increaseNotificationCount();
-      String typeNotify = event.data['Typenotify'];
-      AppDynamicLinks.routeNotifyTo(typeNotify, context, event.data, null);
-    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
@@ -72,8 +53,7 @@ class _WebHomePageState extends State<WebHomePage> {
         Provider.of<UserProvider>(context, listen: false).getAllUsers(),
         Provider.of<RegionProvider>(context, listen: false).getRegions(),
         Provider.of<product_vm>(context, listen: false).getproduct_vm(),
-        Provider.of<ClientTypeProvider>(context, listen: false)
-            .getreasons('ticket'),
+        Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket'),
       ]);
     });
   }
@@ -82,20 +62,17 @@ class _WebHomePageState extends State<WebHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      AppScaffold(
-        body: Row(
-          children: [
-
-            AppWebSideBar(),
-            // _sideBar(context),
-            Expanded(
-              child:widget.child==null?_buildBody(): widget.child!,
-            ),
-          ],
-        ),
-      );
-
+    return AppScaffold(
+      body: Row(
+        children: [
+          AppWebSideBar(),
+          // _sideBar(context),
+          Expanded(
+            child: widget.child == null ? _buildBody() : widget.child!,
+          ),
+        ],
+      ),
+    );
   }
 
   Column _buildBody() {
@@ -117,8 +94,25 @@ class _WebHomePageState extends State<WebHomePage> {
                           GestureDetector(
                             onTap: () {
                               AppNavigator.go(
+                                VersionsPage(),
+                                name: AppRoutesNames.generalRoutes.versions,
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.browser_updated_outlined,
+                                size: (25.0).scaleFontSize,
+                                color: AppColors.black,
+                              ),
+                            ),
+                          ),
+                          12.horizontal,
+                          GestureDetector(
+                            onTap: () {
+                              AppNavigator.go(
                                 NotificationsPage(),
-                                name: AppRoutesNames.generalRoutes.notifications,
+                                name: AppRoutesNames.generalRoutes.versions,
                               );
                               _notificationsCubit.markNotificationsAsRead();
                             },
@@ -146,8 +140,7 @@ class _WebHomePageState extends State<WebHomePage> {
                                         height: (22.0).scaleWidth,
                                         child: Center(
                                           child: state.getUnreadNotificationsCountStatus.when(
-                                            loading: () =>
-                                                AppLoader(size: (18.0).scaleFontSize, padding: 0),
+                                            loading: () => AppLoader(size: (18.0).scaleFontSize, padding: 0),
                                             success: (data) {
                                               return AppText(
                                                 _notificationsCubit.pageVariables.unReadCount > 99
@@ -159,8 +152,7 @@ class _WebHomePageState extends State<WebHomePage> {
                                             },
                                             empty: () => SizedBox.shrink(),
                                             failure: (error, data) => AppErrorWidget(
-                                              onPressed: () =>
-                                                  _notificationsCubit.getUnreadNotificationsCount(),
+                                              onPressed: () => _notificationsCubit.getUnreadNotificationsCount(),
                                             ),
                                           ),
                                         ),
@@ -192,8 +184,7 @@ class _WebHomePageState extends State<WebHomePage> {
                     24.vertical,
                     BlocBuilder<WebHomePageCubit, WebHomePageState>(
                       builder: (context, state) {
-                        print(
-                            "selectedSubSections length => ${_webHomePageCubit.sideBarEntity.selectedSubSections.length}");
+                        print("selectedSubSections length => ${_webHomePageCubit.sideBarEntity.selectedSubSections.length}");
                         return AppCardContainer(
                           // color: AppColors.primaryMain,
                           child: SizedBox(
@@ -203,17 +194,14 @@ class _WebHomePageState extends State<WebHomePage> {
                               runSpacing: 10,
                               // chips contains strings
                               children: [
-                                ..._filterAllowedSections(_webHomePageCubit
-                                        .sideBarEntity.selectedSubSections)
-                                    .mapIndexed(
+                                ..._filterAllowedSections(_webHomePageCubit.sideBarEntity.selectedSubSections).mapIndexed(
                                   (index, element) {
                                     return AppChip(
                                       text: element.title,
                                       width: constraints.maxWidth / 3.3,
                                       onTap: () {
                                         // Handle the tap event here
-                                        AppNavigator.go(element.page,
-                                            name: element.path);
+                                        AppNavigator.go(element.page, name: element.path);
                                         // You can add navigation or any other action here
                                       },
                                     );
@@ -236,6 +224,7 @@ class _WebHomePageState extends State<WebHomePage> {
       ],
     );
   }
+
   Color _containerColor(BuildContext context, NotificationsState state) {
     if (state.getUnreadNotificationsCountStatus.isLoading() ||
         state.getUnreadNotificationsCountStatus.isEmpty() ||
@@ -246,6 +235,7 @@ class _WebHomePageState extends State<WebHomePage> {
 
     return Colors.red;
   }
+
   // Container _sideBar(BuildContext context) {
   //   return Container(
   //     width: 350.scaleWidth,

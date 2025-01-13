@@ -10,13 +10,14 @@ class CustomSearchWidget extends StatelessWidget {
     required this.searchController,
     this.hint,
     this.onChanged,
-    this.margin,
+    this.margin, this.keyboardType,
   });
 
   final TextEditingController searchController;
   final String? hint;
   final void Function(String)? onChanged;
   final EdgeInsetsGeometry? margin;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class CustomSearchWidget extends StatelessWidget {
       margin: margin ?? EdgeInsets.symmetric(horizontal: 10),
       alignment: Alignment.center,
       child: TextField(
+        keyboardType:keyboardType,
         controller: searchController,
         onChanged: onChanged,
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
@@ -47,23 +49,33 @@ class CustomSearchWidget extends StatelessWidget {
           filled: true,
           fillColor: color,
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10).r,
+            borderRadius: BorderRadius
+                .circular(10)
+                .r,
             borderSide: BorderSide(color: Colors.grey.shade300),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10).r,
+            borderRadius: BorderRadius
+                .circular(10)
+                .r,
             borderSide: BorderSide(color: Colors.grey.shade300),
           ),
           disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10).r,
+            borderRadius: BorderRadius
+                .circular(10)
+                .r,
             borderSide: BorderSide(color: color),
           ),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10).r,
+            borderRadius: BorderRadius
+                .circular(10)
+                .r,
             borderSide: BorderSide(color: Colors.red),
           ),
           focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10).r,
+            borderRadius: BorderRadius
+                .circular(10)
+                .r,
             borderSide: BorderSide(color: Colors.red),
           ),
         ),

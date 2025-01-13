@@ -42,26 +42,26 @@ class ClientsContactsPage extends StatefulWidget {
   }
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: AppScaffold(
-        appBar: CustomAppBar(
-            title: 'قائمة جهات الاتصال',
-            actions: [
-              AppTextButton(child: Icon(Icons.add_box_outlined,color: AppColors.white,),onPressed: ()async{
-                ClientContactModel? result =
-                await AppNavigator.go(
-                    AddClientContactPage(),
-                  name: AppRoutesNames.salesInternalRoutes.addContact,
-                  isNew: false,
-                );
-                if(result!=null){
-                  _bloc.add(const GetAllClientsContactsEvent(page: 1));
-                }
-              },)
-            ]
-        ),
-        body: Column(
+    return AppScaffold(
+      appBar: CustomAppBar(
+          title: 'قائمة جهات الاتصال',
+          actions: [
+            AppTextButton(child: Icon(Icons.add_box_outlined,color: AppColors.white,),onPressed: ()async{
+              ClientContactModel? result =
+              await AppNavigator.go(
+                  AddClientContactPage(),
+                name: AppRoutesNames.salesInternalRoutes.addContact,
+                isNew: false,
+              );
+              if(result!=null){
+                _bloc.add(const GetAllClientsContactsEvent(page: 1));
+              }
+            },)
+          ]
+      ),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
           children: [
             15.verticalSpace,
             Row(

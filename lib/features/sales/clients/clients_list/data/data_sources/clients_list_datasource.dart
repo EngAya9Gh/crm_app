@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:crm_smart/model/communication_withdrawal_reason_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +11,20 @@ import '../../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/errors/base_app_exception.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/services/api/api_utils.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/similar_client.dart';
+import '../../../../../../model/usermodel.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 import '../../domain/use_cases/get_high_similar_cleints_usecase.dart';
+import '../../domain/use_cases/get_users_sales_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
 import '../models/client_support_file_model.dart';
@@ -34,8 +36,7 @@ class ClientsListDatasource {
 
   ClientsListDatasource(this.api);
 
-  Future<Either<String, PaginationResponseWrapper>> exportClientsToExcel(
-      GetClientsWithFilterParams body) async {
+  Future<Either<String, PaginationResponseWrapper>> exportClientsToExcel(GetClientsWithFilterParams body) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
@@ -53,19 +54,17 @@ class ClientsListDatasource {
     }
   }
 
-  Future<ResponseWrapper<List<SimilarClient>>> getSimilarClientsList(
-      Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<SimilarClient>>> getSimilarClientsList(Map<String, dynamic> body) async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-          endPoint: EndPoints.client.similarClientsList,
-          data: body,
+        endPoint: EndPoints.client.similarClientsList,
+        data: body,
       );
 
       api.changeBaseUrl(EndPoints.baseUrls.url);
       final client = response; //ClientModel.fromJson(response);
-      List<SimilarClient> listres =
-          List.from((client as List<dynamic>).map((e) {
+      List<SimilarClient> listres = List.from((client as List<dynamic>).map((e) {
         return SimilarClient.fromJson(e as Map<String, dynamic>);
       }));
       return ResponseWrapper<List<SimilarClient>>(message: null, data: listres);
@@ -74,13 +73,10 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<ClientModel>>> getClientsByRegionList(
-      Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<ClientModel>>> getClientsByRegionList(Map<String, dynamic> body) async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.get(
-          endPoint: EndPoints.client.clientsByRegionList,
-          queryParameters: body);
+      final response = await api.get(endPoint: EndPoints.client.clientsByRegionList, queryParameters: body);
 
       return ResponseWrapper<List<ClientModel>>.fromJson(
         response,
@@ -95,12 +91,10 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<ClientModel>>> getClientsByUserList(
-      Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<ClientModel>>> getClientsByUserList(Map<String, dynamic> body) async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.url);
-      final response = await api.get(
-          endPoint: EndPoints.client.clientsByUserList, queryParameters: body);
+      final response = await api.get(endPoint: EndPoints.client.clientsByUserList, queryParameters: body);
 
       return ResponseWrapper<List<ClientModel>>.fromJson(
         response,
@@ -115,8 +109,7 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<PaginationResponseWrapper> getClientsWithFilter(
-      GetClientsWithFilterParams body) async {
+  Future<PaginationResponseWrapper> getClientsWithFilter(GetClientsWithFilterParams body) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
@@ -134,9 +127,7 @@ class ClientsListDatasource {
   Future<dynamic> getClientAll(Map<String, dynamic> body) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await api.get(
-          endPoint: EndPoints.client.allClientsWithFilter,
-          queryParameters: body);
+      final response = await api.get(endPoint: EndPoints.client.allClientsWithFilter, queryParameters: body);
 
       return response;
     } on BaseAppException catch (e) {
@@ -145,8 +136,7 @@ class ClientsListDatasource {
     }
   }
 
-  Future<ResponseWrapper<List<RecommendedClient>>>
-      getRecommendedClients() async {
+  Future<ResponseWrapper<List<RecommendedClient>>> getRecommendedClients() async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.get(
@@ -154,9 +144,8 @@ class ClientsListDatasource {
       );
 
       return ResponseWrapper<List<RecommendedClient>>.fromJson(
-        (response is String)?jsonDecode(response):response,
-        (json) => List.from((json as List<dynamic>)
-            .map((e) => RecommendedClient.fromJson(e as Map<String, dynamic>))),
+        (response is String) ? jsonDecode(response) : response,
+        (json) => List.from((json as List<dynamic>).map((e) => RecommendedClient.fromJson(e as Map<String, dynamic>))),
       );
     }
 
@@ -179,8 +168,7 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<ClientModel>> editClient1(
-      Map<String, dynamic> body, Map<String, dynamic> params) async {
+  Future<ResponseWrapper<ClientModel>> editClient1(Map<String, dynamic> body, Map<String, dynamic> params) async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
@@ -196,8 +184,7 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<ClientModel>> changeTypeClient(
-      Map<String, dynamic> body, Map<String, dynamic> params, String id) async {
+  Future<ResponseWrapper<ClientModel>> changeTypeClient(Map<String, dynamic> body, Map<String, dynamic> params, String id) async {
     fun() async {
       final dio = getIt<Dio>();
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
@@ -214,8 +201,7 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<CommunicationDetailModel>> storeClientCommunication(
-      Map<String, dynamic> body, Map<String, dynamic> params) async {
+  Future<ResponseWrapper<CommunicationDetailModel>> storeClientCommunication(Map<String, dynamic> body, Map<String, dynamic> params) async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
@@ -224,7 +210,7 @@ class ClientsListDatasource {
       );
       final communicationDetail = CommunicationDetailModel.fromJson(response['message']);
       api.changeBaseUrl(EndPoints.baseUrls.url);
-     return ResponseWrapper(message: communicationDetail, data: communicationDetail);
+      return ResponseWrapper(message: communicationDetail, data: communicationDetail);
     }
 
     return throwAppException(fun);
@@ -247,8 +233,7 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<ClientModel>> approveClient_Reject(
-      Map<String, dynamic> body, Map<String, dynamic> params, String id) async {
+  Future<ResponseWrapper<ClientModel>> approveClient_Reject(Map<String, dynamic> body, Map<String, dynamic> params, String id) async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
@@ -271,14 +256,11 @@ class ClientsListDatasource {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
 
-      final response = await api.get(
-          endPoint: EndPoints.invoice.getClientSupportFiles,
-          queryParameters: {
-            'fk_invoice': params.invoiceId,
-          });
+      final response = await api.get(endPoint: EndPoints.invoice.getClientSupportFiles, queryParameters: {
+        'fk_invoice': params.invoiceId,
+      });
       final List data = apiDataHandler(response);
-      final List<ClientSupportFileModel> attachments =
-          data.map((e) => ClientSupportFileModel.fromJson(e)).toList();
+      final List<ClientSupportFileModel> attachments = data.map((e) => ClientSupportFileModel.fromJson(e)).toList();
       return right(attachments);
     } catch (e) {
       debugPrint("error in getInvoiceAttachments => $e");
@@ -304,9 +286,7 @@ class ClientsListDatasource {
       if (data is String) {
         return Right([]);
       }
-      final List<ClientSupportFileModel> files = (data as List)
-          .map((e) => ClientSupportFileModel.fromJson(e))
-          .toList();
+      final List<ClientSupportFileModel> files = (data as List).map((e) => ClientSupportFileModel.fromJson(e)).toList();
       return right(files);
     } catch (e) {
       debugPrint("error in crudInvoiceAttachments => $e");
@@ -341,8 +321,7 @@ class ClientsListDatasource {
     return _formFiles(multipartFiles);
   }
 
-  List<MapEntry<String, MultipartFile>> _formFiles(
-      List<MultipartFile> multipartFiles) {
+  List<MapEntry<String, MultipartFile>> _formFiles(List<MultipartFile> multipartFiles) {
     final List<MapEntry<String, MultipartFile>> files = [];
     for (int i = 0; i < multipartFiles.length; i++) {
       files.add(MapEntry('file_attach_invoice[$i]', multipartFiles[i]));
@@ -386,8 +365,7 @@ class ClientsListDatasource {
     }
   }
 
-  Future<dynamic> getClientMarketingReport(
-      GetClientMarketingReportParams params) async {
+  Future<dynamic> getClientMarketingReport(GetClientMarketingReportParams params) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
@@ -396,14 +374,12 @@ class ClientsListDatasource {
       );
       return apiDataHandler(response);
     } on BaseAppException catch (e) {
-      debugPrint(
-          "error in getClientMarketingReport in datasource => ${e.message}");
+      debugPrint("error in getClientMarketingReport in datasource => ${e.message}");
       throw e.message;
     }
   }
 
-  Future<PaginationResponseWrapper> getHighSimilarClients(
-      GetHighSimilarClientsParams params) async {
+  Future<PaginationResponseWrapper> getHighSimilarClients(GetHighSimilarClientsParams params) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
@@ -413,8 +389,7 @@ class ClientsListDatasource {
 
       return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
-      debugPrint(
-          "error in getHighSimilarClients in datasource => ${e.message}");
+      debugPrint("error in getHighSimilarClients in datasource => ${e.message}");
       throw e.message;
     }
   }
@@ -448,5 +423,24 @@ class ClientsListDatasource {
       debugPrint("error in linkClientTo in datasource => ${e.message}");
       throw e.message;
     }
+  }
+
+  Future<ResponseWrapper<List<UserEntity>>> getUsersSales(GetUsersSalesParams params) async {
+    fun() async {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.get(
+        endPoint: EndPoints.users.getUsersSales,
+        queryParameters: params.toMap(),
+      );
+      return ResponseWrapper<List<UserModel>>.fromJson(
+        response,
+            (json) =>
+            List.from(
+              (json as List<dynamic>).map((e) => UserModel.fromJson(e)),
+            ),
+
+      );
+    }
+      return throwAppException(fun);
   }
 }

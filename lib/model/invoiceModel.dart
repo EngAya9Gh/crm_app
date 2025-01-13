@@ -65,6 +65,8 @@ class InvoiceModel {
   String? mobile; //mobile client
   String? ismarketing;
   String? numbarnch;
+  String? renewInventory;
+  String? renewPos;
   String? renewPlus;
   String? numusers;
   String? nummostda;
@@ -237,6 +239,8 @@ class InvoiceModel {
     this.isCanceledWithdraw,
     this.tag,
     this.isDeleted,
+    this.renewInventory,
+    this.renewPos,
   });
 
   bool searchString(String query) {
@@ -253,6 +257,8 @@ class InvoiceModel {
     return InvoiceModel(
         tag: ApiHelper.handleString(jsondata['tag']) == "true" ? true : false,
         idInvoice: ApiHelper.handleString(jsondata['id_invoice']),
+        renewInventory: ApiHelper.handleString(jsondata['renew_inventory']),
+        renewPos: ApiHelper.handleString(jsondata['renew_pos']),
         user_delete: ApiHelper.handleString(jsondata['user_delete']),
         date_delete: ApiHelper.handleString(jsondata['date_delete']),
         dateCreate: ApiHelper.handleString(jsondata['date_create']),
@@ -514,6 +520,8 @@ class InvoiceModel {
     String? rateSupport,
     String? rateSales,
     String? deviceState,
+    String? renewInventory,
+    String? renewPos,
     bool? hasDevices,
     bool? isCanceledWithdraw,
     bool? isDeleted,
@@ -626,6 +634,8 @@ class InvoiceModel {
       hasDevices: hasDevices ?? this.hasDevices,
       isCanceledWithdraw: isCanceledWithdraw ?? this.isCanceledWithdraw,
       isDeleted: isDeleted ?? this.isDeleted,
+      renewInventory: renewInventory ?? this.renewInventory,
+      renewPos: renewPos ?? this.renewPos,
     );
   }
 //endregion
@@ -784,11 +794,12 @@ class FileAttach {
   final String? id;
   final XFile? file;
   final DownloadFileStatus fileStatus;
-
+  final dynamic type;
   FileAttach({
     this.fileAttach,
     this.id,
     this.file,
+    this.type,
     this.fileStatus = DownloadFileStatus.unDownloaded,
   });
 
@@ -797,18 +808,27 @@ class FileAttach {
       fileAttach:
           HelperFunctions.JsonStringNullHandler(map['file_attach_invoice']),
       id: HelperFunctions.JsonStringNullHandler(map['id']),
+      type: HelperFunctions.JsonStringNullHandler(map['type']),
     );
+  }
+  Map<String,dynamic> convertAddedFileToAttachedPostFile(){
+    return  {
+      'file': this.file,
+      'file_type': this.type,
+    };
   }
 
   FileAttach copyWith({
     String? fileAttach,
     String? id,
+    dynamic type,
     XFile? file,
     DownloadFileStatus? fileStatus,
   }) {
     return FileAttach(
       fileAttach: fileAttach ?? this.fileAttach,
       id: id ?? this.id,
+      type: type ?? this.type,
       file: file ?? this.file,
       fileStatus: fileStatus ?? this.fileStatus,
     );

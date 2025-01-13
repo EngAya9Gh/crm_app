@@ -9,8 +9,7 @@ import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/periodic_communication_repo.dart';
 
 @lazySingleton
-class GetPeriodicCommunicationUseCase extends BaseUsecase<
-    Either<String, PaginationResponseWrapper>, GetPeriodicCommunicationParams> {
+class GetPeriodicCommunicationUseCase extends BaseUsecase<Either<String, PaginationResponseWrapper>, GetPeriodicCommunicationParams> {
   GetPeriodicCommunicationUseCase(this._repository);
 
   final PeriodicCommunicationRepo _repository;
@@ -32,6 +31,7 @@ class GetPeriodicCommunicationParams {
   final String? fkRegion;
   final String? dateFrom;
   final String? dateTo;
+  final String? type;
   final double? rate;
 
   const GetPeriodicCommunicationParams({
@@ -44,6 +44,7 @@ class GetPeriodicCommunicationParams {
     this.dateFrom,
     this.dateTo,
     this.rate,
+    this.type,
   });
 
   Map<String, dynamic> toParams() {
@@ -64,7 +65,7 @@ class GetPeriodicCommunicationParams {
     }
 
     if (periodicCommunicationType.isWaiting) {
-      params.addAll({'fk_regoin': fkRegion});
+      params.addAll({'fk_regoin': fkRegion, if (type != null && type != 'null') 'type': type});
     }
 
     return params..removeWhere((key, value) => value == null || value == '');

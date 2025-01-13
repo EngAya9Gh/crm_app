@@ -19,8 +19,10 @@ import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
+import '../../../model/usermodel.dart';
 import '../../../view_model/comment.dart';
 import '../../../view_model/user_vm_provider.dart';
 import 'card_comment.dart';
@@ -34,32 +36,32 @@ class CommentView extends StatefulWidget {
 
   ClientModel? client;
 
-
   @override
   _CommentViewState createState() => _CommentViewState();
 }
 
-class _CommentViewState extends State<CommentView>  {
+class _CommentViewState extends State<CommentView> {
   final _globalKey = GlobalKey<FormState>();
 
   TextEditingController _comment = TextEditingController();
   CommentTypeEnum? _previousSelectedCommentType;
   CommentTypeEnum? _selectedCommentType;
   CommentTypeEnum? _filterCommentType = CommentTypeEnum.all;
-
+  late UserProvider pro;
+  UserModel? currentUser;
 
   @override
   void initState() {
+    pro = context.read<UserProvider>()..getCurrentUser();
+    currentUser = pro.currentUser;
     super.initState();
   }
 
   @override
   void dispose() {
-
     _comment.dispose();
     super.dispose();
   }
-
 
   bool isFirstComment = true;
 
@@ -108,8 +110,7 @@ class _CommentViewState extends State<CommentView>  {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               AppElevatedButton(
-                                text: _selectedCommentType?.value ??
-                                    'نوع التعليق',
+                                text: _selectedCommentType?.value ?? 'نوع التعليق',
                                 onPressed: () {
                                   // show dialog with the dropdown button
                                   AppConstants.showAppDialog(
@@ -121,51 +122,43 @@ class _CommentViewState extends State<CommentView>  {
                                           child: CustomDropDown(
                                             hint: 'نوع التعليق',
                                             items: CommentTypeEnum.values,
-                                            itemAsString: (value) =>
-                                                value!.value,
+                                            itemAsString: (value) => value!.value,
                                             selectedItem: _selectedCommentType,
                                             onChanged: (value) {
                                               if (value == null) {
                                                 return;
                                               }
-                                              _previousSelectedCommentType =
-                                                  _selectedCommentType;
+                                              _previousSelectedCommentType = _selectedCommentType;
                                               _selectedCommentType = value;
                                             },
-                                            validator:
-                                                InputValidator.requiredFiled,
+                                            validator: InputValidator.requiredFiled,
                                           ),
                                         ),
                                         20.height,
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                           children: [
                                             AppElevatedButton(
                                               text: 'إلغاء',
                                               onPressed: () {
-                                                  _selectedCommentType =
-                                                      _previousSelectedCommentType;
-                                                Navigator.of(context, rootNavigator: true)
-                                                    .pop(false);
-                                                },
+                                                _selectedCommentType = _previousSelectedCommentType;
+                                                Navigator.of(context, rootNavigator: true).pop(false);
+                                              },
                                             ),
                                             AppElevatedButton(
-                                              text: 'حفظ',
-                                              onPressed: () {
-                                                try{
-                                                  if (_selectedCommentType !=
-                                                      null) {
-                                                    _previousSelectedCommentType=_selectedCommentType;
-                                                    setState(() {});
+                                                text: 'حفظ',
+                                                onPressed: () {
+                                                  try {
+                                                    if (_selectedCommentType != null) {
+                                                      _previousSelectedCommentType = _selectedCommentType;
+                                                      setState(() {});
+                                                      Navigator.of(context, rootNavigator: true).pop(false);
+                                                    }
+                                                  } catch (e) {
+                                                    print(e);
                                                     Navigator.of(context, rootNavigator: true).pop(false);
-                                                  } }catch(e){
-                                                  print(e);
-                                                  Navigator.of(context, rootNavigator: true).pop(false);
-                                                }
-                                                }
-
-                                            ),
+                                                  }
+                                                }),
                                           ],
                                         ),
                                         5.height,
@@ -228,8 +221,7 @@ class _CommentViewState extends State<CommentView>  {
                   onChanged: (value) {
                     if (value == null) return;
 
-                    Provider.of<comment_vm>(context, listen: false)
-                        .filterCommentsByType(value.value);
+                    Provider.of<comment_vm>(context, listen: false).filterCommentsByType(value.value);
                     _filterCommentType = value;
                     setState(() {});
                   },
@@ -270,6 +262,7 @@ class _CommentViewState extends State<CommentView>  {
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
                                 return cardcomment(
+                                  userModel: currentUser,
                                   commentmodel: value.filteredComments[index],
                                 );
                               },
@@ -292,37 +285,21 @@ class _CommentViewState extends State<CommentView>  {
       if (_globalKey.currentState!.validate() && _selectedCommentType?.value != null) {
         _globalKey.currentState!.save();
 
-        Provider.of<comment_vm>(context, listen: false).addComment_vm(
-            {
-              'fk_user': await Provider
-                  .of<UserProvider>(context, listen: false)
-                  .currentUser
-                  .idUser
-                  .toString(),
-              'fk_client': widget.client!.idClients!,
-              'fkuser_client': widget.client!.fkUser.toString(),
-              'date_comment': DateTime.now().toString(),
-              //صتحب العميل
-              'nameUser': Provider
-                  .of<UserProvider>(context, listen: false)
-                  .currentUser
-                  .nameUser,
-              'img_image': '',
-              'name_enterprise': widget.client!.nameEnterprise!,
-              'content': _comment.text,
-              if (_selectedCommentType != null)
-                'type_comment': _selectedCommentType?.value,
-            },
-            Provider
-                .of<UserProvider>(context, listen: false)
-                .currentUser
-                .img_image,
-            widget.client!.idClients.toString()
-        ).then((value) {
+        Provider.of<comment_vm>(context, listen: false).addComment_vm({
+          'fk_user': await Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
+          'fk_client': widget.client!.idClients!,
+          'fkuser_client': widget.client!.fkUser.toString(),
+          'date_comment': DateTime.now().toString(),
+          //صتحب العميل
+          'nameUser': Provider.of<UserProvider>(context, listen: false).currentUser.nameUser,
+          'img_image': '',
+          'name_enterprise': widget.client!.nameEnterprise!,
+          'content': _comment.text,
+          if (_selectedCommentType != null) 'type_comment': _selectedCommentType?.value,
+        }, Provider.of<UserProvider>(context, listen: false).currentUser.img_image, widget.client!.idClients.toString()).then((value) {
           if (value != "error") {
-            Provider.of<comment_vm>(context, listen: false)
-                .getComments(widget.client!.idClients.toString());
-             _comment.text = '';
+            Provider.of<comment_vm>(context, listen: false).getComments(widget.client!.idClients.toString());
+            _comment.text = '';
           }
         });
       } else {
@@ -331,7 +308,7 @@ class _CommentViewState extends State<CommentView>  {
           color: ToastColorsEnum.error,
         );
       }
-    }catch(e,s){
+    } catch (e, s) {
       print(e.toString() + s.toString());
     }
   }

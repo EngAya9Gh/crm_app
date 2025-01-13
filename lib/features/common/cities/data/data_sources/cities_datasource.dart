@@ -22,7 +22,7 @@ class CitiesDatasourceImpl implements CitiesDatasource {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.get(
-        endPoint: EndPoints.city.getAllCities,
+        endPoint: EndPoints.regionAndCity.getCitiesAll,
         queryParameters: params.toParams(),
       );
 

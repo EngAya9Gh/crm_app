@@ -1,5 +1,6 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/enums/client/client_debt_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -77,6 +78,19 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
               ),
             ),
             10.height,
+            CustomDropDown<TypeOfInvoice>(
+              hint: 'نوع الفاتورة',
+              items: TypeOfInvoice.values,
+              itemAsString: (item) => item!.text,
+              selectedItem: _invoicesSectionCubit
+                  .filtersEntity.filterInvoiceType.value,
+              onChanged: (value) async {
+                _invoicesSectionCubit
+                    .filtersEntity.filterInvoiceType.value = value;
+              },
+              // height: 70.h,
+            ),
+            10.height,
             CustomDropDown<SellerTypeEnum>(
               hint: "النوع",
               items: SellerTypeEnum.values,
@@ -90,6 +104,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                 _invoicesSectionCubit.getUsers();
               },
             ),
+            20.height,
             ListenableBuilder(
               listenable:
                   _invoicesSectionCubit.filtersEntity.filterInvoicesSellerType,

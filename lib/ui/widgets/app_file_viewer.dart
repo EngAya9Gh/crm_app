@@ -141,10 +141,15 @@ class AppFileViewer extends StatelessWidget {
   });
 
   show(BuildContext context) {
-    if (imageSource == ImageSourceViewer.file && _checkIfPdf()) {
+    if (imageSource == ImageSourceViewer.file) {
       AppFilesHelper.openFile(files.first.path);
       return;
     }
+    // else if(imageSource == ImageSourceViewer.network){
+    //   AppFilesHelper.openFile(urls.first);
+    //   return;
+    //
+    // }
 
     AppNavigator.go(
       AppFileViewer(

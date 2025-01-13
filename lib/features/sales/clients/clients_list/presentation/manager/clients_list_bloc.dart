@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/enums/activity_type_size_enum.dart';
 import 'package:crm_smart/core/common/enums/client/client_source_enum.dart';
+import 'package:crm_smart/model/usermodel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
@@ -37,12 +38,14 @@ import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 import '../../domain/use_cases/get_high_similar_cleints_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
+import '../../domain/use_cases/get_users_sales_usecase.dart';
 import '../../domain/use_cases/link_selected_client_usecase.dart';
 import '../../domain/use_cases/receive_client_usecase.dart';
 import '../../domain/use_cases/store_client_communication_usecase.dart';
 import '../../domain/use_cases/transfer_client_usecase.dart';
 
 part 'clients_list_event.dart';
+
 part 'clients_list_state.dart';
 
 abstract class LinkClientEvent extends Equatable {
@@ -140,6 +143,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final FetchPaginatedClientsUsecase _fetchPaginatedClientsUsecase;
   final LinkSelectedClientsUseCase _linkSelectedClientsUseCase;
   final ExportClientsToExcelUseCase _exportClientsToExcelUseCase;
+  final GetUsersSalesUseCase _getUsersSalesUseCase;
 
   ClientsListBloc(
     this._getClientsWithFilterUserUsecase,
@@ -161,6 +165,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._fetchPaginatedClientsUsecase,
     this._linkSelectedClientsUseCase,
     this._exportClientsToExcelUseCase,
+    this._getUsersSalesUseCase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
@@ -182,22 +187,20 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<ExportClientsToExcelEvent>(_exportToExcel);
     on<StoreClientCommunicationEvent>(_onStoreClientCommunicationEvent);
     on<ChangeClientCommunicationEvent>(_onChangeClientCommunicationEvent);
+    on<GetUsersSales>(_onChangeGetUsersSales);
   }
 
   final TextEditingController searchController = TextEditingController();
   List<clientMarketingReportModel> clientMarketingReportsList = [];
-  SubscribingIntentionLevelEnum _subscribingIntentionLevel =
-      SubscribingIntentionLevelEnum.normal;
+  SubscribingIntentionLevelEnum _subscribingIntentionLevel = SubscribingIntentionLevelEnum.normal;
 
   ClientModel? _currentClient;
 
   ClientModel? get currentClient => _currentClient;
 
   FilterClientsListEntity filterEntity = FilterClientsListEntity();
-  ClientsListPageVariablesEntity pageVariables =
-      ClientsListPageVariablesEntity();
-  LinkedClientsPageVariablesEntity linkedClientsVariables =
-      LinkedClientsPageVariablesEntity();
+  ClientsListPageVariablesEntity pageVariables = ClientsListPageVariablesEntity();
+  LinkedClientsPageVariablesEntity linkedClientsVariables = LinkedClientsPageVariablesEntity();
 
   void init() {
     pageVariables = ClientsListPageVariablesEntity();
@@ -214,8 +217,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
-  SubscribingIntentionLevelEnum get subscribingIntentionLevel =>
-      _subscribingIntentionLevel;
+  SubscribingIntentionLevelEnum get subscribingIntentionLevel => _subscribingIntentionLevel;
 
   set subscribingIntentionLevel(SubscribingIntentionLevelEnum? value) {
     _subscribingIntentionLevel = value ?? SubscribingIntentionLevelEnum.normal;
@@ -248,8 +250,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         emit(state.copyWith(getAllClientsStatus: BlocStatus.success()));
       }
     } catch (e) {
-      emit(state.copyWith(
-          getAllClientsStatus: BlocStatus.fail(error: e.toString())));
+      emit(state.copyWith(getAllClientsStatus: BlocStatus.fail(error: e.toString())));
     }
   }
 
@@ -267,8 +268,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     emit(state.copyWith(getAllClientsStatus: BlocStatus.loading()));
     filterEntity.savePreviousState();
-    final result =
-        await _getClientsWithFilterUserUsecase(_prepareParams(event: event));
+    final result = await _getClientsWithFilterUserUsecase(_prepareParams(event: event));
 
     result.fold(
       (e) {
@@ -302,17 +302,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  FutureOr<void> _exportToExcel(
-      ExportClientsToExcelEvent event, Emitter<ClientsListState> emit) async {
-    if(filterEntity.fromController.text==""){
+  FutureOr<void> _exportToExcel(ExportClientsToExcelEvent event, Emitter<ClientsListState> emit) async {
+    if (filterEntity.fromController.text == "") {
       AppSnackbar.showSnakeBar("يرجى تحديد تاريخ بدء لتصدير ملف الاكسل");
       return;
     }
-    emit(
-        state.copyWith(exportClientsToExcelStatus: const BlocStatus.loading()));
+    emit(state.copyWith(exportClientsToExcelStatus: const BlocStatus.loading()));
 
-    final response =
-        await _exportClientsToExcelUseCase(_prepareParams(isDownload: true));
+    final response = await _exportClientsToExcelUseCase(_prepareParams(isDownload: true));
 
     response.fold(
       (l) {
@@ -330,8 +327,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         );
 
         await AppFilesHelper.openFile(filePath);
-        emit(state.copyWith(
-            exportClientsToExcelStatus: const BlocStatus.success()));
+        emit(state.copyWith(exportClientsToExcelStatus: const BlocStatus.success()));
       },
     );
   }
@@ -363,38 +359,31 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  FutureOr<void> _onGetSimilarClientsEvent(
-      GetSimilarClientsListEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onGetSimilarClientsEvent(GetSimilarClientsListEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.initial()));
-    final GetSimilarClientsListParams getClientsWithFilterParams =
-        event.getClientsWithFilterParams;
+    final GetSimilarClientsListParams getClientsWithFilterParams = event.getClientsWithFilterParams;
     if (state.similarClientsState.isLoading()) {
       emit(state.copyWith(similarClientsState: state.similarClientsState));
       return;
     }
     emit(state.copyWith(similarClientsState: BlocStatus.loading()));
-    final response =
-        await _getSimilarClientsUsecase(getClientsWithFilterParams);
+    final response = await _getSimilarClientsUsecase(getClientsWithFilterParams);
 
     response.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(
-            similarClientsState: BlocStatus.fail(error: message)));
+        emit(state.copyWith(similarClientsState: BlocStatus.fail(error: message)));
       },
       (value) {
-        emit(state.copyWith(
-            similarClientsState: BlocStatus.success(data: value.data ?? [])));
+        emit(state.copyWith(similarClientsState: BlocStatus.success(data: value.data ?? [])));
         event.onSuccess?.call(value.data ?? []);
       },
     );
   }
 
-  FutureOr<void> _onGetRecommendedClientsEvent(
-      GetRecommendedClientsEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onGetRecommendedClientsEvent(GetRecommendedClientsEvent event, Emitter<ClientsListState> emit) async {
     if (state.recommendedClientsState.isLoaded) {
-      emit(state.copyWith(
-          recommendedClientsState: state.recommendedClientsState));
+      emit(state.copyWith(recommendedClientsState: state.recommendedClientsState));
       return;
     }
     emit(state.copyWith(recommendedClientsState: PageState.loading()));
@@ -407,16 +396,13 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         emit(state.copyWith(recommendedClientsState: PageState.error()));
       },
       (value) {
-        emit(state.copyWith(
-            recommendedClientsState:
-                PageState.loaded(data: value.message ?? [])));
+        emit(state.copyWith(recommendedClientsState: PageState.loaded(data: value.message ?? [])));
         event.onSuccess?.call(value.message ?? []);
       },
     );
   }
 
-  FutureOr<void> _onAddClientEvent(
-      AddClientEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onAddClientEvent(AddClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
     final response = await _addClientUserUsecase(
@@ -428,8 +414,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     response.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(
-            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+        emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
       },
       (value) {
         pageVariables.allList.insert(0, value.data!);
@@ -443,8 +428,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  FutureOr<void> _onEditClientEvent(
-      EditClientEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onEditClientEvent(EditClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
     final response = await _editClientUserUsecase(
@@ -456,8 +440,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     response.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(
-            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+        emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
       },
       (value) {
         currentClient = value.data;
@@ -476,21 +459,17 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  FutureOr<void> _onEditTypeClientEvent(
-      ChangeTypeClientEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onEditTypeClientEvent(ChangeTypeClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
-    final response =
-        await _changeTypeClientUsecase(event.changeTypeClientParams);
+    final response = await _changeTypeClientUsecase(event.changeTypeClientParams);
 
     response.extract(
       (exception, message) {
         print("---------------------------------------");
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(
-            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+        emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
         event.onFailure?.call();
-
       },
       (value) {
         emit(state.copyWith(
@@ -503,18 +482,15 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  FutureOr<void> _onStoreClientCommunicationEvent(
-      StoreClientCommunicationEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onStoreClientCommunicationEvent(StoreClientCommunicationEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
-    final response =
-        await _storeClientCommunicationUseCase(event.storeClientCommunicationParams);
+    final response = await _storeClientCommunicationUseCase(event.storeClientCommunicationParams);
 
     response.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(
-            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+        emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
       },
       (value) {
         emit(state.copyWith(
@@ -527,18 +503,15 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  FutureOr<void> _onChangeClientCommunicationEvent(
-      ChangeClientCommunicationEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onChangeClientCommunicationEvent(ChangeClientCommunicationEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
-    final response =
-        await _changeClientCommunicationUseCase(event.changeClientCommunicationParams);
+    final response = await _changeClientCommunicationUseCase(event.changeClientCommunicationParams);
 
     response.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(
-            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+        emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
       },
       (value) {
         emit(state.copyWith(
@@ -551,18 +524,15 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  FutureOr<void> _onApproveRejectClientEvent(
-      ApproveRejectClientEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onApproveRejectClientEvent(ApproveRejectClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
-    final response =
-        await _approveRejectClientUsecase(event.approveRejectClientParams);
+    final response = await _approveRejectClientUsecase(event.approveRejectClientParams);
 
     response.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(
-            actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
+        emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? '')));
       },
       (value) {
         emit(state.copyWith(
@@ -573,13 +543,10 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  FutureOr<void> _onCrudClientSupportFilesEvent(
-      CrudClientSupportFilesEvent event, Emitter<ClientsListState> emit) async {
-    emit(state.copyWith(
-        clientSupportFilesBlocStatus: const BlocStatus.loading()));
+  FutureOr<void> _onCrudClientSupportFilesEvent(CrudClientSupportFilesEvent event, Emitter<ClientsListState> emit) async {
+    emit(state.copyWith(clientSupportFilesBlocStatus: const BlocStatus.loading()));
 
-    final response = await _crudClientSupportFilesUsecase(
-        event.crudClientSupportFilesParams);
+    final response = await _crudClientSupportFilesUsecase(event.crudClientSupportFilesParams);
 
     response.fold((e) {
       if (AppConstants.shouldReturnEarly(e)) return;
@@ -587,8 +554,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         clientSupportFilesBlocStatus: BlocStatus.fail(error: e),
       ));
     }, (r) {
-      final List<ClientSupportFileModel> files =
-          _deleteFileFromList(event.crudClientSupportFilesParams.deletedFiles);
+      final List<ClientSupportFileModel> files = _deleteFileFromList(event.crudClientSupportFilesParams.deletedFiles);
       files.addAll(r);
       emit(state.copyWith(
         clientSupportFilesList: files,
@@ -599,18 +565,13 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   }
 
   List<ClientSupportFileModel> _deleteFileFromList(List<String> deletedFiles) {
-    return state.clientSupportFilesList
-        .where((element) => !deletedFiles.contains(element.id))
-        .toList();
+    return state.clientSupportFilesList.where((element) => !deletedFiles.contains(element.id)).toList();
   }
 
-  FutureOr<void> _onGetClientSupportFilesEvent(
-      GetClientSupportFilesEvent event, Emitter<ClientsListState> emit) async {
-    emit(state.copyWith(
-        clientSupportFilesBlocStatus: const BlocStatus.loading()));
+  FutureOr<void> _onGetClientSupportFilesEvent(GetClientSupportFilesEvent event, Emitter<ClientsListState> emit) async {
+    emit(state.copyWith(clientSupportFilesBlocStatus: const BlocStatus.loading()));
 
-    final response =
-        await _getClientSupportFilesUsecase(event.getClientSupportFilesParams);
+    final response = await _getClientSupportFilesUsecase(event.getClientSupportFilesParams);
 
     response.fold((l) {
       if (AppConstants.shouldReturnEarly(l)) return;
@@ -696,14 +657,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     Emitter<ClientsListState> emit,
   ) async {
     final filteredList = clientMarketingReportsList.where((element) {
-      return element.nameUser.toLowerCase().contains(searchController.text) ||
-          element.count.toString().contains(searchController.text);
+      return element.nameUser.toLowerCase().contains(searchController.text) || element.count.toString().contains(searchController.text);
     }).toList();
 
     emit(state.copyWith(
-      clientMarketingReportStatus:
-          BlocStatus<List<clientMarketingReportModel>>.success(
-              data: filteredList),
+      clientMarketingReportStatus: BlocStatus<List<clientMarketingReportModel>>.success(data: filteredList),
     ));
   }
 
@@ -712,8 +670,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     Emitter<ClientsListState> emit,
   ) async {
     emit(state.copyWith(highSimilarClientsState: BlocStatus.loading()));
-    final response =
-        await _getHighSimilarClientsUsecase(event.getHighSimilarClientsParams);
+    final response = await _getHighSimilarClientsUsecase(event.getHighSimilarClientsParams);
 
     response.fold(
       (l) {
@@ -746,17 +703,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       }
       emit(state.copyWith(getLinkClientsStatus: BlocStatus.success()));
     } catch (e) {
-      emit(state.copyWith(
-          getLinkClientsStatus: BlocStatus.fail(error: e.toString())));
+      emit(state.copyWith(getLinkClientsStatus: BlocStatus.fail(error: e.toString())));
     }
   }
 
   void _initializeCheckedList() {
-    if (linkedClientsVariables.allList.isEmpty)
-      linkedClientsVariables.checkedClientsList = const [];
+    if (linkedClientsVariables.allList.isEmpty) linkedClientsVariables.checkedClientsList = const [];
 
-    linkedClientsVariables.checkedClientsList =
-        List.generate(linkedClientsVariables.allList.length, (index) {
+    linkedClientsVariables.checkedClientsList = List.generate(linkedClientsVariables.allList.length, (index) {
       return linkedClientsVariables.allList[index].isParent != null;
     });
   }
@@ -766,20 +720,16 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     Emitter<ClientsListState> emit,
   ) async {
     if (event.selectedIds.isNotEmpty) {
-      emit(state.copyWith(
-          linkSelectedClientsStatus: const BlocStatus.loading()));
+      emit(state.copyWith(linkSelectedClientsStatus: const BlocStatus.loading()));
       // try {
-      final success =
-          await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
+      final success = await _linkSelectedClientsUseCase(event.clientId, event.selectedIds);
 
       success.fold(
         (l) {
           if (AppConstants.shouldReturnEarly(l)) return;
-          emit(state.copyWith(
-              linkSelectedClientsStatus: BlocStatus.fail(error: l)));
+          emit(state.copyWith(linkSelectedClientsStatus: BlocStatus.fail(error: l)));
         },
-        (r) => emit(
-            state.copyWith(linkSelectedClientsStatus: BlocStatus.success())),
+        (r) => emit(state.copyWith(linkSelectedClientsStatus: BlocStatus.success())),
       );
       //   if (success) {
       //
@@ -820,4 +770,19 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 //     emit(state.copyWith(error: e.toString(), isLoading: false));
 //   }
 // }
+
+  FutureOr<void> _onChangeGetUsersSales(GetUsersSales event, Emitter<ClientsListState> emit) async {
+    emit(state.copyWith(usersSales: BlocStatus.loading()));
+    final result = await _getUsersSalesUseCase(GetUsersSalesParams(type: event.type));
+    result.extract(
+      (exception, message) => emit(
+        state.copyWith(usersSales: BlocStatus.fail(error: message)),
+      ),
+      (value) {
+        emit(
+        state.copyWith(usersSales: BlocStatus.success(data:value.message)),
+      );
+      },
+    );
+  }
 }

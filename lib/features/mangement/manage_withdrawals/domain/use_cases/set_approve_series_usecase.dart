@@ -53,11 +53,6 @@ class SetApproveSeriesParams {
 
   Map<String, dynamic> get data => {
         "is_approve": withdrawalStatus.status.toString(),
-        "fk_client": clientId,
-        "name_enterprise": nameEnterprise,
-        "nameUserdo": nameUserdo,
-        "fkcountry": fkcountry,
-        "fk_regoin": fk_regoin,
         "notes_approve": notesApprove,
         "fk_request": fkRequest,
       };

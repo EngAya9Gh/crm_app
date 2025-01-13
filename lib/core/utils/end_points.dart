@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.production ;
+  static AppMode appMode = AppMode.development;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -28,6 +28,13 @@ abstract class EndPoints {
   static const support = _Support();
   static const reports = _Reports();
   static const notifications = _Notifications();
+  static const versions = _Versions();
+  static const products = _Products();
+  static const management = _Management();
+  static const reason = _Reason();
+  static const regionAndCity = _RegionAndCities();
+  static const activities = _Activity();
+  static const branches = _Branches();
 }
 
 class _BaseUrls {
@@ -97,6 +104,7 @@ class _Users {
 
   final String updateProfileImage = "users/update_picture.php";
   final String updateUserProfile = "users/update_user.php";
+  final String getUsersSales = 'users/sales';
 }
 
 class _Links {
@@ -121,8 +129,8 @@ class _Company {
 class _Series {
   const _Series();
 
-  final getUsersSeries = 'series/view_series_manag.php';
-  final updateUsersSeries = 'series/update_series_manage.php';
+  final getUsersSeries = 'series';
+  final updateUsersSeries = 'series';
   final getWithdrawalsInvoices = 'series/getInvoice_Approve_back.php';
   final getSeriesInvoiceAll = 'getSeriesInvoiceAll';
   final getWithdrawalInvoiceDetails = 'series/view_series_invoice.php';
@@ -130,8 +138,9 @@ class _Series {
   final getWithdrawnDetails = 'series/view_detail_demand.php';
   final deleteDemandOut = 'series/delete_demand_out.php';
 
-  String cancelWithdrawal(String idInvoice) =>
-      "cancelWithdrawInvoice/$idInvoice";
+  String cancelWithdrawal(String idInvoice) => "cancelWithdrawInvoice/$idInvoice";
+
+  String seriesApprove(String idInvoice) => "series/approve/$idInvoice";
 }
 
 class _Care {
@@ -139,7 +148,7 @@ class _Care {
 
   final communicationRepeat = 'care/getcommuncation_repeat_star.php';
   final getRecommendedClients = 'care/get_recommand_care.php';
-  final String viewComments = "care/viewcomment.php";
+  final String viewComments = "viewComments";
 
   final String getClientsAccept = 'getClientsAccept';
 
@@ -160,16 +169,13 @@ class _Care {
   final String getManagement = "admin-for-user";
   final String getViolationTypes = "violations/types";
   final String getActivitiesTypes = "activities/types";
-  String updateActivity(String activityId) =>
-      "activities/$activityId/edit";
 
-  String getActivityByClient(String clientId) =>
-      "activities/by-client/$clientId";
+  String updateActivity(String activityId) => "activities/$activityId/edit";
 
-  String updateViolation(String violationId) =>
-      "violations/$violationId/edit";
+  String getActivityByClient(String clientId) => "activities/by-client/$clientId";
+
+  String updateViolation(String violationId) => "violations/$violationId/edit";
   final String violations = "violations";
-
 }
 
 class _Privilege {
@@ -177,8 +183,7 @@ class _Privilege {
 
   String getPrivileges(String levelId) => "privileges/$levelId";
   final updatePrivileges = "updatePermissions";
-  final getLevels = "config/getLevel.php";
-  final addLevel = "privilge/privAdd.php";
+  final getLevels = "levels";
 }
 
 class _Client {
@@ -188,33 +193,32 @@ class _Client {
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
   final contacts = 'contacts';
-  String updateContacts(String contactId) =>
-      "contacts/$contactId/edit";
+  final getClientFiles = 'clientFiles';
+
+  String updateContacts(String contactId) => "contacts/$contactId/edit";
   final allClientsWithFilter = 'getAllClients';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final updateClient = "updateClient/"; // "client/clientUpdate.php";
-  String editClientByTypeClient(String idClient) =>
-      "editClientByTypeClient/$idClient";
+  String editClientByTypeClient(String idClient) => "editClientByTypeClient/$idClient";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
   final storeClientCommunication = "communication-details";
-  String changeClientCommunication(String idClient) =>
-      "communication-details/$idClient/edit";
-  final getRejectReasons =
-      "client/reason_client_reject/Get_reasonRejectClient.php";
-  final addRejectReasons =
-      "client/reason_client_reject/Add_reasonRejectClient.php";
-  final editRejectReasons =
-      "client/reason_client_reject/Edit_reasonRejectClient.php";
+
+  String changeClientCommunication(String idClient) => "communication-details/$idClient/edit";
+  final getRejectReasons = "reasons-reject";
+  final addRejectReasons = "reasons-reject";
+
+  String editRejectReasons(int id) => "reasons-reject/$id/edit";
   final distinctiveClient = "star_client/get_client_star.php";
   final transferClient = "transferClient/";
   final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
-  final String getTransferClientsWithPrivileges =
-      "getTransferClientsWithPrivileges";
+  final String getTransferClientsWithPrivileges = "getTransferClientsWithPrivileges";
 
   final String getClientLastComment = "getClientLastComment";
+
   String getClientDates(String idClient) {
     return "clientDates/$idClient";
   }
+
   String getInvoiceByIdClient(String idClient) {
     return "getInvoicesByClient/$idClient";
   }
@@ -249,11 +253,10 @@ class _Client {
 class _Task {
   const _Task();
 
-  final addTask = 'addTask';
-  final filterTasksByAll = 'filterTaskesByAll';
-  final changeStatusTask = 'changeStatuseTask/';
-  final getUsersByTypeAdministrationAndRegion =
-      'getUsersByTypeAdministrationAndRegion';
+  final addTask = 'tasks';
+  final filterTasksByAll = 'tasks';
+  String changeStatusTask(String id) => 'tasks/$id/change-status';
+  final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
 }
 
 class _Participate {
@@ -263,8 +266,7 @@ class _Participate {
   final allParticipates = 'agent/get_participate.php';
   final addParticipate = 'participates';
 
-  String updateParticipate(String participateId) =>
-      'participates/$participateId/edit';
+  String updateParticipate(String participateId) => 'participates/$participateId/edit';
 
   final allParticipateClients = 'getParticipateClints';
   final allParticipateInvoices = 'getParticipateInvoices';
@@ -319,8 +321,7 @@ class _Invoice {
 
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
 
-  final String crudFilesInvoice =
-      'FilesInvoice/crud_files_invoice.php?fk_invoice=';
+  final String crudFilesInvoice = 'FilesInvoice/crud_files_invoice.php?fk_invoice=';
 
   final String getClientSupportFiles = 'getFilesInvoices';
   final String crudClientSupportFiles = 'InvoiceFiles';
@@ -332,11 +333,15 @@ class _Invoice {
   final String updateInvoice = 'updateInvoice/';
   final String crudFileInvoice = 'crudFileInvoice/';
   final String getInvoiceMainCity = 'getInvoiceMainCity';
-  final String updateInvoiceState = 'client/invoice/update_stateback.php';
+
+  // final String updateInvoiceState = 'client/invoice/update_stateback.php';
   final String pendingApproveAdmin = 'pendingInvoicesApprove';
   final String getPendingApproveFinance = 'financePendingInvoices';
   final String getwithdrawInvoices = 'withdrawInvoices';
   final String getdeletedInvoices = 'deletedInvoices';
+
+  String withdrawInvoices(String id) => 'withdrawInvoice/$id';
+  String changeInvoiceStatus(String id) => 'changeInvoiceStatus/$id';
 
   String setApproveInvoice(String idInvoice) {
     return 'setApproveInvoice/${idInvoice}';
@@ -372,15 +377,12 @@ class _Tickets {
 class _Events {
   const _Events();
 
-  String updateStatusForVisit(String scheduleId) =>
-      'updateStatusForVisit/$scheduleId';
+  String updateStatusForVisit(String scheduleId) => 'updateStatusForVisit/$scheduleId';
   final String addDateInstall = "addDateInstall";
 
-  String rescheduleOrCancelVisitClient(String scheduleId) =>
-      "rescheduleOrCancelVisitClient/$scheduleId";
+  String rescheduleOrCancelVisitClient(String scheduleId) => "rescheduleOrCancelVisitClient/$scheduleId";
 
-  String returnScheduleVisitToOpen(String scheduleId) =>
-      "returnScheduleVisitToOpen/$scheduleId";
+  String returnScheduleVisitToOpen(String scheduleId) => "returnScheduleVisitToOpen/$scheduleId";
 
   final String getInstallDate = "getInstallDate";
 
@@ -404,6 +406,7 @@ class _Support {
   const _Support();
 
   final String getSupportClientsAccept = 'getClientFilterAccept';
+
   String getDateTimelinesByEmployee(idClient) {
     return "userDateFree/$idClient";
   }
@@ -425,8 +428,7 @@ class _Reports {
   final String getClientsInstallReports = 'reports/support_report_install.php';
   final String getClientsCareReports = 'reports/care_report.php';
   final String getEvaluationLevelReport = 'reports/report_care_rate.php';
-  final String getPeriodicCommunicationReports =
-      "reports/care_communication_report.php";
+  final String getPeriodicCommunicationReports = "reports/care_communication_report.php";
 }
 
 class _Notifications {
@@ -435,4 +437,71 @@ class _Notifications {
   final String getNotifications = 'notifications';
   final String markNotificationsAsRead = 'notifications/mark-read';
   final String getUnreadNotificationsCount = 'notifications/count-unread';
+}
+
+class _Versions {
+  const _Versions();
+
+  final String getAllVersions = 'version-features';
+  final String addVersions = 'version-features';
+
+  String updateVersions(int id) => 'version-features/$id/edit';
+}
+
+class _Products {
+  const _Products();
+
+  final String addProduct = 'products';
+
+  String updateProduct(int id) => 'products/$id/edit';
+
+  String deleteProduct(int id) => 'products/$id/delete';
+}
+
+class _Management {
+  const _Management();
+
+  final String getManagement = 'managements';
+  final String addManagement = 'managements';
+
+  String updateManagement(int id) => 'managements/$id/edit';
+}
+
+class _Reason {
+  const _Reason();
+
+  final String getReason = 'reasons-out';
+  final String addReason = 'reasons-out';
+
+  String updateReason(int id) => 'reasons-out/$id/edit';
+}
+
+class _RegionAndCities {
+  const _RegionAndCities();
+
+  String getRegion(String id) => 'main-city/$id';
+
+  String addRegion(String id) => 'main-city/$id';
+
+  String updateRegion(String id) => 'main-city/$id/edit';
+  final String getCities = 'cities';
+  final String getCitiesAll = 'cities/select';
+  final String addCities = 'cities';
+  String updateCities(String id) => 'cities/$id/edit';
+}
+class _Activity {
+  const _Activity();
+
+  final String getActivities = 'activity-types';
+  final String addActivity = 'activity-types';
+  String  updateActivity(String id) => 'activity-types/$id/edit';
+
+}
+
+class _Branches {
+  const _Branches();
+
+  final String getBranches = 'branches';
+  final String addBranches = 'branches';
+  String updateBranches(String id) => 'branches/$id/edit';
 }

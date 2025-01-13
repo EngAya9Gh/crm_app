@@ -6,4 +6,7 @@ class UserEntity {
     required this.id,
     required this.name,
   });
+
+
+
 }

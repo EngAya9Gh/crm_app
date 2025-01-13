@@ -1,14 +1,12 @@
 import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/lists/sections_lists.dart';
 import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/common/widgets/app_scaffold.dart';
-import '../../../../core/config/app_dynamic_links.dart';
 import '../../../../ui/widgets/custom_widget/customDrawer.dart';
 import '../../../../ui/widgets/custom_widget/home_app_bar.dart';
 import '../../../../view_model/product_vm.dart';
@@ -26,38 +24,18 @@ class MobHomePage extends StatefulWidget {
 
 class _MobHomePageState extends State<MobHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  late final NotificationsCubit _notificationsCubit;
 
   @override
   void initState() {
     super.initState();
-    _notificationsCubit = context.read<NotificationsCubit>()..init();
-    FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((RemoteMessage? message) {
-      if (message != null) {
-        String typeNotify = message.data['Typenotify'];
-        AppDynamicLinks.routeNotifyTo(typeNotify, context, message.data, null);
-      }
-    });
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      if (message.notification != null) {}
-      _notificationsCubit.increaseNotificationCount();
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      _notificationsCubit.increaseNotificationCount();
-      String typeNotify = event.data['Typenotify'];
-      AppDynamicLinks.routeNotifyTo(typeNotify, context, event.data, null);
-    });
-
+     context.read<NotificationsCubit>()..init();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
         context.read<NotificationsCubit>().getUnreadNotificationsCount(),
         Provider.of<UserProvider>(context, listen: false).getAllUsers(),
         Provider.of<RegionProvider>(context, listen: false).getRegions(),
         Provider.of<product_vm>(context, listen: false).getproduct_vm(),
-        Provider.of<ClientTypeProvider>(context, listen: false)
-            .getreasons('ticket'),
+        Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket'),
       ]);
     });
   }

@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/app_colors.dart';
 import '../../utils/app_dimensions.dart';
+import '../../utils/app_styles.dart';
 
 part 'app_theme.dart';
 part 'color_scheme.dart';

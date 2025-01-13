@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import '../api/api.dart';
+import '../core/services/api/api_services.dart';
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/managmodel.dart';
 
@@ -36,12 +37,14 @@ class manage_provider extends ChangeNotifier {
   Future<void> getManages() async {
     if (listtext.isEmpty) {
       isLoading = true;
-      List<dynamic>? data = await Api()
-          .get(url: EndPoints.baseUrls.url + 'users/getmanagment.php');
-
-      if (data != null) {
-        for (int i = 0; i < data.length; i++) {
-          listtext.add(ManageModel.fromMap(data[i]));
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final data = await apiServices.get(
+        endPoint: EndPoints.management.getManagement,
+      );
+      if (data['message'] != null) {
+        for (int i = 0; i < data['message'].length; i++) {
+          listtext.add(ManageModel.fromMap(data['message'][i]));
         }
       }
       isLoading = false;
@@ -49,36 +52,40 @@ class manage_provider extends ChangeNotifier {
   }
 
   Future<String> addmanage_vm(Map<String, dynamic> body) async {
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     //name_mange
-    String res = await Api().post(
-        url: EndPoints.baseUrls.url + 'users/addmangemt.php',
-        //users/addmangemt.php
-        body: body);
-    if (res != "error") {
+    var res = await  apiServices.post(
+      endPoint: EndPoints.management.addManagement,
+      data: body
+    );
+    if (res['result'] == "success") {
       body.addAll({
-        'idmange': res,
+        'idmange': res['message']['idmange'],
       });
       //listoflevel=[];
       listtext.add(ManageModel.fromMap(body));
       notifyListeners();
     }
-    return res;
+    return res['result'];
   }
 
   Future<String> update_manage(
       Map<String, dynamic> body, String idmanag) async {
     //name_mange
-    String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'users/update_manage.php?idmange=${idmanag}',
-        //users/addmangemt.php
-        body: body);
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    //name_mange
+    var res =  await apiServices.post(
+        endPoint: EndPoints.management.updateManagement(int.parse(idmanag)),
+        data: body
+    );
     body.addAll({
       'idmange': idmanag,
     });
-    listtext.add(ManageModel.fromMap(body));
+    listtext=listtext.map((e) => e.idMange==idmanag?ManageModel.fromMap(body):e).toList();
     notifyListeners();
 
-    return res;
+    return res['result'];
   }
 }

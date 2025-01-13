@@ -9,14 +9,18 @@ import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../api/api.dart';
+import '../../../core/common/enums/client/type_client_enum.dart';
+import '../../../core/common/enums/toast_colors_enum.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/common/models/file_model.dart';
+import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
@@ -25,9 +29,11 @@ import '../../../core/common/widgets/files/app_platform_image.dart';
 import '../../../core/common/widgets/files/file_viewer_widget.dart';
 import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_constants.dart';
 import '../../../core/utils/app_file_handler.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
+import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/app/presentation/widgets/app_text_button.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
@@ -51,12 +57,11 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   String? imageRecord;
   bool isDeleteRecordCommercialImageNetworkImage = false;
   late List<FileAttach> filesAttach;
+  List<FileAttach> addNewFilesAttached = [];
   List<String> deletedFiles = [];
   late InvoiceModel currentInvoice;
 
-  final List<String> allowedExtensions = [
-     "pdf",  "PDF"
-  ];
+  final List<String> allowedExtensions = ["pdf", "PDF"];
 
   @override
   void initState() {
@@ -121,6 +126,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     return completer.future;
   }
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<InvoiceVm>(
@@ -178,13 +185,10 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                 child: Align(
                                   alignment: Alignment.topRight,
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       InkWell(
-                                        onTap: () => pickImage((context,
-                                                file) =>
-                                            onPickCommercialRecordImage(file)),
+                                        onTap: () => pickImage((context, file) => onPickCommercialRecordImage(file)),
                                         borderRadius: BorderRadius.circular(90),
                                         child: Container(
                                           height: 40.scaleIconsSize,
@@ -201,8 +205,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                         ),
                                       ),
                                       InkWell(
-                                        onTap: () =>
-                                            onDeleteCommercialRecordImage(),
+                                        onTap: () => onDeleteCommercialRecordImage(),
                                         borderRadius: BorderRadius.circular(90),
                                         child: Container(
                                           height: 40.scaleIconsSize,
@@ -224,22 +227,46 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                               ),
                             ],
                           )
-                        : ((imageRecord?.isNotEmpty ?? false) &&
-                                !isDeleteRecordCommercialImageNetworkImage)
-                            ? InkWell(
-                                onTap: () => AppFileViewer(urls: [imageRecord!])
-                                    .show(context),
-                                child: Stack(
-                                  children: [
-                                    Positioned.fill(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: FileViewerWidget(
-                                          fileUrl: imageRecord,
+                        : ((imageRecord?.isNotEmpty ?? false) && !isDeleteRecordCommercialImageNetworkImage)
+                            ? StatefulBuilder(
+                                builder: (context, setState) => InkWell(
+                                  onTap: () async {
+                                    isLoading = true;
+                                    setState(() {});
+                                    await InvoiceVm().openFile(
+                                      attachFile: FileAttach(id: imageRecord,fileAttach: imageRecord!),
+                                      baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                                      context: context,
+                                    );
+                                    isLoading = false;
+                                    setState(() {});
+                                    // AppFileViewer(imageSource: ImageSourceViewer.file,urls: [imageRecord!]).show(context);
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      Positioned.fill(
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(15),
+                                          child: isLoading
+                                              ? AppLoader(padding: 12)
+                                              : allowedExtensions.any((ext) => imageRecord!.endsWith('.$ext')) ||
+                                                      ((imageRecord!.endsWith('.pdf') || imageRecord!.endsWith('.PDF')))
+                                                  ? AppIcon(
+                                                      Icons.picture_as_pdf,
+                                                      size: 80,
+                                                      color: AppColors.primaryMain.withOpacity(0.5),
+                                                    )
+                                                  : AppPlatformImage(
+                                                      fileModel: FileModel(url: EndPoints.baseUrls.laravelFilesUrl + (imageRecord ?? "")),
+                                                      fit: BoxFit.cover,
+                                                      width: 110,
+                                                    ) /*FileViewerWidget(
+                                            file: XFile(imageRecord!),
+                                            // fileUrl: ,
+                                          )*/
+                                          ,
                                         ),
                                       ),
-                                    ),
-
                                       Positioned.fill(
                                         child: Align(
                                           alignment: Alignment.topRight,
@@ -247,71 +274,53 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                             children: [
                                               InkWell(
                                                 onTap: () {
-                                                  if (context
-                                                      .read<PrivilegesCubit>()
-                                                      .checkPrivilege('300'))
-                                                  pickImage((context,
-                                                        file) =>
-                                                    onPickCommercialRecordImage(
-                                                        file));
-
-                                                  },
-                                                borderRadius:
-                                                    BorderRadius.circular(90),
+                                                  if (context.read<PrivilegesCubit>().checkPrivilege('300'))
+                                                    pickImage((context, file) => onPickCommercialRecordImage(file));
+                                                },
+                                                borderRadius: BorderRadius.circular(90),
                                                 child: Container(
                                                   height: 40.scaleIconsSize,
                                                   width: 40.scaleIconsSize,
-                                                  margin: EdgeInsets.only(
-                                                      top: 10, right: 15),
+                                                  margin: EdgeInsets.only(top: 10, right: 15),
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey.shade50,
                                                     shape: BoxShape.circle,
                                                   ),
                                                   alignment: Alignment.center,
-                                                  child: AppIcon(
-                                                      Icons.attachment_rounded,
-                                                      color:
-                                                          Colors.grey.shade700,
-                                                      size: 20),
+                                                  child: AppIcon(Icons.attachment_rounded, color: Colors.grey.shade700, size: 20),
                                                 ),
                                               ),
-
-                                              if (context
-                                                  .read<PrivilegesCubit>()
-                                                  .checkPrivilege('146'))
+                                              if (context.read<PrivilegesCubit>().checkPrivilege('146'))
                                                 InkWell(
-                                                onTap: () =>
-                                                    onDeleteCommercialRecordImage(),
-                                                borderRadius:
-                                                    BorderRadius.circular(90),
-                                                child: Container(
-                                                  height: 40,
-                                                  width: 40,
-                                                  margin: EdgeInsets.only(
-                                                      top: 10, right: 15),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.grey.shade50,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  alignment: Alignment.center,
-                                                  child: Icon(
-                                                    Icons.delete_rounded,
-                                                    color: Colors.red,
-                                                    size: 20,
+                                                  onTap: () => onDeleteCommercialRecordImage(),
+                                                  borderRadius: BorderRadius.circular(90),
+                                                  child: Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    margin: EdgeInsets.only(top: 10, right: 15),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey.shade50,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: Icon(
+                                                      Icons.delete_rounded,
+                                                      color: Colors.red,
+                                                      size: 20,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
                                             ],
                                           ),
                                         ),
                                       )
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               )
                             : InkWell(
                                 borderRadius: BorderRadius.circular(15),
-                                onTap: () => pickImage((context, file) =>
-                                    onPickCommercialRecordImage(file)),
+                                onTap: () => pickImage((context, file) => onPickCommercialRecordImage(file)),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -345,9 +354,115 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                         ),
                       ],
                     ),
-                    if (context
-                        .read<PrivilegesCubit>()
-                        .checkPrivilege('146')) AppTextButton(text: "إضافة", onPressed: pickImages)
+                    if (context.read<PrivilegesCubit>().checkPrivilege('146'))
+                      AppTextButton(
+                        text: "إضافة",
+                        onPressed: () {
+                          final ValueNotifier<FileAttach?> selectedFile = ValueNotifier(FileAttach(type: 'all'));
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              insetPadding: EdgeInsets.zero,
+                              title: AppText('اضافة صورة'),
+                              content: SizedBox(
+                                width: .75.scaleWidth,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        pickImage(
+                                          (context, file) {
+                                            selectedFile.value = selectedFile.value?.copyWith(file: file);
+                                          },
+                                        );
+                                      },
+                                      behavior: HitTestBehavior.opaque,
+                                      child: Container(
+                                        height: 250.scaleIconsSize,
+                                        width: .9.sw,
+                                        margin: EdgeInsetsDirectional.only(bottom: 10),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadiusDirectional.circular(12.r), border: Border.all(color: AppColors.primaryMain)),
+                                        child: ValueListenableBuilder(
+                                          valueListenable: selectedFile,
+                                          builder: (context, value, child) {
+                                            if (value?.file != null) {
+                                              return SizedBox(height: 250.scaleIconsSize, child: fileImage(value!, filesAttach.length - 1, true));
+                                            }
+                                            return Column(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.attachment),
+                                                AppText('choose image'),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    ValueListenableBuilder(
+                                      valueListenable: selectedFile,
+                                      builder: (context, value, child) {
+                                        return AppDropdownButtonFormField<TypeSubClientEnum, dynamic>(
+                                          items: TypeSubClientEnum.values,
+                                          onChange: (value) {
+                                            selectedFile.value = selectedFile.value?.copyWith(type: value);
+                                          },
+                                          hint: "النوع",
+                                          itemAsValue: (TypeSubClientEnum? item) => item!.id,
+                                          itemAsString: (item) => item!.text,
+                                          value: value?.type ?? 'all',
+                                          validator: (value) {
+                                            if (value == null) {
+                                              return 'هذا الحقل مطلوب.';
+                                            }
+                                            return null;
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    10.height,
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 2,
+                                            child: AppElevatedButton(
+                                              text: 'add',
+                                              onPressed: () {
+                                                if (selectedFile.value != null) {
+                                                  if (selectedFile.value?.file != null) {
+                                                    addNewFilesAttached = List.of(addNewFilesAttached)..add(selectedFile.value!);
+                                                    addOnFilesAttach(
+                                                      [selectedFile.value!],
+                                                      () => AppSnackbar.showSnakeBar("أكثر عدد مسموح به هو 20 ملف."),
+                                                    );
+                                                    context.pop();
+                                                  } else if (selectedFile.value?.file == null) {
+                                                    AppSnackbar.showSnakeBar('الحقل الصورة مطلوب', color: ToastColorsEnum.warning);
+                                                  }
+                                                }
+                                              },
+                                            )),
+                                        Spacer(),
+                                        Expanded(
+                                            flex: 2,
+                                            child: AppElevatedButton(
+                                              onPressed: () {
+                                                context.pop();
+                                              },
+                                              text: 'cancel',
+                                            )),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )
                   ],
                 ),
                 if (filesAttach.isNotEmpty)
@@ -362,16 +477,10 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                           color: Colors.red,
                         );
                         final attachFile = filesAttach[index];
-                        if (attachFile.file != null ||
-                            (attachFile.fileAttach?.endsWith('.pdf') ??
-                                false)) {
-                          return SizedBox(
-                              height: 250.scaleIconsSize,
-                              child: fileImage(attachFile, index));
+                        if (attachFile.file != null || (attachFile.fileAttach?.endsWith('.pdf') ?? false)) {
+                          return SizedBox(height: 250.scaleIconsSize, child: fileImage(attachFile, index));
                         } else {
-                          return SizedBox(
-                              height: 250.scaleIconsSize,
-                              child: networkImage(attachFile, index));
+                          return SizedBox(height: 250.scaleIconsSize, child: networkImage(attachFile, index));
                         }
                       },
                     ),
@@ -386,20 +495,33 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
 
   void _onSave() {
     Map<String, String> deleteFilesMap = {};
+    Map<String, dynamic> attachFilesMap = {};
 
     deletedFiles.forEachIndexed((index, id) {
       deleteFilesMap["id_files[$index]"] = id;
     });
-
+    int fileIndex = 0;
+    for (final file in addNewFilesAttached) {
+      attachFilesMap["file_types[$fileIndex]"] = file.type == 'all' ? null : file.type;
+      fileIndex++;
+    }
+    // addNewFilesAttached.forEachIndexed((index, fileAttached) {
+    //   if (fileAttached.file != null) {
+    //     attachFilesMap.addAll({
+    //       "uploadfiles[$index][file]": fileAttached.file!,
+    //       "uploadfiles[$index][file_type]": fileAttached.type,
+    //     });
+    //   }
+    // });
+    ;
     final body = {
       ...deleteFilesMap,
+      ...attachFilesMap,
+      // 'file_types' :addNewFilesAttached.map((e) => e.type=='all'?null:e.type).toList(),
     };
 
     final invoiceId = currentInvoice.idInvoice!;
-    final files = filesAttach
-        .where((element) => element.file != null)
-        .map((e) => e.file!)
-        .toList();
+    final files = filesAttach.where((element) => element.file != null).map((e) => e.file!).toList();
 
     invoiceVm.curdInvoiceFiles(
       body: body,
@@ -412,110 +534,128 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     );
   }
 
-  Widget fileImage(FileAttach fileAttach, int index) {
+  Widget fileImage(FileAttach fileAttach, int index, [bool isAdd = false]) {
     bool isLoading = false;
-    return Column(
-      children: [
-        Expanded(
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: allowedExtensions.any((ext) => fileAttach.file?.name.ext == '.$ext')
-                      || ( (fileAttach.file?.name.ext == '.pdf' || fileAttach.file?.name.ext == '.PDF')
-                          || (fileAttach.fileAttach==null?false:
-                          (fileAttach.fileAttach!.endsWith('.pdf') || fileAttach.fileAttach!.endsWith('.PDF') ))
-                  )
-                      ? StatefulBuilder(
-                          builder: (context, refresh) {
-                            return InkWell(
-                              onTap: () async {
-                                isLoading = true;
-                                refresh(() {});
-                                await InvoiceVm().openFile(
-                                  attachFile: fileAttach,
-                                  baseUrl: EndPoints.baseUrls.laravelFilesUrl,
-                                  context: context,
-                                );
-                                isLoading = false;
-                                refresh(() {});
-                              },
-                              child: Container(
-                                  width: 110,
-                                  decoration: BoxDecoration(
-                                      color: AppColors.primaryMain
-                                          .withOpacity(0.1)),
-                                  child: isLoading
-                                      ? AppLoader(padding: 12)
-                                      : AppIcon(
-                                          Icons.picture_as_pdf_rounded,
-                                          color: Colors.grey,
-                                        )),
-                            );
-                          },
-                        )
-                      : InkWell(
-                          onTap: () => AppFileViewer(
-                                imageSource: ImageSourceViewer.file,
-                                files: [fileAttach.file!],
-                              ).show(context),
-                          child: AppPlatformImage(
-                            fileModel: FileModel(file: fileAttach.file!),
-                            fit: BoxFit.cover,
-                            width: 110,
-                          )),
-
-                  // _getFile(fileAttach),
-                ),
+    var type = TypeSubClientEnum.values.firstWhereOrNull((element) => (element.id == fileAttach.type));
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadiusDirectional.circular(12.r),
+        boxShadow: <BoxShadow>[
+          BoxShadow(offset: Offset(1.0, 1.0), blurRadius: 2.0, color: Colors.white24 //.withOpacity(0.2),
               ),
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: InkWell(
-                    onTap: () {
-                      if(fileAttach.id==null){
-                        deleteFileAttach(index);
-                        return;
-                      }
-                      deletedFiles.add(fileAttach.id!);
-                      deleteFileAttach(index);
-                    },
-                    borderRadius: BorderRadius.circular(90),
-                    child: Container(
-                      height: 25.scaleIconsSize,
-                      width: 25.scaleIconsSize,
-                      margin: EdgeInsets.only(top: 5, right: 5),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade50,
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      child: AppIcon(Icons.delete_rounded,
-                          color: Colors.red, size: 17),
-                    ),
+        ],
+      ),
+      margin: EdgeInsetsDirectional.only(bottom: (!isAdd) ? 10 : 0, end: 4, start: 4),
+      child: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: allowedExtensions.any((ext) => fileAttach.file?.name.ext == '.$ext') ||
+                            ((fileAttach.file?.name.ext == '.pdf' || fileAttach.file?.name.ext == '.PDF') ||
+                                (fileAttach.fileAttach == null
+                                    ? false
+                                    : (fileAttach.fileAttach!.endsWith('.pdf') || fileAttach.fileAttach!.endsWith('.PDF'))))
+                        ? StatefulBuilder(
+                            builder: (context, refresh) {
+                              return InkWell(
+                                onTap: () async {
+                                  isLoading = true;
+                                  refresh(() {});
+                                  await InvoiceVm().openFile(
+                                    attachFile: fileAttach,
+                                    baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                                    context: context,
+                                  );
+                                  isLoading = false;
+                                  refresh(() {});
+                                },
+                                child: Container(
+                                    width: 110,
+                                    decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                                    child: isLoading
+                                        ? AppLoader(padding: 12)
+                                        : AppIcon(
+                                            Icons.picture_as_pdf_rounded,
+                                            color: Colors.grey,
+                                          )),
+                              );
+                            },
+                          )
+                        : InkWell(
+                            onTap: () => AppFileViewer(
+                                  imageSource: ImageSourceViewer.file,
+                                  files: [fileAttach.file!],
+                                ).show(context),
+                            child: AppPlatformImage(
+                              fileModel: FileModel(file: fileAttach.file!),
+                              fit: BoxFit.cover,
+                              width: 110,
+                            )),
+
+                    // _getFile(fileAttach),
                   ),
                 ),
-              ),
-            ],
+                if (!isAdd)
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: InkWell(
+                        onTap: () {
+                          if (fileAttach.id == null) {
+                            deleteFileAttach(index);
+                            return;
+                          }
+                          deletedFiles.add(fileAttach.id!);
+                          deleteFileAttach(index);
+                        },
+                        borderRadius: BorderRadius.circular(90),
+                        child: Container(
+                          height: 25.scaleIconsSize,
+                          width: 25.scaleIconsSize,
+                          margin: EdgeInsets.only(top: 5, right: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            shape: BoxShape.circle,
+                          ),
+                          alignment: Alignment.center,
+                          child: AppIcon(Icons.delete_rounded, color: Colors.red, size: 17),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-        5.verticalSpacingRadius,
-        TextScroll(
-          (fileAttach.file?.path.name ?? '') + "   ",
-          mode: TextScrollMode.endless,
-          velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
-          delayBefore: Duration(milliseconds: 2000),
-          pauseBetween: Duration(milliseconds: 1000),
-          style: AppStyles.textStyle,
-          textAlign: TextAlign.center,
-          textDirection: TextDirection.ltr,
-        )
-      ],
+          if (!isAdd) 5.verticalSpacingRadius,
+          if (!isAdd)
+            Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: Padding(
+                  padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
+                  child: TextScroll(
+                    "${type?.text ?? fileAttach.type ?? 'الكل'}",
+                    mode: TextScrollMode.endless,
+                    velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
+                    delayBefore: Duration(milliseconds: 2000),
+                    pauseBetween: Duration(milliseconds: 1000),
+                    style: AppStyles.textStyle,
+                    textAlign: TextAlign.center,
+                    textDirection: TextDirection.ltr,
+                  ),
+                ))
+        ],
+      ),
     );
   }
 
   Widget networkImage(FileAttach fileAttach, int index) {
+    bool isLoading = false;
+    var type = TypeSubClientEnum.values.firstWhereOrNull((element) => (element.text == fileAttach.type));
     return Column(
       children: [
         Expanded(
@@ -524,20 +664,53 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
               Positioned.fill(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: InkWell(
+                  child: StatefulBuilder(
+                    builder: (context, refresh) {
+                      return InkWell(
+                        onTap: () async {
+                          isLoading = true;
+                          refresh(() {});
+                          await InvoiceVm().openFile(
+                            attachFile: fileAttach,
+                            baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                            context: context,
+                          );
+                          isLoading = false;
+                          refresh(() {});
+                        },
+                        child: Container(
+                          width: 110,
+                          decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                          child: isLoading
+                              ? AppLoader(padding: 12)
+                              : allowedExtensions.any((ext) => fileAttach.file?.name.ext == '.$ext') ||
+                                      ((fileAttach.file?.name.ext == '.pdf' || fileAttach.file?.name.ext == '.PDF') ||
+                                          (fileAttach.fileAttach == null
+                                              ? false
+                                              : (fileAttach.fileAttach!.endsWith('.pdf') || fileAttach.fileAttach!.endsWith('.PDF'))))
+                                  ? AppIcon(
+                                      Icons.picture_as_pdf_rounded,
+                                      color: Colors.grey,
+                                    )
+                                  : FancyImageShimmerViewer(
+                                      imageUrl: EndPoints.baseUrls.laravelFilesUrl + (fileAttach.fileAttach ?? ""),
+                                      fit: BoxFit.cover,
+                                    ),
+                        ),
+                      );
+                    },
+                  )
+/*InkWell(
                     onTap: () => AppFileViewer(
                       imageSource: ImageSourceViewer.network,
-                      urls: [
-                        EndPoints.baseUrls.laravelFilesUrl +
-                            fileAttach.fileAttach!
-                      ],
+                      urls: [EndPoints.baseUrls.laravelFilesUrl + fileAttach.fileAttach!],
                     ).show(context),
                     child: FancyImageShimmerViewer(
-                      imageUrl: EndPoints.baseUrls.laravelFilesUrl +
-                          (fileAttach.fileAttach ?? ""),
+                      imageUrl: EndPoints.baseUrls.laravelFilesUrl + (fileAttach.fileAttach ?? ""),
                       fit: BoxFit.cover,
                     ),
-                  ),
+                  )*/
+                  ,
                 ),
               ),
               if (context.read<PrivilegesCubit>().checkPrivilege('146'))
@@ -559,8 +732,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,
-                        child: Icon(Icons.delete_rounded,
-                            color: Colors.red, size: 17),
+                        child: Icon(Icons.delete_rounded, color: Colors.red, size: 17),
                       ),
                     ),
                   ),
@@ -569,16 +741,21 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           ),
         ),
         5.verticalSpacingRadius,
-        TextScroll(
-          fileAttach.fileAttach!.name + "   ",
-          mode: TextScrollMode.endless,
-          velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
-          delayBefore: Duration(milliseconds: 2000),
-          pauseBetween: Duration(milliseconds: 1000),
-          style: AppStyles.textStyle,
-          textAlign: TextAlign.center,
-          textDirection: TextDirection.ltr,
-        )
+        Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: Padding(
+              padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
+              child: TextScroll(
+                "${type?.text ?? fileAttach.type ?? 'الكل'}",
+                mode: TextScrollMode.endless,
+                velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
+                delayBefore: Duration(milliseconds: 2000),
+                pauseBetween: Duration(milliseconds: 1000),
+                style: AppStyles.textStyle,
+                textAlign: TextAlign.center,
+                textDirection: TextDirection.ltr,
+              ),
+            ))
       ],
     );
   }
@@ -587,8 +764,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
       builder: (context) => PickImageBottomSheet(onPickFile: onPickFile),
     );
   }
@@ -599,8 +775,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   }
 
   void onDeleteCommercialRecordImage() {
-    if ((imageRecord?.isNotEmpty ?? false) &&
-        !isDeleteRecordCommercialImageNetworkImage) {
+    if ((imageRecord?.isNotEmpty ?? false) && !isDeleteRecordCommercialImageNetworkImage) {
       isDeleteRecordCommercialImageNetworkImage = true;
       setState(() {});
       return;

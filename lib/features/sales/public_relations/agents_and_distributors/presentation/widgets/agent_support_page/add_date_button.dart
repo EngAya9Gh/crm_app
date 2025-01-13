@@ -120,6 +120,7 @@ class _AddDateButtonState extends State<AddDateButton> {
                                 style2: true,
                                 onTimeChange: (time,dateString){
                                   agentBloc.add(UpdateSupportStartTimeEvent(dateString)); // Dispatch event
+                                  agentBloc.add(EnableEndDateEvent()); // Dispatch event
                                 },
                               ),
                             ),

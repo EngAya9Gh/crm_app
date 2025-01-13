@@ -37,18 +37,18 @@ class WebClientsInvoicesPage extends StatefulWidget {
   State<WebClientsInvoicesPage> createState() => _WebClientsInvoicesPageState();
 }
 
-class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
+class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage>{
   late final InvoicesSectionCubit _cubit;
   late final PrivilegesCubit _privilegeCubit;
   final ScrollController _horizontalScrollController = ScrollController();
 
   @override
   void initState() {
-    super.initState();
     _privilegeCubit = context.read<PrivilegesCubit>();
     _cubit = context.read<InvoicesSectionCubit>()
       ..clearFilters()
       ..getInvoicesByPrivileges();
+    super.initState();
   }
   @override
   void dispose() {
@@ -247,7 +247,7 @@ class _WebClientsInvoicesPageState extends State<WebClientsInvoicesPage> {
     return _cubit.invoicesList
         .map((invoice) => DataRow(
               onSelectChanged: (_) {
-                AppNavigator.go(
+                AppNavigator.push(
                   ClientProfile(
                       idClient:
                       invoice.fkIdClient),

@@ -88,15 +88,20 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
       body: BlocBuilder<AgentsDistributorsProfileBloc,
           AgentsDistributorsProfileState>(
         builder: (context, state) {
-          return TabBarView(
-            controller: _tabController,
-            children: [
-              AgentInfo(agent: widget.agent),
-              AgentClientListPage(agentId: widget.agent.idAgent),
-              AgentInvoiceListPage(participateId: widget.agent.idAgent),
-              AgentCommentListPage(agentId: widget.agent.idAgent),
-              AgentSupportPage(agent: widget.agent),
-            ],
+          return CustomScrollView(
+            slivers:
+             [SliverFillRemaining(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    AgentInfo(agent: widget.agent),
+                    AgentClientListPage(agentId: widget.agent.idAgent),
+                    AgentInvoiceListPage(participateId: widget.agent.idAgent),
+                    AgentCommentListPage(agentId: widget.agent.idAgent),
+                    AgentSupportPage(agent: widget.agent),
+                  ],
+                ),
+             )],
           );
         },
       ),

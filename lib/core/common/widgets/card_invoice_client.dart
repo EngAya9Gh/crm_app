@@ -17,7 +17,7 @@ import '../helpers/helper_functions.dart';
 import '../helpers/number_formatter.dart';
 import 'app_status_chip.dart';
 
-enum StatusClient { subscriber, withdrawn, unsupported }
+enum StatusClient { subscriber, withdrawn, unsupported,restrictWithdrawn  }
 
 extension StatusClientExt on StatusClient {
   String get text {
@@ -28,17 +28,21 @@ extension StatusClientExt on StatusClient {
         return "منسحب";
       case StatusClient.unsupported:
         return "غير معتمد بعد";
+      case StatusClient.restrictWithdrawn:
+        return "منسحب مقيد";
     }
   }
 
   Color get color {
     switch (this) {
       case StatusClient.subscriber:
-        return AppColors.secondaryMain;
+        return Colors.green;
       case StatusClient.withdrawn:
         return Colors.redAccent;
       case StatusClient.unsupported:
         return Colors.orangeAccent;
+      case StatusClient.restrictWithdrawn:
+        return AppColors.secondaryMain;
     }
   }
 }

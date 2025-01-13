@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/services/api/result.dart';
 import '../../../../../../model/similar_client.dart';
 import '../../data/models/client_marketing_meport_model.dart';
@@ -13,6 +14,7 @@ import '../use_cases/crud_client_support_files_usecase.dart';
 import '../use_cases/get_client_marketing_report_usecase.dart';
 import '../use_cases/get_client_support_files_usecase.dart';
 import '../use_cases/get_clients_with_filter_usecase.dart';
+import '../use_cases/get_users_sales_usecase.dart';
 import '../use_cases/receive_client_usecase.dart';
 import '../use_cases/transfer_client_usecase.dart';
 import '../../domain/use_cases/fetch_paginated_clients_usecase.dart';
@@ -75,4 +77,5 @@ abstract class ClientsListRepository {
   Future<Either<String, bool>> linkClientTo(String idClient, List<String> ids);
 
   Future<ResponseWrapper<List<ClientModel>>> fetchPaginatedClients(FetchPaginatedClientsParams params);
+  Future<Result<ResponseWrapper<List<UserEntity>>>> getUsersSales(GetUsersSalesParams params);
 }
