@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/common/enums/periodic_communication_client_type_enum.dart';
 import '../../../../../core/common/models/location/branch_model.dart';
 
 class FilterPeriodicCommunicationEntity {
@@ -9,6 +10,7 @@ class FilterPeriodicCommunicationEntity {
   ValueNotifier<bool> isMyClientsNotifier = ValueNotifier<bool>(false);
   ValueNotifier<String?> userIdNotifier = ValueNotifier<String?>(null);
   ValueNotifier<double?> rateNotifier = ValueNotifier<double?>(null);
+  ValueNotifier<PeriodicCommunicationClientTypeEnum?> type = ValueNotifier<PeriodicCommunicationClientTypeEnum?>(null);
   ValueNotifier<BranchModel?> regionNotifier =
       ValueNotifier<BranchModel?>(null);
 

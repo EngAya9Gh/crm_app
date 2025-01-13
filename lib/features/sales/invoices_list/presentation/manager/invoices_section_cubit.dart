@@ -15,6 +15,7 @@ import '../../../../../core/common/models/user_entity.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../model/usermodel.dart';
+import '../../../clients/clients_list/domain/use_cases/get_users_sales_usecase.dart';
 import '../../../public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
 import '../../../public_relations/participates/domain/use_cases/get_participate_list_usecase.dart';
 import '../../domain/entities/_invoices_section_filter_entity.dart';
@@ -31,6 +32,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   final GetAgentsAndDistributorsUseCase _getAgentsAndDistributorsUseCase;
   final ParticipateListUsecase _participateListUsecase;
   final GetAllUsersUseCase _getAllUsersUseCase;
+  final GetUsersSalesUseCase _getUsersSalesUseCases;
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
   final ExportInvoicesToExcelUsecase _exportInvoicesToExcelUsecase;
 
@@ -39,6 +41,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     this._getAgentsAndDistributorsUseCase,
     this._participateListUsecase,
     this._getAllUsersUseCase,
+    this._getUsersSalesUseCases,
     this._getInvoiceByIdUsecase,
     this._exportInvoicesToExcelUsecase,
   ) : super(InvoicesSectionState());
@@ -146,6 +149,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       from: filtersEntity.dateFromController.text,
       to: filtersEntity.dateToController.text,
       typeReadyClient: filtersEntity.filterClientStatus.value?.toParam,
+      invoiceType:() =>  filtersEntity.filterInvoiceType.value?.value,
       hasDevices: filtersEntity.filterDeviceState.value?.toParam,
       download: isDownload ? '1' : null,
     );
@@ -223,16 +227,16 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   Future<void> _getAllUsers() async {
     emit(state.copyWith(getUsersState: const BlocStatus.loading()));
 
-    final result = await _getAllUsersUseCase(GetAllUsersParams());
+    final result = await _getUsersSalesUseCases(GetUsersSalesParams());
 
-    result.fold(
-      (e) {
-        if (AppConstants.shouldReturnEarly(e)) return;
-        emit(state.copyWith(getUsersState: BlocStatus.fail(error: e)));
+    result.extract(
+      (exception,message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(getUsersState: BlocStatus.fail(error: message)));
       },
       (value) {
         emit(state.copyWith(
-          getUsersState: BlocStatus.success(data: _filterEmployees(value)),
+          getUsersState: BlocStatus.success(data: value.message??[]),
         ));
       },
     );

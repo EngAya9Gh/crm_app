@@ -66,13 +66,13 @@ class ManageWithdrawalsRepositoryImpl extends ManageWithdrawalsRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<String>>> addRejectReasons(
+  Future<Result<ResponseWrapper<RejectReason>>> addRejectReasons(
       Map<String, dynamic> query) {
     return toApiResult(() => _datasource.addRejectReasons(query));
   }
 
   @override
-  Future<Result<ResponseWrapper<String>>> editRejectReasons(
+  Future<Result<ResponseWrapper<RejectReason>>> editRejectReasons(
       Map<String, dynamic> query, Map<String, dynamic> data) {
     return toApiResult(() => _datasource.editRejectReasons(query, data));
   }

@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ import '../../../../../../core/common/enums/client/client_classification_enum.da
 import '../../../../../../core/common/enums/client/client_registration_type_enum.dart';
 import '../../../../../../core/common/enums/client/client_source_enum.dart';
 import '../../../../../../core/common/enums/client/subscribing_intention_level_enum.dart';
+import '../../../../../../core/common/enums/client/type_client_enum.dart';
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
@@ -17,7 +19,6 @@ import '../../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
-import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../model/ActivityModel.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../../../view_model/activity_vm.dart';
@@ -75,16 +76,17 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               alignment: Alignment.centerLeft,
               child: ListenableBuilder(
                 listenable: Listenable.merge(_bloc.filterEntity.listenables()),
-                builder: (context, child) => AppTextButton(
-                  onPressed: _bloc.filterEntity.checkIfFilterIsNotEmpty()
-                      ? () {
-                          _bloc.filterEntity.clearFilters();
-                          _fetchClients(context);
-                        }
-                      : null,
-                  text: "إعادة الافتراضي",
-                  appButtonStyle: AppButtonStyle.secondary,
-                ),
+                builder: (context, child) =>
+                    AppTextButton(
+                      onPressed: _bloc.filterEntity.checkIfFilterIsNotEmpty()
+                          ? () {
+                        _bloc.filterEntity.clearFilters();
+                        _fetchClients(context);
+                      }
+                          : null,
+                      text: "إعادة الافتراضي",
+                      appButtonStyle: AppButtonStyle.secondary,
+                    ),
               ),
             ),
             20.height,
@@ -92,11 +94,11 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               builder: (context, clientTypeVm, child) {
                 return CustomMultiSelectionDropdown<String?>(
                   hint: 'الحالة',
-                  items: clientTypeVm.typeOfClientFilter,
+                  items: TypeClientEnum.values.map((e) => e.text,).toList(),
                   selectedItems: _bloc.filterEntity.statusNotifier.value,
                   itemAsString: (item) => item!,
                   onSave: (selectedItems) {
-                    _bloc.filterEntity.statusNotifier.value = selectedItems;
+                    _bloc.filterEntity.statusNotifier.value = TypeClientEnum.values.where((value) => selectedItems.contains(value.text)).map((e) => e.value).toList();
                   },
                   compareFn: (a, b) => a == b,
                 );
@@ -165,7 +167,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 Expanded(
                   child: CitiesSearchableDropDown(
                     selectedCityId:
-                        _bloc.filterEntity.cityNotifier.value?.cityId,
+                    _bloc.filterEntity.cityNotifier.value?.cityId,
                     onSelected: (city) {
                       if (city == null) return;
                       _bloc.filterEntity.cityNotifier.value = city;
@@ -183,7 +185,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             return BranchSearchableDropDown(
                               showAllChoice: true,
                               selectedBranchId:
-                                  _bloc.filterEntity.regionIdNotifier.value,
+                              _bloc.filterEntity.regionIdNotifier.value,
                               onSelected: (branch) {
                                 _bloc.filterEntity.regionIdNotifier.value =
                                     branch!.branchId;
@@ -201,11 +203,11 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             if (_privilegeCubit.checkPrivilege('15') ||
                 _privilegeCubit.checkPrivilege('8') ||
                 widget.val) ...[
-              Consumer<UserProvider>(
-                builder: (context, userVm, child) {
+              BlocBuilder<ClientsListBloc, ClientsListState>(
+                builder: (context, state) {
                   return CustomSearchableDropDown<UserEntity>(
                     hint: 'الموظف',
-                    items: userVm.usersSalesManagement,
+                    items: state.usersSales.data??[],
                     itemAsString: (u) => u!.name,
                     onChanged: (data) {
                       if (data == null) return;
@@ -234,12 +236,12 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               onChanged: (data) {
                                 if (data == null) return;
                                 _bloc.filterEntity.activityNotifier.value =
-                                    int.parse(data.id_activity_type);
+                                    int.parse(data.id_activity_type!);
                               },
                               selectedItem: activityVm.activitiesList
                                   .firstWhereOrNull((element) =>
-                                      int.parse(element.id_activity_type) ==
-                                      selectedActivity),
+                              int.parse(element.id_activity_type!) ==
+                                  selectedActivity),
                               filterFn: (user, filter) =>
                                   user.getFilterActivityType(filter),
                             ),
@@ -252,7 +254,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               items: ActivitySizeTypeEnum.values,
                               itemAsString: (item) => item!.value,
                               selectedItem:
-                                  _bloc.filterEntity.activitySizeNotifier.value,
+                              _bloc.filterEntity.activitySizeNotifier.value,
                               onChanged: (value) {
                                 _bloc.filterEntity.activitySizeNotifier.value =
                                     value;
@@ -295,8 +297,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               builder: (context, setState) {
                 return SubscribingIntentionLevelWidget(
                   subscribingIntentionLevel:
-                      SubscribingIntentionLevelEnum.fromString(
-                          _bloc.filterEntity.subscribingIntentionLevel.value),
+                  SubscribingIntentionLevelEnum.fromString(
+                      _bloc.filterEntity.subscribingIntentionLevel.value),
                   onChanged: (value) {
                     _bloc.filterEntity.subscribingIntentionLevel.value =
                         value?.name;
@@ -318,7 +320,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               hintText: 'من تاريخ',
                               dateTimeType: DateTimeEnum.date,
                               dateTimeController:
-                                  _bloc.filterEntity.fromController,
+                              _bloc.filterEntity.fromController,
                               style2: true,
                             ),
                           ),
@@ -328,7 +330,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               hintText: 'الي تاريخ',
                               dateTimeType: DateTimeEnum.date,
                               dateTimeController:
-                                  _bloc.filterEntity.toController,
+                              _bloc.filterEntity.toController,
                               style2: true,
                             ),
                           ),

@@ -35,6 +35,8 @@ abstract class AppRoutesPaths {
   static const String notAllowed = '/not-allowed';
   static const String home = '/home';
   static const String notifications = 'notifications';
+  static const String versions = 'versions';
+  static const String addVersions = 'addVersions';
 
 }
 
@@ -63,6 +65,7 @@ class _SalesSections {
   final String reports = 'reports';
   final String races = 'races';
   final String crudActivities= 'sales-crud-activities';
+  final String attachments= 'attachments';
 }
 
 class _SupportSubSections {

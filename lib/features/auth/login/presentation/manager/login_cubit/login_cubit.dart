@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
@@ -86,7 +88,9 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<String?> _getFcm() async {
     try {
-      return await FirebaseMessaging.instance.getToken();
+        var token=await FirebaseMessaging.instance.getToken();
+      log('34567890${token}');
+      return token;
     } catch (e) {
       debugPrint('Error getting FCM token: $e');
     }

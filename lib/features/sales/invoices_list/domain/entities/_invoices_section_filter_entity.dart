@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/common/enums/client/client_debt_type_enum.dart';
 import '../../../../../core/common/enums/client/client_status_enum.dart';
 import '../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../core/common/enums/seller_type_enum.dart';
@@ -17,6 +18,8 @@ class InvoicesSectionFilterEntity {
   final TextEditingController dateToController = TextEditingController();
   final ValueNotifier<ClientStatusEnum?> filterClientStatus =
       ValueNotifier(null);
+  final ValueNotifier<TypeOfInvoice?> filterInvoiceType =
+      ValueNotifier(null);
   final ValueNotifier<DevicesStateFilterEnum?> filterDeviceState =
       ValueNotifier<DevicesStateFilterEnum?>(null);
 
@@ -27,6 +30,7 @@ class InvoicesSectionFilterEntity {
     dateFromController.clear();
     dateToController.clear();
     filterClientStatus.value = null;
+    filterInvoiceType.value = null;
     filterDeviceState.value = null;
   }
 
@@ -40,6 +44,7 @@ class InvoicesSectionFilterEntity {
       ..dateFromController.text = this.dateFromController.text
       ..dateToController.text = this.dateToController.text
       ..filterClientStatus.value = this.filterClientStatus.value
+      ..filterInvoiceType.value = this.filterInvoiceType.value
       ..filterDeviceState.value = this.filterDeviceState.value;
   }
 
@@ -59,6 +64,7 @@ class InvoicesSectionFilterEntity {
       dateFromController,
       dateToController,
       filterClientStatus,
+      filterInvoiceType,
       filterDeviceState,
     ];
   }
@@ -70,6 +76,7 @@ class InvoicesSectionFilterEntity {
         filterSelectedUser.value != null ||
         filterSelectedRegion.value != null ||
         filterClientStatus.value != null ||
+        filterInvoiceType.value != null ||
         filterDeviceState.value != null;
   }
 }

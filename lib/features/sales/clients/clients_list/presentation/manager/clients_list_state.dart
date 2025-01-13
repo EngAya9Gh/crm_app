@@ -26,6 +26,7 @@ class ClientsListState extends Equatable {
   final BlocStatus exportClientsToExcelStatus;
   String? error;
   final int? currentPage;
+  final BlocStatus usersSales;
 
   ClientsListState({
     this.refreshUi = 0,
@@ -52,6 +53,7 @@ class ClientsListState extends Equatable {
     this.exportClientsToExcelStatus = const BlocStatus.initial(),
     this.error,
     this.currentPage,
+    this.usersSales = const BlocStatus.initial(),
   });
 
   ClientsListState copyWith({
@@ -80,6 +82,7 @@ class ClientsListState extends Equatable {
     BlocStatus? exportClientsToExcelStatus,
     String? error,
     int? currentPage,
+    BlocStatus? usersSales,
   }) {
     return ClientsListState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
@@ -120,6 +123,7 @@ class ClientsListState extends Equatable {
           linkSelectedClientsStatus ?? this.linkSelectedClientsStatus,
       exportClientsToExcelStatus:
           exportClientsToExcelStatus ?? this.exportClientsToExcelStatus,
+      usersSales: usersSales ?? this.usersSales,
     );
   }
 
@@ -142,6 +146,7 @@ class ClientsListState extends Equatable {
       getLinkClientsStatus,
       exportClientsToExcelStatus,
       exportClientsToExcelStatus,
+      usersSales
     ];
   }
 }

@@ -12,7 +12,7 @@ class AppLayoutBuilder extends StatelessWidget {
   final WidgetBuilder smallBuilder;
   final WidgetBuilder? mediumBuilder;
   final WidgetBuilder? largeBuilder;
-  final bool isUnique = true;
+  final bool isUnique = false;
 
   @override
   Widget build(BuildContext context) {

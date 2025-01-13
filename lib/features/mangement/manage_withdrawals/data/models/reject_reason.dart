@@ -1,24 +1,38 @@
-// ignore_for_file: invalid_annotation_target
+// To parse this JSON data, do
+//
+//     final rejectReason = rejectReasonFromJson(jsonString);
 
 import 'dart:convert';
 
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'reject_reason.freezed.dart';
-part 'reject_reason.g.dart';
-
-RejectReason rejectReasonFromJson(String str) =>
-    RejectReason.fromJson(json.decode(str));
+RejectReason rejectReasonFromJson(String str) => RejectReason.fromJson(json.decode(str));
 
 String rejectReasonToJson(RejectReason data) => json.encode(data.toJson());
 
-@freezed
-class RejectReason with _$RejectReason {
-  const factory RejectReason({
-    @JsonKey(name: "id_rejectClient") String? idRejectClient,
-    @JsonKey(name: "NameReason_reject") String? nameReasonReject,
-  }) = _RejectReason;
+class RejectReason {
+  final int? idRejectClient;
+  final String? nameReasonReject;
 
-  factory RejectReason.fromJson(Map<String, dynamic> json) =>
-      _$RejectReasonFromJson(json);
+  RejectReason({
+    this.idRejectClient,
+    this.nameReasonReject,
+  });
+
+  RejectReason copyWith({
+    int? idRejectClient,
+    String? nameReasonReject,
+  }) =>
+      RejectReason(
+        idRejectClient: idRejectClient ?? this.idRejectClient,
+        nameReasonReject: nameReasonReject ?? this.nameReasonReject,
+      );
+
+  factory RejectReason.fromJson(Map<String, dynamic> json) => RejectReason(
+    idRejectClient: json["id_rejectClient"],
+    nameReasonReject: json["NameReason_reject"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id_rejectClient": idRejectClient,
+    "NameReason_reject": nameReasonReject,
+  };
 }

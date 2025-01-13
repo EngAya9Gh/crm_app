@@ -53,7 +53,7 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
   @override
   void initState() {
     super.initState();
-    _clientsBloc = context.read<ClientsListBloc>()..init();
+    _clientsBloc = context.read<ClientsListBloc>()..init()..add(GetUsersSales());
     _privilegeCubit = context.read<PrivilegesCubit>();
     userModel = AppConstants.currentUser;
     _clientsBloc.state.myclient_parm = false;
@@ -207,74 +207,52 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                                   child: Scrollbar(
                                     controller: _horizontalScrollController,
                                     thumbVisibility: true,
-                                    child: AppDataTable(
-                                      scrollController: _horizontalScrollController,
-                                      columnSpacing: 20,
-                                      horizontalMargin: 10,
-                                      columns: [
-                                        _buildDataTableColumn('الرقم المرجعي'),
-                                        _buildDataTableColumn('العميل'),
-                                        _buildDataTableColumn('المؤسسة'),
-                                        _buildDataTableColumn('تاريخ الإضافة'),
-                                        _buildDataTableColumn('نوع العميل'),
-                                        _buildDataTableColumn('الأولوية'),
-                                        _buildDataTableColumn('الأمر'),
-                                      ],
-                                      rows: clients.mapIndexed(
-                                            (index, client) {
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      controller: _horizontalScrollController,
+                                      child: DataTable(
+                                        columns: [
+                                          DataColumn(label: AppText('الرقم المرجعي')),
+                                          DataColumn(label: AppText('العميل')),
+                                          DataColumn(label: AppText('المؤسسة')),
+                                          DataColumn(label: AppText('تاريخ الإضافة')),
+                                          DataColumn(label: AppText('نوع العميل')),
+                                          DataColumn(label: AppText('الأولوية')),
+
+                                        ],
+                                        rows: clients.mapIndexed((index, client) {
                                           return DataRow(
-                                            color: WidgetStateProperty.all(
-                                              index.isOdd
-                                                  ? Colors.grey.shade100
-                                                  : AppColors.white,
+                                            onSelectChanged:(_){
+                                              if (!value1) {
+                                                AppNavigator.go(
+                                                  ClientProfile(idClient: client.idClients),
+                                                  name: AppRoutesNames.clientProfile.inClientsList,
+                                                  pathParameters: {
+                                                    'idClient': client.idClients.toString()
+                                                  },
+                                                );
+                                              }
+                                            },
+                                          color: MaterialStateProperty.all(
+                                              index.isOdd ? Colors.grey.shade100 : AppColors.white,
                                             ),
                                             cells: [
-                                              AppDataTableCell(
-                                                  value: client.serialNumber ?? ''),
-                                              AppDataTableCell(
-                                                  value: client.nameClient ?? ''),
-                                              AppDataTableCell(
-                                                  value: client.nameEnterprise ?? ''),
-                                              AppDataTableCell(
-                                                  value: client.dateCreate ?? ''),
-                                              AppDataTableCell(
-                                                  value: client.typeClient ?? ''),
-                                              AppDataTableCell(
-                                                icon: AppIcon(
+                                              DataCell(AppText(client.serialNumber ?? '', textAlign: TextAlign.center)),
+                                              DataCell(AppText(client.nameClient ?? '', textAlign: TextAlign.center)),
+                                              DataCell(AppText(client.nameEnterprise ?? '', textAlign: TextAlign.center)),
+                                              DataCell(AppText(client.dateCreate ?? '', textAlign: TextAlign.center)),
+                                              DataCell(AppText(client.typeClient ?? '', textAlign: TextAlign.center)),
+                                              DataCell(
+                                                AppIcon(
                                                   Icons.flag,
-                                                  color: client
-                                                      .subscribingIntentionLevel
-                                                      ?.color,
+                                                  color: client.subscribingIntentionLevel?.color,
                                                 ),
                                               ),
-                                              AppDataTableCell(
-                                                icon: InkWell(
-                                                  onTap: () {
-                                                    if (!value1) {
-                                                      AppNavigator.go(
-                                                        ClientProfile(
-                                                            idClient:
-                                                            client.idClients),
-                                                        name: AppRoutesNames
-                                                            .clientProfile
-                                                            .inClientsList,
-                                                        pathParameters: {
-                                                          'idClient': client.idClients
-                                                              .toString()
-                                                        },
-                                                      );
-                                                    }
-                                                  },
-                                                  child: AppIcon(
-                                                    Icons.remove_red_eye,
-                                                    color: AppColors.primaryMain,
-                                                  ),
-                                                ),
-                                              ),
+
                                             ],
                                           );
-                                        },
-                                      ).toList(),
+                                        }).toList(),
+                                      ),
                                     ),
                                   ),
                                 ),

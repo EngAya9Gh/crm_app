@@ -7,6 +7,7 @@ import '../../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../../core/common/widgets/custom_reset_icon.dart';
 import '../../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../manager/products_sales_reports_cubit.dart';
 import '../widgets/filter_products_sales_reports_sheet.dart';
 import '../widgets/products_sales_reports_body.dart';
@@ -24,7 +25,7 @@ class _ProductsSalesReportsState extends State<ProductsSalesReportsPage> {
   @override
   void initState() {
     _cubit = context.read<ProductsSalesReportsCubit>()..init();
-
+    context.read<ClientsListBloc>()..add(GetUsersSales());
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getProductsSalesReports();
     });
@@ -70,13 +71,10 @@ class _ProductsSalesReportsState extends State<ProductsSalesReportsPage> {
             10.height,
             Expanded(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: BlocBuilder<ProductsSalesReportsCubit,
-                    ProductsSalesReportsState>(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: BlocBuilder<ProductsSalesReportsCubit, ProductsSalesReportsState>(
                   buildWhen: (previous, current) {
-                    return previous.getProductsSalesReportsStatus !=
-                        current.getProductsSalesReportsStatus;
+                    return previous.getProductsSalesReportsStatus != current.getProductsSalesReportsStatus;
                   },
                   builder: (context, state) {
                     return state.getProductsSalesReportsStatus.when(

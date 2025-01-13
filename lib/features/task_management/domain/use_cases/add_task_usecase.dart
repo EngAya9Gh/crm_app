@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/common/usecases/base_usecase.dart';
@@ -26,7 +27,10 @@ class AddTaskUsecase
 class AddTaskParams {
   final String? title;
   final List<UserModel> participants;
-  final UserRegionDepartment? assignTo;
+  final String? assignTo;
+  final String? assignToId;
+  final String? assignFrom;
+  final String? assignFromId;
   final DateTime? startDate;
   final DateTime? deadLineDate;
   final File? file;
@@ -37,7 +41,7 @@ class AddTaskParams {
   final String? numberOfRecurring;
   final String? groupId;
   final String? invoiceId;
-  final String userId;
+  final String? userId;
   final String description;
   final String? clientId;
   final String? mainTypeTask;
@@ -49,6 +53,9 @@ class AddTaskParams {
     required this.userId,
     required this.participants,
     this.assignTo,
+    this.assignToId,
+    this.assignFrom,
+    this.assignFromId,
     this.startDate,
     this.deadLineDate,
     this.file,
@@ -72,9 +79,12 @@ class AddTaskParams {
     return {
       'title': title,
       'file_path': file,
-      "assigned_to": assignTo?.idUser.toString(),
-      'start_date': startDate?.toIso8601String(),
-      'deadline': deadLineDate?.toIso8601String(),
+      "assign_to_id": assignToId,
+      "assign_to": assignTo,
+      "assign_from": assignFrom,
+      "assign_from_id": assignFromId,
+      'start_date':startDate!=null? DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate!):null,
+      'deadline':deadLineDate!=null? DateFormat('yyyy-MM-dd HH:mm:ss').format(deadLineDate!):null,
       ...map,
       "invoice_id": invoiceId,
       "group_id": groupId,
@@ -92,7 +102,7 @@ class AddTaskParams {
       'description': description,
       'client_id': clientId,
       'main_type_task': mainTypeTask,
-      'public_Type': publicType,
+      'code': publicType,
     }..removeWhere((key, value) => value == null || value == '');
   }
 

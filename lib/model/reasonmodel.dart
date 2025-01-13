@@ -1,16 +1,16 @@
 class ReasonModel {
   ReasonModel({
-    required this.idReason,
+    this.idReason,
     required this.nameReason,
     required this.type,
   });
 
-  late final String idReason;
+  late final String? idReason;
   late final String nameReason;
   late final String type;
 
   ReasonModel.fromJson(Map<String, dynamic> json) {
-    idReason = json['id_reason'];
+    idReason = json['id_reason'] == null ? null : json['id_reason'].toString();
     nameReason = json['name_reason'];
     type = json['type'];
   }

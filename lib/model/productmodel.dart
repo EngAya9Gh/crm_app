@@ -1,11 +1,11 @@
 class ProductModel {
   ProductModel({
     this.idProduct,
-    required this.nameProduct,
-    required this.priceProduct,
-    required this.type,
-    required this.fkCountry,
-    required this.fkConfig,
+    this.nameProduct,
+    this.priceProduct,
+    this.type,
+    this.fkCountry,
+    this.fkConfig,
     this.value_config,
     this.created_at,
     this.fkusercreate,
@@ -17,10 +17,10 @@ class ProductModel {
   });
 
   String? idProduct;
-  late final String nameProduct;
-  late final String priceProduct;
-  late final String type;
-  late final String fkCountry;
+  late final String? nameProduct;
+  late final String? priceProduct;
+  late final String? type;
+  late final String? fkCountry;
   late String? fkConfig;
   late String? created_at;
   late String? fkusercreate;
@@ -32,18 +32,18 @@ class ProductModel {
   String? typeProdRenew;
 
   ProductModel.fromJson(Map<String, dynamic> json) {
-    idProduct = json['id_product'];
+    idProduct =json['id_product']==null?null: json['id_product'].toString();
     nameProduct = json['nameProduct'];
     typeProdRenew = json['type_prod_renew'];
     priceProduct = json['priceProduct'];
     type = json['type'];
-    fkCountry = json['fk_country'];
-    fkConfig = json['fk_config'];
+    fkCountry = json['fk_country'] == null ? null : json['fk_country'].toString();
+    fkConfig = json['fk_config'] == null ? null : json['fk_config'].toString();
     value_config = json['value_config'];
     created_at = json['created_at'];
-    fkusercreate = json['fkusercreate'];
+    fkusercreate = json['fkusercreate']==null?null:json['fkusercreate'].toString();
     updated_at = json['updated_at'];
-    fkuserupdate = json['fkuserupdate'];
+    fkuserupdate = json['fkuserupdate'] == null ? null : json['fkuserupdate'].toString();
     nameuserupdated_at = json['nameuserupdated_at'];
     nameusercreate = json['nameusercreate'];
   }

@@ -72,10 +72,10 @@ class _EditProductState extends State<EditProduct> {
       Provider.of<switch_provider>(context, listen: false)
           .changeboolValue(valtaxrate);
     });
-    nameprod = _textName.text = widget.productModel.nameProduct;
-    _textprice.text = widget.productModel.priceProduct;
+    nameprod = _textName.text = widget.productModel.nameProduct??'';
+    _textprice.text = widget.productModel.priceProduct??'';
     price = double.parse(_textprice.text.toString());
-    valtype_product = int.parse(widget.productModel.type);
+    valtype_product = int.parse(widget.productModel.type??'');
     idCountry = Provider.of<UserProvider>(context, listen: false)
         .currentUser
         .fkCountry
@@ -387,16 +387,16 @@ class _EditProductState extends State<EditProduct> {
                                                           ScaffoldMessenger.of(
                                                                   context)
                                                               .showSnackBar(SnackBar(
-                                                                  content: AppText(
+                                                                  content: AppText(color: AppColors.white,
                                                                       "لا يمكن حذف هذا المنتج")));
                                                         else {
-                                                          if (res == "done") {
+                                                          if (res == "success") {
                                                             ScaffoldMessenger
                                                                     .of(context)
                                                                 .showSnackBar(
                                                                     SnackBar(
                                                               content: AppText(
-                                                                  "تم الحذف بنجاح"),
+                                                                  "تم الحذف بنجاح",color: AppColors.white,),
                                                             ));
                                                             Navigator.pop(
                                                                 context);
@@ -406,7 +406,7 @@ class _EditProductState extends State<EditProduct> {
                                                                     .of(context)
                                                                 .showSnackBar(SnackBar(
                                                                     content:
-                                                                        AppText(
+                                                                        AppText(color: AppColors.white,
                                                                             "ارسال خاطئ")));
                                                           else if (res ==
                                                               'error')
@@ -414,14 +414,14 @@ class _EditProductState extends State<EditProduct> {
                                                                     .of(context)
                                                                 .showSnackBar(SnackBar(
                                                                     content:
-                                                                        AppText(
+                                                                        AppText(color: AppColors.white,
                                                                             " هناك مشكلة ما أثناء حذف المنتج")));
                                                           else
                                                             ScaffoldMessenger
                                                                     .of(context)
                                                                 .showSnackBar(SnackBar(
                                                                     content:
-                                                                        AppText(
+                                                                        AppText(color: AppColors.white,
                                                                             "يوجد مشكلة ما ")));
                                                         }
 

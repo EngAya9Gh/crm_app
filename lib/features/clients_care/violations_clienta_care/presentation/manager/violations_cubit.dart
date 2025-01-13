@@ -5,6 +5,7 @@ import 'package:crm_smart/features/clients_care/violations_clienta_care/data/mod
 import 'package:crm_smart/features/clients_care/violations_clienta_care/domain/use_cases/get_all_management_usecase.dart';
 import 'package:crm_smart/features/clients_care/violations_clienta_care/domain/use_cases/get_violation_types_usecase.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/page_state/bloc_status.dart';
@@ -31,8 +32,7 @@ class ViolationsCubit extends Cubit<ViolationsState> {
     this._getViolationsTypesUseCase,
   ) : super(ViolationsState());
 
-  ViolationsPageVarsEntity pageVariables =
-  ViolationsPageVarsEntity();
+  ViolationsPageVarsEntity pageVariables = ViolationsPageVarsEntity();
   FilterViolationsEntity filterEntity = FilterViolationsEntity();
 
   void init(String idUser) {
@@ -60,21 +60,21 @@ class ViolationsCubit extends Cubit<ViolationsState> {
             GetViolationsParams(
               skip: pageVariables.allList.length,
               filter: pageVariables.searchController.text,
-              managementId: filterEntity.management.value==null?null:filterEntity.management.value!.idManage.toString(),
-              userId: filterEntity.userId.value==null?null:filterEntity.userId.value,
-              violationTypeId: filterEntity.violationType.value==null?null:filterEntity.violationType.value!.id.toString(),
+              managementId: filterEntity.management.value == null ? null : filterEntity.management.value!.idManage.toString(),
+              userId: filterEntity.userId.value == null ? null : filterEntity.userId.value,
+              violationTypeId: filterEntity.violationType.value == null ? null : filterEntity.violationType.value!.id.toString(),
             ),
           );
           result.fold(
-                (e) {
+            (e) {
               if (AppConstants.shouldReturnEarly(e)) return;
               emit(state.copyWith(
                 getViolationsStatus: BlocStatus.fail(error: e),
               ));
             },
-                (value) {
+            (value) {
               pageVariables.allList.addAll(value.data);
-              pageVariables.totalCount = value.count==0? pageVariables.totalCount:(value.count??0);
+              pageVariables.totalCount = value.count == 0 ? pageVariables.totalCount : (value.count ?? 0);
               pageVariables.hasReachedEnd = value.data.isEmpty;
               if (pageVariables.allList.isEmpty) {
                 return emit(state.copyWith(
@@ -86,34 +86,37 @@ class ViolationsCubit extends Cubit<ViolationsState> {
               ));
             },
           );
-        }catch (e) {
+        } catch (e) {
           emit(state.copyWith(
             getViolationsStatus: BlocStatus.fail(error: e.toString()),
           ));
         }
-        },
+      },
       tag: 'search_wrong_numbers',
       isDebounced: isDebounced,
     );
   }
 
-  Future<void> getAllManagements() async {
+  Future<void> getAllManagements({ValueChanged<List<ManagementModel>>? onSuccess}) async {
     try {
-        if (state.getManagementStatus.isLoading()) return;
+      if (state.getManagementStatus.isLoading()) return;
 
-        emit(state.copyWith(getManagementStatus: BlocStatus.loading()));
-        final response = await _getManagementsUseCase(GetManagementsParams(),);
-        if(response.message!=null){
-          pageVariables.managementList = response.message!;
-          emit(state.copyWith(
-            getManagementStatus: BlocStatus.success(),
-          ));
-        }else{
-          emit(state.copyWith(
-            getManagementStatus: BlocStatus.empty(),
-          ));
-        }
-      }catch (e) {
+      emit(state.copyWith(getManagementStatus: BlocStatus.loading()));
+      final response = await _getManagementsUseCase(
+        GetManagementsParams(),
+      );
+      if (response.message != null) {
+        pageVariables.managementList = response.message!;
+        onSuccess?.call(response.message!);
+        emit(state.copyWith(
+          getManagementStatus: BlocStatus.success(),
+        ));
+      } else {
+        emit(state.copyWith(
+          getManagementStatus: BlocStatus.empty(),
+        ));
+      }
+    } catch (e) {
       emit(state.copyWith(
         getManagementStatus: BlocStatus.fail(error: e.toString()),
       ));
@@ -122,51 +125,48 @@ class ViolationsCubit extends Cubit<ViolationsState> {
 
   Future<void> getAllViolationTypes() async {
     try {
-        if (state.getViolationTypesStatus.isLoading()) return;
+      if (state.getViolationTypesStatus.isLoading()) return;
 
-        emit(state.copyWith(getViolationTypesStatus: BlocStatus.loading()));
-        final response = await _getViolationsTypesUseCase(GetViolationsTypesParams(),);
-        if(response.message!=null){
-          pageVariables.violationTypeList = response.message!;
-          emit(state.copyWith(
-            getViolationTypesStatus: BlocStatus.success(),
-          ));
-        }else{
-          emit(state.copyWith(
-            getViolationTypesStatus: BlocStatus.empty(),
-          ));
-        }
-      }catch (e) {
+      emit(state.copyWith(getViolationTypesStatus: BlocStatus.loading()));
+      final response = await _getViolationsTypesUseCase(
+        GetViolationsTypesParams(),
+      );
+      if (response.message != null) {
+        pageVariables.violationTypeList = response.message!;
+        emit(state.copyWith(
+          getViolationTypesStatus: BlocStatus.success(),
+        ));
+      } else {
+        emit(state.copyWith(
+          getViolationTypesStatus: BlocStatus.empty(),
+        ));
+      }
+    } catch (e) {
       emit(state.copyWith(
         getViolationTypesStatus: BlocStatus.fail(error: e.toString()),
       ));
     }
   }
 
-  Future<void> updateViolationEvent({
-    String description="",
-    required int violationId,
-    bool isAccepted = false,
-    VoidCallback? onSuccess
-}) async {
-
+  Future<void> updateViolationEvent({String description = "", required int violationId, bool isAccepted = false, VoidCallback? onSuccess}) async {
     if (state.updateViolationStatus.isLoading()) return;
 
-    emit(state.copyWith(updateViolationStatus: BlocStatus.loading(),));
+    emit(state.copyWith(
+      updateViolationStatus: BlocStatus.loading(),
+    ));
 
     final params = UpdateViolationParams(
       violationId: violationId.toString(),
       description: description,
-      acceptStatus: isAccepted?"accepted":"rejected",
+      acceptStatus: isAccepted ? "accepted" : "rejected",
     );
 
     try {
-
       final response = await _updateViolationUseCase(params);
 
-      if(response.message!=null){
+      if (response.message != null) {
         ViolationModel currentAct = pageVariables.allList.firstWhere(
-              (activity) => activity.id == violationId, // Assuming 'id' is the identifier
+          (activity) => activity.id == violationId, // Assuming 'id' is the identifier
         );
 
         int? index = pageVariables.allList.indexOf(currentAct);
@@ -189,6 +189,4 @@ class ViolationsCubit extends Cubit<ViolationsState> {
       onSuccess?.call();
     }
   }
-
-
 }

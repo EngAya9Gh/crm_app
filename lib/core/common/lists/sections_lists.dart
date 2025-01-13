@@ -4,6 +4,7 @@ import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../features/clients_care/clients_attachments/presentation/pages/client_attachments_page.dart';
 import '../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
 import '../../../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../../../features/home/presentation/pages/sales_section.dart';
@@ -64,7 +65,6 @@ abstract class SectionsLists {
       path: AppRoutesPaths.homeSections.care,
       subSections: AllSubSectionsLists.careSubSections,
     ),
-
     SectionModel(
       page: SubSectionsListView(
         title: 'الإدارة',
@@ -75,15 +75,14 @@ abstract class SectionsLists {
       path: AppRoutesPaths.homeSections.management,
       subSections: AllSubSectionsLists.managementSubSections,
     ),
-
     SectionModel(
       page: Directionality(
-textDirection: TextDirection.rtl,
-child: AppLayoutBuilder(
-smallBuilder: (context) => TaskManagementListPage(),
-mediumBuilder: (context) => TaskManagementPage(),
-),
-),
+        textDirection: TextDirection.rtl,
+        child: AppLayoutBuilder(
+          smallBuilder: (context) => TaskManagementListPage(),
+          mediumBuilder: (context) => TaskManagementPage(),
+        ),
+      ),
       title: 'إدارة المهام',
       icon: FontAwesomeIcons.listCheck,
       path: AppRoutesPaths.homeSections.taskManagement,
@@ -107,7 +106,7 @@ mediumBuilder: (context) => TaskManagementPage(),
       page: CrudActivitiesPage(),
       title: 'الانشطة',
       privilegeId: "306",
-      icon: FontAwesomeIcons.listCheck ,
+      icon: FontAwesomeIcons.listCheck,
       path: AppRoutesPaths.salesSections.crudActivities,
     ),
     SectionModel(
@@ -120,7 +119,6 @@ mediumBuilder: (context) => TaskManagementPage(),
       path: AppRoutesPaths.salesSections.invoices,
       subSections: SalesSubSectionsLists.invoiceSections,
     ),
-
     SectionModel(
       page: SubSectionsListView(
         title: 'العلاقات العامة',
@@ -141,7 +139,6 @@ mediumBuilder: (context) => TaskManagementPage(),
       path: AppRoutesPaths.salesSections.reports,
       subSections: SalesSubSectionsLists.reportsSections,
     ),
-
     SectionModel(
       page: SubSectionsListView(
         title: 'السباقات',
@@ -152,7 +149,12 @@ mediumBuilder: (context) => TaskManagementPage(),
       path: AppRoutesPaths.salesSections.races,
       subSections: SalesSubSectionsLists.raceSections,
     ),
-
-
+    SectionModel(
+      page: ClientAttachmentsPage(),
+      title: 'المرفقات',
+      icon: FontAwesomeIcons.link,
+      path: AppRoutesPaths.salesSections.attachments,
+      subSections: [],
+    ),
   ];
 }

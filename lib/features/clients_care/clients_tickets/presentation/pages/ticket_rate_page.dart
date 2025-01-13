@@ -144,7 +144,7 @@ class _TicketRatePageState extends State<TicketRatePage> {
                                               padding: const EdgeInsets.all(2),
                                               child:
                                                   //Text(''),
-                                                  cardcomment(
+                                                  Cardcomment(
                                                 commentmodel: value
                                                     .filteredComments[index],
                                               )));

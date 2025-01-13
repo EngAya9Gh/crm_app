@@ -24,8 +24,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     this._getUnreadNotificationsCountUsecase,
   ) : super(NotificationsState());
 
-  NotificationsPageVariablesEntity pageVariables =
-      NotificationsPageVariablesEntity();
+  NotificationsPageVariablesEntity pageVariables = NotificationsPageVariablesEntity();
   FilterNotificationsEntity filterEntity = FilterNotificationsEntity();
 
   void init() {
@@ -86,8 +85,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   Future<void> getUnreadNotificationsCount() async {
-    emit(state.copyWith(
-        getUnreadNotificationsCountStatus: const BlocStatus.loading()));
+    emit(state.copyWith(getUnreadNotificationsCountStatus: const BlocStatus.loading()));
     final result = await _getUnreadNotificationsCountUsecase(
       GetUnreadNotificationsCountParams(),
     );
@@ -113,8 +111,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   }
 
   Future<void> markNotificationsAsRead() async {
-    emit(state.copyWith(
-        markNotificationsAsReadStatus: const BlocStatus.loading()));
+    emit(state.copyWith(markNotificationsAsReadStatus: const BlocStatus.loading()));
     pageVariables.unReadCount = 0;
     final result = await _markNotificationsAsReadUsecase(
       MarkNotificationsAsReadParams(),
@@ -126,10 +123,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
           markNotificationsAsReadStatus: BlocStatus.fail(error: e),
         ));
       },
-      (_) {
+      (r) {
         emit(state.copyWith(
           getUnreadNotificationsCountStatus: const BlocStatus.empty(),
-          markNotificationsAsReadStatus: const BlocStatus.success(),
+          markNotificationsAsReadStatus:   const BlocStatus.success(),
         ));
       },
     );

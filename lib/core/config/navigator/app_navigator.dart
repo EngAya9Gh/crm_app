@@ -1,5 +1,6 @@
 import 'package:crm_smart/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/task_managment_page.dart';
+import 'package:crm_smart/features/versions/presentation/pages/versions_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +12,9 @@ import '../../../features/auth/login/presentation/pages/login/login_page.dart';
 import '../../../features/auth/login/presentation/pages/otp/verify_otp_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
 import '../../../features/task_management/presentation/pages/task_management_list_page.dart';
+import '../../../features/versions/presentation/widgets/add_new_entry_version_page.dart';
+import '../../../features/versions/presentation/widgets/new_entry_version_widget.dart';
+import '../../../model/versionModel.dart';
 import '../../common/helpers/selected_sections_handler.dart';
 import '../../common/lists/sections_lists.dart';
 import '../../common/widgets/app_adaptive_builder.dart';
@@ -25,11 +29,8 @@ import 'routes/sales_routes.dart';
 import 'routes/support_routes.dart';
 import 'dart:ui' as ui;
 
-
 abstract class AppNavigator {
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
-
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   static Future<dynamic> go(
     Widget page, {
@@ -40,8 +41,7 @@ abstract class AppNavigator {
     bool isNew = true,
   }) {
     if (kIsWeb && isNew) {
-      SelectedSectionsHandler.handle(
-          name: name?.split('/').last ?? page.toString(),pathParameters:pathParameters);
+      SelectedSectionsHandler.handle(name: name?.split('/').last ?? page.toString(), pathParameters: pathParameters);
       AppRouter.goRouter.goNamed(
         name?.split('/').last ?? page.toString(),
         extra: extra,
@@ -54,6 +54,7 @@ abstract class AppNavigator {
       CupertinoPageRoute(builder: (context) => page),
     );
   }
+
   static void printAllRouteNames() {
     for (final route in AppRouter.goRouter.configuration.routes) {
       _printRouteNames(route);
@@ -72,6 +73,7 @@ abstract class AppNavigator {
       }
     }
   }
+
   static Future<dynamic> goReplacement(
     Widget page, {
     String? name,
@@ -126,13 +128,11 @@ abstract class AppNavigator {
   }
 
   static Future<dynamic> pushReplacement(Widget page) {
-    return navigatorKey.currentState!
-        .pushReplacement(CupertinoPageRoute(builder: (context) => page));
+    return navigatorKey.currentState!.pushReplacement(CupertinoPageRoute(builder: (context) => page));
   }
 
   // add predicate
-  static Future<dynamic> pushAndRemoveUntil(Widget page,
-      [bool Function(Route<dynamic>)? predicate]) {
+  static Future<dynamic> pushAndRemoveUntil(Widget page, [bool Function(Route<dynamic>)? predicate]) {
     return navigatorKey.currentState!.pushAndRemoveUntil(
       CupertinoPageRoute(builder: (context) => page),
       predicate ?? (route) => false,
@@ -177,7 +177,7 @@ abstract class AppRouter {
       ),
       ShellRoute(
         builder: (context, state, child) {
-          return HomePage(child: child);  // Sidebar persists here
+          return HomePage(child: child); // Sidebar persists here
         },
         routes: [
           SalesRoutes.allRoutes(),
@@ -192,7 +192,7 @@ abstract class AppRouter {
                 builder: (context, state) => section.page,
                 routes: List.generate(
                   section.subSections.length,
-                      (index) {
+                  (index) {
                     final subSection = section.subSections[index];
                     return GoRoute(
                       name: subSection.path.split('/').last,
@@ -204,19 +204,25 @@ abstract class AppRouter {
               ),
         ],
       ),
-      GoRoute(
-        name: AppRoutesNames.generalRoutes.home,
-        path: AppRoutesPaths.home,
-        builder: (context, state) => HomePage(),
-        routes: [
-          GoRoute(
-            name: AppRoutesNames.generalRoutes.notifications,
-            path: AppRoutesPaths.notifications,
-            builder: (context, state) => NotificationsPage(),
-          ),
-        ]
-      ),
-
+      GoRoute(name: AppRoutesNames.generalRoutes.home, path: AppRoutesPaths.home, builder: (context, state) => HomePage(), routes: [
+        GoRoute(
+          name: AppRoutesNames.generalRoutes.notifications,
+          path: AppRoutesPaths.notifications,
+          builder: (context, state) => NotificationsPage(),
+        ),
+        GoRoute(
+          name: AppRoutesNames.generalRoutes.versions,
+          path: AppRoutesPaths.versions,
+          builder: (context, state) => VersionsPage(),
+          routes: [
+            GoRoute(
+              name: AppRoutesNames.generalRoutes.addVersions,
+              path: AppRoutesPaths.addVersions,
+              builder: (context, state) => AddVersionPage(versionModel: state.extra as VersionModel?,),
+            )   
+          ]
+        ),
+      ]),
 
       // GoRoute(
       //   name: AppRoutesNames.generalRoutes.home,
@@ -248,7 +254,6 @@ abstract class AppRouter {
       //   ],
       // ),
     ],
-    redirect: (context, state) =>
-        AppRedirections.handleRedirection(context, state),
+    redirect: (context, state) => AppRedirections.handleRedirection(context, state),
   );
 }

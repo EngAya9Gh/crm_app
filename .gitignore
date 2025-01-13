@@ -49,4 +49,4 @@ gen.sh
 keys.sh
 watch.sh
 
-android/app/upload-keystore.jks
+android/upload-keystore.jks

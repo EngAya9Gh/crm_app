@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-UserSeries userSeriesFromJson(String str) =>
-    UserSeries.fromJson(json.decode(str));
+UserSeries userSeriesFromJson(String str) => UserSeries.fromJson(json.decode(str));
 
 String userSeriesToJson(UserSeries data) => json.encode(data.toJson());
 
@@ -21,11 +20,11 @@ class UserSeries {
   });
 
   factory UserSeries.fromJson(Map<String, dynamic> json) => UserSeries(
-        idSeries: json["id_series"],
+        idSeries: json["id_series"] == null ? null : json["id_series"].toString(),
         nameSeries: json["name_series"],
-        priority: json["priority"],
-        fkUser: json["fk_user"],
-        fkCountry: json["fk_country"],
+        priority: json["priority"] == null ? null : json["priority"].toString(),
+        fkUser: json["fk_user"] == null ? null : json["fk_user"].toString(),
+        fkCountry: json["fk_country"] == null ? null : json["fk_country"].toString(),
       );
 
   Map<String, dynamic> toJson() => {

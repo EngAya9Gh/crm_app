@@ -33,8 +33,12 @@ mixin _$UserRegionDepartment {
   @JsonKey(name: "regions")
   Regions? get regions => throw _privateConstructorUsedError;
 
+  /// Serializes this UserRegionDepartment to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of UserRegionDepartment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserRegionDepartmentCopyWith<UserRegionDepartment> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -68,6 +72,8 @@ class _$UserRegionDepartmentCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UserRegionDepartment
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -106,6 +112,8 @@ class _$UserRegionDepartmentCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of UserRegionDepartment
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ManagementsCopyWith<$Res>? get managements {
@@ -118,6 +126,8 @@ class _$UserRegionDepartmentCopyWithImpl<$Res,
     });
   }
 
+  /// Create a copy of UserRegionDepartment
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RegionsCopyWith<$Res>? get regions {
@@ -161,6 +171,8 @@ class __$$UserRegionDepartmentImplCopyWithImpl<$Res>
       $Res Function(_$UserRegionDepartmentImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UserRegionDepartment
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -255,12 +267,14 @@ class _$UserRegionDepartmentImpl implements _UserRegionDepartment {
             (identical(other.regions, regions) || other.regions == regions));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, idUser, typeAdministration,
       fkRegoin, nameUser, managements, regions);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UserRegionDepartment
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserRegionDepartmentImplCopyWith<_$UserRegionDepartmentImpl>
@@ -307,8 +321,11 @@ abstract class _UserRegionDepartment implements UserRegionDepartment {
   @override
   @JsonKey(name: "regions")
   Regions? get regions;
+
+  /// Create a copy of UserRegionDepartment
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserRegionDepartmentImplCopyWith<_$UserRegionDepartmentImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -324,8 +341,12 @@ mixin _$Managements {
   @JsonKey(name: "name_mange")
   String? get nameMange => throw _privateConstructorUsedError;
 
+  /// Serializes this Managements to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Managements
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ManagementsCopyWith<Managements> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -351,6 +372,8 @@ class _$ManagementsCopyWithImpl<$Res, $Val extends Managements>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Managements
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -391,6 +414,8 @@ class __$$ManagementsImplCopyWithImpl<$Res>
       _$ManagementsImpl _value, $Res Function(_$ManagementsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Managements
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -442,11 +467,13 @@ class _$ManagementsImpl implements _Managements {
                 other.nameMange == nameMange));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, idmange, nameMange);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Managements
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ManagementsImplCopyWith<_$ManagementsImpl> get copyWith =>
@@ -475,8 +502,11 @@ abstract class _Managements implements Managements {
   @override
   @JsonKey(name: "name_mange")
   String? get nameMange;
+
+  /// Create a copy of Managements
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ManagementsImplCopyWith<_$ManagementsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -492,8 +522,12 @@ mixin _$Regions {
   @JsonKey(name: "id_regoin")
   int? get idRegoin => throw _privateConstructorUsedError;
 
+  /// Serializes this Regions to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Regions
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RegionsCopyWith<Regions> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -517,6 +551,8 @@ class _$RegionsCopyWithImpl<$Res, $Val extends Regions>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Regions
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -556,6 +592,8 @@ class __$$RegionsImplCopyWithImpl<$Res>
       _$RegionsImpl _value, $Res Function(_$RegionsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Regions
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -608,11 +646,13 @@ class _$RegionsImpl implements _Regions {
                 other.idRegoin == idRegoin));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, nameRegoin, idRegoin);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Regions
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RegionsImplCopyWith<_$RegionsImpl> get copyWith =>
@@ -639,8 +679,11 @@ abstract class _Regions implements Regions {
   @override
   @JsonKey(name: "id_regoin")
   int? get idRegoin;
+
+  /// Create a copy of Regions
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RegionsImplCopyWith<_$RegionsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

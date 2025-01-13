@@ -5,10 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/common/widgets/custom_error_widget.dart';
 import '../../../core/config/navigator/app_navigator.dart';
+import '../../../core/config/navigator/app_routes_names.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/notifications/presentation/manager/notifications_cubit.dart';
 import '../../../features/notifications/presentation/pages/notifications_page.dart';
+import '../../../features/versions/presentation/pages/versions_page.dart';
 import '../../../generated/assets.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -36,6 +38,22 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       elevation: 0,
       actions: [
+        GestureDetector(
+          onTap: () {
+            AppNavigator.go(
+              VersionsPage(),
+              name: AppRoutesNames.generalRoutes.versions,
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.browser_updated_outlined,
+              size: (25.0).scaleFontSize,
+              color: AppColors.black,
+            ),
+          ),
+        ),
         GestureDetector(
           onTap: () {
             AppNavigator.go(

@@ -1,17 +1,17 @@
 class ActivityModel {
   ActivityModel({
-    required this.id_activity_type,
+    this.id_activity_type,
     required this.name_activity_type,
     // required this.type,
   });
 
-  late String id_activity_type;
+  late String? id_activity_type;
   late String name_activity_type;
 
   // late final String type;
 
   ActivityModel.fromJson(Map<String, dynamic> json) {
-    id_activity_type = json['id_activity_type'];
+    id_activity_type = json['id_activity_type']==null ?null:json['id_activity_type'].toString();
     name_activity_type = json['name_activity_type'];
     // type = json['type'];
   }

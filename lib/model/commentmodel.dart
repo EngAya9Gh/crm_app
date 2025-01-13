@@ -52,4 +52,28 @@ class CommentModel {
     _data['date_comment'] = date_comment;
     return _data;
   }
+
+  CommentModel copyWith({
+    String? idComment,
+    String? fkUser,
+    String? fkClient,
+    String? content,
+    String? nameUser,
+    String? imgImage,
+    String? nameEnterprise,
+    String? date_comment,
+    String? type_comment,
+  }) {
+    return CommentModel(
+      idComment: idComment ?? this.idComment,
+      fkUser: fkUser ?? this.fkUser,
+      fkClient: fkClient ?? this.fkClient,
+      content: content ?? this.content,
+      nameUser: nameUser ?? this.nameUser,
+      imgImage: imgImage ?? this.imgImage,
+      nameEnterprise: nameEnterprise ?? this.nameEnterprise,
+      date_comment: date_comment ?? this.date_comment,
+      type_comment: type_comment ?? this.type_comment,
+    );
+  }
 }

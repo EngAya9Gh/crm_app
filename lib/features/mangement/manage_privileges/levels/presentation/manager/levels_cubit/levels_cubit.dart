@@ -75,7 +75,7 @@ class LevelsCubit extends Cubit<LevelsState> {
         emit(state.copyWith(addLevelStatus: BlocStatus.fail(error: error)));
       },
       (value) {
-        _addLevelLocally(value.data);
+        _addLevelLocally(value.data['id_level'].toString());
         emit(state.copyWith(
             addLevelStatus: BlocStatus.success(data: value..data)));
       },

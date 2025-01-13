@@ -1,22 +1,12 @@
-import 'dart:convert';
 
-import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../errors/server_exceptions.dart';
-import '../../../utils/app_strings.dart';
-import '../../cache_services/cache_services.dart';
-import '../../cache_services/secure_storage_consumer.dart';
-import '../../di/di_container.dart';
 import '../api_services.dart';
-import 'file_io_stub.dart';
 import 'package:encrypt/encrypt.dart' as enc;
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 import 'file_io_web.dart' as web;
 import 'file_io_mobile.dart' as mob;
 
@@ -123,6 +113,9 @@ class DioServices extends ApiServices {
         queryParameters:  isPhpUrl(endPoint)?queryParameters:encryptedQueryParameters,
         options: Options(
           responseType: responseType,
+          // validateStatus: (status) {
+          //   return status!=null;
+          // },
           headers: {
             ...?headers,
           },
@@ -231,6 +224,7 @@ class DioServices extends ApiServices {
        }else{
          formData = FormData.fromMap(isPhpUrl(endPoint)?data:encryptedData);
        }
+       print(formData);
         List<MapEntry<String, MultipartFile>> preparedFiles;
        if(kIsWeb){
          preparedFiles = await web.getFiles(

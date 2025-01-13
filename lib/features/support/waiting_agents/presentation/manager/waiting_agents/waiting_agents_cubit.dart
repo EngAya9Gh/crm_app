@@ -20,17 +20,29 @@ class WaitingAgentsCubit extends Cubit<WaitingAgentsState> {
   List<AgentDistributorModel> waitingAgentsList = [];
 
   Future<void> getWaitingAgents() async {
-    emit(state.copyWith(getWaitingAgentsStatus: BlocStatus.loading()));
-    final result = await _getWaitingAgentsUsecase(GetWaitingAgentsParams());
+    if (state.getWaitingAgentsParams.page == 1 || state.resetData) {
+      emit(state.copyWith(getWaitingAgentsStatus: BlocStatus.loading()));
+    }
+    final result = await _getWaitingAgentsUsecase(state.getWaitingAgentsParams);
     result.fold(
       (l) {
         if (AppConstants.shouldReturnEarly(l)) return;
         emit(state.copyWith(getWaitingAgentsStatus: BlocStatus.fail(error: l)));
       },
       (r) {
-        waitingAgentsList = r;
-        emit(state.copyWith(getWaitingAgentsStatus: BlocStatus.success()));
+        if(state.getWaitingAgentsParams.page>1){
+        waitingAgentsList = List.of(waitingAgentsList)..addAll(r);
+        }
+        else{
+          waitingAgentsList=r;
+        }
+        emit(state.copyWith(getWaitingAgentsStatus: BlocStatus.success(),reachedMax: r.isEmpty));
       },
     );
+  }
+
+  void changeFilter([GetWaitingAgentsParams? getWaitingAgentsParams]) {
+    bool isNewFilter = (state.getWaitingAgentsParams.source != getWaitingAgentsParams?.source);
+    emit(state.copyWith(resetData: isNewFilter, getWaitingAgentsParams: getWaitingAgentsParams?.copyWith(page: isNewFilter?1:getWaitingAgentsParams.page) ?? GetWaitingAgentsParams()));
   }
 }

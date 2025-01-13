@@ -148,7 +148,7 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                                           element.idRejectClient == value),
                                   isDisabled: widget.disableWithdrawal,
                                   onChanged: (reason) {
-                                    reasonReject.value = reason!.idRejectClient;
+                                    reasonReject.value = reason!.idRejectClient.toString();
                                   },
                                 );
                               });
