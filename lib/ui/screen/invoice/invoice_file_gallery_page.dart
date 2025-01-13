@@ -29,7 +29,6 @@ import '../../../core/common/widgets/files/app_platform_image.dart';
 import '../../../core/common/widgets/files/file_viewer_widget.dart';
 import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_constants.dart';
 import '../../../core/utils/app_file_handler.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';

@@ -23,6 +23,7 @@ class WaitingAgentsDataSourceImpl implements WaitingAgentsDataSource {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.get(
         endPoint: EndPoints.agentDistributor.waitingTrainingAgents,
+        queryParameters: params.toMap(),
       );
 
       final data = apiDataHandler(response);

@@ -21,6 +21,12 @@ class _WaitingAgentsPageState extends State<WaitingAgentsPage> {
   }
 
   @override
+  void deactivate() {
+    context.read<WaitingAgentsCubit>().changeFilter();
+    super.deactivate();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: CustomAppBar(title: 'وكلاء في انتظار التدريب'),
