@@ -18,7 +18,7 @@ class CommentModel {
   late final String fkUser;
   late final String fkClient;
   late final String content;
-  late final String nameUser;
+  late String? nameUser;
   late String? imgImage = '';
   late final String nameEnterprise;
   late final String date_comment;
