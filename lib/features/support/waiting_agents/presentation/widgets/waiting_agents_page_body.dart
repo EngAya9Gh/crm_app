@@ -39,7 +39,7 @@ class WaitingAgentsPageBody extends StatelessWidget {
                       () {
                         cubit..changeFilter(cubit.state.getWaitingAgentsParams.copyWith(filter: () => value))..getWaitingAgents();
                       },
-                      tag: "search_clients_contacts_list",
+                      tag: "search_support_page",
                       isDebounced: true,
                     );
                   },
