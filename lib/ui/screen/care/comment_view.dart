@@ -261,9 +261,10 @@ class _CommentViewState extends State<CommentView> {
                           return SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
-                                return cardcomment(
+                                return Cardcomment(
                                   userModel: currentUser,
                                   commentmodel: value.filteredComments[index],
+                                  idClients: widget.client!.idClients!,
                                 );
                               },
                               childCount: value.filteredComments.length,

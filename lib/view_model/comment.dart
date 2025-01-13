@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:crm_smart/core/errors/server_exceptions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import '../core/common/enums/comments/comment_type_enum.dart';
+import '../core/common/enums/toast_colors_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
+import '../core/common/helpers/app_snackbar.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
@@ -107,25 +110,22 @@ class comment_vm extends ChangeNotifier {
     }
   }
 
-  Future<String> editComment_vm(String content, String commentId) async {
+  Future<String> editComment_vm(String content, CommentModel comment) async {
     try {
       isloadadd = true;
       notifyListeners();
       var sentBody = {
         'content': content,
+        'type_comment': comment.type_comment,
       };
       var res = await GetIt.I<ApiServices>().post(
-        endPoint: EndPoints.baseUrls.urlLaravel + 'editComment/$commentId',
+        endPoint: EndPoints.baseUrls.urlLaravel + 'editComment/${comment.idComment}',
         data: sentBody,
       );
-      if (res == "success") {
-        // body.addAll({
-        //   'id_comment': res["id_comment"] != null ? res["id_comment"].toString() : "",
-        //   'date_comment': DateTime.now().toString(), //formatter.format(DateTime.now())
-        // });
+      if (res['result'] == "success") {
         var list=_allCommentsList
             .map(
-              (element) => element.idComment == commentId ? element.copyWith(content: res['message']['content']) : element,
+              (element) => element.idComment == comment.idComment ? element.copyWith(content: res['message']['content']) : element,
             )
             .toList();
         filteredComments = list;
@@ -141,6 +141,9 @@ class comment_vm extends ChangeNotifier {
       print(e.toString() + s.toString());
       isloadadd = false;
       notifyListeners();
+      if((e as AppNetworkResponseException).statusCode==400){
+        AppSnackbar.showSnakeBar('لايمكن تعديل التعليق بعد مرور مدة ساعة من انشاءه', color: ToastColorsEnum.warning);
+      }
       return "error";
     }
   }

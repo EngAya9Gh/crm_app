@@ -132,6 +132,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   Widget build(BuildContext context) {
     return Consumer<InvoiceVm>(
       builder: (context, value, child) {
+        print(imageRecord);
         return AppScaffold(
           appBar: CustomAppBar(
             title: "مرفقات الفاتورة",
@@ -235,7 +236,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                     setState(() {});
                                     await InvoiceVm().openFile(
                                       attachFile: FileAttach(id: imageRecord,fileAttach: imageRecord!),
-                                      baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                                      baseUrl: '',
                                       context: context,
                                     );
                                     isLoading = false;

@@ -150,7 +150,7 @@ class _comment_companyState extends State<comment_company> {
                               nameEnterprise: '',
                               date_comment: comment.date_comment.toString(),
                               type_comment: '');
-                          return cardcomment(
+                          return Cardcomment(
                             commentmodel: commentmodel,
                           );
                         },
