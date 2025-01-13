@@ -21,6 +21,8 @@ import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../view_model/client_vm.dart';
 import '../../../../../view_model/typeclient.dart';
+import '../../../clients_attachments/data/models/subscribed_clients_model.dart';
+import '../../../clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
@@ -38,7 +40,7 @@ class AddTicketPage extends StatefulWidget {
 
 class _AddTicketPageState extends State<AddTicketPage> {
   late final AddTicketCubit addTicketCubit;
-  ValueNotifier<String?> fkClientNotifier = ValueNotifier(null);
+  ValueNotifier<SubscribedClientsModel?> fkClientNotifier = ValueNotifier(null);
 
   final TextEditingController problem_desc = TextEditingController();
 
@@ -51,7 +53,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
   @override
   void initState() {
     addTicketCubit = context.read<AddTicketCubit>();
-    fkClientNotifier.value = widget.fkClient;
+    // fkClientNotifier.value = widget.fkClient;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ClientProvider>(context, listen: false)
           .getclient_Accept();
@@ -79,23 +81,27 @@ class _AddTicketPageState extends State<AddTicketPage> {
                       10.height,
                       AppText('اسم العميل*'),
                       5.height,
-                      Consumer<ClientProvider>(
-                        builder: (context, cart, child) {
-                          return CustomSearchableDropDown<ClientModel>(
-                            hint: 'العميل',
-                            items: cart.listClientAccept,
-                            itemAsString: (u) => u!.userAsString(),
-                            selectedItem: cart.selectedclient,
-                            onChanged: (data) {
-                              fkClientNotifier.value = data!.idClients;
-                              cart.changevalueclient(data);
-                              name_enterprise = data.nameEnterprise!;
-                              name_regoin = data.nameRegion!;
-                              name_country = data.nameCountry!;
-                            },
-                            filterFn: (user, filter) {
-                              return user.getFilterUser(filter);
-                            },
+                      BlocBuilder<ClientAttachmentsBloc,ClientAttachmentsState>(
+                        builder: (context, state)  {
+                          return ValueListenableBuilder(
+                            valueListenable: fkClientNotifier,
+                            builder:(context, value, child) =>  CustomSearchableDropDown<SubscribedClientsModel>(
+                              hint: 'العميل',
+                              items: state.getAllClients.data??[],
+                              itemAsString: (u) => u?.nameEnterprise??'',
+                              selectedItem: value,
+                              onChanged: (data) {
+                                fkClientNotifier.value=data;
+                                // fkClientNotifier.value = data!.idClients;
+                                // cart.changevalueclient(data);
+                                // name_enterprise = data.nameEnterprise!;
+                                // name_regoin = data.nameRegion!;
+                                // name_country = data.nameCountry!;
+                              },
+                              filterFn: (user, filter) {
+                                return user.nameEnterprise!.toLowerCase().contains(filter.toLowerCase());
+                              },
+                            ),
                           );
                         },
                       ),
@@ -107,11 +113,11 @@ class _AddTicketPageState extends State<AddTicketPage> {
                             onPressed: () {
                               AppNavigator.go(
                                 ClientProfile(
-                                  idClient: fkClientNotifier.value!,
+                                  idClient: fkClientNotifier.value!.id.toString(),
                                 ),
                                 name: AppRoutesNames.clientProfile.inAddTicket,
                                 pathParameters: {
-                                  'idClient': fkClientNotifier.value!,
+                                  'idClient': fkClientNotifier.value!.id.toString(),
                                 },
                               );
                             },
@@ -192,7 +198,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                     }
                                     await addTicketCubit.addTicket(
                                       AddTicketParams(
-                                        fkClient: fkClientNotifier.value!,
+                                        fkClient: fkClientNotifier.value!.id.toString(),
                                         typeProblem:
                                             Provider.of<ClientTypeProvider>(
                                                     context,

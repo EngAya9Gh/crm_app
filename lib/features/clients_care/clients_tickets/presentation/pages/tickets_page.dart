@@ -22,6 +22,7 @@ import '../../../../../view_model/typeclient.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/filter_tickets_sheet.dart';
 import '../widgets/mob_tickets_paginated_list.dart';
@@ -42,6 +43,7 @@ class _TicketsPageState extends State<TicketsPage> {
   void initState() {
     _cubit = context.read<TicketsCubit>()
       ..init();
+    context.read<ClientAttachmentsBloc>().add(GetAllClientEvent());
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _cubit.getTickets();
       await _cubit.getCategories();

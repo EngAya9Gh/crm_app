@@ -84,129 +84,132 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      appBar: CustomAppBar(
-        title: 'إدارة المهام',
-        actions: [
-          BlocBuilder<PrivilegesCubit, PrivilegesState>(
-            builder: (context, state) {
-              if (!_privilegesCubit.checkPrivilege('158')) {
-                return SizedBox.shrink();
-              }
-              return AppTextButton(
-                text: "إضافة\nمهمة",
-                onPressed: () async {
-                  final result = await AppNavigator.go(
-                    AddTaskPage(),
-                    isNew: false,
-                  );
-                  if (result == true) _taskCubit.getTasks();
-                },
-                textStyle: AppStyles.textStyle.copyWith(
-                  fontSize: 16.scaleFontSize,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: AppFonts.fontFamily1,
-                  color: AppColors.white,
-                ),
-                appButtonStyle: AppButtonStyle.secondary,
-              );
-            },
-          ),
-        ],
-      ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Column(
-          children: [
-            10.height,
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: CustomSearchWidget(
-                      searchController:
-                          _taskCubit.pageVariables.searchController,
-                      onChanged: (value) {
-                        _taskCubit.getTasks(isDebounced: true);
-                      },
-                    ),
-                  ),
-                  CustomFilterIcon(
-                    onTap: () async {
-                      final value = await AppBottomSheet.show(
-                        context: context,
-                        child: FilterClientAcceptSheet(),
-                      );
-                      if (value != true) {
-                        // _taskCubit.returnToPreviousState();
-                      }
-                    },
-                  ),
-                  8.width,
-                ],
-              ),
-            ),
-            10.height,
-            Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: context.colorScheme.grey100.withOpacity(0.3),
-                    spreadRadius: 5,
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-              child: BlocBuilder<TaskCubit, TaskState>(
-                builder: (context, state) {
-                  return SizedBox(
-                    height: 50.scaleHeight,
-                    child: Center(
-                      child: AppPaginatedList(
-                        scrollDirection: Axis.horizontal,
-                        items: TaskStatusType.values,
-                        itemBuilder: (context, index) => stageChip(
-                          TaskStatusType.values[index],
-                          state.selectedStatus == TaskStatusType.values[index],
-                        ),
-                        separatorBuilder: (context, index) => 10.width,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            10.verticalSpace,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: CountPaginatedList<TaskCubit, TaskState>(
-                label: 'عدد المهام',
-                countSelector: (state) =>
-                    _taskCubit.pageVariables.allList.length,
-                totalCount: (state) => _taskCubit.pageVariables.totalCount,
-              ),
-            ),
-            BlocBuilder<TaskCubit, TaskState>(
-              buildWhen: (previous, current) =>
-                  previous.getTasksStatus != current.getTasksStatus &&
-                  _taskCubit.pageVariables.isNewFilter,
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: AppScaffold(
+        appBar: CustomAppBar(
+          title: 'إدارة المهام',
+          actions: [
+            BlocBuilder<PrivilegesCubit, PrivilegesState>(
               builder: (context, state) {
-                return state.getTasksStatus.when(
-                  success: (data) {
-                    return Expanded(
-                      child: TasksPaginatedList(),
+                if (!_privilegesCubit.checkPrivilege('158')) {
+                  return SizedBox.shrink();
+                }
+                return AppTextButton(
+                  text: "إضافة\nمهمة",
+                  onPressed: () async {
+                    final result = await AppNavigator.go(
+                      AddTaskPage(),
+                      isNew: false,
                     );
+                    if (result == true) _taskCubit.getTasks();
                   },
-                  failure: (error, data) => AppErrorWidget(
-                    message: error,
-                    onPressed: _taskCubit.getTasks,
+                  textStyle: AppStyles.textStyle.copyWith(
+                    fontSize: 16.scaleFontSize,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: AppFonts.fontFamily1,
+                    color: AppColors.white,
                   ),
+                  appButtonStyle: AppButtonStyle.secondary,
                 );
               },
             ),
           ],
+        ),
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Column(
+            children: [
+              10.height,
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CustomSearchWidget(
+                        searchController:
+                            _taskCubit.pageVariables.searchController,
+                        onChanged: (value) {
+                          _taskCubit.getTasks(isDebounced: true);
+                        },
+                      ),
+                    ),
+                    CustomFilterIcon(
+                      onTap: () async {
+                        final value = await AppBottomSheet.show(
+                          context: context,
+                          child: FilterClientAcceptSheet(),
+                        );
+                        if (value != true) {
+                          // _taskCubit.returnToPreviousState();
+                        }
+                      },
+                    ),
+                    8.width,
+                  ],
+                ),
+              ),
+              10.height,
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.colorScheme.grey100.withOpacity(0.3),
+                      spreadRadius: 5,
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                child: BlocBuilder<TaskCubit, TaskState>(
+                  builder: (context, state) {
+                    return SizedBox(
+                      height: 50.scaleHeight,
+                      child: Center(
+                        child: AppPaginatedList(
+                          scrollDirection: Axis.horizontal,
+                          items: TaskStatusType.values,
+                          itemBuilder: (context, index) => stageChip(
+                            TaskStatusType.values[index],
+                            state.selectedStatus == TaskStatusType.values[index],
+                          ),
+                          separatorBuilder: (context, index) => 10.width,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              10.verticalSpace,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: CountPaginatedList<TaskCubit, TaskState>(
+                  label: 'عدد المهام',
+                  countSelector: (state) =>
+                      _taskCubit.pageVariables.allList.length,
+                  totalCount: (state) => _taskCubit.pageVariables.totalCount,
+                ),
+              ),
+              BlocBuilder<TaskCubit, TaskState>(
+                buildWhen: (previous, current) =>
+                    previous.getTasksStatus != current.getTasksStatus &&
+                    _taskCubit.pageVariables.isNewFilter,
+                builder: (context, state) {
+                  return state.getTasksStatus.when(
+                    success: (data) {
+                      return Expanded(
+                        child: TasksPaginatedList(),
+                      );
+                    },
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: _taskCubit.getTasks,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

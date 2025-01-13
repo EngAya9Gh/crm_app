@@ -105,63 +105,66 @@ class _TaskManagementPageState extends State<TaskManagementPage> {
             ],
           ),
         ),
-        body: NotificationListener<ScrollNotification>(
-          onNotification: _handleScrollNotification,
-          child: BlocConsumer<TaskCubit, TaskState>(
-            listener: (context, state) {
-              // Add this listener to debug
-              print("TaskState changed: ${state.getTasksStatus}");
-            },
-            builder: (context, state) {
-              return DragAndDropLists(
-                axis: Axis.horizontal,
-                listWidth: MediaQuery.of(context).size.width * 0.2,
-                listDraggingWidth: MediaQuery.of(context).size.width * 0.2,
-                onItemReorder: _onItemReorder,
-                onListReorder: (int oldListIndex, int newListIndex){},
-                listPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                itemDecorationWhileDragging: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 3,
-                      offset: const Offset(0, 0),
-                    ),
-                  ],
-                ),
-                listInnerDecoration: BoxDecoration(
-                  color: Theme.of(context).canvasColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                ),
-                lastItemTargetHeight: 8,
-                addLastItemTargetHeightToTop: true,
-                lastListTargetSize: 40,
-                listDragHandle: const DragHandle(
-                  verticalAlignment: DragHandleVerticalAlignment.top,
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(
-                      Icons.menu,
-                      color: Colors.black26,
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: NotificationListener<ScrollNotification>(
+            onNotification: _handleScrollNotification,
+            child: BlocConsumer<TaskCubit, TaskState>(
+              listener: (context, state) {
+                // Add this listener to debug
+                print("TaskState changed: ${state.getTasksStatus}");
+              },
+              builder: (context, state) {
+                return DragAndDropLists(
+                  axis: Axis.horizontal,
+                  listWidth: MediaQuery.of(context).size.width * 0.2,
+                  listDraggingWidth: MediaQuery.of(context).size.width * 0.2,
+                  onItemReorder: _onItemReorder,
+                  onListReorder: (int oldListIndex, int newListIndex){},
+                  listPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  itemDecorationWhileDragging: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 3,
+                        offset: const Offset(0, 0),
+                      ),
+                    ],
+                  ),
+                  listInnerDecoration: BoxDecoration(
+                    color: Theme.of(context).canvasColor,
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  ),
+                  lastItemTargetHeight: 8,
+                  addLastItemTargetHeightToTop: true,
+                  lastListTargetSize: 40,
+                  listDragHandle: const DragHandle(
+                    verticalAlignment: DragHandleVerticalAlignment.top,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Icon(
+                        Icons.menu,
+                        color: Colors.black26,
+                      ),
                     ),
                   ),
-                ),
-                itemDragHandle: const DragHandle(
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(
-                      Icons.menu,
-                      color: Colors.blueGrey,
+                  itemDragHandle: const DragHandle(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: Icon(
+                        Icons.menu,
+                        color: Colors.blueGrey,
+                      ),
                     ),
                   ),
-                ),
-                children: TaskStatusType.values.map((status) =>
-                    DragDropListBuilder.build(status, _taskCubit)
-                ).toList(),
-              );
-            },
+                  children: TaskStatusType.values.map((status) =>
+                      DragDropListBuilder.build(status, _taskCubit)
+                  ).toList(),
+                );
+              },
+            ),
           ),
         ),
       ),
