@@ -1,31 +1,30 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
-import 'package:crm_smart/core/common/widgets/custom_search_widget.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/enums/comments/comment_type_enum.dart';
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_status_chip.dart';
 import '../../../core/common/widgets/app_text_field.dart.dart';
+import '../../../core/common/widgets/custom_dropdown.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../model/commentmodel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/comment.dart';
-import '../../../view_model/user_vm_provider.dart';
-
+import 'package:collection/collection.dart';
 //uplode 2023
-class cardcomment extends StatelessWidget {
-  cardcomment({required this.commentmodel, this.userModel, Key? key}) : super(key: key);
+class Cardcomment extends StatelessWidget {
+  Cardcomment({required this.commentmodel, this.userModel, this.idClients, Key? key}) : super(key: key);
   CommentModel commentmodel;
   UserModel? userModel;
+  String? idClients;
 
   @override
   Widget build(BuildContext context) {
@@ -111,11 +110,12 @@ class cardcomment extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    InkWell(
-                                        onTap: () {
-                                          GlobalKey<FormState> _key = GlobalKey();
-                                          TextEditingController textContrller = TextEditingController();
-                                          if (commentmodel.nameUser == userModel?.nameUser) {
+                                    if (commentmodel.nameUser == userModel?.nameUser)
+                                      InkWell(
+                                          onTap: () {
+                                            GlobalKey<FormState> _key = GlobalKey();
+                                            TextEditingController textContrller = TextEditingController(text: commentmodel.content);
+                                            ValueNotifier<CommentTypeEnum?> type = ValueNotifier(CommentTypeEnum.values.firstWhereOrNull((e)=>e.value==commentmodel.type_comment));
                                             showDialog(
                                               context: context,
                                               builder: (context) => AlertDialog(
@@ -128,6 +128,7 @@ class cardcomment extends StatelessWidget {
                                                       AppTextField(
                                                         validator: InputValidator.requiredFiled,
                                                         hintText: 'إضافة تعليق',
+                                                        maxLines: 2,
                                                         isRequired: true,
                                                         controller: textContrller,
                                                         contentPadding: EdgeInsets.symmetric(
@@ -135,6 +136,23 @@ class cardcomment extends StatelessWidget {
                                                           vertical: 15,
                                                         ),
                                                       ),
+                                                      10.height,
+                                                      ValueListenableBuilder(
+                                                        valueListenable: type,
+                                                        builder: (context, value, child) => CustomDropDown<CommentTypeEnum>(
+                                                          hint: 'نوع التعليق',
+                                                          items: CommentTypeEnum.values,
+                                                          itemAsString: (value) => value!.value,
+                                                          selectedItem: value,
+                                                          onChanged: (value) {
+                                                            if (value == null) {
+                                                              return;
+                                                            }
+                                                            type.value = value;
+                                                          },
+                                                          validator: InputValidator.requiredFiled,
+                                                        ),
+                                                      )
                                                     ],
                                                   ),
                                                 ),
@@ -144,15 +162,16 @@ class cardcomment extends StatelessWidget {
                                                     children: [
                                                       Consumer<comment_vm>(
                                                         builder: (context, value, child) => AppElevatedButton(
-                                                          isLoading: value.isLoading,
+                                                          isLoading: value.isloadadd,
                                                           text: 'تاكيد',
                                                           backgroundColor: AppColors.green,
                                                           onPressed: () async {
                                                             if (_key.currentState!.validate()) {
-                                                              Provider.of<comment_vm>(context, listen: false)
-                                                                  .editComment_vm(textContrller.text, commentmodel.idComment)
+                                                              await Provider.of<comment_vm>(context, listen: false)
+                                                                  .editComment_vm(textContrller.text, commentmodel.copyWith(type_comment: type.value!.value))
                                                                   .then(
                                                                 (value) {
+                                                                  Provider.of<comment_vm>(context, listen: false).getComments(idClients!);
                                                                   context.pop();
                                                                 },
                                                               );
@@ -162,7 +181,7 @@ class cardcomment extends StatelessWidget {
                                                       ),
                                                       10.height,
                                                       AppElevatedButton(
-                                                        text: 'رفض',
+                                                        text: 'رجوع',
                                                         backgroundColor: AppColors.statusErrorActive,
                                                         onPressed: () async {
                                                           context.pop(false);
@@ -173,16 +192,11 @@ class cardcomment extends StatelessWidget {
                                                 ],
                                               ),
                                             );
-                                          }
-                                        },
-                                        child: Padding(
-                                          padding: EdgeInsetsDirectional.all(8),
-                                          child: AppText(
-                                            'تعديل التعليق',
-                                            color: AppColors.primaryMain,
-                                            fontSize: 15,
-                                          ),
-                                        ))
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsetsDirectional.all(8),
+                                            child: Icon(Icons.edit, color: AppColors.primaryMain),
+                                          ))
                                   ],
                                 ),
                               ],

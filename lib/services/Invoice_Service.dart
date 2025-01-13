@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:crm_smart/core/common/widgets/Card_invoice_client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -178,6 +179,7 @@ class Invoice_Service {
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
        await apiServices.post(
         endPoint: EndPoints.invoice.changeInvoiceStatus(id_invoice),
+         data: {'status':StatusClient.restrictWithdrawn.text}
       );
     } catch (e) {
       debugPrint("error in change status => $e");

@@ -8,7 +8,6 @@ import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/comments/comment_type_enum.dart';
@@ -19,7 +18,6 @@ import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../model/usermodel.dart';
@@ -261,9 +259,10 @@ class _CommentViewState extends State<CommentView> {
                           return SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
-                                return cardcomment(
+                                return Cardcomment(
                                   userModel: currentUser,
                                   commentmodel: value.filteredComments[index],
+                                  idClients: widget.client!.idClients!,
                                 );
                               },
                               childCount: value.filteredComments.length,
