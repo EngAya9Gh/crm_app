@@ -12,6 +12,7 @@ class DatesTableState extends Equatable {
   final BlocStatus getInvoicesByClientForDateStatus;
   final BlocStatus addDateInstallStatus;
   final BlocStatus getCancelReasonsStatus;
+  final BlocStatus confirmVisitDateStatus;
 
   const DatesTableState({
     this.refreshUi = 0,
@@ -21,9 +22,9 @@ class DatesTableState extends Equatable {
     this.changeDateToDoneStatus = const BlocStatus.initial(),
     this.cancelScheduleStatus = const BlocStatus.initial(),
     this.reOpenEventStatus = const BlocStatus.initial(),
+    this.confirmVisitDateStatus = const BlocStatus.initial(),
     this.getSubscribedClientsStatus = const BlocStatus.initial(),
-    this.getInvoicesByClientForDateStatus =
-        const BlocStatus<List<DateInvoiceModel>>.initial(),
+    this.getInvoicesByClientForDateStatus = const BlocStatus<List<DateInvoiceModel>>.initial(),
     this.addDateInstallStatus = const BlocStatus.initial(),
     this.getCancelReasonsStatus = const BlocStatus.initial(),
   });
@@ -34,6 +35,7 @@ class DatesTableState extends Equatable {
     BlocStatus? renderEventsStatus,
     BlocStatus? rescheduleDateStatus,
     BlocStatus? changeDateToDoneStatus,
+    BlocStatus? confirmVisitDateStatus,
     BlocStatus? cancelScheduleStatus,
     BlocStatus? reOpenEventStatus,
     BlocStatus? getSubscribedClientsStatus,
@@ -43,21 +45,17 @@ class DatesTableState extends Equatable {
   }) {
     return DatesTableState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
-      getDateInstallationStatus:
-          getDateInstallationStatus ?? this.getDateInstallationStatus,
+      getDateInstallationStatus: getDateInstallationStatus ?? this.getDateInstallationStatus,
       renderEventsStatus: renderEventsStatus ?? this.renderEventsStatus,
       rescheduleDateStatus: rescheduleDateStatus ?? this.rescheduleDateStatus,
-      changeDateToDoneStatus:
-          changeDateToDoneStatus ?? this.changeDateToDoneStatus,
+      changeDateToDoneStatus: changeDateToDoneStatus ?? this.changeDateToDoneStatus,
       cancelScheduleStatus: cancelScheduleStatus ?? this.cancelScheduleStatus,
       reOpenEventStatus: reOpenEventStatus ?? this.reOpenEventStatus,
-      getSubscribedClientsStatus:
-          getSubscribedClientsStatus ?? this.getSubscribedClientsStatus,
-      getInvoicesByClientForDateStatus: getInvoicesByClientForDateStatus ??
-          this.getInvoicesByClientForDateStatus,
+      getSubscribedClientsStatus: getSubscribedClientsStatus ?? this.getSubscribedClientsStatus,
+      getInvoicesByClientForDateStatus: getInvoicesByClientForDateStatus ?? this.getInvoicesByClientForDateStatus,
       addDateInstallStatus: addDateInstallStatus ?? this.addDateInstallStatus,
-      getCancelReasonsStatus:
-          getCancelReasonsStatus ?? this.getCancelReasonsStatus,
+      getCancelReasonsStatus: getCancelReasonsStatus ?? this.getCancelReasonsStatus,
+      confirmVisitDateStatus: confirmVisitDateStatus ?? this.confirmVisitDateStatus,
     );
   }
 
@@ -75,6 +73,7 @@ class DatesTableState extends Equatable {
       getInvoicesByClientForDateStatus,
       addDateInstallStatus,
       getCancelReasonsStatus,
+      confirmVisitDateStatus,
     ];
   }
 }

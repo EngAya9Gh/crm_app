@@ -7,8 +7,12 @@ import '../../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../../core/errors/base_app_exception.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/utils/end_points.dart';
+import '../../../../../core/common/models/event_model.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../common/client_profile/client_dates_tab/data/models/client_date_model.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
+import '../../domain/use_cases/cofirm_visit_date_usecase.dart';
 import '../../domain/use_cases/get_cancel_reasons_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
@@ -23,6 +27,7 @@ abstract interface class DatesTableDataSource {
   Future<dynamic> rescheduleDate(RescheduleDateParams params);
 
   Future<dynamic> changeDateToDone(ChangeDateToDoneParams params);
+  Future<ResponseWrapper<EventModel>> verifyDateVisit(ConfirmVisitDateParams params);
 
   Future<dynamic> cancelSchedule(CancelScheduleParams params);
 
@@ -179,6 +184,21 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
       return PaginationResponseWrapper.fromJson(response);
     } on BaseAppException catch (e) {
       debugPrint("error in getCancelReasons => ${e.message}");
+      throw e.message;
+    }
+  }
+
+  @override
+  Future<ResponseWrapper<EventModel>> verifyDateVisit(ConfirmVisitDateParams params)async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
+        endPoint: EndPoints.events.verifyDateVisit(params.idVisit),
+      );
+
+      return ResponseWrapper.fromJson(response, (json) => EventModel.fromJson(json),);
+    } on BaseAppException catch (e) {
+      debugPrint("error in verify date visit => ${e.message}");
       throw e.message;
     }
   }

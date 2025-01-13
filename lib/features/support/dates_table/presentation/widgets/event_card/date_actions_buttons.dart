@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../../../../core/common/models/event_model.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../view_model/event_provider.dart';
+import '../../../domain/use_cases/cofirm_visit_date_usecase.dart';
 import '../../manager/dates_table_cubit.dart';
 import '../cancel_event_dialog.dart';
 import '../done_client_event_dialog.dart';
@@ -40,6 +41,23 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+       if(widget.eventModel.verifiedAt==null) BlocBuilder<DatesTableCubit,DatesTableState>(
+          builder: (context, state)   {
+            if (state.confirmVisitDateStatus.isLoading()) {
+              return SizedBox(
+                height: 20,
+                width: 20,
+                child: AppLoader(),
+              );
+            }
+            return _CustomTextButton(
+              text: "تأكيد الموعد",
+              onTap: () async {
+                await datesTableCubit.confirmVisitDate(ConfirmVisitDateParams(idVisit: widget.eventModel.idClientsDate!),);
+              },
+            );
+          },
+        ),
         Consumer<EventProvider>(
           builder: (context, eventProvider, _) {
             if (eventProvider.isloadingDoneEvent) {

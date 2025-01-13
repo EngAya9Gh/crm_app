@@ -61,8 +61,7 @@ class DatesTablePageVariablesEntity {
   }
 
   bool isMonthLoaded(DateTime date) {
-    return loadedMonths.containsKey(date.year) &&
-        loadedMonths[date.year]!.contains(date.month);
+    return loadedMonths.containsKey(date.year) && loadedMonths[date.year]!.contains(date.month);
   }
 
   void _loadFirstDay() {
@@ -88,8 +87,7 @@ class DatesTablePageVariablesEntity {
       );
     }
 
-    lastDay = DateTime(date.year, date.month + 1,
-        _lastDayOfMoth(year: date.year, month: date.month + 1));
+    lastDay = DateTime(date.year, date.month + 1, _lastDayOfMoth(year: date.year, month: date.month + 1));
   }
 
   void _handleLoadedMonths() {
@@ -114,5 +112,13 @@ class DatesTablePageVariablesEntity {
 
   void loadEventsForSelectedDay() {
     selectedDayEvents.value = List.from(eventDataSource[selectedDay] ?? []);
+  }
+
+  void changeItemFormSelectedDayEvents(EventModel eventModel) {
+    selectedDayEvents.value = selectedDayEvents.value
+        .map(
+          (e) => e.idClientsDate == eventModel.idClientsDate ? e.copyWith(verifiedAt: eventModel.verifiedAt) : e,
+        )
+        .toList();
   }
 }

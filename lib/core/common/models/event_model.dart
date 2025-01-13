@@ -35,6 +35,7 @@ class EventModel extends Equatable {
   final String? agentName;
   final String? comment;
   final String? nameUser;
+  final DateTime? verifiedAt;
 
   const EventModel({
     this.idClientsDate,
@@ -67,6 +68,7 @@ class EventModel extends Equatable {
     this.agentName,
     this.comment,
     this.nameUser,
+    this.verifiedAt,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> map) {
@@ -99,6 +101,7 @@ class EventModel extends Equatable {
           "${ApiHelper.handleString(map['name_agent'])} ${ApiHelper.handleString(map['type_agent']) == '1' ? 'وكيل' : 'موزع'}",
       description: 'description',
       nameUser: ApiHelper.handleString(map['nameUser']),
+        verifiedAt:map["verified_at"] == null ? null : DateTime.parse(map["verified_at"])
     );
   }
 
@@ -167,6 +170,7 @@ class EventModel extends Equatable {
     String? nameAgent,
     String? nameCity,
     String? nameUser,
+    DateTime? verifiedAt,
   }) {
     return EventModel(
       title: title ?? this.title,
@@ -199,6 +203,7 @@ class EventModel extends Equatable {
       nameAgent: nameAgent ?? this.nameAgent,
       nameCity: nameCity ?? this.nameCity,
       nameUser: nameUser ?? this.nameUser,
+      verifiedAt: verifiedAt ?? this.verifiedAt,
     );
   }
 
@@ -235,6 +240,7 @@ class EventModel extends Equatable {
       agentName,
       comment,
       nameUser,
+      verifiedAt,
     ];
   }
 }

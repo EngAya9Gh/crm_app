@@ -797,6 +797,8 @@ import '../../../features/support/dates_table/domain/use_cases/cancel_schedule_u
     as _i803;
 import '../../../features/support/dates_table/domain/use_cases/change_date_to_done_usecase.dart'
     as _i798;
+import '../../../features/support/dates_table/domain/use_cases/cofirm_visit_date_usecase.dart'
+    as _i904;
 import '../../../features/support/dates_table/domain/use_cases/get_cancel_reasons_usecase.dart'
     as _i989;
 import '../../../features/support/dates_table/domain/use_cases/get_date_installation_usecase.dart'
@@ -1815,6 +1817,8 @@ _i174.GetIt $initGetIt(
       () => _i883.RescheduleDateUsecase(gh<_i61.DatesTableRepo>()));
   gh.lazySingleton<_i307.ReturnScheduleVisitToOpenUsecase>(
       () => _i307.ReturnScheduleVisitToOpenUsecase(gh<_i61.DatesTableRepo>()));
+  gh.lazySingleton<_i904.ConfirmVisitDateUsecase>(
+      () => _i904.ConfirmVisitDateUsecase(gh<_i61.DatesTableRepo>()));
   gh.factory<_i111.AddTaskUsecase>(
       () => _i111.AddTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i831.ChangeStatusTaskUsecase>(
@@ -1904,10 +1908,17 @@ _i174.GetIt $initGetIt(
             gh<_i405.GetAgentDatesListUsecase>(),
             gh<_i207.CrudAgentSupportFilesUsecase>(),
           ));
+  gh.factory<_i225.ClientsDatesCubit>(
+      () => _i225.ClientsDatesCubit(gh<_i555.GetAllClientsDatesUseCase>()));
+  gh.factory<_i819.WithdrawnInvoicesCubit>(() =>
+      _i819.WithdrawnInvoicesCubit(gh<_i209.GetWithdrawnInvoicesUsecase>()));
+  gh.factory<_i349.WaitingAgentsCubit>(
+      () => _i349.WaitingAgentsCubit(gh<_i941.GetWaitingAgentsUsecase>()));
   gh.factory<_i546.DatesTableCubit>(() => _i546.DatesTableCubit(
         gh<_i438.GetDateInstallationUsecase>(),
         gh<_i883.RescheduleDateUsecase>(),
         gh<_i798.ChangeDateToDonUsecase>(),
+        gh<_i904.ConfirmVisitDateUsecase>(),
         gh<_i803.CancelScheduleUsecase>(),
         gh<_i307.ReturnScheduleVisitToOpenUsecase>(),
         gh<_i824.GetSubscribedClientsUsecase>(),
@@ -1915,12 +1926,6 @@ _i174.GetIt $initGetIt(
         gh<_i888.AddDateInstallUsecase>(),
         gh<_i989.GetCancelReasonsUsecase>(),
       ));
-  gh.factory<_i225.ClientsDatesCubit>(
-      () => _i225.ClientsDatesCubit(gh<_i555.GetAllClientsDatesUseCase>()));
-  gh.factory<_i819.WithdrawnInvoicesCubit>(() =>
-      _i819.WithdrawnInvoicesCubit(gh<_i209.GetWithdrawnInvoicesUsecase>()));
-  gh.factory<_i349.WaitingAgentsCubit>(
-      () => _i349.WaitingAgentsCubit(gh<_i941.GetWaitingAgentsUsecase>()));
   return getIt;
 }
 

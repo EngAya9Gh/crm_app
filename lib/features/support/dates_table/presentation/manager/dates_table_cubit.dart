@@ -17,6 +17,7 @@ import '../../domain/entities/events_isolate_params_entity.dart';
 import '../../domain/entities/filter_dates_table_entity.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
+import '../../domain/use_cases/cofirm_visit_date_usecase.dart';
 import '../../domain/use_cases/get_cancel_reasons_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
@@ -32,6 +33,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   final GetDateInstallationUsecase _getDateInstallationUsecase;
   final RescheduleDateUsecase _rescheduleDateUsecase;
   final ChangeDateToDonUsecase _changeDateToDonUsecase;
+  final ConfirmVisitDateUsecase _confirmVisitDateUsecase;
   final CancelScheduleUsecase _cancelScheduleUsecase;
   final ReturnScheduleVisitToOpenUsecase _returnScheduleVisitToOpenUsecase;
   final GetSubscribedClientsUsecase _getSubscribedClientsUsecase;
@@ -43,6 +45,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     this._getDateInstallationUsecase,
     this._rescheduleDateUsecase,
     this._changeDateToDonUsecase,
+    this._confirmVisitDateUsecase,
     this._cancelScheduleUsecase,
     this._returnScheduleVisitToOpenUsecase,
     this._getSubscribedClientsUsecase,
@@ -233,6 +236,19 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     }, (r) {
       onSuccess?.call(r);
       emit(state.copyWith(changeDateToDoneStatus: BlocStatus.success()));
+    });
+  }
+  Future<void> confirmVisitDate(
+      ConfirmVisitDateParams confirmVisitDateParams) async {
+    emit(state.copyWith(confirmVisitDateStatus: BlocStatus.loading()));
+
+    final result = await _confirmVisitDateUsecase(confirmVisitDateParams);
+    result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
+      emit(state.copyWith(confirmVisitDateStatus: BlocStatus.fail(error: l)));
+    }, (r) {
+      emit(state.copyWith(confirmVisitDateStatus: BlocStatus.success()));
+      pageVariables.changeItemFormSelectedDayEvents(r.message!);
     });
   }
 

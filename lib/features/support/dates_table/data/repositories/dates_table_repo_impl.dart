@@ -5,9 +5,12 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/common/models/event_model.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../common/client_profile/client_dates_tab/data/models/client_date_model.dart';
 import '../../domain/repositories/dates_table_repo.dart';
 import '../../domain/use_cases/cancel_schedule_usecase.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
+import '../../domain/use_cases/cofirm_visit_date_usecase.dart';
 import '../../domain/use_cases/get_date_installation_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
 import '../../domain/use_cases/get_subscribed_clients_usecase.dart';
@@ -136,5 +139,17 @@ class DatesTableRepoImpl implements DatesTableRepo {
       debugPrint("error in getCancelReasons => $e");
       return Left(e.toString());
     }
+  }
+
+  @override
+  Future<Either<String, ResponseWrapper<EventModel>>> confirmVisitDate(ConfirmVisitDateParams params)async {
+    try {
+      final data = await _datesTableDataSource.verifyDateVisit(params);
+      return Right(data);
+    } catch (e) {
+      debugPrint("error in confirm => $e");
+      return Left(e.toString());
+    }
+
   }
 }

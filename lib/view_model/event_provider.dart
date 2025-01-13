@@ -14,6 +14,7 @@ class EventProvider extends ChangeNotifier {
   LinkedHashMap<DateTime, List<EventModel>> eventDataSource = LinkedHashMap();
   late String fkCountry;
   bool isloadingDoneEvent = false;
+  bool isLoadingConfirmEvent = false;
 
   List<ClientModel> listclient = [];
 
