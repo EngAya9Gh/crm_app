@@ -1,3 +1,5 @@
+import 'package:crm_smart/model/usermodel.dart';
+
 import '../core/common/enums/comments/comment_type_enum.dart';
 import '../core/utils/end_points.dart';
 
@@ -24,7 +26,7 @@ class CommentModel {
   late final String nameEnterprise;
   late final String date_comment;
   late final String type_comment;
-  List<dynamic>? mention_users;
+  List<UserModel>? mention_users;
 
   CommentModel.fromJson(Map<String, dynamic> json) {
     final image = json['img_image'];
@@ -40,7 +42,7 @@ class CommentModel {
     nameEnterprise = json['name_enterprise'];
     date_comment = json['date_comment'];
     type_comment = json['type_comment'] ?? CommentTypeEnum.all.value;
-    mention_users = List.of(json['mention_users']).map((e) => e.toString()).toList();
+    mention_users = List.of(json['mention_users']).map((e) => UserModel.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -53,7 +55,7 @@ class CommentModel {
     _data['img_image'] = imgImage;
     _data['name_enterprise'] = nameEnterprise;
     _data['date_comment'] = date_comment;
-    _data['mention_users'] = mention_users;
+    _data['mention_users'] = mention_users?.map((e) => e.toJson(),);
     return _data;
   }
 
@@ -67,7 +69,7 @@ class CommentModel {
     String? nameEnterprise,
     String? date_comment,
     String? type_comment,
-    List<String>? mention_users,
+    List<UserModel>? mention_users,
   }) {
     return CommentModel(
       idComment: idComment ?? this.idComment,

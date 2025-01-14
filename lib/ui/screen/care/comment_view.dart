@@ -47,7 +47,6 @@ class CommentView extends StatefulWidget {
 
 class _CommentViewState extends State<CommentView> {
   final _globalKey = GlobalKey<FormState>();
-  final _overlayKey = GlobalKey<FormState>();
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
   TextEditingController _comment = TextEditingController();
   CommentTypeEnum? _previousSelectedCommentType;
@@ -58,7 +57,6 @@ class _CommentViewState extends State<CommentView> {
   List<UserEntity>? usersMentioned = [];
   List<String>? filterUserName = [];
   ValueNotifier<List<UserEntity>?> _suggestions = ValueNotifier([]);
-
   @override
   void initState() {
     pro = context.read<UserProvider>()..getCurrentUser();
