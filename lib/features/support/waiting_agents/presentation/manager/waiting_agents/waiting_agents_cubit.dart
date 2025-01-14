@@ -31,12 +31,12 @@ class WaitingAgentsCubit extends Cubit<WaitingAgentsState> {
       },
       (r) {
         if(state.getWaitingAgentsParams.page>1){
-        waitingAgentsList = List.of(waitingAgentsList)..addAll(r);
+        waitingAgentsList = List.of(waitingAgentsList)..addAll(r.message??[]);
         }
         else{
-          waitingAgentsList=r;
+          waitingAgentsList=r.message??[];
         }
-        emit(state.copyWith(getWaitingAgentsStatus: BlocStatus.success(),reachedMax: r.isEmpty));
+        emit(state.copyWith(getWaitingAgentsStatus: BlocStatus.success(),reachedMax: r.message?.isEmpty,totalCount: r.count));
       },
     );
   }

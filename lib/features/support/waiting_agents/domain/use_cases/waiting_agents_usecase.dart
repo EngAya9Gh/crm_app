@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -7,13 +8,13 @@ import '../../../../sales/public_relations/agents_and_distributors/data/models/a
 import '../repositories/waiting_agents_repo.dart';
 
 @lazySingleton
-class GetWaitingAgentsUsecase extends BaseUsecase<Either<String, List<AgentDistributorModel>>, GetWaitingAgentsParams> {
+class GetWaitingAgentsUsecase extends BaseUsecase<Either<String, ResponseWrapper<List<AgentDistributorModel>>>, GetWaitingAgentsParams> {
   GetWaitingAgentsUsecase(this._repository);
 
   final WaitingAgentsRepo _repository;
 
   @override
-  Future<Either<String, List<AgentDistributorModel>>> call(
+  Future<Either<String, ResponseWrapper<List<AgentDistributorModel>>>> call(
     GetWaitingAgentsParams params,
   ) async {
     return await _repository.getWaitingAgents(params);

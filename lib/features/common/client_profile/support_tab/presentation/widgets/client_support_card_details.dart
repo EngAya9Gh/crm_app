@@ -1,6 +1,8 @@
+import 'package:crm_smart/core/common/helpers/selected_sections_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:collection/collection.dart';
 
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../model/invoiceModel.dart';
@@ -28,163 +30,115 @@ class ClientSupportCardDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SupportTabCubit, SupportTabState>(
       builder: (context, state) {
+        InvoiceModel invoice=context
+            .read<SupportTabCubit>()
+            .listInvoiceClientSupport
+            .firstWhere((element) => element.idInvoice == invoiceModel?.idInvoice);
         return Column(
           children: [
-            if (invoiceModel!.dateinstall_done != null) ...[
+            if (invoice.dateinstall_done != null) ...[
               CardRow(
-                  title: ' تاريخ التركيب ',
-                  value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(
-                      invoiceModel!.dateinstall_done.toString()))),
-              CardRow(
-                  title: ' تم التركيب من قبل ',
-                  value: (invoiceModel!.nameuserinstall.toString()))
+                  title: ' تاريخ التركيب ', value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.dateinstall_done.toString()))),
+              CardRow(title: ' تم التركيب من قبل ', value: (invoice.nameuserinstall.toString()))
             ],
 
             if (nextInstallation?.dateClientVisit != null) ...[
               InkWell(
                 onTap: () => AppNavigator.go(DatesTablePage()),
-                child: CardRow(
-                    title: 'تاريخ الزيارة القادمة',
-                    value: DateFormat('yyyy-MM-dd HH:mm')
-                        .format(nextInstallation!.dateClientVisit!)),
+                child: CardRow(title: 'تاريخ الزيارة القادمة', value: DateFormat('yyyy-MM-dd HH:mm').format(nextInstallation!.dateClientVisit!)),
               ),
             ],
             InkWell(
               onTap: () => AppNavigator.go(DatesTablePage()),
-              child: CardRow(
-                  title: 'عدد الزيارات التي تمت ',
-                  value: datesInstallation
-                      .where((element) => element.isDone == "1")
-                      .length
-                      .toString()),
+              child: CardRow(title: 'عدد الزيارات التي تمت ', value: datesInstallation.where((element) => element.isDone == "1").length.toString()),
             ),
             InkWell(
               onTap: () => AppNavigator.go(DatesTablePage()),
               child: CardRow(
                   title: 'عدد الزيارات المتبقية',
-                  value: datesInstallation
-                      .where((element) =>
-                          element.isDone == "0" || element.isDone == '3')
-                      .length
-                      .toString()),
+                  value: datesInstallation.where((element) => element.isDone == "0" || element.isDone == '3').length.toString()),
             ),
             InkWell(
               onTap: () => AppNavigator.go(DatesTablePage()),
-              child: CardRow(
-                  title: 'عدد الزيارات الملغية',
-                  value: datesInstallation
-                      .where((element) => element.isDone == "2")
-                      .length
-                      .toString()),
+              child: CardRow(title: 'عدد الزيارات الملغية', value: datesInstallation.where((element) => element.isDone == "2").length.toString()),
             ),
 
-            invoiceModel!.clientusername == null
-                ? Container()
-                : CardRow(
-                    title: 'يوزر العميل ',
-                    value: (invoiceModel!.clientusername.toString())),
-            CardRow(
-                title: 'حالة الفاتورة',
-                value: invoiceModel!.stateclient.toString()),
-            CardRow(
-                title: 'عنوان الفاتورة ',
-                value: (invoiceModel!.address_invoice.toString())),
+            invoice.clientusername == null ? Container() : CardRow(title: 'يوزر العميل ', value: (invoice.clientusername.toString())),
+            CardRow(title: 'حالة الفاتورة', value: invoice.stateclient.toString()),
+            CardRow(title: 'عنوان الفاتورة ', value: (invoice.address_invoice.toString())),
             //////////////////////////////////////////////////////////////////////////////////////////
-            invoiceModel!.daterepaly != null
+            invoice.daterepaly != null
                 ? CardRow(
-                    title: ' تاريخ إعادة الجدولة',
-                    value: DateFormat('yyyy-MM-dd HH:mm').format(
-                        DateTime.parse(invoiceModel!.daterepaly.toString())))
+                    title: ' تاريخ إعادة الجدولة', value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.daterepaly.toString())))
                 : Container(),
-            invoiceModel!.daterepaly != null
-                ? CardRow(
-                    title: ' قام بإعادة الجدولة',
-                    value: invoiceModel!.nameuserreplay.toString())
-                : Container(),
-            invoiceModel!.daterepaly != null
+            invoice.daterepaly != null ? CardRow(title: ' قام بإعادة الجدولة', value: invoice.nameuserreplay.toString()) : Container(),
+            invoice.daterepaly != null
                 ? CardRow(
                     title: ' سبب إعادة الجدولة',
-                    value: invoiceModel!.reason_date.toString(),
+                    value: invoice.reason_date.toString(),
                     isExpanded: true,
                   )
                 : Container(),
             ///////////////////////////////////////////////
-            invoiceModel!.dateinstall_task != null
+            invoice.dateinstall_task != null
                 ? CardRow(
                     title: ' تاريخ جدولة التركيب ',
-                    value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(
-                        invoiceModel!.dateinstall_task.toString()))
+                    value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.dateinstall_task.toString()))
                     // DateFormat.yMMMd().
-                    // format(DateTime.parse(_invoice!.dateinstall_task.toString()))
+                    // format(DateTime.parse(_invoice.dateinstall_task.toString()))
                     )
                 : Container(),
-            invoiceModel!.dateinstall_task != null
-                ? CardRow(
-                    title: ' قام بجدولة التركيب ',
-                    value: invoiceModel!.nameusertask.toString())
+            invoice.dateinstall_task != null
+                ? CardRow(title: ' قام بجدولة التركيب ', value: invoice.nameusertask.toString())
                 : Container(),
 
             CardRow(
                 title: 'طريقة التركيب ',
-                value: invoiceModel!.typeInstallation.toString() == '0'
+                value: invoice.typeInstallation.toString() == '0'
                     ? 'ميداني'
-                    : (invoiceModel!.typeInstallation.toString() == '2'
-                        ? 'عميل موصى به'
-                        : 'اونلاين')),
+                    : (invoice.typeInstallation.toString() == '2' ? 'عميل موصى به' : 'اونلاين')),
 
-            invoiceModel!.ready_install == '0' &&
-                    invoiceModel!.TypeReadyClient == 'suspend'
+            invoice.ready_install == '0' && invoice.TypeReadyClient == 'suspend'
                 ? CardRow(title: 'هل تم التركيب للعميل ', value: 'معلق')
-                : invoiceModel!.ready_install == '0' &&
-                        invoiceModel!.TypeReadyClient == 'notReady'
+                : invoice.ready_install == '0' && invoice.TypeReadyClient == 'notReady'
                     ? CardRow(title: 'هل تم التركيب للعميل ', value: 'غير جاهز')
                     : CardRow(
                         title: 'هل تم التركيب للعميل ',
-                        value: invoiceModel!.dateinstall_done == null
+                        value: context
+                                    .read<SupportTabCubit>()
+                                    .listInvoiceClientSupport
+                                    .firstWhereOrNull((element) => element.idInvoice == invoice?.idInvoice)
+                                    ?.dateinstall_done ==
+                                null
                             ? 'بالانتظار'
                             : 'تم التركيب'),
 
-            invoiceModel!.ready_install == '0' &&
-                    invoiceModel!.dateinstall_done == null
-                ? CardRow(
-                    title: 'ملاحظة التعليق',
-                    value: invoiceModel!.notes_ready.toString())
+            invoice.ready_install == '0' && invoice.dateinstall_done == null
+                ? CardRow(title: 'ملاحظة التعليق', value: invoice.notes_ready.toString())
                 : Container(),
 
-            invoiceModel!.ready_install == '0' &&
-                    invoiceModel!.TypeReadyClient == 'notReady'
-                ? CardRow(
-                    title: 'سبب تعليق العميل',
-                    value: invoiceModel!.reason_notReady.toString())
+            invoice.ready_install == '0' && invoice.TypeReadyClient == 'notReady'
+                ? CardRow(title: 'سبب تعليق العميل', value: invoice.reason_notReady.toString())
                 : Container(),
-            invoiceModel!.ready_install == '0' &&
-                    invoiceModel!.TypeReadyClient == 'suspend'
-                ? CardRow(
-                    title: 'سبب تعليق العميل',
-                    value: invoiceModel!.reason_suspend.toString())
+            invoice.ready_install == '0' && invoice.TypeReadyClient == 'suspend'
+                ? CardRow(title: 'سبب تعليق العميل', value: invoice.reason_suspend.toString())
                 : Container(),
 
-            invoiceModel!.date_readyinstall != null
+            invoice.date_readyinstall != null
                 ? CardRow(
                     title: ' تاريخ الغاء تعليق العميل ',
-                    value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(
-                        invoiceModel!.date_readyinstall.toString())))
+                    value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.date_readyinstall.toString())))
                 : Container(),
-            invoiceModel!.date_readyinstall != null
-                ? CardRow(
-                    title: ' قام بالغاء تعليق العميل ',
-                    value: invoiceModel!.nameuser_ready_install.toString())
+            invoice.date_readyinstall != null
+                ? CardRow(title: ' قام بالغاء تعليق العميل ', value: invoice.nameuser_ready_install.toString())
                 : Container(),
-            invoiceModel!.date_not_readyinstall != null
+            invoice.date_not_readyinstall != null
                 ? CardRow(
                     title: ' تاريخ تعليق العميل ',
-                    value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(
-                        invoiceModel!.date_not_readyinstall.toString())))
+                    value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.date_not_readyinstall.toString())))
                 : Container(),
-            invoiceModel!.date_not_readyinstall != null
-                ? CardRow(
-                    title: ' قام بتعليق العميل ',
-                    value: invoiceModel!.nameuser_notready_install.toString())
+            invoice.date_not_readyinstall != null
+                ? CardRow(title: ' قام بتعليق العميل ', value: invoice.nameuser_notready_install.toString())
                 : Container(),
           ],
         );

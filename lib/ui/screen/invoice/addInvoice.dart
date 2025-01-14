@@ -696,8 +696,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       }
                                       if (text?.isEmpty ?? true) return null;
 
-                                      if ((num.tryParse(text!) ?? 0) <= 0) {
-                                        return "يجب إدخال قيمة أكبر من 0.";
+                                      if ((num.tryParse(text!) ?? 0) < 0) {
+                                        return "يجب إدخال قيمة من 0 اة اكثر";
                                       }
                                       return null;
                                     },

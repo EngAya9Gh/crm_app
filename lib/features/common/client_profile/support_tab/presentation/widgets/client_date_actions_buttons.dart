@@ -9,6 +9,7 @@ import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/invoice_vm.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../support/dates_table/presentation/manager/dates_table_cubit.dart';
+import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import 'ReturnInvoiceForApprove.dart';
 import 'cancel_date_dialog.dart';
 import 'custom_done_install_button.dart';
@@ -29,6 +30,10 @@ class ClientDateActionsButtons extends StatelessWidget {
     final PrivilegesCubit _privilegeCubit = context.read<PrivilegesCubit>();
     return BlocBuilder<DatesTableCubit, DatesTableState>(
       builder: (context, state) {
+        InvoiceModel invoice=context
+            .read<SupportTabCubit>()
+            .listInvoiceClientSupport
+            .firstWhere((element) => element.idInvoice == invoiceModel.idInvoice);
         return Column(
           key: UniqueKey(),
           children: [
@@ -38,7 +43,7 @@ class ClientDateActionsButtons extends StatelessWidget {
                   Expanded(
                       child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: CustomDoneInstallButton(invoiceModel: invoiceModel),
+                    child: CustomDoneInstallButton(invoiceModel: invoice),
                   ))
                 ],
                 if (_isAllowedToReturnUserToWaiting(_privilegeCubit)) ...[
@@ -47,13 +52,13 @@ class ClientDateActionsButtons extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 3),
                       child: AppElevatedButton(
                         text: "ارجاع العميل للانتظار",
-                        isDisabled: invoiceModel.isdoneinstall != '1',
+                        isDisabled: invoice.isdoneinstall != '1',
                         onPressed: () async {
                           await showDialog(
                             context: context,
                             builder: (context) {
                               return CancelDateDialog(
-                                idInvoice: invoiceModel.idInvoice!,
+                                idInvoice: invoice.idInvoice!,
                               );
                             },
                           );
@@ -69,22 +74,22 @@ class ClientDateActionsButtons extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (_privilegeCubit.checkPrivilege("196") &&
-                    invoiceModel.isApprove != null &&
-                    invoiceModel.isdoneinstall == null) ...[
+                    invoice.isApprove != null &&
+                    invoice.isdoneinstall == null) ...[
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 3),
                       child: AppElevatedButton(
                         text: 'ارجاع العميل للاعتماد',
                         appButtonStyle: AppButtonStyle.secondary,
-                        isDisabled: invoiceModel.ready_install == '0',
-                        onPressed: invoiceModel.ready_install == '0'
+                        isDisabled: invoice.ready_install == '0',
+                        onPressed: invoice.ready_install == '0'
                             ? null
                             : () async {
                                 await showDialog(
                                   context: context,
                                   builder: (context) => ReturnInvoiceApprove(
-                                    invoiceModel: invoiceModel,
+                                    invoiceModel: invoice,
                                   ),
                                 );
                               },
@@ -98,15 +103,15 @@ class ClientDateActionsButtons extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 3),
                       child: AppElevatedButton(
                         text: 'غير جاهز',
-                        isDisabled: invoiceModel.ready_install == '0',
-                        onPressed: invoiceModel.ready_install == '0'
+                        isDisabled: invoice.ready_install == '0',
+                        onPressed: invoice.ready_install == '0'
                             ? null
                             : () async {
                                 await showDialog(
                                   context: context,
                                   builder: (context) => DialogReady(
                                     type_ready: 'notReady',
-                                    invoice: invoiceModel,
+                                    invoice: invoice,
                                   ),
                                 );
                                 //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
@@ -127,15 +132,15 @@ class ClientDateActionsButtons extends StatelessWidget {
                       child: AppElevatedButton(
                         text: 'تعليق التركيب',
                         appButtonStyle: AppButtonStyle.secondary,
-                        isDisabled: invoiceModel.ready_install == '0',
-                        onPressed: invoiceModel.ready_install == '0'
+                        isDisabled: invoice.ready_install == '0',
+                        onPressed: invoice.ready_install == '0'
                             ? null
                             : () async {
                                 await showDialog(
                                   context: context,
                                   builder: (context) => DialogReady(
                                     type_ready: 'suspend',
-                                    invoice: invoiceModel,
+                                    invoice: invoice,
                                   ),
                                 );
                               },
@@ -148,7 +153,7 @@ class ClientDateActionsButtons extends StatelessWidget {
                       child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3),
                     child:
-                        SetReadyInstallDateButton(invoiceModel: invoiceModel),
+                        SetReadyInstallDateButton(invoiceModel: invoice),
                   )),
                 ],
               ],
@@ -159,10 +164,10 @@ class ClientDateActionsButtons extends StatelessWidget {
                 Consumer<InvoiceVm>(
                   builder: (context, invVm, child) {
                     if (_privilegeCubit.checkPrivilege("192") &&
-                        invoiceModel.hasDevices == true &&
-                        invoiceModel.deviceState ==
+                        invoice.hasDevices == true &&
+                        invoice.deviceState ==
                             DevicesStateEnum.ready.name) {
-                      return ReceiveDeviceState(invoiceModel: invoiceModel);
+                      return ReceiveDeviceState(invoiceModel: invoice);
                     }
                     return SizedBox.shrink();
                   },
@@ -180,7 +185,11 @@ class ClientDateActionsButtons extends StatelessWidget {
   }
 
   bool _isAllowed(BuildContext context, List<String> privileges) {
-    if (invoiceModel.dateinstall_done != null) return false;
+    InvoiceModel invoice=context
+        .read<SupportTabCubit>()
+        .listInvoiceClientSupport
+        .firstWhere((element) => element.idInvoice == invoiceModel.idInvoice);
+    if (invoice.dateinstall_done != null) return false;
 
     for (var item in privileges) {
       if (!context.read<PrivilegesCubit>().checkPrivilege(item)) {

@@ -130,7 +130,7 @@ class _AddDateButtonState extends State<AddDateButton> {
                               builder: (context, state) {
                                 return Flexible(
                                   child: CustomDateTimePicker(
-                                    enabled: state.startDateSelected == true,
+                                    // enabled: state.startDateSelected == true,
                                     dateTimeController:
                                         agentBloc.supportEndTimeController,
                                     dateTimeType: DateTimeEnum.time,

@@ -82,7 +82,7 @@ class WaitingAgentsPageBody extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppText("العدد"),
-                            AppText("${cubit.waitingAgentsList.length}"),
+                            AppText("${cubit.waitingAgentsList.length}/${state.totalCount}"),
                           ],
                         ),
                       ),

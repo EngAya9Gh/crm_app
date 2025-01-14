@@ -122,41 +122,45 @@ class Cardcomment extends StatelessWidget {
                                               builder: (context) => Directionality(
                                                 textDirection: TextDirection.rtl,
                                                 child: AlertDialog(
+                                                  insetPadding: EdgeInsets.symmetric(horizontal: 8),
                                                   title: AppText('تعديل التعليق'),
-                                                  content: Form(
-                                                    key: _key,
-                                                    child: Column(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      children: [
-                                                        AppTextField(
-                                                          validator: InputValidator.requiredFiled,
-                                                          hintText: 'إضافة تعليق',
-                                                          maxLines: 2,
-                                                          isRequired: true,
-                                                          controller: textContrller,
-                                                          contentPadding: EdgeInsets.symmetric(
-                                                            horizontal: 10,
-                                                            vertical: 15,
-                                                          ),
-                                                        ),
-                                                        10.height,
-                                                        ValueListenableBuilder(
-                                                          valueListenable: type,
-                                                          builder: (context, value, child) => CustomDropDown<CommentTypeEnum>(
-                                                            hint: 'نوع التعليق',
-                                                            items: CommentTypeEnum.values,
-                                                            itemAsString: (value) => value!.value,
-                                                            selectedItem: value,
-                                                            onChanged: (value) {
-                                                              if (value == null) {
-                                                                return;
-                                                              }
-                                                              type.value = value;
-                                                            },
+                                                  content: SizedBox(
+                                                    width: MediaQuery.sizeOf(context).width,
+                                                    child: Form(
+                                                      key: _key,
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          AppTextField(
                                                             validator: InputValidator.requiredFiled,
+                                                            hintText: 'إضافة تعليق',
+                                                            maxLines: 4,
+                                                            isRequired: true,
+                                                            controller: textContrller,
+                                                            contentPadding: EdgeInsets.symmetric(
+                                                              horizontal: 10,
+                                                              vertical: 15,
+                                                            ),
                                                           ),
-                                                        )
-                                                      ],
+                                                          10.height,
+                                                          ValueListenableBuilder(
+                                                            valueListenable: type,
+                                                            builder: (context, value, child) => CustomDropDown<CommentTypeEnum>(
+                                                              hint: 'نوع التعليق',
+                                                              items: CommentTypeEnum.values,
+                                                              itemAsString: (value) => value!.value,
+                                                              selectedItem: value,
+                                                              onChanged: (value) {
+                                                                if (value == null) {
+                                                                  return;
+                                                                }
+                                                                type.value = value;
+                                                              },
+                                                              validator: InputValidator.requiredFiled,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                   actions: [
