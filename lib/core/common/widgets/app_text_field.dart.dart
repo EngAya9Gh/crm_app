@@ -74,6 +74,7 @@ class AppTextField<T> extends StatefulWidget {
     this.suffixText,
     this.suffixStyle,
     this.helperText,
+    this.decoration,
     this.isRequired = false,
   });
 
@@ -137,6 +138,7 @@ class AppTextField<T> extends StatefulWidget {
   final TextStyle? suffixStyle;
   final String? helperText;
   final bool isRequired;
+  final InputDecoration? decoration;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();

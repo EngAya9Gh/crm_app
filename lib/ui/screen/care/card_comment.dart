@@ -19,6 +19,7 @@ import '../../../model/commentmodel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/comment.dart';
 import 'package:collection/collection.dart';
+
 //uplode 2023
 class Cardcomment extends StatelessWidget {
   Cardcomment({required this.commentmodel, this.userModel, this.idClients, Key? key}) : super(key: key);
@@ -116,7 +117,8 @@ class Cardcomment extends StatelessWidget {
                                           onTap: () {
                                             GlobalKey<FormState> _key = GlobalKey();
                                             TextEditingController textContrller = TextEditingController(text: commentmodel.content);
-                                            ValueNotifier<CommentTypeEnum?> type = ValueNotifier(CommentTypeEnum.values.firstWhereOrNull((e)=>e.value==commentmodel.type_comment));
+                                            ValueNotifier<CommentTypeEnum?> type =
+                                                ValueNotifier(CommentTypeEnum.values.firstWhereOrNull((e) => e.value == commentmodel.type_comment));
                                             showDialog(
                                               context: context,
                                               builder: (context) => Directionality(
@@ -175,7 +177,8 @@ class Cardcomment extends StatelessWidget {
                                                             onPressed: () async {
                                                               if (_key.currentState!.validate()) {
                                                                 await Provider.of<comment_vm>(context, listen: false)
-                                                                    .editComment_vm(textContrller.text, commentmodel.copyWith(type_comment: type.value!.value))
+                                                                    .editComment_vm(
+                                                                        textContrller.text, commentmodel.copyWith(type_comment: type.value!.value))
                                                                     .then(
                                                                   (value) {
                                                                     Provider.of<comment_vm>(context, listen: false).getComments(idClients!);
@@ -207,6 +210,9 @@ class Cardcomment extends StatelessWidget {
                                           ))
                                   ],
                                 ),
+                                Wrap(
+                                  children: (commentmodel.mention_users ?? []).map((e) => AppText(' @$e ', color: AppColors.primaryMain)).toList(),
+                                )
                               ],
                             ),
                           ),
