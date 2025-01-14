@@ -111,6 +111,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
                     ?.map((e) => e.id_maincity)
                     .toList(),
             date: pageVariables.focusedDay,
+            type: filterEntity.type.value
           ),
         );
         result.fold(
