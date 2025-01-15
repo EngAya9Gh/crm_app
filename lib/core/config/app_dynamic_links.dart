@@ -129,6 +129,16 @@ abstract class AppDynamicLinks {
                       idClient: data == null ? dataNotify : data['idclient'],
                     )));
         break;
+      case "commentMention":
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => ClientProfile(
+                      tabIndex: 2,
+                      //idinvoice: data==null?datanotify:  data['id_invoice'],
+                      idClient: data == null ? dataNotify : data['idclient'],
+                    )));
+        break;
       case "Marketing Client":
         Navigator.push(
             context,
