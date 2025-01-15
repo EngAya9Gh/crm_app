@@ -1,30 +1,16 @@
-import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mentions/flutter_mentions.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-
-import '../../../core/common/enums/comments/comment_type_enum.dart';
 import '../../../core/common/helpers/helper_functions.dart';
-import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/models/user_entity.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
-import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_status_chip.dart';
-import '../../../core/common/widgets/app_text_field.dart.dart';
-import '../../../core/common/widgets/custom_dropdown.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_dimensions.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../model/commentmodel.dart';
 import '../../../model/usermodel.dart';
-import '../../../view_model/comment.dart';
-import 'package:collection/collection.dart';
 
-//uplode 2023
 class Cardcomment extends StatelessWidget {
   Cardcomment({required this.commentmodel, this.userModel, this.idClients, Key? key, this.editCommentModel}) : super(key: key);
   CommentModel commentmodel;

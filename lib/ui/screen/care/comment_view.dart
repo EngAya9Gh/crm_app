@@ -29,7 +29,6 @@ import '../../../model/usermodel.dart';
 import '../../../view_model/comment.dart';
 import '../../../view_model/user_vm_provider.dart';
 import 'card_comment.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 RegExp mentionEegExpr=RegExp(r'@[\w\u0600-\u06FF\u200C\s.-]+');
 class CommentView extends StatefulWidget {
   CommentView({

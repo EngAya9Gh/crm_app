@@ -8,7 +8,6 @@ import '../core/common/enums/comments/comment_type_enum.dart';
 import '../core/common/enums/toast_colors_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/common/helpers/app_snackbar.dart';
-import '../core/common/models/response_wrapper/response_wrapper.dart';
 import '../core/common/models/user_entity.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
