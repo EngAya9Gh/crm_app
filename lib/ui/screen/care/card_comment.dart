@@ -2,12 +2,14 @@ import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/comments/comment_type_enum.dart';
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/helpers/input_validator.dart';
+import '../../../core/common/models/user_entity.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_status_chip.dart';
@@ -19,6 +21,7 @@ import '../../../model/commentmodel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/comment.dart';
 import 'package:collection/collection.dart';
+
 //uplode 2023
 class Cardcomment extends StatelessWidget {
   Cardcomment({required this.commentmodel, this.userModel, this.idClients, Key? key}) : super(key: key);
@@ -113,90 +116,130 @@ class Cardcomment extends StatelessWidget {
                                     ),
                                     if (commentmodel.nameUser == userModel?.nameUser)
                                       InkWell(
-                                          onTap: () {
+                                          onTap: () async {
+                                            ValueNotifier<List<UserEntity>?> _suggestions = ValueNotifier([]);
+                                            Provider.of<comment_vm>(context, listen: false).getAllUsersComment().then(
+                                              (value) {
+                                                _suggestions.value = value;
+                                              },
+                                            );
+                                            GlobalKey<FlutterMentionsState> keyMention = GlobalKey<FlutterMentionsState>();
+                                            List<UserEntity>? usersMentioned = [];
                                             GlobalKey<FormState> _key = GlobalKey();
                                             TextEditingController textContrller = TextEditingController(text: commentmodel.content);
-                                            ValueNotifier<CommentTypeEnum?> type = ValueNotifier(CommentTypeEnum.values.firstWhereOrNull((e)=>e.value==commentmodel.type_comment));
+                                            ValueNotifier<CommentTypeEnum?> type =
+                                                ValueNotifier(CommentTypeEnum.values.firstWhereOrNull((e) => e.value == commentmodel.type_comment));
+                                            keyMention.currentState?.controller?.text = commentmodel.content;
+                                            keyMention.currentState?.addMention(
+                                                {},
+                                                Mention(
+                                                  trigger: "@",
+                                                  style: TextStyle(color: AppColors.primaryMain),
+                                                  data: (commentmodel.mention_users ?? []).map((e) => convertEntityToMapMention(e)).toList(),
+                                                ));
                                             showDialog(
                                               context: context,
-                                              builder: (context) => Directionality(
-                                                textDirection: TextDirection.rtl,
-                                                child: AlertDialog(
-                                                  insetPadding: EdgeInsets.symmetric(horizontal: 8),
-                                                  title: AppText('تعديل التعليق'),
-                                                  content: SizedBox(
-                                                    width: MediaQuery.sizeOf(context).width,
-                                                    child: Form(
-                                                      key: _key,
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize.min,
+                                              builder: (context) => Portal(
+                                                child: Directionality(
+                                                  textDirection: TextDirection.rtl,
+                                                  child: AlertDialog(
+                                                    insetPadding: EdgeInsets.symmetric(horizontal: 8),
+                                                    title: AppText('تعديل التعليق'),
+                                                    content: SizedBox(
+                                                      width: MediaQuery.sizeOf(context).width,
+                                                      child: Form(
+                                                        key: _key,
+                                                        child: Column(
+                                                          mainAxisSize: MainAxisSize.min,
+                                                          children: [
+                                                            ValueListenableBuilder(
+                                                              valueListenable: _suggestions,
+                                                              builder: (context, value, child) => FlutterMentions(
+                                                                key: keyMention,
+                                                                suggestionPosition: SuggestionPosition.Bottom,
+                                                                maxLines: 5,
+                                                                minLines: 1,
+                                                                textDirection: TextDirection.rtl,
+                                                                onMentionAdd: (p0) {
+                                                                  usersMentioned = List.of(usersMentioned ?? [])
+                                                                    ..add(UserEntity(id: p0['id'], name: p0['display']));
+                                                                },
+                                                                mentions: [
+                                                                  Mention(
+                                                                    suggestionBuilder: (p0) => Padding(
+                                                                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                                                                      child: Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          AppText(p0['display']),
+                                                                          Divider(),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    trigger: "@",
+                                                                    style: TextStyle(color: AppColors.primaryMain),
+                                                                    data: (value ?? []).map((e) => convertEntityToMapMention(e)).toList(),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            10.height,
+                                                            ValueListenableBuilder(
+                                                              valueListenable: type,
+                                                              builder: (context, value, child) => CustomDropDown<CommentTypeEnum>(
+                                                                hint: 'نوع التعليق',
+                                                                items: CommentTypeEnum.values,
+                                                                itemAsString: (value) => value!.value,
+                                                                selectedItem: value,
+                                                                onChanged: (value) {
+                                                                  if (value == null) {
+                                                                    return;
+                                                                  }
+                                                                  type.value = value;
+                                                                },
+                                                                validator: InputValidator.requiredFiled,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.stretch,
                                                         children: [
-                                                          AppTextField(
-                                                            validator: InputValidator.requiredFiled,
-                                                            hintText: 'إضافة تعليق',
-                                                            maxLines: 4,
-                                                            isRequired: true,
-                                                            controller: textContrller,
-                                                            contentPadding: EdgeInsets.symmetric(
-                                                              horizontal: 10,
-                                                              vertical: 15,
+                                                          Consumer<comment_vm>(
+                                                            builder: (context, value, child) => AppElevatedButton(
+                                                              isLoading: value.isloadadd,
+                                                              text: 'تاكيد',
+                                                              backgroundColor: AppColors.green,
+                                                              onPressed: () async {
+                                                                if (_key.currentState!.validate()) {
+                                                                  await Provider.of<comment_vm>(context, listen: false)
+                                                                      .editComment_vm(
+                                                                          textContrller.text, commentmodel.copyWith(type_comment: type.value!.value))
+                                                                      .then(
+                                                                    (value) {
+                                                                      Provider.of<comment_vm>(context, listen: false).getComments(idClients!);
+                                                                      context.pop();
+                                                                    },
+                                                                  );
+                                                                }
+                                                              },
                                                             ),
                                                           ),
                                                           10.height,
-                                                          ValueListenableBuilder(
-                                                            valueListenable: type,
-                                                            builder: (context, value, child) => CustomDropDown<CommentTypeEnum>(
-                                                              hint: 'نوع التعليق',
-                                                              items: CommentTypeEnum.values,
-                                                              itemAsString: (value) => value!.value,
-                                                              selectedItem: value,
-                                                              onChanged: (value) {
-                                                                if (value == null) {
-                                                                  return;
-                                                                }
-                                                                type.value = value;
-                                                              },
-                                                              validator: InputValidator.requiredFiled,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                      children: [
-                                                        Consumer<comment_vm>(
-                                                          builder: (context, value, child) => AppElevatedButton(
-                                                            isLoading: value.isloadadd,
-                                                            text: 'تاكيد',
-                                                            backgroundColor: AppColors.green,
+                                                          AppElevatedButton(
+                                                            text: 'رجوع',
+                                                            backgroundColor: AppColors.statusErrorActive,
                                                             onPressed: () async {
-                                                              if (_key.currentState!.validate()) {
-                                                                await Provider.of<comment_vm>(context, listen: false)
-                                                                    .editComment_vm(textContrller.text, commentmodel.copyWith(type_comment: type.value!.value))
-                                                                    .then(
-                                                                  (value) {
-                                                                    Provider.of<comment_vm>(context, listen: false).getComments(idClients!);
-                                                                    context.pop();
-                                                                  },
-                                                                );
-                                                              }
+                                                              context.pop(false);
                                                             },
                                                           ),
-                                                        ),
-                                                        10.height,
-                                                        AppElevatedButton(
-                                                          text: 'رجوع',
-                                                          backgroundColor: AppColors.statusErrorActive,
-                                                          onPressed: () async {
-                                                            context.pop(false);
-                                                          },
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             );
@@ -207,6 +250,9 @@ class Cardcomment extends StatelessWidget {
                                           ))
                                   ],
                                 ),
+                                Wrap(
+                                  children: (commentmodel.mention_users ?? []).map((e) => AppText(' @${e.name} ', color: AppColors.primaryMain)).toList(),
+                                )
                               ],
                             ),
                           ),
@@ -248,5 +294,12 @@ class Cardcomment extends StatelessWidget {
         imageUrl: "${EndPoints.baseUrls.urlImage}$imageUrl",
       ),
     );
+  }
+
+  Map<String, dynamic> convertEntityToMapMention(UserEntity userEntity) {
+    return {
+      'id': userEntity.id,
+      'display': userEntity.name,
+    };
   }
 }

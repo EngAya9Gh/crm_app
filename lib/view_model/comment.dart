@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:collection/collection.dart';
 
 import 'package:crm_smart/core/errors/server_exceptions.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,11 +8,14 @@ import '../core/common/enums/comments/comment_type_enum.dart';
 import '../core/common/enums/toast_colors_enum.dart';
 import '../core/common/helpers/api_data_handler.dart';
 import '../core/common/helpers/app_snackbar.dart';
+import '../core/common/models/response_wrapper/response_wrapper.dart';
+import '../core/common/models/user_entity.dart';
 import '../core/errors/base_app_exception.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/commentmodel.dart';
+import '../model/usermodel.dart';
 
 class comment_vm extends ChangeNotifier {
   List<CommentModel> _allCommentsList = [];
@@ -57,31 +61,60 @@ class comment_vm extends ChangeNotifier {
     }
   }
 
-  void filterCommentsByType(String type) {
-    if (type == CommentTypeEnum.all.value) {
-      filteredComments = _allCommentsList;
+  void filterCommentsByType(String? type, {List<String>? nameUsers}) {
+/*    print(_allCommentsList.where((e) =>
+    (nameUsers?.any(
+          (element) => element == e.nameUser,
+    ) ??
+        false),).map((e) => e.nameUser,).toList());
+    print('///////////////////////////////////');*/
+    /* if (type == CommentTypeEnum.all.value) {
+      filteredComments = _allCommentsList
+        ..where((e) =>
+        e.type_comment == CommentTypeEnum.all.value &&
+            (nameUsers?.any(
+                  (element) => element == e.nameUser,
+            ) ??
+                false));
       notifyListeners();
       return;
-    } else if (type == CommentTypeEnum.Collection.value) {
+    } else */
+    if (type == CommentTypeEnum.Collection.value) {
       filteredComments = _allCommentsList
           .where((element) => ((element.type_comment == CommentTypeEnum.Collection.value) ||
               (element.type_comment == CommentTypeEnum.Renewal.value) ||
               (element.type_comment == CommentTypeEnum.Withdrawal.value)))
+          .where((e) =>
+              nameUsers?.any(
+                (element) => element == e.nameUser,
+              ) ??
+              false)
           .toList();
       notifyListeners();
       return;
     }
-    filteredComments = _allCommentsList.where((element) => element.type_comment.contains(type)).toList();
+    filteredComments = _allCommentsList
+        .where((element) => element.type_comment.contains(type ?? ''))
+        .where((element) => (nameUsers?.isEmpty??true)?true:(nameUsers?.any((e) => e == element.nameUser) ?? false))
+        .toList();
+    print(filteredComments);
     notifyListeners();
   }
 
-  Future<String> addComment_vm(Map<String, dynamic> body, String? imageurl, String clientId) async {
+  Future<String> addComment_vm(Map<String, dynamic> body, String? imageurl, String clientId, List<UserEntity> users) async {
     try {
       isloadadd = true;
       notifyListeners();
+      Map mapUser = {};
+
+      users.forEachIndexed(
+        (index, element) => mapUser.addAll({'user_ids[$index]': element.id}),
+      );
+
       var sentBody = {
         'content': body["content"],
         if (body["type_comment"] != null) 'type_comment': body["type_comment"],
+        ...mapUser,
       };
       var res = await GetIt.I<ApiServices>().postRequestWithFile(
         endPoint: EndPoints.baseUrls.urlLaravel + 'addComment/$clientId',
@@ -123,7 +156,7 @@ class comment_vm extends ChangeNotifier {
         data: sentBody,
       );
       if (res['result'] == "success") {
-        var list=_allCommentsList
+        var list = _allCommentsList
             .map(
               (element) => element.idComment == comment.idComment ? element.copyWith(content: res['message']['content']) : element,
             )
@@ -141,11 +174,34 @@ class comment_vm extends ChangeNotifier {
       print(e.toString() + s.toString());
       isloadadd = false;
       notifyListeners();
-      if((e as AppNetworkResponseException).statusCode==400){
+      if ((e as AppNetworkResponseException).statusCode == 400) {
         AppSnackbar.showSnakeBar('لايمكن تعديل التعليق بعد مرور مدة ساعة من انشاءه', color: ToastColorsEnum.warning);
       }
       return "error";
     }
+  }
+
+  Future<List<UserEntity>?> getAllUsersComment() async {
+    try {
+      isloadadd = true;
+      notifyListeners();
+      var res = await GetIt.I<ApiServices>().get(
+        endPoint: EndPoints.baseUrls.urlLaravel + 'users/all',
+      );
+      if (res['result'] == "success") {
+        isloadadd = false;
+        notifyListeners();
+        return List.from(
+          (res['message']).map((e) => UserModel.fromJson(e)),
+        );
+      }
+    } catch (e, s) {
+      print(e.toString() + s.toString());
+      isloadadd = false;
+      notifyListeners();
+      return [];
+    }
+    return null;
   }
 
   addCommentFromAddInvoice(CommentModel comment) {
