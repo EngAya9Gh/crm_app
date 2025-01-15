@@ -42,7 +42,7 @@ class CommentModel {
     nameEnterprise = json['name_enterprise'];
     date_comment = json['date_comment'];
     type_comment = json['type_comment'] ?? CommentTypeEnum.all.value;
-    mention_users = List.of(json['mention_users']).map((e) => UserModel.fromJson(e)).toList();
+    mention_users =json['mention_users']==null?[]: List.of(json['mention_users']).map((e) => UserModel.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {

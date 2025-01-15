@@ -57,7 +57,7 @@ class _VersionDetailWidgetState extends State<VersionDetailWidget> {
               10.width,
 
               Text(
-                widget.versionModel.management ?? "غير محددة الادارة",
+                widget.versionModel.management ?? "عام",
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 10.sp),
                 softWrap: true,
               ),

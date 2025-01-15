@@ -143,13 +143,20 @@ class comment_vm extends ChangeNotifier {
     }
   }
 
-  Future<String> editComment_vm(String content, CommentModel comment) async {
+  Future<String> editComment_vm(String content, CommentModel comment,List<UserEntity> users) async {
     try {
       isloadadd = true;
       notifyListeners();
+      Map mapUser = {};
+
+      users.forEachIndexed(
+            (index, element) => mapUser.addAll({'user_ids[$index]': element.id}),
+      );
+
       var sentBody = {
         'content': content,
         'type_comment': comment.type_comment,
+        ...mapUser,
       };
       var res = await GetIt.I<ApiServices>().post(
         endPoint: EndPoints.baseUrls.urlLaravel + 'editComment/${comment.idComment}',
