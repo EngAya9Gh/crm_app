@@ -365,7 +365,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                               insetPadding: EdgeInsets.zero,
                               title: AppText('اضافة صورة'),
                               content: SizedBox(
-                                width: .75.scaleWidth,
+                                width: MediaQuery.sizeOf(context).width*.7,
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -388,7 +388,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                           valueListenable: selectedFile,
                                           builder: (context, value, child) {
                                             if (value?.file != null) {
-                                              return SizedBox(height: 250.scaleIconsSize, child: fileImage(value!, filesAttach.length - 1, true));
+                                              return fileImage(value!, filesAttach.length - 1, true);
                                             }
                                             return Column(
                                               crossAxisAlignment: CrossAxisAlignment.center,
