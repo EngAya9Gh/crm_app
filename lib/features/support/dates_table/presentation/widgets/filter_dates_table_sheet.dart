@@ -2,8 +2,10 @@ import 'package:crm_smart/features/common/regions/presentation/pages/regions_mul
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/dates_table_cubit.dart';
@@ -57,6 +59,20 @@ class _FilterDatesTableSheetState extends State<FilterDatesTableSheet> {
               ),
             ),
             10.height,
+        ValueListenableBuilder(
+          valueListenable: _datesCubit.filterEntity.type,
+          builder:(context, value, child) =>  CustomDropDown<SellerTypeEnum>(
+            hint: 'عميل او وكيل',
+            items: [SellerTypeEnum.agent],
+            itemAsString: (item) => item!.value,
+            selectedItem: value,
+            onChanged: (p0) {
+              _datesCubit.filterEntity.type.value=p0;
+            },
+            height: 165.scaleHeight,
+          ),
+        )
+         ,   10.height,
             Row(
               children: [
                 Expanded(

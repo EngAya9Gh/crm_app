@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/models/location/region_model.dart';
 import '../../../../../model/usermodel.dart';
 
@@ -9,11 +10,13 @@ class FilterDatesTableEntity {
   ValueNotifier<List<RegionModel>?> mainCitiesNotifier = ValueNotifier(null);
   ValueNotifier<bool> isAllEventsNotifier = ValueNotifier(true);
   ValueNotifier<UserModel?> userNotifier = ValueNotifier(null);
+  ValueNotifier<SellerTypeEnum?> type = ValueNotifier(null);
 
   void clear() {
     mainCitiesNotifier.value = null;
     isAllEventsNotifier.value = true;
     userNotifier.value = null;
+    type.value = null;
   }
 
   FilterDatesTableEntity? _previousState;
@@ -22,7 +25,8 @@ class FilterDatesTableEntity {
     _previousState = FilterDatesTableEntity()
       ..mainCitiesNotifier.value = mainCitiesNotifier.value
       ..isAllEventsNotifier.value = isAllEventsNotifier.value
-      ..userNotifier.value = userNotifier.value;
+      ..userNotifier.value = userNotifier.value
+      ..type.value = type.value;
   }
 
   FilterDatesTableEntity get returnToPreviousState {
@@ -38,12 +42,14 @@ class FilterDatesTableEntity {
       mainCitiesNotifier,
       isAllEventsNotifier,
       userNotifier,
+      type,
     ];
   }
 
   bool checkIfFilterIsNotEmpty() {
     return mainCitiesNotifier.value != null ||
         !isAllEventsNotifier.value ||
-        userNotifier.value != null;
+        userNotifier.value != null||
+        type.value != null;
   }
 }

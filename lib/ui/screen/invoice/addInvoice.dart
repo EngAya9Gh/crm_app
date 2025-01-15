@@ -652,11 +652,20 @@ class _AddInvoiceState extends State<AddInvoice> {
                           hintText: 'تجديد المستودعات',
                           controller: numInvoiceController,
                           inputType: TextInputType.number,
+                          validator: (text) {
+                            if (text?.isNotEmpty ?? false) {
+                              if ((num.parse(text!)) <= 0) {
+                                return "يجب إدخال قيمة اكبر من ال 0";
+                              }
+                              return null;
+                            }
+                            return null;
+                          },
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                         ),
                       ],
                     ),
-                        10.height,
+                    10.height,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -666,6 +675,15 @@ class _AddInvoiceState extends State<AddInvoice> {
                           hintText: 'تجديد نقاط البيع',
                           controller: numPosController,
                           inputType: TextInputType.number,
+                          validator: (text) {
+                            if (text?.isNotEmpty ?? false) {
+                              if ((num.parse(text!)) <= 0) {
+                                return "يجب إدخال قيمة اكبر من ال 0";
+                              }
+                              return null;
+                            }
+                            return null;
+                          },
                           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                         ),
                       ],
@@ -690,14 +708,11 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       if (!value) {
                                         return null;
                                       }
-
-                                      if ((text?.trim().isEmpty ?? true) && value) {
-                                        return 'الحقل مطلوب.';
-                                      }
-                                      if (text?.isEmpty ?? true) return null;
-
-                                      if ((num.tryParse(text!) ?? 0) < 0) {
-                                        return "يجب إدخال قيمة من 0 اة اكثر";
+                                      else if (text?.isNotEmpty ?? false) {
+                                        if ((num.parse(text!)) <= 0) {
+                                          return "يجب إدخال قيمة اكبر من ال 0";
+                                        }
+                                        return null;
                                       }
                                       return null;
                                     },

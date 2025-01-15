@@ -1,14 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/dates_table_repo.dart';
 
 @lazySingleton
-class GetDateInstallationUsecase extends BaseUsecase<
-    Either<String, PaginationResponseWrapper>, GetDateInstallationParams> {
+class GetDateInstallationUsecase extends BaseUsecase<Either<String, PaginationResponseWrapper>, GetDateInstallationParams> {
   GetDateInstallationUsecase(this._repository);
 
   final DatesTableRepo _repository;
@@ -27,12 +27,14 @@ class GetDateInstallationParams {
   final String? fkUser;
   final List<String>? mainCityFks;
   final DateTime? date;
+  final SellerTypeEnum? type;
 
   GetDateInstallationParams({
     required this.fkCountry,
     this.fkUser,
     this.mainCityFks,
     this.date,
+    this.type,
   }) : state = _getState(fkUser, mainCityFks);
 
   Map<String, dynamic> toMap() {
@@ -40,6 +42,7 @@ class GetDateInstallationParams {
       'state': state.value,
       'fk_country': fkCountry,
       'fk_user': fkUser,
+      'type': type != null ? type!.name.toString() : null,
       'date': HelperFunctions.formatDate(date),
       ..._prepareMainCityParams(),
     }..removeWhere((key, value) {
@@ -74,11 +77,9 @@ class GetDateInstallationParams {
     }
   }
 
-  static bool _existFkUser(String? fkUser) =>
-      fkUser != null && fkUser.isNotEmpty;
+  static bool _existFkUser(String? fkUser) => fkUser != null && fkUser.isNotEmpty;
 
-  static bool _existMainCityFks(List<String>? mainCityFks) =>
-      mainCityFks != null && mainCityFks.isNotEmpty;
+  static bool _existMainCityFks(List<String>? mainCityFks) => mainCityFks != null && mainCityFks.isNotEmpty;
 }
 
 enum DateInstallationState { All, MainCity, FkUser, Mix }
