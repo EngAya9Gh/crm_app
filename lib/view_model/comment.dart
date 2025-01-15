@@ -61,40 +61,40 @@ class comment_vm extends ChangeNotifier {
   }
 
   void filterCommentsByType(String? type, {List<String>? nameUsers}) {
-/*    print(_allCommentsList.where((e) =>
-    (nameUsers?.any(
-          (element) => element == e.nameUser,
-    ) ??
-        false),).map((e) => e.nameUser,).toList());
-    print('///////////////////////////////////');*/
-    /* if (type == CommentTypeEnum.all.value) {
+    if (type == CommentTypeEnum.all.value) {
       filteredComments = _allCommentsList
-        ..where((e) =>
-        e.type_comment == CommentTypeEnum.all.value &&
-            (nameUsers?.any(
-                  (element) => element == e.nameUser,
-            ) ??
-                false));
+          .where((e) => (nameUsers?.isEmpty ?? true)
+              ? true
+              : nameUsers?.any((element) {
+                    return e.mention_users?.map((e) => e.nameUser).contains(element) ?? false;
+                  }) ??
+                  false)
+          .toList();
       notifyListeners();
       return;
-    } else */
-    if (type == CommentTypeEnum.Collection.value) {
+    } else if (type == CommentTypeEnum.Collection.value) {
       filteredComments = _allCommentsList
           .where((element) => ((element.type_comment == CommentTypeEnum.Collection.value) ||
               (element.type_comment == CommentTypeEnum.Renewal.value) ||
               (element.type_comment == CommentTypeEnum.Withdrawal.value)))
-          .where((e) =>
-              nameUsers?.any(
-                (element) => element == e.nameUser,
-              ) ??
-              false)
+          .where((e) => (nameUsers?.isEmpty ?? true)
+              ? true
+              : nameUsers?.any((element) {
+                    return e.mention_users?.map((e) => e.nameUser).contains(element) ?? false;
+                  }) ??
+                  false)
           .toList();
       notifyListeners();
       return;
     }
     filteredComments = _allCommentsList
         .where((element) => element.type_comment.contains(type ?? ''))
-        .where((element) => (nameUsers?.isEmpty??true)?true:(nameUsers?.any((e) => e == element.nameUser) ?? false))
+        .where((e) => (nameUsers?.isEmpty ?? true)
+            ? true
+            : nameUsers?.any((element) {
+                  return e.mention_users?.map((e) => e.nameUser).contains(element) ?? false;
+                }) ??
+                false)
         .toList();
     print(filteredComments);
     notifyListeners();
@@ -142,14 +142,14 @@ class comment_vm extends ChangeNotifier {
     }
   }
 
-  Future<String> editComment_vm(String content, CommentModel comment,List<UserEntity> users) async {
+  Future<String> editComment_vm(String content, CommentModel comment, List<UserEntity> users) async {
     try {
       isloadadd = true;
       notifyListeners();
       Map mapUser = {};
 
       users.forEachIndexed(
-            (index, element) => mapUser.addAll({'user_ids[$index]': element.id}),
+        (index, element) => mapUser.addAll({'user_ids[$index]': element.id}),
       );
 
       var sentBody = {
@@ -192,7 +192,7 @@ class comment_vm extends ChangeNotifier {
       isloadadd = true;
       notifyListeners();
       var res = await GetIt.I<ApiServices>().get(
-        endPoint: EndPoints.baseUrls.urlLaravel + 'users/all',
+        endPoint: EndPoints.baseUrls.urlLaravel + 'users/user-comment',
       );
       if (res['result'] == "success") {
         isloadadd = false;

@@ -29,7 +29,7 @@ import '../../../model/usermodel.dart';
 import '../../../view_model/comment.dart';
 import '../../../view_model/user_vm_provider.dart';
 import 'card_comment.dart';
-RegExp mentionEegExpr=RegExp(r'@[\w\u0600-\u06FF\u200C\s.-]+');
+RegExp mentionEegExpr=RegExp(r'@[\w\u0600-\u06FF\u200C.-]+');
 class CommentView extends StatefulWidget {
   CommentView({
     required this.client,
@@ -120,18 +120,6 @@ class _CommentViewState extends State<CommentView> {
                                 maxLines: 5,
                                 minLines: 1,
                                 textDirection: TextDirection.rtl,
-                                onChanged: (value) {
-                                  var listNames=mentionEegExpr.allMatches(value).map((e) => e.group(0)?.substring(1).trim()).toList();
-                                  usersMentioned=_suggestions.value?.where((e) {
-                                    return listNames.any((element) => element==e.name);
-                                  },).toList();
-                                  print(listNames);
-                                  print(usersMentioned);
-                                },
-                                onMentionAdd: (p0) {
-                                  usersMentioned = List.of(usersMentioned ?? [])..add(UserEntity(id: p0['id'], name: p0['display']));
-                                  print(usersMentioned);
-                                },
                                 mentions: [
                                   Mention(
                                     suggestionBuilder: (p0) => Padding(
@@ -289,7 +277,7 @@ class _CommentViewState extends State<CommentView> {
                     child: ValueListenableBuilder(
                       valueListenable: _suggestions,
                       builder: (context, value, child) => CustomMultiSelectionDropdown<UserEntity>(
-                        hint: 'المشاركين*',
+                        hint: 'الاشخاص المشار لهم بالتعلق',
                         items: value ?? [],
                         selectedItems: value?.where((element) => filterUserName?.contains(element) ?? false).toList() ?? [],
                         onSave: (value) {
@@ -350,10 +338,10 @@ class _CommentViewState extends State<CommentView> {
                                     editCommentModel: (value) {
                                       updateItem.value = value;
                                       _selectedCommentType = CommentTypeEnum.values.firstWhere((element) => element.value == value.type_comment);
-                                      usersMentioned = [...value.mention_users!];
+                                      // usersMentioned = [...value.mention_users!];
                                       key.currentState?.controller?.text = value.content;
                                       for (UserEntity item in value.mention_users ?? []) {
-                                        key.currentState?.controller?.text = (key.currentState?.controller?.text ?? '') + " @${item.name} ";
+                                        key.currentState?.controller?.text = (key.currentState?.controller?.text ?? '') + " @${item.name.replaceAll(' ', '_')} ";
                                       }
                                     },
                                   );
@@ -373,6 +361,12 @@ class _CommentViewState extends State<CommentView> {
   }
 
   Future<void> _sendComment(BuildContext context) async {
+    var listNames=mentionEegExpr.allMatches(key.currentState!.controller!.text).map((e) => e.group(0)?.replaceAll('_', ' ').substring(1)).toList();
+    usersMentioned=_suggestions.value?.where((e) {
+      return listNames.any((element) => element==e.name);
+    },).toList();
+    print(listNames);
+    print(usersMentioned);
     try {
       print(_selectedCommentType);
       if (_globalKey.currentState!.validate() && _selectedCommentType?.value != null) {
@@ -437,7 +431,7 @@ class _CommentViewState extends State<CommentView> {
   Map<String, dynamic> convertEntityToMapMention(UserEntity userEntity) {
     return {
       'id': userEntity.id,
-      'display': userEntity.name,
+      'display': userEntity.name.replaceAll(' ', '_'),
     };
   }
 }

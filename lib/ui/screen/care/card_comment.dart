@@ -88,22 +88,15 @@ class Cardcomment extends StatelessWidget {
                                   ],
                                 ),
                                 SizedBox(height: 15),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onLongPress: () async {
-                                          await HelperFunctions.copyToClipboard(commentmodel.content);
-                                          AppSnackbar.showSnakeBar('Copied to your clipboard!');
-                                        },
-                                        child: AppText(
-                                          commentmodel.content,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                               if(commentmodel.content.isNotEmpty) GestureDetector(
+                                  onLongPress: () async {
+                                    await HelperFunctions.copyToClipboard(commentmodel.content);
+                                    AppSnackbar.showSnakeBar('Copied to your clipboard!');
+                                  },
+                                  child: AppText(
+                                    commentmodel.content,
+                                    fontSize: 18,
+                                  ),
                                 ),
                                 Wrap(
                                   children:
