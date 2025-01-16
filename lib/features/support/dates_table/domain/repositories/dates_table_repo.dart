@@ -24,7 +24,10 @@ abstract interface class DatesTableRepo {
   Future<Either<String, dynamic>> rescheduleDate(RescheduleDateParams params);
 
   Future<Either<String, dynamic>> changeDateToDone(ChangeDateToDoneParams params);
+
   Future<Either<String, ResponseWrapper<EventModel>>> confirmVisitDate(ConfirmVisitDateParams params);
+
+  Future<Either<String, ResponseWrapper<EventModel>>> startDateVisitStatus(ConfirmVisitDateParams params);
 
   Future<Either<String, dynamic>> cancelSchedule(CancelScheduleParams params);
 

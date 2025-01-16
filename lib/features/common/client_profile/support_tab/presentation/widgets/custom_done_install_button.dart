@@ -93,10 +93,10 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
                               validator: InputValidator.requiredFiled,
                             ),
                             SizedBox(height: 10),
-                            CustomLocationField(
-                              isEdit: false,
-                              locationController: addressClientController,
-                            ),
+                            // CustomLocationField(
+                            //   isEdit: false,
+                            //   locationController: addressClientController,
+                            // ),
                             SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -121,7 +121,8 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
                                             await supportTabCubit.setDateDone(SetDateDoneParams(
                                                 id_invoice: widget.invoiceModel!.idInvoice!,
                                                 clientusername: nameUserClient.text,
-                                                location: addressClientController.text));
+                                                // location: addressClientController.text
+                                            ));
                                             nameUserClient.clear();
                                             AppNavigator.pop();
                                           });

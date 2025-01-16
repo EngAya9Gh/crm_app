@@ -150,6 +150,16 @@ class DatesTableRepoImpl implements DatesTableRepo {
       debugPrint("error in confirm => $e");
       return Left(e.toString());
     }
+  }
 
+  @override
+  Future<Either<String, ResponseWrapper<EventModel>>> startDateVisitStatus(ConfirmVisitDateParams params)async {
+    try {
+      final data = await _datesTableDataSource.startDateVisitStatus(params);
+      return Right(data);
+    } catch (e) {
+      debugPrint("error in confirm => $e");
+      return Left(e.toString());
+    }
   }
 }

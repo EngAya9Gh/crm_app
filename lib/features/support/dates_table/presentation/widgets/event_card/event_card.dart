@@ -1,12 +1,16 @@
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:location/location.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/models/event_model.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/config/navigator/app_routes_names.dart';
+import '../../../../../../core/services/di/di_container.dart';
+import '../../../../../../core/services/maps/location_services.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_fonts.dart';
 import '../../../../../../ui/screen/client/client_profile.dart';
@@ -28,6 +32,7 @@ class EventCard extends StatefulWidget {
 }
 
 class _EventCardState extends State<EventCard> {
+
   @override
   Widget build(BuildContext context) {
     final event = widget.event;
@@ -49,55 +54,57 @@ class _EventCardState extends State<EventCard> {
             onTap: () {
               _navigateToProfileOnEventTap(event);
             },
-            child: Row(
+            child: Stack(
               children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AppText(
-                        '${event.title}',
-                        fontFamily: AppFonts.fontFamily1,
+                if(widget.event.isDone=='4')PositionedDirectional(bottom: 0,end: 0,child: Icon(Icons.pause,color: AppColors.statusErrorActive,)),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText(
+                            '${event.title}',
+                            fontFamily: AppFonts.fontFamily1,
+                          ),
+                          AppText(
+                            '${intl.DateFormat("hh:mm a").format(event.to)}'
+                            ' - '
+                            '${intl.DateFormat("hh:mm a").format(event.from)}',
+                            textDirection: TextDirection.ltr,
+                            textAlign: TextAlign.end,
+                            fontFamily: AppFonts.fontFamily1,
+                          ),
+                          if (event.nameCityClient != null) ...[
+                            AppText(
+                              '${event.nameCityClient}',
+                              fontFamily: AppFonts.fontFamily1,
+                            ),
+                          ],
+                          _showTextIfNotNull(event.typeDate, 'النوع:'),
+                          _showTextIfNotNull(event.nameUser, 'موظف الدعم :'),
+                          _showTextIfNotNull(event.nameUserAdd, 'اضاف الجدولة :'),
+                          _showTextIfNotNull(event.dateCreate, 'تاريخ إضاف الجدولة :'),
+                          if (!_isOpen(event)) ...[
+                            _showTextIfNotNull(event.nameUserUpdate, 'اغلاق الجدولة :'),
+                          ],
+                          _showTextIfNotNull(event.nameUserClose, 'آخر من قام بالتعديل :'),
+                        ],
                       ),
-                      AppText(
-                        '${intl.DateFormat("hh:mm a").format(event.to)}'
-                        ' - '
-                        '${intl.DateFormat("hh:mm a").format(event.from)}',
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.end,
-                        fontFamily: AppFonts.fontFamily1,
+                    ),
+                    if (event.isDoneInstall == '1') ...[
+                      const SizedBox(width: 16),
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
                       ),
-                      if (event.nameCityClient != null) ...[
-                        AppText(
-                          '${event.nameCityClient}',
-                          fontFamily: AppFonts.fontFamily1,
-                        ),
-                      ],
-                      _showTextIfNotNull(event.typeDate, 'النوع:'),
-                      _showTextIfNotNull(event.nameUser, 'موظف الدعم :'),
-                      _showTextIfNotNull(event.nameUserAdd, 'اضاف الجدولة :'),
-                      _showTextIfNotNull(
-                          event.dateCreate, 'تاريخ إضاف الجدولة :'),
-                      if (!_isOpen(event)) ...[
-                        _showTextIfNotNull(
-                            event.nameUserUpdate, 'اغلاق الجدولة :'),
-                      ],
-                      _showTextIfNotNull(
-                          event.nameUserClose, 'آخر من قام بالتعديل :'),
                     ],
-                  ),
-                ),
-                if (event.isDoneInstall == '1') ...[
-                  const SizedBox(width: 16),
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.green,
-                  ),
-                ],
-                Expanded(
-                  flex: _isCanceledDate(event) ? 0 : 1,
-                  child: _handleDateActions(event),
+                    Expanded(
+                      flex: _isCanceledDate(event) ? 0 : 1,
+                      child: _handleDateActions(event),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -108,8 +115,7 @@ class _EventCardState extends State<EventCard> {
   }
 
   bool _isOpen(EventModel event) {
-    return event.isDone == IsDoneDateEnum.notVisited.value ||
-        event.isDone == IsDoneDateEnum.scheduled.value;
+    return event.isDone == IsDoneDateEnum.notVisited.value || event.isDone == IsDoneDateEnum.scheduled.value;
   }
 
   Widget _handleDateActions(EventModel event) {
@@ -151,8 +157,7 @@ class _EventCardState extends State<EventCard> {
   }
 
   bool _isAllowedAndNotOpen(EventModel event) {
-    return !_isOpen(event) &&
-        context.read<PrivilegesCubit>().checkPrivilege('197');
+    return !_isOpen(event) && context.read<PrivilegesCubit>().checkPrivilege('197');
   }
 
   void _navigateToProfileOnEventTap(EventModel event) {

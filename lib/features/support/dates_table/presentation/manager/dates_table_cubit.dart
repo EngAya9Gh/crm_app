@@ -24,6 +24,7 @@ import '../../domain/use_cases/get_invoices_by_client_for_date_usecase.dart';
 import '../../domain/use_cases/get_subscribed_clients_usecase.dart';
 import '../../domain/use_cases/reschedule_date_usecase.dart';
 import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
+import '../../domain/use_cases/start_date_visit_status_usecase.dart';
 import 'isolate_executor.dart';
 
 part 'dates_table_state.dart';
@@ -34,6 +35,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   final RescheduleDateUsecase _rescheduleDateUsecase;
   final ChangeDateToDonUsecase _changeDateToDonUsecase;
   final ConfirmVisitDateUsecase _confirmVisitDateUsecase;
+  final StartDateVisitStatusUsecase _startDateVisitStatusUsecase;
   final CancelScheduleUsecase _cancelScheduleUsecase;
   final ReturnScheduleVisitToOpenUsecase _returnScheduleVisitToOpenUsecase;
   final GetSubscribedClientsUsecase _getSubscribedClientsUsecase;
@@ -52,6 +54,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     this._getInvoicesByClientForDateUsecase,
     this._addDateInstallUsecase,
     this._getCancelReasonsUsecase,
+    this._startDateVisitStatusUsecase,
   ) : super(DatesTableState());
 
   String? changedIdUser;
@@ -249,7 +252,20 @@ class DatesTableCubit extends Cubit<DatesTableState> {
       emit(state.copyWith(confirmVisitDateStatus: BlocStatus.fail(error: l)));
     }, (r) {
       emit(state.copyWith(confirmVisitDateStatus: BlocStatus.success()));
-      pageVariables.changeItemFormSelectedDayEvents(r.message!);
+      pageVariables.changeItemLocal(r.message!);
+    });
+  }
+  Future<void> startDateVisit(
+      ConfirmVisitDateParams confirmVisitDateParams,String editItemId) async {
+    emit(state.copyWith(startDateVisitStatus: BlocStatus.loading(),editItemId: editItemId));
+
+    final result = await _startDateVisitStatusUsecase(confirmVisitDateParams);
+    result.fold((l) {
+      if (AppConstants.shouldReturnEarly(l)) return;
+      emit(state.copyWith(startDateVisitStatus: BlocStatus.fail(error: l)));
+    }, (r) {
+      emit(state.copyWith(startDateVisitStatus: BlocStatus.success()));
+      pageVariables.changeItemLocal(r.message!);
     });
   }
 

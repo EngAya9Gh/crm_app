@@ -21,13 +21,15 @@ import '../../domain/use_cases/reschedule_date_usecase.dart';
 import '../../domain/use_cases/return_schedule_visit_to_open_usecase.dart';
 
 abstract interface class DatesTableDataSource {
-  Future<PaginationResponseWrapper> getDateInstallation(
-      GetDateInstallationParams params);
+  Future<PaginationResponseWrapper> getDateInstallation(GetDateInstallationParams params);
 
   Future<dynamic> rescheduleDate(RescheduleDateParams params);
 
   Future<dynamic> changeDateToDone(ChangeDateToDoneParams params);
+
   Future<ResponseWrapper<EventModel>> verifyDateVisit(ConfirmVisitDateParams params);
+
+  Future<ResponseWrapper<EventModel>> startDateVisitStatus(ConfirmVisitDateParams params);
 
   Future<dynamic> cancelSchedule(CancelScheduleParams params);
 
@@ -37,11 +39,9 @@ abstract interface class DatesTableDataSource {
 
   Future<dynamic> getSubscribedClients(GetSubscribedClientsParams params);
 
-  Future<dynamic> getInvoicesByClientForDate(
-      GetInvoicesByClientForDateParams params);
+  Future<dynamic> getInvoicesByClientForDate(GetInvoicesByClientForDateParams params);
 
-  Future<PaginationResponseWrapper> getCancelReasons(
-      GetCancelReasonsParams params);
+  Future<PaginationResponseWrapper> getCancelReasons(GetCancelReasonsParams params);
 }
 
 @LazySingleton(as: DatesTableDataSource)
@@ -75,8 +75,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.post(
-        endPoint:
-            EndPoints.events.rescheduleOrCancelVisitClient(params.scheduleId),
+        endPoint: EndPoints.events.rescheduleOrCancelVisitClient(params.scheduleId),
         data: params.toMap(),
       );
 
@@ -93,8 +92,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
 
       final response = await _apiServices.post(
-        endPoint:
-            EndPoints.events.updateStatusForVisit(params.event.idClientsDate!),
+        endPoint: EndPoints.events.updateStatusForVisit(params.event.idClientsDate!),
         data: params.toMap(),
       );
       return apiDataHandler(response);
@@ -109,8 +107,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.post(
-        endPoint:
-            EndPoints.events.rescheduleOrCancelVisitClient(params.scheduleId),
+        endPoint: EndPoints.events.rescheduleOrCancelVisitClient(params.scheduleId),
         data: params.toMap(),
       );
 
@@ -140,8 +137,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
   }
 
   @override
-  Future<dynamic> getSubscribedClients(
-      GetSubscribedClientsParams params) async {
+  Future<dynamic> getSubscribedClients(GetSubscribedClientsParams params) async {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.get(
@@ -173,8 +169,7 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
   }
 
   @override
-  Future<PaginationResponseWrapper> getCancelReasons(
-      GetCancelReasonsParams params) async {
+  Future<PaginationResponseWrapper> getCancelReasons(GetCancelReasonsParams params) async {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.get(
@@ -189,14 +184,36 @@ class DatesTableDataSourceImpl implements DatesTableDataSource {
   }
 
   @override
-  Future<ResponseWrapper<EventModel>> verifyDateVisit(ConfirmVisitDateParams params)async {
+  Future<ResponseWrapper<EventModel>> verifyDateVisit(ConfirmVisitDateParams params) async {
     try {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.post(
         endPoint: EndPoints.events.verifyDateVisit(params.idVisit),
       );
 
-      return ResponseWrapper.fromJson(response, (json) => EventModel.fromJson(json),);
+      return ResponseWrapper.fromJson(
+        response,
+        (json) => EventModel.fromJson(json),
+      );
+    } on BaseAppException catch (e) {
+      debugPrint("error in verify date visit => ${e.message}");
+      throw e.message;
+    }
+  }
+
+  @override
+  Future<ResponseWrapper<EventModel>> startDateVisitStatus(ConfirmVisitDateParams params) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
+        endPoint: EndPoints.events.startDateVisitStatus(params.idVisit),
+        data: params.toMap(),
+      );
+
+      return ResponseWrapper.fromJson(
+        response,
+        (json) => EventModel.fromJson(json),
+      );
     } on BaseAppException catch (e) {
       debugPrint("error in verify date visit => ${e.message}");
       throw e.message;

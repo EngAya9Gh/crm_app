@@ -379,6 +379,7 @@ class _Events {
 
   String updateStatusForVisit(String scheduleId) => 'updateStatusForVisit/$scheduleId';
   String verifyDateVisit(String scheduleId) => 'verifyDateVisit/$scheduleId';
+  String startDateVisitStatus(String scheduleId) => 'startDateVisit/$scheduleId';
   final String addDateInstall = "addDateInstall";
 
   String rescheduleOrCancelVisitClient(String scheduleId) => "rescheduleOrCancelVisitClient/$scheduleId";

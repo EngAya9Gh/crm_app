@@ -811,6 +811,8 @@ import '../../../features/support/dates_table/domain/use_cases/reschedule_date_u
     as _i883;
 import '../../../features/support/dates_table/domain/use_cases/return_schedule_visit_to_open_usecase.dart'
     as _i307;
+import '../../../features/support/dates_table/domain/use_cases/start_date_visit_status_usecase.dart'
+    as _i567;
 import '../../../features/support/dates_table/presentation/manager/dates_table_cubit.dart'
     as _i546;
 import '../../../features/support/dates_timeline/data/data_sources/dates_timeline_datasource.dart'
@@ -1805,6 +1807,8 @@ _i174.GetIt $initGetIt(
       () => _i803.CancelScheduleUsecase(gh<_i61.DatesTableRepo>()));
   gh.lazySingleton<_i798.ChangeDateToDonUsecase>(
       () => _i798.ChangeDateToDonUsecase(gh<_i61.DatesTableRepo>()));
+  gh.lazySingleton<_i904.ConfirmVisitDateUsecase>(
+      () => _i904.ConfirmVisitDateUsecase(gh<_i61.DatesTableRepo>()));
   gh.lazySingleton<_i989.GetCancelReasonsUsecase>(
       () => _i989.GetCancelReasonsUsecase(gh<_i61.DatesTableRepo>()));
   gh.lazySingleton<_i438.GetDateInstallationUsecase>(
@@ -1817,8 +1821,8 @@ _i174.GetIt $initGetIt(
       () => _i883.RescheduleDateUsecase(gh<_i61.DatesTableRepo>()));
   gh.lazySingleton<_i307.ReturnScheduleVisitToOpenUsecase>(
       () => _i307.ReturnScheduleVisitToOpenUsecase(gh<_i61.DatesTableRepo>()));
-  gh.lazySingleton<_i904.ConfirmVisitDateUsecase>(
-      () => _i904.ConfirmVisitDateUsecase(gh<_i61.DatesTableRepo>()));
+  gh.lazySingleton<_i567.StartDateVisitStatusUsecase>(
+      () => _i567.StartDateVisitStatusUsecase(gh<_i61.DatesTableRepo>()));
   gh.factory<_i111.AddTaskUsecase>(
       () => _i111.AddTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i831.ChangeStatusTaskUsecase>(
@@ -1874,6 +1878,19 @@ _i174.GetIt $initGetIt(
         gh<_i521.GetCommentUsecase>(),
         gh<_i520.AddCommentUsecase>(),
       ));
+  gh.factory<_i546.DatesTableCubit>(() => _i546.DatesTableCubit(
+        gh<_i438.GetDateInstallationUsecase>(),
+        gh<_i883.RescheduleDateUsecase>(),
+        gh<_i798.ChangeDateToDonUsecase>(),
+        gh<_i904.ConfirmVisitDateUsecase>(),
+        gh<_i803.CancelScheduleUsecase>(),
+        gh<_i307.ReturnScheduleVisitToOpenUsecase>(),
+        gh<_i824.GetSubscribedClientsUsecase>(),
+        gh<_i735.GetInvoicesByClientForDateUsecase>(),
+        gh<_i888.AddDateInstallUsecase>(),
+        gh<_i989.GetCancelReasonsUsecase>(),
+        gh<_i567.StartDateVisitStatusUsecase>(),
+      ));
   gh.factory<_i566.ClientsDebtsCubit>(
       () => _i566.ClientsDebtsCubit(gh<_i699.GetClientsDebtsUsecase>()));
   gh.factory<_i412.PeriodicCommunicationCubit>(() =>
@@ -1914,18 +1931,6 @@ _i174.GetIt $initGetIt(
       _i819.WithdrawnInvoicesCubit(gh<_i209.GetWithdrawnInvoicesUsecase>()));
   gh.factory<_i349.WaitingAgentsCubit>(
       () => _i349.WaitingAgentsCubit(gh<_i941.GetWaitingAgentsUsecase>()));
-  gh.factory<_i546.DatesTableCubit>(() => _i546.DatesTableCubit(
-        gh<_i438.GetDateInstallationUsecase>(),
-        gh<_i883.RescheduleDateUsecase>(),
-        gh<_i798.ChangeDateToDonUsecase>(),
-        gh<_i904.ConfirmVisitDateUsecase>(),
-        gh<_i803.CancelScheduleUsecase>(),
-        gh<_i307.ReturnScheduleVisitToOpenUsecase>(),
-        gh<_i824.GetSubscribedClientsUsecase>(),
-        gh<_i735.GetInvoicesByClientForDateUsecase>(),
-        gh<_i888.AddDateInstallUsecase>(),
-        gh<_i989.GetCancelReasonsUsecase>(),
-      ));
   return getIt;
 }
 
