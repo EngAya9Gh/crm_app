@@ -13,6 +13,8 @@ class DatesTableState extends Equatable {
   final BlocStatus addDateInstallStatus;
   final BlocStatus getCancelReasonsStatus;
   final BlocStatus confirmVisitDateStatus;
+  final BlocStatus startDateVisitStatus;
+  final String editItemId;
 
   const DatesTableState({
     this.refreshUi = 0,
@@ -23,10 +25,12 @@ class DatesTableState extends Equatable {
     this.cancelScheduleStatus = const BlocStatus.initial(),
     this.reOpenEventStatus = const BlocStatus.initial(),
     this.confirmVisitDateStatus = const BlocStatus.initial(),
+    this.startDateVisitStatus = const BlocStatus.initial(),
     this.getSubscribedClientsStatus = const BlocStatus.initial(),
     this.getInvoicesByClientForDateStatus = const BlocStatus<List<DateInvoiceModel>>.initial(),
     this.addDateInstallStatus = const BlocStatus.initial(),
     this.getCancelReasonsStatus = const BlocStatus.initial(),
+    this.editItemId = '-1',
   });
 
   DatesTableState copyWith({
@@ -36,12 +40,14 @@ class DatesTableState extends Equatable {
     BlocStatus? rescheduleDateStatus,
     BlocStatus? changeDateToDoneStatus,
     BlocStatus? confirmVisitDateStatus,
+    BlocStatus? startDateVisitStatus,
     BlocStatus? cancelScheduleStatus,
     BlocStatus? reOpenEventStatus,
     BlocStatus? getSubscribedClientsStatus,
     BlocStatus<List<DateInvoiceModel>>? getInvoicesByClientForDateStatus,
     BlocStatus? addDateInstallStatus,
     BlocStatus? getCancelReasonsStatus,
+    String? editItemId,
   }) {
     return DatesTableState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
@@ -56,6 +62,8 @@ class DatesTableState extends Equatable {
       addDateInstallStatus: addDateInstallStatus ?? this.addDateInstallStatus,
       getCancelReasonsStatus: getCancelReasonsStatus ?? this.getCancelReasonsStatus,
       confirmVisitDateStatus: confirmVisitDateStatus ?? this.confirmVisitDateStatus,
+      startDateVisitStatus: startDateVisitStatus ?? this.startDateVisitStatus,
+      editItemId: editItemId ?? this.editItemId,
     );
   }
 
@@ -74,6 +82,8 @@ class DatesTableState extends Equatable {
       addDateInstallStatus,
       getCancelReasonsStatus,
       confirmVisitDateStatus,
+      startDateVisitStatus,
+      editItemId,
     ];
   }
 }

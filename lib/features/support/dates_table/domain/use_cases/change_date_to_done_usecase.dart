@@ -24,10 +24,10 @@ class ChangeDateToDonUsecase
 class ChangeDateToDoneParams {
   late final String? isDone;
   final EventModel event;
-  final String location;
+  final String? location;
   ChangeDateToDoneParams({
     required this.event,
-    required this.location,
+    this.location,
   }) {
     this.isDone = IsDoneDateEnum.done.index.toString();
   }
@@ -39,7 +39,7 @@ class ChangeDateToDoneParams {
       'type_date': event.typeDate,
       'location': location,
       ..._prepareParams(),
-    };
+    }..removeWhere((key, value) => value==null,);
   }
 
   Map<String, dynamic> _prepareParams() {

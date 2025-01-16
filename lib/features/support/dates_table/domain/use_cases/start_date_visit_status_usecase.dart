@@ -6,11 +6,12 @@ import '../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../common/client_profile/client_dates_tab/data/models/client_date_model.dart';
 import '../repositories/dates_table_repo.dart';
 import 'change_date_to_done_usecase.dart';
+import 'cofirm_visit_date_usecase.dart';
 
 @lazySingleton
-class ConfirmVisitDateUsecase
+class StartDateVisitStatusUsecase
     extends BaseUsecase<Either<String, ResponseWrapper<EventModel>>, ConfirmVisitDateParams> {
-  ConfirmVisitDateUsecase(this._repository);
+  StartDateVisitStatusUsecase(this._repository);
 
   final DatesTableRepo _repository;
 
@@ -18,21 +19,6 @@ class ConfirmVisitDateUsecase
   Future<Either<String, ResponseWrapper<EventModel>>> call(
       ConfirmVisitDateParams params,
   ) async {
-    return await _repository.confirmVisitDate(params);
-  }
-}
-
-class ConfirmVisitDateParams{
-  final String idVisit;
-  final String? location;
-  const ConfirmVisitDateParams({
-    required this.idVisit,
-    this.location,
-  });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'location': this.location,
-    };
+    return await _repository.startDateVisitStatus(params);
   }
 }

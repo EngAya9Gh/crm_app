@@ -33,6 +33,7 @@ class GetPeriodicCommunicationParams {
   final String? dateTo;
   final String? type;
   final double? rate;
+  final int clientWhoNotRate;
 
   const GetPeriodicCommunicationParams({
     this.skip = 0,
@@ -45,6 +46,7 @@ class GetPeriodicCommunicationParams {
     this.dateTo,
     this.rate,
     this.type,
+    this.clientWhoNotRate=0,
   });
 
   Map<String, dynamic> toParams() {
@@ -53,6 +55,7 @@ class GetPeriodicCommunicationParams {
       'limit': limit,
       'fk_user': fkUser,
       'filter': filter,
+      'not_rated':clientWhoNotRate,
     };
 
     if (periodicCommunicationType.isEvaluated) {

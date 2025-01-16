@@ -283,7 +283,7 @@ class Invoice_Service {
       Map<String, dynamic> body, String idInvoice) async {
     var result = await Api().post(
         url: EndPoints.baseUrls.urlLaravel + "payments/$idInvoice", body: body);
-    return InvoiceModel.fromJson(result); //=="done"? true:false;
+    return InvoiceModel.fromJson(result['message']); //=="done"? true:false;
   }
 
   Future<InvoiceModel> editinvoice(
@@ -293,7 +293,7 @@ class Invoice_Service {
     var result = await Api().post(
         url: EndPoints.baseUrls.urlLaravel + "editInvoice/$idInvoice",
         body: body);
-    return InvoiceModel.fromJson(result); //=="done"? true:false;
+    return InvoiceModel.fromJson(result['message']); //=="done"? true:false;
   }
 
   Future<String> deleteInvoiceById(String idInvoice) async {

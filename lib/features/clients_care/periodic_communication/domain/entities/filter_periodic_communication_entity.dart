@@ -8,17 +8,18 @@ class FilterPeriodicCommunicationEntity {
   FilterPeriodicCommunicationEntity();
 
   ValueNotifier<bool> isMyClientsNotifier = ValueNotifier<bool>(false);
+  ValueNotifier<bool> isClientWhoNotRate = ValueNotifier<bool>(false);
   ValueNotifier<String?> userIdNotifier = ValueNotifier<String?>(null);
   ValueNotifier<double?> rateNotifier = ValueNotifier<double?>(null);
   ValueNotifier<PeriodicCommunicationClientTypeEnum?> type = ValueNotifier<PeriodicCommunicationClientTypeEnum?>(null);
-  ValueNotifier<BranchModel?> regionNotifier =
-      ValueNotifier<BranchModel?>(null);
+  ValueNotifier<BranchModel?> regionNotifier = ValueNotifier<BranchModel?>(null);
 
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
     isMyClientsNotifier.value = false;
+    isClientWhoNotRate.value = false;
     userIdNotifier.value = null;
     regionNotifier.value = null;
     rateNotifier.value = null;
@@ -31,6 +32,7 @@ class FilterPeriodicCommunicationEntity {
   void savePreviousState() {
     _previousState = FilterPeriodicCommunicationEntity()
       ..isMyClientsNotifier.value = this.isMyClientsNotifier.value
+      ..isClientWhoNotRate.value = this.isClientWhoNotRate.value
       ..userIdNotifier.value = this.userIdNotifier.value
       ..regionNotifier.value = this.regionNotifier.value
       ..rateNotifier.value = this.rateNotifier.value
@@ -49,6 +51,7 @@ class FilterPeriodicCommunicationEntity {
   Iterable<Listenable?> listenables() {
     return [
       isMyClientsNotifier,
+      isClientWhoNotRate,
       userIdNotifier,
       regionNotifier,
       rateNotifier,
@@ -59,6 +62,7 @@ class FilterPeriodicCommunicationEntity {
 
   bool checkIfFilterIsNotEmpty() {
     return isMyClientsNotifier.value ||
+        isClientWhoNotRate.value ||
         userIdNotifier.value != null ||
         regionNotifier.value != null ||
         rateNotifier.value != null ||

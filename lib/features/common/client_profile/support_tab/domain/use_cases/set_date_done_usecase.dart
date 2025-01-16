@@ -23,18 +23,18 @@ class SetDateDoneUsecase
 class SetDateDoneParams {
   final String id_invoice;
   final String clientusername;
-  final String location;
+  // final String location;
   SetDateDoneParams({
     required this.id_invoice,
     required this.clientusername,
-    required this.location,
+    // required this.location,
   });
 
   Map<String, dynamic> toMap() {
     return {
       // 'id_invoice': id_invoice,
       'clientusername': clientusername,
-      'location': location,
+      // 'location': location,
     };
   }
 }

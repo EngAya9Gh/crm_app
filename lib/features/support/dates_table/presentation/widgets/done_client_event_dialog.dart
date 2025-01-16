@@ -48,15 +48,14 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
     super.initState();
   }
 
-  Future<void> getLocation()async {
+  Future<void> getLocation() async {
     final LocationData locationData = await locationService.getLocation();
     final LatLng myLocation = LatLng(
       locationData.latitude!,
       locationData.longitude!,
     );
-    location ='${myLocation.latitude},${myLocation.longitude}';
+    location = '${myLocation.latitude},${myLocation.longitude}';
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +111,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                             await datesTableCubit.changeDateToDone(
                               ChangeDateToDoneParams(
                                 event: editedEvent,
-                                location: location!
+                                location: (widget.event.typeDate == InstallationTypeEnum.online) ? location! : null,
                               ),
                               onSuccess: (value) {
                                 datesTableCubit.handleEventsMap(

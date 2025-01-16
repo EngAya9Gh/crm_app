@@ -114,10 +114,10 @@ class DatesTablePageVariablesEntity {
     selectedDayEvents.value = List.from(eventDataSource[selectedDay] ?? []);
   }
 
-  void changeItemFormSelectedDayEvents(EventModel eventModel) {
+  void changeItemLocal(EventModel eventModel) {
     selectedDayEvents.value = selectedDayEvents.value
         .map(
-          (e) => e.idClientsDate == eventModel.idClientsDate ? e.copyWith(verifiedAt: eventModel.verifiedAt) : e,
+          (e) => e.idClientsDate == eventModel.idClientsDate ? e.copyWith(verifiedAt: eventModel.verifiedAt,isDone: eventModel.isDone) : e,
         )
         .toList();
   }

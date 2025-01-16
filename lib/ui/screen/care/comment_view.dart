@@ -1,17 +1,15 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
-import 'package:crm_smart/core/common/helpers/selected_sections_handler.dart';
 import 'package:crm_smart/core/common/widgets/app_icon.dart';
-import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 
 import '../../../core/common/enums/comments/comment_type_enum.dart';
@@ -31,8 +29,7 @@ import '../../../model/usermodel.dart';
 import '../../../view_model/comment.dart';
 import '../../../view_model/user_vm_provider.dart';
 import 'card_comment.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-
+RegExp mentionEegExpr=RegExp(r'@[\w\u0600-\u06FF\u200C.-]+');
 class CommentView extends StatefulWidget {
   CommentView({
     required this.client,
@@ -57,6 +54,8 @@ class _CommentViewState extends State<CommentView> {
   List<UserEntity>? usersMentioned = [];
   List<String>? filterUserName = [];
   ValueNotifier<List<UserEntity>?> _suggestions = ValueNotifier([]);
+  final ValueNotifier<CommentModel?> updateItem = ValueNotifier(null);
+
   @override
   void initState() {
     pro = context.read<UserProvider>()..getCurrentUser();
@@ -121,9 +120,6 @@ class _CommentViewState extends State<CommentView> {
                                 maxLines: 5,
                                 minLines: 1,
                                 textDirection: TextDirection.rtl,
-                                onMentionAdd: (p0) {
-                                  usersMentioned = List.of(usersMentioned ?? [])..add(UserEntity(id: p0['id'], name: p0['display']));
-                                },
                                 mentions: [
                                   Mention(
                                     suggestionBuilder: (p0) => Padding(
@@ -147,63 +143,69 @@ class _CommentViewState extends State<CommentView> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                AppElevatedButton(
-                                  text: _selectedCommentType?.value ?? 'نوع التعليق',
-                                  onPressed: () {
-                                    // show dialog with the dropdown button
-                                    AppConstants.showAppDialog(
-                                      child: AppDialog(
-                                        title: 'نوع التعليق',
-                                        children: [
-                                          Directionality(
-                                            textDirection: TextDirection.rtl,
-                                            child: CustomDropDown(
-                                              hint: 'نوع التعليق',
-                                              items: CommentTypeEnum.values,
-                                              itemAsString: (value) => value!.value,
-                                              selectedItem: _selectedCommentType,
-                                              onChanged: (value) {
-                                                if (value == null) {
-                                                  return;
-                                                }
-                                                _previousSelectedCommentType = _selectedCommentType;
-                                                _selectedCommentType = value;
-                                              },
-                                              validator: InputValidator.requiredFiled,
-                                            ),
-                                          ),
-                                          20.height,
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            children: [
-                                              AppElevatedButton(
-                                                text: 'إلغاء',
-                                                onPressed: () {
-                                                  _selectedCommentType = _previousSelectedCommentType;
-                                                  Navigator.of(context, rootNavigator: true).pop(false);
+                                ValueListenableBuilder(
+                                  valueListenable: updateItem,
+                                  builder: (context, value, child) => AppElevatedButton(
+                                    text: value?.type_comment ?? _selectedCommentType?.value ?? 'نوع التعليق',
+                                    onPressed: () {
+                                      // show dialog with the dropdown button
+                                      AppConstants.showAppDialog(
+                                        child: AppDialog(
+                                          title: 'نوع التعليق',
+                                          children: [
+                                            Directionality(
+                                              textDirection: TextDirection.rtl,
+                                              child: CustomDropDown(
+                                                hint: 'نوع التعليق',
+                                                items: CommentTypeEnum.values,
+                                                itemAsString: (value) => value!.value,
+                                                selectedItem: value?.type_comment != null
+                                                    ? CommentTypeEnum.values.firstWhere((element) => element.value == value!.type_comment)
+                                                    : _selectedCommentType,
+                                                onChanged: (value) {
+                                                  if (value == null) {
+                                                    return;
+                                                  }
+                                                  _previousSelectedCommentType = _selectedCommentType;
+                                                  _selectedCommentType = value;
                                                 },
+                                                validator: InputValidator.requiredFiled,
                                               ),
-                                              AppElevatedButton(
-                                                  text: 'حفظ',
+                                            ),
+                                            20.height,
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              children: [
+                                                AppElevatedButton(
+                                                  text: 'إلغاء',
                                                   onPressed: () {
-                                                    try {
-                                                      if (_selectedCommentType != null) {
-                                                        _previousSelectedCommentType = _selectedCommentType;
-                                                        setState(() {});
+                                                    _selectedCommentType = _previousSelectedCommentType;
+                                                    Navigator.of(context, rootNavigator: true).pop(false);
+                                                  },
+                                                ),
+                                                AppElevatedButton(
+                                                    text: 'حفظ',
+                                                    onPressed: () {
+                                                      try {
+                                                        if (_selectedCommentType != null) {
+                                                          _previousSelectedCommentType = _selectedCommentType;
+                                                          updateItem.value=updateItem.value?.copyWith(type_comment: _selectedCommentType?.value);
+                                                          setState(() {});
+                                                          Navigator.of(context, rootNavigator: true).pop(false);
+                                                        }
+                                                      } catch (e) {
+                                                        print(e);
                                                         Navigator.of(context, rootNavigator: true).pop(false);
                                                       }
-                                                    } catch (e) {
-                                                      print(e);
-                                                      Navigator.of(context, rootNavigator: true).pop(false);
-                                                    }
-                                                  }),
-                                            ],
-                                          ),
-                                          5.height,
-                                        ],
-                                      ),
-                                    );
-                                  },
+                                                    }),
+                                              ],
+                                            ),
+                                            5.height,
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                                 Consumer<comment_vm>(
                                   builder: (context, value, child) {
@@ -218,8 +220,6 @@ class _CommentViewState extends State<CommentView> {
                                     }
                                     return InkWell(
                                       onTap: () async {
-                                        key = GlobalKey();
-                                        usersMentioned = [];
                                         return _sendComment(context);
                                       },
                                       child: AppIcon(
@@ -263,7 +263,7 @@ class _CommentViewState extends State<CommentView> {
                     onChanged: (value) {
                       if (value == null) return;
 
-                      Provider.of<comment_vm>(context, listen: false).filterCommentsByType(value.value,nameUsers: filterUserName);
+                      Provider.of<comment_vm>(context, listen: false).filterCommentsByType(value.value, nameUsers: filterUserName);
                       _filterCommentType = value;
                       setState(() {});
                     },
@@ -277,7 +277,7 @@ class _CommentViewState extends State<CommentView> {
                     child: ValueListenableBuilder(
                       valueListenable: _suggestions,
                       builder: (context, value, child) => CustomMultiSelectionDropdown<UserEntity>(
-                        hint: 'المشاركين*',
+                        hint: 'الاشخاص المشار لهم بالتعلق',
                         items: value ?? [],
                         selectedItems: value?.where((element) => filterUserName?.contains(element) ?? false).toList() ?? [],
                         onSave: (value) {
@@ -335,6 +335,15 @@ class _CommentViewState extends State<CommentView> {
                                     userModel: currentUser,
                                     commentmodel: value.filteredComments[index],
                                     idClients: widget.client!.idClients!,
+                                    editCommentModel: (value) {
+                                      updateItem.value = value;
+                                      _selectedCommentType = CommentTypeEnum.values.firstWhere((element) => element.value == value.type_comment);
+                                      // usersMentioned = [...value.mention_users!];
+                                      key.currentState?.controller?.text = value.content;
+                                      for (UserEntity item in value.mention_users ?? []) {
+                                        key.currentState?.controller?.text = (key.currentState?.controller?.text ?? '') + " @${item.name.replaceAll(' ', '_')} ";
+                                      }
+                                    },
                                   );
                                 },
                                 childCount: value.filteredComments.length,
@@ -352,28 +361,53 @@ class _CommentViewState extends State<CommentView> {
   }
 
   Future<void> _sendComment(BuildContext context) async {
+    var listNames=mentionEegExpr.allMatches(key.currentState!.controller!.text).map((e) => e.group(0)?.replaceAll('_', ' ').substring(1)).toList();
+    usersMentioned=_suggestions.value?.where((e) {
+      return listNames.any((element) => element==e.name);
+    },).toList();
+    print(listNames);
+    print(usersMentioned);
     try {
       print(_selectedCommentType);
       if (_globalKey.currentState!.validate() && _selectedCommentType?.value != null) {
         _globalKey.currentState!.save();
-        Provider.of<comment_vm>(context, listen: false).addComment_vm({
-          'fk_user': await Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
-          'fk_client': widget.client!.idClients!,
-          'fkuser_client': widget.client!.fkUser.toString(),
-          'date_comment': DateTime.now().toString(),
-          //صتحب العميل
-          'nameUser': Provider.of<UserProvider>(context, listen: false).currentUser.nameUser,
-          'img_image': '',
-          'name_enterprise': widget.client!.nameEnterprise!,
-          'content': _comment.text,
-          if (_selectedCommentType != null) 'type_comment': _selectedCommentType?.value,
-        }, Provider.of<UserProvider>(context, listen: false).currentUser.img_image, widget.client!.idClients.toString(), usersMentioned ?? []).then(
+        if (updateItem.value == null) {
+          Provider.of<comment_vm>(context, listen: false).addComment_vm(
+            {
+              'fk_user': await Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
+              'fk_client': widget.client!.idClients!,
+              'fkuser_client': widget.client!.fkUser.toString(),
+              'date_comment': DateTime.now().toString(),
+              //صتحب العميل
+              'nameUser': Provider.of<UserProvider>(context, listen: false).currentUser.nameUser,
+              'img_image': '',
+              'name_enterprise': widget.client!.nameEnterprise!,
+              'content': key.currentState?.controller?.text.replaceAll(mentionEegExpr, '').trim(),
+              if (_selectedCommentType != null) 'type_comment': _selectedCommentType?.value,
+            },
+            Provider.of<UserProvider>(context, listen: false).currentUser.img_image,
+            widget.client!.idClients.toString(),
+            usersMentioned ?? [],
+          ).then((value) {
+            if (value != "error") {
+              Provider.of<comment_vm>(context, listen: false).getComments(widget.client!.idClients.toString());
+              _comment.text = '';
+            }
+          });
+        } else if (updateItem.value != null) {
+          await Provider.of<comment_vm>(context, listen: false)
+              .editComment_vm(key.currentState!.controller!.text.replaceAll(mentionEegExpr, '').trim(),
+                  updateItem.value!.copyWith(type_comment: _selectedCommentType?.value),usersMentioned??[])
+              .then(
             (value) {
-          if (value != "error") {
-            Provider.of<comment_vm>(context, listen: false).getComments(widget.client!.idClients.toString());
-            _comment.text = '';
-          }
-        });
+              Provider.of<comment_vm>(context, listen: false).getComments(widget.client!.idClients.toString());
+            },
+          );
+        }
+        key=GlobalKey<FlutterMentionsState>();
+        usersMentioned=[];
+        updateItem.value=null;
+        _selectedCommentType=null;
       } else {
         AppSnackbar.showSnakeBar(
           'من فضلك ادخل التعليق',
@@ -397,7 +431,7 @@ class _CommentViewState extends State<CommentView> {
   Map<String, dynamic> convertEntityToMapMention(UserEntity userEntity) {
     return {
       'id': userEntity.id,
-      'display': userEntity.name,
+      'display': userEntity.name.replaceAll(' ', '_'),
     };
   }
 }

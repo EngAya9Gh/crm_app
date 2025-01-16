@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 
 import '../../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../../core/config/navigator/app_routes_names.dart';
+import '../../../../../../core/config/navigator/app_routes_paths.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../support/dates_table/presentation/pages/dates_table_page.dart';
@@ -49,7 +51,7 @@ class ClientSupportCardDetails extends StatelessWidget {
               ),
             ],
             InkWell(
-              onTap: () => AppNavigator.go(DatesTablePage()),
+              onTap: () => AppNavigator.go(DatesTablePage(),name: AppRoutesPaths.supportSubSections.datesTable),
               child: CardRow(title: 'عدد الزيارات التي تمت ', value: datesInstallation.where((element) => element.isDone == "1").length.toString()),
             ),
             InkWell(

@@ -2,10 +2,15 @@ import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/models/event_model.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
+import '../../../../../../core/services/di/di_container.dart';
+import '../../../../../../core/services/maps/location_services.dart';
 import '../../../../../../view_model/event_provider.dart';
 import '../../../domain/use_cases/cofirm_visit_date_usecase.dart';
 import '../../manager/dates_table_cubit.dart';
@@ -27,11 +32,23 @@ class DateActionsButtons extends StatefulWidget {
 
 class _DateActionsButtonsState extends State<DateActionsButtons> {
   late final EventProvider eventProvider;
-  late final EventModel eventModel;
   late final DatesTableCubit datesTableCubit;
+  String? location;
+  late final LocationServices locationService;
+
+  Future<void> getLocation() async {
+    final LocationData locationData = await locationService.getLocation();
+    final LatLng myLocation = LatLng(
+      locationData.latitude!,
+      locationData.longitude!,
+    );
+    location = '${myLocation.latitude},${myLocation.longitude}';
+  }
 
   @override
   void initState() {
+    locationService = getIt<LocationServices>();
+    getLocation();
     eventProvider = context.read<EventProvider>();
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
     super.initState();
@@ -41,23 +58,47 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-       if(widget.eventModel.verifiedAt==null) BlocBuilder<DatesTableCubit,DatesTableState>(
-          builder: (context, state)   {
-            if (state.confirmVisitDateStatus.isLoading()) {
-              return SizedBox(
-                height: 20,
-                width: 20,
-                child: AppLoader(),
+        if (widget.eventModel.verifiedAt == null&&widget.eventModel.isDone!=IsDoneDateEnum.started.value)
+          BlocBuilder<DatesTableCubit, DatesTableState>(
+            builder: (context, state) {
+              if (state.confirmVisitDateStatus.isLoading()) {
+                return SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: AppLoader(),
+                );
+              }
+              return _CustomTextButton(
+                text: "تأكيد الموعد",
+                onTap: () async {
+                  await datesTableCubit.confirmVisitDate(
+                    ConfirmVisitDateParams(idVisit: widget.eventModel.idClientsDate!),
+                  );
+                },
               );
-            }
-            return _CustomTextButton(
-              text: "تأكيد الموعد",
-              onTap: () async {
-                await datesTableCubit.confirmVisitDate(ConfirmVisitDateParams(idVisit: widget.eventModel.idClientsDate!),);
-              },
-            );
-          },
-        ),
+            },
+          ),
+        if(widget.eventModel.isDone!=IsDoneDateEnum.started.value)
+          BlocBuilder<DatesTableCubit, DatesTableState>(
+            builder: (context, state) {
+              print(widget.eventModel.isDone);
+              print(widget.eventModel.isDone != '4');
+              if (state.startDateVisitStatus.isLoading() && state.editItemId == widget.eventModel.idClientsDate) {
+                return SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: AppLoader(),
+                );
+              }
+              return _CustomTextButton(
+                text: "بدء الزيارة",
+                onTap: () async {
+                  await datesTableCubit.startDateVisit(
+                      ConfirmVisitDateParams(idVisit: widget.eventModel.idClientsDate!, location: location), widget.eventModel.idClientsDate!);
+                },
+              );
+            },
+          ),
         Consumer<EventProvider>(
           builder: (context, eventProvider, _) {
             if (eventProvider.isloadingDoneEvent) {
@@ -68,16 +109,15 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
               );
             }
             return _CustomTextButton(
-              text: "تمت الزيارة",
+              text: "إغلاق الزيارة",
               onTap: () async {
-                _showDialog(
-                    body: DoneClientEventDialog(event: widget.eventModel));
+                _showDialog(body: DoneClientEventDialog(event: widget.eventModel));
               },
             );
           },
         ),
         const SizedBox(height: 10),
-        _CustomTextButton(
+        if(widget.eventModel.isDone!=IsDoneDateEnum.started.value)  _CustomTextButton(
           text: "إعادة جدولة",
           onTap: () async {
             final EventModel? editedEvent = await _showDialog(
@@ -92,7 +132,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
           },
         ),
         const SizedBox(height: 10),
-        _CustomTextButton(
+      if(widget.eventModel.isDone!=IsDoneDateEnum.started.value)  _CustomTextButton(
           text: 'إلغاء',
           onTap: () async {
             final EventModel? editedEvent = await _showDialog(

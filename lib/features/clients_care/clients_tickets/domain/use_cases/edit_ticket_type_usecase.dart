@@ -48,9 +48,9 @@ class EditTicketTypeParams {
     if (notesRate != null) {
       map["notes_rate"] = notesRate;
     }
-    if (rate != null) {
+    // if (rate != null) {
       map["rate"] = rate;
-    }
+    // }
     if (notesTicket != null) {
       map["notes_ticket"] = notesTicket;
     }

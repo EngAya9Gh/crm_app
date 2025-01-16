@@ -41,7 +41,7 @@ class ClientsStatusReportsBody extends StatelessWidget {
               return DataRow(
                 cells: <DataCell>[
                   AppDataTableCell(
-                    value: item.x,
+                    value: item.x.isEmpty?'leads':item.x,
                     width: MediaQuery.of(context).size.width * 0.4,
                   ),
                   AppDataTableCell(
