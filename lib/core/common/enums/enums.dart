@@ -63,7 +63,7 @@ extension YesNoEnumExtension on YesNoEnum {
   }
 }
 
-enum IsDoneDateEnum { notVisited, done, canceled, scheduled }
+enum IsDoneDateEnum { notVisited, done, canceled, scheduled,started }
 
 extension IsDoneDateEnumExtension on IsDoneDateEnum {
   String get name {
@@ -76,6 +76,8 @@ extension IsDoneDateEnumExtension on IsDoneDateEnum {
         return 'تم الالغاء';
       case IsDoneDateEnum.scheduled:
         return 'مجدولة';
+      case IsDoneDateEnum.started:
+        return 'بدءالزيارة';
     }
   }
 
@@ -89,6 +91,8 @@ extension IsDoneDateEnumExtension on IsDoneDateEnum {
         return '2';
       case IsDoneDateEnum.scheduled:
         return '3';
+      case IsDoneDateEnum.started:
+        return '4';
     }
   }
 
@@ -103,6 +107,8 @@ extension IsDoneDateEnumExtension on IsDoneDateEnum {
         return IsDoneDateEnum.canceled;
       case '3':
         return IsDoneDateEnum.scheduled;
+      case '4':
+        return IsDoneDateEnum.started;
       default:
         return IsDoneDateEnum.notVisited;
     }

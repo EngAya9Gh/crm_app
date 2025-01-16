@@ -115,7 +115,7 @@ class _EventCardState extends State<EventCard> {
   }
 
   bool _isOpen(EventModel event) {
-    return event.isDone == IsDoneDateEnum.notVisited.value || event.isDone == IsDoneDateEnum.scheduled.value;
+    return event.isDone == IsDoneDateEnum.notVisited.value || event.isDone == IsDoneDateEnum.scheduled.value||event.isDone==IsDoneDateEnum.started.value;
   }
 
   Widget _handleDateActions(EventModel event) {

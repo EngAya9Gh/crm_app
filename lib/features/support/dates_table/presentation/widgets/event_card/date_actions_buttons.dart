@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/models/event_model.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/services/di/di_container.dart';
@@ -57,7 +58,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (widget.eventModel.verifiedAt == null)
+        if (widget.eventModel.verifiedAt == null&&widget.eventModel.isDone!=IsDoneDateEnum.started.value)
           BlocBuilder<DatesTableCubit, DatesTableState>(
             builder: (context, state) {
               if (state.confirmVisitDateStatus.isLoading()) {
@@ -77,7 +78,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
               );
             },
           ),
-        if (widget.eventModel.isDone != '4')
+        if(widget.eventModel.isDone!=IsDoneDateEnum.started.value)
           BlocBuilder<DatesTableCubit, DatesTableState>(
             builder: (context, state) {
               print(widget.eventModel.isDone);
@@ -116,7 +117,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
           },
         ),
         const SizedBox(height: 10),
-        _CustomTextButton(
+        if(widget.eventModel.isDone!=IsDoneDateEnum.started.value)  _CustomTextButton(
           text: "إعادة جدولة",
           onTap: () async {
             final EventModel? editedEvent = await _showDialog(
@@ -131,7 +132,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
           },
         ),
         const SizedBox(height: 10),
-        _CustomTextButton(
+      if(widget.eventModel.isDone!=IsDoneDateEnum.started.value)  _CustomTextButton(
           text: 'إلغاء',
           onTap: () async {
             final EventModel? editedEvent = await _showDialog(

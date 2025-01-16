@@ -21,12 +21,10 @@ class FilterPeriodicCommunicationSheet extends StatefulWidget {
   const FilterPeriodicCommunicationSheet({super.key});
 
   @override
-  State<FilterPeriodicCommunicationSheet> createState() =>
-      _FilterPeriodicCommunicationSheetState();
+  State<FilterPeriodicCommunicationSheet> createState() => _FilterPeriodicCommunicationSheetState();
 }
 
-class _FilterPeriodicCommunicationSheetState
-    extends State<FilterPeriodicCommunicationSheet> {
+class _FilterPeriodicCommunicationSheetState extends State<FilterPeriodicCommunicationSheet> {
   late final PeriodicCommunicationCubit _cubit;
 
   @override
@@ -72,8 +70,7 @@ class _FilterPeriodicCommunicationSheetState
                     _cubit.filterEntity.isMyClientsNotifier.value = value;
                     refresh(() {});
                     if (value) {
-                      _cubit.filterEntity.userIdNotifier.value =
-                          AppConstants.currentUser.idUser;
+                      _cubit.filterEntity.userIdNotifier.value = AppConstants.currentUser.idUser;
                     } else {
                       _cubit.filterEntity.userIdNotifier.value = null;
                     }
@@ -81,6 +78,16 @@ class _FilterPeriodicCommunicationSheetState
                   title: AppText("عملائي"),
                 );
               },
+            ),
+            ValueListenableBuilder(
+               valueListenable:_cubit.filterEntity.isClientWhoNotRate ,
+              builder:(context, value, child) =>  SwitchListTile(
+                value: value,
+                onChanged: (value) {
+                  _cubit.filterEntity.isClientWhoNotRate.value = value;
+                },
+                title: AppText("العملاء الذين لم يقيموا"),
+              ),
             ),
             if (_cubit.pageVariables.periodicCommunicationType.isEvaluated) ...[
               10.height,
@@ -98,8 +105,7 @@ class _FilterPeriodicCommunicationSheetState
                     child: CustomDateTimePicker(
                       hintText: 'من تاريخ',
                       dateTimeType: DateTimeEnum.date,
-                      dateTimeController:
-                          _cubit.filterEntity.dateFromController,
+                      dateTimeController: _cubit.filterEntity.dateFromController,
                       style2: true,
                     ),
                   ),
@@ -138,8 +144,7 @@ class _FilterPeriodicCommunicationSheetState
             ],
             10.height,
             BranchSearchableDropDown(
-              selectedBranchId:
-                  _cubit.filterEntity.regionNotifier.value?.branchId,
+              selectedBranchId: _cubit.filterEntity.regionNotifier.value?.branchId,
               onSelected: (value) {
                 _cubit.filterEntity.regionNotifier.value = value;
               },

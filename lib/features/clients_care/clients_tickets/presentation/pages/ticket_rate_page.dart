@@ -30,7 +30,7 @@ class _TicketRatePageState extends State<TicketRatePage> {
   bool numberwrong = false;
   bool repeat = false;
   bool isdone = false;
-  double rate = 1.0;
+  double? rate;
   TextEditingController _textnotes = TextEditingController();
   late ConfigModel peroid;
 
@@ -79,8 +79,8 @@ class _TicketRatePageState extends State<TicketRatePage> {
                 children: [
                   Text('التقييم 1/5'),
                   RatingBar.builder(
-                    initialRating: 1,
-                    minRating: 1,
+                    initialRating: 0,
+                    minRating: 0,
                     direction: Axis.horizontal,
                     allowHalfRating: false,
                     itemCount: 5,
@@ -114,7 +114,7 @@ class _TicketRatePageState extends State<TicketRatePage> {
                         typeTicket: TicketTypesEnum.rate.nameEn,
                         notes: _textnotes.text,
                         notesRate: _textnotes.text,
-                        rate: rate.toString(),
+                        rate:rate==0?null.toString(): rate.toString(),
                       ));
                       AppNavigator.pop();
                     },
