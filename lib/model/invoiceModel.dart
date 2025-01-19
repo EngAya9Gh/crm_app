@@ -129,6 +129,12 @@ class InvoiceModel {
 
   //endregion
 
+  //region training
+  final TrainingModel? trainingPlan;
+  final TrainingModel? trainingSession;
+  final TrainingModel? trainingMultiSession;
+  //endregion
+
   //region Constructor
   InvoiceModel({
     this.idInvoice,
@@ -241,6 +247,9 @@ class InvoiceModel {
     this.isDeleted,
     this.renewInventory,
     this.renewPos,
+    this.trainingPlan,
+    this.trainingSession,
+    this.trainingMultiSession,
   });
 
   bool searchString(String query) {
@@ -278,6 +287,9 @@ class InvoiceModel {
               ? jsondata['imagelogo']
               : EndPoints.baseUrls.laravelFilesUrl + jsondata['imagelogo'],
         ),
+        trainingPlan: jsondata['training_plan']==null?null:TrainingModel.fromJson(jsondata['training_plan']),
+        trainingSession: jsondata['training_session']==null?null:TrainingModel.fromJson(jsondata['training_session']),
+        trainingMultiSession: jsondata['training_multi_session']==null?null:TrainingModel.fromJson(jsondata['training_multi_session']),
         fkIdClient: ApiHelper.handleString(jsondata['fk_idClient']),
         fkIdUser: ApiHelper.handleString(jsondata['fk_idUser']),
         amountPaid: ApiHelper.handleString(jsondata['amount_paid']),
@@ -935,6 +947,30 @@ class DateInstallationClient {
       dateEnd: dateEnd ?? this.dateEnd,
       nameAgent: nameAgent ?? this.nameAgent,
       force: force,
+    );
+  }
+}
+
+class TrainingModel{
+  final String name;
+  final String path;
+
+  const TrainingModel({
+    required this.name,
+    required this.path,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': this.name,
+      'link': this.path,
+    };
+  }
+
+  factory TrainingModel.fromJson(Map<String, dynamic> map) {
+    return TrainingModel(
+      name: map['name'] as String,
+      path: map['link'] as String,
     );
   }
 }

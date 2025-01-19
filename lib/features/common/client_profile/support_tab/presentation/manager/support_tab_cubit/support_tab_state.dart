@@ -12,6 +12,7 @@ class SupportTabState extends Equatable {
   final String setReadyInstallMessage;
 
   final BlocStatus cancelDateInstallStatus;
+  final BlocStatus invoiceModules;
 
   const SupportTabState({
     this.refreshUi = 0,
@@ -22,6 +23,7 @@ class SupportTabState extends Equatable {
     this.setReadyInstallStatus = StateStatus.success,
     this.setReadyInstallMessage = '',
     this.cancelDateInstallStatus = const BlocStatus.initial(),
+    this.invoiceModules = const BlocStatus.initial(),
   });
 
   SupportTabState copyWith({
@@ -36,20 +38,18 @@ class SupportTabState extends Equatable {
     BlocStatus? rescheduleDateStatus,
     BlocStatus? changeDateToDoneStatus,
     BlocStatus? cancelDateInstallStatus,
+    BlocStatus? invoiceModules,
   }) {
     return SupportTabState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
-      getInvoiceByClientStatus:
-          getInvoiceByClientStatus ?? this.getInvoiceByClientStatus,
+      getInvoiceByClientStatus: getInvoiceByClientStatus ?? this.getInvoiceByClientStatus,
       addDateInstallStatus: addDateInstallStatus ?? this.addDateInstallStatus,
       setDateDoneStatus: setDateDoneStatus ?? this.setDateDoneStatus,
       setDateDoneMessage: setDateDoneMessage ?? this.setDateDoneMessage,
-      setReadyInstallStatus:
-          setReadyInstallStatus ?? this.setReadyInstallStatus,
-      setReadyInstallMessage:
-          setReadyInstallMessage ?? this.setReadyInstallMessage,
-      cancelDateInstallStatus:
-          cancelDateInstallStatus ?? this.cancelDateInstallStatus,
+      setReadyInstallStatus: setReadyInstallStatus ?? this.setReadyInstallStatus,
+      setReadyInstallMessage: setReadyInstallMessage ?? this.setReadyInstallMessage,
+      cancelDateInstallStatus: cancelDateInstallStatus ?? this.cancelDateInstallStatus,
+      invoiceModules: invoiceModules ?? this.invoiceModules,
     );
   }
 
@@ -64,6 +64,7 @@ class SupportTabState extends Equatable {
       setReadyInstallStatus,
       setReadyInstallMessage,
       cancelDateInstallStatus,
+      invoiceModules,
     ];
   }
 }

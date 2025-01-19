@@ -30,7 +30,7 @@ class AppText extends StatelessWidget {
     this.fontSize,
     this.color,
     this.fontWeight,
-    this.fontFamily,
+    this.fontFamily, this.decoration,
   });
 
   final dynamic text;
@@ -55,6 +55,7 @@ class AppText extends StatelessWidget {
   final Color? color;
   final FontWeight? fontWeight;
   final String? fontFamily;
+  final TextDecoration? decoration;
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +108,9 @@ class AppText extends StatelessWidget {
     }
     if (fontWeight != null) {
       textStyle = textStyle.copyWith(fontWeight: fontWeight);
+    }
+    if (decoration != null) {
+      textStyle = textStyle.copyWith(decoration: decoration);
     }
 
     return textStyle;

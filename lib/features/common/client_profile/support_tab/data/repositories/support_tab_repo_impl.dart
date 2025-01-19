@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/support_tab/data/module_invioce_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -96,6 +97,17 @@ class SupportTabRepoImpl implements SupportTabRepo {
     } catch (e) {
       debugPrint("error in cancelDateInstall => $e");
       return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, List<ModuleInvoiceModel>>> getModulesByInvoice(CancelDateInstallParams params) async{
+     try {
+    final data = await _supportTabDataSource.getModulesByInvoice(params);
+    return data;
+    } catch (e) {
+    debugPrint("error in cancelDateInstall => $e");
+    return Left(e.toString());
     }
   }
 }

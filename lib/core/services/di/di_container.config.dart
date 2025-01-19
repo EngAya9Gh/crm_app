@@ -299,6 +299,8 @@ import '../../../features/common/client_profile/support_tab/domain/use_cases/can
     as _i417;
 import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart'
     as _i801;
+import '../../../features/common/client_profile/support_tab/domain/use_cases/module_invoice_model_usecase.dart'
+    as _i201;
 import '../../../features/common/client_profile/support_tab/domain/use_cases/receive_device_usecase.dart'
     as _i376;
 import '../../../features/common/client_profile/support_tab/domain/use_cases/returnToApprove.dart'
@@ -1328,6 +1330,8 @@ _i174.GetIt $initGetIt(
       () => _i417.CancelDateInstallUsecase(gh<_i843.SupportTabRepo>()));
   gh.lazySingleton<_i801.GetInvoiceByClientUsecase>(
       () => _i801.GetInvoiceByClientUsecase(gh<_i843.SupportTabRepo>()));
+  gh.lazySingleton<_i201.GetModuleInvoiceModelUsecase>(
+      () => _i201.GetModuleInvoiceModelUsecase(gh<_i843.SupportTabRepo>()));
   gh.lazySingleton<_i376.ReceiveDeviceUsecase>(
       () => _i376.ReceiveDeviceUsecase(gh<_i843.SupportTabRepo>()));
   gh.lazySingleton<_i123.ReturnInvoiceApproveUsecase>(
@@ -1543,6 +1547,16 @@ _i174.GetIt $initGetIt(
       _i608.EditGeneralConfigsUsecase(gh<_i5.GeneralConfigsRepository>()));
   gh.lazySingleton<_i4.GetGeneralConfigsUsecase>(
       () => _i4.GetGeneralConfigsUsecase(gh<_i5.GeneralConfigsRepository>()));
+  gh.factory<_i565.SupportTabCubit>(() => _i565.SupportTabCubit(
+        gh<_i801.GetInvoiceByClientUsecase>(),
+        gh<_i888.AddDateInstallUsecase>(),
+        gh<_i1045.SetDateDoneUsecase>(),
+        gh<_i896.SetReadyInstallUsecase>(),
+        gh<_i123.ReturnInvoiceApproveUsecase>(),
+        gh<_i376.ReceiveDeviceUsecase>(),
+        gh<_i417.CancelDateInstallUsecase>(),
+        gh<_i201.GetModuleInvoiceModelUsecase>(),
+      ));
   gh.factory<_i705.PeriodicCommunicationReportsCubit>(() =>
       _i705.PeriodicCommunicationReportsCubit(
           gh<_i566.GetPeriodicCommunicationReportsUsecase>()));
@@ -1581,15 +1595,6 @@ _i174.GetIt $initGetIt(
         gh<_i97.UpdateViolationUseCase>(),
         gh<_i116.GetManagementsUsecase>(),
         gh<_i797.GetViolationsTypesUseCase>(),
-      ));
-  gh.factory<_i565.SupportTabCubit>(() => _i565.SupportTabCubit(
-        gh<_i801.GetInvoiceByClientUsecase>(),
-        gh<_i888.AddDateInstallUsecase>(),
-        gh<_i1045.SetDateDoneUsecase>(),
-        gh<_i896.SetReadyInstallUsecase>(),
-        gh<_i123.ReturnInvoiceApproveUsecase>(),
-        gh<_i376.ReceiveDeviceUsecase>(),
-        gh<_i417.CancelDateInstallUsecase>(),
       ));
   gh.factory<_i401.ClientsDebtsReportsCubit>(() =>
       _i401.ClientsDebtsReportsCubit(

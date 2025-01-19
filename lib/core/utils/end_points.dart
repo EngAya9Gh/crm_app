@@ -356,6 +356,7 @@ class _Invoice {
   }
 
   String cancelDateInstall(idInvoice) => "cancelDateInstall/$idInvoice";
+  String getModulesByInvoice(idInvoice) => "getModulesByInvoice/$idInvoice";
 
   String getInvoiceById(String invoiceId) => 'getInvoiceById/$invoiceId';
 }
