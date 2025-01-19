@@ -83,7 +83,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   pinput: ^4.0.0
   connectivity_wrapper: ^1.1.4
-  location: ^6.0.1
+  location: ^7.0.1
   google_maps_flutter: ^2.6.1
   easy_debounce: ^2.0.3
   syncfusion_flutter_charts: ^20.4.54
@@ -102,6 +102,9 @@ dependencies:
   open_filex: ^4.5.0
   easy_sidemenu: ^0.6.0
   flutter_expanded_tile: ^0.4.0
+
+dependency_overrides:
+  web: ^1.1.0
 
 dev_dependencies:
   build_runner: ^2.4.6
