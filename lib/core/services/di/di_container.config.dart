@@ -331,6 +331,18 @@ import '../../../features/common/users_searchable_dropdown/domain/use_cases/get_
     as _i976;
 import '../../../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart'
     as _i144;
+import '../../../features/finance/verified_invoice/data/data_sources/verified_invoice_datasource.dart'
+    as _i8;
+import '../../../features/finance/verified_invoice/data/repositories/verified_invoice_repo_impl.dart'
+    as _i11;
+import '../../../features/finance/verified_invoice/domain/repositories/clients_attachments_repo.dart'
+    as _i320;
+import '../../../features/finance/verified_invoice/domain/use_cases/get_verified_invoice_usecase.dart'
+    as _i206;
+import '../../../features/finance/verified_invoice/domain/use_cases/verified_invoice_usecase.dart'
+    as _i1029;
+import '../../../features/finance/verified_invoice/presentation/manager/verified_invoice_bloc.dart'
+    as _i522;
 import '../../../features/home/presentation/manager/web_home_page_cubit.dart'
     as _i756;
 import '../../../features/mangement/advanced_configs/data/data_sources/advanced_configs_datasource.dart'
@@ -1057,6 +1069,8 @@ _i174.GetIt $initGetIt(
       () => _i55.ClientActivitiesDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i274.ClientsDatesDatasource>(
       () => _i274.ClientsDatesDatasource(gh<_i124.ApiServices>()));
+  gh.factory<_i8.VerifiedInvoicesDatasource>(
+      () => _i8.VerifiedInvoicesDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i316.AddClientsContactsDatasource>(
       () => _i316.AddClientsContactsDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i743.ClientsContactsDatasource>(
@@ -1110,6 +1124,8 @@ _i174.GetIt $initGetIt(
           gh<_i517.ClientsCareReportsDatasource>()));
   gh.lazySingleton<_i25.ExceededClientsRepo>(() =>
       _i372.ExceededClientsRepoImpl(gh<_i87.ExceededClientsDatasource>()));
+  gh.factory<_i320.VerifiedInvoiceRepository>(
+      () => _i11.VerifiedInvoiceRepoImpl(gh<_i8.VerifiedInvoicesDatasource>()));
   gh.factory<_i1001.ActionUserUsecase>(
       () => _i1001.ActionUserUsecase(gh<_i586.UsersRepository>()));
   gh.lazySingleton<_i495.ViolationsRepository>(() =>
@@ -1120,6 +1136,10 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i418.GetEvaluationLevelReportUsecase>(() =>
       _i418.GetEvaluationLevelReportUsecase(
           gh<_i1035.EvaluationLevelReportRepo>()));
+  gh.factory<_i206.GetVerifiedInvoiceUseCase>(() =>
+      _i206.GetVerifiedInvoiceUseCase(gh<_i320.VerifiedInvoiceRepository>()));
+  gh.factory<_i1029.VerifiedInvoiceUseCase>(() =>
+      _i1029.VerifiedInvoiceUseCase(gh<_i320.VerifiedInvoiceRepository>()));
   gh.lazySingleton<_i1070.ClientsInstallReportsRepo>(() =>
       _i867.ClientsInstallReportsRepoImpl(
           gh<_i45.ClientsInstallReportsDatasource>()));
@@ -1439,6 +1459,10 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i1067.ClientsTransferApprovalsRepo>(() =>
       _i913.ClientsTransferApprovalsRepoImpl(
           gh<_i923.ClientsTransferApprovalsDatasource>()));
+  gh.factory<_i522.VerifiedInvoiceBloc>(() => _i522.VerifiedInvoiceBloc(
+        gh<_i206.GetVerifiedInvoiceUseCase>(),
+        gh<_i1029.VerifiedInvoiceUseCase>(),
+      ));
   gh.lazySingleton<_i225.GetDeletedInvoicesUsecase>(
       () => _i225.GetDeletedInvoicesUsecase(gh<_i151.DeletedInvoicesRepo>()));
   gh.factory<_i20.ClientsContactsRepository>(() =>

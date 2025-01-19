@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
+import 'package:crm_smart/features/home/presentation/pages/finance_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,6 +88,16 @@ abstract class SectionsLists {
       icon: FontAwesomeIcons.listCheck,
       path: AppRoutesPaths.homeSections.taskManagement,
     ),
+    SectionModel(
+      page: Directionality(
+        textDirection: TextDirection.rtl,
+        child: FinancesSection(),
+      ),
+      title: 'المالية',
+      icon: FontAwesomeIcons.moneyBills,
+      path: AppRoutesPaths.homeSections.finance,
+      subSections: AllSubSectionsLists.financeSubSection,
+    ),
   ];
 
   /* Sales Sections */
@@ -148,13 +159,6 @@ abstract class SectionsLists {
       icon: FontAwesomeIcons.flagCheckered,
       path: AppRoutesPaths.salesSections.races,
       subSections: SalesSubSectionsLists.raceSections,
-    ),
-    SectionModel(
-      page: ClientAttachmentsPage(),
-      title: 'المرفقات',
-      icon: FontAwesomeIcons.link,
-      path: AppRoutesPaths.salesSections.attachments,
-      subSections: [],
     ),
   ];
 }

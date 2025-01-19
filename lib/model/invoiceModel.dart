@@ -119,6 +119,8 @@ class InvoiceModel {
   String? dateBackNow;
 
   String? rateProduct;
+  String? userDidOperation;
+  String? lastOperation;
   String? rateSupport;
   String? rateSales;
   String? deviceState;
@@ -250,6 +252,8 @@ class InvoiceModel {
     this.trainingPlan,
     this.trainingSession,
     this.trainingMultiSession,
+    this.lastOperation,
+    this.userDidOperation,
   });
 
   bool searchString(String query) {
@@ -264,6 +268,7 @@ class InvoiceModel {
 
   factory InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
     return InvoiceModel(
+
         tag: ApiHelper.handleString(jsondata['tag']) == "true" ? true : false,
         idInvoice: ApiHelper.handleString(jsondata['id_invoice']),
         renewInventory: ApiHelper.handleString(jsondata['renew_inventory']),
@@ -313,6 +318,8 @@ class InvoiceModel {
         date_lastuserupdate:
             ApiHelper.handleString(jsondata['date_lastuserupdate']),
         path: ApiHelper.handleString(jsondata['path']),
+        lastOperation: ApiHelper.handleString(jsondata['last_operation']),
+        userDidOperation: ApiHelper.handleString(jsondata['user_did_operation']),
         fk_country: ApiHelper.handleString(jsondata['fk_country']),
         reason_date: ApiHelper.handleString(jsondata['reason_date']),
         stateclient: ApiHelper.handleString(jsondata['stateclient']),

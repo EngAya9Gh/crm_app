@@ -35,6 +35,7 @@ abstract class EndPoints {
   static const regionAndCity = _RegionAndCities();
   static const activities = _Activity();
   static const branches = _Branches();
+  static const finance = _Finance();
 }
 
 class _BaseUrls {
@@ -507,4 +508,10 @@ class _Branches {
   final String getBranches = 'branches';
   final String addBranches = 'branches';
   String updateBranches(String id) => 'branches/$id/edit';
+}
+class _Finance {
+  const _Finance();
+
+  final String getVerifiedInvoice = 'verifiedInvoices';
+  String deportInvoice(String id) => 'deportInvoice/$id';
 }

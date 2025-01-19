@@ -96,11 +96,6 @@ abstract class SalesRoutes {
           path: AppRoutesPaths.salesSections.crudActivities,
           builder: (context, state) => CrudActivitiesPage(),
         ),
-        GoRoute(
-          name: AppRoutesPaths.salesSections.attachments.split('/').last,
-          path: AppRoutesPaths.salesSections.attachments,
-          builder: (context, state) => ClientAttachmentsPage(),
-        ),
       ],
     );
   }

@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/config/navigator/routes/finance_routes.dart';
 import 'package:crm_smart/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/task_managment_page.dart';
 import 'package:crm_smart/features/versions/presentation/pages/versions_page.dart';
@@ -184,6 +185,7 @@ abstract class AppRouter {
           SupportRoutes.allRoutes(),
           CareRoutes.allRoutes(),
           ManagementRoutes.allRoutes(),
+          FinanceRoutes.allRoutes(),
           for (final section in SectionsLists.homeSections)
             if (section.path == AppRoutesPaths.homeSections.taskManagement)
               GoRoute(

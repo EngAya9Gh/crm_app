@@ -11,6 +11,7 @@ abstract class AppRoutesPaths {
   static final _Auth auth = _Auth();
   static final _HomeSections homeSections = _HomeSections();
   static final _SalesSections salesSections = _SalesSections();
+  static final _FinanceSections financeSections = _FinanceSections();
   static final _SupportSubSections supportSubSections = _SupportSubSections();
   static final _CareSubSections careSubSections = _CareSubSections();
   static final _ManagementSubSections managementSubSections =
@@ -56,6 +57,7 @@ class _HomeSections {
   final String care = '/care';
   final String management = '/management';
   final String taskManagement = '/taskManagement';
+  final String finance = '/finance';
 }
 
 class _SalesSections {
@@ -65,7 +67,6 @@ class _SalesSections {
   final String reports = 'reports';
   final String races = 'races';
   final String crudActivities= 'sales-crud-activities';
-  final String attachments= 'attachments';
 }
 
 class _SupportSubSections {
@@ -192,4 +193,9 @@ class _ManagementInternalRoutes {
 
 class _CareInternalRoutes {
   final String addTicket = 'add-ticket';
+}
+
+class _FinanceSections{
+  final String attachments= 'attachments';
+  final String invoiceTransfer= 'invoiceTransfer';
 }
