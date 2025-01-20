@@ -55,6 +55,7 @@ class _BaseUrls {
   late final String urlFile;
   late final String urlFileLogo;
   late final String laravelFilesUrl;
+  late final String urlWebPage;
 
   void init() {
     if (EndPoints.appMode.isProduction) {
@@ -64,6 +65,7 @@ class _BaseUrls {
       urlFile = 'https://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
       urlFileLogo = 'https://smartcrm.ws/crm/api/imagesApp/logoclient/';
       laravelFilesUrl = 'https://new.smartcrm.ws/storage/';
+      urlWebPage = 'https://new.smartcrm.ws/';
     } else {
       url = 'https://smartcrm.ws/test/api/';
       urlLaravel = 'https://test.smartcrm.ws/api/';
@@ -71,6 +73,7 @@ class _BaseUrls {
       urlFile = 'https://smartcrm.ws/test/api/imagesApp/filesinvoice/';
       urlFileLogo = 'https://smartcrm.ws/test/api/imagesApp/logoclient/';
       laravelFilesUrl = 'https://test.smartcrm.ws/storage/';
+      urlWebPage = 'https://test.smartcrm.ws/';
     }
   }
 }
