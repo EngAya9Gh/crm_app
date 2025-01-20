@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../features/finance/clients_attachments/presentation/pages/client_attachments_page.dart';
-import '../../../../features/finance/verified_invoice/presentation/pages/verified_invoices_page.dart';
+import '../../../../features/finance/verified_invoice/presentation/pages/mob_verified_invoices_page.dart';
 import '../../../../features/finance/verified_invoice/presentation/pages/web_verified_invoices_page.dart';
 import '../../../../features/home/presentation/pages/finance_section.dart';
 import '../../../common/widgets/app_adaptive_builder.dart';
@@ -23,9 +23,9 @@ abstract class FinanceRoutes {
           name: AppRoutesPaths.financeSections.invoiceTransfer.split('/').last,
           path: AppRoutesPaths.financeSections.invoiceTransfer,
           builder: (context, state) => Directionality(
-            textDirection: TextDirection.rtl,
+            textDirection: TextDirection.ltr,
             child: AppLayoutBuilder(
-              smallBuilder: (context) => VerifiedInvoicesPage(),
+              smallBuilder: (context) => MobVerifiedInvoicesPage(),
               mediumBuilder: (context) => WebVerifiedInvoicesPage(),
             ),
           ),

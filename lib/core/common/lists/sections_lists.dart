@@ -88,7 +88,7 @@ abstract class SectionsLists {
     ),
     SectionModel(
       page: Directionality(
-        textDirection: TextDirection.rtl,
+        textDirection: TextDirection.ltr,
         child: FinancesSection(),
       ),
       title: 'المالية',

@@ -18,7 +18,7 @@ import '../../../features/clients_care/previous_ratings/presentation/pages/previ
 import '../../../features/clients_care/special_clients/presentation/pages/special_clients_page.dart';
 import '../../../features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
 import '../../../features/finance/clients_attachments/presentation/pages/client_attachments_page.dart';
-import '../../../features/finance/verified_invoice/presentation/pages/verified_invoices_page.dart';
+import '../../../features/finance/verified_invoice/presentation/pages/mob_verified_invoices_page.dart';
 import '../../../features/finance/verified_invoice/presentation/pages/web_verified_invoices_page.dart';
 import '../../../features/mangement/advanced_configs/presentation/pages/advanced_cofigs_page.dart';
 import '../../../features/mangement/general_configs/presentation/pages/general_cofigs_page.dart';
@@ -309,9 +309,9 @@ abstract class AllSubSectionsLists {
     ),
     SectionModel(
       page: Directionality(
-        textDirection: TextDirection.rtl,
+        textDirection: TextDirection.ltr,
         child: AppLayoutBuilder(
-          smallBuilder: (context) => VerifiedInvoicesPage(),
+          smallBuilder: (context) => MobVerifiedInvoicesPage(),
           mediumBuilder: (context) => WebVerifiedInvoicesPage(),
         ),
       ),

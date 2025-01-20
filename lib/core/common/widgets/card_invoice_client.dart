@@ -61,6 +61,7 @@ class CardInvoiceClient extends StatefulWidget {
   final bool isFromWithdrawalsInvoicesList;
   final String routeName;
   final Widget? transferWidget;
+
   CardInvoiceClient({
     super.key,
     required this.type,
@@ -150,9 +151,9 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                     ],
                     borderRadius: widget.invoice.approveBackDone != null && widget.isFromWithdrawalsInvoicesList
                         ? BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    )
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          )
                         : BorderRadius.circular(10),
                   ),
                   child: Padding(
@@ -188,13 +189,13 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             widget.invoice.address_invoice == null
                                 ? Spacer()
                                 : Expanded(
-                              child: AppText(
-                                widget.invoice.address_invoice.toString(),
-                                fontSize: 18,
-                                fontFamily: AppFonts.fontFamily1,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                                    child: AppText(
+                                      widget.invoice.address_invoice.toString(),
+                                      fontSize: 18,
+                                      fontFamily: AppFonts.fontFamily1,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                             prepareStatusWidget(
                               isDeleted: widget.invoice.isDeleted,
                               isApprove: widget.invoice.isApprove,
@@ -331,47 +332,30 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           ],
                         ),
                         if (widget.invoice.lastOperation != null && widget.invoice.userDidOperation != null) ...{
+                          5.height,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: [
                                   AppText(
-                                    'الذي قام بالتعديل',
-                                    fontFamily: AppFonts.fontFamily1,
-                                    color: AppColors.primaryMain,
-                                    fontSize: 14,
-                                  ),
-                                  SizedBox(width: 4),
-                                  AppText(
-                                    widget.invoice.userDidOperation,
-                                    fontFamily: AppFonts.fontFamily1,
-                                    color: AppColors.primaryMain,
-                                    fontSize: 14,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                // mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  AppText(
-                                    'اخر تعديل',
-                                    fontFamily: AppFonts.fontFamily1,
-                                    color: AppColors.primaryMain,
-                                    fontSize: 14,
-                                  ),
-                                  SizedBox(width: 4),
-                                  AppText(
                                     widget.invoice.lastOperation,
                                     fontFamily: AppFonts.fontFamily1,
-                                    color: AppColors.primaryMain,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                  SizedBox(width: 4),
+                                  AppText(
+                                    "(${widget.invoice.userDidOperation})",
+                                    fontFamily: AppFonts.fontFamily1,
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 14,
                                   ),
                                 ],
                               ),
+                              widget.transferWidget ?? SizedBox.shrink(),
                             ],
                           ),
-                          widget.transferWidget??SizedBox.shrink(),
                         }
                       ],
                     ),
@@ -394,11 +378,11 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                     ),
                     child: Center(
                         child: AppText(
-                          WithdrawalStatus.values[int.parse(widget.invoice.approveBackDone!)].text,
-                          color: Colors.white,
-                          fontFamily: AppFonts.fontFamily1,
-                          fontSize: 18,
-                        )),
+                      WithdrawalStatus.values[int.parse(widget.invoice.approveBackDone!)].text,
+                      color: Colors.white,
+                      fontFamily: AppFonts.fontFamily1,
+                      fontSize: 18,
+                    )),
                   ),
               ],
             ),

@@ -1,13 +1,15 @@
-import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/features/finance/verified_invoice/presentation/manager/verified_invoice_bloc.dart';
+import 'package:crm_smart/features/finance/verified_invoice/presentation/widgets/insure_transfer_inoivce_dialog.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
+
+import '../../../../../core/common/enums/client/client_status_enum.dart';
+import '../../../../../core/common/enums/devices_state_enum.dart';
+import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/widgets/Card_invoice_client.dart';
-import '../../../../../core/common/widgets/app_dialog.dart';
-import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
@@ -22,18 +24,14 @@ import '../../../../sales/invoices_list/domain/use_cases/get_invoices_by_privile
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../../../../sales/invoices_list/presentation/widgets/filter_invoices_sheet.dart';
 
-import '../../../../../core/common/enums/client/client_status_enum.dart';
-import '../../../../../core/common/enums/devices_state_enum.dart';
-import '../../../../../core/common/enums/seller_type_enum.dart';
-
-class VerifiedInvoicesPage extends StatefulWidget {
-  const VerifiedInvoicesPage({super.key});
+class MobVerifiedInvoicesPage extends StatefulWidget {
+  const MobVerifiedInvoicesPage({super.key});
 
   @override
-  State<VerifiedInvoicesPage> createState() => _VerifiedInvoicesPageState();
+  State<MobVerifiedInvoicesPage> createState() => _MobVerifiedInvoicesPageState();
 }
 
-class _VerifiedInvoicesPageState extends State<VerifiedInvoicesPage> {
+class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
   late final VerifiedInvoiceBloc _bloc;
 
   final TextEditingController searchController = TextEditingController();
@@ -140,48 +138,13 @@ class _VerifiedInvoicesPageState extends State<VerifiedInvoicesPage> {
                         return CardInvoiceClient(
                           type: 'profile',
                           invoice: state.verifiedInvoiceList.data![index],
-                          transferWidget: Center(
-                            child: AppTextButton(
-                              text: 'ترحيل الفاتورة',
-                              onPressed: () {
-                                AppConstants.showAppDialog(
-                                  child: AppDialog(
-                                    title: 'ترحيل الفاتورة',
-                                    children: [
-                                      20.height,
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: [
-                                          BlocBuilder<VerifiedInvoiceBloc, VerifiedInvoiceState>(
-                                            bloc: _bloc,
-                                            builder: (context, state) {
-                                              return AppElevatedButton(
-                                                isLoading: state.verifiedInvoiceList.isLoading(),
-                                                text: 'تأكيد',
-                                                onPressed: () {
-                                                  _bloc
-                                                    ..add(ChangeStatusVerifiedInvoiceEvent(invoiceModel: state.verifiedInvoiceList.data![index]))
-                                                    ..add(GetVerifiedInvoiceEvent());
-                                                  context.pop();
-                                                },
-                                              );
-                                            },
-                                          ),
-                                          20.height,
-                                          AppElevatedButton(
-                                              text: 'رجوع',
-                                              onPressed: () {
-                                                context.pop();
-                                              }),
-                                        ],
-                                      ),
-                                      5.height,
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
+                          transferWidget: AppElevatedButton(
+                            text: 'ترحيل الفاتورة',
+                            onPressed: () {
+                              AppConstants.showAppDialog(
+                                child: InsureTransferInoivceDialog(bloc: _bloc,invoiceModel: state.verifiedInvoiceList.data![index],),
+                              );
+                            },
                           ),
                         );
                       },
@@ -195,18 +158,5 @@ class _VerifiedInvoicesPageState extends State<VerifiedInvoicesPage> {
         ),
       ),
     );
-  }
-
-  String? _prepareUserId(SellerTypeEnum sellerType) {
-    var _blocFilter = context.read<InvoicesSectionCubit>();
-
-    if (sellerType == _blocFilter.filtersEntity.filterInvoicesSellerType.value) {
-      return _blocFilter.filtersEntity.filterSelectedUser.value?.id;
-    }
-    if (sellerType.isAgent() && (_blocFilter.filtersEntity.filterInvoicesSellerType.value?.isDistributor() ?? false)) {
-      return _blocFilter.filtersEntity.filterSelectedUser.value?.id;
-    }
-
-    return '';
   }
 }

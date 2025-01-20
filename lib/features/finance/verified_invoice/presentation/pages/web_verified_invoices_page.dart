@@ -9,6 +9,7 @@ import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/helpers/number_formatter.dart';
+import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -21,6 +22,7 @@ import '../../../../../core/utils/app_constants.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../../../../sales/invoices_list/presentation/widgets/filter_invoices_sheet.dart';
@@ -29,6 +31,7 @@ import '../manager/verified_invoice_bloc.dart';
 
 import '../../../../../core/common/enums/client/client_status_enum.dart';
 import '../../../../../core/common/enums/devices_state_enum.dart';
+import '../widgets/insure_transfer_inoivce_dialog.dart';
 
 class WebVerifiedInvoicesPage extends StatefulWidget {
   const WebVerifiedInvoicesPage({super.key});
@@ -182,6 +185,9 @@ class _WebVerifiedInvoicesPageState extends State<WebVerifiedInvoicesPage> {
                         'التجديد السنوي',
                       )),
                   DataColumn(label: AppText('العملة')),
+                  DataColumn(label: AppText('الذي قام بالتعديل')),
+                  DataColumn(label: AppText('اخر تعديل')),
+                  DataColumn(label: AppText('عمليات على الفاتورة')),
                   DataColumn(label: AppText('الحالة')),
                 ],
                 rows: _buildTableRows(),
@@ -218,6 +224,17 @@ class _WebVerifiedInvoicesPageState extends State<WebVerifiedInvoicesPage> {
             ),
             DataCell(AppText(_handleNum(invoice.renewYear.toString()), textAlign: TextAlign.center)),
             DataCell(AppText(HelperFunctions.getCurrencyName(invoice.currency_name), textAlign: TextAlign.center)),
+            DataCell(AppText(invoice.userDidOperation, textAlign: TextAlign.center)),
+            DataCell(AppText(invoice.lastOperation, textAlign: TextAlign.center)),
+            DataCell(AppElevatedButton(
+              height: 30,
+              text: 'ترحيل الفاتورة',
+              onPressed: () {
+                AppConstants.showAppDialog(
+                  child: InsureTransferInoivceDialog(bloc: _bloc,invoiceModel: invoice,),
+                );
+              },
+            )),
             DataCell(prepareStatusWidget(
               isDeleted: invoice.isDeleted,
               isApprove: invoice.isApprove,
@@ -241,7 +258,7 @@ class _WebVerifiedInvoicesPageState extends State<WebVerifiedInvoicesPage> {
 
   Widget _buildPaginationControls() {
     return PaginationControls(
-      currentPage: ApiHelper.calculatePage(skip: (_bloc.state.getInvoicesByPrivilegesParams!.skip)),
+      currentPage: ApiHelper.calculatePage(skip: (_bloc.state.getInvoicesByPrivilegesParams?.skip??0)),
       totalPages: ((_bloc.state.verifiedInvoiceList.data?.length ?? 0) / AppConstants.kPerPage).ceil(),
       onPageChanged: (page) {
         var _blocFilter = context.read<InvoicesSectionCubit>();
