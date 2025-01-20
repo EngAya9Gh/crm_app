@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
 import '../../../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../../../features/home/presentation/pages/sales_section.dart';
+import '../../../features/sales/packages_offers/presentation/pages/packages_offers_page.dart';
 import '../../../features/task_management/presentation/pages/task_management_list_page.dart';
 import '../../../features/task_management/presentation/pages/task_managment_page.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -158,5 +159,12 @@ abstract class SectionsLists {
       path: AppRoutesPaths.salesSections.races,
       subSections: SalesSubSectionsLists.raceSections,
     ),
+      SectionModel(
+        page: PackagesOffersPage(),
+        title: 'عروض الباقات',
+        icon: FontAwesomeIcons.flagCheckered,
+        path: AppRoutesPaths.salesSections.packagesOffer,
+        subSections: [],
+      ),
   ];
 }

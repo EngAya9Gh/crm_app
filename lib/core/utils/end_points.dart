@@ -36,6 +36,7 @@ abstract class EndPoints {
   static const activities = _Activity();
   static const branches = _Branches();
   static const finance = _Finance();
+  static const offers = _Offers();
 }
 
 class _BaseUrls {
@@ -259,6 +260,7 @@ class _Task {
 
   final addTask = 'tasks';
   final filterTasksByAll = 'tasks';
+
   String changeStatusTask(String id) => 'tasks/$id/change-status';
   final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
 }
@@ -345,6 +347,7 @@ class _Invoice {
   final String getdeletedInvoices = 'deletedInvoices';
 
   String withdrawInvoices(String id) => 'withdrawInvoice/$id';
+
   String changeInvoiceStatus(String id) => 'changeInvoiceStatus/$id';
 
   String setApproveInvoice(String idInvoice) {
@@ -360,6 +363,7 @@ class _Invoice {
   }
 
   String cancelDateInstall(idInvoice) => "cancelDateInstall/$idInvoice";
+
   String getModulesByInvoice(idInvoice) => "getModulesByInvoice/$idInvoice";
 
   String getInvoiceById(String invoiceId) => 'getInvoiceById/$invoiceId';
@@ -383,7 +387,9 @@ class _Events {
   const _Events();
 
   String updateStatusForVisit(String scheduleId) => 'updateStatusForVisit/$scheduleId';
+
   String verifyDateVisit(String scheduleId) => 'verifyDateVisit/$scheduleId';
+
   String startDateVisitStatus(String scheduleId) => 'startDateVisit/$scheduleId';
   final String addDateInstall = "addDateInstall";
 
@@ -494,15 +500,17 @@ class _RegionAndCities {
   final String getCities = 'cities';
   final String getCitiesAll = 'cities/select';
   final String addCities = 'cities';
+
   String updateCities(String id) => 'cities/$id/edit';
 }
+
 class _Activity {
   const _Activity();
 
   final String getActivities = 'activity-types';
   final String addActivity = 'activity-types';
-  String  updateActivity(String id) => 'activity-types/$id/edit';
 
+  String updateActivity(String id) => 'activity-types/$id/edit';
 }
 
 class _Branches {
@@ -510,11 +518,21 @@ class _Branches {
 
   final String getBranches = 'branches';
   final String addBranches = 'branches';
+
   String updateBranches(String id) => 'branches/$id/edit';
 }
+
 class _Finance {
   const _Finance();
 
   final String getVerifiedInvoice = 'verifiedInvoices';
+
   String deportInvoice(String id) => 'deportInvoice/$id';
+}
+
+class _Offers {
+  const _Offers();
+
+  final String getPackagesOffers = 'offers';
+  final String addPackagesOffers = 'offers';
 }

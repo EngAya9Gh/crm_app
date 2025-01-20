@@ -38,13 +38,13 @@ class product_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getproduct_vm() async {
+  Future<void> getproduct_vm({String? type}) async {
     isloading = true;
     notifyListeners();
     // listProduct.clear();
     debugPrint("start fetching");
     listProduct =
-        await ProductService().getAllProduct(usercurrent!.fkCountry.toString());
+        await ProductService().getAllProduct(usercurrent!.fkCountry.toString(),type: type);
     isloading = false;
     notifyListeners();
   }

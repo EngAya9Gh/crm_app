@@ -30,8 +30,9 @@ class SectionsCardForList extends StatelessWidget {
               page.path,
               isNewTab: true,
             );
+            return;
           }
-          if ((MediaQuery.of(context).size.width < 600)) {
+          else if ((MediaQuery.of(context).size.width < 600)) {
             AppNavigator.go(page.page, name: page.path, isNew: false);
           } else {
             AppNavigator.go(page.page, name: page.path);

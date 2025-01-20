@@ -335,8 +335,8 @@ import '../../../features/finance/verified_invoice/data/data_sources/verified_in
     as _i8;
 import '../../../features/finance/verified_invoice/data/repositories/verified_invoice_repo_impl.dart'
     as _i11;
-import '../../../features/finance/verified_invoice/domain/repositories/clients_attachments_repo.dart'
-    as _i320;
+import '../../../features/finance/verified_invoice/domain/repositories/verified_invoice_repo.dart'
+    as _i24;
 import '../../../features/finance/verified_invoice/domain/use_cases/get_verified_invoice_usecase.dart'
     as _i206;
 import '../../../features/finance/verified_invoice/domain/use_cases/verified_invoice_usecase.dart'
@@ -643,6 +643,18 @@ import '../../../features/sales/manage_withdrawn_invoices/domain/use_cases/get_m
     as _i707;
 import '../../../features/sales/manage_withdrawn_invoices/presentation/manager/manage_withdrawn_invoices_cubit.dart'
     as _i938;
+import '../../../features/sales/packages_offers/data/data_sources/packages_offers_datasource.dart'
+    as _i304;
+import '../../../features/sales/packages_offers/data/repositories/packages_offers_repo_impl.dart'
+    as _i234;
+import '../../../features/sales/packages_offers/domain/repositories/packages_offers_repo.dart'
+    as _i444;
+import '../../../features/sales/packages_offers/domain/use_cases/add_packages_offers_usecase.dart'
+    as _i615;
+import '../../../features/sales/packages_offers/domain/use_cases/get_packages_offers_usecase.dart'
+    as _i260;
+import '../../../features/sales/packages_offers/presentation/manager/packages_offers_bloc.dart'
+    as _i783;
 import '../../../features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_actions_data_source.dart'
     as _i113;
 import '../../../features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_data_source.dart'
@@ -1079,6 +1091,8 @@ _i174.GetIt $initGetIt(
       () => _i186.ClientsListDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i139.CommentCompanyDatasource>(
       () => _i139.CommentCompanyDatasource(gh<_i124.ApiServices>()));
+  gh.factory<_i304.PackagesOffersDatasource>(
+      () => _i304.PackagesOffersDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i674.ImportantLinksDatasource>(
       () => _i674.ImportantLinksDatasource(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i330.UsersDatasource>(
@@ -1124,8 +1138,6 @@ _i174.GetIt $initGetIt(
           gh<_i517.ClientsCareReportsDatasource>()));
   gh.lazySingleton<_i25.ExceededClientsRepo>(() =>
       _i372.ExceededClientsRepoImpl(gh<_i87.ExceededClientsDatasource>()));
-  gh.factory<_i320.VerifiedInvoiceRepository>(
-      () => _i11.VerifiedInvoiceRepoImpl(gh<_i8.VerifiedInvoicesDatasource>()));
   gh.factory<_i1001.ActionUserUsecase>(
       () => _i1001.ActionUserUsecase(gh<_i586.UsersRepository>()));
   gh.lazySingleton<_i495.ViolationsRepository>(() =>
@@ -1136,10 +1148,6 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i418.GetEvaluationLevelReportUsecase>(() =>
       _i418.GetEvaluationLevelReportUsecase(
           gh<_i1035.EvaluationLevelReportRepo>()));
-  gh.factory<_i206.GetVerifiedInvoiceUseCase>(() =>
-      _i206.GetVerifiedInvoiceUseCase(gh<_i320.VerifiedInvoiceRepository>()));
-  gh.factory<_i1029.VerifiedInvoiceUseCase>(() =>
-      _i1029.VerifiedInvoiceUseCase(gh<_i320.VerifiedInvoiceRepository>()));
   gh.lazySingleton<_i1070.ClientsInstallReportsRepo>(() =>
       _i867.ClientsInstallReportsRepoImpl(
           gh<_i45.ClientsInstallReportsDatasource>()));
@@ -1257,6 +1265,8 @@ _i174.GetIt $initGetIt(
           gh<_i52.GreetingCommunicationDatasource>()));
   gh.lazySingleton<_i372.DatesTimeLinesRepo>(
       () => _i102.DatesTimelineRepoImpl(gh<_i1036.DatesTimelineDatasource>()));
+  gh.factory<_i444.PackagesOffersRepository>(
+      () => _i234.PackagesOffersRepoImpl(gh<_i304.PackagesOffersDatasource>()));
   gh.singleton<_i74.CacheServices>(
     () => _i178.SecureStorageConsumer(gh<_i558.FlutterSecureStorage>()),
     instanceName: 'SecureStorageConsumer',
@@ -1459,12 +1469,14 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i1067.ClientsTransferApprovalsRepo>(() =>
       _i913.ClientsTransferApprovalsRepoImpl(
           gh<_i923.ClientsTransferApprovalsDatasource>()));
-  gh.factory<_i522.VerifiedInvoiceBloc>(() => _i522.VerifiedInvoiceBloc(
-        gh<_i206.GetVerifiedInvoiceUseCase>(),
-        gh<_i1029.VerifiedInvoiceUseCase>(),
-      ));
+  gh.factory<_i24.VerifiedInvoiceRepository>(
+      () => _i11.VerifiedInvoiceRepoImpl(gh<_i8.VerifiedInvoicesDatasource>()));
   gh.lazySingleton<_i225.GetDeletedInvoicesUsecase>(
       () => _i225.GetDeletedInvoicesUsecase(gh<_i151.DeletedInvoicesRepo>()));
+  gh.factory<_i615.AddPackagesOffersUseCase>(() =>
+      _i615.AddPackagesOffersUseCase(gh<_i444.PackagesOffersRepository>()));
+  gh.factory<_i260.GetPackagesOffersUseCase>(() =>
+      _i260.GetPackagesOffersUseCase(gh<_i444.PackagesOffersRepository>()));
   gh.factory<_i20.ClientsContactsRepository>(() =>
       _i1007.ClientsListRepositoryImpl(gh<_i743.ClientsContactsDatasource>()));
   gh.lazySingleton<_i587.GetClientsStatusReportsUsecase>(() =>
@@ -1682,6 +1694,10 @@ _i174.GetIt $initGetIt(
         gh<_i525.LoginRemoteDataSource>(),
         gh<_i1.LoginLocalDataSource>(),
       ));
+  gh.factory<_i783.PackagesOffersBloc>(() => _i783.PackagesOffersBloc(
+        gh<_i260.GetPackagesOffersUseCase>(),
+        gh<_i615.AddPackagesOffersUseCase>(),
+      ));
   gh.factory<_i222.SpecialClientsBloc>(
       () => _i222.SpecialClientsBloc(gh<_i70.GetSpecialClientsUsecase>()));
   gh.factory<_i520.AddCommentUsecase>(
@@ -1709,6 +1725,10 @@ _i174.GetIt $initGetIt(
           gh<_i992.GetSupportClientsInvoicesUseCase>()));
   gh.factory<_i53.WrongNumbersCubit>(
       () => _i53.WrongNumbersCubit(gh<_i23.GetWrongNumbersUsecase>()));
+  gh.factory<_i206.GetVerifiedInvoiceUseCase>(() =>
+      _i206.GetVerifiedInvoiceUseCase(gh<_i24.VerifiedInvoiceRepository>()));
+  gh.factory<_i1029.VerifiedInvoiceUseCase>(() =>
+      _i1029.VerifiedInvoiceUseCase(gh<_i24.VerifiedInvoiceRepository>()));
   gh.lazySingleton<_i220.CacheTokenUsecase>(
       () => _i220.CacheTokenUsecase(gh<_i325.LoginRepo>()));
   gh.lazySingleton<_i882.GetTokenUsecase>(
@@ -1822,6 +1842,10 @@ _i174.GetIt $initGetIt(
         gh<_i95.EditRejectReasonsUsecase>(),
         gh<_i179.GetFilteredWithdrawalsInvoicesUsecase>(),
         gh<_i344.CancelWithdrawalUsecase>(),
+      ));
+  gh.factory<_i522.VerifiedInvoiceBloc>(() => _i522.VerifiedInvoiceBloc(
+        gh<_i206.GetVerifiedInvoiceUseCase>(),
+        gh<_i1029.VerifiedInvoiceUseCase>(),
       ));
   gh.factory<_i938.ManageWithdrawnInvoicesCubit>(() =>
       _i938.ManageWithdrawnInvoicesCubit(

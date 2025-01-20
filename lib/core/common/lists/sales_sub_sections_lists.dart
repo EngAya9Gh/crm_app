@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../../features/sales/clients/clients_contacts/presentation/pages/clients_contacts_pages/clients_contact_page.dart';
 import '../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
@@ -87,7 +88,7 @@ abstract class SalesSubSectionsLists {
     ),
     SectionModel(
       title: 'ادارة ال lead',
-      page: ExceededClientsPage(),
+      page: SizedBox.shrink(),
       path:  EndPoints.baseUrls.urlWebPage+'/leads',
     ),
   ];

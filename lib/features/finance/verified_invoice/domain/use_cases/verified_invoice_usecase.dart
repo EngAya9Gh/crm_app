@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/common/usecases/base_usecase.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../model/invoiceModel.dart';
-import '../repositories/clients_attachments_repo.dart';
+import '../repositories/verified_invoice_repo.dart';
 
 @injectable
 class VerifiedInvoiceUseCase extends BaseUsecase<Either<String, InvoiceModel>,VerifiedInvoiceParams> {
