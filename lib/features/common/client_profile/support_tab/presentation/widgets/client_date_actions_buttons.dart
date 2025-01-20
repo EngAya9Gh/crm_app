@@ -177,47 +177,55 @@ class ClientDateActionsButtons extends StatelessWidget {
               appButtonStyle: AppButtonStyle.secondary,
               onPressed: () async {
                 await AppConstants.showAppDialog(
-                    child: AppDialog(
-                  title: 'اختر نوع الاقرار',
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(borderRadius: BorderRadiusDirectional.circular(8), border: Border.all(color: Colors.black)),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            child: AppText('اقرار مشروع تركيب',decoration: TextDecoration.underline,color: AppColors.primaryMain,),
-                            onTap: () async {
-                              await HelperFunctions.urlLauncher(
-                                'http://test.smartcrm.ws/training-multi-session?fk_invoice=${invoice.idInvoice}',
-                                isNewTab: true,
-                              );
-                            },
-                          ),
-                          10.height,
-                          InkWell(
-                            child: AppText('اقرار تدريب جلسة واحدة',decoration: TextDecoration.underline,color: AppColors.primaryMain),
-                            onTap: () async {
-                              await HelperFunctions.urlLauncher(
-                                'http://test.smartcrm.ws/training-form?fk_invoice=${invoice.idInvoice}',
-                                isNewTab: true,
-                              );
-                            },
-                          ),
-                          10.height,
-                          InkWell(
-                            child: AppText('اقرار تدريب عدة جلسات',decoration: TextDecoration.underline,color: AppColors.primaryMain),
-                            onTap: () async {
-                              await HelperFunctions.urlLauncher(
-                                'http://test.smartcrm.ws/training-plans?fk_invoice=${invoice.idInvoice}',
-                                isNewTab: true,
-                              );
-                            },
-                          ),
-                        ],
+                    child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: AppDialog(
+                    title: 'اختر نوع الاقرار',
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(borderRadius: BorderRadiusDirectional.circular(8), border: Border.all(color: Colors.black)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              child: AppText(
+                                'اقرار مشروع تركيب',
+                                decoration: TextDecoration.underline,
+                                color: AppColors.primaryMain,
+                              ),
+                              onTap: () async {
+                                await HelperFunctions.urlLauncher(
+                                  'http://test.smartcrm.ws/training-multi-session?fk_invoice=${invoice.idInvoice}',
+                                  isNewTab: true,
+                                );
+                              },
+                            ),
+                            10.height,
+                            InkWell(
+                              child: AppText('اقرار تدريب جلسة واحدة', decoration: TextDecoration.underline, color: AppColors.primaryMain),
+                              onTap: () async {
+                                await HelperFunctions.urlLauncher(
+                                  'http://test.smartcrm.ws/training-form?fk_invoice=${invoice.idInvoice}',
+                                  isNewTab: true,
+                                );
+                              },
+                            ),
+                            10.height,
+                            InkWell(
+                              child: AppText('اقرار تدريب عدة جلسات', decoration: TextDecoration.underline, color: AppColors.primaryMain),
+                              onTap: () async {
+                                await HelperFunctions.urlLauncher(
+                                  'http://test.smartcrm.ws/training-plans?fk_invoice=${invoice.idInvoice}',
+                                  isNewTab: true,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ));
               },
             )

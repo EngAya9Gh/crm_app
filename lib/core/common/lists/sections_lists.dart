@@ -65,6 +65,16 @@ abstract class SectionsLists {
       subSections: AllSubSectionsLists.careSubSections,
     ),
     SectionModel(
+      page: Directionality(
+        textDirection: TextDirection.ltr,
+        child: FinancesSection(),
+      ),
+      title: 'المالية',
+      icon: FontAwesomeIcons.moneyBills,
+      path: AppRoutesPaths.homeSections.finance,
+      subSections: AllSubSectionsLists.financeSubSection,
+    ),
+    SectionModel(
       page: SubSectionsListView(
         title: 'الإدارة',
         subSections: AllSubSectionsLists.managementSubSections,
@@ -85,16 +95,6 @@ abstract class SectionsLists {
       title: 'إدارة المهام',
       icon: FontAwesomeIcons.listCheck,
       path: AppRoutesPaths.homeSections.taskManagement,
-    ),
-    SectionModel(
-      page: Directionality(
-        textDirection: TextDirection.ltr,
-        child: FinancesSection(),
-      ),
-      title: 'المالية',
-      icon: FontAwesomeIcons.moneyBills,
-      path: AppRoutesPaths.homeSections.finance,
-      subSections: AllSubSectionsLists.financeSubSection,
     ),
   ];
 

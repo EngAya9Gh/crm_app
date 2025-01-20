@@ -203,9 +203,9 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
       return Right(List.from(response['message']).map((e) => ModuleInvoiceModel.fromJson(e)).toList());
     } on BaseAppException catch (e) {
       debugPrint("error in get module => ${e.message}");
-        AppSnackbar.showSnakeBar(
-          'لايوجد اقرارات بعد ',
-          color: ToastColorsEnum.warning);
+        // AppSnackbar.showSnakeBar(
+        //   'لايوجد اقرارات بعد ',
+        //   color: ToastColorsEnum.warning);
       // throw e.message;
     }
     return Right([]);
