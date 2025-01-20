@@ -1,14 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/clients_care/clients_attachments/data/models/attachment_model.dart';
-import 'package:crm_smart/features/clients_care/clients_attachments/domain/use_cases/get_attachments_usecase.dart';
 import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:text_scroll/text_scroll.dart';
 import '../../../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../../../core/common/widgets/custom_filter_icon.dart';
@@ -28,9 +25,10 @@ import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
-import '../../../../../ui/widgets/app_file_viewer.dart';
 import '../../../../../view_model/invoice_vm.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../data/models/attachment_model.dart';
+import '../../domain/use_cases/get_attachments_usecase.dart';
 import '../manager/client_attachments_bloc.dart';
 import '../widgets/filter_clients_attachments_sheet.dart';
 

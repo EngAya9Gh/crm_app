@@ -142,9 +142,9 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       skip: invoicesList.length,
       searchQuery: searchController.text,
       typeSeller: filtersEntity.filterInvoicesSellerType.value,
-      participateFk: _prepareUserId(SellerTypeEnum.collaborator),
-      fkAgent: _prepareUserId(SellerTypeEnum.agent),
-      fkIdUser: _prepareUserId(SellerTypeEnum.employee),
+      participateFk: prepareUserId(SellerTypeEnum.collaborator),
+      fkAgent: prepareUserId(SellerTypeEnum.agent),
+      fkIdUser: prepareUserId(SellerTypeEnum.employee),
       fkRegionInvoice: filtersEntity.filterSelectedRegion.value?.branchId,
       from: filtersEntity.dateFromController.text,
       to: filtersEntity.dateToController.text,
@@ -156,7 +156,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     return getInvoicesParams;
   }
 
-  String? _prepareUserId(SellerTypeEnum sellerType) {
+  String? prepareUserId(SellerTypeEnum sellerType) {
     if (sellerType == filtersEntity.filterInvoicesSellerType.value) {
       return filtersEntity.filterSelectedUser.value?.id;
     }
@@ -308,9 +308,9 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       skip: (page - 1) * AppConstants.kPerPage,
       searchQuery: searchController.text,
       typeSeller: filtersEntity.filterInvoicesSellerType.value,
-      participateFk: _prepareUserId(SellerTypeEnum.collaborator),
-      fkAgent: _prepareUserId(SellerTypeEnum.agent),
-      fkIdUser: _prepareUserId(SellerTypeEnum.employee),
+      participateFk: prepareUserId(SellerTypeEnum.collaborator),
+      fkAgent: prepareUserId(SellerTypeEnum.agent),
+      fkIdUser: prepareUserId(SellerTypeEnum.employee),
       fkRegionInvoice: filtersEntity.filterSelectedRegion.value?.branchId,
       from: filtersEntity.dateFromController.text,
       to: filtersEntity.dateToController.text,

@@ -1,12 +1,12 @@
-import 'package:crm_smart/core/common/models/client_model.dart';
-import 'package:crm_smart/features/clients_care/clients_attachments/data/models/attachment_model.dart';
-import 'package:crm_smart/features/clients_care/clients_attachments/domain/use_cases/get_attachments_usecase.dart';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../domain/repositories/clients_attachments_repo.dart';
+import '../../domain/use_cases/get_attachments_usecase.dart';
 import '../data_sources/clients_attachments_datasource.dart';
+import '../models/attachment_model.dart';
 import '../models/subscribed_clients_model.dart';
 
 

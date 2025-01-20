@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../model/invoiceModel.dart';
+import '../../../../sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import '../../domain/repositories/clients_attachments_repo.dart';
 import '../data_sources/verified_invoice_datasource.dart';
 
@@ -14,9 +15,9 @@ class VerifiedInvoiceRepoImpl implements VerifiedInvoiceRepository {
   VerifiedInvoiceRepoImpl(this.datasource);
 
   @override
-  Future<Either<String, List<InvoiceModel>>> getVerifiedInvoice() async {
+  Future<Either<String, List<InvoiceModel>>> getVerifiedInvoice(GetInvoicesByPrivilegesParams params) async {
     try {
-      final data = await datasource.getVerifiedInvoices();
+      final data = await datasource.getVerifiedInvoices(params);
       return data;
     } catch (e) {
       debugPrint("error in verified invoice in repo => $e");

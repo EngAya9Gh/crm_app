@@ -13,7 +13,6 @@ import '../features/app/presentation/pages/my_app.dart';
 import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../features/clients_care/accept_clients/presentation/manager/clients_accept_cubit.dart';
 import '../features/clients_care/client_communications/presentation/manager/care_activities_bloc.dart';
-import '../features/clients_care/clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import '../features/clients_care/clients_care_reports/presentation/manager/clients_care_reports_cubit.dart';
 import '../features/clients_care/clients_not_using_system/presentation/manager/not_using_system_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
@@ -35,6 +34,7 @@ import '../features/common/client_profile/logs_tab/presentation/manager/client_l
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart';
+import '../features/finance/clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import '../features/home/presentation/manager/web_home_page_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';

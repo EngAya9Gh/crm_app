@@ -11,7 +11,6 @@ import '../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
-import '../../../../clients_care/clients_attachments/presentation/widgets/filter_clients_attachments_sheet.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_card.dart';
 import '../manager/waiting_agents/waiting_agents_cubit.dart';
 import 'filter_waiting_agents_sheet.dart';

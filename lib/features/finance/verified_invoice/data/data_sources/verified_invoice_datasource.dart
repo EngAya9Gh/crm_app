@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
@@ -11,11 +12,12 @@ class VerifiedInvoicesDatasource {
 
   VerifiedInvoicesDatasource(this.api);
 
-  Future<Either<String, List<InvoiceModel>>> getVerifiedInvoices() async {
+  Future<Either<String, List<InvoiceModel>>> getVerifiedInvoices(GetInvoicesByPrivilegesParams params) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
         endPoint: EndPoints.finance.getVerifiedInvoice,
+        queryParameters: params.toMap(),
       );
 
       return Right(List.from((response['message'] as List<dynamic>).map((e) {

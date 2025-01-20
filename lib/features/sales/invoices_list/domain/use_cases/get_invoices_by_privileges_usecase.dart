@@ -38,7 +38,7 @@ class GetInvoicesByPrivilegesParams {
   final String? hasDevices;
   final String? download;
 
-  GetInvoicesByPrivilegesParams({
+  const GetInvoicesByPrivilegesParams({
     this.skip = 0,
     this.limit = AppConstants.kPerPage,
     this.typeSeller,

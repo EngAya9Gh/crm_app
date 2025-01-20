@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../features/clients_care/clients_attachments/presentation/pages/client_attachments_page.dart';
-import '../../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
+import '../../../../features/finance/clients_attachments/presentation/pages/client_attachments_page.dart';
+import '../../../../features/finance/verified_invoice/presentation/pages/verified_invoices_page.dart';
+import '../../../../features/finance/verified_invoice/presentation/pages/web_verified_invoices_page.dart';
 import '../../../../features/home/presentation/pages/finance_section.dart';
-import '../../../../features/home/presentation/pages/sales_section.dart';
+import '../../../common/widgets/app_adaptive_builder.dart';
 import '../app_routes_paths.dart';
 
 abstract class FinanceRoutes {
@@ -16,12 +18,18 @@ abstract class FinanceRoutes {
           name: AppRoutesPaths.financeSections.attachments.split('/').last,
           path: AppRoutesPaths.financeSections.attachments,
           builder: (context, state) => ClientAttachmentsPage(),
-        )
-        // GoRoute(
-        //   name: AppRoutesPaths.salesSections.crudActivities.split('/').last,
-        //   path: AppRoutesPaths.salesSections.crudActivities,
-        //   builder: (context, state) => CrudActivitiesPage(),
-        // ),
+        ),
+        GoRoute(
+          name: AppRoutesPaths.financeSections.invoiceTransfer.split('/').last,
+          path: AppRoutesPaths.financeSections.invoiceTransfer,
+          builder: (context, state) => Directionality(
+            textDirection: TextDirection.rtl,
+            child: AppLayoutBuilder(
+              smallBuilder: (context) => VerifiedInvoicesPage(),
+              mediumBuilder: (context) => WebVerifiedInvoicesPage(),
+            ),
+          ),
+        ),
       ],
     );
   }

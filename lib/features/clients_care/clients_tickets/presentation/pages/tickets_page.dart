@@ -3,14 +3,11 @@ import 'package:crm_smart/features/clients_care/clients_tickets/presentation/wid
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/widgets/app_adaptive_builder.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
-import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
@@ -21,8 +18,8 @@ import '../../../../../core/utils/app_styles.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
+import '../../../../finance/clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
-import '../../../clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/filter_tickets_sheet.dart';
 import '../widgets/mob_tickets_paginated_list.dart';

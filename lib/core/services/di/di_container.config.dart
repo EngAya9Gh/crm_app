@@ -67,18 +67,6 @@ import '../../../features/clients_care/client_communications/domain/use_cases/up
     as _i70;
 import '../../../features/clients_care/client_communications/presentation/manager/care_activities_bloc.dart'
     as _i485;
-import '../../../features/clients_care/clients_attachments/data/data_sources/clients_attachments_datasource.dart'
-    as _i987;
-import '../../../features/clients_care/clients_attachments/data/repositories/clients_attachments_repo_impl.dart'
-    as _i331;
-import '../../../features/clients_care/clients_attachments/domain/repositories/clients_attachments_repo.dart'
-    as _i760;
-import '../../../features/clients_care/clients_attachments/domain/use_cases/get_all_client_usecase.dart'
-    as _i797;
-import '../../../features/clients_care/clients_attachments/domain/use_cases/get_attachments_usecase.dart'
-    as _i12;
-import '../../../features/clients_care/clients_attachments/presentation/manager/client_attachments_bloc.dart'
-    as _i412;
 import '../../../features/clients_care/clients_care_reports/data/data_sources/clients_care_reports_datasource.dart'
     as _i517;
 import '../../../features/clients_care/clients_care_reports/data/repositories/clients_care_reports_repo_impl.dart'
@@ -331,6 +319,18 @@ import '../../../features/common/users_searchable_dropdown/domain/use_cases/get_
     as _i976;
 import '../../../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart'
     as _i144;
+import '../../../features/finance/clients_attachments/data/data_sources/clients_attachments_datasource.dart'
+    as _i973;
+import '../../../features/finance/clients_attachments/data/repositories/clients_attachments_repo_impl.dart'
+    as _i803;
+import '../../../features/finance/clients_attachments/domain/repositories/clients_attachments_repo.dart'
+    as _i129;
+import '../../../features/finance/clients_attachments/domain/use_cases/get_all_client_usecase.dart'
+    as _i1065;
+import '../../../features/finance/clients_attachments/domain/use_cases/get_attachments_usecase.dart'
+    as _i559;
+import '../../../features/finance/clients_attachments/presentation/manager/client_attachments_bloc.dart'
+    as _i476;
 import '../../../features/finance/verified_invoice/data/data_sources/verified_invoice_datasource.dart'
     as _i8;
 import '../../../features/finance/verified_invoice/data/repositories/verified_invoice_repo_impl.dart'
@@ -1057,8 +1057,6 @@ _i174.GetIt $initGetIt(
       () => _i87.ExceededClientsDatasourceImpl(gh<_i124.ApiServices>()));
   gh.factory<_i293.AppDatasource>(
       () => _i293.AppDatasource(gh<_i124.ApiServices>()));
-  gh.factory<_i987.ClientAttachmentsDatasource>(
-      () => _i987.ClientAttachmentsDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i809.CareActivitiesDatasource>(
       () => _i809.CareActivitiesDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i734.CrudActivitiesDatasource>(
@@ -1069,6 +1067,8 @@ _i174.GetIt $initGetIt(
       () => _i55.ClientActivitiesDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i274.ClientsDatesDatasource>(
       () => _i274.ClientsDatesDatasource(gh<_i124.ApiServices>()));
+  gh.factory<_i973.ClientAttachmentsDatasource>(
+      () => _i973.ClientAttachmentsDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i8.VerifiedInvoicesDatasource>(
       () => _i8.VerifiedInvoicesDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i316.AddClientsContactsDatasource>(
@@ -1296,6 +1296,9 @@ _i174.GetIt $initGetIt(
       () => _i527.SupportTabRepoImpl(gh<_i532.SupportTabDataSource>()));
   gh.factory<_i70.GetSpecialClientsUsecase>(() =>
       _i70.GetSpecialClientsUsecase(gh<_i652.SpecialClientsRepository>()));
+  gh.factory<_i129.ClientsAttachmentsRepository>(() =>
+      _i803.ClientsAttachmentsRepoImpl(
+          gh<_i973.ClientAttachmentsDatasource>()));
   gh.lazySingleton<_i568.ExportInvoicesToExcelUsecase>(() =>
       _i568.ExportInvoicesToExcelUsecase(gh<_i887.InvoicesSectionRepo>()));
   gh.lazySingleton<_i351.GetInvoicesByPrivilegesUsecase>(() =>
@@ -1393,9 +1396,6 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i992.GetSupportClientsInvoicesUseCase>(() =>
       _i992.GetSupportClientsInvoicesUseCase(
           gh<_i794.SupportClientsInvoicesRepo>()));
-  gh.factory<_i760.ClientsAttachmentsRepository>(() =>
-      _i331.ClientsAttachmentsRepoImpl(
-          gh<_i987.ClientAttachmentsDatasource>()));
   gh.lazySingleton<_i745.ManageWithdrawalsRepository>(() =>
       _i665.ManageWithdrawalsRepositoryImpl(
           gh<_i1031.ManageWithdrawalsDatasource>()));
@@ -1611,6 +1611,10 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i753.GetClientsTransferApprovalsUsecase>(() =>
       _i753.GetClientsTransferApprovalsUsecase(
           gh<_i1067.ClientsTransferApprovalsRepo>()));
+  gh.factory<_i1065.GetAllClientUseCase>(() =>
+      _i1065.GetAllClientUseCase(gh<_i129.ClientsAttachmentsRepository>()));
+  gh.factory<_i559.GetAttachmentsUseCase>(() =>
+      _i559.GetAttachmentsUseCase(gh<_i129.ClientsAttachmentsRepository>()));
   gh.factory<_i456.ClientsStatusReportsCubit>(() =>
       _i456.ClientsStatusReportsCubit(
           gh<_i587.GetClientsStatusReportsUsecase>()));
@@ -1654,6 +1658,10 @@ _i174.GetIt $initGetIt(
   gh.factory<_i851.RegionsSalesReportsCubit>(() =>
       _i851.RegionsSalesReportsCubit(
           gh<_i910.GetRegionsSalesReportsUsecase>()));
+  gh.factory<_i476.ClientAttachmentsBloc>(() => _i476.ClientAttachmentsBloc(
+        gh<_i559.GetAttachmentsUseCase>(),
+        gh<_i1065.GetAllClientUseCase>(),
+      ));
   gh.factory<_i289.AddClientContactBloc>(() => _i289.AddClientContactBloc(
         gh<_i943.AddClientContactUseCase>(),
         gh<_i738.UpdateClientContactUseCase>(),
@@ -1723,10 +1731,6 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i313.GetPeriodicCommunicationUseCase>(() =>
       _i313.GetPeriodicCommunicationUseCase(
           gh<_i931.PeriodicCommunicationRepo>()));
-  gh.factory<_i797.GetAllClientUseCase>(() =>
-      _i797.GetAllClientUseCase(gh<_i760.ClientsAttachmentsRepository>()));
-  gh.factory<_i12.GetAttachmentsUseCase>(() =>
-      _i12.GetAttachmentsUseCase(gh<_i760.ClientsAttachmentsRepository>()));
   gh.lazySingleton<_i699.GetClientsDebtsUsecase>(
       () => _i699.GetClientsDebtsUsecase(gh<_i228.ClientsDebtsRepo>()));
   gh.factory<_i449.GetUsersSalesUseCase>(() => _i449.GetUsersSalesUseCase(
@@ -1786,10 +1790,6 @@ _i174.GetIt $initGetIt(
       () => _i941.GetWaitingAgentsUsecase(gh<_i887.WaitingAgentsRepo>()));
   gh.factory<_i1003.ClientActivitiesBloc>(() =>
       _i1003.ClientActivitiesBloc(gh<_i618.GetClientActivitiesUseCase>()));
-  gh.factory<_i412.ClientAttachmentsBloc>(() => _i412.ClientAttachmentsBloc(
-        gh<_i12.GetAttachmentsUseCase>(),
-        gh<_i797.GetAllClientUseCase>(),
-      ));
   gh.factory<_i821.ProductsSalesReportsCubit>(() =>
       _i821.ProductsSalesReportsCubit(
           gh<_i550.GetProductsSalesReportsUsecase>()));

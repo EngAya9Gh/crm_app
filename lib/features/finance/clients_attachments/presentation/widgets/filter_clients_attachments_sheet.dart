@@ -1,7 +1,4 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/features/clients_care/clients_attachments/domain/use_cases/get_attachments_usecase.dart';
-
-import 'package:crm_smart/features/clients_care/clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +11,8 @@ import '../../../../../core/common/enums/client/type_client_enum.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../data/models/subscribed_clients_model.dart';
+import '../../domain/use_cases/get_attachments_usecase.dart';
+import '../manager/client_attachments_bloc.dart';
 
 class FilterClientAttachmentSheet extends StatelessWidget {
   const FilterClientAttachmentSheet({
