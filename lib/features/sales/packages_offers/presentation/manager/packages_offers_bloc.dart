@@ -82,9 +82,17 @@ class PackagesOffersBloc extends Bloc<PackagesOffersEvent, PackagesOffersState> 
       (l) => emit(
         state.copyWith(allOffersPackages: BlocStatus.fail(error: l)),
       ),
-      (r) => emit(
-        state.copyWith(allOffersPackages: BlocStatus.success(data: r)),
-      ),
+      (r) {
+        if(r.isEmpty){
+          emit(
+            state.copyWith(allOffersPackages: BlocStatus.empty()),
+          );
+          return;
+        }
+        emit(
+          state.copyWith(allOffersPackages: BlocStatus.success(data: r)),
+        );
+      },
     );
   }
 
@@ -110,13 +118,7 @@ class PackagesOffersBloc extends Bloc<PackagesOffersEvent, PackagesOffersState> 
       ),
       (r) {
         emit(state.copyWith(deleteNewOfferStatus: BlocStatus.success()));
-        emit(state.copyWith(
-            deleteNewOfferStatus: BlocStatus.initial(),
-            allOffersPackages: BlocStatus.success(
-                data: List.of(state.allOffersPackages.data ?? [])
-                  ..removeWhere(
-                    (element) => element.id == event.params.id,
-                  ))));
+        emit(state.copyWith(deleteNewOfferStatus: BlocStatus.initial()));
       },
     );
   }
