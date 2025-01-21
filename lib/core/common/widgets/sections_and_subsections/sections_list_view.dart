@@ -23,6 +23,9 @@ class SectionsListView extends StatelessWidget {
           child: AppPaginatedList(
             items: sections,
             itemBuilder: (context, index) {
+              if(!context.read<PrivilegesCubit>().checkPrivilege(sections[index].privilegeId)){
+                return SizedBox.shrink();
+              }
               return SectionsCardForList(page: sections[index]);
             },
           ),
@@ -47,4 +50,7 @@ class SectionsListView extends StatelessWidget {
       ],
     );
   }
+  bool _isAllowed(BuildContext context, SectionModel subsection) =>
+      context.read<PrivilegesCubit>().checkPrivilege(subsection.privilegeId);
+
 }

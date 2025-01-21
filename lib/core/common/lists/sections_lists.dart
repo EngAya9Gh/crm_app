@@ -161,6 +161,7 @@ abstract class SectionsLists {
     ),
       SectionModel(
         page: PackagesOffersPage(),
+        privilegeId: '315',
         title: 'عروض الباقات',
         icon: FontAwesomeIcons.flagCheckered,
         path: AppRoutesPaths.salesSections.packagesOffer,

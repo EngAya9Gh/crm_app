@@ -109,7 +109,7 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
               )),
               child: CardRow(
                 title: 'استعراض مديولات التركيب',
-                icon: Icon(Icons.visibility),
+                anotherWidget: Icon(Icons.visibility),
                 value: '',
               ),
             ),
@@ -124,13 +124,13 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
                   },
                   child: CardRow(
                     title: invoice.trainingPlan!.name,
-                    icon: SizedBox.shrink(),
+                    anotherWidget: SizedBox.shrink(),
                   )),
             if (invoice.trainingSession != null)
               InkWell(
                 child: CardRow(
                   title: invoice.trainingSession!.name,
-                  icon: SizedBox.shrink()
+                  anotherWidget: SizedBox.shrink()
                 ),
                   onTap: () async {
                     await HelperFunctions.urlLauncher(
@@ -143,7 +143,7 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
               InkWell(
                 child: CardRow(
                   title: invoice.trainingMultiSession!.name,
-                  icon: SizedBox.shrink(),
+                  anotherWidget: SizedBox.shrink(),
                 ),
                   onTap: () async {
                     await HelperFunctions.urlLauncher(
