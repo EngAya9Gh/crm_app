@@ -535,4 +535,6 @@ class _Offers {
 
   final String getPackagesOffers = 'offers';
   final String addPackagesOffers = 'offers';
+  String updatePackagesOffers(String id) => 'offers/$id/edit';
+  String deletePackagesOffers(String id) => 'offers/$id/delete';
 }

@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../domain/use_cases/add_packages_offers_usecase.dart';
+import '../../domain/use_cases/delete_packages_offers_usecase.dart';
 import '../models/package_offer_model.dart';
 
 @injectable
@@ -28,6 +29,7 @@ class PackagesOffersDatasource {
       throw Exception("$e");
     }
   }
+
   Future<Either<String, PackageOfferModel>> addPackagesOffers(AddNewPackagesOffersParams params) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
@@ -37,6 +39,35 @@ class PackagesOffersDatasource {
       );
 
       return Right(PackageOfferModel.fromJson(response['message']));
+    } catch (e) {
+      debugPrint("error in packages offers data source => $e");
+      throw Exception("$e");
+    }
+  }
+
+  Future<Either<String, PackageOfferModel>> updatePackagesOffers(AddNewPackagesOffersParams params) async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+        endPoint: EndPoints.offers.updatePackagesOffers(params.id.toString()),
+        data: params.toMap(),
+      );
+
+      return Right(PackageOfferModel.fromJson(response['message']));
+    } catch (e) {
+      debugPrint("error in packages offers data source => $e");
+      throw Exception("$e");
+    }
+  }
+
+  Future<Either<String, bool>> deletePackagesOffers(DeleteOffersParams params) async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+        endPoint: EndPoints.offers.deletePackagesOffers(params.id.toString()),
+      );
+
+      return Right(true);
     } catch (e) {
       debugPrint("error in packages offers data source => $e");
       throw Exception("$e");

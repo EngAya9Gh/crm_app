@@ -1,4 +1,6 @@
 
+import 'package:crm_smart/model/productmodel.dart';
+
 class PackageOfferModel {
   final int? id;
   final String? name;
@@ -9,7 +11,7 @@ class PackageOfferModel {
   final DateTime? updatedAt;
   final dynamic updatedBy;
   final List<OfferItem>? offerItems;
-  final List<dynamic>? products;
+  final List<ProductModel>? products;
 
   PackageOfferModel({
     this.id,
@@ -34,7 +36,7 @@ class PackageOfferModel {
     DateTime? updatedAt,
     dynamic updatedBy,
     List<OfferItem>? offerItems,
-    List<dynamic>? products,
+    List<ProductModel>? products,
   }) =>
       PackageOfferModel(
         id: id ?? this.id,
@@ -59,7 +61,7 @@ class PackageOfferModel {
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     updatedBy: json["updated_by"],
     offerItems: json["offer_items"] == null ? [] : List<OfferItem>.from(json["offer_items"]!.map((x) => OfferItem.fromJson(x))),
-    products: json["products"] == null ? [] : List<dynamic>.from(json["products"]!.map((x) => x)),
+    products: json["products"] == null ? [] : List<ProductModel>.from(json["products"]!.map((x) => ProductModel.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -72,14 +74,14 @@ class PackageOfferModel {
     "updated_at": updatedAt?.toIso8601String(),
     "updated_by": updatedBy,
     "offer_items": offerItems == null ? [] : List<dynamic>.from(offerItems!.map((x) => x.toJson())),
-    "products": products == null ? [] : List<dynamic>.from(products!.map((x) => x)),
+    "products": products == null ? [] : List<ProductModel>.from(products!.map((x) => x.toJson())),
   };
 }
 
 class OfferItem {
   final int? id;
   final String? rebateType;
-  final int? rebateValue;
+  final num? rebateValue;
   final int? offerId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -96,7 +98,7 @@ class OfferItem {
   OfferItem copyWith({
     int? id,
     String? rebateType,
-    int? rebateValue,
+    num? rebateValue,
     int? offerId,
     DateTime? createdAt,
     DateTime? updatedAt,

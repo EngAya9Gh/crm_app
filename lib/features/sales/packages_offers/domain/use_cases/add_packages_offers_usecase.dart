@@ -19,6 +19,7 @@ class AddPackagesOffersUseCase extends BaseUsecase<Either<String, PackageOfferMo
 }
 
 class AddNewPackagesOffersParams {
+  final int? id;
   final String name;
   final String start_date;
   final String end_date;
@@ -49,6 +50,7 @@ class AddNewPackagesOffersParams {
   }
 
   const AddNewPackagesOffersParams({
+    this.id,
     required this.name,
     required this.start_date,
     required this.end_date,
