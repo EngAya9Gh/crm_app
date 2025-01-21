@@ -88,6 +88,7 @@ abstract class SalesSubSectionsLists {
     ),
     SectionModel(
       title: 'ادارة ال lead',
+      privilegeId: '314',
       page: SizedBox.shrink(),
       path:  EndPoints.baseUrls.urlWebPage+'leads',
     ),

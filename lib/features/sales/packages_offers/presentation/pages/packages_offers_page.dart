@@ -96,14 +96,14 @@ class PackagesOffersPageState extends State<PackagesOffersPage> {
                                 anotherWidget: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
+                                    AppText('${data![index].offerItems?[i].rebateValue}'),
+                                    10.width,
                                     AppText(
                                       '${OfferItemType.values.firstWhere(
                                             (element) => element.name.toString() == data![index].offerItems?[i].rebateType,
-                                          ).symbol}',
+                                          ).text}',
                                       color: AppColors.primaryMain,
                                     ),
-                                    10.width,
-                                    AppText('${data![index].offerItems?[i].rebateValue}'),
                                   ],
                                 ),
                               ),

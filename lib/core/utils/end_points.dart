@@ -202,6 +202,7 @@ class _Client {
 
   String updateContacts(String contactId) => "contacts/$contactId/edit";
   final allClientsWithFilter = 'getAllClients';
+  final selectedClient = 'selectClient';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final updateClient = "updateClient/"; // "client/clientUpdate.php";
   String editClientByTypeClient(String idClient) => "editClientByTypeClient/$idClient";

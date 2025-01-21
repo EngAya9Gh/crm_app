@@ -18,6 +18,7 @@ import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
+import '../../../../core/common/enums/enums.dart';
 import '../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/common/helpers/input_validator.dart';
@@ -44,6 +45,7 @@ import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
+import '../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../data/models/user_region_department.dart';
 import '../manager/task_cubit.dart';
 
@@ -285,7 +287,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     Row(
                       children: [
                         Expanded(
-                          child: InkWell(
+                          child:CustomDateTimePicker(
+                            dateTimeType: DateTimeEnum.both,
+                            hintText: 'تاريخ البداية',
+                            isStartFromNow: true,
+                            isRequired: true,
+                            dateTimeController: _startDateController,
+                            style2: true,
+                            onDateChange:  (p0, p1) {
+
+                            },
+                          ), /*InkWell(
                             onTap: () async {
                               final selectedTime = TimeOfDay.fromDateTime(taskState.startDate ?? DateTime.now());
 
@@ -323,12 +335,22 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                          ),
+                          )*/
                         ),
                         if (privilegeBloc.checkPrivilege('171')) ...{
                           15.width,
                           Expanded(
-                            child: InkWell(
+                            child: CustomDateTimePicker(
+                              dateTimeType: DateTimeEnum.both,
+                              hintText: 'تاريخ البداية',
+                              isStartFromNow: true,
+                              isRequired: true,
+                              dateTimeController: _startDateController,
+                              style2: true,
+                              onDateChange:  (p0, p1) {
+
+                              },
+                            )/*InkWell(
                               onTap: () async {
                                 final selectedTime = TimeOfDay.fromDateTime(taskState.deadLineDate ?? DateTime.now());
 
@@ -367,7 +389,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
+                            )*/,
                           ),
                         },
                       ],

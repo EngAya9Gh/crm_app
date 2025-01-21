@@ -39,27 +39,6 @@ class _PackageOfferItemEntryAddedState extends State<PackageOfferItemEntryAdded>
           Row(
             children: [
               Expanded(
-                child: AppDropdownButtonFormField(
-                  value: widget.item.rebateType,
-                  validator: (value) {
-                    if (value == null) {
-                      return 'هذا الحقل مطلوب.';
-                    }
-                    return null;
-                  },
-                  items: OfferItemType.values,
-                  itemAsString: (item) => item!.name.toString(),
-                  itemAsValue: (item) => item!.name.toString(),
-                  onChange: (value) {
-                    if (value != null) {
-                      context.read<PackagesOffersBloc>().add(
-                          DeleteOrAddOrUpdateEntryToListOfItemAddedEvent(newEntryItemPackageOfferAdded: widget.item.copyWith(rebateType: value)));
-                    }
-                  },
-                ),
-              ),
-              20.width,
-              Expanded(
                 child: AppTextField(
                   hintText: "قيمة العرض",
                   controller: valueController,
@@ -72,6 +51,27 @@ class _PackageOfferItemEntryAddedState extends State<PackageOfferItemEntryAdded>
                   isRequired: true,
                   inputType: TextInputType.number,
                   validator: InputValidator.requiredFiled,
+                ),
+              ),
+              20.width,
+              Expanded(
+                child: AppDropdownButtonFormField(
+                  value: widget.item.rebateType,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'هذا الحقل مطلوب.';
+                    }
+                    return null;
+                  },
+                  items: OfferItemType.values,
+                  itemAsString: (item) => item!.text.toString(),
+                  itemAsValue: (item) => item!.name.toString(),
+                  onChange: (value) {
+                    if (value != null) {
+                      context.read<PackagesOffersBloc>().add(
+                          DeleteOrAddOrUpdateEntryToListOfItemAddedEvent(newEntryItemPackageOfferAdded: widget.item.copyWith(rebateType: value)));
+                    }
+                  },
                 ),
               ),
               10.width,

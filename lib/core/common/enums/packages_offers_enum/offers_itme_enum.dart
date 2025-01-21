@@ -1,7 +1,8 @@
 enum OfferItemType {
-  percetage('%'),
-  value('value'),
-  days('days');
+  percetage('%',"نسبة"),
+  value('value',"قيمة"),
+  days('days',"ايام");
   final String symbol;
-  const OfferItemType(this.symbol);
+  final String text;
+  const OfferItemType(this.symbol,this.text);
 }

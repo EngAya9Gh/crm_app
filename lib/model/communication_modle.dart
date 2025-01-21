@@ -36,6 +36,7 @@ class CommunicationModel {
   String? typeSeller;
   late final List<CommunicationDetails> details;
   late final List<RatingModel> ratings;
+  late final DateTime? lastRateDate;
 
   CommunicationModel({
     required this.idCommunication,
@@ -70,6 +71,7 @@ class CommunicationModel {
     this.isRecommendation,
     this.is_visit,
     this.typeSeller,
+    this.lastRateDate,
     this.details = const [],
   });
 
@@ -97,9 +99,9 @@ class CommunicationModel {
     fk_regoin = ApiHelper.handleString(json['fk_regoin']);
     nameClient = ApiHelper.handleString(json['nameClient']);
     type_install = ApiHelper.handleString(json['type_install']);
-    date_last_com_install =
-        ApiHelper.handleString(json['date_last_com_install']);
+    date_last_com_install = ApiHelper.handleString(json['date_last_com_install']);
     isRecommendation = ApiHelper.handleString(json['isRecommendation']);
+    lastRateDate = json['last_rate_date'] == null ? null : DateTime.tryParse(json['last_rate_date'] ?? '');
     is_visit = ApiHelper.handleString(json['is_visit']);
     is_suspend = ApiHelper.handleString(json['is_suspend']);
     fkUserInstall = ApiHelper.handleString(json['userinstall']);
@@ -110,8 +112,7 @@ class CommunicationModel {
     typeSeller = ApiHelper.handleString(json['type_seller']);
     details = json['communication_details'] == null
         ? []
-        : List<CommunicationDetails>.from(
-            json['communication_details'].map((e) {
+        : List<CommunicationDetails>.from(json['communication_details'].map((e) {
             return CommunicationDetails.fromJson(e);
           }));
     ratings = json['ratings'] == null
