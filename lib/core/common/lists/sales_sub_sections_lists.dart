@@ -89,7 +89,7 @@ abstract class SalesSubSectionsLists {
     SectionModel(
       title: 'ادارة ال lead',
       page: SizedBox.shrink(),
-      path:  EndPoints.baseUrls.urlWebPage+'/leads',
+      path:  EndPoints.baseUrls.urlWebPage+'leads',
     ),
   ];
 
