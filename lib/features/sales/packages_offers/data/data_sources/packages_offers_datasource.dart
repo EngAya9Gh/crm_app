@@ -29,6 +29,21 @@ class PackagesOffersDatasource {
       throw Exception("$e");
     }
   }
+  Future<Either<String, List<PackageOfferModel>>> getPackagesOffersFilter() async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.get(
+        endPoint: EndPoints.offers.getPackagesOffersFilter,
+      );
+
+      return Right(List.from((response['message'] as List<dynamic>).map((e) {
+        return PackageOfferModel.fromJson(e as Map<String, dynamic>);
+      })));
+    } catch (e) {
+      debugPrint("error in packages offers data source => $e");
+      throw Exception("$e");
+    }
+  }
 
   Future<Either<String, PackageOfferModel>> addPackagesOffers(AddNewPackagesOffersParams params) async {
     try {

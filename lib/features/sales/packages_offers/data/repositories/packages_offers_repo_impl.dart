@@ -57,4 +57,15 @@ class PackagesOffersRepoImpl implements PackagesOffersRepository {
       return Left(e.toString());
     }
   }
+
+  @override
+  Future<Either<String, List<PackageOfferModel>>> getFilterPackagesOffers()  async {
+    try {
+      final data = await datasource.getPackagesOffersFilter();
+      return data;
+    } catch (e) {
+      debugPrint("error in packages offers repo imp => $e");
+      return Left(e.toString());
+    }
+  }
 }

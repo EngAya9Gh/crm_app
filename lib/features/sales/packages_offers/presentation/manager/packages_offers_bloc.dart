@@ -8,6 +8,7 @@ import '../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../data/models/package_offer_model.dart';
 import '../../domain/use_cases/add_packages_offers_usecase.dart';
 import '../../domain/use_cases/delete_packages_offers_usecase.dart';
+import '../../domain/use_cases/get_filter_packages_offers_usecase.dart';
 import '../../domain/use_cases/get_packages_offers_usecase.dart';
 import '../../domain/use_cases/update_packages_offers_usecase.dart';
 import '../pages/package_offer_item_entry_added.dart';
@@ -22,14 +23,17 @@ class PackagesOffersBloc extends Bloc<PackagesOffersEvent, PackagesOffersState> 
   final AddPackagesOffersUseCase addPackagesOffersUseCase;
   final UpdatePackagesOffersUseCase updatePackagesOffersUseCase;
   final DeletePackagesOffersUseCase deletePackagesOffersUseCase;
+  final GetFilterPackagesOffersUseCase getFilterPackagesOffersUseCase;
 
   PackagesOffersBloc(
     this.getPackagesOffersUseCase,
     this.addPackagesOffersUseCase,
     this.updatePackagesOffersUseCase,
     this.deletePackagesOffersUseCase,
+    this.getFilterPackagesOffersUseCase,
   ) : super(PackagesOffersState()) {
     on<GetPackagesOffersEvent>(_onHandleGetPackagesOffersEvent);
+    on<GetPackagesOffersFilterEvent>(_onHandleGetPackagesOffersFilterEvent);
     on<DeletePackagesOffersEvent>(_onHandleDeletePackagesOffersEvent);
     on<AddNewPackagesOffersEvent>(_onHandleAddNewPackagesOffersEvent);
     on<UpdateNewPackagesOffersEvent>(_onHandleUpdateNewPackagesOffersEvent);
@@ -119,6 +123,27 @@ class PackagesOffersBloc extends Bloc<PackagesOffersEvent, PackagesOffersState> 
       (r) {
         emit(state.copyWith(deleteNewOfferStatus: BlocStatus.success()));
         emit(state.copyWith(deleteNewOfferStatus: BlocStatus.initial()));
+      },
+    );
+  }
+
+  FutureOr<void> _onHandleGetPackagesOffersFilterEvent(GetPackagesOffersFilterEvent event, Emitter<PackagesOffersState> emit)async {
+    emit(state.copyWith(allFilterOffersPackages: BlocStatus.loading(), addOrUpdateNewOfferStatus: BlocStatus.initial()));
+    final result = await getFilterPackagesOffersUseCase();
+    result.fold(
+          (l) => emit(
+        state.copyWith(allFilterOffersPackages: BlocStatus.fail(error: l)),
+      ),
+          (r) {
+        if(r.isEmpty){
+          emit(
+            state.copyWith(allFilterOffersPackages: BlocStatus.empty()),
+          );
+          return;
+        }
+        emit(
+          state.copyWith(allFilterOffersPackages: BlocStatus.success(data: r)),
+        );
       },
     );
   }

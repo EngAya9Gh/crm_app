@@ -681,6 +681,7 @@ class ProductsInvoice {
   String? fkclient;
   String? typeProdRenew;
   String? localId;
+  String? offerId;
 
   //endregion
 
@@ -705,6 +706,7 @@ class ProductsInvoice {
     this.fkuser,
     this.typeProdRenew,
     this.localId,
+    this.offerId,
   });
 
   ProductsInvoice copyWith({
@@ -727,6 +729,7 @@ class ProductsInvoice {
     String? fkclient,
     String? typeProdRenew,
     String? localId,
+    String? offerId,
   }) {
     return ProductsInvoice(
       idInvoiceProduct: idInvoiceProduct ?? this.idInvoiceProduct,
@@ -748,6 +751,7 @@ class ProductsInvoice {
       fkclient: fkclient ?? this.fkclient,
       typeProdRenew: typeProdRenew ?? this.typeProdRenew,
       localId: localId ?? this.localId,
+      offerId: offerId ?? this.offerId,
     );
   }
 
@@ -769,6 +773,7 @@ class ProductsInvoice {
       type: HelperFunctions.JsonStringNullHandler(json['type']),
       fkCountry: json['fk_country'].toString(),
       fkConfig: json['fk_config'].toString(),
+      offerId: json['offerId'].toString(),
     );
   }
 
@@ -788,6 +793,7 @@ class ProductsInvoice {
     _data['type'] = type;
     _data['fk_country'] = fkCountry;
     _data['fk_config'] = fkConfig == null ? "null" : fkConfig;
+    _data['offerId'] = offerId == null ? "null" : offerId;
     return _data;
   }
 //endregion

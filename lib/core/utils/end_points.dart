@@ -174,6 +174,7 @@ class _Care {
   final String getManagement = "admin-for-user";
   final String getViolationTypes = "violations/types";
   final String getActivitiesTypes = "activities/types";
+  String communicationsByClient(String id) => "communications/by-client/$id";
 
   String updateActivity(String activityId) => "activities/$activityId/edit";
 
@@ -368,6 +369,8 @@ class _Invoice {
   String getModulesByInvoice(idInvoice) => "getModulesByInvoice/$idInvoice";
 
   String getInvoiceById(String invoiceId) => 'getInvoiceById/$invoiceId';
+
+  final String calculatePrice = 'calculatePrice';
 }
 
 class _Tickets {
@@ -470,6 +473,7 @@ class _Products {
   String updateProduct(int id) => 'products/$id/edit';
 
   String deleteProduct(int id) => 'products/$id/delete';
+  final String getProductsByOfferId = 'products/with-offers';
 }
 
 class _Management {
@@ -535,7 +539,10 @@ class _Offers {
   const _Offers();
 
   final String getPackagesOffers = 'offers';
+  final String getPackagesOffersFilter = 'offers/select';
   final String addPackagesOffers = 'offers';
+
   String updatePackagesOffers(String id) => 'offers/$id/edit';
+
   String deletePackagesOffers(String id) => 'offers/$id/delete';
 }

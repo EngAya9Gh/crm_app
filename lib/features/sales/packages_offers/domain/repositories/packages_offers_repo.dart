@@ -6,6 +6,7 @@ import '../use_cases/delete_packages_offers_usecase.dart';
 
 abstract class PackagesOffersRepository {
   Future<Either<String, List<PackageOfferModel>>> getPackagesOffers();
+  Future<Either<String, List<PackageOfferModel>>> getFilterPackagesOffers();
   Future<Either<String, PackageOfferModel>> addPackagesOffers(AddNewPackagesOffersParams params);
   Future<Either<String, PackageOfferModel>> updatePackagesOffers(AddNewPackagesOffersParams params);
   Future<Either<String, bool>> deletePackagesOffers(DeleteOffersParams params);

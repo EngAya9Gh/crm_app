@@ -50,7 +50,7 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
       create: (context) => _bloc,
       child: AppScaffold(
         appBar: CustomAppBar(
-          title: 'فواتير بحاجة توثيق',
+          title: 'فواتير للتوثيق',
         ),
         body: Directionality(
           textDirection: TextDirection.rtl,

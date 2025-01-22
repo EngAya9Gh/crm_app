@@ -1,22 +1,28 @@
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/sales/packages_offers/presentation/manager/packages_offers_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/enums/toast_colors_enum.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
+import '../../../core/common/helpers/input_validator.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/common/widgets/app_group_button.dart';
 import '../../../core/common/widgets/app_icon.dart';
+import '../../../core/common/widgets/app_loader.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/common/widgets/custom_app_bar.dart';
+import '../../../core/common/widgets/custom_error_widget.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../features/sales/packages_offers/data/models/package_offer_model.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/productmodel.dart';
 import '../../../view_model/invoice_vm.dart';
@@ -46,6 +52,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
   List<ProductsInvoice> listAdded = [];
   String? selectedvalue = null;
   ProductModel? selectedProduct = null;
+  final ValueNotifier<PackageOfferModel?> selectedOfferModel = ValueNotifier(null);
   TextEditingController _taxuser = TextEditingController();
 
   TextEditingController _textprice = TextEditingController();
@@ -56,12 +63,14 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
   // late int index = 0;
   String? taxCountry = null;
   late product_vm productVm;
+
   @override
   void initState() {
-   productVm= Provider.of<product_vm>(context,listen: false);
-   WidgetsBinding.instance.addPostFrameCallback((_) {
-     productVm.getproduct_vm(); // Now it's safe to call
-   });
+    context.read<PackagesOffersBloc>().add(GetPackagesOffersFilterEvent());
+    productVm = Provider.of<product_vm>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      productVm.getProductsWithOffer(); // Now it's safe to call
+    });
     invoiceVm = Provider.of<InvoiceVm>(context, listen: false);
     _taxuser.text = '';
     _taxadmin.text = '';
@@ -74,8 +83,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
 
         if (userTax + adminTax > 100) {
           _taxuser.text = (100 - adminTax).toString();
-          _taxuser.selection = TextSelection.fromPosition(
-              TextPosition(offset: _taxuser.text.length));
+          _taxuser.selection = TextSelection.fromPosition(TextPosition(offset: _taxuser.text.length));
         }
       }
 
@@ -84,8 +92,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
 
         if (userTax > 100) {
           _taxuser.text = 100.toString();
-          _taxuser.selection = TextSelection.fromPosition(
-              TextPosition(offset: _taxuser.text.length));
+          _taxuser.selection = TextSelection.fromPosition(TextPosition(offset: _taxuser.text.length));
         }
       }
     });
@@ -96,8 +103,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
 
         if (userTax + adminTax > 100) {
           _taxadmin.text = (100 - userTax).toString();
-          _taxadmin.selection = TextSelection.fromPosition(
-              TextPosition(offset: _taxuser.text.length));
+          _taxadmin.selection = TextSelection.fromPosition(TextPosition(offset: _taxuser.text.length));
         }
       }
 
@@ -106,8 +112,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
 
         if (adminTax > 100) {
           _taxadmin.text = 100.toString();
-          _taxadmin.selection = TextSelection.fromPosition(
-              TextPosition(offset: _taxadmin.text.length));
+          _taxadmin.selection = TextSelection.fromPosition(TextPosition(offset: _taxadmin.text.length));
         }
       }
     });
@@ -126,16 +131,13 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
     setState(() {
       double totaltax = 0;
       if (listProduct.isNotEmpty) {
-        _textprice.text = double.parse(selectedProduct?.priceProduct ?? "0.0")
-            .toStringAsFixed(2);
+        _textprice.text = double.parse(selectedProduct?.priceProduct ?? "0.0").toStringAsFixed(2);
         String? taxCountry = selectedProduct?.value_config;
 
         if (taxCountry != null) {
-          double pricewithtax =
-              double.parse(_textprice.text) * double.parse(taxCountry) / 100;
+          double pricewithtax = double.parse(_textprice.text) * double.parse(taxCountry) / 100;
 
-          _textprice.text =
-              (double.parse(_textprice.text) + pricewithtax).toString();
+          _textprice.text = (double.parse(_textprice.text) + pricewithtax).toString();
         }
         if (_taxadmin.text != '' && _taxuser.text != '') {
           totaltax = double.parse(_taxadmin.text) + double.parse(_taxuser.text);
@@ -144,13 +146,10 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
           if (_taxadmin.text != '') totaltax = double.parse(_taxadmin.text);
           if (_taxuser.text != '') totaltax = double.parse(_taxuser.text);
         }
-        double pricewithouttax =
-            double.parse(_textprice.text) * totaltax / 100; //حسم
-        _textprice.text =
-            (double.parse(_textprice.text) - pricewithouttax).toString();
+        double pricewithouttax = double.parse(_textprice.text) * totaltax / 100; //حسم
+        _textprice.text = (double.parse(_textprice.text) - pricewithouttax).toString();
 
-        double totalprice = double.parse(_textprice.text) *
-            double.parse(_amount.text.isEmpty ? '1' : _amount.text);
+        double totalprice = double.parse(_textprice.text) * double.parse(_amount.text.isEmpty ? '1' : _amount.text);
         // totalprice.floorToDouble();
         _textprice.text = totalprice.toStringAsFixed(2).toString();
       }
@@ -162,18 +161,14 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
   onChangeProductType(ProductType productType, bool isSelected) {
     if (!isSelected) {
       selectedProductType = null;
-      listProduct =
-          List.of(Provider.of<product_vm>(context, listen: false).listProduct)
-              .toList();
+      listProduct = List.of(Provider.of<product_vm>(context, listen: false).listProduct).toList();
       setState(() {});
       return;
     }
     selectedProductType = productType;
-    listProduct =
-        List.of(Provider.of<product_vm>(context, listen: false).listProduct)
-            .where((element) =>
-                element.type == selectedProductType!.index.toString())
-            .toList();
+    listProduct = List.of(Provider.of<product_vm>(context, listen: false).listProduct)
+        .where((element) => element.type == selectedProductType!.index.toString())
+        .toList();
     selectedProduct = null;
     selectedvalue = null;
     setState(() {});
@@ -248,34 +243,99 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                           ),
                           child: AppGroupButton(
                             width: (MediaQuery.of(context).size.width / 2) - 50,
-                            groupButtonController: GroupButtonController(
-                                selectedIndex: selectedProductType?.index),
+                            groupButtonController: GroupButtonController(selectedIndex: selectedProductType?.index),
                             buttons: ['أجهزة', 'برامج'],
                             onSelected: (value, index, isSelected) {
-                              onChangeProductType(
-                                  ProductType.values[index], isSelected);
+                              onChangeProductType(ProductType.values[index], isSelected);
                             },
                           ),
                         ),
                         SizedBox(height: 10),
-                        CustomSearchableDropDown<ProductModel>(
-                          hint: "اختر منتج",
-                          items: listProduct,
-                          itemAsString: (item) => item?.nameProduct ?? '',
-                          filterFn: (item, filter) {
-                            return item.nameProduct
-                                ?.toLowerCase()
-                                .contains(filter.toLowerCase())??false;
+                        BlocBuilder<PackagesOffersBloc, PackagesOffersState>(
+                          builder: (context, state) {
+                            if (state.allFilterOffersPackages.isLoading()) {
+                              return AppLoader();
+                            } else if (state.allFilterOffersPackages.isFailed()) {
+                              return AppErrorWidget(
+                                message: 'error try again',
+                                onPressed: () {
+                                  context.read<PackagesOffersBloc>().add(GetPackagesOffersFilterEvent());
+                                },
+                              );
+                            } else if (state.allFilterOffersPackages.data?.isEmpty ?? true) {
+                              return SizedBox.shrink();
+                            }
+                            return ValueListenableBuilder(
+                              valueListenable: selectedOfferModel,
+                              builder: (context, value, child) => Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomSearchableDropDown<PackageOfferModel>(
+                                      hint: 'العروض',
+                                      items: state.allFilterOffersPackages.data ?? [],
+                                      itemAsString: (item) => item!.name ?? '',
+                                      selectedItem: value,
+                                      onChanged: (value) async {
+                                        selectedOfferModel.value = value;
+                                        productVm.getProductsWithOffer(offerId: value!.id.toString()).then(
+                                          (value) {
+                                            listProduct = List.of(Provider.of<product_vm>(context, listen: false).listProduct);
+                                            selectedProduct = null;
+                                            setState(() {});
+                                          },
+                                        ); // Now it's safe to call
+                                      },
+                                      validator: (value) {
+                                        return InputValidator.requiredFiled(value);
+                                      },
+                                      filterFn: (item, filter) {
+                                        return item.name!.toLowerCase().contains(filter.toLowerCase());
+                                      },
+                                    ),
+                                  ),
+                                  if (value != null)
+                                    InkWell(
+                                      onTap: () {
+                                        productVm.getProductsWithOffer().then(
+                                          (value) {
+                                            listProduct = List.of(Provider.of<product_vm>(context, listen: false).listProduct);
+                                          },
+                                        );
+                                        selectedOfferModel.value = null;
+                                        selectedProduct = null;
+                                        setState(() {});
+                                      },
+                                      child: Icon(Icons.delete),
+                                    )
+                                ],
+                              ),
+                            );
                           },
-                          selectedItem: selectedProduct,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedProduct = value;
-                              selectedvalue =
-                                  selectedProduct?.idProduct.toString();
-                              // index = listProduct.indexWhere((element) => element.idProduct == selectedvalue);
-                              calculate();
-                            });
+                        ),
+                        SizedBox(height: 10),
+                        Consumer<product_vm>(
+                          builder: (context, value, child) {
+                            if (value.isloading) {
+                              return AppLoader();
+                            } else
+                              return CustomSearchableDropDown<ProductModel>(
+                                hint: "اختر منتج",
+                                items: value.listProduct,
+                                itemAsString: (item) => item?.nameProduct ?? '',
+                                filterFn: (item, filter) {
+                                  return item.nameProduct?.toLowerCase().contains(filter.toLowerCase()) ?? false;
+                                },
+                                selectedItem: selectedProduct,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedProduct = value;
+                                    selectedvalue = selectedProduct?.idProduct.toString();
+
+                                    // index = listProduct.indexWhere((element) => element.idProduct == selectedvalue);
+                                    calculate();
+                                  });
+                                },
+                              );
                           },
                         ),
                         SizedBox(height: 10),
@@ -293,9 +353,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                       calculate();
                                     },
                                     inputType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
+                                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                                   ),
                                 ],
                               ),
@@ -313,9 +371,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                     validator: (value) {
                                       if (value.toString().trim().isEmpty) {
                                         return AppStrings.labelEmpty;
-                                      } else if (double.tryParse(
-                                              value.toString()) ==
-                                          null) {
+                                      } else if (double.tryParse(value.toString()) == null) {
                                         return 'من فضلك ادخل عدد';
                                       }
                                       return null;
@@ -341,9 +397,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                       calculate();
                                     },
                                     inputType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
+                                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                                     prefix: AppText('%'),
                                   ),
                                 ],
@@ -362,9 +416,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                       calculate();
                                     },
                                     inputType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
+                                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                                     prefix: AppText('%'),
                                   ),
                                 ],
@@ -376,42 +428,75 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                         SizedBox(
                           width: double.infinity,
                           child: AppElevatedButton(
+                            text: "تطبيق خصم العرض على المنتجات المضافة ",
+                            onPressed: () async {
+                              if (_textprice.text.isNotEmpty && selectedvalue != null) {
+                                ProductModel pm = selectedProduct!;
+                                ProductsInvoice pp = ProductsInvoice(
+                                    idInvoiceProduct: null,
+                                    fkIdInvoice: widget.invoice!.idInvoice == null ? '0' : widget.invoice!.idInvoice.toString(),
+                                    fkclient: widget.invoice!.fkIdClient,
+                                    fkuser: widget.invoice!.fkIdUser,
+                                    fkProduct: pm.idProduct,
+                                    fkConfig: pm.fkConfig == null ? "null" : pm.fkConfig,
+                                    fkCountry: pm.fkCountry,
+                                    price: _textprice.text,
+                                    amount: _amount.text.isEmpty ? '1' : _amount.text,
+                                    rateAdmin: _taxadmin.text,
+                                    rateUser: _taxuser.text,
+                                    nameProduct: pm.nameProduct,
+                                    type: pm.type,
+                                    idProduct: pm.idProduct,
+                                    priceProduct: pm.priceProduct,
+                                    taxtotal: pm.value_config == null ? "null" : pm.value_config,
+                                    typeProdRenew: pm.typeProdRenew,
+                                    localId: DateTime.now().millisecondsSinceEpoch.toString(),
+                                    offerId: selectedOfferModel.value!.id!.toString());
+                                productVm.CalculateProductsPrice([pp]).then(
+                                  (value) {
+                                    _amount.text = value.first.amount!;
+                                    _textprice.text = value.first.finalPrice.toString();
+                                  },
+                                );
+                              } else {
+                                AppSnackbar.showSnakeBar(
+                                  'من فضلك تأكد من عملية الإدخال',
+                                  color: ToastColorsEnum.error,
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        SizedBox(
+                          width: double.infinity,
+                          child: AppElevatedButton(
                             text: 'إضافة المنتج للفاتورة',
                             onPressed: () {
                               //iduser
-                              if (_textprice.text.isNotEmpty &&
-                                  selectedvalue != null) {
+                              if (_textprice.text.isNotEmpty && selectedvalue != null) {
                                 // final index =
                                 //     listProduct.indexWhere((element) => element.idProduct == selectedvalue);
                                 ProductModel pm = selectedProduct!;
                                 ProductsInvoice pp = ProductsInvoice(
                                   idInvoiceProduct: null,
-                                  fkIdInvoice: widget.invoice!.idInvoice == null
-                                      ? '0'
-                                      : widget.invoice!.idInvoice.toString(),
+                                  fkIdInvoice: widget.invoice!.idInvoice == null ? '0' : widget.invoice!.idInvoice.toString(),
                                   fkclient: widget.invoice!.fkIdClient,
                                   fkuser: widget.invoice!.fkIdUser,
                                   fkProduct: pm.idProduct,
-                                  fkConfig: pm.fkConfig == null
-                                      ? "null"
-                                      : pm.fkConfig,
+                                  fkConfig: pm.fkConfig == null ? "null" : pm.fkConfig,
                                   fkCountry: pm.fkCountry,
                                   price: _textprice.text,
-                                  amount:
-                                      _amount.text.isEmpty ? '1' : _amount.text,
+                                  amount: _amount.text.isEmpty ? '1' : _amount.text,
                                   rateAdmin: _taxadmin.text,
                                   rateUser: _taxuser.text,
                                   nameProduct: pm.nameProduct,
                                   type: pm.type,
                                   idProduct: pm.idProduct,
                                   priceProduct: pm.priceProduct,
-                                  taxtotal: pm.value_config == null
-                                      ? "null"
-                                      : pm.value_config,
+                                  taxtotal: pm.value_config == null ? "null" : pm.value_config,
                                   typeProdRenew: pm.typeProdRenew,
-                                  localId: DateTime.now()
-                                      .millisecondsSinceEpoch
-                                      .toString(),
+                                  localId: DateTime.now().millisecondsSinceEpoch.toString(),
                                 );
                                 listAdded.add(pp);
 

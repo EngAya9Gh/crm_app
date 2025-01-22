@@ -1,9 +1,14 @@
+import 'package:crm_smart/core/common/helpers/selected_sections_handler.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 
 import '../api/api.dart';
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
+import '../model/invoiceModel.dart';
 import '../model/productmodel.dart';
+import 'package:collection/collection.dart';
+
+import '../view_model/product_vm.dart';
 
 class ProductService {
   Future<ProductModel> addProduct(Map<String, dynamic> body) async {
@@ -26,7 +31,7 @@ class ProductService {
     final ApiServices apiServices = getIt<ApiServices>();
     apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await apiServices.get(
-        endPoint: 'products',
+        endPoint: EndPoints.products.addProduct,
         queryParameters: {
           'type': type,
         }..removeWhere(
@@ -36,6 +41,27 @@ class ProductService {
     //
     //     endPoint: EndPoints.baseUrls.urlLaravel +
     //         'products',);
+    data = response['message'];
+    List<ProductModel> prodlist = [];
+
+    for (int i = 0; i < data.length; i++) {
+      prodlist.add(ProductModel.fromJson(data[i]));
+    }
+
+    return prodlist;
+  }
+
+  Future<List<ProductModel>> getAllProductByOfferId(String? offerId) async {
+    List<dynamic> data = [];
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await apiServices.get(
+        endPoint: EndPoints.products.getProductsByOfferId,
+        queryParameters: {
+          'offer_id': offerId,
+        }..removeWhere(
+            (key, value) => value == null,
+          ));
     data = response['message'];
     List<ProductModel> prodlist = [];
 
@@ -61,5 +87,39 @@ class ProductService {
       return res;
     }
     return res;
+  }
+
+  Future<List<CalculatePriceProductModel>> calculateProductsPrice(List<ProductsInvoice> productsInvoice) async {
+    var res;
+    try {
+      var CalPriceParamMap = {};
+      productsInvoice.forEachIndexed(
+        (index, element) => CalPriceParamMap.addAll({
+          "products[$index][fk_product]": element.fkProduct,
+          "products[$index][amount]": element.amount,
+          "products[$index][taxtotal]": element.taxtotal,
+          "products[$index][rate_admin]": element.rateAdmin,
+          "products[$index][rateUser]": element.rateUser,
+          "products[$index][offer_id]": element.offerId,
+        }),
+      );
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final ressponse = await apiServices.get(endPoint: EndPoints.invoice.calculatePrice, queryParameters: {
+        ...CalPriceParamMap..removeWhere((key, value) => value==null||value=='',),
+      });
+      print(ressponse['message'][0]);
+      // var list = List.from(ressponse['message']).map((e) => CalculatePriceProductModel.fromJson(e)).toList();
+      var data = ressponse['message'];
+      List<CalculatePriceProductModel> prodlist = [];
+
+      for (int i = 0; i < data.length; i++) {
+        prodlist.add(CalculatePriceProductModel.fromJson(data[i]));
+      }
+
+      return prodlist;
+    } catch (e) {
+      return res;
+    }
   }
 }

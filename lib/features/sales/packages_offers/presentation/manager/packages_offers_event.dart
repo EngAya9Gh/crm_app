@@ -44,3 +44,4 @@ class ResetListOfItemAddEvent extends PackagesOffersEvent{
     this.listItem,
   });
 }
+class GetPackagesOffersFilterEvent extends PackagesOffersEvent{}

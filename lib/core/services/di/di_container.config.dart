@@ -653,6 +653,8 @@ import '../../../features/sales/packages_offers/domain/use_cases/add_packages_of
     as _i615;
 import '../../../features/sales/packages_offers/domain/use_cases/delete_packages_offers_usecase.dart'
     as _i1043;
+import '../../../features/sales/packages_offers/domain/use_cases/get_filter_packages_offers_usecase.dart'
+    as _i451;
 import '../../../features/sales/packages_offers/domain/use_cases/get_packages_offers_usecase.dart'
     as _i260;
 import '../../../features/sales/packages_offers/domain/use_cases/update_packages_offers_usecase.dart'
@@ -1481,6 +1483,9 @@ _i174.GetIt $initGetIt(
       _i615.AddPackagesOffersUseCase(gh<_i444.PackagesOffersRepository>()));
   gh.factory<_i1043.DeletePackagesOffersUseCase>(() =>
       _i1043.DeletePackagesOffersUseCase(gh<_i444.PackagesOffersRepository>()));
+  gh.factory<_i451.GetFilterPackagesOffersUseCase>(() =>
+      _i451.GetFilterPackagesOffersUseCase(
+          gh<_i444.PackagesOffersRepository>()));
   gh.factory<_i260.GetPackagesOffersUseCase>(() =>
       _i260.GetPackagesOffersUseCase(gh<_i444.PackagesOffersRepository>()));
   gh.factory<_i864.UpdatePackagesOffersUseCase>(() =>
@@ -1733,12 +1738,6 @@ _i174.GetIt $initGetIt(
       _i206.GetVerifiedInvoiceUseCase(gh<_i24.VerifiedInvoiceRepository>()));
   gh.factory<_i1029.VerifiedInvoiceUseCase>(() =>
       _i1029.VerifiedInvoiceUseCase(gh<_i24.VerifiedInvoiceRepository>()));
-  gh.factory<_i783.PackagesOffersBloc>(() => _i783.PackagesOffersBloc(
-        gh<_i260.GetPackagesOffersUseCase>(),
-        gh<_i615.AddPackagesOffersUseCase>(),
-        gh<_i864.UpdatePackagesOffersUseCase>(),
-        gh<_i1043.DeletePackagesOffersUseCase>(),
-      ));
   gh.lazySingleton<_i220.CacheTokenUsecase>(
       () => _i220.CacheTokenUsecase(gh<_i325.LoginRepo>()));
   gh.lazySingleton<_i882.GetTokenUsecase>(
@@ -1827,6 +1826,13 @@ _i174.GetIt $initGetIt(
       _i209.GetWithdrawnInvoicesUsecase(gh<_i746.WithdrawnInvoicesRepo>()));
   gh.factory<_i999.PreviousRatingsCubit>(
       () => _i999.PreviousRatingsCubit(gh<_i710.GetPreviousRatingsUsecase>()));
+  gh.factory<_i783.PackagesOffersBloc>(() => _i783.PackagesOffersBloc(
+        gh<_i260.GetPackagesOffersUseCase>(),
+        gh<_i615.AddPackagesOffersUseCase>(),
+        gh<_i864.UpdatePackagesOffersUseCase>(),
+        gh<_i1043.DeletePackagesOffersUseCase>(),
+        gh<_i451.GetFilterPackagesOffersUseCase>(),
+      ));
   gh.factory<_i485.CareActivitiesBloc>(() => _i485.CareActivitiesBloc(
         gh<_i335.GetAllCareActivitiesUseCase>(),
         gh<_i70.UpdateCareActivityUseCase>(),
