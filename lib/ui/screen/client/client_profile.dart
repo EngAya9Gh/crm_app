@@ -96,8 +96,8 @@ class _ClientProfileState extends State<ClientProfile>
 
     invoiceVm.getInvoiceByClient(widget.idClient);
 
-    Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(
-        widget.idClient.toString(), widget.idCommunication);
+    Provider.of<CommunicationVm>(context, listen: false)..getCommunicationclient(
+        widget.idClient.toString(), widget.idCommunication)..getCommunicationByClient(widget.idClient.toString());
 
     await ticketsCubit.getClientTicket(widget.idClient!);
 
