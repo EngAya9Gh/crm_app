@@ -59,7 +59,9 @@ class CommunicationVm extends ChangeNotifier {
 
       List<dynamic> data = [];
       var api = getIt<ApiServices>()..changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      var response = await api.get(endPoint: EndPoints.care.communicationsByClient(fk_client));
+      var response = await api.get(endPoint: EndPoints.care.communicationsByClient(fk_client),queryParameters: {
+        'id_communication':idCommunication,
+      });
       data = response['message'];
 
       if (data.length.toString().isNotEmpty) {

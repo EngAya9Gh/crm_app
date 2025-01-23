@@ -127,7 +127,7 @@ class InvoiceModel {
   String? cancel_approvment;
   bool? hasDevices;
   bool? isCanceledWithdraw;
-  bool?  isDeleted;
+  bool? isDeleted;
 
   //endregion
 
@@ -135,6 +135,7 @@ class InvoiceModel {
   final TrainingModel? trainingPlan;
   final TrainingModel? trainingSession;
   final TrainingModel? trainingMultiSession;
+
   //endregion
 
   //region Constructor
@@ -268,7 +269,6 @@ class InvoiceModel {
 
   factory InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
     return InvoiceModel(
-
         tag: ApiHelper.handleString(jsondata['tag']) == "true" ? true : false,
         idInvoice: ApiHelper.handleString(jsondata['id_invoice']),
         renewInventory: ApiHelper.handleString(jsondata['renew_inventory']),
@@ -281,20 +281,18 @@ class InvoiceModel {
         typeInstallation: ApiHelper.handleString(jsondata['type_installation']),
         currency_name: ApiHelper.handleString(jsondata['currency_name']),
         imageRecord: ApiHelper.handleString(
-          jsondata['image_record'].toString().trim().isEmpty ||
-                  jsondata['image_record'] == null
+          jsondata['image_record'].toString().trim().isEmpty || jsondata['image_record'] == null
               ? jsondata['image_record']
               : EndPoints.baseUrls.laravelFilesUrl + jsondata['image_record'],
         ),
         imagelogo: ApiHelper.handleString(
-          jsondata['imagelogo'].toString().trim().isEmpty ||
-                  jsondata['imagelogo'] == null
+          jsondata['imagelogo'].toString().trim().isEmpty || jsondata['imagelogo'] == null
               ? jsondata['imagelogo']
               : EndPoints.baseUrls.laravelFilesUrl + jsondata['imagelogo'],
         ),
-        trainingPlan: jsondata['training_plan']==null?null:TrainingModel.fromJson(jsondata['training_plan']),
-        trainingSession: jsondata['training_session']==null?null:TrainingModel.fromJson(jsondata['training_session']),
-        trainingMultiSession: jsondata['training_multi_session']==null?null:TrainingModel.fromJson(jsondata['training_multi_session']),
+        trainingPlan: jsondata['training_plan'] == null ? null : TrainingModel.fromJson(jsondata['training_plan']),
+        trainingSession: jsondata['training_session'] == null ? null : TrainingModel.fromJson(jsondata['training_session']),
+        trainingMultiSession: jsondata['training_multi_session'] == null ? null : TrainingModel.fromJson(jsondata['training_multi_session']),
         fkIdClient: ApiHelper.handleString(jsondata['fk_idClient']),
         fkIdUser: ApiHelper.handleString(jsondata['fk_idUser']),
         amountPaid: ApiHelper.handleString(jsondata['amount_paid']),
@@ -307,16 +305,14 @@ class InvoiceModel {
         name_regoin: ApiHelper.handleString(jsondata['name_regoin']),
         type_client: ApiHelper.handleString(jsondata['type_client']),
         lastuserupdate: ApiHelper.handleString(jsondata['lastuserupdate']),
-        lastuserupdateName:
-            ApiHelper.handleString(jsondata['lastuserupdateName']),
+        lastuserupdateName: ApiHelper.handleString(jsondata['lastuserupdateName']),
         nameuserinstall: ApiHelper.handleString(jsondata['nameuserinstall']),
         dateinstall_done: ApiHelper.handleString(jsondata['dateinstall_done']),
         isdoneinstall: ApiHelper.handleString(jsondata['isdoneinstall']),
         userinstall: ApiHelper.handleString(jsondata['userinstall']),
         dateinstall_task: ApiHelper.handleString(jsondata['dateinstall_task']),
         fkusertask: ApiHelper.handleString(jsondata['fkusertask']),
-        date_lastuserupdate:
-            ApiHelper.handleString(jsondata['date_lastuserupdate']),
+        date_lastuserupdate: ApiHelper.handleString(jsondata['date_lastuserupdate']),
         path: ApiHelper.handleString(jsondata['path']),
         lastOperation: ApiHelper.handleString(jsondata['last_operation']),
         userDidOperation: ApiHelper.handleString(jsondata['user_did_operation']),
@@ -349,25 +345,17 @@ class InvoiceModel {
         nummostda: ApiHelper.handleString(jsondata['nummostda']),
         numTax: ApiHelper.handleString(jsondata['numTax']),
         hoursdelaytabel: ApiHelper.handleString(jsondata['hoursdelaytabel']),
-        hoursdelayinstall:
-            ApiHelper.handleString(jsondata['hoursdelayinstall']),
+        hoursdelayinstall: ApiHelper.handleString(jsondata['hoursdelayinstall']),
         clientusername: ApiHelper.handleString(jsondata['clientusername']),
         address_invoice: ApiHelper.handleString(jsondata['address_invoice']),
         ready_install: ApiHelper.handleString(jsondata['ready_install']),
-        date_readyinstall:
-            ApiHelper.handleString(jsondata['date_readyinstall']),
-        user_ready_install:
-            ApiHelper.handleString(jsondata['user_ready_install']),
-        date_not_readyinstall:
-            ApiHelper.handleString(jsondata['date_not_readyinstall']),
-        user_not_ready_install:
-            ApiHelper.handleString(jsondata['user_not_ready_install']),
-        nameuser_ready_install:
-            ApiHelper.handleString(jsondata['nameuser_ready_install']),
-        nameuser_notready_install:
-            ApiHelper.handleString(jsondata['nameuser_notready_install']),
-        count_delay_ready:
-            ApiHelper.handleString(jsondata['count_delay_ready']),
+        date_readyinstall: ApiHelper.handleString(jsondata['date_readyinstall']),
+        user_ready_install: ApiHelper.handleString(jsondata['user_ready_install']),
+        date_not_readyinstall: ApiHelper.handleString(jsondata['date_not_readyinstall']),
+        user_not_ready_install: ApiHelper.handleString(jsondata['user_not_ready_install']),
+        nameuser_ready_install: ApiHelper.handleString(jsondata['nameuser_ready_install']),
+        nameuser_notready_install: ApiHelper.handleString(jsondata['nameuser_notready_install']),
+        count_delay_ready: ApiHelper.handleString(jsondata['count_delay_ready']),
         isApproveFinance: ApiHelper.handleString(jsondata['isApproveFinance']),
         iduser_FApprove: ApiHelper.handleString(jsondata['iduser_FApprove']),
         Date_FApprove: ApiHelper.handleString(jsondata['Date_FApprove']),
@@ -376,14 +364,11 @@ class InvoiceModel {
         participate_fk: ApiHelper.handleString(jsondata['participate_fk']),
         fk_agent: ApiHelper.handleString(jsondata['fk_agent']),
         type_seller: ApiHelper.handleString(jsondata['type_seller']),
-        fk_regoin_invoice:
-            ApiHelper.handleString(jsondata['fk_regoin_invoice']),
-        name_regoin_invoice:
-            ApiHelper.handleString(jsondata['name_regoin_invoice']),
+        fk_regoin_invoice: ApiHelper.handleString(jsondata['fk_regoin_invoice']),
+        name_regoin_invoice: ApiHelper.handleString(jsondata['name_regoin_invoice']),
         renew_agent: ApiHelper.handleString(jsondata['renew_agent']),
         participal: _getParticipateModel(jsondata['participal_info']),
-        agent_distibutor:
-            _getAgentDistributorModel(jsondata['agent_distibutor_info']),
+        agent_distibutor: _getAgentDistributorModel(jsondata['agent_distibutor_info']),
         products: _getProduct(jsondata['products']),
         fileAttach: ApiHelper.handleString(jsondata['file_attach']),
         file_reject: ApiHelper.handleString(jsondata['file_reject']),
@@ -400,22 +385,15 @@ class InvoiceModel {
           json: jsondata['dates_install_client'],
           fromJson: (e) => DateInstallationClient.fromJson(e),
         ),
-        filesAttach: List.from(jsondata['files_attach'] ?? [])
-            .map((e) => FileAttach.fromMap(e))
-            .toList(),
+        filesAttach: List.from(jsondata['files_attach'] ?? []).map((e) => FileAttach.fromMap(e)).toList(),
         rateProduct: jsondata['rate_product'],
         rateSupport: jsondata['rate_support'],
         rateSales: jsondata['rate_sales'],
         deviceState: jsondata['device_state'],
         hasDevices: jsondata['has_devices'],
-        cancel_approvment:
-            ApiHelper.handleString(jsondata['cancel_approvement']),
-        isCanceledWithdraw:
-            ApiHelper.handleString(jsondata['is_canceled_withdraw']) == '1'
-                ? true
-                : false,
-        isDeleted: (ApiHelper.handleString(jsondata['isdelete'])) == '1'? true
-            : false);
+        cancel_approvment: ApiHelper.handleString(jsondata['cancel_approvement']),
+        isCanceledWithdraw: ApiHelper.handleString(jsondata['is_canceled_withdraw']) == '1' ? true : false,
+        isDeleted: (ApiHelper.handleString(jsondata['isdelete'])) == '1' ? true : false);
   }
 
   //region Methods
@@ -607,14 +585,10 @@ class InvoiceModel {
       ready_install: ready_install ?? this.ready_install,
       date_readyinstall: date_readyinstall ?? this.date_readyinstall,
       user_ready_install: user_ready_install ?? this.user_ready_install,
-      date_not_readyinstall:
-          date_not_readyinstall ?? this.date_not_readyinstall,
-      user_not_ready_install:
-          user_not_ready_install ?? this.user_not_ready_install,
-      nameuser_ready_install:
-          nameuser_ready_install ?? this.nameuser_ready_install,
-      nameuser_notready_install:
-          nameuser_notready_install ?? this.nameuser_notready_install,
+      date_not_readyinstall: date_not_readyinstall ?? this.date_not_readyinstall,
+      user_not_ready_install: user_not_ready_install ?? this.user_not_ready_install,
+      nameuser_ready_install: nameuser_ready_install ?? this.nameuser_ready_install,
+      nameuser_notready_install: nameuser_notready_install ?? this.nameuser_notready_install,
       count_delay_ready: count_delay_ready ?? this.count_delay_ready,
       isApproveFinance: isApproveFinance ?? this.isApproveFinance,
       iduser_FApprove: iduser_FApprove ?? this.iduser_FApprove,
@@ -635,13 +609,11 @@ class InvoiceModel {
       products: products ?? this.products,
       participal: participal ?? this.participal,
       agent_distibutor: agent_distibutor ?? this.agent_distibutor,
-      datesInstallationClient:
-          datesInstallationClient ?? this.datesInstallationClient,
+      datesInstallationClient: datesInstallationClient ?? this.datesInstallationClient,
       fileAttach: deleteImage ? null : fileAttach ?? this.fileAttach,
       file_reject: deleteRejectImage ? null : file_reject ?? this.file_reject,
       attachFileStatus: attachFileStatus ?? this.attachFileStatus,
-      deleteAttachFileStatus:
-          deleteAttachFileStatus ?? this.deleteAttachFileStatus,
+      deleteAttachFileStatus: deleteAttachFileStatus ?? this.deleteAttachFileStatus,
       filesAttach: filesAttach ?? this.filesAttach,
       renew_agent: renew_agent ?? this.renew_agent,
       approveBackDone: approveBackDone ?? this.approveBackDone,
@@ -793,7 +765,7 @@ class ProductsInvoice {
     _data['type'] = type;
     _data['fk_country'] = fkCountry;
     _data['fk_config'] = fkConfig == null ? "null" : fkConfig;
-    _data['offerId'] = offerId == null ? "null" : offerId;
+    if (offerId != null) _data['offerId'] = offerId;
     return _data;
   }
 //endregion
@@ -820,6 +792,7 @@ class FileAttach {
   final XFile? file;
   final DownloadFileStatus fileStatus;
   final dynamic type;
+
   FileAttach({
     this.fileAttach,
     this.id,
@@ -830,14 +803,14 @@ class FileAttach {
 
   factory FileAttach.fromMap(Map<String, dynamic> map) {
     return FileAttach(
-      fileAttach:
-          HelperFunctions.JsonStringNullHandler(map['file_attach_invoice']),
+      fileAttach: HelperFunctions.JsonStringNullHandler(map['file_attach_invoice']),
       id: HelperFunctions.JsonStringNullHandler(map['id']),
       type: HelperFunctions.JsonStringNullHandler(map['type']),
     );
   }
-  Map<String,dynamic> convertAddedFileToAttachedPostFile(){
-    return  {
+
+  Map<String, dynamic> convertAddedFileToAttachedPostFile() {
+    return {
       'file': this.file,
       'file_type': this.type,
     };
@@ -904,9 +877,7 @@ class DateInstallationClient {
       isDone: map['is_done']?.toString(),
       fkClient: HelperFunctions.JsonStringNullHandler(map['fk_client']),
       fkInvoice: HelperFunctions.JsonStringNullHandler(map['fk_invoice']),
-      typeDate: map['type_date'] == InstallationTypeEnum.field.value
-          ? InstallationTypeEnum.field
-          : InstallationTypeEnum.online,
+      typeDate: map['type_date'] == InstallationTypeEnum.field.value ? InstallationTypeEnum.field : InstallationTypeEnum.online,
       processReason: map['processReason'] ?? '',
       userIdProcess: map['user_id_process'] ?? '',
       fkAgent: map['fk_agent']?.toString(),
@@ -964,7 +935,7 @@ class DateInstallationClient {
   }
 }
 
-class TrainingModel{
+class TrainingModel {
   final String name;
   final String path;
 

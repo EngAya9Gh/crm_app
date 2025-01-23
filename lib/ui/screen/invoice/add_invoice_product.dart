@@ -512,6 +512,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                   taxtotal: pm.value_config == null ? "null" : pm.value_config,
                                   typeProdRenew: pm.typeProdRenew,
                                   localId: DateTime.now().millisecondsSinceEpoch.toString(),
+                                  offerId:selectedOfferModel.value==null?null:selectedOfferModel.value!.id.toString()
                                 );
                                 listAdded.add(pp);
 
@@ -529,6 +530,9 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                 _amount.text = '';
                                 selectedvalue = null;
                                 selectedProduct = null;
+                                selectedOfferModel.value = null;
+                                selectedProductType=null;
+                                productVm.getProductsWithOffer(); // Now it's safe to call
                               });
                             },
                           ),

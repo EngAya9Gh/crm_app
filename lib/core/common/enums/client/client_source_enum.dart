@@ -14,7 +14,8 @@ enum ClientSourceEnum {
   trialVersion,
   messengerDirect,
   whatsappSite,
-  siteChat;
+  siteChat,
+  googleWhats;
 
   // isFieldFromString
   static bool isFieldFromString(String? value) =>
@@ -54,6 +55,8 @@ enum ClientSourceEnum {
         return ClientSourceEnum.whatsappSite;
       case 'شات الموقع':
         return ClientSourceEnum.siteChat;
+      case 'واتس غوغل':
+        return ClientSourceEnum.googleWhats;
       default:
         return ClientSourceEnum.field;
     }
@@ -95,6 +98,8 @@ extension ClientSourceEnumExtension on ClientSourceEnum {
         return 'واتس الموقع';
       case ClientSourceEnum.siteChat:
         return 'شات الموقع';
+      case ClientSourceEnum.googleWhats:
+        return 'واتس غوغل';
     }
   }
 
