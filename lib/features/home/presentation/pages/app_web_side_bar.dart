@@ -116,7 +116,7 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                               },
                             );
                             _cubit.setSelectedSubSections();
-                            if(currentIndex==4)
+                            if(currentIndex==5)
                              AppNavigator.go(SectionsLists.homeSections[currentIndex].page, name: SectionsLists.homeSections[currentIndex].path);
 
                           },

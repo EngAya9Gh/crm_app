@@ -15,8 +15,7 @@ abstract class PeriodicCommunicationDatasource {
 }
 
 @LazySingleton(as: PeriodicCommunicationDatasource)
-class PeriodicCommunicationDatasourceImpl
-    implements PeriodicCommunicationDatasource {
+class PeriodicCommunicationDatasourceImpl implements PeriodicCommunicationDatasource {
   final ApiServices _api;
 
   const PeriodicCommunicationDatasourceImpl(this._api);

@@ -1,4 +1,7 @@
 
+import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../features/clients_care/client_communications/presentation/pages/care_activities_page.dart';
 import '../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
@@ -14,6 +17,9 @@ import '../../../features/clients_care/periodic_communication_reports/presentati
 import '../../../features/clients_care/previous_ratings/presentation/pages/previous_ratings_page.dart';
 import '../../../features/clients_care/special_clients/presentation/pages/special_clients_page.dart';
 import '../../../features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
+import '../../../features/finance/clients_attachments/presentation/pages/client_attachments_page.dart';
+import '../../../features/finance/verified_invoice/presentation/pages/mob_verified_invoices_page.dart';
+import '../../../features/finance/verified_invoice/presentation/pages/web_verified_invoices_page.dart';
 import '../../../features/mangement/advanced_configs/presentation/pages/advanced_cofigs_page.dart';
 import '../../../features/mangement/general_configs/presentation/pages/general_cofigs_page.dart';
 import '../../../features/mangement/manage_privileges/levels/presentation/pages/levels_page.dart';
@@ -39,6 +45,7 @@ import '../../../ui/screen/product/productView.dart';
 import '../../config/navigator/app_routes_paths.dart';
 import '../../utils/app_strings.dart';
 import '../models/sections/section_model.dart';
+import '../widgets/app_adaptive_builder.dart';
 
 abstract class AllSubSectionsLists {
   /* Support Sub Sections */
@@ -291,4 +298,27 @@ abstract class AllSubSectionsLists {
       path: AppRoutesPaths.managementSubSections.generalConfigs,
     ),
   ];
+
+  //region financeRegion
+  static final List<SectionModel> financeSubSection=[
+    SectionModel(
+      page: ClientAttachmentsPage(),
+      title: 'مرفقات الفواتير',
+      path: AppRoutesPaths.financeSections.attachments,
+      subSections: [],
+    ),
+    SectionModel(
+      page: Directionality(
+        textDirection: TextDirection.ltr,
+        child: AppLayoutBuilder(
+          smallBuilder: (context) => MobVerifiedInvoicesPage(),
+          mediumBuilder: (context) => WebVerifiedInvoicesPage(),
+        ),
+      ),
+      title: 'فواتير للتوثيق',
+      path: AppRoutesPaths.financeSections.invoiceTransfer,
+      subSections: [],
+    ),
+  ];
+  //endregion
 }

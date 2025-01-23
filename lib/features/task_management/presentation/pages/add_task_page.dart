@@ -18,6 +18,7 @@ import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
+import '../../../../core/common/enums/enums.dart';
 import '../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/common/helpers/input_validator.dart';
@@ -44,6 +45,7 @@ import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
+import '../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../data/models/user_region_department.dart';
 import '../manager/task_cubit.dart';
 
@@ -282,63 +284,38 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       },
                     ),
                     10.height,
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () async {
-                              final selectedTime = TimeOfDay.fromDateTime(taskState.startDate ?? DateTime.now());
-
-                              DateTime? date = await showDatePicker(
-                                context: context,
-                                initialDate: taskState.startDate ?? DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime.now().add(Duration(days: 365)),
-                              );
-                              if (date == null) return;
-
-                              final time = await showTimePicker(
-                                context: context,
-                                initialTime: selectedTime,
-                              );
-                              if (time != null) {
-                                date = date.copyWith(
-                                  hour: time.hour,
-                                  minute: time.minute,
-                                );
-                              }
-
-                              _startDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(date);
-                              _taskCubit.onChangeStartDate(date);
-                            },
-                            child: IgnorePointer(
-                              ignoring: true,
-                              child: AppTextField(
-                                labelText: "تاريخ البدء*",
-                                maxLines: 1,
-                                validator: InputValidator.requiredFiled,
-                                readOnly: true,
-                                controller: _startDateController,
-                                textDirection: TextDirection.ltr,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (privilegeBloc.checkPrivilege('171')) ...{
-                          15.width,
+                    Theme(
+                      data: context.theme.copyWith(timePickerTheme: TimePickerThemeData(
+                        cancelButtonStyle:ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
+                        confirmButtonStyle:ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
+                        dayPeriodTextStyle: TextStyle(fontSize: 12),
+                        dialTextStyle: TextStyle(fontSize: 12),
+                        helpTextStyle: TextStyle(fontSize: 12),
+                        hourMinuteTextStyle: TextStyle(fontSize: 12),
+                      )),
+                      child: Row(
+                        children: [
                           Expanded(
-                            child: InkWell(
+                            child:CustomDateTimePicker(
+                              dateTimeType: DateTimeEnum.both,
+                              hintText: 'تاريخ البداية',
+                              isStartFromNow: true,
+                              isRequired: true,
+                              dateTimeController: _startDateController,
+                              style2: true,
+                              onDateChange:  (p0, p1) {
+
+                              },
+                            ), /*InkWell(
                               onTap: () async {
-                                final selectedTime = TimeOfDay.fromDateTime(taskState.deadLineDate ?? DateTime.now());
+                                final selectedTime = TimeOfDay.fromDateTime(taskState.startDate ?? DateTime.now());
 
                                 DateTime? date = await showDatePicker(
                                   context: context,
-                                  initialDate: taskState.deadLineDate ?? DateTime.now(),
+                                  initialDate: taskState.startDate ?? DateTime.now(),
                                   firstDate: DateTime.now(),
                                   lastDate: DateTime.now().add(Duration(days: 365)),
                                 );
-
                                 if (date == null) return;
 
                                 final time = await showTimePicker(
@@ -352,25 +329,80 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   );
                                 }
 
-                                _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(date);
-                                _taskCubit.onChangeDeadLineDate(date);
+                                _startDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(date);
+                                _taskCubit.onChangeStartDate(date);
                               },
                               child: IgnorePointer(
                                 ignoring: true,
                                 child: AppTextField(
-                                  labelText: "تاريخ التسليم*",
+                                  labelText: "تاريخ البدء*",
                                   maxLines: 1,
                                   validator: InputValidator.requiredFiled,
                                   readOnly: true,
-                                  controller: _deadLineDateController,
+                                  controller: _startDateController,
                                   textDirection: TextDirection.ltr,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
+                            )*/
                           ),
-                        },
-                      ],
+                          if (privilegeBloc.checkPrivilege('171')) ...{
+                            15.width,
+                            Expanded(
+                              child: CustomDateTimePicker(
+                                dateTimeType: DateTimeEnum.both,
+                                hintText: 'تاريخ النهاية',
+                                isStartFromNow: true,
+                                isRequired: true,
+                                dateTimeController: _deadLineDateController,
+                                style2: true,
+                                onDateChange:  (p0, p1) {
+
+                                },
+                              )/*InkWell(
+                                onTap: () async {
+                                  final selectedTime = TimeOfDay.fromDateTime(taskState.deadLineDate ?? DateTime.now());
+
+                                  DateTime? date = await showDatePicker(
+                                    context: context,
+                                    initialDate: taskState.deadLineDate ?? DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime.now().add(Duration(days: 365)),
+                                  );
+
+                                  if (date == null) return;
+
+                                  final time = await showTimePicker(
+                                    context: context,
+                                    initialTime: selectedTime,
+                                  );
+                                  if (time != null) {
+                                    date = date.copyWith(
+                                      hour: time.hour,
+                                      minute: time.minute,
+                                    );
+                                  }
+
+                                  _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(date);
+                                  _taskCubit.onChangeDeadLineDate(date);
+                                },
+                                child: IgnorePointer(
+                                  ignoring: true,
+                                  child: AppTextField(
+                                    labelText: "تاريخ التسليم*",
+                                    maxLines: 1,
+                                    validator: InputValidator.requiredFiled,
+                                    readOnly: true,
+                                    controller: _deadLineDateController,
+                                    textDirection: TextDirection.ltr,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )*/,
+                            ),
+                          },
+                        ],
+                      ),
                     ),
                     Visibility(
                       visible: false,

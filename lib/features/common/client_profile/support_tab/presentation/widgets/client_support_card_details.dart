@@ -1,18 +1,27 @@
 import 'package:crm_smart/core/common/helpers/selected_sections_handler.dart';
+import 'package:crm_smart/core/common/widgets/app_dialog.dart';
+import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
+import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/data/module_invioce_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:collection/collection.dart';
 
+import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../../../core/config/navigator/app_routes_paths.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../support/dates_table/presentation/pages/dates_table_page.dart';
+import '../../domain/use_cases/cancel_date_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
-class ClientSupportCardDetails extends StatelessWidget {
+class ClientSupportCardDetails extends StatefulWidget {
   const ClientSupportCardDetails({
     super.key,
     this.invoiceModel,
@@ -29,49 +38,126 @@ class ClientSupportCardDetails extends StatelessWidget {
   final String? selectInstallationType;
 
   @override
+  State<ClientSupportCardDetails> createState() => _ClientSupportCardDetailsState();
+}
+
+class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
+  @override
+  void initState() {
+    context.read<SupportTabCubit>().getInvoiceModules(CancelDateInstallParams(idInvoice: widget.invoiceModel!.idInvoice!));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<SupportTabCubit, SupportTabState>(
       builder: (context, state) {
-        InvoiceModel invoice=context
-            .read<SupportTabCubit>()
-            .listInvoiceClientSupport
-            .firstWhere((element) => element.idInvoice == invoiceModel?.idInvoice);
+        InvoiceModel invoice =
+            context.read<SupportTabCubit>().listInvoiceClientSupport.firstWhere((element) => element.idInvoice == widget.invoiceModel?.idInvoice);
         return Column(
           children: [
             if (invoice.dateinstall_done != null) ...[
-              CardRow(
-                  title: ' تاريخ التركيب ', value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.dateinstall_done.toString()))),
+              CardRow(title: ' تاريخ التركيب ', value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.dateinstall_done.toString()))),
               CardRow(title: ' تم التركيب من قبل ', value: (invoice.nameuserinstall.toString()))
             ],
 
-            if (nextInstallation?.dateClientVisit != null) ...[
+            if (widget.nextInstallation?.dateClientVisit != null) ...[
               InkWell(
                 onTap: () => AppNavigator.go(DatesTablePage()),
-                child: CardRow(title: 'تاريخ الزيارة القادمة', value: DateFormat('yyyy-MM-dd HH:mm').format(nextInstallation!.dateClientVisit!)),
+                child:
+                    CardRow(title: 'تاريخ الزيارة القادمة', value: DateFormat('yyyy-MM-dd HH:mm').format(widget.nextInstallation!.dateClientVisit!)),
               ),
             ],
             InkWell(
-              onTap: () => AppNavigator.go(DatesTablePage(),name: AppRoutesPaths.supportSubSections.datesTable),
-              child: CardRow(title: 'عدد الزيارات التي تمت ', value: datesInstallation.where((element) => element.isDone == "1").length.toString()),
+              onTap: () => AppNavigator.go(DatesTablePage(), name: AppRoutesPaths.supportSubSections.datesTable),
+              child: CardRow(
+                  title: 'عدد الزيارات التي تمت ', value: widget.datesInstallation.where((element) => element.isDone == "1").length.toString()),
             ),
             InkWell(
               onTap: () => AppNavigator.go(DatesTablePage()),
               child: CardRow(
                   title: 'عدد الزيارات المتبقية',
-                  value: datesInstallation.where((element) => element.isDone == "0" || element.isDone == '3').length.toString()),
+                  value: widget.datesInstallation.where((element) => element.isDone == "0" || element.isDone == '3').length.toString()),
             ),
             InkWell(
               onTap: () => AppNavigator.go(DatesTablePage()),
-              child: CardRow(title: 'عدد الزيارات الملغية', value: datesInstallation.where((element) => element.isDone == "2").length.toString()),
+              child:
+                  CardRow(title: 'عدد الزيارات الملغية', value: widget.datesInstallation.where((element) => element.isDone == "2").length.toString()),
+            ),
+            InkWell(
+              onTap: () => AppConstants.showAppDialog(
+                  child: AppDialog(
+                title: 'موديلات التركيب',
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(borderRadius: BorderRadiusDirectional.circular(8), border: Border.all(color: Colors.black)),
+                    child: (state.invoiceModules.isEmpty())
+                        ? AppText('لايوجد اقرارات لعرضها')
+                        : Wrap(
+                            spacing: 5,
+                            runSpacing: 5,
+                            children: ((state.invoiceModules.data ?? []) as List<ModuleInvoiceModel>)
+                                .map((e) => AppStatusChip(
+                                      status: e.name ?? '',
+                                      color: AppColors.primaryMain,
+                                    ))
+                                .toList(),
+                          ),
+                  ),
+                ],
+              )),
+              child: CardRow(
+                title: 'استعراض مديولات التركيب',
+                anotherWidget: Icon(Icons.visibility),
+                value: '',
+              ),
             ),
 
+            if (invoice.trainingPlan != null)
+              InkWell(
+                  onTap: () async {
+                    await HelperFunctions.urlLauncher(
+                      invoice.trainingPlan!.path,
+                      isNewTab: true,
+                    );
+                  },
+                  child: CardRow(
+                    title: invoice.trainingPlan!.name,
+                    anotherWidget: SizedBox.shrink(),
+                  )),
+            if (invoice.trainingSession != null)
+              InkWell(
+                child: CardRow(
+                  title: invoice.trainingSession!.name,
+                  anotherWidget: SizedBox.shrink()
+                ),
+                  onTap: () async {
+                    await HelperFunctions.urlLauncher(
+                      invoice.trainingSession!.path,
+                      isNewTab: true,
+                    );
+                  },
+              ),
+            if (invoice.trainingMultiSession != null)
+              InkWell(
+                child: CardRow(
+                  title: invoice.trainingMultiSession!.name,
+                  anotherWidget: SizedBox.shrink(),
+                ),
+                  onTap: () async {
+                    await HelperFunctions.urlLauncher(
+                      invoice.trainingMultiSession!.path,
+                      isNewTab: true,
+                    );
+                  },
+              ),
             invoice.clientusername == null ? Container() : CardRow(title: 'يوزر العميل ', value: (invoice.clientusername.toString())),
             CardRow(title: 'حالة الفاتورة', value: invoice.stateclient.toString()),
             CardRow(title: 'عنوان الفاتورة ', value: (invoice.address_invoice.toString())),
             //////////////////////////////////////////////////////////////////////////////////////////
             invoice.daterepaly != null
-                ? CardRow(
-                    title: ' تاريخ إعادة الجدولة', value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.daterepaly.toString())))
+                ? CardRow(title: ' تاريخ إعادة الجدولة', value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.daterepaly.toString())))
                 : Container(),
             invoice.daterepaly != null ? CardRow(title: ' قام بإعادة الجدولة', value: invoice.nameuserreplay.toString()) : Container(),
             invoice.daterepaly != null
@@ -84,15 +170,12 @@ class ClientSupportCardDetails extends StatelessWidget {
             ///////////////////////////////////////////////
             invoice.dateinstall_task != null
                 ? CardRow(
-                    title: ' تاريخ جدولة التركيب ',
-                    value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.dateinstall_task.toString()))
+                    title: ' تاريخ جدولة التركيب ', value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(invoice.dateinstall_task.toString()))
                     // DateFormat.yMMMd().
                     // format(DateTime.parse(_invoice.dateinstall_task.toString()))
                     )
                 : Container(),
-            invoice.dateinstall_task != null
-                ? CardRow(title: ' قام بجدولة التركيب ', value: invoice.nameusertask.toString())
-                : Container(),
+            invoice.dateinstall_task != null ? CardRow(title: ' قام بجدولة التركيب ', value: invoice.nameusertask.toString()) : Container(),
 
             CardRow(
                 title: 'طريقة التركيب ',

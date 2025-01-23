@@ -1,13 +1,14 @@
 import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
+import 'package:crm_smart/features/home/presentation/pages/finance_section.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../../../features/clients_care/clients_attachments/presentation/pages/client_attachments_page.dart';
 import '../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
 import '../../../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../../../features/home/presentation/pages/sales_section.dart';
+import '../../../features/sales/packages_offers/presentation/pages/packages_offers_page.dart';
 import '../../../features/task_management/presentation/pages/task_management_list_page.dart';
 import '../../../features/task_management/presentation/pages/task_managment_page.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -66,6 +67,16 @@ abstract class SectionsLists {
       subSections: AllSubSectionsLists.careSubSections,
     ),
     SectionModel(
+      page: Directionality(
+        textDirection: TextDirection.ltr,
+        child: FinancesSection(),
+      ),
+      title: 'المالية',
+      icon: FontAwesomeIcons.moneyBills,
+      path: AppRoutesPaths.homeSections.finance,
+      subSections: AllSubSectionsLists.financeSubSection,
+    ),
+    SectionModel(
       page: SubSectionsListView(
         title: 'الإدارة',
         subSections: AllSubSectionsLists.managementSubSections,
@@ -103,13 +114,6 @@ abstract class SectionsLists {
       subSections: SalesSubSectionsLists.clientsSubSections,
     ),
     SectionModel(
-      page: CrudActivitiesPage(),
-      title: 'الانشطة',
-      privilegeId: "306",
-      icon: FontAwesomeIcons.listCheck,
-      path: AppRoutesPaths.salesSections.crudActivities,
-    ),
-    SectionModel(
       page: SubSectionsListView(
         title: 'الفواتير',
         subSections: SalesSubSectionsLists.invoiceSections,
@@ -118,6 +122,21 @@ abstract class SectionsLists {
       icon: FontAwesomeIcons.fileInvoiceDollar,
       path: AppRoutesPaths.salesSections.invoices,
       subSections: SalesSubSectionsLists.invoiceSections,
+    ),
+    SectionModel(
+      page: PackagesOffersPage(),
+      privilegeId: '315',
+      title: 'عروض الباقات',
+      icon: Icons.local_offer_rounded,
+      path: AppRoutesPaths.salesSections.packagesOffer,
+      subSections: [],
+    ),
+    SectionModel(
+      page: CrudActivitiesPage(),
+      title: 'الانشطة',
+      privilegeId: "306",
+      icon: FontAwesomeIcons.listCheck,
+      path: AppRoutesPaths.salesSections.crudActivities,
     ),
     SectionModel(
       page: SubSectionsListView(
@@ -148,13 +167,6 @@ abstract class SectionsLists {
       icon: FontAwesomeIcons.flagCheckered,
       path: AppRoutesPaths.salesSections.races,
       subSections: SalesSubSectionsLists.raceSections,
-    ),
-    SectionModel(
-      page: ClientAttachmentsPage(),
-      title: 'المرفقات',
-      icon: FontAwesomeIcons.link,
-      path: AppRoutesPaths.salesSections.attachments,
-      subSections: [],
     ),
   ];
 }

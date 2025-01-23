@@ -13,7 +13,6 @@ import '../features/app/presentation/pages/my_app.dart';
 import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../features/clients_care/accept_clients/presentation/manager/clients_accept_cubit.dart';
 import '../features/clients_care/client_communications/presentation/manager/care_activities_bloc.dart';
-import '../features/clients_care/clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import '../features/clients_care/clients_care_reports/presentation/manager/clients_care_reports_cubit.dart';
 import '../features/clients_care/clients_not_using_system/presentation/manager/not_using_system_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
@@ -35,6 +34,7 @@ import '../features/common/client_profile/logs_tab/presentation/manager/client_l
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart';
+import '../features/finance/clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import '../features/home/presentation/manager/web_home_page_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
@@ -54,6 +54,7 @@ import '../features/sales/deleted_invoices/presentation/manager/deleted_invoices
 import '../features/sales/exceeded_clients/presentation/manager/exceeded_clients_cubit.dart';
 import '../features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../features/sales/manage_withdrawn_invoices/presentation/manager/manage_withdrawn_invoices_cubit.dart';
+import '../features/sales/packages_offers/presentation/manager/packages_offers_bloc.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import '../features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
@@ -166,6 +167,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<LevelsCubit>()),
         BlocProvider(create: (context) => getIt<PrivilegesCubit>()),
         BlocProvider(create: (context) => getIt<WithdrawnInvoicesCubit>()),
+        BlocProvider(create: (context) => getIt<PackagesOffersBloc>()),
         BlocProvider(
             create: (context) => getIt<ManageWithdrawnInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<DeletedInvoicesCubit>()),

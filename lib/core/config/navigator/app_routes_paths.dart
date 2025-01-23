@@ -3,33 +3,28 @@ import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 abstract class AppRoutesPaths {
   // static String routeFullPathByName(String name) =>
   //     AppRouter.goRouter.namedLocation(name);
-  static String routeFullPathByName(String name,{Map<String, String>? pathParameters}) {
-    final location = AppRouter.goRouter.namedLocation(name,pathParameters: pathParameters??{});
+  static String routeFullPathByName(String name, {Map<String, String>? pathParameters}) {
+    final location = AppRouter.goRouter.namedLocation(name, pathParameters: pathParameters ?? {});
     return location.startsWith('/') ? location : '/$location';
   }
+
   static final _AppInit init = _AppInit();
   static final _Auth auth = _Auth();
   static final _HomeSections homeSections = _HomeSections();
   static final _SalesSections salesSections = _SalesSections();
+  static final _FinanceSections financeSections = _FinanceSections();
   static final _SupportSubSections supportSubSections = _SupportSubSections();
   static final _CareSubSections careSubSections = _CareSubSections();
-  static final _ManagementSubSections managementSubSections =
-      _ManagementSubSections();
-  static final _SalesClientsSubSections salesClientsSubSections =
-      _SalesClientsSubSections();
-  static final _SalesInvoiceSubSections salesInvoiceSubSections =
-      _SalesInvoiceSubSections();
-  static final _SalesRelationSubSections salesRelationSubSections =
-      _SalesRelationSubSections();
-  static final _SalesReportsSubSections salesReportsSubSections =
-      _SalesReportsSubSections();
-  static final _SalesRaceSubSections salesRaceSubSections =
-      _SalesRaceSubSections();
+  static final _ManagementSubSections managementSubSections = _ManagementSubSections();
+  static final _SalesClientsSubSections salesClientsSubSections = _SalesClientsSubSections();
+  static final _SalesInvoiceSubSections salesInvoiceSubSections = _SalesInvoiceSubSections();
+  static final _SalesRelationSubSections salesRelationSubSections = _SalesRelationSubSections();
+  static final _SalesReportsSubSections salesReportsSubSections = _SalesReportsSubSections();
+  static final _SalesRaceSubSections salesRaceSubSections = _SalesRaceSubSections();
+  static final _SalesPackagesOffersSubSections salesPackagesOffersSubSections = _SalesPackagesOffersSubSections();
   static final _Users users = _Users();
-  static final _SalesInternalRoutes salesInternalRoutes =
-      _SalesInternalRoutes();
-  static final _ManagementInternalRoutes managementInternalRoutes =
-      _ManagementInternalRoutes();
+  static final _SalesInternalRoutes salesInternalRoutes = _SalesInternalRoutes();
+  static final _ManagementInternalRoutes managementInternalRoutes = _ManagementInternalRoutes();
   static final _CareInternalRoutes careInternalRoutes = _CareInternalRoutes();
 
   static const String notAllowed = '/not-allowed';
@@ -37,7 +32,6 @@ abstract class AppRoutesPaths {
   static const String notifications = 'notifications';
   static const String versions = 'versions';
   static const String addVersions = 'addVersions';
-
 }
 
 class _AppInit {
@@ -56,6 +50,7 @@ class _HomeSections {
   final String care = '/care';
   final String management = '/management';
   final String taskManagement = '/taskManagement';
+  final String finance = '/finance';
 }
 
 class _SalesSections {
@@ -64,8 +59,8 @@ class _SalesSections {
   final String relations = 'relations';
   final String reports = 'reports';
   final String races = 'races';
-  final String crudActivities= 'sales-crud-activities';
-  final String attachments= 'attachments';
+  final String crudActivities = 'sales-crud-activities';
+  final String packagesOffer = 'packages_offer';
 }
 
 class _SupportSubSections {
@@ -77,8 +72,7 @@ class _SupportSubSections {
   final String delayAfterInstall = 'delay-after-install';
   final String waitingAgents = 'waiting-agents';
   final String datesTimeline = 'dates-timeline';
-  final String crudActivities= 'support-crud-activities';
-
+  final String crudActivities = 'support-crud-activities';
 }
 
 class _CareSubSections {
@@ -96,7 +90,7 @@ class _CareSubSections {
   final String notUsingSystem = 'not-using-system';
   final String wrongNumbers = 'wrong-numbers';
   final String clientsActivities = 'clients-activities';
-  final String crudActivities= 'care-crud-activities';
+  final String crudActivities = 'care-crud-activities';
 }
 
 class _ManagementSubSections {
@@ -137,7 +131,7 @@ class _SalesClientsSubSections {
         pendingInvoices,
         financePending,
         exceededClients,
-    clientsContacts,
+        clientsContacts,
       ];
 }
 
@@ -169,6 +163,10 @@ class _SalesRaceSubSections {
   final String salesBranchRace = 'sales-branch-race';
 }
 
+class _SalesPackagesOffersSubSections {
+  final String addNewItem = 'add-new';
+}
+
 class _Users {
   final String clientProfile = 'client-profile/:idClient';
   final String clientDashboard = 'client-dashboard';
@@ -192,4 +190,9 @@ class _ManagementInternalRoutes {
 
 class _CareInternalRoutes {
   final String addTicket = 'add-ticket';
+}
+
+class _FinanceSections {
+  final String attachments = 'attachments';
+  final String invoiceTransfer = 'invoiceTransfer';
 }

@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../../features/sales/clients/clients_contacts/presentation/pages/clients_contacts_pages/clients_contact_page.dart';
 import '../../../features/sales/clients/clients_debts/presentation/pages/clients_debts_page.dart';
@@ -25,6 +26,7 @@ import '../../../ui/screen/client/calender_client.dart';
 import '../../../ui/screen/config/company_view.dart';
 import '../../../ui/screen/employee_race/pages/employee_race_page.dart';
 import '../../../ui/screen/user/demo_users_page.dart';
+import '../../utils/end_points.dart';
 import '../models/sections/section_model.dart';
 
 abstract class SalesSubSectionsLists {
@@ -56,10 +58,10 @@ abstract class SalesSubSectionsLists {
       path: AppRoutesPaths.salesClientsSubSections.clientsDebts,
     ),
     SectionModel(
-      title: 'جدول زيارات العميل',
-      page: calender_client(),
-      privilegeId: '120',
-      path: AppRoutesPaths.salesClientsSubSections.calenderClient,
+      title: 'ادارة ال lead',
+      privilegeId: '314',
+      page: SizedBox.shrink(),
+      path:  EndPoints.baseUrls.urlWebPage+'leads',
     ),
     SectionModel(
       title: 'موافقات تحويل العملاء',
@@ -83,6 +85,12 @@ abstract class SalesSubSectionsLists {
       page: ExceededClientsPage(),
       privilegeId: '233',
       path: AppRoutesPaths.salesClientsSubSections.exceededClients,
+    ),
+    SectionModel(
+      title: 'جدول زيارات العميل',
+      page: calender_client(),
+      privilegeId: '120',
+      path: AppRoutesPaths.salesClientsSubSections.calenderClient,
     ),
   ];
 

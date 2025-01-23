@@ -11,6 +11,7 @@ import '../../../domain/entities/add_date_form_variables_entity.dart';
 import '../../../domain/use_cases/add_date_install_usecase.dart';
 import '../../../domain/use_cases/cancel_date_usecase.dart';
 import '../../../domain/use_cases/get_invoice_by_client_usecase.dart';
+import '../../../domain/use_cases/module_invoice_model_usecase.dart';
 import '../../../domain/use_cases/receive_device_usecase.dart';
 import '../../../domain/use_cases/returnToApprove.dart';
 import '../../../domain/use_cases/set_date_done_usecase.dart';
@@ -27,6 +28,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   final ReturnInvoiceApproveUsecase _returnInvoiceApproveUsecase;
   final ReceiveDeviceUsecase _receiveDeviceUsecaseUsecase;
   final CancelDateInstallUsecase _cancelDateInstallUsecase;
+  final GetModuleInvoiceModelUsecase _getModuleInvoiceModelUsecase;
 
   SupportTabCubit(
     this._getInvoiceByClientUsecase,
@@ -36,11 +38,13 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     this._returnInvoiceApproveUsecase,
     this._receiveDeviceUsecaseUsecase,
     this._cancelDateInstallUsecase,
+    this._getModuleInvoiceModelUsecase,
   ) : super(SupportTabState());
 
   List<InvoiceModel> clientInvoicesList = [];
   List<InvoiceModel> listInvoiceClientSupport = [];
   AddDateFormVariablesEntity addDateFormVariablesEntity = AddDateFormVariablesEntity();
+
   Future<void> getClientInvoice({
     required GetInvoiceByClientParams getInvoiceByClientParams,
     Function(List<InvoiceModel> list, bool isParticipate)? onSuccess,
@@ -50,12 +54,10 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     final isParticipate = getInvoiceByClientParams.subscribed ?? false;
     listInvoiceClientSupport = [];
     if (!isParticipate) {
-      emit(
-          state.copyWith(getInvoiceByClientStatus: const BlocStatus.success()));
+      emit(state.copyWith(getInvoiceByClientStatus: const BlocStatus.success()));
       return;
     }
-    getInvoiceByClientParams =
-        getInvoiceByClientParams.copyWith(subscribed: isParticipate);
+    getInvoiceByClientParams = getInvoiceByClientParams.copyWith(subscribed: isParticipate);
     final result = await _getInvoiceByClientUsecase(getInvoiceByClientParams);
     result.fold((l) {
       if (AppConstants.shouldReturnEarly(l)) return;
@@ -68,8 +70,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       }
       onSuccess?.call(r, isParticipate);
 
-      emit(
-          state.copyWith(getInvoiceByClientStatus: const BlocStatus.success()));
+      emit(state.copyWith(getInvoiceByClientStatus: const BlocStatus.success()));
     });
   }
 
@@ -176,15 +177,13 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   }
 
   void _updateInvoicesList(String idInvoice, InvoiceModel r) {
-    int index = listInvoiceClientSupport
-        .indexWhere((element) => element.idInvoice == idInvoice);
+    int index = listInvoiceClientSupport.indexWhere((element) => element.idInvoice == idInvoice);
     if (index != -1) listInvoiceClientSupport[index] = r;
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 
   void _updateAfterReturn(String idInvoice, InvoiceModel r) {
-    int index1 = listInvoiceClientSupport
-        .indexWhere((element) => element.idInvoice == idInvoice);
+    int index1 = listInvoiceClientSupport.indexWhere((element) => element.idInvoice == idInvoice);
     if (index1 != -1) listInvoiceClientSupport.removeAt(index1);
     emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
@@ -202,6 +201,24 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       _updateInvoicesList(cancelDateInstallParams.idInvoice, r);
 
       emit(state.copyWith(cancelDateInstallStatus: BlocStatus.success()));
+    });
+  }
+
+  Future<void> getInvoiceModules(
+    CancelDateInstallParams cancelDateInstallParams,
+  ) async {
+    emit(state.copyWith(invoiceModules: BlocStatus.loading()));
+
+    final result = await _getModuleInvoiceModelUsecase(cancelDateInstallParams);
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
+      emit(state.copyWith(invoiceModules: BlocStatus.fail(error: e)));
+    }, (r) {
+      if(r.isEmpty){
+      emit(state.copyWith(invoiceModules: BlocStatus.empty()));
+        return;
+      }
+      emit(state.copyWith(invoiceModules: BlocStatus.success(data: r)));
     });
   }
 }

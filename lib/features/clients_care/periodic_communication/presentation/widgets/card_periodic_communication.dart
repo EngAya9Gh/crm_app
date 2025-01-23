@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/common/widgets/non_agent_client.dart';
@@ -86,15 +87,8 @@ class CardPeriodicCommunication extends StatelessWidget {
                     if (communication.dateCommunication == null) ...[
                       AppText(
                         int.parse(communication.hoursdelaylabel.toString()) < 0
-                            ? ' تأخر عن التواصل  ' +
-                                (int.parse(communication.hoursdelaylabel
-                                            .toString()) *
-                                        -1)
-                                    .toString() +
-                                ' يوم '
-                            : ' باقي ' +
-                                communication.hoursdelaylabel.toString() +
-                                ' يوم ',
+                            ? ' تأخر عن التواصل  ' + (int.parse(communication.hoursdelaylabel.toString()) * -1).toString() + ' يوم '
+                            : ' باقي ' + communication.hoursdelaylabel.toString() + ' يوم ',
                         color: AppColors.primaryMain,
                         fontSize: 16,
                       ),
@@ -143,9 +137,7 @@ class CardPeriodicCommunication extends StatelessWidget {
             children: [
               if (_showRateBar()) ...[
                 RatingBar.builder(
-                  initialRating: communication.rate == null
-                      ? 0.0
-                      : double.parse(communication.rate.toString()),
+                  initialRating: communication.rate == null ? 0.0 : double.parse(communication.rate.toString()),
                   itemSize: 30,
                   minRating: 1,
                   direction: Axis.horizontal,
@@ -164,6 +156,22 @@ class CardPeriodicCommunication extends StatelessWidget {
               ],
             ],
           ),
+          if (communication.lastRateDate != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppText(
+                  "تاريخ اخر تقييم عبر النظام",
+                  fontSize: 16,
+                ),
+                10.width,
+                AppText(
+                  DateFormat('yyyy-MM-dd').format(communication.lastRateDate!),
+                  color: AppColors.primaryMain,
+                  fontSize: 16,
+                ),
+              ],
+            )
         ],
       ),
     );
@@ -174,13 +182,11 @@ class CardPeriodicCommunication extends StatelessWidget {
   }
 
   bool _showTagIcon(BuildContext context) {
-    return (communication.tag ?? false) &&
-        context.read<PrivilegesCubit>().checkPrivilege('133');
+    return (communication.tag ?? false) && context.read<PrivilegesCubit>().checkPrivilege('133');
   }
 
   MainAxisAlignment _buildAlignment(BuildContext context) {
-    if (_showTagIcon(context) && _showRateBar())
-      return MainAxisAlignment.spaceBetween;
+    if (_showTagIcon(context) && _showRateBar()) return MainAxisAlignment.spaceBetween;
 
     if (_showTagIcon(context)) return MainAxisAlignment.end;
 

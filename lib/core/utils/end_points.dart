@@ -35,6 +35,8 @@ abstract class EndPoints {
   static const regionAndCity = _RegionAndCities();
   static const activities = _Activity();
   static const branches = _Branches();
+  static const finance = _Finance();
+  static const offers = _Offers();
 }
 
 class _BaseUrls {
@@ -54,6 +56,7 @@ class _BaseUrls {
   late final String urlFile;
   late final String urlFileLogo;
   late final String laravelFilesUrl;
+  late final String urlWebPage;
 
   void init() {
     if (EndPoints.appMode.isProduction) {
@@ -63,6 +66,7 @@ class _BaseUrls {
       urlFile = 'https://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
       urlFileLogo = 'https://smartcrm.ws/crm/api/imagesApp/logoclient/';
       laravelFilesUrl = 'https://new.smartcrm.ws/storage/';
+      urlWebPage = 'https://new.smartcrm.ws/';
     } else {
       url = 'https://smartcrm.ws/test/api/';
       urlLaravel = 'https://test.smartcrm.ws/api/';
@@ -70,6 +74,7 @@ class _BaseUrls {
       urlFile = 'https://smartcrm.ws/test/api/imagesApp/filesinvoice/';
       urlFileLogo = 'https://smartcrm.ws/test/api/imagesApp/logoclient/';
       laravelFilesUrl = 'https://test.smartcrm.ws/storage/';
+      urlWebPage = 'https://test.smartcrm.ws/';
     }
   }
 }
@@ -169,6 +174,7 @@ class _Care {
   final String getManagement = "admin-for-user";
   final String getViolationTypes = "violations/types";
   final String getActivitiesTypes = "activities/types";
+  String communicationsByClient(String id) => "communications/by-client/$id";
 
   String updateActivity(String activityId) => "activities/$activityId/edit";
 
@@ -197,6 +203,7 @@ class _Client {
 
   String updateContacts(String contactId) => "contacts/$contactId/edit";
   final allClientsWithFilter = 'getAllClients';
+  final selectedClient = 'selectClient';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final updateClient = "updateClient/"; // "client/clientUpdate.php";
   String editClientByTypeClient(String idClient) => "editClientByTypeClient/$idClient";
@@ -255,6 +262,7 @@ class _Task {
 
   final addTask = 'tasks';
   final filterTasksByAll = 'tasks';
+
   String changeStatusTask(String id) => 'tasks/$id/change-status';
   final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
 }
@@ -341,6 +349,7 @@ class _Invoice {
   final String getdeletedInvoices = 'deletedInvoices';
 
   String withdrawInvoices(String id) => 'withdrawInvoice/$id';
+
   String changeInvoiceStatus(String id) => 'changeInvoiceStatus/$id';
 
   String setApproveInvoice(String idInvoice) {
@@ -357,7 +366,11 @@ class _Invoice {
 
   String cancelDateInstall(idInvoice) => "cancelDateInstall/$idInvoice";
 
+  String getModulesByInvoice(idInvoice) => "getModulesByInvoice/$idInvoice";
+
   String getInvoiceById(String invoiceId) => 'getInvoiceById/$invoiceId';
+
+  final String calculatePrice = 'calculatePrice';
 }
 
 class _Tickets {
@@ -378,7 +391,9 @@ class _Events {
   const _Events();
 
   String updateStatusForVisit(String scheduleId) => 'updateStatusForVisit/$scheduleId';
+
   String verifyDateVisit(String scheduleId) => 'verifyDateVisit/$scheduleId';
+
   String startDateVisitStatus(String scheduleId) => 'startDateVisit/$scheduleId';
   final String addDateInstall = "addDateInstall";
 
@@ -458,6 +473,7 @@ class _Products {
   String updateProduct(int id) => 'products/$id/edit';
 
   String deleteProduct(int id) => 'products/$id/delete';
+  final String getProductsByOfferId = 'products/with-offers';
 }
 
 class _Management {
@@ -489,15 +505,17 @@ class _RegionAndCities {
   final String getCities = 'cities';
   final String getCitiesAll = 'cities/select';
   final String addCities = 'cities';
+
   String updateCities(String id) => 'cities/$id/edit';
 }
+
 class _Activity {
   const _Activity();
 
   final String getActivities = 'activity-types';
   final String addActivity = 'activity-types';
-  String  updateActivity(String id) => 'activity-types/$id/edit';
 
+  String updateActivity(String id) => 'activity-types/$id/edit';
 }
 
 class _Branches {
@@ -505,5 +523,26 @@ class _Branches {
 
   final String getBranches = 'branches';
   final String addBranches = 'branches';
+
   String updateBranches(String id) => 'branches/$id/edit';
+}
+
+class _Finance {
+  const _Finance();
+
+  final String getVerifiedInvoice = 'verifiedInvoices';
+
+  String deportInvoice(String id) => 'deportInvoice/$id';
+}
+
+class _Offers {
+  const _Offers();
+
+  final String getPackagesOffers = 'offers';
+  final String getPackagesOffersFilter = 'offers/select';
+  final String addPackagesOffers = 'offers';
+
+  String updatePackagesOffers(String id) => 'offers/$id/edit';
+
+  String deletePackagesOffers(String id) => 'offers/$id/delete';
 }

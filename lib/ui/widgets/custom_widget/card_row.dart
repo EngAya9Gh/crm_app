@@ -12,16 +12,18 @@ class CardRow extends StatelessWidget {
   final bool withDivider;
   final bool showEmpty;
   final TextOverflow? overflow;
+  final Widget? anotherWidget;
 
   const CardRow({
     super.key,
     this.alignment,
-    required this.value,
+    this.value,
     required this.title,
     this.isExpanded = true,
     this.withDivider = true,
     this.showEmpty = false,
     this.overflow,
+    this.anotherWidget,
   });
 
   @override
@@ -31,6 +33,7 @@ class CardRow extends StatelessWidget {
       if (showEmpty) {
         valueString = "لا يوجد";
       } else {
+        if(anotherWidget==null)
         return SizedBox.shrink();
       }
     }
@@ -53,7 +56,7 @@ class CardRow extends StatelessWidget {
             ),
             50.width,
             Flexible(
-              child: AppText(
+              child:anotherWidget?? AppText(
                 valueString,
                 fontWeight: FontWeight.w500,
                 fontFamily: AppFonts.fontFamily1,

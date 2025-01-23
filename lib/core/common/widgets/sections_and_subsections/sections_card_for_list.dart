@@ -6,6 +6,8 @@ import '../../../../features/app/presentation/widgets/app_text.dart';
 import '../../../config/navigator/app_navigator.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_fonts.dart';
+import '../../../utils/end_points.dart';
+import '../../helpers/helper_functions.dart';
 import '../../models/sections/section_model.dart';
 import '../app_card_container.dart';
 
@@ -22,10 +24,17 @@ class SectionsCardForList extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AppCardContainer(
-        onTap: () {
-          if((MediaQuery.of(context).size.width < 600)){
-            AppNavigator.go(page.page, name: page.path,isNew: false);
-          }else{
+        onTap: () async {
+          if (page.path.startsWith(EndPoints.baseUrls.urlWebPage)) {
+            await HelperFunctions.urlLauncher(
+              page.path,
+              isNewTab: true,
+            );
+            return;
+          }
+          else if ((MediaQuery.of(context).size.width < 600)) {
+            AppNavigator.go(page.page, name: page.path, isNew: false);
+          } else {
             AppNavigator.go(page.page, name: page.path);
           }
         },

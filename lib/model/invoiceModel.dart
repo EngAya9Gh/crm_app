@@ -119,6 +119,8 @@ class InvoiceModel {
   String? dateBackNow;
 
   String? rateProduct;
+  String? userDidOperation;
+  String? lastOperation;
   String? rateSupport;
   String? rateSales;
   String? deviceState;
@@ -127,6 +129,12 @@ class InvoiceModel {
   bool? isCanceledWithdraw;
   bool?  isDeleted;
 
+  //endregion
+
+  //region training
+  final TrainingModel? trainingPlan;
+  final TrainingModel? trainingSession;
+  final TrainingModel? trainingMultiSession;
   //endregion
 
   //region Constructor
@@ -241,6 +249,11 @@ class InvoiceModel {
     this.isDeleted,
     this.renewInventory,
     this.renewPos,
+    this.trainingPlan,
+    this.trainingSession,
+    this.trainingMultiSession,
+    this.lastOperation,
+    this.userDidOperation,
   });
 
   bool searchString(String query) {
@@ -255,6 +268,7 @@ class InvoiceModel {
 
   factory InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
     return InvoiceModel(
+
         tag: ApiHelper.handleString(jsondata['tag']) == "true" ? true : false,
         idInvoice: ApiHelper.handleString(jsondata['id_invoice']),
         renewInventory: ApiHelper.handleString(jsondata['renew_inventory']),
@@ -278,6 +292,9 @@ class InvoiceModel {
               ? jsondata['imagelogo']
               : EndPoints.baseUrls.laravelFilesUrl + jsondata['imagelogo'],
         ),
+        trainingPlan: jsondata['training_plan']==null?null:TrainingModel.fromJson(jsondata['training_plan']),
+        trainingSession: jsondata['training_session']==null?null:TrainingModel.fromJson(jsondata['training_session']),
+        trainingMultiSession: jsondata['training_multi_session']==null?null:TrainingModel.fromJson(jsondata['training_multi_session']),
         fkIdClient: ApiHelper.handleString(jsondata['fk_idClient']),
         fkIdUser: ApiHelper.handleString(jsondata['fk_idUser']),
         amountPaid: ApiHelper.handleString(jsondata['amount_paid']),
@@ -301,6 +318,8 @@ class InvoiceModel {
         date_lastuserupdate:
             ApiHelper.handleString(jsondata['date_lastuserupdate']),
         path: ApiHelper.handleString(jsondata['path']),
+        lastOperation: ApiHelper.handleString(jsondata['last_operation']),
+        userDidOperation: ApiHelper.handleString(jsondata['user_did_operation']),
         fk_country: ApiHelper.handleString(jsondata['fk_country']),
         reason_date: ApiHelper.handleString(jsondata['reason_date']),
         stateclient: ApiHelper.handleString(jsondata['stateclient']),
@@ -662,6 +681,7 @@ class ProductsInvoice {
   String? fkclient;
   String? typeProdRenew;
   String? localId;
+  String? offerId;
 
   //endregion
 
@@ -686,6 +706,7 @@ class ProductsInvoice {
     this.fkuser,
     this.typeProdRenew,
     this.localId,
+    this.offerId,
   });
 
   ProductsInvoice copyWith({
@@ -708,6 +729,7 @@ class ProductsInvoice {
     String? fkclient,
     String? typeProdRenew,
     String? localId,
+    String? offerId,
   }) {
     return ProductsInvoice(
       idInvoiceProduct: idInvoiceProduct ?? this.idInvoiceProduct,
@@ -729,6 +751,7 @@ class ProductsInvoice {
       fkclient: fkclient ?? this.fkclient,
       typeProdRenew: typeProdRenew ?? this.typeProdRenew,
       localId: localId ?? this.localId,
+      offerId: offerId ?? this.offerId,
     );
   }
 
@@ -750,6 +773,7 @@ class ProductsInvoice {
       type: HelperFunctions.JsonStringNullHandler(json['type']),
       fkCountry: json['fk_country'].toString(),
       fkConfig: json['fk_config'].toString(),
+      offerId: json['offerId'].toString(),
     );
   }
 
@@ -769,6 +793,7 @@ class ProductsInvoice {
     _data['type'] = type;
     _data['fk_country'] = fkCountry;
     _data['fk_config'] = fkConfig == null ? "null" : fkConfig;
+    _data['offerId'] = offerId == null ? "null" : offerId;
     return _data;
   }
 //endregion
@@ -935,6 +960,30 @@ class DateInstallationClient {
       dateEnd: dateEnd ?? this.dateEnd,
       nameAgent: nameAgent ?? this.nameAgent,
       force: force,
+    );
+  }
+}
+
+class TrainingModel{
+  final String name;
+  final String path;
+
+  const TrainingModel({
+    required this.name,
+    required this.path,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': this.name,
+      'link': this.path,
+    };
+  }
+
+  factory TrainingModel.fromJson(Map<String, dynamic> map) {
+    return TrainingModel(
+      name: map['name'] as String,
+      path: map['link'] as String,
     );
   }
 }

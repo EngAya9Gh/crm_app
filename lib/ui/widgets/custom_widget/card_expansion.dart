@@ -4,11 +4,11 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 
 Widget buildcardExpansion(String title, String? subtitle, Widget items,
-    {bool initiallyExpanded = false}) {
+    {bool initiallyExpanded = false,Widget? subTitleWidget,Widget? titleWidget}) {
   return Card(
     child: ExpansionTile(
       initiallyExpanded: initiallyExpanded,
-      subtitle: Padding(
+      subtitle:subTitleWidget?? Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Text(
@@ -25,7 +25,7 @@ Widget buildcardExpansion(String title, String? subtitle, Widget items,
       textColor: AppColors.primaryMain,
       iconColor: AppColors.primaryMain,
       // collapsedBackgroundColor: AppColors.kMainColor,
-      title: Text(
+      title:titleWidget?? Text(
         title,
         style: TextStyle(
             color: AppColors.primaryMain,

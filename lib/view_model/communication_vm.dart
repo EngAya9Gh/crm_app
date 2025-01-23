@@ -29,13 +29,9 @@ class CommunicationVm extends ChangeNotifier {
     final list = List.of(list_not_use);
 
     listCommunicationFilterSearch = list.where((element) {
-      return element.nameEnterprise
-              .toLowerCase()
-              .contains(query.toLowerCase()) ||
-          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ??
-              false) ||
-          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ??
-              false);
+      return element.nameEnterprise.toLowerCase().contains(query.toLowerCase()) ||
+          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ?? false);
     }).toList();
 
     notifyListeners();
@@ -54,6 +50,7 @@ class CommunicationVm extends ChangeNotifier {
   Map<String, List<CommunicationModel>> careClientState = Map();
   bool isLoadingCareClient = false;
 
+
   void getCommunicationclient(String fk_client, String idCommunication) async {
     try {
       listCommunicationClient = [];
@@ -61,55 +58,45 @@ class CommunicationVm extends ChangeNotifier {
       notifyListeners();
 
       List<dynamic> data = [];
-      data = await Api().get(
-          url: EndPoints.baseUrls.url +
-              'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
+      var api = getIt<ApiServices>()..changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      var response = await api.get(endPoint: EndPoints.care.communicationsByClient(fk_client));
+      data = response['message'];
 
       if (data.length.toString().isNotEmpty) {
         for (int i = 0; i < data.length; i++) {
           listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
         }
       }
-      final listWelcome = listCommunicationClient
-          .where((element) => element.typeCommuncation == "ترحيب")
-          .toList();
-      final listInstallation = listCommunicationClient
-          .where((element) => element.typeCommuncation == "تركيب")
-          .toList();
-      final listRepeat = listCommunicationClient
-          .where((element) => element.typeCommuncation == "دوري")
-          .toList();
+      final listWelcome = listCommunicationClient.where((element) => element.typeCommuncation == "ترحيب").toList();
+      final listInstallation = listCommunicationClient.where((element) => element.typeCommuncation == "تركيب").toList();
+      final listRepeat = listCommunicationClient.where((element) => element.typeCommuncation == "دوري").toList();
+      final listRateSys = listCommunicationClient.where((element) => element.lastRateDate != null).toList();
 
-      CommunicationModel? communicationSelected = listWelcome.firstWhereOrNull(
-          (element) => element.idCommunication == idCommunication);
+      CommunicationModel? communicationSelected = listWelcome.firstWhereOrNull((element) => element.idCommunication == idCommunication);
 
       if (communicationSelected != null) {
-        listWelcome.removeWhere((element) =>
-            element.idCommunication == communicationSelected!.idCommunication);
+        listWelcome.removeWhere((element) => element.idCommunication == communicationSelected!.idCommunication);
         listWelcome.insert(0, communicationSelected);
       } else {
-        communicationSelected = listInstallation.firstWhereOrNull(
-            (element) => element.idCommunication == idCommunication);
+        communicationSelected = listInstallation.firstWhereOrNull((element) => element.idCommunication == idCommunication);
 
         if (communicationSelected != null) {
-          listInstallation.removeWhere((element) =>
-              element.idCommunication ==
-              communicationSelected!.idCommunication);
+          listInstallation.removeWhere((element) => element.idCommunication == communicationSelected!.idCommunication);
           listInstallation.insert(0, communicationSelected);
         } else {
-          communicationSelected = listRepeat.firstWhereOrNull(
-              (element) => element.idCommunication == idCommunication);
+          communicationSelected = listRepeat.firstWhereOrNull((element) => element.idCommunication == idCommunication);
           if (communicationSelected != null) {
-            listRepeat.removeWhere((element) =>
-                element.idCommunication ==
-                communicationSelected!.idCommunication);
+            listRepeat.removeWhere((element) => element.idCommunication == communicationSelected!.idCommunication);
             listRepeat.insert(0, communicationSelected);
           }
         }
       }
+
+
       careClientState['ترحيب'] = listWelcome;
       careClientState['تركيب'] = listInstallation;
       careClientState['دوري'] = listRepeat;
+      careClientState['تقييم النظام'] = listRateSys;
 
       careClientState.removeWhere((key, value) => value.isEmpty);
 
@@ -138,9 +125,7 @@ class CommunicationVm extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     List<dynamic> data = [];
-    data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'care/view_communcation.php?fk_client=${fk_client}');
+    data = await Api().get(url: EndPoints.baseUrls.url + 'care/view_communcation.php?fk_client=${fk_client}');
 
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
@@ -148,9 +133,7 @@ class CommunicationVm extends ChangeNotifier {
       }
       if (listCommunicationClient.isNotEmpty) {
         listCommunicationClient.forEach((element) {
-          if (element.fkClient == fk_client &&
-                  element.dateCommunication != null &&
-                  element.typeCommuncation == 'دوري'
+          if (element.fkClient == fk_client && element.dateCommunication != null && element.typeCommuncation == 'دوري'
               //&&element.fkUser==null
               ) list.add(element);
         });
@@ -193,16 +176,14 @@ class CommunicationVm extends ChangeNotifier {
       final result = apiDataHandler(response);
 
       if (listCommunicationrepeat.isNotEmpty) {
-        int index = listCommunicationrepeat.indexWhere(
-            (element) => element.idCommunication == id_communication);
+        int index = listCommunicationrepeat.indexWhere((element) => element.idCommunication == id_communication);
         if (index != -1) {
           listCommunicationrepeat.removeAt(index);
         }
       }
 
       if (listCommunicationrepeatTemp.isNotEmpty) {
-        int index = listCommunicationrepeatTemp.indexWhere(
-            (element) => element.idCommunication == id_communication);
+        int index = listCommunicationrepeatTemp.indexWhere((element) => element.idCommunication == id_communication);
         if (index != -1) {
           listCommunicationrepeatTemp.removeAt(index);
         }
@@ -210,11 +191,7 @@ class CommunicationVm extends ChangeNotifier {
       isload = false;
       final communication = CommunicationModel.fromJson(result);
       var list = careClientState['دوري'] ?? [];
-      list = list
-          .map((e) => communication.idCommunication == e.idCommunication
-              ? communication
-              : e)
-          .toList();
+      list = list.map((e) => communication.idCommunication == e.idCommunication ? communication : e).toList();
       careClientState['دوري'] = list;
       notifyListeners();
       onSuccess?.call();
@@ -267,8 +244,7 @@ class CommunicationVm extends ChangeNotifier {
 
       CommunicationModel data = CommunicationModel.fromJson(result);
       if (listCommunication.isNotEmpty) {
-        int i = listCommunication.indexWhere(
-            (element) => element.idCommunication == id_communication);
+        int i = listCommunication.indexWhere((element) => element.idCommunication == id_communication);
         if (i != -1) {
           listCommunication[i] = data;
         }
@@ -280,75 +256,61 @@ class CommunicationVm extends ChangeNotifier {
         case 'تركيب':
           if (type == 1) {
             if (listCommunicationInstall_temp.isNotEmpty) {
-              index = listCommunicationInstall_temp.indexWhere(
-                  (element) => element.idCommunication == id_communication);
+              index = listCommunicationInstall_temp.indexWhere((element) => element.idCommunication == id_communication);
               if (index != -1) listCommunicationInstall_temp[index] = data;
             }
 
             if (listCommunicationInstall.isNotEmpty) {
-              index = listCommunicationInstall.indexWhere(
-                  (element) => element.idCommunication == id_communication);
+              index = listCommunicationInstall.indexWhere((element) => element.idCommunication == id_communication);
               if (index != -1) listCommunicationInstall.removeAt(index);
             }
           }
           if (type == 2) {
             if (listCommunicationInstall2_temp.isNotEmpty) {
-              index = listCommunicationInstall2_temp.indexWhere(
-                  (element) => element.idCommunication == id_communication);
+              index = listCommunicationInstall2_temp.indexWhere((element) => element.idCommunication == id_communication);
               if (index != -1) listCommunicationInstall2_temp[index] = data;
             }
 
             if (listCommunicationInstall.isNotEmpty) {
-              index = listCommunicationInstall.indexWhere(
-                  (element) => element.idCommunication == id_communication);
+              index = listCommunicationInstall.indexWhere((element) => element.idCommunication == id_communication);
               if (index != -1) listCommunicationInstall.removeAt(index);
             }
             // listCommunicationInstall[index]= data;
           }
           var list = careClientState['تركيب'] ?? [];
-          list = list
-              .map((e) => data.idCommunication == e.idCommunication ? data : e)
-              .toList();
+          list = list.map((e) => data.idCommunication == e.idCommunication ? data : e).toList();
           careClientState['تركيب'] = list;
           break;
         case 'ترحيب':
           if (listCommunicationWelcome_temp.isNotEmpty) {
-            index = listCommunicationWelcome_temp.indexWhere(
-                (element) => element.idCommunication == id_communication);
+            index = listCommunicationWelcome_temp.indexWhere((element) => element.idCommunication == id_communication);
             if (index != -1) listCommunicationWelcome_temp[index] = data;
           }
 
           if (listCommunicationWelcome.isNotEmpty) {
-            index = listCommunicationWelcome.indexWhere(
-                (element) => element.idCommunication == id_communication);
+            index = listCommunicationWelcome.indexWhere((element) => element.idCommunication == id_communication);
             if (index != -1) listCommunicationWelcome.removeAt(index);
           }
 
           var list = careClientState['ترحيب'] ?? [];
-          list = list
-              .map((e) => data.idCommunication == e.idCommunication ? data : e)
-              .toList();
+          list = list.map((e) => data.idCommunication == e.idCommunication ? data : e).toList();
           careClientState['ترحيب'] = list;
           break;
         case 'دوري':
           getCommunicationclientrepeat(data.fkClient);
           if (listCommunicationrepeat.isNotEmpty) {
-            index = listCommunicationrepeat.indexWhere(
-                (element) => element.idCommunication == id_communication);
+            index = listCommunicationrepeat.indexWhere((element) => element.idCommunication == id_communication);
             if (index != -1) listCommunicationrepeat.removeAt(index);
 
             // listCommunicationrepeat[index] = data;
           }
           if (listCommunicationrepeatTemp.isNotEmpty) {
-            index = listCommunicationrepeatTemp.indexWhere(
-                (element) => element.idCommunication == id_communication);
+            index = listCommunicationrepeatTemp.indexWhere((element) => element.idCommunication == id_communication);
             if (index != -1) listCommunicationrepeatTemp.removeAt(index);
           }
 
           var list = careClientState['دوري'] ?? [];
-          list = list
-              .map((e) => data.idCommunication == e.idCommunication ? data : e)
-              .toList();
+          list = list.map((e) => data.idCommunication == e.idCommunication ? data : e).toList();
           careClientState['دوري'] = list;
 
           valuebutton = true;
