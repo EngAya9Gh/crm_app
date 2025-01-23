@@ -58,10 +58,20 @@ class TaskCard {
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 8),
-                    _buildInfoRow('من فرع:', '${task.assignFrom?.nameRegion == '' ? task.assignFromModel.toString() : task.assignFrom?.nameRegion}'),
-                    _buildInfoRow('إلى فرع:', '${task.assignFrom?.nameRegion == '' ? task.assignToModel.toString() : task.assignFrom?.nameRegion}'),
-                    _buildInfoRow('من قسم:', '${task.assignFrom?.nameMange == '' ? task.assignFromModel : task.assignFrom?.nameMange}'),
-                    _buildInfoRow('إلى قسم:', '${task.assignTo?.nameMange == '' ? task.assignToModel : task.assignTo?.nameMange}'),
+                    _buildInfoRow(
+                        (task.assignFromModel == 'region')
+                            ? 'من فرع : '
+                            : (task.assignFromModel == 'managements')
+                                ? "من قسم : "
+                                : "من مستخدم : ",
+                        '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}'),
+                    _buildInfoRow(
+                        (task.assignToModel == 'region')
+                            ? 'الى فرع : '
+                            : (task.assignToModel == 'managements')
+                            ? "الى قسم : "
+                            : "الى مستخدم : ",
+                        '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}'),
                     SizedBox(height: 4),
                     Row(
                       children: [

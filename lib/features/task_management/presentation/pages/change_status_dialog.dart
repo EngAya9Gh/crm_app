@@ -12,11 +12,11 @@ import '../../data/models/task_model.dart';
 import '../manager/task_cubit.dart';
 
 class ChangeStatusTaskDialog extends StatefulWidget {
-  const ChangeStatusTaskDialog(
-      {Key? key, required this.status, required this.taskModel})
+  const ChangeStatusTaskDialog({Key? key, required this.status, required this.taskModel, required this.tasksCubit})
       : super(key: key);
   final TaskStatusType status;
   final TaskModel taskModel;
+  final TaskCubit tasksCubit;
 
   @override
   State<ChangeStatusTaskDialog> createState() => _ChangeStatusTaskDialogState();
@@ -64,11 +64,16 @@ class _ChangeStatusTaskDialogState extends State<ChangeStatusTaskDialog> {
             AppTextButton(
               text: 'تأكيد',
               onPressed: () {
-                getIt<TaskCubit>().onChangeTaskStatusStage(
-                  widget.taskModel,
-                  widget.status,
-                  Navigator.of(context).pop,
-                  context.read<UserProvider>().currentUser.idUser!,
+                widget.tasksCubit.onChangeTaskStatusStage(
+                    widget.taskModel,
+                    widget.status,
+                    Navigator
+                        .of(context)
+                        .pop,
+                    context
+                        .read<UserProvider>()
+                        .currentUser
+                        .idUser!, true
                 );
               },
               isLoading: state.changeTaskStatus.isLoading(),
