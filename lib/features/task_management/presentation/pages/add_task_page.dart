@@ -213,7 +213,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               assignToId: state.selectedAssignTo!.idUser.toString(),
                               userId: currentUser.idUser!,
                               startDate: state.startDate,
-                               file: state.attachmentFile,
+                              file: state.attachmentFile,
                               deadLineDate: state.deadLineDate,
                               publicType: PublicType.addTask.name.toString(),
                               participants: state.selectedParticipant ?? [])
@@ -285,9 +285,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     ),
                     10.height,
                     Theme(
-                      data: context.theme.copyWith(timePickerTheme: TimePickerThemeData(
-                        cancelButtonStyle:ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
-                        confirmButtonStyle:ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
+                      data: context.theme.copyWith(
+                          timePickerTheme: TimePickerThemeData(
+                        cancelButtonStyle: ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
+                        confirmButtonStyle: ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
                         dayPeriodTextStyle: TextStyle(fontSize: 12),
                         dialTextStyle: TextStyle(fontSize: 12),
                         helpTextStyle: TextStyle(fontSize: 12),
@@ -296,55 +297,18 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       child: Row(
                         children: [
                           Expanded(
-                            child:CustomDateTimePicker(
+                            child: CustomDateTimePicker(
                               dateTimeType: DateTimeEnum.both,
                               hintText: 'تاريخ البداية',
                               isStartFromNow: true,
+                              formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
                               isRequired: true,
                               dateTimeController: _startDateController,
                               style2: true,
-                              onDateChange:  (p0, p1) {
-
+                              onDateChange: (p0, p1) {
+                                _taskCubit.onChangeStartDate(p0);
                               },
-                            ), /*InkWell(
-                              onTap: () async {
-                                final selectedTime = TimeOfDay.fromDateTime(taskState.startDate ?? DateTime.now());
-
-                                DateTime? date = await showDatePicker(
-                                  context: context,
-                                  initialDate: taskState.startDate ?? DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime.now().add(Duration(days: 365)),
-                                );
-                                if (date == null) return;
-
-                                final time = await showTimePicker(
-                                  context: context,
-                                  initialTime: selectedTime,
-                                );
-                                if (time != null) {
-                                  date = date.copyWith(
-                                    hour: time.hour,
-                                    minute: time.minute,
-                                  );
-                                }
-
-                                _startDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(date);
-                                _taskCubit.onChangeStartDate(date);
-                              },
-                              child: IgnorePointer(
-                                ignoring: true,
-                                child: AppTextField(
-                                  labelText: "تاريخ البدء*",
-                                  maxLines: 1,
-                                  validator: InputValidator.requiredFiled,
-                                  readOnly: true,
-                                  controller: _startDateController,
-                                  textDirection: TextDirection.ltr,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            )*/
+                            ),
                           ),
                           if (privilegeBloc.checkPrivilege('171')) ...{
                             15.width,
@@ -354,12 +318,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 hintText: 'تاريخ النهاية',
                                 isStartFromNow: true,
                                 isRequired: true,
+                                formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
                                 dateTimeController: _deadLineDateController,
                                 style2: true,
-                                onDateChange:  (p0, p1) {
-
+                                onDateChange: (p0, p1) {
+                                  // _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(p0);
+                                  _taskCubit.onChangeDeadLineDate(p0);
                                 },
-                              )/*InkWell(
+                              ) /*InkWell(
                                 onTap: () async {
                                   final selectedTime = TimeOfDay.fromDateTime(taskState.deadLineDate ?? DateTime.now());
 
@@ -398,7 +364,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
-                              )*/,
+                              )*/
+                              ,
                             ),
                           },
                         ],

@@ -96,27 +96,26 @@ class TaskCubit extends Cubit<TaskState> {
     final result = await _getTasksUsecase(
       GetTaskParams(
         skip: taskStatusInfo[status]?.tasks.length ?? 0,
-        statusName: status.index+1,
+        statusName: status.id,
         // ... other parameters ...
       ),
     );
 
     result.fold(
-          (e) {
+      (e) {
         if (AppConstants.shouldReturnEarly(e)) return;
         taskStatusInfo[status] = taskStatusInfo[status]!.copyWith(
           loadingStatus: BlocStatus.fail(error: e),
         );
         emit(state.copyWith());
       },
-          (value) {
+      (value) {
         final currentTasks = taskStatusInfo[status]?.tasks ?? [];
         taskStatusInfo[status] = taskStatusInfo[status]!.copyWith(
-          tasks: [...currentTasks, ...value.data],
-          hasReachedEnd: value.data.length < AppConstants.kPerPage,
-          loadingStatus: const BlocStatus.success(),
-          count: value.count??0
-        );
+            tasks: [...currentTasks, ...value.data],
+            hasReachedEnd: value.data.length < AppConstants.kPerPage,
+            loadingStatus: const BlocStatus.success(),
+            count: value.count ?? 0);
         emit(state.copyWith());
       },
     );
@@ -134,11 +133,12 @@ class TaskCubit extends Cubit<TaskState> {
 
   addTaskAction({
     required VoidCallback onSuccess,
-  required AddTaskParams addTaskParams,
+    required AddTaskParams addTaskParams,
   }) async {
     emit(state.copyWith(addTaskStatus: const BlocStatus.loading()));
 
-    final result = await _addTaskUsecase(addTaskParams/*AddTaskParams(
+    final result = await _addTaskUsecase(
+        addTaskParams /*AddTaskParams(
       title: taskName,
       clientId: clientId,
       invoiceId: invoiceId,
@@ -160,7 +160,8 @@ class TaskCubit extends Cubit<TaskState> {
           : null,
       description: description,
       userId: userId,
-    )*/);
+    )*/
+        );
 
     result.extract(
       (exception, message) {
@@ -169,12 +170,10 @@ class TaskCubit extends Cubit<TaskState> {
       },
       (value) {
         onSuccess();
-        emit(state.copyWith(
-            addTaskStatus: const BlocStatus.success(), isResetAddTask: true));
+        emit(state.copyWith(addTaskStatus: const BlocStatus.success(), isResetAddTask: true));
       },
     );
   }
-
 
   Future<void> getTasks({
     bool isNewFilter = true,
@@ -195,7 +194,7 @@ class TaskCubit extends Cubit<TaskState> {
           GetTaskParams(
             skip: pageVariables.allList.length,
             filter: pageVariables.searchController.text,
-            statusName: ((state.selectedStatus?.id??1)),
+            statusName: ((state.selectedStatus?.id ?? 1)),
             assignedTo: state.filterAssignTo?.idUser?.toString(),
             assignedBy: state.filterAssignFrom?.idUser?.toString(),
             startDateFrom: state.filterFromDate,
@@ -219,8 +218,7 @@ class TaskCubit extends Cubit<TaskState> {
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
-            pageVariables.hasReachedEnd =
-                value.data.length < AppConstants.kPerPage;
+            pageVariables.hasReachedEnd = value.data.length < AppConstants.kPerPage;
             if (pageVariables.allList.isEmpty) {
               return emit(state.copyWith(
                 getTasksStatus: BlocStatus.empty(),
@@ -290,11 +288,10 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(isResetTasksState: true));
   }
 
-  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType,
-      VoidCallback onSuccess, String userId) async {
+  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess, String userId, bool fromDialog) async {
     emit(state.copyWith(changeTaskStatus: const BlocStatus.loading()));
     final response = await _changeStatusTaskUsecase(ChangeStatusTaskParams(
-      taskStatusType.next.id.toString(),
+      fromDialog ? taskStatusType.next.id.toString() : taskStatusType.id.toString(),
       taskModel.id.toString(),
       userId,
     ));
@@ -310,19 +307,14 @@ class TaskCubit extends Cubit<TaskState> {
           taskList.removeWhere((element) => element.id == taskModel.id);
         } else {
           taskList = taskList
-              .map((e) => e.id == taskModel.id
-                  ? e.copyWith(
-                      status: e.status?.copyWith(name: taskStatusType.next.name,id: taskStatusType.next.id))
-                  : e)
+              .map((e) =>
+                  e.id == taskModel.id ? e.copyWith(status: e.status?.copyWith(name: taskStatusType.next.name, id: taskStatusType.next.id)) : e)
               .toList();
         }
         List<TaskModel> allTasks = List.from(pageVariables.allList);
 
         allTasks = allTasks
-            .map((e) => e.id == taskModel.id
-                ? e.copyWith(
-            status: e.status?.copyWith(name: taskStatusType.next.name,id: taskStatusType.next.id))
-            : e)
+            .map((e) => e.id == taskModel.id ? e.copyWith(status: e.status?.copyWith(name: taskStatusType.next.name, id: taskStatusType.next.id)) : e)
             .toList();
 
         onSuccess();
@@ -337,8 +329,7 @@ class TaskCubit extends Cubit<TaskState> {
   }
 
   onChangeSelectedAssignedToType(AssignedTypeNew? assignedType) {
-    emit(
-        state.copyWith(selectedAssignedToType: Nullable.value(assignedType)));
+    emit(state.copyWith(selectedAssignedToType: Nullable.value(assignedType)));
   }
 
   @override

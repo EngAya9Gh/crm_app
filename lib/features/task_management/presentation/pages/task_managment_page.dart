@@ -190,7 +190,7 @@ class _TaskManagementPageState extends State<TaskManagementPage> {
           // Refresh the lists after successful update
           setState(() {});
         },
-        context.read<UserProvider>().currentUser.idUser!,
+        context.read<UserProvider>().currentUser.idUser!,false
       );
     }
   }

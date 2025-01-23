@@ -33,7 +33,6 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskCubit, TaskState>(
-      buildWhen: (previous, current) => previous.getTasksStatus != current.getTasksStatus,
       builder: (context, state) {
         return AppPaginatedList(
           items: _cubit.pageVariables.allList,
@@ -68,7 +67,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     return InkWell(
       onTap: status != null && status != TaskStatusType.Evaluated && context.read<PrivilegesCubit>().checkPrivilege('165')
           ? () {
-        print('object234567890-');
+              print('object234567890-');
               showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -78,6 +77,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                   child: ChangeStatusTaskDialog(
                     status: status,
                     taskModel: task,
+                    tasksCubit: _cubit,
                   ),
                 ),
               );
@@ -124,13 +124,13 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                             Row(
                               children: [
                                 AppText(
-                                  task.assignFrom?.nameUser??task.assignFrom?.nameMange??task.assignFrom?.nameRegion,
+                                  task.assignFrom?.nameUser ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameRegion,
                                   color: context.colorScheme.grey500,
                                 ),
-                                  AppText(' --> '),
+                                AppText(' --> '),
                                 // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
                                 AppText(
-                                  task.assignFrom?.nameUser??task.assignFrom?.nameMange??task.assignFrom?.nameRegion,
+                                  task.assignFrom?.nameUser ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameRegion,
                                   color: AppColors.primaryMain,
                                 ),
                               ],
@@ -151,40 +151,39 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                     10.height,
                     Wrap(
                       children: [
-                        Row(
-                          children: [
-                            AppText(
-                              (task.assignFromModel == 'region')
-                                  ? 'من فرع : '
-                                  : (task.assignFromModel == 'managements')
-                                      ? "من قسم : "
-                                      : "من مستخدم : ",
-                              color: context.colorScheme.grey500,
-                            ),
-                            AppText(
-                              '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
-                              color: context.colorScheme.grey800,
-                            ),
-                          ],
-                        ),
+                        ((task.assignFrom?.nameRegion == null && task.assignFrom?.nameMange == null && task.assignFrom?.nameUser == null))?SizedBox.shrink():
                           Row(
                             children: [
                               AppText(
-
-                                (task.assignToModel == 'region')
-                                    ? 'الى فرع : '
-                                    : (task.assignToModel == 'managements')
-                                    ? "الى قسم : "
-                                    : "الى مستخدم : ",
+                                (task.assignFromModel == 'region')
+                                    ? 'من فرع : '
+                                    : (task.assignFromModel == 'managements')
+                                        ? "من قسم : "
+                                        : "من مستخدم : ",
                                 color: context.colorScheme.grey500,
                               ),
                               AppText(
-                                '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser}',
-
+                                '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
                                 color: context.colorScheme.grey800,
                               ),
                             ],
                           ),
+                        Row(
+                          children: [
+                            AppText(
+                              (task.assignToModel == 'region')
+                                  ? 'الى فرع : '
+                                  : (task.assignToModel == 'managements')
+                                      ? "الى قسم : "
+                                      : "الى مستخدم : ",
+                              color: context.colorScheme.grey500,
+                            ),
+                            AppText(
+                              '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser}',
+                              color: context.colorScheme.grey800,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                     /*  10.height,
