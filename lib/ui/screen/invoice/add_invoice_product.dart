@@ -166,6 +166,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
       return;
     }
     selectedProductType = productType;
+    productVm.changeFilterType(productType);
     listProduct = List.of(Provider.of<product_vm>(context, listen: false).listProduct)
         .where((element) => element.type == selectedProductType!.index.toString())
         .toList();
@@ -280,6 +281,9 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                         productVm.getProductsWithOffer(offerId: value!.id.toString()).then(
                                           (value) {
                                             listProduct = List.of(Provider.of<product_vm>(context, listen: false).listProduct);
+                                            if (selectedProductType != null) {
+                                              productVm.changeFilterType(selectedProductType!);
+                                            }
                                             selectedProduct = null;
                                             setState(() {});
                                           },
@@ -320,7 +324,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                             } else
                               return CustomSearchableDropDown<ProductModel>(
                                 hint: "اختر منتج",
-                                items: value.listProduct,
+                                items: selectedProductType != null ? value.listFilteredTypeProduct : value.listProduct,
                                 itemAsString: (item) => item?.nameProduct ?? '',
                                 filterFn: (item, filter) {
                                   return item.nameProduct?.toLowerCase().contains(filter.toLowerCase()) ?? false;
@@ -427,43 +431,54 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                         SizedBox(height: 10),
                         SizedBox(
                           width: double.infinity,
-                          child: AppElevatedButton(
-                            text: "تطبيق خصم العرض على المنتجات المضافة ",
-                            onPressed: () async {
-                              if (_textprice.text.isNotEmpty && selectedvalue != null) {
-                                ProductModel pm = selectedProduct!;
-                                ProductsInvoice pp = ProductsInvoice(
-                                    idInvoiceProduct: null,
-                                    fkIdInvoice: widget.invoice!.idInvoice == null ? '0' : widget.invoice!.idInvoice.toString(),
-                                    fkclient: widget.invoice!.fkIdClient,
-                                    fkuser: widget.invoice!.fkIdUser,
-                                    fkProduct: pm.idProduct,
-                                    fkConfig: pm.fkConfig == null ? "null" : pm.fkConfig,
-                                    fkCountry: pm.fkCountry,
-                                    price: _textprice.text,
-                                    amount: _amount.text.isEmpty ? '1' : _amount.text,
-                                    rateAdmin: _taxadmin.text,
-                                    rateUser: _taxuser.text,
-                                    nameProduct: pm.nameProduct,
-                                    type: pm.type,
-                                    idProduct: pm.idProduct,
-                                    priceProduct: pm.priceProduct,
-                                    taxtotal: pm.value_config == null ? "null" : pm.value_config,
-                                    typeProdRenew: pm.typeProdRenew,
-                                    localId: DateTime.now().millisecondsSinceEpoch.toString(),
-                                    offerId: selectedOfferModel.value!.id!.toString());
-                                productVm.CalculateProductsPrice([pp]).then(
-                                  (value) {
-                                    _amount.text = value.first.amount!;
-                                    _textprice.text = value.first.finalPrice.toString();
-                                  },
-                                );
-                              } else {
-                                AppSnackbar.showSnakeBar(
-                                  'من فضلك تأكد من عملية الإدخال',
-                                  color: ToastColorsEnum.error,
+                          child: ValueListenableBuilder(
+                            valueListenable: selectedOfferModel,
+                            builder: (context, value, child) {
+                              if (value != null) {
+                                return Consumer<product_vm>(
+                                  builder: (context, value, child) => AppElevatedButton(
+                                    isLoading: (selectedvalue != null && value.isloadingCal),
+                                    text: "تطبيق خصم العرض على المنتج",
+                                    onPressed: () async {
+                                      if (_textprice.text.isNotEmpty && selectedvalue != null) {
+                                        ProductModel pm = selectedProduct!;
+                                        ProductsInvoice pp = ProductsInvoice(
+                                            idInvoiceProduct: null,
+                                            fkIdInvoice: widget.invoice!.idInvoice == null ? '0' : widget.invoice!.idInvoice.toString(),
+                                            fkclient: widget.invoice!.fkIdClient,
+                                            fkuser: widget.invoice!.fkIdUser,
+                                            fkProduct: pm.idProduct,
+                                            fkConfig: pm.fkConfig == null ? "null" : pm.fkConfig,
+                                            fkCountry: pm.fkCountry,
+                                            price: _textprice.text,
+                                            amount: _amount.text.isEmpty ? '1' : _amount.text,
+                                            rateAdmin: _taxadmin.text,
+                                            rateUser: _taxuser.text,
+                                            nameProduct: pm.nameProduct,
+                                            type: pm.type,
+                                            idProduct: pm.idProduct,
+                                            priceProduct: pm.priceProduct,
+                                            taxtotal: pm.value_config == null ? "null" : pm.value_config,
+                                            typeProdRenew: pm.typeProdRenew,
+                                            localId: DateTime.now().millisecondsSinceEpoch.toString(),
+                                            offerId: selectedOfferModel.value?.id.toString());
+                                        productVm.CalculateProductsPrice([pp]).then(
+                                          (value) {
+                                            _amount.text = value.first.amount!;
+                                            _textprice.text = value.first.finalPrice.toString();
+                                          },
+                                        );
+                                      } else {
+                                        AppSnackbar.showSnakeBar(
+                                          'من فضلك تأكد من عملية الإدخال',
+                                          color: ToastColorsEnum.error,
+                                        );
+                                      }
+                                    },
+                                  ),
                                 );
                               }
+                              return SizedBox.shrink();
                             },
                           ),
                         ),

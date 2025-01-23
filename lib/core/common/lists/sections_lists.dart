@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
 import 'package:crm_smart/features/home/presentation/pages/finance_section.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -113,13 +114,6 @@ abstract class SectionsLists {
       subSections: SalesSubSectionsLists.clientsSubSections,
     ),
     SectionModel(
-      page: CrudActivitiesPage(),
-      title: 'الانشطة',
-      privilegeId: "306",
-      icon: FontAwesomeIcons.listCheck,
-      path: AppRoutesPaths.salesSections.crudActivities,
-    ),
-    SectionModel(
       page: SubSectionsListView(
         title: 'الفواتير',
         subSections: SalesSubSectionsLists.invoiceSections,
@@ -128,6 +122,21 @@ abstract class SectionsLists {
       icon: FontAwesomeIcons.fileInvoiceDollar,
       path: AppRoutesPaths.salesSections.invoices,
       subSections: SalesSubSectionsLists.invoiceSections,
+    ),
+    SectionModel(
+      page: PackagesOffersPage(),
+      privilegeId: '315',
+      title: 'عروض الباقات',
+      icon: Icons.local_offer_rounded,
+      path: AppRoutesPaths.salesSections.packagesOffer,
+      subSections: [],
+    ),
+    SectionModel(
+      page: CrudActivitiesPage(),
+      title: 'الانشطة',
+      privilegeId: "306",
+      icon: FontAwesomeIcons.listCheck,
+      path: AppRoutesPaths.salesSections.crudActivities,
     ),
     SectionModel(
       page: SubSectionsListView(
@@ -159,13 +168,5 @@ abstract class SectionsLists {
       path: AppRoutesPaths.salesSections.races,
       subSections: SalesSubSectionsLists.raceSections,
     ),
-      SectionModel(
-        page: PackagesOffersPage(),
-        privilegeId: '315',
-        title: 'عروض الباقات',
-        icon: FontAwesomeIcons.flagCheckered,
-        path: AppRoutesPaths.salesSections.packagesOffer,
-        subSections: [],
-      ),
   ];
 }

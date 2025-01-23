@@ -58,10 +58,10 @@ abstract class SalesSubSectionsLists {
       path: AppRoutesPaths.salesClientsSubSections.clientsDebts,
     ),
     SectionModel(
-      title: 'جدول زيارات العميل',
-      page: calender_client(),
-      privilegeId: '120',
-      path: AppRoutesPaths.salesClientsSubSections.calenderClient,
+      title: 'ادارة ال lead',
+      privilegeId: '314',
+      page: SizedBox.shrink(),
+      path:  EndPoints.baseUrls.urlWebPage+'leads',
     ),
     SectionModel(
       title: 'موافقات تحويل العملاء',
@@ -87,10 +87,10 @@ abstract class SalesSubSectionsLists {
       path: AppRoutesPaths.salesClientsSubSections.exceededClients,
     ),
     SectionModel(
-      title: 'ادارة ال lead',
-      privilegeId: '314',
-      page: SizedBox.shrink(),
-      path:  EndPoints.baseUrls.urlWebPage+'leads',
+      title: 'جدول زيارات العميل',
+      page: calender_client(),
+      privilegeId: '120',
+      path: AppRoutesPaths.salesClientsSubSections.calenderClient,
     ),
   ];
 

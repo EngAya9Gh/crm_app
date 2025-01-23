@@ -86,7 +86,7 @@ class _FilterPeriodicCommunicationSheetState extends State<FilterPeriodicCommuni
                 onChanged: (value) {
                   _cubit.filterEntity.isClientWhoNotRate.value = value;
                 },
-                title: AppText("العملاء الذين قيموا عبر النظام"),
+                title: AppText("استثناء العملاء الذين قيموا عبر النظام"),
               ),
             ),
             if (_cubit.pageVariables.periodicCommunicationType.isEvaluated) ...[

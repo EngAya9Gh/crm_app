@@ -50,42 +50,6 @@ class CommunicationVm extends ChangeNotifier {
   Map<String, List<CommunicationModel>> careClientState = Map();
   bool isLoadingCareClient = false;
 
-  void getCommunicationByClient(String fk_client) async {
-    try {
-      listCommunicationClient = [];
-      isLoadingCareClient = true;
-      notifyListeners();
-
-      List<dynamic> data = [];
-      var api = getIt<ApiServices>()..changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      var response = await api.get(endPoint: EndPoints.care.communicationsByClient(fk_client));
-      data = response['message'];
-      if (data.length.toString().isNotEmpty) {
-        for (int i = 0; i < data.length; i++) {
-          listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
-        }
-      }
-      final listRateSys = listCommunicationClient;
-      // .where((element) => element.typeCommuncation == "تقييم النظام")
-      // .toList();
-
-      careClientState['تقييم النظام'] = listRateSys;
-
-      careClientState.removeWhere((key, value) => value.isEmpty);
-
-      isLoadingCareClient = false;
-      notifyListeners();
-    } on BaseAppException catch (e) {
-      debugPrint("error in getCommunicationclient => ${e.message}");
-      isLoadingCareClient = false;
-      notifyListeners();
-      throw e.message;
-    } catch (e) {
-      debugPrint("error in getCommunicationclient => $e");
-      isLoadingCareClient = false;
-      notifyListeners();
-    }
-  }
 
   void getCommunicationclient(String fk_client, String idCommunication) async {
     try {
@@ -96,9 +60,6 @@ class CommunicationVm extends ChangeNotifier {
       List<dynamic> data = [];
       var api = getIt<ApiServices>()..changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       var response = await api.get(endPoint: EndPoints.care.communicationsByClient(fk_client));
-      // data = await Api().get(
-      //     url: EndPoints.baseUrls.url +
-      //         'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
       data = response['message'];
 
       if (data.length.toString().isNotEmpty) {
@@ -109,6 +70,7 @@ class CommunicationVm extends ChangeNotifier {
       final listWelcome = listCommunicationClient.where((element) => element.typeCommuncation == "ترحيب").toList();
       final listInstallation = listCommunicationClient.where((element) => element.typeCommuncation == "تركيب").toList();
       final listRepeat = listCommunicationClient.where((element) => element.typeCommuncation == "دوري").toList();
+      final listRateSys = listCommunicationClient.where((element) => element.lastRateDate != null).toList();
 
       CommunicationModel? communicationSelected = listWelcome.firstWhereOrNull((element) => element.idCommunication == idCommunication);
 
@@ -129,9 +91,12 @@ class CommunicationVm extends ChangeNotifier {
           }
         }
       }
+
+
       careClientState['ترحيب'] = listWelcome;
       careClientState['تركيب'] = listInstallation;
       careClientState['دوري'] = listRepeat;
+      careClientState['تقييم النظام'] = listRateSys;
 
       careClientState.removeWhere((key, value) => value.isEmpty);
 

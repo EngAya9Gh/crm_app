@@ -303,7 +303,7 @@ abstract class AllSubSectionsLists {
   static final List<SectionModel> financeSubSection=[
     SectionModel(
       page: ClientAttachmentsPage(),
-      title: 'المرفقات',
+      title: 'مرفقات الفواتير',
       path: AppRoutesPaths.financeSections.attachments,
       subSections: [],
     ),
@@ -315,7 +315,7 @@ abstract class AllSubSectionsLists {
           mediumBuilder: (context) => WebVerifiedInvoicesPage(),
         ),
       ),
-      title: 'فواتير بحاجة توثيق',
+      title: 'فواتير للتوثيق',
       path: AppRoutesPaths.financeSections.invoiceTransfer,
       subSections: [],
     ),

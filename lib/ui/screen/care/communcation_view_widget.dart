@@ -11,6 +11,7 @@ import '../../../core/common/enums/periodic_communication_client_type_enum.dart'
 import '../../../core/common/models/config_model.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/app_fonts.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
 import '../../../model/communication_modle.dart';
@@ -61,12 +62,16 @@ class _CommunicationExpandedWidgetState extends State<CommunicationExpandedWidge
 
   @override
   Widget build(BuildContext context) {
-    String? dateinvoice = widget.communicationModel.date_create;
+    String? dateinvoice = widget.communicationModel.date_approve;
     String val = dateinvoice != null ? '(فاتورة ${dateinvoice})' : '';
     if (widget.communicationModel.idCommunication != '') {
       return buildcardExpansion(
         get_title_care(widget.communicationModel.typeCommuncation.toString()) + val,
         '',
+        subTitleWidget:(['ترحيب','تركيب'].contains(widget.communicationModel.typeCommuncation))? AppText('${widget.communicationModel.id_invoice}#',color: AppColors.primaryMain,
+            fontSize: 13.0,
+            fontFamily: AppFonts.fontFamily1,
+            fontWeight: FontWeight.bold):null,
         widget.communicationModel.dateCommunication != null
             ? Column(
                 children: [

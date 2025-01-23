@@ -6,10 +6,14 @@ import '../model/productmodel.dart';
 import '../model/usermodel.dart';
 import '../provider/loadingprovider.dart';
 import '../services/ProductService.dart';
+import '../ui/screen/invoice/add_invoice_product.dart';
 
 class  product_vm extends ChangeNotifier {
   List<ProductModel> listProduct = [];
+  List<ProductModel> listFilteredTypeProduct = [];
   bool isloading = false;
+  bool isloadingCal = false;
+
 
   UserModel? usercurrent;
 
@@ -101,10 +105,19 @@ class  product_vm extends ChangeNotifier {
     }
     return res;
   }
+  Future<String> changeFilterType(ProductType productType) async {
+  listFilteredTypeProduct=  listProduct.where((element) => element.type == productType.index.toString()).toList();
+      notifyListeners();
+    return '';
+  }
 
   Future<List<CalculatePriceProductModel>> CalculateProductsPrice(List<ProductsInvoice> productsInvoice) async {
     //listProduct=[];
+    isloadingCal = true;
+    notifyListeners();
     var res = await ProductService().calculateProductsPrice(productsInvoice);
+    isloadingCal = false;
+    notifyListeners();
     return res;
   }
 }
