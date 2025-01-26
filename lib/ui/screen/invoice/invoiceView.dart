@@ -21,6 +21,7 @@ import '../../../core/utils/app_fonts.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/app/presentation/widgets/app_text_button.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../features/sales/invoices_list/domain/use_cases/export_invoices_to_pdf_usecase.dart';
 import '../../../features/sales/invoices_list/presentation/widgets/invoice_status_widget.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
@@ -59,6 +60,7 @@ class InvoiceView extends StatefulWidget {
 class _InvoiceViewState extends State<InvoiceView> {
   ClientModel? client;
   late PrivilegesCubit _privilegeCubit;
+  late InvoicesSectionCubit _invoicesSectionCubit;
   late final InvoiceVm _invoiceVm;
   late final InvoicesSectionCubit _invoicesCubit;
 
@@ -69,6 +71,7 @@ class _InvoiceViewState extends State<InvoiceView> {
     super.initState();
     _invoicesCubit = context.read<InvoicesSectionCubit>();
     _privilegeCubit = context.read<PrivilegesCubit>();
+    _invoicesSectionCubit = context.read<InvoicesSectionCubit>();
     _invoiceVm = context.read<InvoiceVm>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -321,10 +324,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       child: AppElevatedButton(
                                         text: 'الاجراءات',
                                         onPressed: () async {
-                                          if (client != null){
-                                            if(invoice.stateclient!=StatusClient.restrictWithdrawn.text){
+                                          if (client != null) {
+                                            if (invoice.stateclient != StatusClient.restrictWithdrawn.text) {
                                               _showConvertToRestrictWithdrawDialog(context, invoice);
-                                            }else{
+                                            } else {
                                               showDialog<void>(
                                                 context: context,
                                                 builder: (context) {
@@ -485,6 +488,15 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   );
                                 },
                               ),
+                              5.height,
+                              AppElevatedButton(
+                                width: double.infinity,
+                                text: 'تصدير ك ملف pdf',
+                                icon: Icons.file_present_rounded,
+                                onPressed: () {
+                                  _invoicesSectionCubit.exportInvoicesToPdf(ExportInvoiceToPdfParams(invoiceId: invoice.idInvoice!));
+                                },
+                              ),
                               SizedBox(height: 20),
                             },
                           ],
@@ -540,25 +552,25 @@ class _InvoiceViewState extends State<InvoiceView> {
                 ),
                 if (showConfirm) ...{
                   10.height,
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       AppElevatedButton(
                         text: 'رفض',
                         backgroundColor: AppColors.statusErrorActive,
                         onPressed: () async {
-                          showConfirm=false;
-                          setState((){});
+                          showConfirm = false;
+                          setState(() {});
                           context.pop(false);
                         },
-                      )
-                      ,
+                      ),
                       AppElevatedButton(
                         isLoading: isLoading,
                         text: 'تاكيد',
                         backgroundColor: AppColors.green,
                         onPressed: () async {
                           isLoading = true;
-                          showConfirm=false;
+                          showConfirm = false;
                           setState(() {});
                           await _invoiceVm
                             ..RestrictedWithdrawal(invoice.idInvoice)
@@ -569,7 +581,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                             return isLoading = false;
                           });
                         },
-                      ),],
+                      ),
+                    ],
                   )
                 },
                 10.height,
@@ -588,7 +601,7 @@ class _InvoiceViewState extends State<InvoiceView> {
         );
       },
     ).then(
-          (value) {
+      (value) {
         if (((value as bool?) ?? false)) {
           showDialog<void>(
             context: context,

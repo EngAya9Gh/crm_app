@@ -19,6 +19,7 @@ import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
@@ -93,7 +94,7 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                                   from: _blocFilter.filtersEntity.dateFromController.text,
                                   to: _blocFilter.filtersEntity.dateToController.text,
                                   typeReadyClient: _blocFilter.filtersEntity.filterClientStatus.value?.toParam,
-                                  invoiceType: () => _blocFilter.filtersEntity.filterInvoiceType.value?.value,
+                                  invoiceType: () => _blocFilter.filtersEntity.filterInvoiceType.value,
                                   hasDevices: _blocFilter.filtersEntity.filterDeviceState.value?.toParam,
                                 );
                                 _bloc.add(GetVerifiedInvoiceEvent(
@@ -111,6 +112,22 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                   );
                 },
               ),
+              SizedBox(height: 10),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppText('عدد الفواتير: '),
+                      BlocBuilder<VerifiedInvoiceBloc, VerifiedInvoiceState>(
+                        builder: (context, state) {
+                          return ((state.verifiedInvoiceList.data ?? []).isEmpty)
+                              ? SizedBox.shrink()
+                              : AppText('${state.verifiedInvoiceList.data?.length ?? ''}/${state.totalCount}');
+                        },
+                      ),
+                    ],
+                  )),
               SizedBox(height: 10),
               BlocBuilder<VerifiedInvoiceBloc, VerifiedInvoiceState>(
                 builder: (context, state) {
@@ -142,7 +159,10 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                             text: 'ترحيل الفاتورة',
                             onPressed: () {
                               AppConstants.showAppDialog(
-                                child: InsureTransferInoivceDialog(bloc: _bloc,invoiceModel: state.verifiedInvoiceList.data![index],),
+                                child: InsureTransferInoivceDialog(
+                                  bloc: _bloc,
+                                  invoiceModel: state.verifiedInvoiceList.data![index],
+                                ),
                               );
                             },
                           ),

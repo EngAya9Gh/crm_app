@@ -10,18 +10,15 @@ import '../../../../../core/common/models/user_entity.dart';
 class InvoicesSectionFilterEntity {
   InvoicesSectionFilterEntity();
 
-  final ValueNotifier<SellerTypeEnum?> filterInvoicesSellerType =
-      ValueNotifier(null);
+  final ValueNotifier<SellerTypeEnum?> filterInvoicesSellerType = ValueNotifier(null);
   final ValueNotifier<UserEntity?> filterSelectedUser = ValueNotifier(null);
   final ValueNotifier<BranchModel?> filterSelectedRegion = ValueNotifier(null);
   final TextEditingController dateFromController = TextEditingController();
   final TextEditingController dateToController = TextEditingController();
-  final ValueNotifier<ClientStatusEnum?> filterClientStatus =
-      ValueNotifier(null);
-  final ValueNotifier<TypeOfInvoice?> filterInvoiceType =
-      ValueNotifier(null);
-  final ValueNotifier<DevicesStateFilterEnum?> filterDeviceState =
-      ValueNotifier<DevicesStateFilterEnum?>(null);
+  final ValueNotifier<ClientStatusEnum?> filterClientStatus = ValueNotifier(null);
+  final ValueNotifier<List<TypeOfInvoice>> filterInvoiceType = ValueNotifier([]);
+  final ValueNotifier<StatusOfInvoice?> filterInvoiceStatus = ValueNotifier(null);
+  final ValueNotifier<DevicesStateFilterEnum?> filterDeviceState = ValueNotifier<DevicesStateFilterEnum?>(null);
 
   void clearFilters() {
     filterInvoicesSellerType.value = null;
@@ -30,7 +27,8 @@ class InvoicesSectionFilterEntity {
     dateFromController.clear();
     dateToController.clear();
     filterClientStatus.value = null;
-    filterInvoiceType.value = null;
+    filterInvoiceType.value = [];
+    filterInvoiceStatus.value = null;
     filterDeviceState.value = null;
   }
 
@@ -45,6 +43,7 @@ class InvoicesSectionFilterEntity {
       ..dateToController.text = this.dateToController.text
       ..filterClientStatus.value = this.filterClientStatus.value
       ..filterInvoiceType.value = this.filterInvoiceType.value
+      ..filterInvoiceStatus.value = this.filterInvoiceStatus.value
       ..filterDeviceState.value = this.filterDeviceState.value;
   }
 
@@ -65,6 +64,7 @@ class InvoicesSectionFilterEntity {
       dateToController,
       filterClientStatus,
       filterInvoiceType,
+      filterInvoiceStatus,
       filterDeviceState,
     ];
   }
@@ -76,7 +76,8 @@ class InvoicesSectionFilterEntity {
         filterSelectedUser.value != null ||
         filterSelectedRegion.value != null ||
         filterClientStatus.value != null ||
-        filterInvoiceType.value != null ||
+        filterInvoiceType.value != [] ||
+        filterInvoiceStatus.value != null ||
         filterDeviceState.value != null;
   }
 }

@@ -1,7 +1,10 @@
+import 'package:crm_smart/core/common/helpers/selected_sections_handler.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
+import 'package:collection/collection.dart';
 
+import '../../../../../core/common/enums/client/client_debt_type_enum.dart';
 import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/usecases/base_usecase.dart';
@@ -25,10 +28,11 @@ class GetInvoicesByPrivilegesUsecase extends BaseUsecase<Either<String, dynamic>
 class GetInvoicesByPrivilegesParams {
   final int skip;
   final int? limit;
+  final int? statusInvoice;
   final SellerTypeEnum? typeSeller;
   final String? fkRegionInvoice;
   final String? typeReadyClient;
-  final String? invoiceType;
+  final List<TypeOfInvoice>? invoiceType;
   final String? from;
   final String? to;
   final String? searchQuery;
@@ -46,6 +50,7 @@ class GetInvoicesByPrivilegesParams {
     this.typeReadyClient,
     this.invoiceType,
     this.from,
+    this.statusInvoice,
     this.to,
     this.searchQuery,
     this.fkAgent,
@@ -58,10 +63,11 @@ class GetInvoicesByPrivilegesParams {
   GetInvoicesByPrivilegesParams copyWith({
     int? skip,
     int? limit,
+    int? statusInvoice,
     SellerTypeEnum? typeSeller,
     String? fkRegionInvoice,
     String? typeReadyClient,
-    ValueGetter<String?>? invoiceType,
+    ValueGetter<List<TypeOfInvoice>>? invoiceType,
     String? from,
     String? to,
     String? searchQuery,
@@ -85,6 +91,7 @@ class GetInvoicesByPrivilegesParams {
       fkIdUser: _assignNull(currentValue: this.fkIdUser, newValue: fkIdUser),
       hasDevices: _assignNull(currentValue: this.hasDevices, newValue: hasDevices),
       download: download ?? this.download,
+      statusInvoice: statusInvoice ?? this.statusInvoice,
       invoiceType: invoiceType != null ? invoiceType() : this.invoiceType,
     );
   }
@@ -101,12 +108,19 @@ class GetInvoicesByPrivilegesParams {
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    var mapType = {};
+    invoiceType?.forEachIndexed(
+      (index, element) => mapType.addAll({
+        'state_invoice[$index]': element.value,
+      }),
+    );
     data['page'] = ApiHelper.calculatePage(skip: skip, limit: limit);
     data['limit'] = limit;
     data['type_seller'] = typeSeller?.toParam;
     data['fk_regoin_invoice'] = fkRegionInvoice;
     data['TypeReadyClient'] = typeReadyClient;
-    if (invoiceType != null) data['state_invoice'] = invoiceType;
+    if (statusInvoice == StatusOfInvoice.cancelApprovement.value) data['cancel_approvement'] = 1;
+    if (statusInvoice == StatusOfInvoice.cancelWithdraw.value) data['cancel_withdraw'] = 1;
     data['from'] = from;
     data['to'] = to;
     data['search_query'] = searchQuery;
@@ -115,6 +129,6 @@ class GetInvoicesByPrivilegesParams {
     data['fk_idUser'] = fkIdUser;
     data['has_devices'] = hasDevices;
     if (download != null) data['download'] = download;
-    return data;
+    return data..addAll({if (mapType.isNotEmpty) ...mapType});
   }
 }

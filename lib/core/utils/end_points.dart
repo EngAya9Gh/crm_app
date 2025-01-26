@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -326,6 +326,7 @@ class _Invoice {
 
   // ?type_seller=1&fk_regoin_invoice=11&TypeReadyClient&from&to&search_query&fk_agent&participate_fk&fk_idUser
   final String getInvoicesByPrivileges = 'getInvoicesByPrivilages';
+  String exportInvoiceToPdf(String id) => 'exportInvoice/$id';
 
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
 

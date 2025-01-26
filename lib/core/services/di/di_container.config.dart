@@ -625,6 +625,8 @@ import '../../../features/sales/invoices_list/domain/repositories/invoices_secti
     as _i887;
 import '../../../features/sales/invoices_list/domain/use_cases/export_invoices_to_excel_usecase.dart'
     as _i568;
+import '../../../features/sales/invoices_list/domain/use_cases/export_invoices_to_pdf_usecase.dart'
+    as _i944;
 import '../../../features/sales/invoices_list/domain/use_cases/get_all_users_usecase.dart'
     as _i780;
 import '../../../features/sales/invoices_list/domain/use_cases/get_invoice_by_id_usecase.dart'
@@ -1317,6 +1319,8 @@ _i174.GetIt $initGetIt(
           gh<_i973.ClientAttachmentsDatasource>()));
   gh.lazySingleton<_i568.ExportInvoicesToExcelUsecase>(() =>
       _i568.ExportInvoicesToExcelUsecase(gh<_i887.InvoicesSectionRepo>()));
+  gh.lazySingleton<_i944.ExportInvoicesToPdfUsecase>(
+      () => _i944.ExportInvoicesToPdfUsecase(gh<_i887.InvoicesSectionRepo>()));
   gh.lazySingleton<_i351.GetInvoicesByPrivilegesUsecase>(() =>
       _i351.GetInvoicesByPrivilegesUsecase(gh<_i887.InvoicesSectionRepo>()));
   gh.lazySingleton<_i825.GetInvoiceByIdUsecase>(
@@ -1972,15 +1976,6 @@ _i174.GetIt $initGetIt(
         gh<_i882.GetTokenUsecase>(),
         gh<_i518.ValidateTokenUsecase>(),
       ));
-  gh.factory<_i401.InvoicesSectionCubit>(() => _i401.InvoicesSectionCubit(
-        gh<_i351.GetInvoicesByPrivilegesUsecase>(),
-        gh<_i1046.GetAgentsAndDistributorsUseCase>(),
-        gh<_i905.ParticipateListUsecase>(),
-        gh<_i780.GetAllUsersUseCase>(),
-        gh<_i449.GetUsersSalesUseCase>(),
-        gh<_i825.GetInvoiceByIdUsecase>(),
-        gh<_i568.ExportInvoicesToExcelUsecase>(),
-      ));
   gh.factory<_i1049.AgentsDistributorsProfileBloc>(
       () => _i1049.AgentsDistributorsProfileBloc(
             gh<_i854.GetAgentByIdUsecase>(),
@@ -1998,6 +1993,16 @@ _i174.GetIt $initGetIt(
       () => _i225.ClientsDatesCubit(gh<_i555.GetAllClientsDatesUseCase>()));
   gh.factory<_i819.WithdrawnInvoicesCubit>(() =>
       _i819.WithdrawnInvoicesCubit(gh<_i209.GetWithdrawnInvoicesUsecase>()));
+  gh.factory<_i401.InvoicesSectionCubit>(() => _i401.InvoicesSectionCubit(
+        gh<_i351.GetInvoicesByPrivilegesUsecase>(),
+        gh<_i1046.GetAgentsAndDistributorsUseCase>(),
+        gh<_i905.ParticipateListUsecase>(),
+        gh<_i780.GetAllUsersUseCase>(),
+        gh<_i449.GetUsersSalesUseCase>(),
+        gh<_i825.GetInvoiceByIdUsecase>(),
+        gh<_i568.ExportInvoicesToExcelUsecase>(),
+        gh<_i944.ExportInvoicesToPdfUsecase>(),
+      ));
   gh.factory<_i349.WaitingAgentsCubit>(
       () => _i349.WaitingAgentsCubit(gh<_i941.GetWaitingAgentsUsecase>()));
   return getIt;

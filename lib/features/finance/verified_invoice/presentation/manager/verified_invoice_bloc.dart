@@ -34,17 +34,18 @@ class VerifiedInvoiceBloc extends Bloc<VerifiedInvoiceEvent, VerifiedInvoiceStat
     }
     emit(state.copyWith(getInvoicesByPrivilegesParams: () => event.getInvoicesByPrivilegesParams));
     final result = await getVerifiedInvoiceUseCase(event.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams());
-    result.fold(
-      (l) => emit(
-        state.copyWith(verifiedInvoiceList: BlocStatus.fail(error: l)),
+    result.extract(
+
+      (l,e) => emit(
+        state.copyWith(verifiedInvoiceList: BlocStatus.fail(error: e)),
       ),
       (r) {
-        emit(state.copyWith(hasReachedMax: r.isEmpty));
+        emit(state.copyWith(hasReachedMax: r.message?.isEmpty??true));
         if (event.addNewFilter) {
-          emit(state.copyWith(verifiedInvoiceList: BlocStatus.success(data: List.of(state.verifiedInvoiceList.data ?? [])..addAll(r))));
+          emit(state.copyWith(verifiedInvoiceList: BlocStatus.success(data: List.of(state.verifiedInvoiceList.data ?? [])..addAll(r.message??[])),totalCount: r.count));
           return;
         }
-        emit(state.copyWith(verifiedInvoiceList: BlocStatus.success(data: r)));
+        emit(state.copyWith(verifiedInvoiceList: BlocStatus.success(data: r.message),totalCount: r.count));
       },
     );
   }
