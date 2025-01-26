@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/models/event_model.dart';
@@ -7,8 +8,7 @@ import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/dates_table_repo.dart';
 
 @lazySingleton
-class ChangeDateToDonUsecase
-    extends BaseUsecase<Either<String, dynamic>, ChangeDateToDoneParams> {
+class ChangeDateToDonUsecase extends BaseUsecase<Either<String, dynamic>, ChangeDateToDoneParams> {
   ChangeDateToDonUsecase(this._repository);
 
   final DatesTableRepo _repository;
@@ -25,9 +25,14 @@ class ChangeDateToDoneParams {
   late final String? isDone;
   final EventModel event;
   final String? location;
+  final String? timeTaken;
+  final DateTime? nextDate;
+
   ChangeDateToDoneParams({
     required this.event,
     this.location,
+    this.timeTaken,
+    this.nextDate,
   }) {
     this.isDone = IsDoneDateEnum.done.index.toString();
   }
@@ -38,8 +43,12 @@ class ChangeDateToDoneParams {
       'comment': event.comment,
       'type_date': event.typeDate,
       'location': location,
+      if (timeTaken != null) ' time_taken': timeTaken,
+      if (nextDate != null) 'next_date': DateFormat('yyyy-MM-dd hh:mm:ss').format(nextDate!),
       ..._prepareParams(),
-    }..removeWhere((key, value) => value==null,);
+    }..removeWhere(
+        (key, value) => value == null,
+      );
   }
 
   Map<String, dynamic> _prepareParams() {

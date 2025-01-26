@@ -2,6 +2,7 @@ import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,14 +51,14 @@ class _AddEventDialogState extends State<AddEventDialog> {
   void initState() {
     _datesTableCubit = context.read<DatesTableCubit>();
     _datesTableCubit.addEventFormVariables.clear();
+    _datesTableCubit.getSubscribedClients();
     _prepareSelectedDate();
     super.initState();
   }
 
   void _prepareSelectedDate() {
     if (widget.selectedDay != null) {
-      _datesTableCubit.addEventFormVariables.selectedDateController.text =
-          HelperFunctions.formatDate(widget.selectedDay!);
+      _datesTableCubit.addEventFormVariables.selectedDateController.text = HelperFunctions.formatDate(widget.selectedDay!);
     }
   }
 
@@ -90,8 +91,10 @@ class _AddEventDialogState extends State<AddEventDialog> {
                       CustomDateTimePicker(
                         hintText: 'تعيين التاريخ',
                         dateTimeType: DateTimeEnum.date,
-                        dateTimeController: _datesTableCubit
-                            .addEventFormVariables.selectedDateController,
+                        dateTimeController: _datesTableCubit.addEventFormVariables.selectedDateController,
+                        onDateChange: (p0, p1) {
+                          _datesTableCubit.pageVariables.selectedDay=_datesTableCubit.pageVariables.selectedDay?.copyWith(month: p0.month,year: p0.year,day: p0.day);
+                        },
                         style2: true,
                       ),
                       SizedBox(height: 10),
@@ -101,9 +104,12 @@ class _AddEventDialogState extends State<AddEventDialog> {
                             child: CustomDateTimePicker(
                               hintText: 'بداية الزيارة',
                               dateTimeType: DateTimeEnum.time,
-                              dateTimeController: _datesTableCubit
-                                  .addEventFormVariables.startTimeController,
+                              dateTimeController: _datesTableCubit.addEventFormVariables.startTimeController,
                               style2: true,
+                              onTimeChange: (p0, p1) {
+                                _datesTableCubit.pageVariables.selectedDay=_datesTableCubit.pageVariables.selectedDay?.copyWith(hour: p0.hour,minute: p0.minute);
+
+                              },
                             ),
                           ),
                           SizedBox(width: 10),
@@ -111,8 +117,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                             child: CustomDateTimePicker(
                               hintText: 'نهاية الزيارة',
                               dateTimeType: DateTimeEnum.time,
-                              dateTimeController: _datesTableCubit
-                                  .addEventFormVariables.endTimeController,
+                              dateTimeController: _datesTableCubit.addEventFormVariables.endTimeController,
                               style2: true,
                             ),
                           ),
@@ -125,11 +130,9 @@ class _AddEventDialogState extends State<AddEventDialog> {
                         hint: "نوع التركيب",
                         items: InstallationTypeEnum.values,
                         itemAsString: (item) => item!.value,
-                        selectedItem: _datesTableCubit
-                            .addEventFormVariables.selectInstallationType.value,
+                        selectedItem: _datesTableCubit.addEventFormVariables.selectInstallationType.value,
                         onChanged: (value) {
-                          _datesTableCubit.addEventFormVariables
-                              .selectInstallationType.value = value!;
+                          _datesTableCubit.addEventFormVariables.selectInstallationType.value = value!;
                         },
                         validator: (value) {
                           return InputValidator.requiredFiled(value);
@@ -144,24 +147,19 @@ class _AddEventDialogState extends State<AddEventDialog> {
                           hint: 'العميل',
                           items: widget.subscribedClients!,
                           itemAsString: (item) => item!.name,
-                          selectedItem: _datesTableCubit
-                              .addEventFormVariables.selectedClient.value,
+                          selectedItem: _datesTableCubit.addEventFormVariables.selectedClient.value,
                           onChanged: (value) async {
-                            _datesTableCubit.addEventFormVariables
-                                .selectedClient.value = value;
+                            _datesTableCubit.addEventFormVariables.selectedClient.value = value;
                             setState(() {});
                             await _datesTableCubit.getInvoicesByClientForDate(
-                              GetInvoicesByClientForDateParams(
-                                  idClient: "${value!.id}"),
+                              GetInvoicesByClientForDateParams(idClient: "${value!.id}"),
                             );
                           },
                           validator: (value) {
                             return InputValidator.requiredFiled(value);
                           },
                           filterFn: (item, filter) {
-                            return item.name
-                                .toLowerCase()
-                                .contains(filter.toLowerCase());
+                            return item.name.toLowerCase().contains(filter.toLowerCase());
                           },
                         ),
                       ],
@@ -186,11 +184,23 @@ class _AddEventDialogState extends State<AddEventDialog> {
                       SizedBox(height: 10),
                       AppCardRow(title: "اسناد الي", value: '*'),
                       SizedBox(height: 10),
-                      TechSupportUsersDropDown(
-                        clear: true,
-                        onSelectUser: (user) {
-                          _datesTableCubit.addEventFormVariables
-                              .selectedEmployee.value = user;
+                      BlocBuilder<DatesTableCubit, DatesTableState>(
+                        builder: (context, state) {
+                          return CustomSearchableDropDown<UserEntity>(
+                            hint: 'موظف الدعم الفني',
+                            items: _datesTableCubit.subscribedClients,
+                            itemAsString: (u) => u!.name,
+                            onChanged: (selectedUser) {
+                              _datesTableCubit.addEventFormVariables.selectedEmployee.value =
+                                  UserModel(idUser: selectedUser?.id, nameUser: selectedUser?.name);
+                            },
+                            selectedItem: _datesTableCubit.addEventFormVariables.selectedEmployee.value,
+                            filterFn: (user, filter) => user.name.contains(filter),
+                            compareFn: (item, selectedItem) => item.id == selectedItem.id,
+                            validator: (value) {
+                              return InputValidator.requiredFiled(value);
+                            },
+                          );
                         },
                       ),
                       SizedBox(height: 15),
@@ -214,9 +224,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                             isLoading: state.addDateInstallStatus.isLoading(),
                             text: "حفظ",
                             onPressed: () async {
-                              if (_datesTableCubit
-                                  .addEventFormVariables.globalKey.currentState!
-                                  .validate()) {
+                              if (_datesTableCubit.addEventFormVariables.globalKey.currentState!.validate()) {
                                 await _addDateInstall();
                               }
                             },
@@ -235,27 +243,27 @@ class _AddEventDialogState extends State<AddEventDialog> {
   }
 
   Future<void> _addDateInstall({int? force}) async {
-    final params =
-        _datesTableCubit.addEventFormVariables.getAddDateInstallParams(
+    final params = _datesTableCubit.addEventFormVariables.getAddDateInstallParams(
       force: force,
       sms: _isSmsChecked ? '1' : null,
     );
 
-    final isAfter = IsStartAfterEnd(_datesTableCubit.addEventFormVariables.startTimeController.text,_datesTableCubit.addEventFormVariables.endTimeController.text);
+    final isAfter = IsStartAfterEnd(
+        _datesTableCubit.addEventFormVariables.startTimeController.text, _datesTableCubit.addEventFormVariables.endTimeController.text);
 
     if (isAfter) {
       AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
       return;
     }
     EventModel? event;
-    if( _datesTableCubit.addEventFormVariables.selectedClient.value!=null ||  _datesTableCubit.addEventFormVariables.selectedInvoice.value!=null){
+    if (_datesTableCubit.addEventFormVariables.selectedClient.value != null || _datesTableCubit.addEventFormVariables.selectedInvoice.value != null) {
       event = EventModel(
-        fkIdClient:  _datesTableCubit.addEventFormVariables.selectedClient.value!.id,
-        idinvoice:  _datesTableCubit.addEventFormVariables.selectedInvoice.value!.idInvoice.toString(),
+        fkIdClient: _datesTableCubit.addEventFormVariables.selectedClient.value!.id,
+        idinvoice: _datesTableCubit.addEventFormVariables.selectedInvoice.value!.idInvoice.toString(),
         title: _datesTableCubit.addEventFormVariables.selectedClient.value!.name,
         description: "",
-        from: _datesTableCubit.addEventFormVariables.prepareDateFromTime( _datesTableCubit.addEventFormVariables.startTimeController.text),
-        to: _datesTableCubit.addEventFormVariables.prepareDateFromTime( _datesTableCubit.addEventFormVariables.endTimeController.text),
+        from: _datesTableCubit.addEventFormVariables.prepareDateFromTime(_datesTableCubit.addEventFormVariables.startTimeController.text),
+        to: _datesTableCubit.addEventFormVariables.prepareDateFromTime(_datesTableCubit.addEventFormVariables.endTimeController.text),
         typeDate: _datesTableCubit.addEventFormVariables.selectInstallationType.value.value.toString(),
       );
     }
