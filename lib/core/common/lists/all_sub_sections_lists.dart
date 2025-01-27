@@ -316,6 +316,7 @@ abstract class AllSubSectionsLists {
       subSections: [],
     ),
     SectionModel(
+      privilegeId: '320',
       page: ClientDeptPage(),
       title: 'مديونية العملاء',
       path: AppRoutesPaths.financeSections.clientDept,

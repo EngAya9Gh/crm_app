@@ -22,6 +22,7 @@ import '../../../../../core/utils/app_styles.dart';
 import '../../../../../ui/widgets/custom_widget/card_expansion.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import 'package:collection/collection.dart';
 
@@ -149,7 +150,7 @@ class PackagesOffersPageState extends State<ClientDeptPage> {
                                                           ]),
                                                     ),
                                                   ),
-                                                  BlocBuilder<ClientDeptBloc, ClientDeptState>(
+                                                 if(context.read<PrivilegesCubit>().checkPrivilege('319')) BlocBuilder<ClientDeptBloc, ClientDeptState>(
                                                     builder: (context, state) {
                                                       return AppElevatedButton(
                                                         isLoading: state.reportPayoutClientStatus.isLoading(),
