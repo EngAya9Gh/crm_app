@@ -254,11 +254,11 @@ class UserProvider extends ChangeNotifier {
             UserTypeEnum.SalesManagement.type.toString())
         .toList();
     _addNoneChoiceForUserSales();
-    usersSupportManagement = List.of(activeUsers)
+    usersSupportManagement = allUsers/*List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==
             UserTypeEnum.SupportManagement.type.toString())
-        .toList();
+        .toList()*/;
     usersCareManagement = List.of(activeUsers)
         .where((element) =>
             element.typeAdministration ==

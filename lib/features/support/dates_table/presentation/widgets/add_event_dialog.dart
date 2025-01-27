@@ -33,12 +33,12 @@ class AddEventDialog extends StatefulWidget {
   const AddEventDialog({
     super.key,
     this.subscribedClients,
-    this.selectedDay,
+    this.selectedDay, this.eventModel,
   });
 
   final List<UserEntity>? subscribedClients;
   final DateTime? selectedDay;
-
+  final EventModel? eventModel;
   @override
   State<AddEventDialog> createState() => _AddEventDialogState();
 }
@@ -51,7 +51,6 @@ class _AddEventDialogState extends State<AddEventDialog> {
   void initState() {
     _datesTableCubit = context.read<DatesTableCubit>();
     _datesTableCubit.addEventFormVariables.clear();
-    _datesTableCubit.getSubscribedClients();
     _prepareSelectedDate();
     super.initState();
   }
@@ -93,7 +92,8 @@ class _AddEventDialogState extends State<AddEventDialog> {
                         dateTimeType: DateTimeEnum.date,
                         dateTimeController: _datesTableCubit.addEventFormVariables.selectedDateController,
                         onDateChange: (p0, p1) {
-                          _datesTableCubit.pageVariables.selectedDay=_datesTableCubit.pageVariables.selectedDay?.copyWith(month: p0.month,year: p0.year,day: p0.day);
+                          _datesTableCubit.pageVariables.selectedDay =
+                              _datesTableCubit.pageVariables.selectedDay?.copyWith(month: p0.month, year: p0.year, day: p0.day);
                         },
                         style2: true,
                       ),
@@ -107,8 +107,8 @@ class _AddEventDialogState extends State<AddEventDialog> {
                               dateTimeController: _datesTableCubit.addEventFormVariables.startTimeController,
                               style2: true,
                               onTimeChange: (p0, p1) {
-                                _datesTableCubit.pageVariables.selectedDay=_datesTableCubit.pageVariables.selectedDay?.copyWith(hour: p0.hour,minute: p0.minute);
-
+                                _datesTableCubit.pageVariables.selectedDay =
+                                    _datesTableCubit.pageVariables.selectedDay?.copyWith(hour: p0.hour, minute: p0.minute);
                               },
                             ),
                           ),
@@ -140,7 +140,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                         height: 70.h,
                       ),
                       SizedBox(height: 10),
-                      if (widget.subscribedClients != null) ...[
+                      if (widget.subscribedClients != null&&(widget.eventModel?.fkIdClient==null)) ...[
                         AppCardRow(title: "العميل", value: '*'),
                         SizedBox(height: 10),
                         CustomSearchableDropDown<UserEntity>(
@@ -184,23 +184,10 @@ class _AddEventDialogState extends State<AddEventDialog> {
                       SizedBox(height: 10),
                       AppCardRow(title: "اسناد الي", value: '*'),
                       SizedBox(height: 10),
-                      BlocBuilder<DatesTableCubit, DatesTableState>(
-                        builder: (context, state) {
-                          return CustomSearchableDropDown<UserEntity>(
-                            hint: 'موظف الدعم الفني',
-                            items: _datesTableCubit.subscribedClients,
-                            itemAsString: (u) => u!.name,
-                            onChanged: (selectedUser) {
-                              _datesTableCubit.addEventFormVariables.selectedEmployee.value =
-                                  UserModel(idUser: selectedUser?.id, nameUser: selectedUser?.name);
-                            },
-                            selectedItem: _datesTableCubit.addEventFormVariables.selectedEmployee.value,
-                            filterFn: (user, filter) => user.name.contains(filter),
-                            compareFn: (item, selectedItem) => item.id == selectedItem.id,
-                            validator: (value) {
-                              return InputValidator.requiredFiled(value);
-                            },
-                          );
+                      TechSupportUsersDropDown(
+                        clear: true,
+                        onSelectUser: (user) {
+                          _datesTableCubit.addEventFormVariables.selectedEmployee.value = user;
                         },
                       ),
                       SizedBox(height: 15),
@@ -246,6 +233,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
     final params = _datesTableCubit.addEventFormVariables.getAddDateInstallParams(
       force: force,
       sms: _isSmsChecked ? '1' : null,
+      fkIdClient: widget.eventModel?.fkIdClient,
     );
 
     final isAfter = IsStartAfterEnd(
@@ -256,7 +244,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
       return;
     }
     EventModel? event;
-    if (_datesTableCubit.addEventFormVariables.selectedClient.value != null || _datesTableCubit.addEventFormVariables.selectedInvoice.value != null) {
+    if ((_datesTableCubit.addEventFormVariables.selectedClient.value != null||widget.eventModel!=null) || _datesTableCubit.addEventFormVariables.selectedInvoice.value != null) {
       event = EventModel(
         fkIdClient: _datesTableCubit.addEventFormVariables.selectedClient.value!.id,
         idinvoice: _datesTableCubit.addEventFormVariables.selectedInvoice.value!.idInvoice.toString(),

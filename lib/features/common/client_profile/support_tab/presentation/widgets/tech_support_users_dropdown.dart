@@ -15,13 +15,11 @@ class TechSupportUsersDropDown extends StatefulWidget {
     this.clear = false,
     this.fkUser,
     this.onSelectUser,
-    this.users,
   }) : super(key: key);
 
   final bool clear;
   final String? fkUser;
   final Function(UserModel)? onSelectUser;
-  final List<UserEntity>? users;
   @override
   State<TechSupportUsersDropDown> createState() =>
       _TechSupportUsersDropDownState();
@@ -33,7 +31,6 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
   @override
   void initState() {
     userProvider = context.read<UserProvider>();
-    userProvider.getUsersVm();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.fkUser != null) {
         onSelectUser();

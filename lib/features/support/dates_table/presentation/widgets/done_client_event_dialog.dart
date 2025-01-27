@@ -100,9 +100,6 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                       ),
                     ),
                     keyboardType: TextInputType.number,
-                    validator: (value) {
-                      return InputValidator.requiredFiled(value);
-                    },
                   ),
                   10.height,
                   TextFormField(
@@ -135,6 +132,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                               AppNavigator.pop(result: true);
                               AppConstants.showAppDialog(
                                   child: AddEventDialog(
+                                eventModel: editedEvent,
                                 subscribedClients: datesTableCubit.subscribedClients,
                                 selectedDay: datesTableCubit.pageVariables.selectedDay,
                               )).then(

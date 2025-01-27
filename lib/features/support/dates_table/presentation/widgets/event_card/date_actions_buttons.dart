@@ -109,6 +109,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
               );
             },
           ),
+        if (widget.eventModel.isDone == IsDoneDateEnum.started.value)
         Consumer<EventProvider>(
           builder: (context, eventProvider, _) {
             if (eventProvider.isloadingDoneEvent) {
@@ -121,6 +122,10 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
             return _CustomTextButton(
               text: "إغلاق الزيارة",
               onTap: () async {
+                if(widget.eventModel.fkIdClient!=null){
+                  _showDialog(body: DoneClientEventDialog(event: widget.eventModel));
+                  return;
+                }
                 _showDialog(
                     body: AlertDialog(
                   title: Center(

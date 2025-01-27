@@ -101,6 +101,7 @@ class _Users {
 
   String updateUser(String idUser) => 'users/$idUser/edit';
   final allUsers = 'users/getUser.php';
+  final getAllUsers = 'users/all-users';
   final getCurrentUser = 'GetCurrentUser';
   final getLevelsForUser = 'level-for-user';
   final getManagesForUser = 'admin-for-user';
