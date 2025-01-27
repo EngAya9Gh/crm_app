@@ -8,6 +8,7 @@ class CardRow extends StatelessWidget {
   final MainAxisAlignment? alignment;
   final String title;
   final dynamic value;
+  final Color? valueFontColor;
   final bool isExpanded;
   final bool withDivider;
   final bool showEmpty;
@@ -17,6 +18,7 @@ class CardRow extends StatelessWidget {
   const CardRow({
     super.key,
     this.alignment,
+    this.valueFontColor,
     this.value,
     required this.title,
     this.isExpanded = true,
@@ -59,6 +61,7 @@ class CardRow extends StatelessWidget {
               child:anotherWidget?? AppText(
                 valueString,
                 fontWeight: FontWeight.w500,
+                color: valueFontColor,
                 fontFamily: AppFonts.fontFamily1,
                 overflow: overflow,
               ),

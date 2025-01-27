@@ -535,6 +535,8 @@ class _Finance {
   final String getVerifiedInvoice = 'verifiedInvoices';
 
   String deportInvoice(String id) => 'deportInvoice/$id';
+  final String getClientDept = 'clientsDept';
+  String reportClientDept(String id) => 'clientPayoutReport/$id';
 }
 
 class _Offers {

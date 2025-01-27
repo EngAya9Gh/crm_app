@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -17,6 +16,7 @@ import '../../../features/clients_care/periodic_communication_reports/presentati
 import '../../../features/clients_care/previous_ratings/presentation/pages/previous_ratings_page.dart';
 import '../../../features/clients_care/special_clients/presentation/pages/special_clients_page.dart';
 import '../../../features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
+import '../../../features/finance/client_dept/presentation/pages/client_dept_page.dart';
 import '../../../features/finance/clients_attachments/presentation/pages/client_attachments_page.dart';
 import '../../../features/finance/verified_invoice/presentation/pages/mob_verified_invoices_page.dart';
 import '../../../features/finance/verified_invoice/presentation/pages/web_verified_invoices_page.dart';
@@ -69,14 +69,12 @@ abstract class AllSubSectionsLists {
       privilegeId: '34',
       path: AppRoutesPaths.supportSubSections.supportClientsInvoices,
     ),
-
     SectionModel(
       title: 'جدول التركيب للعملاء',
       page: DatesTablePage(),
       privilegeId: '18',
       path: AppRoutesPaths.supportSubSections.datesTable,
     ),
-
     SectionModel(
       title: 'جدول المواعيد',
       page: DatesTimelinePage(),
@@ -107,8 +105,6 @@ abstract class AllSubSectionsLists {
       privilegeId: '195',
       path: AppRoutesPaths.supportSubSections.waitingAgents,
     ),
-
-
   ];
 
   /* Care Sub Sections */
@@ -300,7 +296,7 @@ abstract class AllSubSectionsLists {
   ];
 
   //region financeRegion
-  static final List<SectionModel> financeSubSection=[
+  static final List<SectionModel> financeSubSection = [
     SectionModel(
       page: ClientAttachmentsPage(),
       title: 'مرفقات الفواتير',
@@ -319,6 +315,12 @@ abstract class AllSubSectionsLists {
       path: AppRoutesPaths.financeSections.invoiceTransfer,
       subSections: [],
     ),
+    SectionModel(
+      page: ClientDeptPage(),
+      title: 'مديونية العملاء',
+      path: AppRoutesPaths.financeSections.clientDept,
+      subSections: [],
+    ),
   ];
-  //endregion
+//endregion
 }

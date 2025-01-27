@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../features/finance/client_dept/presentation/pages/client_dept_page.dart';
 import '../../../../features/finance/clients_attachments/presentation/pages/client_attachments_page.dart';
 import '../../../../features/finance/verified_invoice/presentation/pages/mob_verified_invoices_page.dart';
 import '../../../../features/finance/verified_invoice/presentation/pages/web_verified_invoices_page.dart';
@@ -29,6 +30,11 @@ abstract class FinanceRoutes {
               mediumBuilder: (context) => WebVerifiedInvoicesPage(),
             ),
           ),
+        ),
+        GoRoute(
+          name: AppRoutesPaths.financeSections.clientDept.split('/').last,
+          path: AppRoutesPaths.financeSections.clientDept,
+          builder: (context, state) => ClientDeptPage(),
         ),
       ],
     );
