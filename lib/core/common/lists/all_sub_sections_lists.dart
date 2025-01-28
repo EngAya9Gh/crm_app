@@ -299,12 +299,14 @@ abstract class AllSubSectionsLists {
   //region financeRegion
   static final List<SectionModel> financeSubSection = [
     SectionModel(
+      privilegeId: "321",
       page: ClientAttachmentsPage(),
       title: 'مرفقات الفواتير',
       path: AppRoutesPaths.financeSections.attachments,
       subSections: [],
     ),
     SectionModel(
+      privilegeId: "322",
       page: Directionality(
         textDirection: TextDirection.ltr,
         child: AppLayoutBuilder(
@@ -324,6 +326,7 @@ abstract class AllSubSectionsLists {
       subSections: [],
     ),
     SectionModel(
+      privilegeId: "324",
       page: VerifiedClientPage(),
       title: 'عملاء للترحيل',
       path: AppRoutesPaths.financeSections.clientTransfer,

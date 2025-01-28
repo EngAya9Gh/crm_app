@@ -4,6 +4,7 @@ import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_paginated_list.dart';
@@ -145,30 +146,32 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          AppStatusChip(
-                                            status: state.verifiedClientList.data?[index].clientModel.typeClient??'',
-                                            color: AppColors.primaryMain,
-                                          ),
+                                          if (state.verifiedClientList.data?[index].clientModel.typeClient?.isNotEmpty ?? false)
+                                            AppStatusChip(
+                                              status: state.verifiedClientList.data?[index].clientModel.typeClient ?? '',
+                                              color: AppColors.primaryMain,
+                                            ),
                                         ],
                                       ),
                                       5.height,
-                                      if(state.verifiedClientList.data?[index].clientModel.city?.isNotEmpty??false)Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          AppText(
-                                            'اسم المدينة',
-                                            fontSize: 14,
-                                            fontFamily: AppFonts.fontFamily1,
-                                            color: AppColors.primaryMain,
-                                          ),
-                                          AppText(
-                                            state.verifiedClientList.data?[index].clientModel.city,
-                                            fontSize: 14,
-                                            fontFamily: AppFonts.fontFamily1,
-                                            color: AppColors.primaryMain,
-                                          ),
-                                        ],
-                                      ),
+                                      if (state.verifiedClientList.data?[index].clientModel.name_city?.isNotEmpty ?? false)
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            AppText(
+                                              'اسم المدينة',
+                                              fontSize: 14,
+                                              fontFamily: AppFonts.fontFamily1,
+                                              color: AppColors.primaryMain,
+                                            ),
+                                            AppText(
+                                              state.verifiedClientList.data?[index].clientModel.name_city,
+                                              fontSize: 14,
+                                              fontFamily: AppFonts.fontFamily1,
+                                              color: AppColors.primaryMain,
+                                            ),
+                                          ],
+                                        ),
                                       if (state.verifiedClientList.data?[index].lastOperation != null &&
                                           state.verifiedClientList.data?[index].userDidOperation != null) ...{
                                         5.height,
@@ -193,7 +196,7 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                                               ],
                                             ),
                                             AppText(
-                                              state.verifiedClientList.data?[index].dateLastOperation,
+                                              DateFormat('yyyy-MM-dd').format(state.verifiedClientList.data![index].dateLastOperation!),
                                               fontFamily: AppFonts.fontFamily1,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14,

@@ -18,6 +18,7 @@ import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/services/maps/location_services.dart';
 import '../../../../../core/utils/app_constants.dart';
+import '../../../../common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
 import '../manager/dates_table_cubit.dart';
 import 'add_event_dialog.dart';
@@ -131,13 +132,13 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                             if (widget.isReschedule) {
                               AppNavigator.pop(result: true);
                               AppConstants.showAppDialog(
-                                  child: AddEventDialog(
-                                eventModel: editedEvent,
-                                subscribedClients: datesTableCubit.subscribedClients,
-                                selectedDay: datesTableCubit.pageVariables.selectedDay,
+                                  child: AddDateDialog(
+                                    invoiceId: editedEvent.fkInvoice,
+                                    idClient: editedEvent.fkIdClient!,
+                                    datesInstallation: null,
                               )).then(
                                 (value) {
-                                  if (value != null) {
+                                  if (value) {
                                     datesTableCubit.changeDateToDone(
                                       ChangeDateToDoneParams(
                                         timeTaken: takenTimeController.text,

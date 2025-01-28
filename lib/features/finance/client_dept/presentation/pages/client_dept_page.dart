@@ -6,6 +6,7 @@ import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/features/finance/client_dept/data/models/client_dept.dart';
 import 'package:crm_smart/features/finance/client_dept/presentation/management/client_dept_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' hide TextDirection;
@@ -132,6 +133,8 @@ class ClientDeptPageState extends State<ClientDeptPage> {
                                             Form(
                                               key: _formKey,
                                               child: AppTextField(
+                                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                                inputType: TextInputType.number,
                                                 hintText: 'المبلغ',
                                                 controller: amountController,
                                                 onChange: (val) {
@@ -178,6 +181,9 @@ class ClientDeptPageState extends State<ClientDeptPage> {
                                             10.height,
                                             AppElevatedButton(
                                               text: 'رجوع',
+                                              onPressed: () {
+                                                context.pop();
+                                              },
                                             ),
                                           ],
                                         ),

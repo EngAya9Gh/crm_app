@@ -140,7 +140,6 @@ class _AddEventDialogState extends State<AddEventDialog> {
                         height: 70.h,
                       ),
                       SizedBox(height: 10),
-                      if (widget.subscribedClients != null&&(widget.eventModel?.fkIdClient==null)) ...[
                         AppCardRow(title: "العميل", value: '*'),
                         SizedBox(height: 10),
                         CustomSearchableDropDown<UserEntity>(
@@ -162,7 +161,6 @@ class _AddEventDialogState extends State<AddEventDialog> {
                             return item.name.toLowerCase().contains(filter.toLowerCase());
                           },
                         ),
-                      ],
                       ListenableBuilder(
                         listenable: Listenable.merge([
                           _datesTableCubit.addEventFormVariables.selectedClient,
@@ -233,7 +231,6 @@ class _AddEventDialogState extends State<AddEventDialog> {
     final params = _datesTableCubit.addEventFormVariables.getAddDateInstallParams(
       force: force,
       sms: _isSmsChecked ? '1' : null,
-      fkIdClient: widget.eventModel?.fkIdClient,
     );
 
     final isAfter = IsStartAfterEnd(

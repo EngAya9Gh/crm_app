@@ -239,7 +239,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
           color: ToastColorsEnum.success,
         );
         _supportTabCubit.addDateFormVariablesEntity.clear();
-        AppNavigator.pop();
+        AppNavigator.pop(result: true);
       },
     );
   }
