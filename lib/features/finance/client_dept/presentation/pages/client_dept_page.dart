@@ -32,10 +32,10 @@ class ClientDeptPage extends StatefulWidget {
   const ClientDeptPage({super.key});
 
   @override
-  State<ClientDeptPage> createState() => PackagesOffersPageState();
+  State<ClientDeptPage> createState() => ClientDeptPageState();
 }
 
-class PackagesOffersPageState extends State<ClientDeptPage> {
+class ClientDeptPageState extends State<ClientDeptPage> {
   late final ClientDeptBloc _bloc;
 
   final TextEditingController searchController = TextEditingController();
@@ -116,74 +116,75 @@ class PackagesOffersPageState extends State<ClientDeptPage> {
                                           valueFontColor: AppColors.primaryMain,
                                         ),
                                         Divider(),
-                                        AppElevatedButton(
-                                          text: 'مصادقة من العميل',
-                                          onPressed: () {
-                                            AppConstants.showAppDialog(
-                                                child: Directionality(
-                                              textDirection: TextDirection.rtl,
-                                              child: AppDialog(
-                                                title: 'مصادقة',
-                                                children: [
-                                                  Form(
-                                                    key: _formKey,
-                                                    child: AppTextField(
-                                                      hintText: 'المبلغ',
-                                                      controller: amountController,
-                                                      onChange: (val) {
-                                                        amountNotifier.value = val;
-                                                      },
-                                                      validator: InputValidator.requiredFiled,
-                                                    ),
-                                                  ),
-                                                  AppText('الرسالة التي ستظهر للعميل : '),
-                                                  10.height,
-                                                  ValueListenableBuilder(
-                                                    valueListenable: amountNotifier,
-                                                    builder: (context, value, child) => RichText(
-                                                      text: TextSpan(
-                                                          text: 'تم استلام دفعة لصالح شركة سمارت لايف بقيمة',
-                                                          style: AppStyles.textStyle.copyWith(),
-                                                          children: [
-                                                            TextSpan(text: value, style: AppStyles.textStyle.copyWith(color: AppColors.primaryMain)),
-                                                            TextSpan(text: ' يرجى التواصل في حال اي خلاف بالمبلغ المذكور'),
-                                                          ]),
-                                                    ),
-                                                  ),
-                                                 if(context.read<PrivilegesCubit>().checkPrivilege('319')) BlocBuilder<ClientDeptBloc, ClientDeptState>(
-                                                    builder: (context, state) {
-                                                      return AppElevatedButton(
-                                                        isLoading: state.reportPayoutClientStatus.isLoading(),
-                                                        text: 'تأكيد',
-                                                        onPressed: () {
-                                                          if (_formKey.currentState!.validate()) {
-                                                            context.read<ClientDeptBloc>().add(ReportPayoutClientDeptEvents(
-                                                                  params: ReportClientParams(
-                                                                      clientId: data![index].idClients!,
-                                                                      amount: double.parse(amountNotifier.value ?? '0')),
-                                                                  onSuccess: () {
-                                                                    context.pop();
-                                                                    AppSnackbar.showSnakeBar('تم المصادقة بنجاح');
-                                                                  },
-                                                                ));
-                                                          }
-                                                        },
-                                                      );
-                                                    },
-                                                  ),
-                                                  10.height,
-                                                  AppElevatedButton(
-                                                    text: 'رجوع',
-                                                  ),
-                                                ],
-                                              ),
-                                            ));
-                                          },
-                                        )
                                       ],
                                     ),
                                   )
-                                  .toList()
+                                  .toList(),
+                              AppElevatedButton(
+                                text: 'مصادقة من العميل',
+                                onPressed: () {
+                                  AppConstants.showAppDialog(
+                                      child: Directionality(
+                                        textDirection: TextDirection.rtl,
+                                        child: AppDialog(
+                                          title: 'مصادقة',
+                                          children: [
+                                            Form(
+                                              key: _formKey,
+                                              child: AppTextField(
+                                                hintText: 'المبلغ',
+                                                controller: amountController,
+                                                onChange: (val) {
+                                                  amountNotifier.value = val;
+                                                },
+                                                validator: InputValidator.requiredFiled,
+                                              ),
+                                            ),
+                                            AppText('الرسالة التي ستظهر للعميل : '),
+                                            10.height,
+                                            ValueListenableBuilder(
+                                              valueListenable: amountNotifier,
+                                              builder: (context, value, child) => RichText(
+                                                text: TextSpan(
+                                                    text: 'تم استلام دفعة لصالح شركة سمارت لايف بقيمة',
+                                                    style: AppStyles.textStyle.copyWith(),
+                                                    children: [
+                                                      TextSpan(text: value, style: AppStyles.textStyle.copyWith(color: AppColors.primaryMain)),
+                                                      TextSpan(text: ' يرجى التواصل في حال اي خلاف بالمبلغ المذكور'),
+                                                    ]),
+                                              ),
+                                            ),
+                                            if(context.read<PrivilegesCubit>().checkPrivilege('319')) BlocBuilder<ClientDeptBloc, ClientDeptState>(
+                                              builder: (context, state) {
+                                                return AppElevatedButton(
+                                                  isLoading: state.reportPayoutClientStatus.isLoading(),
+                                                  text: 'تأكيد',
+                                                  onPressed: () {
+                                                    if (_formKey.currentState!.validate()) {
+                                                      context.read<ClientDeptBloc>().add(ReportPayoutClientDeptEvents(
+                                                        params: ReportClientParams(
+                                                            clientId: data![index].idClients!,
+                                                            amount: double.parse(amountNotifier.value ?? '0')),
+                                                        onSuccess: () {
+                                                          context.pop();
+                                                          AppSnackbar.showSnakeBar('تم المصادقة بنجاح');
+                                                        },
+                                                      ));
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                            10.height,
+                                            AppElevatedButton(
+                                              text: 'رجوع',
+                                            ),
+                                          ],
+                                        ),
+                                      ));
+                                },
+                              )
+
                             ],
                           ),
                         ),

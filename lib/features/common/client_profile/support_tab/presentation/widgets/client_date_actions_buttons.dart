@@ -9,6 +9,7 @@ import '../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../core/common/widgets/app_dialog.dart';
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/utils/app_constants.dart';
+import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../../../../view_model/invoice_vm.dart';
 import '../../../../../app/presentation/widgets/app_text.dart';
@@ -196,7 +197,7 @@ class ClientDateActionsButtons extends StatelessWidget {
                               ),
                               onTap: () async {
                                 await HelperFunctions.urlLauncher(
-                                  'http://test.smartcrm.ws/training-multi-session?fk_invoice=${invoice.idInvoice}',
+                                  '${EndPoints.baseUrls.urlTrainingMulti}?fk_invoice=${invoice.idInvoice}',
                                   isNewTab: true,
                                 );
                               },
@@ -206,7 +207,7 @@ class ClientDateActionsButtons extends StatelessWidget {
                               child: AppText('اقرار تدريب جلسة واحدة', decoration: TextDecoration.underline, color: AppColors.primaryMain),
                               onTap: () async {
                                 await HelperFunctions.urlLauncher(
-                                  'http://test.smartcrm.ws/training-form?fk_invoice=${invoice.idInvoice}',
+                                  '${EndPoints.baseUrls.urlTrainingForm}?fk_invoice=${invoice.idInvoice}',
                                   isNewTab: true,
                                 );
                               },
@@ -216,7 +217,7 @@ class ClientDateActionsButtons extends StatelessWidget {
                               child: AppText('اقرار تدريب عدة جلسات', decoration: TextDecoration.underline, color: AppColors.primaryMain),
                               onTap: () async {
                                 await HelperFunctions.urlLauncher(
-                                  'http://test.smartcrm.ws/training-plans?fk_invoice=${invoice.idInvoice}',
+                                  '${EndPoints.baseUrls.urlTrainingPlan}?fk_invoice=${invoice.idInvoice}',
                                   isNewTab: true,
                                 );
                               },

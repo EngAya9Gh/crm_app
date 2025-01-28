@@ -155,16 +155,21 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                         return CardInvoiceClient(
                           type: 'profile',
                           invoice: state.verifiedInvoiceList.data![index],
-                          transferWidget: AppElevatedButton(
-                            text: 'ترحيل الفاتورة',
-                            onPressed: () {
-                              AppConstants.showAppDialog(
-                                child: InsureTransferInoivceDialog(
-                                  bloc: _bloc,
-                                  invoiceModel: state.verifiedInvoiceList.data![index],
-                                ),
-                              );
-                            },
+                          transferWidget: Column(
+
+                            children: [
+                              AppElevatedButton(
+                                text: 'ترحيل الفاتورة',
+                                onPressed: () {
+                                  AppConstants.showAppDialog(
+                                    child: InsureTransferInoivceDialog(
+                                      bloc: _bloc,
+                                      invoiceModel: state.verifiedInvoiceList.data![index],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         );
                       },

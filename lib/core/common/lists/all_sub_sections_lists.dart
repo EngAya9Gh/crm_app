@@ -18,6 +18,7 @@ import '../../../features/clients_care/special_clients/presentation/pages/specia
 import '../../../features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
 import '../../../features/finance/client_dept/presentation/pages/client_dept_page.dart';
 import '../../../features/finance/clients_attachments/presentation/pages/client_attachments_page.dart';
+import '../../../features/finance/verified_client/presentation/pages/verified_clients_page.dart';
 import '../../../features/finance/verified_invoice/presentation/pages/mob_verified_invoices_page.dart';
 import '../../../features/finance/verified_invoice/presentation/pages/web_verified_invoices_page.dart';
 import '../../../features/mangement/advanced_configs/presentation/pages/advanced_cofigs_page.dart';
@@ -320,6 +321,12 @@ abstract class AllSubSectionsLists {
       page: ClientDeptPage(),
       title: 'مديونية العملاء',
       path: AppRoutesPaths.financeSections.clientDept,
+      subSections: [],
+    ),
+    SectionModel(
+      page: VerifiedClientPage(),
+      title: 'عملاء للترحيل',
+      path: AppRoutesPaths.financeSections.clientTransfer,
       subSections: [],
     ),
   ];

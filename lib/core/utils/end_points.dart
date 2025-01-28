@@ -57,6 +57,9 @@ class _BaseUrls {
   late final String urlFileLogo;
   late final String laravelFilesUrl;
   late final String urlWebPage;
+  late final String urlTrainingMulti;
+  late final String urlTrainingForm;
+  late final String urlTrainingPlan;
 
   void init() {
     if (EndPoints.appMode.isProduction) {
@@ -67,6 +70,9 @@ class _BaseUrls {
       urlFileLogo = 'https://smartcrm.ws/crm/api/imagesApp/logoclient/';
       laravelFilesUrl = 'https://new.smartcrm.ws/storage/';
       urlWebPage = 'https://new.smartcrm.ws/';
+      urlTrainingMulti = 'http://new.smartcrm.ws/training-multi-session';
+      urlTrainingForm = 'http://new.smartcrm.ws/training-form';
+      urlTrainingPlan = 'http://new.smartcrm.ws/training-plans';
     } else {
       url = 'https://smartcrm.ws/test/api/';
       urlLaravel = 'https://test.smartcrm.ws/api/';
@@ -75,6 +81,9 @@ class _BaseUrls {
       urlFileLogo = 'https://smartcrm.ws/test/api/imagesApp/logoclient/';
       laravelFilesUrl = 'https://test.smartcrm.ws/storage/';
       urlWebPage = 'https://test.smartcrm.ws/';
+      urlTrainingMulti = 'http://test.smartcrm.ws/training-multi-session';
+      urlTrainingForm = 'http://test.smartcrm.ws/training-form';
+      urlTrainingPlan = 'http://test.smartcrm.ws/training-plans';
     }
   }
 }
@@ -535,6 +544,9 @@ class _Finance {
   final String getVerifiedInvoice = 'verifiedInvoices';
 
   String deportInvoice(String id) => 'deportInvoice/$id';
+  final String getVerifiedClient = 'verifiedClients';
+
+  String deportClient(String id) => 'deportClient/$id';
   final String getClientDept = 'clientsDept';
   String reportClientDept(String id) => 'clientPayoutReport/$id';
 }

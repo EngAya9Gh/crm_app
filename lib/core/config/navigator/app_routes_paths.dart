@@ -196,4 +196,5 @@ class _FinanceSections {
   final String attachments = 'attachments';
   final String invoiceTransfer = 'invoiceTransfer';
   final String clientDept = 'clientDept';
+  final String clientTransfer = 'clientTransfer';
 }

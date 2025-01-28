@@ -30,21 +30,32 @@ class EmployeesSalesReportsBody extends StatelessWidget {
             columns: <DataColumn>[
               AppDataTableColumn('الموظف'),
               AppDataTableColumn('المبيعات'),
-              AppDataTableColumn('عدد الفواتير'),
+              AppDataTableColumn('عدد\n الفواتير'),
+              AppDataTableColumn('مبيعات(بعد\nالانسحاب)'),
+              AppDataTableColumn('العدد\n (بعد)'),
             ],
             rows: _cubit.pageVariables.allList.map((item) {
               return DataRow(
                 cells: <DataCell>[
                   AppDataTableCell(
                     value: item.x,
-                    width: MediaQuery.of(context).size.width * 0.4,
-                  ),
-                  AppDataTableCell(
-                    value: formatNumber(item.y),
                     width: MediaQuery.of(context).size.width * 0.25,
                   ),
                   AppDataTableCell(
+                    value: formatNumber(item.y),
+                    width: MediaQuery.of(context).size.width * 0.15,
+                  ),
+                  AppDataTableCell(
                     value: item.countclient.toString(),
+                    alignment: Alignment.center,
+                  ),
+                  AppDataTableCell(
+                    value: item.total1.toString(),
+                    alignment: Alignment.center,
+                  ),
+                  AppDataTableCell(
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    value: item.clientcounterafter??'',
                     alignment: Alignment.center,
                   ),
                 ],

@@ -122,7 +122,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
             return _CustomTextButton(
               text: "إغلاق الزيارة",
               onTap: () async {
-                if(widget.eventModel.fkIdClient!=null){
+                if((widget.eventModel.fkAgent!=null)){
                   _showDialog(body: DoneClientEventDialog(event: widget.eventModel));
                   return;
                 }
