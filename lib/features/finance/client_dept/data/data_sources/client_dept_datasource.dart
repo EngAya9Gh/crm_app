@@ -14,11 +14,12 @@ class ClientDeptDatasource {
 
   ClientDeptDatasource(this.api);
 
-  Future<ResponseWrapper<List<ClientDeptModel>>> getClientDept() async {
+  Future<ResponseWrapper<List<ClientDeptModel>>> getClientDept(GetInvoicesByPrivilegesParams params) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
         endPoint: EndPoints.finance.getClientDept,
+        queryParameters: params.toMap(),
       );
 
       return ResponseWrapper<List<ClientDeptModel>>.fromJson(

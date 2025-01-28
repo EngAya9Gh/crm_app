@@ -16,6 +16,6 @@ class GetVerifiedClientUseCase extends BaseUsecase<Result<ResponseWrapper<List<V
 
   @override
   Future<Result<ResponseWrapper<List<VerifiedClientModel>>>> call(GetInvoicesByPrivilegesParams params) {
-    return repository.getVerifiedClient();
+    return repository.getVerifiedClient(params);
   }
 }

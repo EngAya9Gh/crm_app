@@ -20,8 +20,8 @@ class VerifiedClientRepoImpl implements VerifiedClientRepository {
   VerifiedClientRepoImpl(this.datasource);
 
   @override
-  Future<Result<ResponseWrapper<List<VerifiedClientModel>>>> getVerifiedClient() async {
-    return toApiResult(() async => await datasource.getVerifiedClient());
+  Future<Result<ResponseWrapper<List<VerifiedClientModel>>>> getVerifiedClient(GetInvoicesByPrivilegesParams params) async {
+    return toApiResult(() async => await datasource.getVerifiedClient(params));
   }
 
   @override

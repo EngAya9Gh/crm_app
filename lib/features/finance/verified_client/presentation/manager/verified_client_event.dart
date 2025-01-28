@@ -18,3 +18,5 @@ class ChangeStatusVerifiedClientEvent extends VerifiedClientEvent {
     required this.clientModel,
   });
 }
+
+class ResetFilterEvent extends VerifiedClientEvent{}

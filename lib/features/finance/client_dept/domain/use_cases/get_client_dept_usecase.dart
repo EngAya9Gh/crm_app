@@ -9,13 +9,13 @@ import '../../data/models/client_dept.dart';
 import '../repositories/client_dept_repo.dart';
 
 @injectable
-class GetClientDeptUseCase extends UseCaseNoParam<Result<ResponseWrapper<List<ClientDeptModel>>>> {
+class GetClientDeptUseCase extends BaseUsecase<Result<ResponseWrapper<List<ClientDeptModel>>>,GetInvoicesByPrivilegesParams> {
   GetClientDeptUseCase(this.repository);
 
   final ClientDeptRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<List<ClientDeptModel>>>> call() {
-    return repository.getClientDept();
+  Future<Result<ResponseWrapper<List<ClientDeptModel>>>> call(GetInvoicesByPrivilegesParams params) {
+    return repository.getClientDept(params);
   }
 }

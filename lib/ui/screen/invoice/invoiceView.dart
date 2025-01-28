@@ -489,15 +489,16 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 },
                               ),
                               5.height,
-                              AppElevatedButton(
-                                isLoading: state.exportInvoicesToPdfStatus.isLoading(),
-                                width: double.infinity,
-                                text: 'تصدير ك ملف pdf',
-                                icon: Icons.file_present_rounded,
-                                onPressed: () {
-                                  _invoicesSectionCubit.exportInvoicesToPdf(ExportInvoiceToPdfParams(invoiceId: invoice.idInvoice!));
-                                },
-                              ),
+                              if (context.read<PrivilegesCubit>().checkPrivilege('325'))
+                                AppElevatedButton(
+                                  isLoading: state.exportInvoicesToPdfStatus.isLoading(),
+                                  width: double.infinity,
+                                  text: 'تصدير ك ملف pdf',
+                                  icon: Icons.file_present_rounded,
+                                  onPressed: () {
+                                    _invoicesSectionCubit.exportInvoicesToPdf(ExportInvoiceToPdfParams(invoiceId: invoice.idInvoice!));
+                                  },
+                                ),
                               SizedBox(height: 20),
                             },
                           ],

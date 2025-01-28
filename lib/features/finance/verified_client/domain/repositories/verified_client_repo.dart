@@ -9,6 +9,6 @@ import '../../data/models/verified_client_model.dart';
 import '../use_cases/verified_client_usecase.dart';
 
 abstract class VerifiedClientRepository {
-  Future<Result<ResponseWrapper<List<VerifiedClientModel>>>> getVerifiedClient();
+  Future<Result<ResponseWrapper<List<VerifiedClientModel>>>> getVerifiedClient(GetInvoicesByPrivilegesParams params);
   Future<Either<String, VerifiedClientModel>> verifiedClient(VerifiedClientParams params);
 }

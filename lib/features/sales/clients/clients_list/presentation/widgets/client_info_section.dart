@@ -228,7 +228,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                               color: AppColors.white,
                             ),
                           ),
-                          SpecialClientIconButton()
+                          SpecialClientIconButton(idClients:clientModel.idClients)
                         ],
                       ),
                       TextButton(

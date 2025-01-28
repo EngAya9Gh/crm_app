@@ -16,11 +16,12 @@ class VerifiedClientsDatasource {
 
   VerifiedClientsDatasource(this.api);
 
-  Future<ResponseWrapper<List<VerifiedClientModel>>> getVerifiedClient() async {
+  Future<ResponseWrapper<List<VerifiedClientModel>>> getVerifiedClient(GetInvoicesByPrivilegesParams params) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
         endPoint: EndPoints.finance.getVerifiedClient,
+        queryParameters: params.toMap()
       );
 
       return ResponseWrapper<List<VerifiedClientModel>>.fromJson(

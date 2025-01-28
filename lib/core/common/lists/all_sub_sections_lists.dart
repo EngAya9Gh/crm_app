@@ -328,7 +328,7 @@ abstract class AllSubSectionsLists {
     SectionModel(
       privilegeId: "324",
       page: VerifiedClientPage(),
-      title: 'عملاء للترحيل',
+      title: 'عملاء للتوثيق',
       path: AppRoutesPaths.financeSections.clientTransfer,
       subSections: [],
     ),

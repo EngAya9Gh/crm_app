@@ -26,6 +26,7 @@ class VerifiedClientBloc extends Bloc<VerifiedClientEvent, VerifiedClientState> 
   ) : super(VerifiedClientState()) {
     on<GetVerifiedClientEvent>(_onHandleGetVerifiedClientEvent);
     on<ChangeStatusVerifiedClientEvent>(_onHandleChangeStatusVerifiedClientEvent);
+    on<ResetFilterEvent>(_onHandleResetFilterEvent);
   }
 
   FutureOr<void> _onHandleGetVerifiedClientEvent(GetVerifiedClientEvent event, Emitter<VerifiedClientState> emit) async {
@@ -59,5 +60,9 @@ class VerifiedClientBloc extends Bloc<VerifiedClientEvent, VerifiedClientState> 
       ),
       (r) => emit(state.copyWith(changeStatusClient: BlocStatus.success())),
     );
+  }
+
+  FutureOr<void> _onHandleResetFilterEvent(ResetFilterEvent event, Emitter<VerifiedClientState> emit) {
+    emit(state.copyWith(getInvoicesByPrivilegesParams:() =>  GetInvoicesByPrivilegesParams()));
   }
 }

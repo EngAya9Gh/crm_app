@@ -1,22 +1,16 @@
-import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/finance/verified_client/presentation/pages/verified_client_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart' hide TextDirection;
-import '../../../../../core/common/widgets/app_elevated_button.dart';
+
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../../core/utils/app_constants.dart';
-import '../../../../../core/utils/app_fonts.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../manager/verified_client_bloc.dart';
-import '../widgets/insure_transfer_client_dialog.dart';
 
 class VerifiedClientPage extends StatefulWidget {
   const VerifiedClientPage({super.key});
@@ -74,7 +68,12 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                   } else if (state.verifiedClientList.isFailed() && state.verifiedClientList.isEmpty()) {
                     return AppErrorWidget(
                       onPressed: () {
-                        _bloc.add(GetVerifiedClientEvent());
+                        if (state.hasReachedMax) {
+                          return;
+                        }
+                        _bloc.add(GetVerifiedClientEvent(
+                            getInvoicesByPrivilegesParams:
+                                state.getInvoicesByPrivilegesParams?.copyWith(skip: (state.getInvoicesByPrivilegesParams?.skip ?? -1) + 1)));
                       },
                     );
                   } else if (state.verifiedClientList.isEmpty()) {
@@ -85,146 +84,12 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                       scrollController: ScrollController(),
                       isLoading: state.verifiedClientList.isLoading(),
                       items: state.verifiedClientList.data ?? [],
-                      // hasReachedEnd: _invoicesSectionCubit.hasReachedEnd,
+                      // hasReachedEnd: ,
                       onLoadMore: () {
-                        // _invoicesSectionCubit.getInvoicesByPrivileges(isNewFilter: false);
+                        _bloc.add(GetVerifiedClientEvent());
                       },
                       itemBuilder: (context, index) {
-                        return Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                      offset: Offset(1.0, 1.0),
-                                      blurRadius: 8.0,
-                                      color: Colors.black87.withOpacity(0.2),
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadiusDirectional.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          AppText(
-                                            state.verifiedClientList.data?[index].clientModel.nameRegion,
-                                            color: AppColors.primaryMain,
-                                            fontSize: 16,
-                                          ),
-                                          AppText(
-                                            state.verifiedClientList.data?[index].clientModel.dateCreate,
-                                            color: AppColors.primaryMain,
-                                            fontSize: 16,
-                                          ),
-                                        ],
-                                      ),
-                                      5.height,
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          if (state.verifiedClientList.data?[index].clientModel.idClients != null)
-                                            AppText(
-                                              "${state.verifiedClientList.data?[index].clientModel.idClients}#  ",
-                                              fontFamily: AppFonts.fontFamily1,
-                                              fontWeight: FontWeight.bold,
-                                              color: AppColors.secondaryMain,
-                                            ),
-                                          Expanded(
-                                            child: AppText(
-                                              state.verifiedClientList.data?[index].clientModel.nameEnterprise,
-                                              fontSize: 18,
-                                              fontFamily: AppFonts.fontFamily1,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          if (state.verifiedClientList.data?[index].clientModel.typeClient?.isNotEmpty ?? false)
-                                            AppStatusChip(
-                                              status: state.verifiedClientList.data?[index].clientModel.typeClient ?? '',
-                                              color: AppColors.primaryMain,
-                                            ),
-                                        ],
-                                      ),
-                                      5.height,
-                                      if (state.verifiedClientList.data?[index].clientModel.name_city?.isNotEmpty ?? false)
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            AppText(
-                                              'اسم المدينة',
-                                              fontSize: 14,
-                                              fontFamily: AppFonts.fontFamily1,
-                                              color: AppColors.primaryMain,
-                                            ),
-                                            AppText(
-                                              state.verifiedClientList.data?[index].clientModel.name_city,
-                                              fontSize: 14,
-                                              fontFamily: AppFonts.fontFamily1,
-                                              color: AppColors.primaryMain,
-                                            ),
-                                          ],
-                                        ),
-                                      if (state.verifiedClientList.data?[index].lastOperation != null &&
-                                          state.verifiedClientList.data?[index].userDidOperation != null) ...{
-                                        5.height,
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                AppText(
-                                                  state.verifiedClientList.data?[index].lastOperation,
-                                                  fontFamily: AppFonts.fontFamily1,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14,
-                                                ),
-                                                SizedBox(width: 4),
-                                                AppText(
-                                                  "(${state.verifiedClientList.data?[index].userDidOperation})",
-                                                  fontFamily: AppFonts.fontFamily1,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14,
-                                                ),
-                                              ],
-                                            ),
-                                            AppText(
-                                              DateFormat('yyyy-MM-dd').format(state.verifiedClientList.data![index].dateLastOperation!),
-                                              fontFamily: AppFonts.fontFamily1,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                            )
-                                          ],
-                                        ),
-                                      },
-                                      5.height,
-                                      Center(
-                                        child: AppElevatedButton(
-                                          text: 'ترحيل العميل',
-                                          onPressed: () {
-                                            AppConstants.showAppDialog(
-                                              child: InsureTransferClientDialog(
-                                                bloc: _bloc,
-                                                clientModel: state.verifiedClientList.data![index],
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
+                        return VerifiedClientCard(verifiedClientModel: state.verifiedClientList.data![index]);
                       },
                       separatorBuilder: (_, __) => const SizedBox.shrink(),
                     ),
