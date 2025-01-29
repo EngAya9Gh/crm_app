@@ -45,12 +45,14 @@ class YearlyPage extends StatelessWidget {
               return AppLoader();
             } else if (yearlyState.isFailure) {
               return AppErrorWidget(
-                onPressed: () => vm.getTargets(),
+                onPressed: () => vm.onChangeYear(DateTime.now().year.toString()),
               );
             }
 
             final list = yearlyState.data ?? [];
-            return Expanded(child: BranchList(targetList: list));
+            return Expanded(child: BranchList(targetList: list,onPressed: () {
+              return vm.onChangeYear(DateTime.now().year.toString());
+            },));
           }),
         ],
       ),

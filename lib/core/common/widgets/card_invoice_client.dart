@@ -345,7 +345,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               ),
                               SizedBox(width: 4),
                               AppText(
-                                "(${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.invoice.dateLastOperation!))})",
+                                "(${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse(widget.invoice.dateLastOperation!))})",
                                 fontFamily: AppFonts.fontFamily1,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,

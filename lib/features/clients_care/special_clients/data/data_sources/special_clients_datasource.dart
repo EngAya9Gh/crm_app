@@ -15,7 +15,7 @@ class SpecialClientsDatasource {
   Future<ResponseWrapper<List<DistinctiveClient>>> getSpecialClients(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
           endPoint: EndPoints.client.distinctiveClient, queryParameters: body);
 

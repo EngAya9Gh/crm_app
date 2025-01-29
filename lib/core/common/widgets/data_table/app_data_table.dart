@@ -30,7 +30,7 @@ class AppDataTable extends StatelessWidget {
       controller:scrollController,
       child: SingleChildScrollView(
         child: SizedBox(
-          width: kIsWeb?MediaQuery.sizeOf(context).width * 0.75:null, // Increased width
+          // width: kIsWeb?MediaQuery.sizeOf(context).width * 0.75:null, // Increased width
           child: DataTable(
             columns: columns,
             rows: rows,

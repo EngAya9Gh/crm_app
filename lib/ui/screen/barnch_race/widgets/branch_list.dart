@@ -9,14 +9,18 @@ class BranchList extends StatelessWidget {
   const BranchList({
     Key? key,
     required this.targetList,
+    this.onPressed,
   }) : super(key: key);
   final List<BranchRaceModel>? targetList;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     if (targetList?.isEmpty ?? true) {
       return AppErrorWidget(
-        onPressed: () {},
+        onPressed: () {
+          onPressed?.call();
+        },
         message: 'لا يوجد بيانات',
       );
     }

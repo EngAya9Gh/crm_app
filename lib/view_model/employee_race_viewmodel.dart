@@ -296,7 +296,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
     );
 
     List<EmployeeReportModel> list =
-        convertListFromJson(data, (json) => EmployeeReportModel.fromJson(json));
+        convertListFromJson(data['message'], (json) => EmployeeReportModel.fromJson(json));
     return list;
   }
 

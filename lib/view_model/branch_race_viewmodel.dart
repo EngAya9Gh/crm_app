@@ -221,8 +221,8 @@ class BranchRaceViewmodel extends ChangeNotifier {
               "target/get_sales_target.php?fk_country=$fkCountry&month=${date.toIso8601String()}",
           body: {'type': 'datemonth'});
       List<BranchRaceModel> list = [];
-      for (int i = 0; i < data.length; i++)
-        list.add(BranchRaceModel.fromJson(data[i]));
+      for (int i = 0; i < data['message'].length; i++)
+        list.add(BranchRaceModel.fromJson(data['message'][i]));
 
       monthlyState = monthlyState.changeToLoaded(list);
       notifyListeners();
@@ -250,8 +250,8 @@ class BranchRaceViewmodel extends ChangeNotifier {
               "target/get_sales_target.php?fk_country=$fkCountry&year=$year",
           body: {'type': 'dateyear'});
       List<BranchRaceModel> list = [];
-      for (int i = 0; i < data.length; i++)
-        list.add(BranchRaceModel.fromJson(data[i]));
+      for (int i = 0; i < data['message'].length; i++)
+        list.add(BranchRaceModel.fromJson(data['message'][i]));
 
       yearlyState = yearlyState.changeToLoaded(list);
 
@@ -291,14 +291,14 @@ class BranchRaceViewmodel extends ChangeNotifier {
       var data = await Api().post(
           url: EndPoints.baseUrls.url + params, body: {'type': 'datedays'});
       List<BranchRaceModel> list = [];
-      for (int i = 0; i < data.length; i++)
-        list.add(BranchRaceModel.fromJson(data[i]));
+      for (int i = 0; i < data['message'].length; i++)
+        list.add(BranchRaceModel.fromJson(data['message'][i]));
 
       quarterState = quarterState.changeToLoaded(list);
 
       notifyListeners();
     } catch (e) {
-      quarterState = quarterState.changeToLoading;
+      quarterState = quarterState.changeToFailed;
       notifyListeners();
     }
   }

@@ -225,7 +225,7 @@ class _Client {
   final addRejectReasons = "reasons-reject";
 
   String editRejectReasons(int id) => "reasons-reject/$id/edit";
-  final distinctiveClient = "star_client/get_client_star.php";
+  final distinctiveClient = "tagClients";
   final transferClient = "transferClient/";
   final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
   final String getTransferClientsWithPrivileges = "getTransferClientsWithPrivileges";

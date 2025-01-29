@@ -19,10 +19,12 @@ import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/app_status_chip.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_styles.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../ui/widgets/custom_widget/card_expansion.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
@@ -293,16 +295,24 @@ class ClientDeptPageState extends State<ClientDeptPage> {
                           titleWidget: Column(
                             crossAxisAlignment:CrossAxisAlignment.start,
                             children: [
-                              AppStatusChip(
-                                status: data?[index].nameRegoin ?? '',
-                                color: AppColors.primaryMain,
-                                fontSize: 13,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  AppStatusChip(
+                                    status: data?[index].nameRegoin ?? '',
+                                    color: AppColors.primaryMain,
+                                    fontSize: 13,
+                                  ),
+                                  IconButton(onPressed: () {
+                                    AppNavigator.go(ClientProfile(idClient: data?[index].idClients.toString()));
+                                  }, icon: Icon(Icons.transit_enterexit))
+                                ],
                               ),
                               5.height,
                               AppText(data?[index].nameEnterprise),
                               if (data?[index].dateApprove != null) ...{
                                 5.height,
-                                AppText(DateFormat('yyyy-MM-dd').format(data![index].dateApprove!)),
+                                AppText(DateFormat('yyyy-MM-dd HH:mm:ss').format(data![index].dateApprove!)),
                               }
                             ],
                           ));

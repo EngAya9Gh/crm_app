@@ -136,7 +136,7 @@ class VerifiedClientCard extends StatelessWidget {
                           ],
                         ),
                         AppText(
-                          DateFormat('yyyy-MM-dd').format(verifiedClientModel.dateLastOperation!),
+                          DateFormat('yyyy-MM-dd HH:mm:ss').format(verifiedClientModel.dateLastOperation!),
                           fontFamily: AppFonts.fontFamily1,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,

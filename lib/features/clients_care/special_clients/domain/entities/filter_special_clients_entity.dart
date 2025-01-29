@@ -5,16 +5,19 @@ class FilterSpecialClientsEntity {
   FilterSpecialClientsEntity();
 
   ValueNotifier<CityModel?> cityNotifier = ValueNotifier<CityModel?>(null);
+  ValueNotifier<int> currentPage = ValueNotifier(1);
 
   void clearFilters() {
     cityNotifier.value = null;
+    currentPage.value = 1;
   }
 
   FilterSpecialClientsEntity? _previousState;
 
   void savePreviousState() {
     _previousState = FilterSpecialClientsEntity()
-      ..cityNotifier.value = this.cityNotifier.value;
+      ..cityNotifier.value = this.cityNotifier.value
+      ..currentPage.value = this.currentPage.value;
   }
 
   FilterSpecialClientsEntity get returnToPreviousState {
@@ -28,6 +31,7 @@ class FilterSpecialClientsEntity {
   Iterable<Listenable?> listenables() {
     return [
       cityNotifier,
+      currentPage,
     ];
   }
 

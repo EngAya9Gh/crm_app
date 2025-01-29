@@ -12,6 +12,8 @@ import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/config/navigator/app_navigator.dart';
+import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../manager/verified_client_bloc.dart';
@@ -58,7 +60,7 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                     Duration(milliseconds: 500),
                     () => _bloc.add(GetVerifiedClientEvent(
                         getInvoicesByPrivilegesParams:
-                            (_bloc.state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter: value,fromPage: true))),
+                            (_bloc.state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter: value, fromPage: true))),
                   );
                 },
               ),
@@ -90,8 +92,9 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                           return;
                         }
                         _bloc.add(GetVerifiedClientEvent(
-                            getInvoicesByPrivilegesParams:
-                                state.getInvoicesByPrivilegesParams?.copyWith(page: (state.getInvoicesByPrivilegesParams?.page ?? 1) + 1,)));
+                            getInvoicesByPrivilegesParams: state.getInvoicesByPrivilegesParams?.copyWith(
+                          page: (state.getInvoicesByPrivilegesParams?.page ?? 1) + 1,
+                        )));
                       },
                     );
                   } else if (state.verifiedClientList.isEmpty()) {
@@ -111,7 +114,11 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                             .copyWith(skip: (_bloc.state.getInvoicesByPrivilegesParams?.skip ?? -1) + 1);
                       },
                       itemBuilder: (context, index) {
-                        return VerifiedClientCard(verifiedClientModel: state.verifiedClientList.data![index]);
+                        return InkWell(
+                            onTap: () {
+                              AppNavigator.go(ClientProfile(idClient: state.verifiedClientList.data![index].clientModel.idClients));
+                            },
+                            child: VerifiedClientCard(verifiedClientModel: state.verifiedClientList.data![index]));
                       },
                       separatorBuilder: (_, __) => const SizedBox.shrink(),
                     ),

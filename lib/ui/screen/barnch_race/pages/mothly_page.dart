@@ -79,15 +79,15 @@ class _MonthlyPageState extends State<MonthlyPage> {
               final monthlyState = vm.monthlyState;
 
               if (monthlyState.isLoading) {
-                AppLoader();
+               return AppLoader();
               } else if (monthlyState.isFailure) {
-                AppErrorWidget(
-                  onPressed: () => vm.getTargets(),
+                return AppErrorWidget(
+                  onPressed: () => vm.onChangeMonth(monthList.first),
                 );
               }
 
               final list = monthlyState.data ?? [];
-              return Expanded(child: BranchList(targetList: list));
+              return Expanded(child: BranchList(targetList: list,onPressed: () => vm.onChangeMonth(monthList.first),));
             }),
           ],
         ),

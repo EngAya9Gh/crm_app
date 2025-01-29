@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/extensions/num_extensions.dart';
+import '../../../../core/common/helpers/get_month_name.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../widgets/custom_widget/app_card_row.dart';
 import '../widgets/branch_list.dart';
@@ -79,12 +80,14 @@ class _QuarterPageState extends State<QuarterPage> {
               return AppLoader();
             } else if (quarterState.isFailure) {
               return AppErrorWidget(
-                onPressed: () => vm.getTargets(),
+                onPressed: () => vm.onChangeQuarter(quarterList.first),
               );
             }
 
             final list = quarterState.data ?? [];
-            return Expanded(child: BranchList(targetList: list));
+            return Expanded(child: BranchList(targetList: list,onPressed: () {
+              return vm.onChangeQuarter(quarterList.first);
+            },));
           }),
         ],
       ),
