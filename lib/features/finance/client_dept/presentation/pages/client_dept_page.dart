@@ -21,6 +21,7 @@ import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../ui/widgets/custom_widget/card_expansion.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
@@ -63,7 +64,7 @@ class ClientDeptPageState extends State<ClientDeptPage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(title: 'مدوينية العملاء'),
+      appBar: CustomAppBar(title: 'مديونية العملاء'),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
@@ -98,7 +99,7 @@ class ClientDeptPageState extends State<ClientDeptPage> {
                       }
                       _bloc.add(GetClientDeptEvents(
                           getInvoicesByPrivilegesParams: (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams())
-                              .copyWith(skip: (state.getInvoicesByPrivilegesParams?.skip ?? 1) + 1)));
+                              .copyWith(fromPage: true,page: (state.getInvoicesByPrivilegesParams?.page ?? 1) + 1)));
                     },
                     itemBuilder: (context, index) {
                       return buildcardExpansion(
@@ -216,37 +217,93 @@ class ClientDeptPageState extends State<ClientDeptPage> {
                           subTitleWidget: Column(
                             children: [
                               10.height,
-                              CardRow(
-                                title: 'المبلغ الكلي',
-                                value: formatNumber(data?[index].totalInvoices),
-                                withDivider: false,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: AppText(
+                                      'المبلغ الكلي',
+                                      textDirection: TextDirection.rtl,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: AppFonts.fontFamily1,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Expanded(
+                                    flex: 2,
+                                    child: AppText(
+                                      formatNumber(data?[index].totalInvoices),
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.primaryMain,
+                                      fontFamily: AppFonts.fontFamily1,
+                                    ),
+                                  ),
+                                ],
                               ),
                               5.height,
-                              CardRow(
-                                title: 'المبلغ المدفوع',
-                                value: formatNumber(data?[index].totalPaid),
-                                withDivider: false,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: AppText(
+                                      'المبلغ المدفوع',
+                                      textDirection: TextDirection.rtl,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: AppFonts.fontFamily1,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Expanded(
+                                    flex: 2,
+                                    child: AppText(
+                                      formatNumber(data?[index].totalPaid),
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.primaryMain,
+                                      fontFamily: AppFonts.fontFamily1,
+                                    ),
+                                  ),
+                                ],
                               ),
                               5.height,
-                              CardRow(
-                                title: 'المبلغ المتبقي',
-                                value: formatNumber(data?[index].remaining),
-                                withDivider: false,
-                                valueFontColor: AppColors.primaryMain,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: AppText(
+                                      'المبلغ المتبقي',
+                                      textDirection: TextDirection.rtl,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: AppFonts.fontFamily1,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Expanded(
+                                    flex: 2,
+                                    child: AppText(
+                                      formatNumber(data?[index].remaining),
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.primaryMain,
+                                      fontFamily: AppFonts.fontFamily1,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          titleWidget: Stack(
-                            clipBehavior: Clip.none,
+                          titleWidget: Column(
+                            crossAxisAlignment:CrossAxisAlignment.start,
                             children: [
+                              AppStatusChip(
+                                status: data?[index].nameRegoin ?? '',
+                                color: AppColors.primaryMain,
+                                fontSize: 13,
+                              ),
+                              5.height,
                               AppText(data?[index].nameEnterprise),
-                              PositionedDirectional(
-                                  end: -50,
-                                  child: AppStatusChip(
-                                    status: data?[index].nameRegoin ?? '',
-                                    color: AppColors.primaryMain,
-                                    fontSize: 13,
-                                  )),
+                              if (data?[index].dateApprove != null) ...{
+                                5.height,
+                                AppText(DateFormat('yyyy-MM-dd').format(data![index].dateApprove!)),
+                              }
                             ],
                           ));
                     },

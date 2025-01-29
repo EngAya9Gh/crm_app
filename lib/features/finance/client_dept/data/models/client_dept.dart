@@ -7,6 +7,7 @@ class ClientDeptModel {
   final String? location;
   final String? fkRegoin;
   final DateTime? dateCreate;
+  final DateTime? dateApprove;
   final dynamic receivedDate;
   final String? typeClient;
   final String? fkUser;
@@ -38,6 +39,7 @@ class ClientDeptModel {
     this.location,
     this.fkRegoin,
     this.dateCreate,
+    this.dateApprove,
     this.receivedDate,
     this.typeClient,
     this.fkUser,
@@ -70,6 +72,7 @@ class ClientDeptModel {
     String? location,
     String? fkRegoin,
     DateTime? dateCreate,
+    DateTime? dateApprove,
     dynamic receivedDate,
     String? typeClient,
     String? fkUser,
@@ -101,6 +104,7 @@ class ClientDeptModel {
         location: location ?? this.location,
         fkRegoin: fkRegoin ?? this.fkRegoin,
         dateCreate: dateCreate ?? this.dateCreate,
+        dateApprove: dateApprove ?? this.dateApprove,
         receivedDate: receivedDate ?? this.receivedDate,
         typeClient: typeClient ?? this.typeClient,
         fkUser: fkUser ?? this.fkUser,
@@ -133,6 +137,7 @@ class ClientDeptModel {
     location: json["location"],
     fkRegoin: json["fk_regoin"],
     dateCreate: json["date_create"] == null ? null : DateTime.parse(json["date_create"]),
+    dateApprove: json["date_approve"] == null ? null : DateTime.parse(json["date_approve"]),
     receivedDate: json["received_date"],
     typeClient: json["type_client"],
     fkUser: json["fk_user"],
@@ -165,6 +170,7 @@ class ClientDeptModel {
     "location": location,
     "fk_regoin": fkRegoin,
     "date_create": dateCreate?.toIso8601String(),
+    "date_approve": dateApprove?.toIso8601String(),
     "received_date": receivedDate,
     "type_client": typeClient,
     "fk_user": fkUser,

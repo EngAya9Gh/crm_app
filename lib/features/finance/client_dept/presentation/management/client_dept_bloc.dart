@@ -32,7 +32,7 @@ class ClientDeptBloc extends Bloc<ClientDeptEvent, ClientDeptState> {
   }
 
   FutureOr<void> _onHandleGetClientDeptEvents(GetClientDeptEvents event, Emitter<ClientDeptState> emit) async {
-    if (event.addNewFilter) {
+    if (event.addNewFilter||(event.getInvoicesByPrivilegesParams?.page??1)==1) {
       emit(state.copyWith(getClientDeptList: BlocStatus.loading()));
     }
     emit(state.copyWith(getInvoicesByPrivilegesParams: () => event.getInvoicesByPrivilegesParams));

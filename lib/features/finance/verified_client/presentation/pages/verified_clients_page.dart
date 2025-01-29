@@ -1,5 +1,8 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/features/finance/verified_client/presentation/pages/verified_client_card.dart';
+import 'package:crm_smart/features/finance/verified_client/presentation/widgets/verified_client_card.dart';
+import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +11,7 @@ import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../manager/verified_client_bloc.dart';
@@ -44,6 +48,20 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
           textDirection: TextDirection.rtl,
           child: Column(
             children: [
+              10.height,
+              CustomSearchWidget(
+                searchController: searchController,
+                hint: 'اسم المؤسسة، رقم الفاتورة...',
+                onChanged: (value) {
+                  EasyDebounce.debounce(
+                    'get_client_verified',
+                    Duration(milliseconds: 500),
+                    () => _bloc.add(GetVerifiedClientEvent(
+                        getInvoicesByPrivilegesParams:
+                            (_bloc.state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter: value,fromPage: true))),
+                  );
+                },
+              ),
               SizedBox(height: 10),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -73,7 +91,7 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                         }
                         _bloc.add(GetVerifiedClientEvent(
                             getInvoicesByPrivilegesParams:
-                                state.getInvoicesByPrivilegesParams?.copyWith(skip: (state.getInvoicesByPrivilegesParams?.skip ?? -1) + 1)));
+                                state.getInvoicesByPrivilegesParams?.copyWith(page: (state.getInvoicesByPrivilegesParams?.page ?? 1) + 1,)));
                       },
                     );
                   } else if (state.verifiedClientList.isEmpty()) {
@@ -84,9 +102,13 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                       scrollController: ScrollController(),
                       isLoading: state.verifiedClientList.isLoading(),
                       items: state.verifiedClientList.data ?? [],
-                      // hasReachedEnd: ,
+                      hasReachedEnd: state.hasReachedMax,
                       onLoadMore: () {
-                        _bloc.add(GetVerifiedClientEvent());
+                        if (state.hasReachedMax) {
+                          return;
+                        }
+                        (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams())
+                            .copyWith(skip: (_bloc.state.getInvoicesByPrivilegesParams?.skip ?? -1) + 1);
                       },
                       itemBuilder: (context, index) {
                         return VerifiedClientCard(verifiedClientModel: state.verifiedClientList.data![index]);

@@ -18,7 +18,7 @@ import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../../data/models/verified_client_model.dart';
 import '../manager/verified_client_bloc.dart';
-import '../widgets/insure_transfer_client_dialog.dart';
+import 'insure_transfer_client_dialog.dart';
 
 class VerifiedClientCard extends StatelessWidget {
   const VerifiedClientCard({

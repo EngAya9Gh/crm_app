@@ -35,7 +35,7 @@ class BarModel {
   factory BarModel.fromJson(Map<String, dynamic> json) => BarModel(
         colorval: Colors.primaries[Random().nextInt(Colors.primaries.length)],
         x: json["x"] ?? '',
-        clientcounterafter: json["clientcounterafter"],
+        clientcounterafter: json["clientcountafter"],
         total1: json["total1"],
         countclient: int.parse(json["countclient"]),
         y: double.parse(json["y"]),

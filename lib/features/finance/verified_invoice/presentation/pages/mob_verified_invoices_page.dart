@@ -71,8 +71,11 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                               'get_verified_invoices-debounce',
                               Duration(milliseconds: 500),
                               () => _bloc.add(GetVerifiedInvoiceEvent(
+                                addNewFilter: true,
                                   getInvoicesByPrivilegesParams:
-                                      (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(searchQuery: value))),
+                                      (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter: value,
+                                        fromPage:true ,
+                                      ))),
                             );
                           },
                         ),
@@ -85,7 +88,7 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                               onFilter: () {
                                 var _blocFilter = context.read<InvoicesSectionCubit>();
                                 var params = (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(
-                                  skip: state.verifiedInvoiceList.data?.length,
+                                  fromPage:true ,
                                   typeSeller: _blocFilter.filtersEntity.filterInvoicesSellerType.value,
                                   participateFk: _blocFilter.prepareUserId(SellerTypeEnum.collaborator),
                                   fkAgent: _blocFilter.prepareUserId(SellerTypeEnum.agent),
@@ -98,6 +101,7 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                                   hasDevices: _blocFilter.filtersEntity.filterDeviceState.value?.toParam,
                                 );
                                 _bloc.add(GetVerifiedInvoiceEvent(
+                                  addNewFilter: true,
                                   getInvoicesByPrivilegesParams: params,
                                 ));
                                 // InvoicesSectionCubit
@@ -147,9 +151,17 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                       scrollController: ScrollController(),
                       isLoading: state.verifiedInvoiceList.isLoading(),
                       items: state.verifiedInvoiceList.data ?? [],
-                      // hasReachedEnd: _invoicesSectionCubit.hasReachedEnd,
+                      hasReachedEnd: state.hasReachedMax,
                       onLoadMore: () {
-                        // _invoicesSectionCubit.getInvoicesByPrivileges(isNewFilter: false);
+                        if(state.hasReachedMax){
+                          return;
+                        }
+                        _bloc.add(GetVerifiedInvoiceEvent(
+                          getInvoicesByPrivilegesParams: (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(
+                            fromPage:true ,
+                            page: ((state.getInvoicesByPrivilegesParams?.page??1)+1),
+                          ),
+                        ));
                       },
                       itemBuilder: (context, index) {
                         return CardInvoiceClient(

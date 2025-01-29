@@ -345,7 +345,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               ),
                               SizedBox(width: 4),
                               AppText(
-                                "(${widget.invoice.dateLastOperation})",
+                                "(${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.invoice.dateLastOperation!))})",
                                 fontFamily: AppFonts.fontFamily1,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
@@ -358,22 +358,13 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  AppText(
-                                    widget.invoice.lastOperation,
-                                    fontFamily: AppFonts.fontFamily1,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                  SizedBox(width: 4),
-                                  AppText(
-                                    "(${widget.invoice.userDidOperation})",
-                                    fontFamily: AppFonts.fontFamily1,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                ],
+                              Expanded(
+                                   child:  AppText(
+                                      (widget.invoice.lastOperation!)+ "  (${widget.invoice.userDidOperation})",
+                                      fontFamily: AppFonts.fontFamily1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
                               ),
                               widget.transferWidget ?? SizedBox.shrink(),
                             ],
