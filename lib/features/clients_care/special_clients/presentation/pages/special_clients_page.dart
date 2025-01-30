@@ -112,8 +112,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                   Expanded(
                     child: AppPaginatedList(
                       onLoadMore: () {
-                        _bloc.filterEntity.currentPage.value = _bloc.filterEntity.currentPage.value + 1;
-                        _bloc.add(GetSpecialClientsEvent());
+                        _bloc.add(GetSpecialClientsEvent(page:_bloc.filterEntity.currentPage.value + 1));
                       },
                       hasReachedEnd: state.hasReachedMax,
                       items: state.communicationListState.data,

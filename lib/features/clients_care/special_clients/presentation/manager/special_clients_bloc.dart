@@ -23,7 +23,7 @@ class SpecialClientsBloc extends Bloc<SpecialClientsEvent, SpecialClientsState> 
   final GetSpecialClientsUsecase _getCommunicationListUsecase;
 
   SpecialClientsBloc(this._getCommunicationListUsecase) : super(SpecialClientsState()) {
-    on<GetSpecialClientsEvent>(_onGetCommunicationListEvent,transformer: droppable());
+    on<GetSpecialClientsEvent>(_onGetCommunicationListEvent, transformer: droppable());
     on<SearchEvent>(_onSearchEvent);
   }
 
@@ -39,14 +39,14 @@ class SpecialClientsBloc extends Bloc<SpecialClientsEvent, SpecialClientsState> 
     GetSpecialClientsEvent event,
     Emitter<SpecialClientsState> emit,
   ) async {
-    if (filterEntity.currentPage.value == 1) {
+    if ((event.page ?? filterEntity.currentPage.value) == 1) {
       emit(state.copyWith(communicationListState: PageState.loading()));
     }
-
+    filterEntity.currentPage.value = event.page ?? filterEntity.currentPage.value;
     final response = await _getCommunicationListUsecase(GetSpecialClientsParams(
       country: AppConstants.currentCountry,
       city: filterEntity.cityNotifier.value,
-      page: filterEntity.currentPage.value,
+      page: event.page ?? filterEntity.currentPage.value,
     ));
 
     response.extract(
@@ -55,33 +55,18 @@ class SpecialClientsBloc extends Bloc<SpecialClientsEvent, SpecialClientsState> 
         emit(state.copyWith(communicationListState: PageState.error()));
       },
       (value) {
-        if(value.message?.isEmpty??true){
-          emit(state.copyWith(hasReachedMax: true));
-        }
-        if(filterEntity.currentPage.value>1&&(value.message?.isNotEmpty??false)){
+        emit(state.copyWith(hasReachedMax: value.message?.isEmpty));
+        if ((event.page ?? filterEntity.currentPage.value) > 1 ) {
           emit(
             state.copyWith(
               total: value.count,
-              communicationListState:PageState.loaded(data: List.of(state.allCommunicationsState)..addAll(value.message??[])),
+              communicationListState: PageState.loaded(data: List.of(state.communicationListState.data)..addAll(value.message ?? [])),
               allCommunicationsState: value.message,
             ),
           );
           return;
         }
-        final filterData = filterList(pageVariables.searchController.text);
-        final lists = [filterData, (value.message ?? [])];
-        final commonElements = pageVariables.searchController.text.isNotEmpty && state.selectedCityId == null
-            ? filterList(pageVariables.searchController.text, value.message)
-            : HelperFunctions.instance.intersection(lists);
-
-        emit(
-          state.copyWith(
-            total: value.count,
-            communicationListState:
-                pageVariables.searchController.text.isNotEmpty ? PageState.loaded(data: commonElements) : PageState.loaded(data: value.message ?? []),
-            allCommunicationsState: value.message,
-          ),
-        );
+        emit(state.copyWith(total: value.count, communicationListState: PageState.loaded(data: value.message ?? [])));
       },
     );
   }

@@ -148,7 +148,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
     monthsFilter = list
         .where((element) =>
             element.typeTarget == DateFilterType.monthly.index.toString())
-        .map((e) => getMonthName(int.parse(e.nameTarget ?? '0')))
+        .map((e) => getMonthName(int.parse(e.typeTarget ?? '0')))
         .toSet()
         .toList();
 

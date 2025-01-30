@@ -23,7 +23,7 @@ class EmployeeReportModel {
         countClient: json["countclient"],
         name: json["x"],
         salary: json["salary"],
-        img_image: json['img_image'].toString().trim().isEmpty
+        img_image:json['img_image']==null?null: json['img_image'].toString().trim().isEmpty
             ? json['img_image']
             : EndPoints.baseUrls.urlImage + json['img_image'],
       );
