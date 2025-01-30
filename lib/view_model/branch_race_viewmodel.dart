@@ -143,7 +143,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
     _allTargetsList = list;
     monthsFilter = list
         .where((element) => element.typeTarget == DateFilterType.monthly.index.toString())
-        .map((e) => getMonthName(int.parse(e.nameTarget ?? '0')))
+        .map((e) => e.nameTarget!)
         .toSet()
         .toList();
 
@@ -392,7 +392,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
         };
 
         response = await Api().post(
-          url: EndPoints.baseUrls.url + 'target/add_target.php',
+          url: EndPoints.baseUrls.urlLaravel + 'targets',
           body: body,
         );
       } else {
@@ -405,7 +405,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
         };
 
         response = await Api().post(
-          url: EndPoints.baseUrls.url + 'target/update_target.php?id_target=${branchRaceModel?.idTarget}',
+          url: EndPoints.baseUrls.urlLaravel + 'targets?id_target=${branchRaceModel?.idTarget}',
           body: body,
         );
       }

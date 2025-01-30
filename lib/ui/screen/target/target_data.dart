@@ -1,4 +1,7 @@
+import 'package:crm_smart/core/services/api/api_services.dart';
+
 import '../../../api/api.dart';
+import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../model/branch_race_model.dart';
 import '../../../model/targetmodel.dart';
@@ -19,11 +22,15 @@ class TargetData {
   }
 
   static Future<List<BranchRaceModel>> getTarget() async {
-    var data =
-        await Api().get(url: EndPoints.baseUrls.url + 'target/target_get.php');
-    List<BranchRaceModel> list =
-        convertListFromJson(data, (json) => BranchRaceModel.fromJson(json));
-    return list;
+        try {
+          var api =await getIt<ApiServices>()..changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+          var data=await api.get(endPoint: 'targets');
+          List<BranchRaceModel> list = [];
+          for (int i = 0; i < data['message'].length; i++) list.add(BranchRaceModel.fromJson(data['message'][i]));
+             return list;
+        } on Exception catch (e) {
+          return [];
+        }
   }
 }
 

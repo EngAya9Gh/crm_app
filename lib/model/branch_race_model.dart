@@ -33,12 +33,12 @@ class BranchRaceModel {
 
   factory BranchRaceModel.fromJson(Map<String, dynamic> json) =>
       BranchRaceModel(
-        idTarget: json["id_target"],
-        typeTarget: json["type_target"],
+        idTarget:json["id_target"]==null?null: json["id_target"].toString(),
+        typeTarget:json["type_target"]==null?null: json["type_target"].toString(),
         nameTarget: json["name_target"],
         yearTarget: json["year_target"],
         valueTarget: json["value_target"],
-        fkRegion: json["fk_region"],
+        fkRegion:json["fk_region"]==null?null: json["fk_region"].toString(),
         imgRegoin: json["img_regoin"],
         name_regoin: json["name_regoin"],
         x: json["x"],
