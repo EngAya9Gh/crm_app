@@ -25,9 +25,9 @@ class ClientDeptModel {
   final String? nameRegoin;
   final String? nameUser;
   final String? mobileUser;
-  final int? totalPaid;
-  final double? totalInvoices;
-  final double? remaining;
+  final num? totalPaid;
+  final num? totalInvoices;
+  final num? remaining;
   final List<Payment>? payments;
 
   ClientDeptModel({
@@ -90,9 +90,9 @@ class ClientDeptModel {
     String? nameRegoin,
     String? nameUser,
     String? mobileUser,
-    int? totalPaid,
-    double? totalInvoices,
-    double? remaining,
+    num? totalPaid,
+    num? totalInvoices,
+    num? remaining,
     List<Payment>? payments,
   }) =>
       ClientDeptModel(
