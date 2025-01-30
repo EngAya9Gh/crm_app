@@ -8,6 +8,8 @@ class AppCardContainer extends StatefulWidget {
     this.padding,
     this.margin,
     this.color,
+    this.height,
+    this.width,
   });
 
   final VoidCallback? onTap;
@@ -15,6 +17,8 @@ class AppCardContainer extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final Color? color;
+  final double? height;
+  final double? width;
 
   @override
   State<AppCardContainer> createState() => _AppCardContainerState();
@@ -36,6 +40,8 @@ class _AppCardContainerState extends State<AppCardContainer> {
           setState(() {});
         },
         child: AnimatedContainer(
+          height: widget.height,
+          width: widget.width,
           duration: const Duration(milliseconds: 800),
           curve: Curves.fastEaseInToSlowEaseOut,
           margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),

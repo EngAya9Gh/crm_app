@@ -201,9 +201,14 @@ class BranchRaceViewmodel extends ChangeNotifier {
       // list = list.where((element) => element.nameTarget == getMonthIndex(selectedMonthFilter!).toString()).toList();
 
       // list = list.where((element) => element.nameTarget == getMonthNumber(selectedMonthFilter!).toString()).toList();
-      var data = await Api().post(
-          url: EndPoints.baseUrls.url + "target/get_sales_target.php?fk_country=$fkCountry&month=${date.toIso8601String()}",
-          body: {'type': 'datemonth'});
+      var api = await getIt<ApiServices>()
+        ..changeBaseUrl(EndPoints.baseUrls.url);
+      var data = await api.post(endPoint: "target/get_sales_target.php", queryParameters: {
+        "fk_country": fkCountry,
+        "month": date.toIso8601String(),
+      }, data: {
+        'type': 'datemonth'
+      });
       List<BranchRaceModel> list = [];
       for (int i = 0; i < data['message'].length; i++) list.add(BranchRaceModel.fromJson(data['message'][i]));
 
@@ -229,7 +234,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
       notifyListeners();
 
       var api = await getIt<ApiServices>()
-        ..changeBaseUrl(AutofillHints.url);
+        ..changeBaseUrl(EndPoints.baseUrls.url);
       var data = await api.post(endPoint: 'target/get_sales_target.php', queryParameters: {
         "fk_country": fkCountry,
         "year": year,
@@ -270,10 +275,19 @@ class BranchRaceViewmodel extends ChangeNotifier {
       //     .where(
       //         (element) => element.yearTarget == selectedQuarterYearFilter && element.nameTarget == selectedQuarterFilter)
       //     .toList();
+      var api = await getIt<ApiServices>()
+        ..changeBaseUrl(EndPoints.baseUrls.url);
+      var data = await api.post(endPoint: 'target/get_sales_target.php', queryParameters: {
+        "fk_country": fkCountry,
+        "from": getFromQuarter,
+        "to": getToQuarter,
+        "Q": selectedQuarterFilter,
+      }, data: {
+        'type': 'datedays'
+      });
+      // final params = "target/get_sales_target.php?fk_country=$fkCountry&from=$getFromQuarter&to=$getToQuarter&Q=$selectedQuarterFilter";
 
-      final params = "target/get_sales_target.php?fk_country=$fkCountry&from=$getFromQuarter&to=$getToQuarter&Q=$selectedQuarterFilter";
-
-      var data = await Api().post(url: EndPoints.baseUrls.url + params, body: {'type': 'datedays'});
+      // var data = await Api().post(url: EndPoints.baseUrls.url + params, body: {'type': 'datedays'});
       List<BranchRaceModel> list = [];
       for (int i = 0; i < data['message'].length; i++) list.add(BranchRaceModel.fromJson(data['message'][i]));
 

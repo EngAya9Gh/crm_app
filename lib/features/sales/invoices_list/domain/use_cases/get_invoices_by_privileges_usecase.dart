@@ -32,6 +32,7 @@ class GetInvoicesByPrivilegesParams {
   final int? statusInvoice;
   final SellerTypeEnum? typeSeller;
   final String? fkRegionInvoice;
+  final String? fkRegion;
   final String? filter;
   final String? typeReadyClient;
   final List<TypeOfInvoice>? invoiceType;
@@ -51,6 +52,7 @@ class GetInvoicesByPrivilegesParams {
     this.limit = AppConstants.kPerPage,
     this.typeSeller,
     this.fkRegionInvoice,
+    this.fkRegion,
     this.typeReadyClient,
     this.invoiceType,
     this.from,
@@ -73,6 +75,7 @@ class GetInvoicesByPrivilegesParams {
     int? statusInvoice,
     SellerTypeEnum? typeSeller,
     String? fkRegionInvoice,
+    String? fkRegion,
     String? typeReadyClient,
     ValueGetter<List<TypeOfInvoice>>? invoiceType,
     String? from,
@@ -105,6 +108,7 @@ class GetInvoicesByPrivilegesParams {
       statusInvoice: statusInvoice ?? this.statusInvoice,
       invoiceType: invoiceType != null ? invoiceType() : this.invoiceType,
       fromPage: fromPage ?? this.fromPage,
+      fkRegion: fkRegion ?? this.fkRegion,
     );
   }
 
@@ -130,6 +134,7 @@ class GetInvoicesByPrivilegesParams {
     data['limit'] = limit;
     data['type_seller'] = typeSeller?.toParam;
     data['fk_regoin_invoice'] = fkRegionInvoice;
+    data['fk_regoin'] = fkRegion;
     data['TypeReadyClient'] = typeReadyClient;
     if (statusInvoice == StatusOfInvoice.cancelApprovement.value) data['cancel_approvement'] = 1;
     if (statusInvoice == StatusOfInvoice.cancelWithdraw.value) data['cancel_withdraw'] = 1;

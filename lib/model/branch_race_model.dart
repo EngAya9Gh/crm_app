@@ -14,6 +14,7 @@ class BranchRaceModel {
   String? valueTarget;
   String? fkRegion;
   String? name_regoin;
+  String? imgRegoin;
   String? x;
   String? y;
 
@@ -25,6 +26,7 @@ class BranchRaceModel {
     this.valueTarget,
     this.fkRegion,
     this.name_regoin,
+    this.imgRegoin,
     this.x,
     this.y,
   });
@@ -37,6 +39,7 @@ class BranchRaceModel {
         yearTarget: json["year_target"],
         valueTarget: json["value_target"],
         fkRegion: json["fk_region"],
+        imgRegoin: json["img_regoin"],
         name_regoin: json["name_regoin"],
         x: json["x"],
         y: json["y"],
@@ -49,5 +52,6 @@ class BranchRaceModel {
         "year_target": yearTarget,
         "value_target": valueTarget,
         "fk_region": fkRegion,
+        "img_regoin": imgRegoin,
       };
 }

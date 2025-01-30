@@ -133,7 +133,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
       list = list
           .map((e) => e.copyWith(
               percentage:
-                  e.salary == null || e.sales == null ? null : ((num.parse(e.sales!) * 100) / ((gettarget_CurrentYear * 12))).toStringAsFixed(2)))
+                  e.salary == null || e.sales == null ? null : ((num.parse(e.sales!) * 100) / ((num.parse(e.target!) * 12))).toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
 
@@ -163,7 +163,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
       list = list
           .map((e) => e.copyWith(
               percentage:
-                  e.salary == null || e.sales == null ? null : ((num.parse(e.sales!) * 100) / (((gettarget_CurrentYear * 3)))).toStringAsFixed(2)))
+                  e.salary == null || e.sales == null ? null : ((num.parse(e.sales!) * 100) / (((num.parse(e.target!) * 3)))).toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
 
@@ -192,7 +192,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
 
       list = list
           .map((e) => e.copyWith(
-              percentage: e.salary == null || e.sales == null ? null : (((num.parse(e.sales!)) * 100) / (gettarget_CurrentYear)).toStringAsFixed(2)))
+              percentage: e.salary == null || e.sales == null ? null : (((num.parse(e.sales!)) * 100) / (num.parse(e.target!))).toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0.0").compareTo(num.parse(a.percentage ?? "0.0")));
 
@@ -227,7 +227,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
         return e.copyWith(
             percentage: e.salary == null || e.sales == null
                 ? null
-                : ((num.parse(e.sales!) * 100) / ((gettarget_CurrentYear / numOfDayInMonth) * numOfFilterDay)).toStringAsFixed(2));
+                : ((num.parse(e.sales!) * 100) / ((num.parse(e.target!) / numOfDayInMonth) * numOfFilterDay)).toStringAsFixed(2));
       }).toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
 

@@ -1,5 +1,7 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_grid.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 import '../../../../model/employee_report_model.dart';
 import 'employee_card.dart';
@@ -13,9 +15,9 @@ class EmployeeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppPaginatedGridView(
-      items: list,
-      itemBuilder: (_, index) => EmployeeCard(employeeReportModel: list[index]),
+    return ResponsiveStaggeredGridList(
+      desiredItemWidth: 185.scaleWidth,
+      children: [...list].map((e) => EmployeeCard(height: 200.scaleHeight,employeeReportModel:e),).toList(),
     );
   }
 }

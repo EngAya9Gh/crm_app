@@ -72,6 +72,7 @@ class ClientDeptPageState extends State<ClientDeptPage> {
         child: Column(
           children: [
             10.height,
+            10.height,
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
