@@ -28,7 +28,7 @@ class EmployeeCard extends StatelessWidget {
               ? "${getQuarterName(vm.selectedQuarter!)}-${vm.selectedQuarterYear}"
               : vm.selectedDateFilterType == DateFilterType.monthly
                   ? "${getMonthName(vm.selectedMonth!)}-${vm.selectedMonthYear}"
-                  : "${getMonthName(vm.selectedDailyFrom!.month)}, من ${vm.selectedDailyFrom!.day} إلى ${vm.selectedDailyTo!.day}";
+                  : "${getMonthName(vm.selectedDailyFrom!.month)}, من ${vm.selectedDailyFrom?.day??''} إلى ${vm.selectedDailyTo?.day??''}";
 
       return AppCardContainer(
         child: Column(
