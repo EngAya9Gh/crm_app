@@ -73,7 +73,7 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                               () => _bloc.add(GetVerifiedInvoiceEvent(
                                 addNewFilter: true,
                                   getInvoicesByPrivilegesParams:
-                                      (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter: value,
+                                      (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter:() =>  value,
                                         fromPage:true ,
                                       ))),
                             );

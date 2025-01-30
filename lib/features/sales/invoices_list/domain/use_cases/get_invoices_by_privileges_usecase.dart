@@ -75,13 +75,13 @@ class GetInvoicesByPrivilegesParams {
     int? statusInvoice,
     SellerTypeEnum? typeSeller,
     String? fkRegionInvoice,
-    String? fkRegion,
+    ValueGetter<String?>? fkRegion,
     String? typeReadyClient,
     ValueGetter<List<TypeOfInvoice>>? invoiceType,
     String? from,
     String? to,
     String? searchQuery,
-    String? filter,
+    ValueGetter<String?>? filter,
     String? fkAgent,
     String? participateFk,
     String? fkIdUser,
@@ -99,7 +99,7 @@ class GetInvoicesByPrivilegesParams {
       from: from ?? this.from,
       to: to ?? this.to,
       searchQuery: searchQuery ?? this.searchQuery,
-      filter: filter ?? this.filter,
+      filter: filter != null ? filter() : this.filter,
       fkAgent: _assignNull(currentValue: this.fkAgent, newValue: fkAgent),
       participateFk: _assignNull(currentValue: this.participateFk, newValue: participateFk),
       fkIdUser: _assignNull(currentValue: this.fkIdUser, newValue: fkIdUser),
@@ -108,7 +108,7 @@ class GetInvoicesByPrivilegesParams {
       statusInvoice: statusInvoice ?? this.statusInvoice,
       invoiceType: invoiceType != null ? invoiceType() : this.invoiceType,
       fromPage: fromPage ?? this.fromPage,
-      fkRegion: fkRegion ?? this.fkRegion,
+      fkRegion: fkRegion != null ? fkRegion() : this.fkRegion,
     );
   }
 

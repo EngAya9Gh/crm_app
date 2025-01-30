@@ -19,6 +19,8 @@ import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/app_status_chip.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/custom_filter_icon.dart';
+import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_constants.dart';
@@ -27,12 +29,14 @@ import '../../../../../core/utils/app_styles.dart';
 import '../../../../../ui/screen/client/client_profile.dart';
 import '../../../../../ui/widgets/custom_widget/card_expansion.dart';
 import '../../../../../ui/widgets/custom_widget/card_row.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import 'package:collection/collection.dart';
 
 import '../../domain/use_cases/report_client_dept_usecase.dart';
+import '../widgets/filter_client_dept_sheet.dart';
 
 class ClientDeptPage extends StatefulWidget {
   const ClientDeptPage({super.key});
@@ -72,6 +76,28 @@ class ClientDeptPageState extends State<ClientDeptPage> {
         child: Column(
           children: [
             10.height,
+            Row(
+              children: [
+                Expanded(
+                  child: CustomSearchWidget(
+                    searchController: searchController,
+                    onChanged: (value) {
+                      _bloc.add(GetClientDeptEvents(getInvoicesByPrivilegesParams: (_bloc.state.getInvoicesByPrivilegesParams ??
+                          GetInvoicesByPrivilegesParams()).copyWith(filter: () => value,)));
+                    },
+                  ),
+                ),
+                CustomFilterIcon(
+                  onTap: () async {
+                    await AppBottomSheet.show(
+                      context: context,
+                      child: FilterClientDeptSheet(),
+                    );
+                  },
+                ),
+                8.width,
+              ],
+            ),
             10.height,
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -293,28 +319,32 @@ class ClientDeptPageState extends State<ClientDeptPage> {
                               ),
                             ],
                           ),
-                          titleWidget: Column(
-                            crossAxisAlignment:CrossAxisAlignment.start,
+                          titleWidget: Stack(
+                            clipBehavior: Clip.none,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              Column(
+                                crossAxisAlignment:CrossAxisAlignment.start,
                                 children: [
                                   AppStatusChip(
                                     status: data?[index].nameRegoin ?? '',
                                     color: AppColors.primaryMain,
                                     fontSize: 13,
                                   ),
-                                  IconButton(onPressed: () {
-                                    AppNavigator.go(ClientProfile(idClient: data?[index].idClients.toString()));
-                                  }, icon: Icon(Icons.transit_enterexit))
+                                  5.height,
+                                  AppText(data?[index].nameEnterprise),
+                                  if (data?[index].dateApprove != null) ...{
+                                    5.height,
+                                    AppText(DateFormat('yyyy-MM-dd HH:mm:ss').format(data![index].dateApprove!)),
+                                  }
                                 ],
                               ),
-                              5.height,
-                              AppText(data?[index].nameEnterprise),
-                              if (data?[index].dateApprove != null) ...{
-                                5.height,
-                                AppText(DateFormat('yyyy-MM-dd HH:mm:ss').format(data![index].dateApprove!)),
-                              }
+                              PositionedDirectional(
+                                end: 0,
+                                child: IconButton(onPressed: () {
+                                  AppNavigator.go(ClientProfile(idClient: data?[index].idClients.toString()));
+                                }, icon: Icon(Icons.transit_enterexit)),
+                              )
+
                             ],
                           ));
                     },

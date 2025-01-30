@@ -60,7 +60,7 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                     Duration(milliseconds: 500),
                     () => _bloc.add(GetVerifiedClientEvent(
                         getInvoicesByPrivilegesParams:
-                            (_bloc.state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter: value, fromPage: true))),
+                            (_bloc.state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter:() =>  value, fromPage: true))),
                   );
                 },
               ),
