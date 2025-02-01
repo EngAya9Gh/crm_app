@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/config/size_config.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
@@ -17,7 +18,8 @@ AppBar CustomAppBar({
   PreferredSizeWidget? bottom,
   bool? showBackButton,
 }) {
-  showBackButton ??= AppDimensions.currentWidth() < SizeConfig.tablet;
+  showBackButton ??=  !kIsWeb;
+      //AppDimensions.currentWidth() < SizeConfig.desktop;
   return AppBar(
     title: title == null
         ? null

@@ -16,7 +16,7 @@ class AppLayoutBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (MediaQuery.sizeOf(context).width < SizeConfig.tablet) {
+    if (MediaQuery.sizeOf(context).width < SizeConfig.desktop) {
       return isUnique
           ? _UniqueWidget(child: smallBuilder(context), key: UniqueKey())
           : smallBuilder(context);
