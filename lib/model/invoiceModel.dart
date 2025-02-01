@@ -128,6 +128,7 @@ class InvoiceModel {
   bool? hasDevices;
   bool? isCanceledWithdraw;
   bool? isDeleted;
+  String? dateLastOperation;
 
   //endregion
 
@@ -255,6 +256,7 @@ class InvoiceModel {
     this.trainingMultiSession,
     this.lastOperation,
     this.userDidOperation,
+    this.dateLastOperation,
   });
 
   bool searchString(String query) {
@@ -315,6 +317,7 @@ class InvoiceModel {
         date_lastuserupdate: ApiHelper.handleString(jsondata['date_lastuserupdate']),
         path: ApiHelper.handleString(jsondata['path']),
         lastOperation: ApiHelper.handleString(jsondata['last_operation']),
+        dateLastOperation: ApiHelper.handleString(jsondata['date_last_operation']),
         userDidOperation: ApiHelper.handleString(jsondata['user_did_operation']),
         fk_country: ApiHelper.handleString(jsondata['fk_country']),
         reason_date: ApiHelper.handleString(jsondata['reason_date']),

@@ -47,8 +47,10 @@ class UserService {
 
   Future<List<UserModel>> usersServices() async {
     try {
-      List<dynamic> data = await Api()
-          .get(url: EndPoints.baseUrls.url + EndPoints.users.allUsers);
+      var api = await getIt<ApiServices>()
+        ..changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      var response = await api.get(endPoint: EndPoints.users.getAllUsers);
+      List<dynamic> data = response['message'];
       List<UserModel> usersList = [];
 
       for (int i = 0; i < data.length; i++) {
@@ -61,5 +63,4 @@ class UserService {
       throw e;
     }
   }
-
 }

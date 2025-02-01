@@ -3,6 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_utils.dart';
+import '../../../../../core/services/api/result.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import '../../domain/repositories/verified_invoice_repo.dart';
@@ -15,14 +17,16 @@ class VerifiedInvoiceRepoImpl implements VerifiedInvoiceRepository {
   VerifiedInvoiceRepoImpl(this.datasource);
 
   @override
-  Future<Either<String, List<InvoiceModel>>> getVerifiedInvoice(GetInvoicesByPrivilegesParams params) async {
-    try {
-      final data = await datasource.getVerifiedInvoices(params);
-      return data;
-    } catch (e) {
-      debugPrint("error in verified invoice in repo => $e");
-      return Left(e.toString());
-    }
+  Future<Result<ResponseWrapper<List<InvoiceModel>>>> getVerifiedInvoice(GetInvoicesByPrivilegesParams params) async {
+    // return datasource.getVerifiedInvoices(params);
+    return toApiResult(() async => await datasource.getVerifiedInvoices(params));
+    // try {
+    //   final data = await datasource.getVerifiedInvoices(params);
+    //   return data;
+    // } catch (e) {
+    //   debugPrint("error in verified invoice in repo => $e");
+    //   return Left(e.toString());
+    // }
   }
 
   @override

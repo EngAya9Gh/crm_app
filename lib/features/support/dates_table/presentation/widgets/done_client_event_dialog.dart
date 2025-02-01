@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,16 +17,21 @@ import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/services/di/di_container.dart';
 import '../../../../../core/services/maps/location_services.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../../../../common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
 import '../../domain/use_cases/change_date_to_done_usecase.dart';
 import '../manager/dates_table_cubit.dart';
+import 'add_event_dialog.dart';
 
 class DoneClientEventDialog extends StatefulWidget {
   const DoneClientEventDialog({
     super.key,
     required this.event,
+    this.isReschedule = false,
   });
 
   final EventModel event;
+  final bool isReschedule;
 
   @override
   State<DoneClientEventDialog> createState() => _DoneClientEventDialogState();
@@ -34,6 +40,7 @@ class DoneClientEventDialog extends StatefulWidget {
 class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _commentController = TextEditingController();
+  final TextEditingController takenTimeController = TextEditingController();
   late InstallationTypeEnum _installationType;
   late final DatesTableCubit datesTableCubit;
   String? location;
@@ -83,6 +90,20 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                   ),
                   10.height,
                   TextFormField(
+                    controller: takenTimeController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    decoration: InputDecoration(
+                      hintText: "الدقائق المستغرقة لاغلاق الجدولة",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  10.height,
+                  TextFormField(
                     controller: _commentController,
                     decoration: InputDecoration(
                       hintText: "أكتب تعليقك هنا *",
@@ -108,6 +129,39 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                             comment: _commentController.text,
                           );
                           if (_formKey.currentState!.validate()) {
+                            if (widget.isReschedule) {
+                              AppNavigator.pop(result: true);
+                              AppConstants.showAppDialog(
+                                  child: AddDateDialog(
+                                    invoiceId: editedEvent.fkInvoice,
+                                    idClient: editedEvent.fkIdClient!,
+                                    datesInstallation: null,
+                              )).then(
+                                (value) {
+                                  if (value) {
+                                    datesTableCubit.changeDateToDone(
+                                      ChangeDateToDoneParams(
+                                        timeTaken: takenTimeController.text,
+                                        nextDate: datesTableCubit.pageVariables.selectedDay,
+                                        event: editedEvent,
+                                        location: (widget.event.typeDate == InstallationTypeEnum.online) ? location! : null,
+                                      ),
+                                      onSuccess: (value) {
+                                        datesTableCubit.handleEventsMap(
+                                          updatedEvent: editedEvent,
+                                          oldEvent: widget.event,
+                                        );
+                                        AppSnackbar.showSnakeBar(
+                                          "تمت العملية بنجاح",
+                                          color: ToastColorsEnum.success,
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                              );
+                              return;
+                            }
                             await datesTableCubit.changeDateToDone(
                               ChangeDateToDoneParams(
                                 event: editedEvent,

@@ -25,12 +25,10 @@ class BranchRaceManagementView extends StatefulWidget {
   const BranchRaceManagementView({super.key});
 
   @override
-  State<BranchRaceManagementView> createState() =>
-      _BranchRaceManagementViewState();
+  State<BranchRaceManagementView> createState() => _BranchRaceManagementViewState();
 }
 
-class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
-    with StateViewModelMixin<BranchRaceManagementView, BranchRaceViewmodel> {
+class _BranchRaceManagementViewState extends State<BranchRaceManagementView> with StateViewModelMixin<BranchRaceManagementView, BranchRaceViewmodel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,16 +65,13 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
                 builder: (_, selectedDateFilter, __) {
                   return Center(
                     child: GroupButton(
-                      controller: GroupButtonController(
-                          selectedIndex: selectedDateFilter.index),
+                      controller: GroupButtonController(selectedIndex: selectedDateFilter.index),
                       options: GroupButtonOptions(
                           selectedColor: AppColors.primaryMain,
-                          buttonWidth:
-                              (MediaQuery.of(context).size.width - 60) / 4,
+                          buttonWidth: (MediaQuery.of(context).size.width - 60) / 4,
                           borderRadius: BorderRadius.circular(10)),
                       buttons: ["شهري", "ربعي", 'سنوي'],
-                      onSelected: (_, index, isselected) =>
-                          viewmodel.onChangeSelectedFilterType(index),
+                      onSelected: (_, index, isselected) => viewmodel.onChangeSelectedFilterType(index),
                     ),
                   );
                 },

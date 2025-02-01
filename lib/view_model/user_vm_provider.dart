@@ -123,7 +123,7 @@ class UserProvider extends ChangeNotifier {
   Future<void> getAllUsers() async {
     isLoading = true;
     notifyListeners();
-    await _getUsersVm();
+    await getUsersVm();
     isLoading = false;
     listFilteredUser = List.from(allUsers);
     notifyListeners();
@@ -232,7 +232,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> _getUsersVm() async {
+  Future<void> getUsersVm() async {
     if (allUsers.isNotEmpty) {
       return;
     }

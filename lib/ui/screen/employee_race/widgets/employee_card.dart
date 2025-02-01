@@ -15,9 +15,13 @@ class EmployeeCard extends StatelessWidget {
   const EmployeeCard({
     Key? key,
     required this.employeeReportModel,
+    this.height,
+    this.width,
   }) : super(key: key);
 
   final EmployeeReportModel employeeReportModel;
+  final double? height;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -28,46 +32,51 @@ class EmployeeCard extends StatelessWidget {
               ? "${getQuarterName(vm.selectedQuarter!)}-${vm.selectedQuarterYear}"
               : vm.selectedDateFilterType == DateFilterType.monthly
                   ? "${getMonthName(vm.selectedMonth!)}-${vm.selectedMonthYear}"
-                  : "${getMonthName(vm.selectedDailyFrom!.month)}, من ${vm.selectedDailyFrom!.day} إلى ${vm.selectedDailyTo!.day}";
+                  : "${getMonthName(vm.selectedDailyFrom!.month)}, من ${vm.selectedDailyFrom?.day??''} إلى ${vm.selectedDailyTo?.day??''}";
 
       return AppCardContainer(
+        height: height,
+        width: width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
             Stack(
               children: [
-                CircleAvatar(
-                  radius: 30.scaleIconsSize,
-                  child: employeeReportModel.img_image
-                              .toString()
-                              .trim()
-                              .length ==
-                          0
-                      // ||usermodell.img_thumbnail.toString().trim().isEmpty
-                      ? employeeReportModel.name.toString().isEmpty ||
-                              employeeReportModel.name == null
-                          ? Icon(
-                              Icons.person,
-                              size: 50.scaleIconsSize,
-                              color: Colors.lightBlueAccent,
-                            )
-                          : Text(employeeReportModel.name
-                              .toString()
-                              .substring(0, 1))
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(45),
-                          child: AppCachedNetworkImage(
-                            width: 500.scaleIconsSize,
-                            height: 500.scaleIconsSize,
-                            fit: BoxFit.fill,
-                            imageUrl: employeeReportModel.img_image,
+                Align(
+                  alignment: AlignmentDirectional.topStart,
+                  child: CircleAvatar(
+                    radius: 30.scaleIconsSize,
+                    child: employeeReportModel.img_image
+                                .toString()
+                                .trim()
+                                .length ==
+                            0
+                        // ||usermodell.img_thumbnail.toString().trim().isEmpty
+                        ? employeeReportModel.name.toString().isEmpty ||
+                                employeeReportModel.name == null
+                            ? Icon(
+                                Icons.person,
+                                size: 50.scaleIconsSize,
+                                color: Colors.lightBlueAccent,
+                              )
+                            : Text(employeeReportModel.name
+                                .toString()
+                                .substring(0, 1))
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(45),
+                            child: AppCachedNetworkImage(
+                              width: 500.scaleIconsSize,
+                              height: 500.scaleIconsSize,
+                              fit: BoxFit.fill,
+                              imageUrl: employeeReportModel.img_image,
+                            ),
                           ),
-                        ),
+                  ),
                 ),
                 if (employeeReportModel.percentage != null)
                   Align(
-                    alignment: Alignment.topLeft,
+                    alignment: AlignmentDirectional.topEnd,
                     child: Container(
                       margin: EdgeInsets.only(left: 10, top: 10),
                       decoration: BoxDecoration(
@@ -85,7 +94,7 @@ class EmployeeCard extends StatelessWidget {
             ),
             SizedBox(height: 5),
             Align(
-              alignment: Alignment.centerLeft,
+              alignment: AlignmentDirectional.topStart,
               child: AppText(
                 date,
                 color: Colors.blue.shade800,

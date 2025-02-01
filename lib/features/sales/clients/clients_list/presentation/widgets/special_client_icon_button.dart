@@ -13,9 +13,11 @@ class SpecialClientIconButton extends StatelessWidget {
   const SpecialClientIconButton({
     super.key,
     this.onChanged,
+    this.idClients,
   });
 
   final void Function(ClientModel? client)? onChanged;
+  final String? idClients;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class SpecialClientIconButton extends StatelessWidget {
         return IconButton(
           onPressed: () async {
             if (context.read<PrivilegesCubit>().checkPrivilege('147')) {
-              final ClientModel? client = await clientProvider.setTagClient();
+              final ClientModel? client = await clientProvider.setTagClient(idClients);
               bloc.currentClient = client;
               // onChanged?.call(client);
             }

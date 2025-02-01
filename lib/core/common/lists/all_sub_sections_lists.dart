@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -17,7 +16,9 @@ import '../../../features/clients_care/periodic_communication_reports/presentati
 import '../../../features/clients_care/previous_ratings/presentation/pages/previous_ratings_page.dart';
 import '../../../features/clients_care/special_clients/presentation/pages/special_clients_page.dart';
 import '../../../features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
+import '../../../features/finance/client_dept/presentation/pages/client_dept_page.dart';
 import '../../../features/finance/clients_attachments/presentation/pages/client_attachments_page.dart';
+import '../../../features/finance/verified_client/presentation/pages/verified_clients_page.dart';
 import '../../../features/finance/verified_invoice/presentation/pages/mob_verified_invoices_page.dart';
 import '../../../features/finance/verified_invoice/presentation/pages/web_verified_invoices_page.dart';
 import '../../../features/mangement/advanced_configs/presentation/pages/advanced_cofigs_page.dart';
@@ -69,14 +70,12 @@ abstract class AllSubSectionsLists {
       privilegeId: '34',
       path: AppRoutesPaths.supportSubSections.supportClientsInvoices,
     ),
-
     SectionModel(
       title: 'جدول التركيب للعملاء',
       page: DatesTablePage(),
       privilegeId: '18',
       path: AppRoutesPaths.supportSubSections.datesTable,
     ),
-
     SectionModel(
       title: 'جدول المواعيد',
       page: DatesTimelinePage(),
@@ -107,8 +106,6 @@ abstract class AllSubSectionsLists {
       privilegeId: '195',
       path: AppRoutesPaths.supportSubSections.waitingAgents,
     ),
-
-
   ];
 
   /* Care Sub Sections */
@@ -300,14 +297,16 @@ abstract class AllSubSectionsLists {
   ];
 
   //region financeRegion
-  static final List<SectionModel> financeSubSection=[
+  static final List<SectionModel> financeSubSection = [
     SectionModel(
+      privilegeId: "321",
       page: ClientAttachmentsPage(),
       title: 'مرفقات الفواتير',
       path: AppRoutesPaths.financeSections.attachments,
       subSections: [],
     ),
     SectionModel(
+      privilegeId: "322",
       page: Directionality(
         textDirection: TextDirection.ltr,
         child: AppLayoutBuilder(
@@ -319,6 +318,20 @@ abstract class AllSubSectionsLists {
       path: AppRoutesPaths.financeSections.invoiceTransfer,
       subSections: [],
     ),
+    SectionModel(
+      privilegeId: '320',
+      page: ClientDeptPage(),
+      title: 'مديونية العملاء',
+      path: AppRoutesPaths.financeSections.clientDept,
+      subSections: [],
+    ),
+    SectionModel(
+      privilegeId: "324",
+      page: VerifiedClientPage(),
+      title: 'عملاء للتوثيق',
+      path: AppRoutesPaths.financeSections.clientTransfer,
+      subSections: [],
+    ),
   ];
-  //endregion
+//endregion
 }

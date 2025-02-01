@@ -319,6 +319,18 @@ import '../../../features/common/users_searchable_dropdown/domain/use_cases/get_
     as _i976;
 import '../../../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart'
     as _i144;
+import '../../../features/finance/client_dept/data/data_sources/client_dept_datasource.dart'
+    as _i620;
+import '../../../features/finance/client_dept/data/repositories/client_dept_repo_impl.dart'
+    as _i378;
+import '../../../features/finance/client_dept/domain/repositories/client_dept_repo.dart'
+    as _i619;
+import '../../../features/finance/client_dept/domain/use_cases/get_client_dept_usecase.dart'
+    as _i523;
+import '../../../features/finance/client_dept/domain/use_cases/report_client_dept_usecase.dart'
+    as _i807;
+import '../../../features/finance/client_dept/presentation/management/client_dept_bloc.dart'
+    as _i742;
 import '../../../features/finance/clients_attachments/data/data_sources/clients_attachments_datasource.dart'
     as _i973;
 import '../../../features/finance/clients_attachments/data/repositories/clients_attachments_repo_impl.dart'
@@ -331,6 +343,18 @@ import '../../../features/finance/clients_attachments/domain/use_cases/get_attac
     as _i559;
 import '../../../features/finance/clients_attachments/presentation/manager/client_attachments_bloc.dart'
     as _i476;
+import '../../../features/finance/verified_client/data/data_sources/verified_client_datasource.dart'
+    as _i860;
+import '../../../features/finance/verified_client/data/repositories/verified_client_repo_impl.dart'
+    as _i711;
+import '../../../features/finance/verified_client/domain/repositories/verified_client_repo.dart'
+    as _i147;
+import '../../../features/finance/verified_client/domain/use_cases/get_verified_client_usecase.dart'
+    as _i0;
+import '../../../features/finance/verified_client/domain/use_cases/verified_client_usecase.dart'
+    as _i25;
+import '../../../features/finance/verified_client/presentation/manager/verified_client_bloc.dart'
+    as _i221;
 import '../../../features/finance/verified_invoice/data/data_sources/verified_invoice_datasource.dart'
     as _i8;
 import '../../../features/finance/verified_invoice/data/repositories/verified_invoice_repo_impl.dart'
@@ -625,6 +649,8 @@ import '../../../features/sales/invoices_list/domain/repositories/invoices_secti
     as _i887;
 import '../../../features/sales/invoices_list/domain/use_cases/export_invoices_to_excel_usecase.dart'
     as _i568;
+import '../../../features/sales/invoices_list/domain/use_cases/export_invoices_to_pdf_usecase.dart'
+    as _i944;
 import '../../../features/sales/invoices_list/domain/use_cases/get_all_users_usecase.dart'
     as _i780;
 import '../../../features/sales/invoices_list/domain/use_cases/get_invoice_by_id_usecase.dart'
@@ -1087,6 +1113,10 @@ _i174.GetIt $initGetIt(
       () => _i274.ClientsDatesDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i973.ClientAttachmentsDatasource>(
       () => _i973.ClientAttachmentsDatasource(gh<_i124.ApiServices>()));
+  gh.factory<_i620.ClientDeptDatasource>(
+      () => _i620.ClientDeptDatasource(gh<_i124.ApiServices>()));
+  gh.factory<_i860.VerifiedClientsDatasource>(
+      () => _i860.VerifiedClientsDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i8.VerifiedInvoicesDatasource>(
       () => _i8.VerifiedInvoicesDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i316.AddClientsContactsDatasource>(
@@ -1159,6 +1189,10 @@ _i174.GetIt $initGetIt(
           gh<_i45.ClientsInstallReportsDatasource>()));
   gh.lazySingleton<_i180.AgentsDistributorsDataSource>(
       () => _i180.AgentsDistributorsDataSourceImpl(gh<_i124.ApiServices>()));
+  gh.factory<_i147.VerifiedClientRepository>(() =>
+      _i711.VerifiedClientRepoImpl(gh<_i860.VerifiedClientsDatasource>()));
+  gh.factory<_i619.ClientDeptRepository>(
+      () => _i378.ClientDeptRepoImpl(gh<_i620.ClientDeptDatasource>()));
   gh.factory<_i483.TaskDatasource>(
       () => _i483.TaskDatasource(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i970.GetClientsInstallReportsUsecase>(() =>
@@ -1178,6 +1212,10 @@ _i174.GetIt $initGetIt(
       () => _i532.SupportTabDataSourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i976.GetUsersUsecase>(
       () => _i976.GetUsersUsecase(gh<_i620.UsersRepository>()));
+  gh.factory<_i523.GetClientDeptUseCase>(
+      () => _i523.GetClientDeptUseCase(gh<_i619.ClientDeptRepository>()));
+  gh.factory<_i807.ReportClientDeptUseCase>(
+      () => _i807.ReportClientDeptUseCase(gh<_i619.ClientDeptRepository>()));
   gh.factory<_i425.AddClientContactRepository>(() =>
       _i741.AddClientContactRepositoryImpl(
           gh<_i316.AddClientsContactsDatasource>()));
@@ -1317,6 +1355,8 @@ _i174.GetIt $initGetIt(
           gh<_i973.ClientAttachmentsDatasource>()));
   gh.lazySingleton<_i568.ExportInvoicesToExcelUsecase>(() =>
       _i568.ExportInvoicesToExcelUsecase(gh<_i887.InvoicesSectionRepo>()));
+  gh.lazySingleton<_i944.ExportInvoicesToPdfUsecase>(
+      () => _i944.ExportInvoicesToPdfUsecase(gh<_i887.InvoicesSectionRepo>()));
   gh.lazySingleton<_i351.GetInvoicesByPrivilegesUsecase>(() =>
       _i351.GetInvoicesByPrivilegesUsecase(gh<_i887.InvoicesSectionRepo>()));
   gh.lazySingleton<_i825.GetInvoiceByIdUsecase>(
@@ -1399,6 +1439,10 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i794.SupportClientsInvoicesRepo>(() =>
       _i635.SupportClientsInvoicesRepoImpl(
           gh<_i880.SupportClientsInvoicesDatasource>()));
+  gh.factory<_i742.ClientDeptBloc>(() => _i742.ClientDeptBloc(
+        gh<_i523.GetClientDeptUseCase>(),
+        gh<_i807.ReportClientDeptUseCase>(),
+      ));
   gh.lazySingleton<_i62.GetBranchesForUserUsecase>(
       () => _i62.GetBranchesForUserUsecase(gh<_i586.UsersRepository>()));
   gh.lazySingleton<_i1026.GetLevelsForUserUsecase>(
@@ -1477,6 +1521,10 @@ _i174.GetIt $initGetIt(
           gh<_i923.ClientsTransferApprovalsDatasource>()));
   gh.factory<_i24.VerifiedInvoiceRepository>(
       () => _i11.VerifiedInvoiceRepoImpl(gh<_i8.VerifiedInvoicesDatasource>()));
+  gh.factory<_i0.GetVerifiedClientUseCase>(
+      () => _i0.GetVerifiedClientUseCase(gh<_i147.VerifiedClientRepository>()));
+  gh.factory<_i25.VerifiedClientUseCase>(
+      () => _i25.VerifiedClientUseCase(gh<_i147.VerifiedClientRepository>()));
   gh.lazySingleton<_i225.GetDeletedInvoicesUsecase>(
       () => _i225.GetDeletedInvoicesUsecase(gh<_i151.DeletedInvoicesRepo>()));
   gh.factory<_i615.AddPackagesOffersUseCase>(() =>
@@ -1613,6 +1661,10 @@ _i174.GetIt $initGetIt(
       _i701.GetAllClientsContactsUseCase(gh<_i20.ClientsContactsRepository>()));
   gh.factory<_i437.InstallQualityCubit>(
       () => _i437.InstallQualityCubit(gh<_i257.GetInstallUseCase>()));
+  gh.factory<_i221.VerifiedClientBloc>(() => _i221.VerifiedClientBloc(
+        gh<_i0.GetVerifiedClientUseCase>(),
+        gh<_i25.VerifiedClientUseCase>(),
+      ));
   gh.factory<_i82.ClientsContactsBloc>(
       () => _i82.ClientsContactsBloc(gh<_i701.GetAllClientsContactsUseCase>()));
   gh.factory<_i554.ImportantLinksCubit>(() => _i554.ImportantLinksCubit(
@@ -1972,15 +2024,6 @@ _i174.GetIt $initGetIt(
         gh<_i882.GetTokenUsecase>(),
         gh<_i518.ValidateTokenUsecase>(),
       ));
-  gh.factory<_i401.InvoicesSectionCubit>(() => _i401.InvoicesSectionCubit(
-        gh<_i351.GetInvoicesByPrivilegesUsecase>(),
-        gh<_i1046.GetAgentsAndDistributorsUseCase>(),
-        gh<_i905.ParticipateListUsecase>(),
-        gh<_i780.GetAllUsersUseCase>(),
-        gh<_i449.GetUsersSalesUseCase>(),
-        gh<_i825.GetInvoiceByIdUsecase>(),
-        gh<_i568.ExportInvoicesToExcelUsecase>(),
-      ));
   gh.factory<_i1049.AgentsDistributorsProfileBloc>(
       () => _i1049.AgentsDistributorsProfileBloc(
             gh<_i854.GetAgentByIdUsecase>(),
@@ -1998,6 +2041,16 @@ _i174.GetIt $initGetIt(
       () => _i225.ClientsDatesCubit(gh<_i555.GetAllClientsDatesUseCase>()));
   gh.factory<_i819.WithdrawnInvoicesCubit>(() =>
       _i819.WithdrawnInvoicesCubit(gh<_i209.GetWithdrawnInvoicesUsecase>()));
+  gh.factory<_i401.InvoicesSectionCubit>(() => _i401.InvoicesSectionCubit(
+        gh<_i351.GetInvoicesByPrivilegesUsecase>(),
+        gh<_i1046.GetAgentsAndDistributorsUseCase>(),
+        gh<_i905.ParticipateListUsecase>(),
+        gh<_i780.GetAllUsersUseCase>(),
+        gh<_i449.GetUsersSalesUseCase>(),
+        gh<_i825.GetInvoiceByIdUsecase>(),
+        gh<_i568.ExportInvoicesToExcelUsecase>(),
+        gh<_i944.ExportInvoicesToPdfUsecase>(),
+      ));
   gh.factory<_i349.WaitingAgentsCubit>(
       () => _i349.WaitingAgentsCubit(gh<_i941.GetWaitingAgentsUsecase>()));
   return getIt;

@@ -20,6 +20,7 @@ import '../../../public_relations/agents_and_distributors/domain/use_cases/get_a
 import '../../../public_relations/participates/domain/use_cases/get_participate_list_usecase.dart';
 import '../../domain/entities/_invoices_section_filter_entity.dart';
 import '../../domain/use_cases/export_invoices_to_excel_usecase.dart';
+import '../../domain/use_cases/export_invoices_to_pdf_usecase.dart';
 import '../../domain/use_cases/get_all_users_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
@@ -35,6 +36,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   final GetUsersSalesUseCase _getUsersSalesUseCases;
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
   final ExportInvoicesToExcelUsecase _exportInvoicesToExcelUsecase;
+  final ExportInvoicesToPdfUsecase _exportInvoicesToPdfUsecase;
 
   InvoicesSectionCubit(
     this._getInvoicesByPrivilegesUsecase,
@@ -44,10 +46,10 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     this._getUsersSalesUseCases,
     this._getInvoiceByIdUsecase,
     this._exportInvoicesToExcelUsecase,
+    this._exportInvoicesToPdfUsecase,
   ) : super(InvoicesSectionState());
 
-  GetInvoicesByPrivilegesParams getInvoicesParams =
-      GetInvoicesByPrivilegesParams();
+  GetInvoicesByPrivilegesParams getInvoicesParams = GetInvoicesByPrivilegesParams();
 
   final TextEditingController searchController = TextEditingController();
   InvoicesSectionFilterEntity filtersEntity = InvoicesSectionFilterEntity();
@@ -109,12 +111,11 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
   }
 
   Future<void> exportInvoicesToExcel() async {
-    if(filtersEntity.dateFromController.text==""){
+    if (filtersEntity.dateFromController.text == "") {
       AppSnackbar.showSnakeBar("يرجى تحديد تاريخ بدء لتصدير ملف الاكسل");
       return;
     }
-    emit(state.copyWith(
-        exportInvoicesToExcelStatus: const BlocStatus.loading()));
+    emit(state.copyWith(exportInvoicesToExcelStatus: const BlocStatus.loading()));
 
     final result = await _exportInvoicesToExcelUsecase(_getInvoicesParams(isDownload: true));
     result.fold((e) {
@@ -135,9 +136,36 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     });
   }
 
+  Future<void> exportInvoicesToPdf(ExportInvoiceToPdfParams params) async {
+    emit(state.copyWith(exportInvoicesToPdfStatus: const BlocStatus.loading()));
+
+    final result = await _exportInvoicesToPdfUsecase(params);
+    result.fold((e) {
+      if (AppConstants.shouldReturnEarly(e)) return;
+      emit(state.copyWith(
+        exportInvoicesToPdfStatus: BlocStatus.fail(error: e),
+      ));
+    }, (r) async {
+      final pdfData = r.data;
+
+      final filePath = await AppFilesHelper.downloadFileAndReturnPath(
+        name: "pdfDetail.pdf",
+        bytes: pdfData,
+      );
+
+      await AppFilesHelper.openFile(filePath);
+      emit(state.copyWith(exportInvoicesToPdfStatus: BlocStatus.success()));
+    });
+  }
+
   GetInvoicesByPrivilegesParams _getInvoicesParams({
     bool isDownload = false,
   }) {
+    print(filtersEntity.filterInvoiceType.value
+        .map(
+          (e) => e.value!,
+        )
+        .toList());
     getInvoicesParams = getInvoicesParams.copyWith(
       skip: invoicesList.length,
       searchQuery: searchController.text,
@@ -149,7 +177,8 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
       from: filtersEntity.dateFromController.text,
       to: filtersEntity.dateToController.text,
       typeReadyClient: filtersEntity.filterClientStatus.value?.toParam,
-      invoiceType:() =>  filtersEntity.filterInvoiceType.value?.value,
+      invoiceType: () => filtersEntity.filterInvoiceType.value,
+      statusInvoice: filtersEntity.filterInvoiceStatus.value?.value,
       hasDevices: filtersEntity.filterDeviceState.value?.toParam,
       download: isDownload ? '1' : null,
     );
@@ -160,9 +189,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     if (sellerType == filtersEntity.filterInvoicesSellerType.value) {
       return filtersEntity.filterSelectedUser.value?.id;
     }
-    if (sellerType.isAgent() &&
-        (filtersEntity.filterInvoicesSellerType.value?.isDistributor() ??
-            false)) {
+    if (sellerType.isAgent() && (filtersEntity.filterInvoicesSellerType.value?.isDistributor() ?? false)) {
       return filtersEntity.filterSelectedUser.value?.id;
     }
 
@@ -197,8 +224,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
         emit(state.copyWith(
           getUsersState: BlocStatus.success(
               data: value.where((element) {
-            return element.typeAgent.toString() ==
-                filtersEntity.filterInvoicesSellerType.value!.toParam;
+            return element.typeAgent.toString() == filtersEntity.filterInvoicesSellerType.value!.toParam;
           }).toList()),
         ));
       },
@@ -213,8 +239,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     response.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(
-            getUsersState: BlocStatus.fail(error: exception.message)));
+        emit(state.copyWith(getUsersState: BlocStatus.fail(error: exception.message)));
       },
       (value) {
         emit(state.copyWith(
@@ -230,25 +255,20 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     final result = await _getUsersSalesUseCases(GetUsersSalesParams());
 
     result.extract(
-      (exception,message) {
+      (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
         emit(state.copyWith(getUsersState: BlocStatus.fail(error: message)));
       },
       (value) {
         emit(state.copyWith(
-          getUsersState: BlocStatus.success(data: value.message??[]),
+          getUsersState: BlocStatus.success(data: value.message ?? []),
         ));
       },
     );
   }
 
   List<UserModel> _filterEmployees(List<UserModel> value) {
-    return value
-        .where((element) =>
-            element.isActive == '1' &&
-            element.typeAdministration ==
-                UserTypeEnum.SalesManagement.type.toString())
-        .toList();
+    return value.where((element) => element.isActive == '1' && element.typeAdministration == UserTypeEnum.SalesManagement.type.toString()).toList();
   }
 
   Future<void> getInvoiceById(String id) async {
@@ -282,8 +302,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
 
     emit(state.copyWith(getInvoicesStatus: StateStatus.loading));
 
-    final result =
-        await _getInvoicesByPrivilegesUsecase(_getInvoicesParams1(page: page));
+    final result = await _getInvoicesByPrivilegesUsecase(_getInvoicesParams1(page: page));
     result.fold((e) {
       if (AppConstants.shouldReturnEarly(e)) return;
       emit(state.copyWith(

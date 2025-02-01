@@ -55,7 +55,7 @@ class GetPeriodicCommunicationParams {
       'limit': limit,
       'fk_user': fkUser,
       'filter': filter,
-      'not_rated':clientWhoNotRate,
+     if(clientWhoNotRate!=0) 'not_rated':clientWhoNotRate,
     };
 
     if (periodicCommunicationType.isEvaluated) {

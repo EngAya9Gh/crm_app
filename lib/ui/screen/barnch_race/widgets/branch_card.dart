@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/get_month_name.dart';
+import '../../../../core/utils/end_points.dart';
 import '../../../../features/app/presentation/widgets/app_text.dart';
 import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
@@ -36,7 +37,7 @@ class BranchCard extends StatelessWidget {
                     height: constraints.maxHeight * 0.6,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage("assest/images/default_branch.jpg"),
+                        image: NetworkImage(   "${EndPoints.baseUrls.laravelFilesUrl}${branchRaceModel.imgRegoin}",),
                         fit: BoxFit.fill,
                       ),
                       borderRadius: BorderRadius.vertical(

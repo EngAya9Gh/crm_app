@@ -51,8 +51,7 @@ class ClientProvider extends ChangeNotifier {
     listClientAccept = [];
 
     notifyListeners();
-    List<ClientModel> _list = await ClientService()
-        .getAcceptClient(usercurrent!.fkCountry.toString());
+    List<ClientModel> _list = await ClientService().getAcceptClient(usercurrent!.fkCountry.toString());
 
     isloading = false;
     listClientAccept = List.from(_list);
@@ -88,21 +87,12 @@ class ClientProvider extends ChangeNotifier {
     }
 
     final filteredListClient = list.where((element) {
-      final regionCondition =
-          region == null ? true : element.fkRegoin == region;
-      final typeClientCondition =
-          typeClient == null ? true : element.typeClient == typeClient;
-      final activityCondition =
-          activity == null ? true : element.NameReason_reject == activity;
-      final idUserCondition = idUser == null
-          ? true
-          : element.fkUser == idUser &&
-              element.fkcountry == usercurrent!.fkCountry;
+      final regionCondition = region == null ? true : element.fkRegoin == region;
+      final typeClientCondition = typeClient == null ? true : element.typeClient == typeClient;
+      final activityCondition = activity == null ? true : element.NameReason_reject == activity;
+      final idUserCondition = idUser == null ? true : element.fkUser == idUser && element.fkcountry == usercurrent!.fkCountry;
 
-      return regionCondition &&
-          typeClientCondition &&
-          activityCondition &&
-          idUserCondition;
+      return regionCondition && typeClientCondition && activityCondition && idUserCondition;
     }).toList();
 
     listClientfilter = filteredListClient;
@@ -116,19 +106,15 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
     bool res = privilegeCubit.checkPrivilege('8');
     if (res) {
-      listClientAccept = await ClientService()
-          .getClientDateTable(usercurrent!.fkCountry.toString());
+      listClientAccept = await ClientService().getClientDateTable(usercurrent!.fkCountry.toString());
     } else {
       res = privilegeCubit.checkPrivilege('15');
       if (res) {
-        listClientAccept = await ClientService().getClientDateTable_regoin(
-            usercurrent!.fkCountry.toString(),
-            usercurrent!.fkRegoin.toString());
+        listClientAccept = await ClientService().getClientDateTable_regoin(usercurrent!.fkCountry.toString(), usercurrent!.fkRegoin.toString());
       } else {
         res = privilegeCubit.checkPrivilege('16');
         if (res) {
-          listClientAccept = await ClientService()
-              .getClientDateTable_user(usercurrent!.idUser.toString());
+          listClientAccept = await ClientService().getClientDateTable_user(usercurrent!.idUser.toString());
         }
       }
     }
@@ -152,20 +138,17 @@ class ClientProvider extends ChangeNotifier {
 
     bool res = privilegeCubit.checkPrivilege(allClientPrivilege);
     if (res) {
-      listClient = await ClientService()
-          .getAllClientmarket(usercurrent!.fkCountry.toString());
+      listClient = await ClientService().getAllClientmarket(usercurrent!.fkCountry.toString());
       listClientfilter = List.from(listClient);
     } else {
       res = privilegeCubit.checkPrivilege(allClientByRegionPrivilege);
       if (res) {
-        listClient = await ClientService()
-            .getClientmarket_regoin(usercurrent!.fkRegoin.toString());
+        listClient = await ClientService().getClientmarket_regoin(usercurrent!.fkRegoin.toString());
         listClientfilter = List.from(listClient);
       } else {
         res = privilegeCubit.checkPrivilege(allClientByUserPrivilege);
         if (res) {
-          listClient = await ClientService()
-              .getClientmarket_user(usercurrent!.idUser.toString());
+          listClient = await ClientService().getClientmarket_user(usercurrent!.idUser.toString());
           listClientfilter = List.from(listClient);
         }
       }
@@ -177,8 +160,7 @@ class ClientProvider extends ChangeNotifier {
 
   PageState<ClientModel?> currentClientModel = PageState();
 
-  Future<void> getClientById(String idClient,
-      [ValueChanged<ClientModel>? onData]) async {
+  Future<void> getClientById(String idClient, [ValueChanged<ClientModel>? onData]) async {
     ClientModel? client;
     try {
       currentClientModel = currentClientModel.changeToLoading;
@@ -211,8 +193,7 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> addclient_vm(
-      Map<String, dynamic?> body, String username, String regoin) async {
+  Future<String> addclient_vm(Map<String, dynamic?> body, String username, String regoin) async {
     ClientModel res = await ClientService().addClient(body);
     //if (res!="false") {
     // body.addAll({
@@ -233,24 +214,20 @@ class ClientProvider extends ChangeNotifier {
     return "done";
   }
 
-  Future<bool> updateclient_vm(Map<String, dynamic?> body, String? idClient,
-      {ValueChanged<ClientModel>? onSuccess}) async {
+  Future<bool> updateclient_vm(Map<String, dynamic?> body, String? idClient, {ValueChanged<ClientModel>? onSuccess}) async {
     try {
       isloading = true;
       notifyListeners();
       ClientModel data = await ClientService().updateClient(body, idClient!);
 
-      int index =
-          listClient.indexWhere((element) => element.idClients == idClient);
+      int index = listClient.indexWhere((element) => element.idClients == idClient);
 
       if (index != -1) listClient[index] = data;
 
-      index = listClientfilter
-          .indexWhere((element) => element.idClients == idClient);
+      index = listClientfilter.indexWhere((element) => element.idClients == idClient);
       if (index != -1) listClientfilter[index] = data;
 
-      index = listClientAccept
-          .indexWhere((element) => element.idClients == idClient);
+      index = listClientAccept.indexWhere((element) => element.idClients == idClient);
       if (index != -1) listClientAccept[index] = data;
 
       // get_byIdClient(idClient.toString());
@@ -284,8 +261,7 @@ class ClientProvider extends ChangeNotifier {
         idClient: idClient,
       );
 
-      int index = listClientAprroveTransfer
-          .indexWhere((element) => element.idClients == idClient);
+      int index = listClientAprroveTransfer.indexWhere((element) => element.idClients == idClient);
       listClientAprroveTransfer.removeAt(index);
     } catch (e) {
       log("error in approveRefuseTransferClient => ${e}");
@@ -296,17 +272,14 @@ class ClientProvider extends ChangeNotifier {
     return true;
   }
 
-  Future<void> searchmarket(
-      String productName, PrivilegesCubit privilegeCubit) async {
+  Future<void> searchmarket(String productName, PrivilegesCubit privilegeCubit) async {
     List<ClientModel> clientlistsearch = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
 
     if (productName.isNotEmpty) {
       listClientMarketing.forEach((element) {
-        if (element.nameEnterprise!.contains(searchKey, 0) ||
-            element.nameClient!.contains(searchKey, 0) ||
-            element.mobile!.contains(searchKey, 0))
+        if (element.nameEnterprise!.contains(searchKey, 0) || element.nameClient!.contains(searchKey, 0) || element.mobile!.contains(searchKey, 0))
           clientlistsearch.add(element);
       });
       listClientMarketing = clientlistsearch;
@@ -319,7 +292,7 @@ class ClientProvider extends ChangeNotifier {
 
   Status tagStatus = Status.init;
 
-  Future<ClientModel> setTagClient() async {
+  Future<ClientModel> setTagClient(String? idClient) async {
     tagStatus = Status.loading;
     notifyListeners();
 
@@ -331,9 +304,7 @@ class ClientProvider extends ChangeNotifier {
 
     try {
       await Api().post(
-        url: EndPoints.baseUrls.url +
-            'clientTag',
-        body: {"tag": (client.tag == true ? "1" : "0")},
+        url: EndPoints.baseUrls.urlLaravel + 'clientTag/$idClient',
       );
 
       tagStatus = Status.loaded;
@@ -357,67 +328,50 @@ class ClientProvider extends ChangeNotifier {
   }
 
   onUpdateListsMarketing(ClientModel clientModel) {
-    bool isExist =
-        listClient.any((element) => element.idClients == clientModel.idClients);
+    bool isExist = listClient.any((element) => element.idClients == clientModel.idClients);
     if (!isExist) {
       listClient.insert(0, clientModel);
     } else {
-      listClient = listClient
-          .map((e) => e.idClients == clientModel.idClients ? clientModel : e)
-          .toList();
+      listClient = listClient.map((e) => e.idClients == clientModel.idClients ? clientModel : e).toList();
     }
 
-    isExist = listClientfilter
-        .any((element) => element.idClients == clientModel.idClients);
+    isExist = listClientfilter.any((element) => element.idClients == clientModel.idClients);
     if (!isExist) {
       listClientfilter.insert(0, clientModel);
     } else {
-      listClientfilter = listClientfilter
-          .map((e) => e.idClients == clientModel.idClients ? clientModel : e)
-          .toList();
+      listClientfilter = listClientfilter.map((e) => e.idClients == clientModel.idClients ? clientModel : e).toList();
     }
 
-    isExist = listClientAccept
-        .any((element) => element.idClients == clientModel.idClients);
+    isExist = listClientAccept.any((element) => element.idClients == clientModel.idClients);
     if (!isExist) {
       listClientAccept.insert(0, clientModel);
     } else {
-      listClientAccept = listClientAccept
-          .map((e) => e.idClients == clientModel.idClients ? clientModel : e)
-          .toList();
+      listClientAccept = listClientAccept.map((e) => e.idClients == clientModel.idClients ? clientModel : e).toList();
     }
 
-    isExist = listClientMarketing
-        .any((element) => element.idClients == clientModel.idClients);
+    isExist = listClientMarketing.any((element) => element.idClients == clientModel.idClients);
     if (!isExist) {
       if (clientModel.ismarketing == '1') {
         listClientMarketing.insert(0, clientModel);
       }
     } else {
       if (clientModel.ismarketing == '1') {
-        listClientMarketing = listClientMarketing
-            .map((e) => e.idClients == clientModel.idClients ? clientModel : e)
-            .toList();
+        listClientMarketing = listClientMarketing.map((e) => e.idClients == clientModel.idClients ? clientModel : e).toList();
       } else {
-        listClientMarketing
-            .removeWhere((e) => e.idClients == clientModel.idClients);
+        listClientMarketing.removeWhere((e) => e.idClients == clientModel.idClients);
       }
     }
 
-    isExist = listClientMarketingFilter
-        .any((element) => element.idClients == clientModel.idClients);
+    isExist = listClientMarketingFilter.any((element) => element.idClients == clientModel.idClients);
     if (!isExist) {
       if (clientModel.ismarketing == '1') {
         listClientMarketingFilter.insert(0, clientModel);
       }
     } else {
       if (clientModel.ismarketing == '1') {
-        listClientMarketingFilter = listClientMarketingFilter
-            .map((e) => e.idClients == clientModel.idClients ? clientModel : e)
-            .toList();
+        listClientMarketingFilter = listClientMarketingFilter.map((e) => e.idClients == clientModel.idClients ? clientModel : e).toList();
       } else {
-        listClientMarketingFilter
-            .removeWhere((e) => e.idClients == clientModel.idClients);
+        listClientMarketingFilter.removeWhere((e) => e.idClients == clientModel.idClients);
       }
     }
 

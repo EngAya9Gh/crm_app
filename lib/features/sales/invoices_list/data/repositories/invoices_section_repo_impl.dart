@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/export_invoices_to_pdf_usecase.dart';
 import 'package:crm_smart/features/sales/invoices_list/domain/use_cases/get_invoice_by_id_usecase.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:dartz/dartz.dart';
@@ -32,13 +33,11 @@ class InvoicesTabRepoImpl implements InvoicesSectionRepo {
   }
 
   @override
-  Future<Either<String, List<UserModel>>> getAllUsers(
-      GetAllUsersParams params) async {
+  Future<Either<String, List<UserModel>>> getAllUsers(GetAllUsersParams params) async {
     try {
       final data = await _dataSource.getAllUsers(params);
 
-      List<UserModel> usersList =
-          List<UserModel>.from(data.map((e) => UserModel.fromJson(e)));
+      List<UserModel> usersList = List<UserModel>.from(data.map((e) => UserModel.fromJson(e)));
 
       return Right(usersList);
     } catch (e) {
@@ -48,8 +47,7 @@ class InvoicesTabRepoImpl implements InvoicesSectionRepo {
   }
 
   @override
-  Future<Either<String, PaginationResponseWrapper>> getInvoiceById(
-      GetInvoiceByIdParams params) async {
+  Future<Either<String, PaginationResponseWrapper>> getInvoiceById(GetInvoiceByIdParams params) async {
     try {
       final data = await _dataSource.getInvoiceById(params);
       return Right(data.copyWith(data: InvoiceModel.fromJson(data.data)));
@@ -57,5 +55,10 @@ class InvoicesTabRepoImpl implements InvoicesSectionRepo {
       debugPrint("error in getInvoiceById in repo => $e");
       return Left(e.toString());
     }
+  }
+
+  @override
+  Future<Either<String, PaginationResponseWrapper>> exportToPdf(ExportInvoiceToPdfParams params) {
+    return _dataSource.exportToPdf(params);
   }
 }

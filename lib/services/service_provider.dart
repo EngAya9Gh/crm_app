@@ -34,7 +34,9 @@ import '../features/common/client_profile/logs_tab/presentation/manager/client_l
 import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../features/common/regions/presentation/manager/regions_cubit.dart';
 import '../features/common/users_searchable_dropdown/presentation/manager/users_type_cubit.dart';
+import '../features/finance/client_dept/presentation/management/client_dept_bloc.dart';
 import '../features/finance/clients_attachments/presentation/manager/client_attachments_bloc.dart';
+import '../features/finance/verified_client/presentation/manager/verified_client_bloc.dart';
 import '../features/home/presentation/manager/web_home_page_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
@@ -162,12 +164,14 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(
             create: (context) => getIt<PeriodicCommunicationReportsCubit>()),
         BlocProvider(create: (context) => getIt<NotificationsCubit>()),
+        BlocProvider(create: (context) => getIt<ClientDeptBloc>()),
         BlocProvider(create: (context) => getIt<VersionsBloc>()),
         BlocProvider(create: (context) => getIt<RegionsCubit>()),
         BlocProvider(create: (context) => getIt<LevelsCubit>()),
         BlocProvider(create: (context) => getIt<PrivilegesCubit>()),
         BlocProvider(create: (context) => getIt<WithdrawnInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<PackagesOffersBloc>()),
+        BlocProvider(create: (context) => getIt<VerifiedClientBloc>()),
         BlocProvider(
             create: (context) => getIt<ManageWithdrawnInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<DeletedInvoicesCubit>()),

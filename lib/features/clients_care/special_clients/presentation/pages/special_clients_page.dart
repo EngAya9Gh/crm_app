@@ -78,8 +78,7 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                     children: [
                       Expanded(
                         child: CustomSearchWidget(
-                          searchController:
-                              _bloc.pageVariables.searchController,
+                          searchController: _bloc.pageVariables.searchController,
                           onChanged: (value) {
                             _bloc.add(SearchEvent());
                           },
@@ -106,12 +105,16 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         AppText("عدد العملاء"),
-                        AppText(data.length.toString()),
+                        AppText(data.length.toString()+'/'+state.total.toString()),
                       ],
                     ),
                   ),
                   Expanded(
                     child: AppPaginatedList(
+                      onLoadMore: () {
+                        _bloc.add(GetSpecialClientsEvent(page:_bloc.filterEntity.currentPage.value + 1));
+                      },
+                      hasReachedEnd: state.hasReachedMax,
                       items: state.communicationListState.data,
                       itemBuilder: (context, index) {
                         return communicationWidget(
@@ -188,17 +191,18 @@ class _SpecialClientsPageState extends State<SpecialClientsPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppText(
-                  communication.nameRegoin ?? '',
-                  color: Colors.black,
-                  fontFamily: AppFonts.fontFamily1,
-                  textDirection: TextDirection.rtl,
-                  textAlign: TextAlign.start,
+                Expanded(
+                  child: AppText(
+                    communication.nameRegoin ?? '',
+                    color: Colors.black,
+                    fontFamily: AppFonts.fontFamily1,
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.start,
+                  ),
                 ),
                 SizedBox(width: 15),
                 AppText(
-                  intl.DateFormat("yyyy MMM dd hh:mm a", "ar")
-                      .format(communication.dateCreate ?? DateTime.now()),
+                  intl.DateFormat("yyyy MMM dd hh:mm a", "ar").format(communication.dateCreate ?? DateTime.now()),
                   color: AppColors.primaryMain,
                   fontFamily: AppFonts.fontFamily1,
                   textDirection: TextDirection.rtl,

@@ -4,15 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../../../core/services/api/api_services.dart';
 import '../../../../../../core/utils/end_points.dart';
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/result.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../domain/use_cases/verified_invoice_usecase.dart';
+
 @injectable
 class VerifiedInvoicesDatasource {
   final ApiServices api;
 
   VerifiedInvoicesDatasource(this.api);
 
-  Future<Either<String, List<InvoiceModel>>> getVerifiedInvoices(GetInvoicesByPrivilegesParams params) async {
+  Future<ResponseWrapper<List<InvoiceModel>>> getVerifiedInvoices(GetInvoicesByPrivilegesParams params) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
@@ -20,14 +23,14 @@ class VerifiedInvoicesDatasource {
         queryParameters: params.toMap(),
       );
 
-      return Right(List.from((response['message'] as List<dynamic>).map((e) {
-        return InvoiceModel.fromJson(e as Map<String, dynamic>);
-      })));
+      return ResponseWrapper<List<InvoiceModel>>.fromJson(
+          response, (json) => List.from((json as List<dynamic>).map((e) => InvoiceModel.fromJson(e as Map<String, dynamic>))));
     } catch (e) {
       debugPrint("error in verified invoice in repo => $e");
       throw Exception("$e");
     }
   }
+
   Future<Either<String, InvoiceModel>> verifiedStatus(VerifiedInvoiceParams params) async {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);

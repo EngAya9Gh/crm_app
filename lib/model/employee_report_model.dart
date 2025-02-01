@@ -5,6 +5,7 @@ class EmployeeReportModel {
   String? countClient;
   String? name;
   String? salary;
+  String? target;
   String? percentage;
   String? img_image = '';
 
@@ -13,6 +14,7 @@ class EmployeeReportModel {
     this.countClient,
     this.name,
     this.salary,
+    this.target,
     this.percentage,
     this.img_image,
   });
@@ -23,7 +25,8 @@ class EmployeeReportModel {
         countClient: json["countclient"],
         name: json["x"],
         salary: json["salary"],
-        img_image: json['img_image'].toString().trim().isEmpty
+        target: json["target"],
+        img_image:json['img_image']==null?null: json['img_image'].toString().trim().isEmpty
             ? json['img_image']
             : EndPoints.baseUrls.urlImage + json['img_image'],
       );
@@ -40,6 +43,7 @@ class EmployeeReportModel {
     String? countClient,
     String? name,
     String? salary,
+    String? target,
     String? percentage,
   }) {
     return EmployeeReportModel(
@@ -47,6 +51,7 @@ class EmployeeReportModel {
       countClient: countClient ?? this.countClient,
       name: name ?? this.name,
       salary: salary ?? this.salary,
+      target: target ?? this.target,
       percentage: percentage ?? this.percentage,
       img_image: img_image ?? this.img_image,
     );

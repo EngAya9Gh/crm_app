@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/models/event_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,7 @@ class AddEventFormVariablesEntity {
     );
   }
 
-  AddDateInstallParams getAddDateInstallParams({int? force,String? sms}) {
+  AddDateInstallParams getAddDateInstallParams({int? force,String? sms,}) {
     return AddDateInstallParams(
       fkUser: selectedEmployee.value!.id,
       dateClientVisit: prepareDateFromTime(startTimeController.text),

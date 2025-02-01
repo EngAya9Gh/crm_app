@@ -9,6 +9,7 @@ import '../../../../../core/errors/base_app_exception.dart';
 import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/invoiceModel.dart';
+import '../../domain/use_cases/export_invoices_to_pdf_usecase.dart';
 import '../../domain/use_cases/get_all_users_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_invoices_by_privileges_usecase.dart';
@@ -18,9 +19,8 @@ abstract interface class InvoicesTabDataSource {
     GetInvoicesByPrivilegesParams params,
   );
 
-  Future<Either<String, PaginationResponseWrapper>> exportToExcel(
-    GetInvoicesByPrivilegesParams params,
-  );
+  Future<Either<String, PaginationResponseWrapper>> exportToExcel(GetInvoicesByPrivilegesParams params);
+  Future<Either<String, PaginationResponseWrapper>> exportToPdf(ExportInvoiceToPdfParams params);
 
   Future<dynamic> getAllUsers(GetAllUsersParams params);
 
@@ -43,6 +43,7 @@ class InvoicesTabDataSourceImpl implements InvoicesTabDataSource {
         endPoint: EndPoints.invoice.getInvoicesByPrivileges,
         queryParameters: params.toMap(),
       );
+      print("fsdfsafjdkslfjasfkajldsf     ${params.toMap()}");
       final int count = response['count'];
 
       final data = apiDataHandler(response);
@@ -114,5 +115,26 @@ class InvoicesTabDataSourceImpl implements InvoicesTabDataSource {
       debugPrint("error in getInvoiceById in datasource => ${e.message}");
       throw e.message;
     }
+  }
+
+  @override
+  Future<Either<String, PaginationResponseWrapper>> exportToPdf(ExportInvoiceToPdfParams params) async{
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(
+        endPoint: EndPoints.invoice.exportInvoiceToPdf(params.invoiceId),
+        queryParameters: params.toMap(),
+        responseType: ResponseType.bytes,
+      );
+
+      return Right(PaginationResponseWrapper(data: response));
+    } on BaseAppException catch (e) {
+      debugPrint("error in getInvoiceByPrivileges => ${e.message}");
+      return Left(e.message);
+    } catch (e) {
+      debugPrint("error in getInvoiceByPrivileges => $e");
+      return Left(e.toString());
+    }
+
   }
 }

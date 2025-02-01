@@ -59,14 +59,13 @@ class _WebVerifiedInvoicesPageState extends State<WebVerifiedInvoicesPage> {
     return BlocProvider(
       create: (context) => _bloc,
       child: AppScaffold(
-        appBar: CustomAppBar(title: 'فواتير بحاجة توثيق'),
+        appBar: CustomAppBar(title: 'فواتير للتوثيق'),
         body: Directionality(
           textDirection: myui.TextDirection.rtl,
           child: Column(
             children: [
               SizedBox(height: 10),
               _buildSearchAndFilterRow(),
-              SizedBox(height: 10),
               BlocBuilder<VerifiedInvoiceBloc, VerifiedInvoiceState>(
                 bloc: _bloc,
                 builder: (context, state) {

@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -57,6 +57,9 @@ class _BaseUrls {
   late final String urlFileLogo;
   late final String laravelFilesUrl;
   late final String urlWebPage;
+  late final String urlTrainingMulti;
+  late final String urlTrainingForm;
+  late final String urlTrainingPlan;
 
   void init() {
     if (EndPoints.appMode.isProduction) {
@@ -67,6 +70,9 @@ class _BaseUrls {
       urlFileLogo = 'https://smartcrm.ws/crm/api/imagesApp/logoclient/';
       laravelFilesUrl = 'https://new.smartcrm.ws/storage/';
       urlWebPage = 'https://new.smartcrm.ws/';
+      urlTrainingMulti = 'http://new.smartcrm.ws/training-multi-session';
+      urlTrainingForm = 'http://new.smartcrm.ws/training-form';
+      urlTrainingPlan = 'http://new.smartcrm.ws/training-plans';
     } else {
       url = 'https://smartcrm.ws/test/api/';
       urlLaravel = 'https://test.smartcrm.ws/api/';
@@ -75,6 +81,9 @@ class _BaseUrls {
       urlFileLogo = 'https://smartcrm.ws/test/api/imagesApp/logoclient/';
       laravelFilesUrl = 'https://test.smartcrm.ws/storage/';
       urlWebPage = 'https://test.smartcrm.ws/';
+      urlTrainingMulti = 'http://test.smartcrm.ws/training-multi-session';
+      urlTrainingForm = 'http://test.smartcrm.ws/training-form';
+      urlTrainingPlan = 'http://test.smartcrm.ws/training-plans';
     }
   }
 }
@@ -101,6 +110,7 @@ class _Users {
 
   String updateUser(String idUser) => 'users/$idUser/edit';
   final allUsers = 'users/getUser.php';
+  final getAllUsers = 'users/all-users';
   final getCurrentUser = 'GetCurrentUser';
   final getLevelsForUser = 'level-for-user';
   final getManagesForUser = 'admin-for-user';
@@ -215,7 +225,7 @@ class _Client {
   final addRejectReasons = "reasons-reject";
 
   String editRejectReasons(int id) => "reasons-reject/$id/edit";
-  final distinctiveClient = "star_client/get_client_star.php";
+  final distinctiveClient = "tagClients";
   final transferClient = "transferClient/";
   final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
   final String getTransferClientsWithPrivileges = "getTransferClientsWithPrivileges";
@@ -326,6 +336,7 @@ class _Invoice {
 
   // ?type_seller=1&fk_regoin_invoice=11&TypeReadyClient&from&to&search_query&fk_agent&participate_fk&fk_idUser
   final String getInvoicesByPrivileges = 'getInvoicesByPrivilages';
+  String exportInvoiceToPdf(String id) => 'exportInvoice/$id';
 
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
 
@@ -533,6 +544,11 @@ class _Finance {
   final String getVerifiedInvoice = 'verifiedInvoices';
 
   String deportInvoice(String id) => 'deportInvoice/$id';
+  final String getVerifiedClient = 'verifiedClients';
+
+  String deportClient(String id) => 'deportClient/$id';
+  final String getClientDept = 'clientsDept';
+  String reportClientDept(String id) => 'clientPayoutReport/$id';
 }
 
 class _Offers {

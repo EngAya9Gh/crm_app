@@ -106,9 +106,9 @@ class NotificationService {
           ElegantNotification(
             height: 70,
             title: AppText(
-              "New version",
+              message.notification?.title,
             ),
-            description: AppText("A new version is available to you please update."),
+            description: AppText(message.notification?.title),
             icon: Icon(
               Icons.notifications_active_sharp,
               color: Colors.green,
@@ -122,7 +122,7 @@ class NotificationService {
           flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             message.notification?.title,
-            message.notification?.body,
+            message.notification?.title,
             NotificationDetails(
               iOS: DarwinNotificationDetails(
                 presentAlert: true,

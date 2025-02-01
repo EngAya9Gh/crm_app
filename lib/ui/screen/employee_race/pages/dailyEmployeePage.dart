@@ -24,10 +24,11 @@ class DailyEmployeePage extends StatefulWidget {
   State<DailyEmployeePage> createState() => _DailyEmployeePageState();
 }
 
-class _DailyEmployeePageState extends State<DailyEmployeePage>
-    with StateViewModelMixin<DailyEmployeePage, EmployeeRaceViewmodel> {
-  Future<void> _selectDateFrom(BuildContext context, DateTime currentDate,
-      DateTime? _selectedDateFrom, DateTime? _selectedDateTo) async {
+class _DailyEmployeePageState extends State<DailyEmployeePage> with StateViewModelMixin<DailyEmployeePage, EmployeeRaceViewmodel> {
+  final TextEditingController fromDate = TextEditingController();
+  final TextEditingController toDate = TextEditingController();
+
+  Future<void> _selectDateFrom(BuildContext context, DateTime currentDate, DateTime? _selectedDateFrom, DateTime? _selectedDateTo) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       currentDate: currentDate,
@@ -37,8 +38,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
     );
     if (pickedDate != null) {
       if (_selectedDateTo != null) {
-        if (_selectedDateTo.isBefore(pickedDate) ||
-            _selectedDateFrom!.isAtSameMomentAs(pickedDate)) {
+        if (_selectedDateTo.isBefore(pickedDate) || _selectedDateFrom!.isAtSameMomentAs(pickedDate)) {
           AppSnackbar.showSnakeBar(
             "اختر تاريخ قبل ${intl.DateFormat("yyyy dd MMM").format(_selectedDateTo)}",
             color: ToastColorsEnum.error,
@@ -56,23 +56,23 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
     DateTime? _selectedDateFrom,
     DateTime? _selectedDateTo,
   ) {
-    viewmodel.onChangeFrom(pickedDate);
-    setState(() {
-      _selectedDateFrom = pickedDate;
-    });
+    print('/////////////////////////////////////////');
+    print(pickedDate);
+    print('/////////////////////////////////////////');
+    // viewmodel.onChangeFrom(pickedDate);
+    // setState(() {
+    //   _selectedDateFrom = pickedDate;
+    // });
 
     var lastDay = DTU.lastDayOfMonth(_selectedDateFrom!);
     var firstDay = DTU.firstDayOfMonth(_selectedDateFrom!);
 
-    if ((_selectedDateTo?.isAfter(lastDay) ?? false) ||
-        (_selectedDateTo?.isBefore(firstDay) ?? false)) {
+    if ((_selectedDateTo?.isAfter(lastDay) ?? false) || (_selectedDateTo?.isBefore(firstDay) ?? false)) {
       viewmodel.onChangeTo(null);
     }
   }
 
-  Future<void> _selectDateTo(BuildContext context, DateTime currentDate,
-      DateTime firstDate, DateTime lastDate,
-      {DateTime? selectedDateFrom}) async {
+  Future<void> _selectDateTo(BuildContext context, DateTime currentDate, DateTime firstDate, DateTime lastDate, {DateTime? selectedDateFrom}) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       currentDate: currentDate,
@@ -81,8 +81,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
       lastDate: lastDate,
     );
     if (pickedDate != null) {
-      if (selectedDateFrom!.isAfter(pickedDate) ||
-          selectedDateFrom.isAtSameMomentAs(pickedDate)) {
+      if (selectedDateFrom!.isAfter(pickedDate) || selectedDateFrom.isAtSameMomentAs(pickedDate)) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: AppText(
             "اختر تاريخ بعد ${intl.DateFormat("yyyy dd MMM").format(selectedDateFrom)}",
@@ -120,12 +119,17 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                       child: CustomDateTimePicker(
                         hintText: 'from',
                         dateTimeType: DateTimeEnum.date,
-                        dateTimeController: TextEditingController(),
-                        onDateChange: (dateTime, formattedDate) => _onChange(
-                          dateTime,
-                          _selectedDateFrom,
-                          _selectedDateTo,
-                        ),
+                        dateTimeController: fromDate,
+                        onDateChange: (dateTime, formattedDate) {
+                          print(dateTime);
+                          if (_selectedDateFrom != null && dateTime.isAtSameMomentAs(_selectedDateFrom)) return;
+                          viewmodel.onChangeFrom(dateTime);
+                          _onChange(
+                            dateTime,
+                            _selectedDateFrom,
+                            _selectedDateTo,
+                          );
+                        },
                         style2: true,
                       ),
                     ),
@@ -137,28 +141,23 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                       child: CustomDateTimePicker(
                         hintText: 'to',
                         dateTimeType: DateTimeEnum.date,
-                        dateTimeController: TextEditingController(),
+                        dateTimeController: toDate,
                         onDateChange: (dateTime, formattedDate) {
+                          if (_selectedDateTo != null && dateTime.isAtSameMomentAs(_selectedDateTo)) return;
                           if (_selectedDateFrom == null) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("اخنر From أولاً.",
-                                  textDirection: TextDirection.rtl),
+                              content: Text("اخنر From أولاً.", textDirection: TextDirection.rtl),
                               backgroundColor: Colors.red,
                             ));
                             return;
                           }
-
+                          viewmodel.onChangeTo(dateTime);
                           var lastDay = DTU.lastDayOfMonth(_selectedDateFrom);
                           var firstDay = DTU.firstDayOfMonth(_selectedDateFrom);
-
-                          _selectDateTo(
-                              context,
-                              (_selectedDateTo?.isAfter(lastDay) ?? false)
-                                  ? lastDay
-                                  : _selectedDateTo ?? lastDay,
-                              firstDay,
-                              lastDay,
-                              selectedDateFrom: _selectedDateFrom);
+                          _onChange(dateTime, _selectedDateFrom, _selectedDateTo);
+                          // _selectDateTo(
+                          //     context, (_selectedDateTo?.isAfter(lastDay) ?? false) ? lastDay : _selectedDateTo ?? lastDay, firstDay, lastDay,
+                          //     selectedDateFrom: _selectedDateFrom);
                         },
                         style2: true,
                       ),
@@ -169,9 +168,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
               5.height,
               AppElevatedButton(
                 text: 'تحديث',
-                onPressed: _selectedDateFrom == null || _selectedDateTo == null
-                    ? null
-                    : value.getEmployeeReport,
+                onPressed: _selectedDateFrom == null || _selectedDateTo == null ? null : value.getEmployeeReport,
               ),
               10.height,
               if (employeeDayReportState.isInit)
@@ -179,15 +176,11 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
               else if (employeeDayReportState.isLoading)
                 AppLoader()
               else if (employeeDayReportState.isFailure)
-                AppErrorWidget(
-                    message: 'حدث خطأ أثناء تحميل البيانات',
-                    onPressed: value.getEmployeeReport)
+                AppErrorWidget(message: 'حدث خطأ أثناء تحميل البيانات', onPressed: value.getEmployeeReport)
               else
                 list.isEmpty
                     ? Expanded(
-                        child: Center(
-                            heightFactor: 20,
-                            child: AppText("لايوجد بيانات لهذا التاريخ!")),
+                        child: Center(heightFactor: 20, child: AppText("لايوجد بيانات لهذا التاريخ!")),
                       )
                     : Expanded(child: EmployeeList(list: list)),
             ],

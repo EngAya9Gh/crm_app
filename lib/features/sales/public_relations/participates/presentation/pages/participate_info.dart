@@ -30,8 +30,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ParticipateListBloc, ParticipateListState>(
-        builder: (context, state) {
+    return BlocBuilder<ParticipateListBloc, ParticipateListState>(builder: (context, state) {
       return Padding(
         padding: const EdgeInsets.only(
           right: 10,
@@ -48,13 +47,10 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                       height: 30,
                       width: 30,
                       //color: AppColors.kMainColor,
-                      decoration: BoxDecoration(
-                          color: AppColors.primaryMain,
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      decoration: BoxDecoration(color: AppColors.primaryMain, borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: IconButton(
                         onPressed: () async {
-                          final phoneNo =
-                              state.currentPaticipate!.mobile_participate;
+                          final phoneNo = state.currentPaticipate!.mobile_participate;
                           if (kIsWeb) {
                             HelperFunctions.copyToClipboard(phoneNo);
 
@@ -71,8 +67,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                     ),
                     AppTextButton(
                       onPressed: () async {
-                        final phoneNo =
-                            state.currentPaticipate!.mobile_participate;
+                        final phoneNo = state.currentPaticipate!.mobile_participate;
                         if (kIsWeb) {
                           HelperFunctions.copyToClipboard(phoneNo);
 
@@ -88,32 +83,24 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                   ],
                 ),
                 10.verticalSpace,
-                CardRow(
-                    title: "الاسم",
-                    value: state.currentPaticipate!.name_participate),
-                CardRow(
-                    title: "اسم البنك",
-                    value: state.currentPaticipate!.namebank_participate),
-                CardRow(
-                    title: "رقم البنك",
-                    value: state.currentPaticipate!.numberbank_participate),
-                CardRow(
-                  title: "الموظف الذي أضاف",
-                  value: state.currentPaticipate!.nameUserAdd,
-                ),
+                CardRow(title: "الاسم", value: state.currentPaticipate!.name_participate),
+                CardRow(title: "اسم البنك", value: state.currentPaticipate!.namebank_participate),
+                CardRow(title: "رقم البنك", value: state.currentPaticipate!.numberbank_participate),
+                if (state.currentPaticipate?.nameUserAdd?.isNotEmpty ?? false)
+                  CardRow(
+                    title: "الموظف الذي أضاف",
+                    value: state.currentPaticipate!.nameUserAdd,
+                  ),
                 CardRow(
                   title: "تاريخ الاضافة",
                   value: state.currentPaticipate!.addDate,
                 ),
-                CardRow(
-                    title: "آخر من عدل",
-                    value: state.currentPaticipate!.nameUserUpdate.toString()),
+                CardRow(title: "آخر من عدل", value: state.currentPaticipate!.nameUserUpdate.toString()),
                 CardRow(
                   title: "تاريخ التعديل",
                   value: state.currentPaticipate!.updateDate.toString(),
                 ),
-                CardRow(
-                    title: "المدينة", value: state.currentPaticipate!.nameCity),
+                CardRow(title: "المدينة", value: state.currentPaticipate!.nameCity),
                 CardRow(
                   title: "الحالة",
                   value: state.currentPaticipate!.lastState?.state,
@@ -130,8 +117,7 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                       context: context,
                       builder: (context) => ParticipateStatusDialog(
                         idParticipate: state.currentPaticipate!.id_participate,
-                        stateParticipateModel:
-                            state.currentPaticipate?.lastState,
+                        stateParticipateModel: state.currentPaticipate?.lastState,
                       ),
                     );
                   },

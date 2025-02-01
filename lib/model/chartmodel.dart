@@ -15,6 +15,8 @@ class BarModel {
     required this.countclient,
     required this.y,
     required this.colorval,
+    required this.clientcounterafter,
+    required this.total1,
     // required this.nameUser,
   });
 
@@ -24,6 +26,8 @@ class BarModel {
   int countclient;
   double y;
   Color colorval;
+  String? clientcounterafter;
+  String? total1;
 
   // double probability;
   // int count;
@@ -31,7 +35,8 @@ class BarModel {
   factory BarModel.fromJson(Map<String, dynamic> json) => BarModel(
         colorval: Colors.primaries[Random().nextInt(Colors.primaries.length)],
         x: json["x"] ?? '',
-        // nameUser: json["nameUser"],
+        clientcounterafter: json["clientcountafter"],
+        total1: json["total1"],
         countclient: int.parse(json["countclient"]),
         y: double.parse(json["y"]),
         // probability: json["probability"].toDouble(),

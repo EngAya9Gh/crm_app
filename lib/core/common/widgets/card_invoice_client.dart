@@ -6,6 +6,7 @@ import 'package:crm_smart/features/finance/verified_invoice/presentation/manager
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/mangement/manage_withdrawals/presentation/pages/withdrawn_details_page.dart';
@@ -331,32 +332,44 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ),
                           ],
                         ),
+                        if(widget.transferWidget!=null&&(widget.invoice.dateLastOperation?.isNotEmpty??false))...{
+                          5.height,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AppText(
+                                'تاريخ العملية',
+                                fontFamily: AppFonts.fontFamily1,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                              SizedBox(width: 4),
+                              AppText(
+                                "(${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse(widget.invoice.dateLastOperation!))})",
+                                fontFamily: AppFonts.fontFamily1,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ],
+                          ),
+                        },
                         if (widget.invoice.lastOperation != null && widget.invoice.userDidOperation != null) ...{
                           5.height,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  AppText(
-                                    widget.invoice.lastOperation,
-                                    fontFamily: AppFonts.fontFamily1,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                  SizedBox(width: 4),
-                                  AppText(
-                                    "(${widget.invoice.userDidOperation})",
-                                    fontFamily: AppFonts.fontFamily1,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                ],
+                              Expanded(
+                                   child:  AppText(
+                                      (widget.invoice.lastOperation!)+ "  (${widget.invoice.userDidOperation})",
+                                      fontFamily: AppFonts.fontFamily1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
                               ),
                               widget.transferWidget ?? SizedBox.shrink(),
                             ],
                           ),
-                        }
+                        },
                       ],
                     ),
                   ),

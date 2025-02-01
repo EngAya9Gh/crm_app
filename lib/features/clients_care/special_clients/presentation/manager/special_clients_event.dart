@@ -5,7 +5,8 @@ abstract class SpecialClientsEvent extends Equatable {
 }
 
 class GetSpecialClientsEvent extends SpecialClientsEvent {
-  GetSpecialClientsEvent();
+  final int? page;
+  GetSpecialClientsEvent({this.page});
 
   @override
   List<Object?> get props => [];

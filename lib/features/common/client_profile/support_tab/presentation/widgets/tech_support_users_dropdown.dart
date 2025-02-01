@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/helpers/input_validator.dart';
+import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
+import '../../../../../support/dates_table/data/models/subscribed_client_model.dart';
 
 class TechSupportUsersDropDown extends StatefulWidget {
   const TechSupportUsersDropDown({
@@ -18,7 +20,6 @@ class TechSupportUsersDropDown extends StatefulWidget {
   final bool clear;
   final String? fkUser;
   final Function(UserModel)? onSelectUser;
-
   @override
   State<TechSupportUsersDropDown> createState() =>
       _TechSupportUsersDropDownState();

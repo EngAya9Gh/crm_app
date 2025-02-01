@@ -19,6 +19,7 @@ import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../sales/invoices_list/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
@@ -70,8 +71,11 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                               'get_verified_invoices-debounce',
                               Duration(milliseconds: 500),
                               () => _bloc.add(GetVerifiedInvoiceEvent(
+                                addNewFilter: true,
                                   getInvoicesByPrivilegesParams:
-                                      (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(searchQuery: value))),
+                                      (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter:() =>  value,
+                                        fromPage:true ,
+                                      ))),
                             );
                           },
                         ),
@@ -84,7 +88,7 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                               onFilter: () {
                                 var _blocFilter = context.read<InvoicesSectionCubit>();
                                 var params = (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(
-                                  skip: state.verifiedInvoiceList.data?.length,
+                                  fromPage:true ,
                                   typeSeller: _blocFilter.filtersEntity.filterInvoicesSellerType.value,
                                   participateFk: _blocFilter.prepareUserId(SellerTypeEnum.collaborator),
                                   fkAgent: _blocFilter.prepareUserId(SellerTypeEnum.agent),
@@ -93,10 +97,11 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                                   from: _blocFilter.filtersEntity.dateFromController.text,
                                   to: _blocFilter.filtersEntity.dateToController.text,
                                   typeReadyClient: _blocFilter.filtersEntity.filterClientStatus.value?.toParam,
-                                  invoiceType: () => _blocFilter.filtersEntity.filterInvoiceType.value?.value,
+                                  invoiceType: () => _blocFilter.filtersEntity.filterInvoiceType.value,
                                   hasDevices: _blocFilter.filtersEntity.filterDeviceState.value?.toParam,
                                 );
                                 _bloc.add(GetVerifiedInvoiceEvent(
+                                  addNewFilter: true,
                                   getInvoicesByPrivilegesParams: params,
                                 ));
                                 // InvoicesSectionCubit
@@ -111,6 +116,22 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                   );
                 },
               ),
+              SizedBox(height: 10),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppText('عدد الفواتير: '),
+                      BlocBuilder<VerifiedInvoiceBloc, VerifiedInvoiceState>(
+                        builder: (context, state) {
+                          return ((state.verifiedInvoiceList.data ?? []).isEmpty)
+                              ? SizedBox.shrink()
+                              : AppText('${state.verifiedInvoiceList.data?.length ?? ''}/${state.totalCount}');
+                        },
+                      ),
+                    ],
+                  )),
               SizedBox(height: 10),
               BlocBuilder<VerifiedInvoiceBloc, VerifiedInvoiceState>(
                 builder: (context, state) {
@@ -130,21 +151,37 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                       scrollController: ScrollController(),
                       isLoading: state.verifiedInvoiceList.isLoading(),
                       items: state.verifiedInvoiceList.data ?? [],
-                      // hasReachedEnd: _invoicesSectionCubit.hasReachedEnd,
+                      hasReachedEnd: state.hasReachedMax,
                       onLoadMore: () {
-                        // _invoicesSectionCubit.getInvoicesByPrivileges(isNewFilter: false);
+                        if(state.hasReachedMax){
+                          return;
+                        }
+                        _bloc.add(GetVerifiedInvoiceEvent(
+                          getInvoicesByPrivilegesParams: (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(
+                            fromPage:true ,
+                            page: ((state.getInvoicesByPrivilegesParams?.page??1)+1),
+                          ),
+                        ));
                       },
                       itemBuilder: (context, index) {
                         return CardInvoiceClient(
                           type: 'profile',
                           invoice: state.verifiedInvoiceList.data![index],
-                          transferWidget: AppElevatedButton(
-                            text: 'ترحيل الفاتورة',
-                            onPressed: () {
-                              AppConstants.showAppDialog(
-                                child: InsureTransferInoivceDialog(bloc: _bloc,invoiceModel: state.verifiedInvoiceList.data![index],),
-                              );
-                            },
+                          transferWidget: Column(
+
+                            children: [
+                              AppElevatedButton(
+                                text: 'ترحيل الفاتورة',
+                                onPressed: () {
+                                  AppConstants.showAppDialog(
+                                    child: InsureTransferInoivceDialog(
+                                      bloc: _bloc,
+                                      invoiceModel: state.verifiedInvoiceList.data![index],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         );
                       },

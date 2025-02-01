@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
@@ -24,27 +25,28 @@ class VerifiedInvoiceBloc extends Bloc<VerifiedInvoiceEvent, VerifiedInvoiceStat
     this.getVerifiedInvoiceUseCase,
     this.verifiedInvoiceUseCase,
   ) : super(VerifiedInvoiceState()) {
-    on<GetVerifiedInvoiceEvent>(_onHandleGetVerifiedInvoiceEvent);
+    on<GetVerifiedInvoiceEvent>(_onHandleGetVerifiedInvoiceEvent,transformer: droppable());
     on<ChangeStatusVerifiedInvoiceEvent>(_onHandleChangeStatusVerifiedInvoiceEvent);
   }
 
   FutureOr<void> _onHandleGetVerifiedInvoiceEvent(GetVerifiedInvoiceEvent event, Emitter<VerifiedInvoiceState> emit) async {
-    if (!event.addNewFilter) {
+    if (event.addNewFilter||((event.getInvoicesByPrivilegesParams?.page??1)==1)) {
       emit(state.copyWith(verifiedInvoiceList: BlocStatus.loading()));
     }
     emit(state.copyWith(getInvoicesByPrivilegesParams: () => event.getInvoicesByPrivilegesParams));
     final result = await getVerifiedInvoiceUseCase(event.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams());
-    result.fold(
-      (l) => emit(
-        state.copyWith(verifiedInvoiceList: BlocStatus.fail(error: l)),
+    result.extract(
+
+      (l,e) => emit(
+        state.copyWith(verifiedInvoiceList: BlocStatus.fail(error: e)),
       ),
       (r) {
-        emit(state.copyWith(hasReachedMax: r.isEmpty));
-        if (event.addNewFilter) {
-          emit(state.copyWith(verifiedInvoiceList: BlocStatus.success(data: List.of(state.verifiedInvoiceList.data ?? [])..addAll(r))));
+        emit(state.copyWith(hasReachedMax: r.message?.isEmpty??true));
+        if (!event.addNewFilter) {
+          emit(state.copyWith(verifiedInvoiceList: BlocStatus.success(data: List.of(state.verifiedInvoiceList.data ?? [])..addAll(r.message??[])),totalCount: r.count));
           return;
         }
-        emit(state.copyWith(verifiedInvoiceList: BlocStatus.success(data: r)));
+        emit(state.copyWith(verifiedInvoiceList: BlocStatus.success(data: r.message),totalCount: r.count));
       },
     );
   }
