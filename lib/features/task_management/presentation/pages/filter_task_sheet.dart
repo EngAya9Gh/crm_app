@@ -44,13 +44,13 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
   @override
   void initState() {
     privilegeBloc = getIt<PrivilegesCubit>();
-    final currentUser = context.read<UserProvider>().currentUser;
-    departmentId = privilegeBloc.checkPrivilege('159')
-        ? currentUser.typeAdministration
-        : null;
-    regionId =
-        privilegeBloc.checkPrivilege('162') ? currentUser.fkRegoin : null;
-
+    // final currentUser = context.read<UserProvider>().currentUser;
+    // departmentId = privilegeBloc.checkPrivilege('159')
+    //     ? currentUser.typeAdministration
+    //     : null;
+    // regionId =
+    //     privilegeBloc.checkPrivilege('162') ? currentUser.fkRegoin : null;
+    //
     _taskCubit = getIt<TaskCubit>();
     _usersCubit = context.read<UsersCubit>()
       ..getUsersByDepartmentAndRegion(

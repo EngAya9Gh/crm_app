@@ -69,14 +69,14 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
     _taskCubit = getIt<TaskCubit>();
 
     currentUser = context.read<UserProvider>().currentUser;
-    departmentId = privilegeBloc.checkPrivilege('174')
-        ? '2'
-        : privilegeBloc.checkPrivilege('169')
-            ? null
-            : privilegeBloc.checkPrivilege('168') || privilegeBloc.checkPrivilege('166')
-                ? currentUser.typeAdministration
-                : null;
-    regionId = privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
+    // departmentId = privilegeBloc.checkPrivilege('174')
+    //     ? '2'
+    //     : privilegeBloc.checkPrivilege('169')
+    //         ? null
+    //         : privilegeBloc.checkPrivilege('168') || privilegeBloc.checkPrivilege('166')
+    //             ? currentUser.typeAdministration
+    //             : null;
+    // regionId = privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
 
     _usersCubit = context.read<UsersCubit>()
       ..storeCurrentUser(currentUser)

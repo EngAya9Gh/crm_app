@@ -41,36 +41,36 @@ class TaskManagementListPage extends StatefulWidget {
 class _TaskManagementListPageState extends State<TaskManagementListPage> {
   late TaskCubit _taskCubit;
   late PrivilegesCubit _privilegesCubit;
-  String? regionId;
-  String? departmentId;
-  String? userId;
-
+  // String? regionId;
+  // String? departmentId;
+  // String? userId;
+  //
   @override
   void initState() {
     super.initState();
     _privilegesCubit = context.read<PrivilegesCubit>();
     _taskCubit = getIt<TaskCubit>()..init();
-    final currentUser = AppConstants.currentUser;
-    departmentId = _privilegesCubit.checkPrivilege('161')
-        ? '2'
-        : _privilegesCubit.checkPrivilege('160')
-            ? null
-            : _privilegesCubit.checkPrivilege('159')
-                ? currentUser.typeAdministration
-                : null;
-    regionId = _privilegesCubit.checkPrivilege('161')
-        ? null
-        : _privilegesCubit.checkPrivilege('162')
-            ? currentUser.fkRegoin
-            : null;
+    // final currentUser = AppConstants.currentUser;
+    // departmentId = _privilegesCubit.checkPrivilege('161')
+    //     ? '2'
+    //     : _privilegesCubit.checkPrivilege('160')
+    //         ? null
+    //         : _privilegesCubit.checkPrivilege('159')
+    //             ? currentUser.typeAdministration
+    //             : null;
+    // regionId = _privilegesCubit.checkPrivilege('161')
+    //     ? null
+    //     : _privilegesCubit.checkPrivilege('162')
+    //         ? currentUser.fkRegoin
+    //         : null;
 
-    userId = _privilegesCubit.checkPrivilege('163') ? currentUser.idUser : null;
+    // userId = _privilegesCubit.checkPrivilege('163') ? currentUser.idUser : null;
 
     scheduleMicrotask(() {
-      _taskCubit
-        ..onChangeMyDepartment(departmentId)
-        ..onChangeMyBranch(regionId)
-        ..onChangeMyTasks(userId);
+      // _taskCubit
+      //   ..onChangeMyDepartment(departmentId)
+      //   ..onChangeMyBranch(regionId)
+      //   ..onChangeMyTasks(userId);
 
       _taskCubit.getTasks();
     });

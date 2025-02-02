@@ -33,35 +33,35 @@ class TaskManagementPage extends StatefulWidget {
 class _TaskManagementPageState extends State<TaskManagementPage> {
 
   late TaskCubit _taskCubit;
-  String? regionId;
-  String? departmentId;
-  String? userId;
+  // String? regionId;
+  // String? departmentId;
+  // String? userId;
 
   @override
   void initState() {
     super.initState();
     _taskCubit = getIt<TaskCubit>()..init();
-    final currentUser = AppConstants.currentUser;
-    final privilegesCubit = context.read<PrivilegesCubit>();
+    // final currentUser = AppConstants.currentUser;
+    // final privilegesCubit = context.read<PrivilegesCubit>();
 
-    String? departmentId = privilegesCubit.checkPrivilege('161')
-        ? '2'
-        : privilegesCubit.checkPrivilege('160')
-        ? null
-        : privilegesCubit.checkPrivilege('159')
-        ? currentUser.typeAdministration
-        : null;
-    String? regionId = privilegesCubit.checkPrivilege('161')
-        ? null
-        : privilegesCubit.checkPrivilege('162')
-        ? currentUser.fkRegoin
-        : null;
-    String? userId = privilegesCubit.checkPrivilege('163') ? currentUser.idUser : null;
+    // String? departmentId = privilegesCubit.checkPrivilege('161')
+    //     ? '2'
+    //     : privilegesCubit.checkPrivilege('160')
+    //     ? null
+    //     : privilegesCubit.checkPrivilege('159')
+    //     ? currentUser.typeAdministration
+    //     : null;
+    // String? regionId = privilegesCubit.checkPrivilege('161')
+    //     ? null
+    //     : privilegesCubit.checkPrivilege('162')
+    //     ? currentUser.fkRegoin
+    //     : null;
+    // String? userId = privilegesCubit.checkPrivilege('163') ? currentUser.idUser : null;
 
-    _taskCubit
-      ..onChangeMyDepartment(departmentId)
-      ..onChangeMyBranch(regionId)
-      ..onChangeMyTasks(userId);
+    // _taskCubit
+    //   ..onChangeMyDepartment(departmentId)
+    //   ..onChangeMyBranch(regionId)
+    //   ..onChangeMyTasks(userId);
     // _taskCubit.getTasks();
     _taskCubit.loadInitialData();
 
