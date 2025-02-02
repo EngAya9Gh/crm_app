@@ -34,6 +34,7 @@ class UserModel extends UserEntity {
   String? path = '';
   List<UserRegion>? maincitylist_user;
   List<PrivilegeModel> privilegesList;
+  int? noOfOpenTasks;
 
   // List<> maincitylist_user;
 
@@ -67,6 +68,7 @@ class UserModel extends UserEntity {
     this.path,
     this.maincitylist_user,
     this.privilegesList = const [],
+    this.noOfOpenTasks,
     // this.privilgelist,
   }) : super(
           id: idUser!,
@@ -102,6 +104,7 @@ class UserModel extends UserEntity {
           ? ''
           : EndPoints.baseUrls.urlImage + jsonData['img_thumbnail'],
       path: ApiHelper.handleString(jsonData['path']),
+      noOfOpenTasks: jsonData['no_of_open_tasks'],
       fkuserupdate: ApiHelper.handleString(jsonData['fkuserupdate']),
       updated_at: ApiHelper.handleString(jsonData['updated_at']),
       nameuserupdate: jsonData['nameuserupdate'] != null
@@ -142,6 +145,7 @@ class UserModel extends UserEntity {
     _data['img_image'] = img_image;
     _data['img_thumbnail'] = img_thumbnail;
     _data['path'] = path;
+    _data['no_of_open_tasks'] = noOfOpenTasks;
     _data['maincitylist_user'] =
         maincitylist_user?.map((e) => e.toMap()).toList();
     _data['privilgelist'] = privilegesList.map((e) => e.toJson()).toList();
