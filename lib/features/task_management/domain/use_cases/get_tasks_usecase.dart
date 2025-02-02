@@ -8,8 +8,7 @@ import '../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/task_repository.dart';
 
 @injectable
-class GetTasksUsecase extends BaseUsecase<
-    Either<String, PaginationResponseWrapper>, GetTaskParams> {
+class GetTasksUsecase extends BaseUsecase<Either<String, PaginationResponseWrapper>, GetTaskParams> {
   GetTasksUsecase(this.repository);
 
   final TaskRepository repository;
@@ -65,7 +64,8 @@ class GetTaskParams {
         'skip': ApiHelper.calculatePage(skip: skip, limit: limit),
         'limit': limit,
         'filter': filter,
-        'status': statusName,/*
+        'status': statusName,
+        'mybranch': myBranch, /*
         'assigned_by': assignedBy,
         'assigned_to': assignedTo,
         'date_time_created': dateTimeCreated?.toIso8601String(),

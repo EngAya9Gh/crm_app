@@ -433,6 +433,8 @@ import '../../../features/mangement/manage_users/domain/use_cases/get_manages_fo
     as _i944;
 import '../../../features/mangement/manage_users/domain/use_cases/get_user_by_id_usecase.dart'
     as _i653;
+import '../../../features/mangement/manage_users/domain/use_cases/get_user_select_task_management_usecase.dart'
+    as _i424;
 import '../../../features/mangement/manage_users/domain/use_cases/get_users_usecase.dart'
     as _i18;
 import '../../../features/mangement/manage_users/presentation/manager/users_cubit.dart'
@@ -1176,6 +1178,8 @@ _i174.GetIt $initGetIt(
       _i372.ExceededClientsRepoImpl(gh<_i87.ExceededClientsDatasource>()));
   gh.factory<_i1001.ActionUserUsecase>(
       () => _i1001.ActionUserUsecase(gh<_i586.UsersRepository>()));
+  gh.factory<_i424.GetUserSelectUsecase>(
+      () => _i424.GetUserSelectUsecase(gh<_i586.UsersRepository>()));
   gh.lazySingleton<_i495.ViolationsRepository>(() =>
       _i245.ViolationsRepositoryImpl(
           gh<_i823.ViolationsClientsCareDatasource>()));
@@ -1964,15 +1968,6 @@ _i174.GetIt $initGetIt(
         gh<_i439.GetTasksUsecase>(),
         gh<_i831.ChangeStatusTaskUsecase>(),
       ));
-  gh.factory<_i301.UsersCubit>(() => _i301.UsersCubit(
-        gh<_i18.GetUsersUsecase>(),
-        gh<_i653.GetUserByIdUsecase>(),
-        gh<_i1001.ActionUserUsecase>(),
-        gh<_i526.GetUsersByDepartmentAndRegionUsecase>(),
-        gh<_i944.GetManagesForUserUsecase>(),
-        gh<_i1026.GetLevelsForUserUsecase>(),
-        gh<_i62.GetBranchesForUserUsecase>(),
-      ));
   gh.factory<_i631.ClientsListBloc>(() => _i631.ClientsListBloc(
         gh<_i574.GetClientsWithFilterUserUsecase>(),
         gh<_i143.GetRecommendedClientsUsecase>(),
@@ -1998,6 +1993,16 @@ _i174.GetIt $initGetIt(
   gh.factory<_i815.CompanyCubit>(() => _i815.CompanyCubit(
         gh<_i521.GetCommentUsecase>(),
         gh<_i520.AddCommentUsecase>(),
+      ));
+  gh.factory<_i301.UsersCubit>(() => _i301.UsersCubit(
+        gh<_i18.GetUsersUsecase>(),
+        gh<_i653.GetUserByIdUsecase>(),
+        gh<_i1001.ActionUserUsecase>(),
+        gh<_i526.GetUsersByDepartmentAndRegionUsecase>(),
+        gh<_i944.GetManagesForUserUsecase>(),
+        gh<_i1026.GetLevelsForUserUsecase>(),
+        gh<_i62.GetBranchesForUserUsecase>(),
+        gh<_i424.GetUserSelectUsecase>(),
       ));
   gh.factory<_i546.DatesTableCubit>(() => _i546.DatesTableCubit(
         gh<_i438.GetDateInstallationUsecase>(),

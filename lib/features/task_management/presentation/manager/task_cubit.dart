@@ -11,6 +11,7 @@ import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/usermodel.dart';
+import '../../../clients_care/violations_clienta_care/data/models/management_model.dart';
 import '../../data/models/task_model.dart';
 import '../../data/models/task_status_info.dart';
 import '../../data/models/user_region_department.dart';
@@ -18,6 +19,7 @@ import '../../domain/entities/tasks_page_variables_entity.dart';
 import '../../domain/use_cases/add_task_usecase.dart';
 import '../../domain/use_cases/change_status_usecase.dart';
 import '../../domain/use_cases/get_tasks_usecase.dart';
+import '../../../mangement/manage_users/domain/use_cases/get_user_select_task_management_usecase.dart';
 import '../pages/add_task_page.dart';
 
 part 'task_state.dart';
@@ -47,7 +49,7 @@ class TaskCubit extends Cubit<TaskState> {
     pageVariables = TasksPageVariablesEntity();
   }
 
-  onChangeAssignTo(UserRegionDepartment? userModel) {
+  onChangeAssignTo(ManagementModel? userModel) {
     if (userModel == null) return;
     emit(state.copyWith(selectedAssignTo: userModel));
   }
@@ -196,7 +198,7 @@ class TaskCubit extends Cubit<TaskState> {
             filter: pageVariables.searchController.text,
             statusName: ((state.selectedStatus?.id ?? 1)),
             assignedTo: state.filterAssignTo?.idUser?.toString(),
-            assignedBy: state.filterAssignFrom?.idUser?.toString(),
+            assignedBy: state.filterAssignFrom?.idManage.toString(),
             startDateFrom: state.filterFromDate,
             startDateTo: state.filterToDate,
             departmentFrom: state.departmentFrom?.idMange,
@@ -205,7 +207,7 @@ class TaskCubit extends Cubit<TaskState> {
             regionTo: state.regionTo?.branchId,
             myTasks: state.myTasks,
             myDepartment: state.myDepartment,
-            myBranch: state.myBranch,
+            myBranch: pageVariables.selectedBranchModel.value?.branchId,
           ),
         );
         result.fold(
@@ -243,7 +245,7 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(filterToDate: Nullable.value(date)));
   }
 
-  onChangeFilterAssignFrom(UserRegionDepartment? user) {
+  onChangeFilterAssignFrom(ManagementModel? user) {
     emit(state.copyWith(filterAssignFrom: Nullable.value(user)));
   }
 
@@ -327,6 +329,7 @@ class TaskCubit extends Cubit<TaskState> {
       },
     );
   }
+
 
   onChangeSelectedAssignedToType(AssignedTypeNew? assignedType) {
     emit(state.copyWith(selectedAssignedToType: Nullable.value(assignedType)));

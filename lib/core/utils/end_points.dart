@@ -275,6 +275,7 @@ class _Task {
 
   String changeStatusTask(String id) => 'tasks/$id/change-status';
   final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
+  final getUserSelect = 'tasks/management';
 }
 
 class _Participate {
@@ -491,6 +492,7 @@ class _Management {
   const _Management();
 
   final String getManagement = 'managements';
+  final String tasksManagement = 'tasks/management';
   final String addManagement = 'managements';
 
   String updateManagement(int id) => 'managements/$id/edit';
@@ -534,6 +536,7 @@ class _Branches {
 
   final String getBranches = 'branches';
   final String addBranches = 'branches';
+  final String tasksBranches = 'tasks/branches';
 
   String updateBranches(String id) => 'branches/$id/edit';
 }

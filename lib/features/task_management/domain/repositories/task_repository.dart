@@ -1,3 +1,4 @@
+import 'package:crm_smart/model/usermodel.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/common/helpers/responseWrapper.dart';
@@ -13,9 +14,8 @@ abstract class TaskRepository {
     GetTaskParams params,
   );
 
-  Future<Result<ResponseWrapper<void>>> changeStatusTask(
-      String taskId, Map<String, dynamic> body);
+  Future<Result<ResponseWrapper<void>>> changeStatusTask(String taskId, Map<String, dynamic> body);
 
-  Future<Result<ResponseWrapper<List<UserRegionDepartment>>>>
-      getUsersByTypeAdministrationAndRegion(Map<String, dynamic> body);
+  Future<Result<ResponseWrapper<List<UserRegionDepartment>>>> getUsersByTypeAdministrationAndRegion(Map<String, dynamic> body);
+
 }

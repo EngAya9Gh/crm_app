@@ -7,6 +7,7 @@ class UsersState extends Equatable {
     this.managesStatus = const BlocStatus.initial(),
     this.branchesStatus = const BlocStatus.initial(),
     this.levelsStatus = const BlocStatus.initial(),
+    this.getUserSelected = const BlocStatus.initial(),
     this.actionUserState = const BlocStatus.initial(),
     this.currentUser,
     this.usersByDepartmentAndRegion = const PageState.init(),
@@ -17,16 +18,19 @@ class UsersState extends Equatable {
   final BlocStatus<List<ManageModel>> managesStatus;
   final BlocStatus<List<BranchModel>> branchesStatus;
   final BlocStatus<List<LevelModel>> levelsStatus;
+  final BlocStatus<List<ManagementModel>> getUserSelected;
   final BlocStatus actionUserState;
   final UserModel? currentUser;
   final PageState<List<UserRegionDepartment>> usersByDepartmentAndRegion;
 
   UsersState copyWith({
+    BlocStatus<List<ManagementModel>>? getUserSelected,
     BlocStatus? getUsersStatus,
     BlocStatus? getUserByIdStatus,
     BlocStatus<List<ManageModel>>? managesStatus,
     BlocStatus<List<BranchModel>>? branchesStatus,
     BlocStatus<List<LevelModel>>? levelsStatus,
+    BlocStatus<List<UserModel>>? userSelected,
     BlocStatus? actionUserState,
     UserModel? currentUser,
     PageState<List<UserRegionDepartment>>? usersByDepartmentAndRegion,
@@ -34,13 +38,14 @@ class UsersState extends Equatable {
     return UsersState(
       getUsersStatus: getUsersStatus ?? this.getUsersStatus,
       getUserByIdStatus: getUserByIdStatus ?? this.getUserByIdStatus,
+      getUserSelected: getUserSelected ?? this.getUserSelected,
       managesStatus: managesStatus ?? this.managesStatus,
       branchesStatus: branchesStatus ?? this.branchesStatus,
       levelsStatus: levelsStatus ?? this.levelsStatus,
       actionUserState: actionUserState ?? this.actionUserState,
       currentUser: currentUser ?? this.currentUser,
       usersByDepartmentAndRegion:
-          usersByDepartmentAndRegion ?? this.usersByDepartmentAndRegion,
+      usersByDepartmentAndRegion ?? this.usersByDepartmentAndRegion,
     );
   }
 
@@ -55,6 +60,7 @@ class UsersState extends Equatable {
       actionUserState,
       currentUser,
       usersByDepartmentAndRegion,
+      getUserSelected,
     ];
   }
 }

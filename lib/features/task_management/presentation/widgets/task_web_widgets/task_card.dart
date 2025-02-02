@@ -73,6 +73,13 @@ class TaskCard {
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(height: 8),
+                        if (task.client != null) ...{
+                          Text(
+                            task.client?.nameEnterprise ?? '',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          SizedBox(height: 8),
+                        },
                         _buildInfoRow(
                             (task.assignFromModel == 'region')
                                 ? 'من فرع : '

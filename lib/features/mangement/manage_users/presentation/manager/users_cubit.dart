@@ -10,6 +10,7 @@ import '../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
+import '../../../../clients_care/violations_clienta_care/data/models/management_model.dart';
 import '../../../../task_management/data/models/user_region_department.dart';
 import '../../../../task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart';
 import '../../../manage_privileges/levels/data/models/level_model.dart';
@@ -21,6 +22,7 @@ import '../../domain/use_cases/get_branches_for_user_usecase.dart';
 import '../../domain/use_cases/get_levels_for_user_usecase.dart';
 import '../../domain/use_cases/get_manages_for_user_usecase.dart';
 import '../../domain/use_cases/get_user_by_id_usecase.dart';
+import '../../domain/use_cases/get_user_select_task_management_usecase.dart';
 import '../../domain/use_cases/get_users_usecase.dart';
 
 part 'users_state.dart';
@@ -35,6 +37,7 @@ class UsersCubit extends Cubit<UsersState> {
   final GetManagesForUserUsecase _getManagesForUserUsecase;
   final GetLevelsForUserUsecase _getLevelsForUserUsecase;
   final GetBranchesForUserUsecase _getBranchesForUserUsecase;
+  final GetUserSelectUsecase _getUserSelectUsecase;
 
   UsersCubit(
     this._getAllUsersUsecase,
@@ -44,6 +47,7 @@ class UsersCubit extends Cubit<UsersState> {
     this._getManagesForUserUsecase,
     this._getLevelsForUserUsecase,
     this._getBranchesForUserUsecase,
+    this._getUserSelectUsecase,
   ) : super(UsersState());
 
   FilterUsersEntity filterUsersEntity = FilterUsersEntity();
@@ -214,6 +218,20 @@ class UsersCubit extends Cubit<UsersState> {
         );
 
         onSuccess.call(null);
+      },
+    );
+  }
+  onGetUserSelected() async {
+    emit(state.copyWith(getUserSelected: const BlocStatus.loading()));
+    final response = await _getUserSelectUsecase();
+
+    response.extract(
+          (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(getUserSelected: BlocStatus.fail(error: message)));
+      },
+          (value) {
+        emit(state.copyWith(getUserSelected: BlocStatus.success(data: value.message ?? [])));
       },
     );
   }

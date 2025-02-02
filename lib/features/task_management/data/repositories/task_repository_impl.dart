@@ -1,3 +1,4 @@
+import 'package:crm_smart/model/usermodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -50,4 +51,5 @@ class TaskRepositoryImpl extends TaskRepository {
     return toApiResult(
         () => datasource.getUsersByTypeAdministrationAndRegion(body));
   }
+
 }

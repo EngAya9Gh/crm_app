@@ -7,6 +7,7 @@ import '../../../../../core/common/models/response_wrapper/response_wrapper.dart
 import '../../../../../core/services/api/result.dart';
 import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
+import '../../../../clients_care/violations_clienta_care/data/models/management_model.dart';
 import '../../../manage_privileges/levels/data/models/level_model.dart';
 import '../use_cases/get_branches_for_user_usecase.dart';
 import '../use_cases/get_levels_for_user_usecase.dart';
@@ -40,4 +41,6 @@ abstract class UsersRepository {
 
   Future<Either<String, List<BranchModel>>> getBranchesForUser(
       GetBranchesForUserParams params);
+  Future<Result<ResponseWrapper<List<ManagementModel>>>> getUserSelected();
+
 }

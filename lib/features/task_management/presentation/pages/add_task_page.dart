@@ -43,6 +43,7 @@ import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
+import '../../../clients_care/violations_clienta_care/data/models/management_model.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
@@ -139,7 +140,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _usersCubit = context.read<UsersCubit>()
       ..storeCurrentUser(currentUser)
       ..getUsers()
-      ..getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId);
+      ..onGetUserSelected();
 
     _taskNameController = TextEditingController();
     _startDateController = TextEditingController();
@@ -151,10 +152,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<RegionProvider>()
         ..changeValuser(null, true)
-        ..getRegions();
+        ..getRegionsTasks();
       context.read<manage_provider>()
         ..changevalue(null)
-        ..getManages();
+        ..getManagesTask();
     });
     super.initState();
   }
@@ -210,7 +211,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               assignFrom: AssignedTypeNew.users.name.toString(),
                               assignFromId: currentUser.idUser!,
                               assignTo: state.selectedAssignedToType?.name,
-                              assignToId: state.selectedAssignTo!.idUser.toString(),
+                              assignToId: state.selectedAssignTo!.idManage.toString(),
                               userId: currentUser.idUser!,
                               startDate: state.startDate,
                               file: state.attachmentFile,
@@ -481,13 +482,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (taskState.selectedAssignedToType == AssignedTypeNew.users)
       return BlocBuilder<UsersCubit, UsersState>(
         builder: (context, state) {
-          return CustomSearchableDropDown<UserRegionDepartment>(
+          return CustomSearchableDropDown<ManagementModel>(
             hint: 'الموظف',
-            items: state.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
-            itemAsString: (u) => u!.nameUser!,
+            items: state.getUserSelected.data ?? [],
+            itemAsString: (u) => u!.nameManage!,
             onChanged: _taskCubit.onChangeAssignTo,
             selectedItem: taskState.selectedAssignTo,
-            filterFn: (user, filter) => user.nameUser!.contains(filter),
+            filterFn: (user, filter) => user.nameManage.contains(filter),
             validator: (value) {
               if (taskState.selectedAssignedToType != AssignedToType.employee) {
                 return null;
@@ -509,10 +510,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
         builder: (context, manageList, child) {
           final userDepartment = context.read<UserProvider>().currentUser.typeAdministration;
           final list = getIt<PrivilegesCubit>().checkPrivilege('169')
-              ? manageList.listtext
+              ? manageList.listMangTask
               : getIt<PrivilegesCubit>().checkPrivilege('168') || getIt<PrivilegesCubit>().checkPrivilege('174')
-                  ? manageList.listtext.where((element) => element.idMange == userDepartment).toList()
-                  : manageList.listtext;
+                  ? manageList.listMangTask.where((element) => element.idMange == userDepartment).toList()
+                  : manageList.listMangTask;
 
           return CustomDropDown<ManageModel>(
             hint: 'القسم',
@@ -545,10 +546,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
         builder: (context, cart, child) {
           final user = context.read<UserProvider>().currentUser;
           final list = privilegeBloc.checkPrivilege('169')
-              ? cart.listRegion
+              ? cart.listRegionTaskFilter
               : privilegeBloc.checkPrivilege('167')
-                  ? cart.listRegion.where((element) => element.branchId == user.fkRegoin).toList()
-                  : cart.listRegion;
+                  ? cart.listRegionTaskFilter.where((element) => element.branchId == user.fkRegoin).toList()
+                  : cart.listRegionTaskFilter;
           return CustomDropDown<BranchModel>(
             hint: 'الفرع',
             items: list,

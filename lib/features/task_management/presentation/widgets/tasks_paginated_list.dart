@@ -171,6 +171,13 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                           ),
                         },
                         10.height,
+                        if (task.client != null) ...{
+                          Text(
+                            task.client?.nameEnterprise ?? '',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        10.height,
+                        },
                         Wrap(
                           children: [
                             ((task.assignFrom?.nameRegion == null && task.assignFrom?.nameMange == null && task.assignFrom?.nameUser == null))

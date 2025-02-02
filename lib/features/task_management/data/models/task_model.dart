@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'package:crm_smart/model/usermodel.dart';
 
+import '../../../../core/common/models/client_model.dart';
+
 TaskModel taskModelFromJson(String str) => TaskModel.fromJson(json.decode(str));
 
 String taskModelToJson(TaskModel data) => json.encode(data.toJson());
@@ -19,7 +21,7 @@ class TaskModel {
   final AssignFromOrToModel? assignTo;
   final String? assignToModel;
   final Status? status;
-  final dynamic client;
+  final ClientModel? client;
   final Invoice? invoice;
   final dynamic communicationId;
   final dynamic group;
@@ -72,7 +74,7 @@ class TaskModel {
     AssignFromOrToModel? assignTo,
     String? assignToModel,
     Status? status,
-    dynamic client,
+    ClientModel? client,
     Invoice? invoice,
     dynamic communicationId,
     dynamic group,
@@ -126,7 +128,7 @@ class TaskModel {
         assignTo: json["assign_to"] == null ? null : AssignFromOrToModel.fromJson(json["assign_to"]),
         assignToModel: json["assign_to_model"],
         status: json["status"] == null ? null : Status.fromJson(json["status"]),
-        client: json["client"],
+        client: json["client"]==null?null:ClientModel.fromJson(json["client"]),
         invoice: json["invoice"] == null ? null : Invoice.fromJson(json["invoice"]),
         communicationId: json["communication_id"],
         group: json["group"],

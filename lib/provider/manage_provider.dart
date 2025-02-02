@@ -16,6 +16,7 @@ class manage_provider extends ChangeNotifier {
   }
 
   List<ManageModel> listtext = [];
+  List<ManageModel> listMangTask = [];
 
   // 'مشرف مبيعات',
   // 'موظف مبيعات',
@@ -45,6 +46,23 @@ class manage_provider extends ChangeNotifier {
       if (data['message'] != null) {
         for (int i = 0; i < data['message'].length; i++) {
           listtext.add(ManageModel.fromMap(data['message'][i]));
+        }
+      }
+      isLoading = false;
+    }
+  }
+
+  Future<void> getManagesTask() async {
+    if (listMangTask.isEmpty) {
+      isLoading = true;
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final data = await apiServices.get(
+        endPoint: EndPoints.management.tasksManagement,
+      );
+      if (data['message'] != null) {
+        for (int i = 0; i < data['message'].length; i++) {
+          listMangTask.add(ManageModel.fromMap(data['message'][i]));
         }
       }
       isLoading = false;
