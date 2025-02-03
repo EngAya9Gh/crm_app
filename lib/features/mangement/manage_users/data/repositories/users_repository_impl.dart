@@ -10,7 +10,6 @@ import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/services/api/result.dart';
 import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
-import '../../../../clients_care/violations_clienta_care/data/models/management_model.dart';
 import '../../../manage_privileges/levels/data/models/level_model.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../../domain/use_cases/get_branches_for_user_usecase.dart';
@@ -93,7 +92,7 @@ class UsersRepositoryImpl extends UsersRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<List<ManagementModel>>>> getUserSelected() {
+  Future<Result<ResponseWrapper<List<UserModel>>>> getUserSelected() {
     return toApiResult(() => datasource.getUserSelected());
   }
 }

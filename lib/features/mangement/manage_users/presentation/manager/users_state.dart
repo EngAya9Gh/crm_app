@@ -18,13 +18,13 @@ class UsersState extends Equatable {
   final BlocStatus<List<ManageModel>> managesStatus;
   final BlocStatus<List<BranchModel>> branchesStatus;
   final BlocStatus<List<LevelModel>> levelsStatus;
-  final BlocStatus<List<ManagementModel>> getUserSelected;
+  final BlocStatus<List<UserModel>> getUserSelected;
   final BlocStatus actionUserState;
   final UserModel? currentUser;
   final PageState<List<UserRegionDepartment>> usersByDepartmentAndRegion;
 
   UsersState copyWith({
-    BlocStatus<List<ManagementModel>>? getUserSelected,
+    BlocStatus<List<UserModel>>? getUserSelected,
     BlocStatus? getUsersStatus,
     BlocStatus? getUserByIdStatus,
     BlocStatus<List<ManageModel>>? managesStatus,

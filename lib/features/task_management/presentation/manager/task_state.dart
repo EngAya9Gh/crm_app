@@ -29,7 +29,7 @@ class TaskState {
   });
 
   final BlocStatus getTasksStatus;
-  final ManagementModel? selectedAssignTo;
+  final UserModel? selectedAssignTo;
   final List<UserModel>? selectedParticipant;
   final DateTime? startDate;
   final DateTime? deadLineDate;
@@ -38,7 +38,7 @@ class TaskState {
   final bool? isRecurring;
   final BlocStatus addTaskStatus;
   final TaskStatusType? selectedStatus;
-  final ManagementModel? filterAssignFrom;
+  final UserModel? filterAssignFrom;
   final UserRegionDepartment? filterAssignTo;
   final DateTime? filterFromDate;
   final DateTime? filterToDate;
@@ -54,7 +54,7 @@ class TaskState {
 
   TaskState copyWith({
     BlocStatus? getTasksStatus,
-    ManagementModel? selectedAssignTo,
+    UserModel? selectedAssignTo,
     List<UserModel>? selectedParticipant,
     DateTime? startDate,
     DateTime? deadLineDate,
@@ -65,7 +65,7 @@ class TaskState {
     BlocStatus? changeTaskStatus,
     bool isResetAddTask = false,
     Nullable<TaskStatusType?>? selectedStatus,
-    Nullable<ManagementModel?>? filterAssignFrom,
+    Nullable<UserModel?>? filterAssignFrom,
     Nullable<UserRegionDepartment?>? filterAssignTo,
     Nullable<DateTime?>? filterFromDate,
     Nullable<DateTime?>? filterToDate,

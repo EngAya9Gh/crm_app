@@ -7,12 +7,14 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+
 import '../../../../../core/errors/base_app_exception.dart';
 import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/services/api/api_utils.dart';
 import '../../../../../core/services/api/result.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/usermodel.dart';
+import '../../../../task_management/data/models/user_region_department.dart';
 import '../../domain/use_cases/get_branches_for_user_usecase.dart';
 import '../../domain/use_cases/get_levels_for_user_usecase.dart';
 import '../../domain/use_cases/get_manages_for_user_usecase.dart';
@@ -39,7 +41,7 @@ abstract class UsersDatasource {
 
   Future<PaginationResponseWrapper> getUserById(GetUserByIdParams params);
 
-  Future<ResponseWrapper<List<ManagementModel>>> getUserSelected();
+  Future<ResponseWrapper<List<UserModel>>> getUserSelected();
 }
 
 @LazySingleton(as: UsersDatasource)
@@ -168,15 +170,15 @@ class UsersDatasourceImpl implements UsersDatasource {
     }
   }
 
-  Future<ResponseWrapper<List<ManagementModel>>> getUserSelected() async {
+  Future<ResponseWrapper<List<UserModel>>> getUserSelected() async {
     fun() async {
       var _apiServices = getIt<ApiServices>();
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.get(endPoint: EndPoints.task.getUserSelect);
 
-      return ResponseWrapper<List<ManagementModel>>(
-        data: List.from((response['message'] as List<dynamic>).map((e) => ManagementModel.fromJson(e as Map<String, dynamic>))),
-        message: List.from((response['message']).map((e) => ManagementModel.fromJson(e as Map<String, dynamic>))),
+      return ResponseWrapper<List<UserModel>>(
+        data: List.from((response['message'] as List<dynamic>).map((e) => UserModel.fromJson(e as Map<String, dynamic>))),
+        message: List.from((response['message']).map((e) => UserModel.fromJson(e as Map<String, dynamic>))),
       );
     }
 

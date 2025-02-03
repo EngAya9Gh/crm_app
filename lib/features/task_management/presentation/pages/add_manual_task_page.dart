@@ -257,7 +257,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                                             assignFrom: AssignedTypeNew.users.name.toString(),
                                             assignFromId: currentUser.idUser!,
                                             assignTo: state.selectedAssignedToType?.name,
-                                            assignToId: state.selectedAssignTo!.idManage.toString(),
+                                            assignToId: state.selectedAssignTo!.idUser.toString(),
                                             userId: currentUser.idUser!,
                                             startDate: state.startDate,
                                             file: state.attachmentFile,
@@ -323,15 +323,15 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
     if (taskState.selectedAssignedToType == AssignedTypeNew.users)
       return BlocBuilder<UsersCubit, UsersState>(
         builder: (context, state) {
-          return CustomSearchableDropDown<ManagementModel>(
+          return CustomSearchableDropDown<UserModel>(
             hint: "الموظف",
             items: state.getUserSelected.data ?? [],
-            itemAsString: (u) => u!.nameManage,
+            itemAsString: (u) => u!.nameUser.toString(),
             onChanged: (data) {
               _taskCubit.onChangeAssignTo(data);
             },
             selectedItem: taskState.selectedAssignTo,
-            filterFn: (user, filter) => user.nameManage.contains(filter),
+            filterFn: (user, filter) => user.nameUser!.contains(filter),
             validator: (value) {
               if (taskState.selectedAssignedToType != AssignedToType.employee) {
                 return null;

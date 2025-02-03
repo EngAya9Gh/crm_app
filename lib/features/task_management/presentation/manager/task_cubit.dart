@@ -49,7 +49,7 @@ class TaskCubit extends Cubit<TaskState> {
     pageVariables = TasksPageVariablesEntity();
   }
 
-  onChangeAssignTo(ManagementModel? userModel) {
+  onChangeAssignTo(UserModel? userModel) {
     if (userModel == null) return;
     emit(state.copyWith(selectedAssignTo: userModel));
   }
@@ -198,7 +198,7 @@ class TaskCubit extends Cubit<TaskState> {
             filter: pageVariables.searchController.text,
             statusName: ((state.selectedStatus?.id ?? 1)),
             assignedTo: state.filterAssignTo?.idUser?.toString(),
-            assignedBy: state.filterAssignFrom?.idManage.toString(),
+            assignedBy: state.filterAssignFrom?.idUser.toString(),
             startDateFrom: state.filterFromDate,
             startDateTo: state.filterToDate,
             departmentFrom: state.departmentFrom?.idMange,
@@ -245,7 +245,7 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(filterToDate: Nullable.value(date)));
   }
 
-  onChangeFilterAssignFrom(ManagementModel? user) {
+  onChangeFilterAssignFrom(UserModel? user) {
     emit(state.copyWith(filterAssignFrom: Nullable.value(user)));
   }
 

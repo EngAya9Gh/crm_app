@@ -275,7 +275,7 @@ class _Task {
 
   String changeStatusTask(String id) => 'tasks/$id/change-status';
   final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
-  final getUserSelect = 'tasks/management';
+  final getUserSelect = 'tasks/employees';
 }
 
 class _Participate {

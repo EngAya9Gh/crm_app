@@ -161,51 +161,34 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                             ),
                           ],
                         ),
-                        if (task.description?.isNotEmpty ?? false) ...{
-                          10.height,
-                          Expanded(
-                            child: AppText(
-                              task.description ?? '',
-                              color: context.colorScheme.grey600,
-                            ),
-                          ),
-                        },
-                        10.height,
-                        if (task.client != null) ...{
-                          Text(
-                            task.client?.nameEnterprise ?? '',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        10.height,
-                        },
                         Wrap(
                           children: [
                             ((task.assignFrom?.nameRegion == null && task.assignFrom?.nameMange == null && task.assignFrom?.nameUser == null))
                                 ? SizedBox.shrink()
                                 : Row(
-                                    children: [
-                                      AppText(
-                                        (task.assignFromModel == 'region')
-                                            ? 'من فرع : '
-                                            : (task.assignFromModel == 'managements')
-                                                ? "من قسم : "
-                                                : "من مستخدم : ",
-                                        color: context.colorScheme.grey500,
-                                      ),
-                                      AppText(
-                                        '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
-                                        color: context.colorScheme.grey800,
-                                      ),
-                                    ],
-                                  ),
+                              children: [
+                                AppText(
+                                  (task.assignFromModel == 'region')
+                                      ? 'من فرع : '
+                                      : (task.assignFromModel == 'managements')
+                                      ? "من قسم : "
+                                      : "من مستخدم : ",
+                                  color: context.colorScheme.grey500,
+                                ),
+                                AppText(
+                                  '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
+                                  color: context.colorScheme.grey800,
+                                ),
+                              ],
+                            ),
                             Row(
                               children: [
                                 AppText(
                                   (task.assignToModel == 'region')
-                                      ? 'الى فرع : '
+                                      ? 'إلى فرع : '
                                       : (task.assignToModel == 'managements')
-                                          ? "الى قسم : "
-                                          : "الى مستخدم : ",
+                                      ? "إلى قسم : "
+                                      : "إلى الموظف : ",
                                   color: context.colorScheme.grey500,
                                 ),
                                 AppText(
@@ -216,6 +199,27 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                             ),
                           ],
                         ),
+                        10.height,
+                        if (task.client != null) ...{
+                          Text(
+                            task.client?.nameEnterprise ?? '',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          10.height,
+                        },
+
+                        if (task.description?.isNotEmpty ?? false) ...{
+                          10.height,
+                          Expanded(
+                            child: AppText(
+                              task.description ?? '',
+                              color: context.colorScheme.grey600,
+                            ),
+                          ),
+                        },
+
+
+
                         /*  10.height,
                         Wrap(
                           children: [

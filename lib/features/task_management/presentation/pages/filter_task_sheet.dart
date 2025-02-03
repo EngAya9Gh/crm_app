@@ -269,15 +269,15 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                             Expanded(
                               child: BlocBuilder<UsersCubit, UsersState>(
                                 builder: (context, userState) {
-                                  return CustomSearchableDropDown<ManagementModel>(
+                                  return CustomSearchableDropDown<UserModel>(
                                     hint: 'اسناد من',
                                     items: userState.getUserSelected.data ?? [],
-                                    itemAsString: (u) => u!.nameManage,
+                                    itemAsString: (u) => u!.nameUser.toString(),
                                     onChanged: (data) {
                                       _taskCubit.onChangeFilterAssignFrom(data);
                                     },
                                     selectedItem: state.filterAssignFrom,
-                                    filterFn: (user, filter) => user.nameManage.contains(filter),
+                                    filterFn: (user, filter) => user.nameUser!.contains(filter),
                                   );
                                 },
                               ),
