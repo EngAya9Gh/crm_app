@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.development ;
+  static AppMode appMode = AppMode.production;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -184,6 +184,7 @@ class _Care {
   final String getManagement = "admin-for-user";
   final String getViolationTypes = "violations/types";
   final String getActivitiesTypes = "activities/types";
+
   String communicationsByClient(String id) => "communications/by-client/$id";
 
   String updateActivity(String activityId) => "activities/$activityId/edit";
@@ -265,6 +266,8 @@ class _Client {
   String getClientLogs(String idClient) {
     return "change-log/$idClient";
   }
+
+  String getClientTasks(String idClient) => 'clientTasks/$idClient';
 }
 
 class _Task {
@@ -337,6 +340,7 @@ class _Invoice {
 
   // ?type_seller=1&fk_regoin_invoice=11&TypeReadyClient&from&to&search_query&fk_agent&participate_fk&fk_idUser
   final String getInvoicesByPrivileges = 'getInvoicesByPrivilages';
+
   String exportInvoiceToPdf(String id) => 'exportInvoice/$id';
 
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
@@ -551,6 +555,7 @@ class _Finance {
 
   String deportClient(String id) => 'deportClient/$id';
   final String getClientDept = 'clientsDept';
+
   String reportClientDept(String id) => 'clientPayoutReport/$id';
 }
 

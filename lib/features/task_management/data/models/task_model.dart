@@ -181,6 +181,7 @@ class AssignFromOrToModel {
   final String? nameMange;
   final String? nameRegion;
   final String? nameUser;
+  final String? image;
   final dynamic fkCountry;
 
   AssignFromOrToModel({
@@ -191,6 +192,7 @@ class AssignFromOrToModel {
     this.nameRegion,
     this.nameUser,
     this.fkCountry,
+    this.image,
   });
 
 
@@ -201,7 +203,8 @@ class AssignFromOrToModel {
     String? nameMange,
     String? nameRegion,
     String? nameUser,
-    dynamic? fkCountry,
+    String? image,
+    dynamic fkCountry,
   }) {
     return AssignFromOrToModel(
       idMange: idMange ?? this.idMange,
@@ -211,6 +214,7 @@ class AssignFromOrToModel {
       nameRegion: nameRegion ?? this.nameRegion,
       nameUser: nameUser ?? this.nameUser,
       fkCountry: fkCountry ?? this.fkCountry,
+      image: image ?? this.image,
     );
   }
 
@@ -222,6 +226,7 @@ class AssignFromOrToModel {
       'name_mange': this.nameMange,
       'name_regoin': this.nameRegion,
       'nameUser': this.nameUser,
+      'img_image': this.image,
       'fk_country': this.fkCountry,
     };
   }
@@ -234,6 +239,7 @@ class AssignFromOrToModel {
       nameMange: map['name_mange'] as String?,
       nameRegion: map['name_regoin'] as String?,
       nameUser: map['nameUser'] as String?,
+      image: map['img_image'] as String?,
       fkCountry: map['fk_country'] as dynamic,
     );
   }

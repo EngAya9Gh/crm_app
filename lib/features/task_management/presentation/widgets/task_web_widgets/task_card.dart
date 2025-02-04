@@ -4,6 +4,7 @@ import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:intl/intl.dart' as Intl;
 import '../../../../../core/common/helpers/get_color_by_taskstatus.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/end_points.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../data/models/task_model.dart';
 import '../../manager/task_cubit.dart';
@@ -28,6 +29,7 @@ class TaskCard {
                       PositionedDirectional(
                         child: Icon(
                           task.overDeadline == 0 ? Icons.arrow_upward : Icons.arrow_downward,
+                          size: 40,
                           color: task.overDeadline == 0 ? AppColors.green : AppColors.statusErrorActive,
                         ),
                         bottom: 0,
@@ -39,10 +41,17 @@ class TaskCard {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CircleAvatar(
-                              backgroundColor: getColorForStatus(name: task.title),
-                              child: Text(initials, style: TextStyle(color: Colors.white, fontSize: 12)),
-                              radius: 14,
+                            Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle, border: Border.all(width: 2, color: getColorForStatus(name: task.status?.name ?? ''))),
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    task.assignTo?.image != null ? NetworkImage(EndPoints.baseUrls.laravelFilesUrl + task.assignTo!.image!) : null,
+                                child:task.assignTo?.image==null? Center(
+                                  child: AppText(initials, color: Colors.white, fontSize: 12),
+                                ):null  ,
+                                radius: 14,
+                              ),
                             ),
                             SizedBox(width: 8),
                             Expanded(
@@ -53,48 +62,57 @@ class TaskCard {
                                     task.title ?? "",
                                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                                   ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    task.assignTo?.nameUser ?? '',
-                                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                  8.height,
+                                  if (((task.assignFrom?.nameRegion?.isEmpty ?? true) &&
+                                          (task.assignFrom?.nameMange?.isEmpty ?? true) &&
+                                          (task.assignFrom?.nameUser?.isEmpty ?? true)) &&
+                                      ((task.assignTo?.nameRegion?.isEmpty ?? true) &&
+                                          (task.assignTo?.nameMange?.isEmpty ?? true) &&
+                                          (task.assignTo?.nameUser?.isEmpty ?? true)))
+                                    Row(
+                                      children: [
+                                        AppText(
+                                          (task.assignFromModel == 'region')
+                                              ? 'فرع'
+                                              : (task.assignFromModel == 'managements')
+                                                  ? "قسم"
+                                                  : "مستخدم",
+                                          color: AppColors.grey.shade500,
+                                        ),
+                                        AppText(' --> '),
+                                        // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
+                                        AppText(
+                                          (task.assignFromModel == 'region')
+                                              ? 'فرع'
+                                              : (task.assignFromModel == 'managements')
+                                                  ? "قسم"
+                                                  : "مستخدم",
+                                          color: AppColors.primaryMain,
+                                        ),
+                                      ],
+                                    ),
+                                  _buildInfoRow("${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}",
+                                      ' --> ${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}'),
                                 ],
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 0),
-                        Text(
+                        if (task.client != null) ...{
+                          AppText(
+                            task.client?.nameEnterprise ?? '',
+                            color: AppColors.primaryMain,
+                          ),
+                          SizedBox(height: 8),
+                        },
+                        AppText(
                           task.description ?? '',
-                          style: TextStyle(fontSize: 12),
+                          fontSize: 15.scaleFontSize,
+                          color: AppColors.grey.shade500,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(height: 8),
-                        if (task.client != null) ...{
-                          Text(
-                            task.client?.nameEnterprise ?? '',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          SizedBox(height: 8),
-                        },
-                        _buildInfoRow(
-                            (task.assignFromModel == 'region')
-                                ? 'من فرع : '
-                                : (task.assignFromModel == 'managements')
-                                    ? "من قسم : "
-                                    : "من مستخدم : ",
-                            '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}'),
-                        _buildInfoRow(
-                            (task.assignToModel == 'region')
-                                ? 'الى فرع : '
-                                : (task.assignToModel == 'managements')
-                                    ? "الى قسم : "
-                                    : "الى مستخدم : ",
-                            '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}'),
-                        SizedBox(height: 4),
                         Wrap(
                             spacing: 5,
                             runSpacing: 5,

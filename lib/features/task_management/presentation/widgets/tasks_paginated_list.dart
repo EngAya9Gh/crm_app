@@ -11,6 +11,7 @@ import 'package:intl/intl.dart' as Intl;
 import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/config/theme/theme.dart';
+import '../../../../core/utils/end_points.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/task_cubit.dart';
@@ -56,7 +57,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     );
   }
 
-  InkWell _buildCard(int index, BuildContext context) {
+  Widget _buildCard(int index, BuildContext context) {
     final task = _cubit.pageVariables.allList[index];
     final assignToUserName = task.assignTo!.nameUser;
     final firstList = assignToUserName?.split(' ').firstOrNull;
@@ -75,218 +76,253 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     buffer.writeAll([firstChar, secondChar], '.');
 
     final status = TaskStatusType.values.firstWhereOrNull((element) => element.name == task.status?.name);
-    return InkWell(
-      onTap: status != null && status != TaskStatusType.Evaluated && context.read<PrivilegesCubit>().checkPrivilege('165')
-          ? () {
-              print('object234567890-');
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                barrierLabel: task.id.toString(),
-                builder: (context) => BlocProvider.value(
-                  value: _cubit,
-                  child: ChangeStatusTaskDialog(
-                    status: status,
-                    taskModel: task,
-                    tasksCubit: _cubit,
-                  ),
-                ),
-              );
-            }
-          : null,
-      child: IntrinsicHeight(
-        child: Stack(
-          children: [
-            if (task.status?.name == TaskStatusType.Open.name || task.status?.name == TaskStatusType.receive.name)
-              PositionedDirectional(
-                child: Icon(
-                  task.overDeadline == 0 ? Icons.arrow_upward : Icons.arrow_downward,
-                  color: task.overDeadline == 0 ? AppColors.green : AppColors.statusErrorActive,
-                ),
-                bottom: 0,
-                end: 5,
-              ),
-            Row(
-              children: [
-                5.width,
-                Container(
-                  width: 4,
-                  decoration: BoxDecoration(
-                    color: status?.color,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        10.height,
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: status?.color,
-                              child: Center(
-                                child: AppText(
-                                  buffer.toString(),
-                                  color: context.colorScheme.white,
-                                ),
-                              ),
-                              radius: 22.scaleIconsSize,
-                            ),
-                            10.width,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AppText(
-                                  task.title,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Row(
-                                  children: [
-                                    AppText(
-                                      task.assignFrom?.nameUser ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameRegion,
-                                      color: context.colorScheme.grey500,
-                                    ),
-                                    AppText(' --> '),
-                                    // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
-                                    AppText(
-                                      task.assignFrom?.nameUser ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameRegion,
-                                      color: AppColors.primaryMain,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Wrap(
-                          children: [
-                            ((task.assignFrom?.nameRegion == null && task.assignFrom?.nameMange == null && task.assignFrom?.nameUser == null))
-                                ? SizedBox.shrink()
-                                : Row(
-                              children: [
-                                AppText(
-                                  (task.assignFromModel == 'region')
-                                      ? 'من فرع : '
-                                      : (task.assignFromModel == 'managements')
-                                      ? "من قسم : "
-                                      : "من مستخدم : ",
-                                  color: context.colorScheme.grey500,
-                                ),
-                                AppText(
-                                  '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
-                                  color: context.colorScheme.grey800,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                AppText(
-                                  (task.assignToModel == 'region')
-                                      ? 'إلى فرع : '
-                                      : (task.assignToModel == 'managements')
-                                      ? "إلى قسم : "
-                                      : "إلى الموظف : ",
-                                  color: context.colorScheme.grey500,
-                                ),
-                                AppText(
-                                  '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser}',
-                                  color: context.colorScheme.grey800,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        10.height,
-                        if (task.client != null) ...{
-                          Text(
-                            task.client?.nameEnterprise ?? '',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          10.height,
-                        },
-
-                        if (task.description?.isNotEmpty ?? false) ...{
-                          10.height,
-                          Expanded(
-                            child: AppText(
-                              task.description ?? '',
-                              color: context.colorScheme.grey600,
-                            ),
-                          ),
-                        },
-
-
-
-                        /*  10.height,
-                        Wrap(
-                          children: [
-                            if(task.assignFromModel=='managements')        Row(
-                              children: [
-                                AppText(
-                                  'من قسم: ',
-                                  color: context.colorScheme.grey500,
-                                ),
-                                AppText(
-                                  '${task.assignFrom?.nameMange == '' ? task.assignFromModel : task.assignFrom?.nameMange}',
-                                  color: context.colorScheme.grey800,
-                                ),
-                              ],
-                            ),
-                            if(task.assignToModel=='managements')Row(
-                              children: [
-                                AppText(
-                                  'إلى قسم: ',
-                                  color: context.colorScheme.grey500,
-                                ),
-                                AppText(
-                                  '${task.assignFrom?.nameMange == '' ? task.assignFromModel : task.assignFrom?.nameMange}',
-                                  color: context.colorScheme.grey800,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),*/
-                        10.height,
-                        Wrap(
-                            spacing: 5,
-                            runSpacing: 5,
-                            children: (task.collaborators ?? [])
-                                .map((e) => Tooltip(
-                                      message: e.nameUser,
-                                      child: CircleAvatar(
-                                          radius: 20,
-                                          backgroundColor: AppColors.primaryAltLight,
-                                          child: AppText(e.nameUser?.substring(0, 2).toUpperCase())),
-                                    ))
-                                .toList()),
-                        10.height,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            AppIcon(Icons.date_range_rounded, color: context.colorScheme.grey600),
-                            5.width,
-                            Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: AppText(
-                                Intl.DateFormat('dd MMM hh:mm a').format(task.startDate ?? DateTime.now()),
-                                color: context.colorScheme.grey600,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ),
-                          ],
-                        ),
-                        10.height,
-                      ],
+    return Container(
+      decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadiusDirectional.circular(8)),
+      child: InkWell(
+        onTap: status != null && status != TaskStatusType.Evaluated && context.read<PrivilegesCubit>().checkPrivilege('165')
+            ? () {
+                print('object234567890-');
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  barrierLabel: task.id.toString(),
+                  builder: (context) => BlocProvider.value(
+                    value: _cubit,
+                    child: ChangeStatusTaskDialog(
+                      status: status,
+                      taskModel: task,
+                      tasksCubit: _cubit,
                     ),
                   ),
+                );
+              }
+            : null,
+        child: IntrinsicHeight(
+          child: Stack(
+            children: [
+              if (task.status?.name == TaskStatusType.Open.name || task.status?.name == TaskStatusType.receive.name)
+                PositionedDirectional(
+                  child: Icon(
+                    task.overDeadline == 0 ? Icons.arrow_upward : Icons.arrow_downward,
+                    size: 40,
+                    color: task.overDeadline == 0 ? AppColors.green : AppColors.statusErrorActive,
+                  ),
+                  bottom: 0,
+                  end: 5,
                 ),
-              ],
-            ),
-          ],
+              Row(
+                children: [
+                  5.width,
+                  Container(
+                    width: 4,
+                    decoration: BoxDecoration(
+                      color: status?.color,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          10.height,
+                          Row(
+                            children: [
+                              Container(
+                                decoration: (status?.color != null)
+                                    ? BoxDecoration(shape: BoxShape.circle, border: Border.all(width: 2, color: status!.color))
+                                    : null,
+                                child: CircleAvatar(
+                                  backgroundImage:
+                                      task.assignTo?.image != null ? NetworkImage(EndPoints.baseUrls.laravelFilesUrl + task.assignTo!.image!) : null,
+                                  child: task.assignTo?.image==null?Center(
+                                    child: AppText(
+                                      buffer.toString(),
+                                      color: context.colorScheme.white,
+                                    ),
+                                  ):null,
+                                  radius: 22.scaleIconsSize,
+                                ),
+                              ),
+                              10.width,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppText(
+                                    task.title,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  if (((task.assignFrom?.nameRegion?.isEmpty ?? true) &&
+                                          (task.assignFrom?.nameMange?.isEmpty ?? true) &&
+                                          (task.assignFrom?.nameUser?.isEmpty ?? true)) &&
+                                      ((task.assignTo?.nameRegion?.isEmpty ?? true) &&
+                                          (task.assignTo?.nameMange?.isEmpty ?? true) &&
+                                          (task.assignTo?.nameUser?.isEmpty ?? true)))
+                                    Row(
+                                      children: [
+                                        AppText(
+                                          (task.assignFromModel == 'region')
+                                              ? 'فرع'
+                                              : (task.assignFromModel == 'managements')
+                                                  ? "قسم"
+                                                  : "مستخدم",
+                                          color: context.colorScheme.grey500,
+                                        ),
+                                        AppText(' --> '),
+                                        // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
+                                        AppText(
+                                          (task.assignFromModel == 'region')
+                                              ? 'فرع'
+                                              : (task.assignFromModel == 'managements')
+                                                  ? "قسم"
+                                                  : "مستخدم",
+                                          color: AppColors.primaryMain,
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          // Wrap(
+                          //   children: [
+                          //     ((task.assignFrom?.nameRegion == null && task.assignFrom?.nameMange == null && task.assignFrom?.nameUser == null))
+                          //         ? SizedBox.shrink()
+                          //         : Row(
+                          //       children: [
+                          //         AppText(
+                          //           (task.assignFromModel == 'region')
+                          //               ? 'من فرع : '
+                          //               : (task.assignFromModel == 'managements')
+                          //               ? "من قسم : "
+                          //               : "من مستخدم : ",
+                          //           color: context.colorScheme.grey500,
+                          //         ),
+                          //         AppText(
+                          //           '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
+                          //           color: context.colorScheme.grey800,
+                          //         ),
+                          //       ],
+                          //     ),
+                          //     Row(
+                          //       children: [
+                          //         AppText(
+                          //           (task.assignToModel == 'region')
+                          //               ? 'إلى فرع : '
+                          //               : (task.assignToModel == 'managements')
+                          //               ? "إلى قسم : "
+                          //               : "إلى الموظف : ",
+                          //           color: context.colorScheme.grey500,
+                          //         ),
+                          //         AppText(
+                          //           '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser}',
+                          //           color: context.colorScheme.grey800,
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ],
+                          // ),
+                          Row(
+                            children: [
+                              AppText(
+                                '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
+                                color: context.colorScheme.grey500,
+                              ),
+                              AppText(' --> '),
+                              // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
+                              AppText(
+                                '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser}',
+                                color: AppColors.primaryMain,
+                              ),
+                            ],
+                          ),
+                          if (task.client != null) ...{
+                            AppText(
+                              task.client?.nameEnterprise ?? '',
+                              color: AppColors.primaryMain,
+                            ),
+                            10.height,
+                          },
+
+                          if (task.description?.isNotEmpty ?? false) ...{
+                            Expanded(
+                              child: AppText(
+                                task.description ?? '',
+                                fontSize: 15.scaleFontSize,
+                                color: context.colorScheme.grey600,
+                              ),
+                            ),
+                          },
+
+                          /*  10.height,
+                          Wrap(
+                            children: [
+                              if(task.assignFromModel=='managements')        Row(
+                                children: [
+                                  AppText(
+                                    'من قسم: ',
+                                    color: context.colorScheme.grey500,
+                                  ),
+                                  AppText(
+                                    '${task.assignFrom?.nameMange == '' ? task.assignFromModel : task.assignFrom?.nameMange}',
+                                    color: context.colorScheme.grey800,
+                                  ),
+                                ],
+                              ),
+                              if(task.assignToModel=='managements')Row(
+                                children: [
+                                  AppText(
+                                    'إلى قسم: ',
+                                    color: context.colorScheme.grey500,
+                                  ),
+                                  AppText(
+                                    '${task.assignFrom?.nameMange == '' ? task.assignFromModel : task.assignFrom?.nameMange}',
+                                    color: context.colorScheme.grey800,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),*/
+                          10.height,
+                          Wrap(
+                              spacing: 5,
+                              runSpacing: 5,
+                              children: (task.collaborators ?? [])
+                                  .map((e) => Tooltip(
+                                        message: e.nameUser,
+                                        child: CircleAvatar(
+                                            radius: 20,
+                                            backgroundColor: AppColors.primaryAltLight,
+                                            child: AppText(e.nameUser?.substring(0, 2).toUpperCase())),
+                                      ))
+                                  .toList()),
+                          10.height,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              AppIcon(Icons.date_range_rounded, color: context.colorScheme.grey600),
+                              5.width,
+                              Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: AppText(
+                                  Intl.DateFormat('dd MMM hh:mm a').format(task.startDate ?? DateTime.now()),
+                                  color: context.colorScheme.grey600,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                          10.height,
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
