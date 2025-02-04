@@ -62,6 +62,7 @@ class CardInvoiceClient extends StatefulWidget {
   final bool isFromWithdrawalsInvoicesList;
   final String routeName;
   final Widget? transferWidget;
+  final Widget? commissionWidget;
 
   CardInvoiceClient({
     super.key,
@@ -70,6 +71,7 @@ class CardInvoiceClient extends StatefulWidget {
     this.isFromWithdrawalsInvoicesList = false,
     this.routeName = '',
     this.transferWidget,
+    this.commissionWidget,
   });
 
   @override
@@ -370,6 +372,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ],
                           ),
                         },
+                        widget.commissionWidget??SizedBox.shrink()
                       ],
                     ),
                   ),

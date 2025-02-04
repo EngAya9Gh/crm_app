@@ -90,6 +90,7 @@ class InvoiceModel {
   String? renew2year;
   String? participate_fk;
   String? rate_participate;
+  List<ParticipateInfo>? participateInfo;
   String? type_seller;
   String? fk_agent;
   String? fk_regoin_invoice;
@@ -257,6 +258,7 @@ class InvoiceModel {
     this.lastOperation,
     this.userDidOperation,
     this.dateLastOperation,
+    this.participateInfo,
   });
 
   bool searchString(String query) {
@@ -364,6 +366,7 @@ class InvoiceModel {
         Date_FApprove: ApiHelper.handleString(jsondata['Date_FApprove']),
         renew2year: ApiHelper.handleString(jsondata['renew2year']),
         rate_participate: ApiHelper.handleString(jsondata['rate_participate']),
+        participateInfo: jsondata['participal_info'] == null ? null : (jsondata['participal_info'] as List<dynamic>).map((e)=>ParticipateInfo.fromJson(e)).toList(),
         participate_fk: ApiHelper.handleString(jsondata['participate_fk']),
         fk_agent: ApiHelper.handleString(jsondata['fk_agent']),
         type_seller: ApiHelper.handleString(jsondata['type_seller']),
@@ -958,6 +961,26 @@ class TrainingModel {
     return TrainingModel(
       name: map['name'] as String,
       path: map['link'] as String,
+    );
+  }
+}
+
+class ParticipateInfo {
+  final String? nameParticipate;
+
+  const ParticipateInfo({
+    this.nameParticipate,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name_participate': this.nameParticipate,
+    };
+  }
+
+  factory ParticipateInfo.fromJson(Map<String, dynamic> map) {
+    return ParticipateInfo(
+      nameParticipate: map['name_participate'] as String,
     );
   }
 }

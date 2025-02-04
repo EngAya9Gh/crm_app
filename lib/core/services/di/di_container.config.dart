@@ -353,6 +353,16 @@ import '../../../features/finance/clients_attachments/domain/use_cases/get_attac
     as _i559;
 import '../../../features/finance/clients_attachments/presentation/manager/client_attachments_bloc.dart'
     as _i476;
+import '../../../features/finance/commission_for_collaborators/data/data_sources/commission_collaborators_datasource.dart'
+    as _i262;
+import '../../../features/finance/commission_for_collaborators/data/repositories/commission_collaborators_repo_impl.dart'
+    as _i421;
+import '../../../features/finance/commission_for_collaborators/domain/repositories/commission_collaborators_repo.dart'
+    as _i654;
+import '../../../features/finance/commission_for_collaborators/domain/use_cases/get_commission_collaborators_usecase.dart'
+    as _i290;
+import '../../../features/finance/commission_for_collaborators/presentation/management/commission_collaborators_bloc.dart'
+    as _i685;
 import '../../../features/finance/verified_client/data/data_sources/verified_client_datasource.dart'
     as _i860;
 import '../../../features/finance/verified_client/data/repositories/verified_client_repo_impl.dart'
@@ -1127,6 +1137,8 @@ _i174.GetIt $initGetIt(
       () => _i973.ClientAttachmentsDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i620.ClientDeptDatasource>(
       () => _i620.ClientDeptDatasource(gh<_i124.ApiServices>()));
+  gh.factory<_i262.CommissionForCollaboratorsDatasource>(() =>
+      _i262.CommissionForCollaboratorsDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i860.VerifiedClientsDatasource>(
       () => _i860.VerifiedClientsDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i8.VerifiedInvoicesDatasource>(
@@ -1383,6 +1395,9 @@ _i174.GetIt $initGetIt(
       () => _i23.GetWrongNumbersUsecase(gh<_i833.WrongNumbersRepo>()));
   gh.lazySingleton<_i26.GetClientsAcceptUseCase>(
       () => _i26.GetClientsAcceptUseCase(gh<_i551.ClientsAcceptRepository>()));
+  gh.factory<_i654.CommissionCollaboratorsRepository>(() =>
+      _i421.ClientDeptRepoImpl(
+          gh<_i262.CommissionForCollaboratorsDatasource>()));
   gh.lazySingleton<_i5.GeneralConfigsRepository>(() =>
       _i188.GeneralConfigsRepositoryImpl(gh<_i576.GeneralConfigsDatasource>()));
   gh.lazySingleton<_i620.GetNotificationsUsecase>(
@@ -1437,6 +1452,9 @@ _i174.GetIt $initGetIt(
       () => _i1045.SetDateDoneUsecase(gh<_i843.SupportTabRepo>()));
   gh.lazySingleton<_i896.SetReadyInstallUsecase>(
       () => _i896.SetReadyInstallUsecase(gh<_i843.SupportTabRepo>()));
+  gh.factory<_i290.GetCommissionCollaboratorsUseCase>(() =>
+      _i290.GetCommissionCollaboratorsUseCase(
+          gh<_i654.CommissionCollaboratorsRepository>()));
   gh.lazySingleton<_i780.GetAllUsersUseCase>(
       () => _i780.GetAllUsersUseCase(gh<_i887.InvoicesSectionRepo>()));
   gh.lazySingleton<_i228.ClientsDebtsRepo>(
@@ -1788,6 +1806,9 @@ _i174.GetIt $initGetIt(
   gh.factory<_i583.DelayInstallReportsCubit>(() =>
       _i583.DelayInstallReportsCubit(
           gh<_i767.GetDelayInstallReportsUseCase>()));
+  gh.factory<_i685.CommissionCollaboratorsBloc>(() =>
+      _i685.CommissionCollaboratorsBloc(
+          gh<_i290.GetCommissionCollaboratorsUseCase>()));
   gh.factory<_i149.ClientTaskBloc>(
       () => _i149.ClientTaskBloc(gh<_i613.GetClientTasksUsecase>()));
   gh.factory<_i593.DatesTimelineBloc>(

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../features/finance/client_dept/presentation/pages/client_dept_page.dart';
 import '../../../../features/finance/clients_attachments/presentation/pages/client_attachments_page.dart';
+import '../../../../features/finance/commission_for_collaborators/presentation/pages/commission_collaborators_page.dart';
 import '../../../../features/finance/verified_client/presentation/pages/verified_clients_page.dart';
 import '../../../../features/finance/verified_invoice/presentation/pages/mob_verified_invoices_page.dart';
 import '../../../../features/finance/verified_invoice/presentation/pages/web_verified_invoices_page.dart';
@@ -41,6 +42,11 @@ abstract class FinanceRoutes {
           name: AppRoutesPaths.financeSections.clientTransfer.split('/').last,
           path: AppRoutesPaths.financeSections.clientTransfer,
           builder: (context, state) => VerifiedClientPage(),
+        ),
+        GoRoute(
+          name: AppRoutesPaths.financeSections.commissionCollaborators.split('/').last,
+          path: AppRoutesPaths.financeSections.commissionCollaborators,
+          builder: (context, state) => CommissionCollaboratorsPage(),
         ),
       ],
     );
