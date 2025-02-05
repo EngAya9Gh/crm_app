@@ -33,6 +33,7 @@ class CommissionCollaboratorsBloc extends Bloc<CommissionCollaboratorsEvent, Com
       (l) => emit(state.copyWith(commissionCollaboratorsResponse: BlocStatus.fail(error: l))),
       (r) {
         emit(state.copyWith(hasReachedMax: r.invoiceModel?.isEmpty ?? true, totalCount: r.count));
+        /// if the come form page not first page should add data that come to previous data
         if ((event.params?.page ?? 1) > 1) {
           emit(state.copyWith(
               commissionCollaboratorsResponse: BlocStatus.success(
@@ -41,6 +42,7 @@ class CommissionCollaboratorsBloc extends Bloc<CommissionCollaboratorsEvent, Com
         } else {
           emit(state.copyWith(commissionCollaboratorsResponse: BlocStatus.success(data: r)));
         }
+        ///when get data success return the next page number to send it with coming next api call
         event.onSuccess?.call((event.params?.page ?? 1) + 1);
       },
     );

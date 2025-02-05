@@ -219,6 +219,7 @@ class _Client {
   final updateClient = "updateClient/"; // "client/clientUpdate.php";
   String editClientByTypeClient(String idClient) => "editClientByTypeClient/$idClient";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
+  final transferMultiClient = "transferMultiClient";
   final storeClientCommunication = "communication-details";
 
   String changeClientCommunication(String idClient) => "communication-details/$idClient/edit";

@@ -32,6 +32,7 @@ import '../../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../manager/clients_list_bloc.dart';
+import '../../widgets/assign_clients_to_employee_dialog.dart';
 import '../../widgets/filter_clients_sheet.dart';
 import '../client_add_edit_page.dart';
 import '../client_marketing_report_page.dart';
@@ -90,6 +91,37 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                       children: [
                         AppText('قائمة العملاء', fontWeight: FontWeight.bold),
                         Spacer(),
+                        ValueListenableBuilder(
+                          valueListenable: _clientsBloc.pageVariables.selectedItemsId,
+                          builder: (context, listIds, child) => AnimatedSwitcher(
+                            duration: Duration(milliseconds: 500),
+                            transitionBuilder: (widget, animation) => FadeTransition(
+                              opacity: animation,
+                              child: widget,
+                            ),
+                            child: listIds.isEmpty
+                                ? SizedBox.shrink()
+                                : Container(
+                              child: AppElevatedButton(
+                                text: 'تحويل العملاء المحددين',
+                                onPressed: () async {
+                                  final ValueNotifier<UserModel?> selectedUser = ValueNotifier(null);
+                                  if (listIds.isEmpty) {
+                                    AppSnackbar.showSnakeBar(
+                                      'يجب تحديد عميل واحد على الأقل',
+                                      color: ToastColorsEnum.warning,
+                                    );
+                                    return;
+                                  }
+                                  AppConstants.showAppDialog(
+                                    child: assignClientsToEmployeeDialog(selectedUser: selectedUser, clientsListBloc: _clientsBloc),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 16),
                         if (_privilegeCubit.checkPrivilege('47')) ...[
                           AppElevatedButton(
                             text: "إضافة عميل",
@@ -174,6 +206,7 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                                 _clientsBloc.pageVariables.searchController,
                             onChanged: (value) {
                               _fetchClients(isDebounced: true);
+                              _clientsBloc.pageVariables.selectedItemsId.value=[];
                             },
                           ),
                         ),
@@ -210,48 +243,72 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                                     child: SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
                                       controller: _horizontalScrollController,
-                                      child: DataTable(
-                                        columns: [
-                                          DataColumn(label: AppText('الرقم المرجعي')),
-                                          DataColumn(label: AppText('العميل')),
-                                          DataColumn(label: AppText('المؤسسة')),
-                                          DataColumn(label: AppText('تاريخ الإضافة')),
-                                          DataColumn(label: AppText('نوع العميل')),
-                                          DataColumn(label: AppText('الأولوية')),
+                                      child: ValueListenableBuilder(
+                                        valueListenable: _clientsBloc.pageVariables.selectedItemsId,
+                                        builder:(context, listIds, child) =>  DataTable(
+                                          onSelectAll: (value) {
+                                            if(!context.read<PrivilegesCubit>().checkPrivilege('326')){
+                                              return;
+                                            }
+                                            if(!(value??false)){
+                                              _clientsBloc.pageVariables.selectedItemsId.value=[];
+                                            }else{
+                                              _clientsBloc.pageVariables.selectedItemsId.value=List.of(_clientsBloc.pageVariables.selectedItemsId.value)..addAll(_clientsBloc.pageVariables.allList.map((e) => e.idClients!));
+                                            }
+                                          },
+                                          columns: [
+                                            DataColumn(label: AppText('الرقم المرجعي')),
+                                            DataColumn(label: AppText('العميل')),
+                                            DataColumn(label: AppText('المؤسسة')),
+                                            DataColumn(label: AppText('تاريخ الإضافة')),
+                                            DataColumn(label: AppText('نوع العميل')),
+                                            DataColumn(label: AppText('الأولوية')),
 
-                                        ],
-                                        rows: clients.mapIndexed((index, client) {
-                                          return DataRow(
-                                            onSelectChanged:(_){
-                                              if (!value1) {
-                                                AppNavigator.go(
-                                                  ClientProfile(idClient: client.idClients),
-                                                  name: AppRoutesNames.clientProfile.inClientsList,
-                                                  pathParameters: {
-                                                    'idClient': client.idClients.toString()
-                                                  },
-                                                );
-                                              }
-                                            },
-                                          color: MaterialStateProperty.all(
-                                              index.isOdd ? Colors.grey.shade100 : AppColors.white,
-                                            ),
-                                            cells: [
-                                              DataCell(AppText(client.serialNumber ?? '', textAlign: TextAlign.center)),
-                                              DataCell(AppText(client.nameClient ?? '', textAlign: TextAlign.center)),
-                                              DataCell(AppText(client.nameEnterprise ?? '', textAlign: TextAlign.center)),
-                                              DataCell(AppText(client.dateCreate ?? '', textAlign: TextAlign.center)),
-                                              DataCell(AppText(client.typeClient ?? '', textAlign: TextAlign.center)),
-                                              DataCell(
-                                                AppIcon(
-                                                  Icons.flag,
-                                                  color: client.subscribingIntentionLevel?.color,
-                                                ),
+                                          ],
+                                          rows: clients.mapIndexed((index, client) {
+                                            return DataRow(
+                                              selected:listIds.contains(client.idClients) ,
+                                              onLongPress: () {
+                                                if (!value1) {
+                                                  AppNavigator.go(
+                                                    ClientProfile(idClient: client.idClients),
+                                                    name: AppRoutesNames.clientProfile.inClientsList,
+                                                    pathParameters: {
+                                                      'idClient': client.idClients.toString()
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                              onSelectChanged:(_){
+                                                if(!context.read<PrivilegesCubit>().checkPrivilege('326')){
+                                                  return;
+                                                }
+                                                if(_clientsBloc.pageVariables.selectedItemsId.value.contains(client.idClients)){
+                                                  _clientsBloc.pageVariables.selectedItemsId.value=List.of(_clientsBloc.pageVariables.selectedItemsId.value)..removeWhere((element) => element==client.idClients,);
+                                                }else{
+                                                  _clientsBloc.pageVariables.selectedItemsId.value=List.of(_clientsBloc.pageVariables.selectedItemsId.value)..add(client.idClients!);
+                                                }
+                                              },
+                                            color: MaterialStateProperty.all(
+                                                index.isOdd ? Colors.grey.shade100 : AppColors.white,
                                               ),
+                                              cells: [
+                                                DataCell(AppText(client.serialNumber ?? '', textAlign: TextAlign.center)),
+                                                DataCell(AppText(client.nameClient ?? '', textAlign: TextAlign.center)),
+                                                DataCell(AppText(client.nameEnterprise ?? '', textAlign: TextAlign.center)),
+                                                DataCell(AppText(client.dateCreate ?? '', textAlign: TextAlign.center)),
+                                                DataCell(AppText(client.typeClient ?? '', textAlign: TextAlign.center)),
+                                                DataCell(
+                                                  AppIcon(
+                                                    Icons.flag,
+                                                    color: client.subscribingIntentionLevel?.color,
+                                                  ),
+                                                ),
 
-                                            ],
-                                          );
-                                        }).toList(),
+                                              ],
+                                            );
+                                          }).toList(),
+                                        ),
                                       ),
                                     ),
                                   ),

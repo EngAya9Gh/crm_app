@@ -1,11 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
-import 'package:crm_smart/features/finance/verified_invoice/presentation/manager/verified_invoice_bloc.dart';
-import 'package:crm_smart/features/finance/verified_invoice/presentation/manager/verified_invoice_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 
 import '../../../features/app/presentation/widgets/app_text.dart';
@@ -17,14 +13,10 @@ import '../../../ui/screen/client/client_profile.dart';
 import '../../../ui/screen/invoice/invoiceView.dart';
 import '../../config/navigator/app_routes_names.dart';
 import '../../utils/app_colors.dart';
-import '../../utils/app_constants.dart';
 import '../../utils/app_fonts.dart';
 import '../enums/withdrawal_status_enum.dart';
 import '../helpers/helper_functions.dart';
 import '../helpers/number_formatter.dart';
-import 'app_dialog.dart';
-import 'app_elevated_button.dart';
-import 'app_status_chip.dart';
 
 enum StatusClient { subscriber, withdrawn, unsupported, restrictWithdrawn }
 

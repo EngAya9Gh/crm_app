@@ -1,9 +1,12 @@
+import 'package:crm_smart/features/sales/clients/clients_list/presentation/widgets/assign_clients_to_employee_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../../core/common/helpers/app_snackbar.dart';
+import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../../../core/common/widgets/custom_app_bar.dart';
@@ -16,6 +19,7 @@ import '../../../../../../../core/utils/app_constants.dart';
 import '../../../../../../../core/utils/app_styles.dart';
 import '../../../../../../../model/usermodel.dart';
 import '../../../../../../../view_model/activity_vm.dart';
+import '../../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../../../app/presentation/widgets/app_text.dart';
 import '../../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
@@ -38,11 +42,14 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
   late final PrivilegesCubit _privilegeCubit;
   late final UserModel userModel;
   bool value1 = false;
+  final ValueNotifier<bool> chooseAll = ValueNotifier(false);
 
   @override
   void initState() {
     super.initState();
-    _clientsListBloc = context.read<ClientsListBloc>()..init()..add(GetUsersSales());
+    _clientsListBloc = context.read<ClientsListBloc>()
+      ..init()
+      ..add(GetUsersSales());
     _privilegeCubit = context.read<PrivilegesCubit>();
     userModel = AppConstants.currentUser;
     _clientsListBloc.state.myclient_parm = false;
@@ -53,6 +60,9 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
       context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        await Provider.of<UserProvider>(context, listen: false).getAllUsers();
+      });
     });
   }
 
@@ -68,8 +78,7 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
               textDirection: TextDirection.rtl,
               child: BlocConsumer<ClientsListBloc, ClientsListState>(
                 listenWhen: (previous, current) {
-                  return previous.exportClientsToExcelStatus !=
-                      current.exportClientsToExcelStatus;
+                  return previous.exportClientsToExcelStatus != current.exportClientsToExcelStatus;
                 },
                 listener: (context, state) {
                   if (state.exportClientsToExcelStatus.isFailed()) {
@@ -80,8 +89,7 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                   }
                 },
                 buildWhen: (previous, current) {
-                  return previous.exportClientsToExcelStatus !=
-                      current.exportClientsToExcelStatus;
+                  return previous.exportClientsToExcelStatus != current.exportClientsToExcelStatus;
                 },
                 builder: (context, state) {
                   if (state.exportClientsToExcelStatus.isLoading()) {
@@ -133,6 +141,37 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
             ),
           ],
         ),
+        bottomNavigationBar: ValueListenableBuilder(
+          valueListenable: _clientsListBloc.pageVariables.selectedItemsId,
+          builder: (context, listIds, child) => AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            transitionBuilder: (widget, animation) => FadeTransition(
+              opacity: animation,
+              child: widget,
+            ),
+            child: listIds.isEmpty
+                ? SizedBox.shrink()
+                : Container(
+                    margin: EdgeInsets.symmetric(horizontal: 65.w, vertical: 5),
+                    child: AppElevatedButton(
+                      text: 'تحويل العملاء المحددين',
+                      onPressed: () async {
+                        final ValueNotifier<UserModel?> selectedUser = ValueNotifier(null);
+                        if (listIds.isEmpty) {
+                          AppSnackbar.showSnakeBar(
+                            'يجب تحديد عميل واحد على الأقل',
+                            color: ToastColorsEnum.warning,
+                          );
+                          return;
+                        }
+                        AppConstants.showAppDialog(
+                          child: assignClientsToEmployeeDialog(selectedUser: selectedUser, clientsListBloc: _clientsListBloc),
+                        );
+                      },
+                    ),
+                  ),
+          ),
+        ),
         body: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(
@@ -144,8 +183,7 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                   children: [
                     Expanded(
                       child: CustomSearchWidget(
-                        searchController:
-                            _clientsListBloc.pageVariables.searchController,
+                        searchController: _clientsListBloc.pageVariables.searchController,
                         onChanged: (value) {
                           _fetchClients(isDebounced: true);
                         },
@@ -167,13 +205,12 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                   value: _clientsListBloc.filterEntity.isSwitchOnNotifier.value,
                   onChanged: (value) {
                     value1 = value;
-                    _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
-                        value;
+                    _clientsListBloc.filterEntity.isSwitchOnNotifier.value = value;
                     setState(() {});
 
-                    _clientsListBloc.filterEntity.statusNotifier.value =
-                        value ? ['مشترك'] : [];
+                    _clientsListBloc.filterEntity.statusNotifier.value = value ? ['مشترك'] : [];
                     _fetchClients();
+                    _clientsListBloc.pageVariables.selectedItemsId.value=[];
                   },
                   title: AppText(
                     "انشطة العملاء المشتركين",
@@ -185,13 +222,35 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: ClientsListCount(),
                 ),
+                if(context.read<PrivilegesCubit>().checkPrivilege('326'))Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppText('اختر الكل'),
+                      ValueListenableBuilder(
+                        valueListenable: chooseAll,
+                        builder: (context, value, child) => Checkbox(
+                          value: value,
+                          onChanged: (value) {
+                            chooseAll.value = value ?? false;
+                            if (value ?? false) {
+                              _clientsListBloc.pageVariables.selectedItemsId.value = List.of(_clientsListBloc.pageVariables.selectedItemsId.value)
+                                ..addAll((_clientsListBloc.pageVariables.allList).map((e) => e.idClients!));
+                            } else {
+                              _clientsListBloc.pageVariables.selectedItemsId.value = [];
+                            }
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 5.verticalSpace,
                 Expanded(
                   child: BlocBuilder<ClientsListBloc, ClientsListState>(
                     buildWhen: (previous, current) {
-                      return previous.getAllClientsStatus !=
-                              current.getAllClientsStatus &&
-                          _clientsListBloc.pageVariables.isNewFilter;
+                      return previous.getAllClientsStatus != current.getAllClientsStatus && _clientsListBloc.pageVariables.isNewFilter;
                     },
                     builder: (context, state) {
                       return state.getAllClientsStatus.when(

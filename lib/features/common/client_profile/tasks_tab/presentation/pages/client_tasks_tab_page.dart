@@ -44,6 +44,7 @@ class _ClientTasksTabPageState extends State<ClientTasksTabPage> {
       child: BlocBuilder<ClientTaskBloc, ClientTaskState>(
         builder: (context, state) => state.listClientTasks.when(
           success: (data) {
+            /// grouped data by time create task
             Map<String, List<TaskModel>> groupedItems = groupBy(
               data ?? [],
               (p0) => DateFormat('yyyy MMM').format(p0.createdAt!),
@@ -81,7 +82,6 @@ class _ClientTasksTabPageState extends State<ClientTasksTabPage> {
                         ),
                         indicatorXY: 0.00,
                         indicator: Container(
-                          // color: Colors.blue,
                           height: 150,
                           width: 50,
                           child: GestureDetector(
@@ -114,6 +114,7 @@ class _ClientTasksTabPageState extends State<ClientTasksTabPage> {
                         color: Colors.grey,
                         thickness: 2,
                       ),
+                      ///iterate on list of values and get element at index to take it's list task model
                       startChild: Column(
                         children: groupedItems.values.elementAt(index).map((e) => ClientTaskCard(task: e)).toList(),
                       ),

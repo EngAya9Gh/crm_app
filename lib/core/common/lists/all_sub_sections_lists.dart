@@ -334,6 +334,7 @@ abstract class AllSubSectionsLists {
       subSections: [],
     ),
     SectionModel(
+      privilegeId: "327",
       page: CommissionCollaboratorsPage(),
       title: 'عمولة المشاركين',
       path: AppRoutesPaths.financeSections.clientTransfer,

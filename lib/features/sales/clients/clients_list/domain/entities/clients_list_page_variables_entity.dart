@@ -4,6 +4,7 @@ import '../../../../../../core/common/models/client_model.dart';
 
 class ClientsListPageVariablesEntity {
   List<ClientModel> allList = [];
+  ValueNotifier<List<String>> selectedItemsId = ValueNotifier([]);
   TextEditingController searchController = TextEditingController();
   int totalCount = 0;
   int totalPages = 0;
