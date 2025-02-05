@@ -23,6 +23,7 @@ import '../../domain/use_cases/get_levels_for_user_usecase.dart';
 import '../../domain/use_cases/get_manages_for_user_usecase.dart';
 import '../../domain/use_cases/get_user_by_id_usecase.dart';
 import '../../domain/use_cases/get_user_select_task_management_usecase.dart';
+import '../../domain/use_cases/get_users_all_usecase.dart';
 import '../../domain/use_cases/get_users_usecase.dart';
 
 part 'users_state.dart';
@@ -32,12 +33,12 @@ class UsersCubit extends Cubit<UsersState> {
   final GetUsersUsecase _getAllUsersUsecase;
   final GetUserByIdUsecase _getUserByIdUsecase;
   final ActionUserUsecase _actionUserUsecase;
-  final GetUsersByDepartmentAndRegionUsecase
-      _getUsersByDepartmentAndRegionUsecase;
+  final GetUsersByDepartmentAndRegionUsecase _getUsersByDepartmentAndRegionUsecase;
   final GetManagesForUserUsecase _getManagesForUserUsecase;
   final GetLevelsForUserUsecase _getLevelsForUserUsecase;
   final GetBranchesForUserUsecase _getBranchesForUserUsecase;
   final GetUserSelectUsecase _getUserSelectUsecase;
+  final GetUsersAllUsecase _getUsersAllUsecase;
 
   UsersCubit(
     this._getAllUsersUsecase,
@@ -48,6 +49,7 @@ class UsersCubit extends Cubit<UsersState> {
     this._getLevelsForUserUsecase,
     this._getBranchesForUserUsecase,
     this._getUserSelectUsecase,
+    this._getUsersAllUsecase,
   ) : super(UsersState());
 
   FilterUsersEntity filterUsersEntity = FilterUsersEntity();
@@ -75,18 +77,15 @@ class UsersCubit extends Cubit<UsersState> {
   }
 
   void setSelectedManage(String? value) {
-    userActionsEntity.selectedManage = state.managesStatus.data
-        ?.firstWhereOrNull((element) => element.idMange == value);
+    userActionsEntity.selectedManage = state.managesStatus.data?.firstWhereOrNull((element) => element.idMange == value);
   }
 
   void setSelectedLevel(String? value) {
-    userActionsEntity.selectedLevel = state.levelsStatus.data
-        ?.firstWhereOrNull((element) => element.idLevel == value);
+    userActionsEntity.selectedLevel = state.levelsStatus.data?.firstWhereOrNull((element) => element.idLevel == value);
   }
 
   void setSelectedBranch(String? value) {
-    userActionsEntity.selectedBranch = state.branchesStatus.data
-        ?.firstWhereOrNull((element) => element.branchId == value);
+    userActionsEntity.selectedBranch = state.branchesStatus.data?.firstWhereOrNull((element) => element.branchId == value);
   }
 
   Future<void> getUsers({
@@ -119,8 +118,7 @@ class UsersCubit extends Cubit<UsersState> {
         allUsers.extract(
           (exception, message) {
             if (AppConstants.shouldReturnEarly(message)) return;
-            emit(state.copyWith(
-                getUsersStatus: BlocStatus.fail(error: message)));
+            emit(state.copyWith(getUsersStatus: BlocStatus.fail(error: message)));
           },
           (value) {
             pageVariables.usersList.addAll(value.message!);
@@ -138,6 +136,36 @@ class UsersCubit extends Cubit<UsersState> {
       },
       tag: 'search_manage_users',
       isDebounced: isDebounced,
+    );
+  }
+
+  Future<void> getUsersAll() async {
+    AppConstants.debounceFunction(
+      () async {
+        emit(state.copyWith(getUsersStatus: const BlocStatus.loading()));
+        final allUsers = await _getUsersAllUsecase(GetUsersParams());
+
+        allUsers.extract(
+          (exception, message) {
+            if (AppConstants.shouldReturnEarly(message)) return;
+            emit(state.copyWith(getUsersStatus: BlocStatus.fail(error: message)));
+          },
+          (value) {
+            pageVariables.usersAllList.addAll(value.message!);
+            pageVariables.totalUsersCount = value.count ?? 0;
+            pageVariables.hasReachedEnd = value.message!.isEmpty;
+            if (pageVariables.usersAllList.isEmpty) {
+              emit(state.copyWith(getUsersStatus: BlocStatus.empty()));
+              return;
+            }
+            emit(
+              state.copyWith(getUsersStatus: BlocStatus.success()),
+            );
+          },
+        );
+      },
+      tag: 'search_manage_users',
+      isDebounced: false,
     );
   }
 
@@ -221,27 +249,26 @@ class UsersCubit extends Cubit<UsersState> {
       },
     );
   }
+
   onGetUserSelected() async {
     emit(state.copyWith(getUserSelected: const BlocStatus.loading()));
     final response = await _getUserSelectUsecase();
 
     response.extract(
-          (exception, message) {
+      (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
         emit(state.copyWith(getUserSelected: BlocStatus.fail(error: message)));
       },
-          (value) {
+      (value) {
         emit(state.copyWith(getUserSelected: BlocStatus.success(data: value.message ?? [])));
       },
     );
   }
 
-  getUsersByDepartmentAndRegion(
-      {required String? regionId, required String? departmentId}) async {
+  getUsersByDepartmentAndRegion({required String? regionId, required String? departmentId}) async {
     emit(state.copyWith(usersByDepartmentAndRegion: const PageState.loading()));
 
-    final result = await _getUsersByDepartmentAndRegionUsecase(
-        GetUsersByDepartmentAndRegionParams(
+    final result = await _getUsersByDepartmentAndRegionUsecase(GetUsersByDepartmentAndRegionParams(
       departmentId: departmentId,
       regionId: regionId,
     ));
@@ -249,12 +276,9 @@ class UsersCubit extends Cubit<UsersState> {
     result.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(
-            usersByDepartmentAndRegion: const PageState.error()));
+        emit(state.copyWith(usersByDepartmentAndRegion: const PageState.error()));
       },
-      (value) => emit(state.copyWith(
-          usersByDepartmentAndRegion:
-              PageState.loaded(data: value.data ?? []))),
+      (value) => emit(state.copyWith(usersByDepartmentAndRegion: PageState.loaded(data: value.data ?? []))),
     );
   }
 

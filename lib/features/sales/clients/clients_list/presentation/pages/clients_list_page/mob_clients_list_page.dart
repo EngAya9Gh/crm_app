@@ -149,6 +149,7 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
               opacity: animation,
               child: widget,
             ),
+            ///determine to show widget depending on listIds content
             child: listIds.isEmpty
                 ? SizedBox.shrink()
                 : Container(
@@ -157,13 +158,6 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                       text: 'تحويل العملاء المحددين',
                       onPressed: () async {
                         final ValueNotifier<UserModel?> selectedUser = ValueNotifier(null);
-                        if (listIds.isEmpty) {
-                          AppSnackbar.showSnakeBar(
-                            'يجب تحديد عميل واحد على الأقل',
-                            color: ToastColorsEnum.warning,
-                          );
-                          return;
-                        }
                         AppConstants.showAppDialog(
                           child: assignClientsToEmployeeDialog(selectedUser: selectedUser, clientsListBloc: _clientsListBloc),
                         );
@@ -210,7 +204,9 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
 
                     _clientsListBloc.filterEntity.statusNotifier.value = value ? ['مشترك'] : [];
                     _fetchClients();
+                    ///when change type of client clear all any select
                     _clientsListBloc.pageVariables.selectedItemsId.value=[];
+                    chooseAll.value=false;
                   },
                   title: AppText(
                     "انشطة العملاء المشتركين",
@@ -233,6 +229,8 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                         builder: (context, value, child) => Checkbox(
                           value: value,
                           onChanged: (value) {
+                            ///if value true select all data appear
+                            ///else make all data unselected
                             chooseAll.value = value ?? false;
                             if (value ?? false) {
                               _clientsListBloc.pageVariables.selectedItemsId.value = List.of(_clientsListBloc.pageVariables.selectedItemsId.value)

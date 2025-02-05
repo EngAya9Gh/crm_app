@@ -40,7 +40,7 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(title: 'عمولة المشاركين'),
+      appBar: CustomAppBar(title: 'عمولة المتعاونين'),
       backgroundColor: Colors.grey.shade100,
       body: BlocBuilder<CommissionCollaboratorsBloc, CommissionCollaboratorsState>(
         builder: (context, state) {

@@ -47,9 +47,11 @@ class TaskCard {
                               child: CircleAvatar(
                                 backgroundImage:
                                     task.assignTo?.image != null ? NetworkImage(EndPoints.baseUrls.laravelFilesUrl + task.assignTo!.image!) : null,
-                                child:task.assignTo?.image==null? Center(
-                                  child: AppText(initials, color: Colors.white, fontSize: 12),
-                                ):null  ,
+                                child: task.assignTo?.image == null
+                                    ? Center(
+                                        child: AppText(initials, color: Colors.white, fontSize: 12),
+                                      )
+                                    : null,
                                 radius: 14,
                               ),
                             ),
@@ -69,28 +71,9 @@ class TaskCard {
                                       ((task.assignTo?.nameRegion?.isEmpty ?? true) &&
                                           (task.assignTo?.nameMange?.isEmpty ?? true) &&
                                           (task.assignTo?.nameUser?.isEmpty ?? true)))
-                                    Row(
-                                      children: [
-                                        AppText(
-                                          (task.assignFromModel == 'region')
-                                              ? 'فرع'
-                                              : (task.assignFromModel == 'managements')
-                                                  ? "قسم"
-                                                  : "مستخدم",
-                                          color: AppColors.grey.shade500,
-                                        ),
-                                        AppText(' --> '),
-                                        // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
-                                        AppText(
-                                          (task.assignFromModel == 'region')
-                                              ? 'فرع'
-                                              : (task.assignFromModel == 'managements')
-                                                  ? "قسم"
-                                                  : "مستخدم",
-                                          color: AppColors.primaryMain,
-                                        ),
-                                      ],
-                                    ),
+                                    _buildInfoRow(
+                                        "${(task.assignFromModel == 'region') ? 'فرع' : (task.assignFromModel == 'managements') ? "قسم" : "مستخدم"}",
+                                        ' --> ${(task.assignFromModel == 'region') ? 'فرع' : (task.assignFromModel == 'managements') ? "قسم" : "مستخدم"}'),
                                   _buildInfoRow("${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}",
                                       ' --> ${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}'),
                                 ],

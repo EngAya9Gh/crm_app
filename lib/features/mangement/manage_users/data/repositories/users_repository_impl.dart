@@ -95,4 +95,9 @@ class UsersRepositoryImpl extends UsersRepository {
   Future<Result<ResponseWrapper<List<UserModel>>>> getUserSelected() {
     return toApiResult(() => datasource.getUserSelected());
   }
+
+  @override
+  Future<Result<ResponseWrapper<List<UserModel>>>> getUsersAll(GetUsersParams params) {
+    return toApiResult(() => datasource.getUsersAll());
+  }
 }

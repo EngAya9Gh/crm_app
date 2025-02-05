@@ -61,7 +61,7 @@ class GetTaskParams {
   });
 
   Map<String, dynamic> get toMap => {
-        'skip': ApiHelper.calculatePage(skip: skip, limit: limit),
+        'page': ApiHelper.calculatePage(skip: skip, limit: limit),
         'limit': limit,
         'filter': filter,
         'status': statusName,

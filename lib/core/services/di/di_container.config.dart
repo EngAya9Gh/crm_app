@@ -455,6 +455,8 @@ import '../../../features/mangement/manage_users/domain/use_cases/get_user_by_id
     as _i653;
 import '../../../features/mangement/manage_users/domain/use_cases/get_user_select_task_management_usecase.dart'
     as _i424;
+import '../../../features/mangement/manage_users/domain/use_cases/get_users_all_usecase.dart'
+    as _i985;
 import '../../../features/mangement/manage_users/domain/use_cases/get_users_usecase.dart'
     as _i18;
 import '../../../features/mangement/manage_users/presentation/manager/users_cubit.dart'
@@ -1487,6 +1489,8 @@ _i174.GetIt $initGetIt(
       () => _i1026.GetLevelsForUserUsecase(gh<_i586.UsersRepository>()));
   gh.lazySingleton<_i944.GetManagesForUserUsecase>(
       () => _i944.GetManagesForUserUsecase(gh<_i586.UsersRepository>()));
+  gh.factory<_i985.GetUsersAllUsecase>(
+      () => _i985.GetUsersAllUsecase(gh<_i586.UsersRepository>()));
   gh.factory<_i18.GetUsersUsecase>(
       () => _i18.GetUsersUsecase(gh<_i586.UsersRepository>()));
   gh.factory<_i653.GetUserByIdUsecase>(
@@ -2038,16 +2042,6 @@ _i174.GetIt $initGetIt(
         gh<_i521.GetCommentUsecase>(),
         gh<_i520.AddCommentUsecase>(),
       ));
-  gh.factory<_i301.UsersCubit>(() => _i301.UsersCubit(
-        gh<_i18.GetUsersUsecase>(),
-        gh<_i653.GetUserByIdUsecase>(),
-        gh<_i1001.ActionUserUsecase>(),
-        gh<_i526.GetUsersByDepartmentAndRegionUsecase>(),
-        gh<_i944.GetManagesForUserUsecase>(),
-        gh<_i1026.GetLevelsForUserUsecase>(),
-        gh<_i62.GetBranchesForUserUsecase>(),
-        gh<_i424.GetUserSelectUsecase>(),
-      ));
   gh.factory<_i546.DatesTableCubit>(() => _i546.DatesTableCubit(
         gh<_i438.GetDateInstallationUsecase>(),
         gh<_i883.RescheduleDateUsecase>(),
@@ -2102,6 +2096,17 @@ _i174.GetIt $initGetIt(
       ));
   gh.factory<_i349.WaitingAgentsCubit>(
       () => _i349.WaitingAgentsCubit(gh<_i941.GetWaitingAgentsUsecase>()));
+  gh.factory<_i301.UsersCubit>(() => _i301.UsersCubit(
+        gh<_i18.GetUsersUsecase>(),
+        gh<_i653.GetUserByIdUsecase>(),
+        gh<_i1001.ActionUserUsecase>(),
+        gh<_i526.GetUsersByDepartmentAndRegionUsecase>(),
+        gh<_i944.GetManagesForUserUsecase>(),
+        gh<_i1026.GetLevelsForUserUsecase>(),
+        gh<_i62.GetBranchesForUserUsecase>(),
+        gh<_i424.GetUserSelectUsecase>(),
+        gh<_i985.GetUsersAllUsecase>(),
+      ));
   return getIt;
 }
 

@@ -20,6 +20,8 @@ abstract class UsersRepository {
     GetUsersParams params,
   );
 
+  Future<Result<ResponseWrapper<List<UserModel>>>> getUsersAll(GetUsersParams params);
+
   Future<Either<String, PaginationResponseWrapper>> getUserById(
     GetUserByIdParams params,
   );
@@ -34,14 +36,11 @@ abstract class UsersRepository {
     required Map<String, dynamic> param,
   });
 
-  Future<Either<String, List<ManageModel>>> getManagesForUser(
-      GetManagesForUserParams params);
+  Future<Either<String, List<ManageModel>>> getManagesForUser(GetManagesForUserParams params);
 
-  Future<Either<String, List<LevelModel>>> getLevelsForUser(
-      GetLevelsForUserParams params);
+  Future<Either<String, List<LevelModel>>> getLevelsForUser(GetLevelsForUserParams params);
 
-  Future<Either<String, List<BranchModel>>> getBranchesForUser(
-      GetBranchesForUserParams params);
+  Future<Either<String, List<BranchModel>>> getBranchesForUser(GetBranchesForUserParams params);
+
   Future<Result<ResponseWrapper<List<UserModel>>>> getUserSelected();
-
 }

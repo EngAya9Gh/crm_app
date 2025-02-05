@@ -254,36 +254,6 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                               ),
                             ),
                           },
-
-                          /*  10.height,
-                          Wrap(
-                            children: [
-                              if(task.assignFromModel=='managements')        Row(
-                                children: [
-                                  AppText(
-                                    'من قسم: ',
-                                    color: context.colorScheme.grey500,
-                                  ),
-                                  AppText(
-                                    '${task.assignFrom?.nameMange == '' ? task.assignFromModel : task.assignFrom?.nameMange}',
-                                    color: context.colorScheme.grey800,
-                                  ),
-                                ],
-                              ),
-                              if(task.assignToModel=='managements')Row(
-                                children: [
-                                  AppText(
-                                    'إلى قسم: ',
-                                    color: context.colorScheme.grey500,
-                                  ),
-                                  AppText(
-                                    '${task.assignFrom?.nameMange == '' ? task.assignFromModel : task.assignFrom?.nameMange}',
-                                    color: context.colorScheme.grey800,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),*/
                           10.height,
                           Wrap(
                               spacing: 5,

@@ -56,6 +56,7 @@ class assignClientsToEmployeeDialog extends StatelessWidget {
                 _clientsListBloc.add(AssignClientsToEmployeesEvent(
                   fkUser: selectedUser.value!.id,
                   onSucess: () {
+                    ///after success clear all selected data , get again and pop to previous screen
                     _clientsListBloc.pageVariables.selectedItemsId.value = [];
                     _clientsListBloc.add(GetAllClientsListEvent());
                     context.pop();
