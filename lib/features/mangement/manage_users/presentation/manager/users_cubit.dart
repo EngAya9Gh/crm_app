@@ -235,9 +235,10 @@ class UsersCubit extends Cubit<UsersState> {
         if (updateUser != null) {
           users = users.map((e) => e.idUser == user.idUser ? user : e).toList();
         } else {
-          users.insert(0, user);
+          users = users..insert(0, user);
+          pageVariables.totalUsersCount = pageVariables.totalUsersCount + 1;
         }
-
+        pageVariables.usersList = List.of(users);
         emit(
           state.copyWith(
             actionUserState: BlocStatus.success(),
