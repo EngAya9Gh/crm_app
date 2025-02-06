@@ -104,7 +104,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                 PositionedDirectional(
                   child: Icon(
                     task.overDeadline == 0 ? Icons.arrow_upward : Icons.arrow_downward,
-                    size: 40,
+                    size: 35,
                     color: task.overDeadline == 0 ? AppColors.green : AppColors.statusErrorActive,
                   ),
                   bottom: 0,

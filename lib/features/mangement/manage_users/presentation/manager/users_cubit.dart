@@ -151,7 +151,7 @@ class UsersCubit extends Cubit<UsersState> {
             emit(state.copyWith(getUsersStatus: BlocStatus.fail(error: message)));
           },
           (value) {
-            pageVariables.usersAllList.addAll(value.message!);
+            pageVariables.usersAllList = value.message ?? [];
             pageVariables.totalUsersCount = value.count ?? 0;
             pageVariables.hasReachedEnd = value.message!.isEmpty;
             if (pageVariables.usersAllList.isEmpty) {

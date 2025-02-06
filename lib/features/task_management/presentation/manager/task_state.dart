@@ -343,7 +343,7 @@ extension PublicTypeExt on PublicType {
       case PublicType.rateTicket:
         return 'تقييم تذكرة';
       case PublicType.other:
-        return 'آخرى';
+        return 'أخرى';
       case PublicType.addTask:
         return 'اضافة مهمة';
     }

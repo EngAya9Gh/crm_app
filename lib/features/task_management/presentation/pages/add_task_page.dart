@@ -274,7 +274,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       builder: (context, state) {
                         return CustomMultiSelectionDropdown<UserModel>(
                           hint: 'المشاركين*',
-                          items: _usersCubit.pageVariables.usersAllList,
+                          items:  _usersCubit.pageVariables.usersAllList,
                           selectedItems: taskState.selectedParticipant ?? [],
                           onSave: _taskCubit.onChangeParticipants,
                           itemAsString: (u) => u!.userAsString(),

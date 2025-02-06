@@ -89,6 +89,7 @@ class _ClientTasksTabPageState extends State<ClientTasksTabPage> {
                             child: Container(
                               height: 45,
                               width: 45,
+                              padding: EdgeInsets.all(4),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: Colors.white,

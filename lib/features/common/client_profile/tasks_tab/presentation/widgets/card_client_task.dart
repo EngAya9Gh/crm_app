@@ -98,7 +98,7 @@ class ClientTaskCard extends StatelessWidget {
                     ),
                   ),
                   Icon(task.overDeadline == 0 ? Icons.arrow_upward : Icons.arrow_downward,
-                      size: 40, color: task.overDeadline == 0 ? AppColors.green : AppColors.statusErrorActive)
+                      size: 35, color: task.overDeadline == 0 ? AppColors.green : AppColors.statusErrorActive)
                 ],
               ),
             ),
