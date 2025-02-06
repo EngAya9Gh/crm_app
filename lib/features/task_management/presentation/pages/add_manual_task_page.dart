@@ -261,6 +261,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                                             assignTo: state.selectedAssignedToType?.name,
                                             assignToId: assignToId,
                                             userId: currentUser.idUser!,
+                                             clientId: widget.clientId,
+                                             invoiceId: widget.invoiceId,
                                             startDate: state.startDate,
                                             file: state.attachmentFile,
                                             deadLineDate: state.deadLineDate,

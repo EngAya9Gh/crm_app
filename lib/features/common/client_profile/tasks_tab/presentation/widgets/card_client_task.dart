@@ -29,7 +29,7 @@ class ClientTaskCard extends StatelessWidget {
                   child: CircleAvatar(
                     backgroundImage:
                     task.assignTo?.image != null ? NetworkImage(EndPoints.baseUrls.laravelFilesUrl + task.assignTo!.image!) : null,
-                    child:task.assignTo?.image==null? Center(
+                    child:((task.assignTo?.image==null)&&(task.assignTo?.nameUser?.isNotEmpty??false))? Center(
                       child: AppText(
                         task.assignTo?.nameUser?.substring(0,2).toUpperCase(),
                         color: AppColors.white,
