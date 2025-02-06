@@ -246,18 +246,20 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
 
                                     final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
                                     final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
-
+                                 var assignToId=   state.selectedAssignedToType == AssignedTypeNew.users
+                                        ? state.selectedAssignTo?.idUser.toString()
+                                        : state.selectedAssignedToType == AssignedTypeNew.managements
+                                        ? selectedValueManage
+                                        : selectedRegionId;
                                     _taskCubit.addTaskAction(
                                         onSuccess: () => Navigator.pop(context, selectedPublicType == PublicType.linkComment),
                                         addTaskParams: AddTaskParams(
-                                            title:  selectedPublicType == PublicType.other
-                                                ? _taskNameController.text
-                                                : selectedPublicType?.text,
+                                            title: selectedPublicType == PublicType.other ? _taskNameController.text : selectedPublicType?.text,
                                             description: _taskDescriptionController.text,
                                             assignFrom: AssignedTypeNew.users.name.toString(),
                                             assignFromId: currentUser.idUser!,
                                             assignTo: state.selectedAssignedToType?.name,
-                                            assignToId: state.selectedAssignTo!.idUser.toString(),
+                                            assignToId: assignToId,
                                             userId: currentUser.idUser!,
                                             startDate: state.startDate,
                                             file: state.attachmentFile,
@@ -307,13 +309,13 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
   List<AssignedTypeNew> get assignedToList {
     final list = List.of(AssignedTypeNew.values);
     if (!privilegeBloc.checkPrivilege('167') && !privilegeBloc.checkPrivilege('174')) {
-      list.remove(AssignedTypeNew.region);
+      list.remove(AssignedTypeNew.regoin);
     }
     if (!privilegeBloc.checkPrivilege('168') && !privilegeBloc.checkPrivilege('169')) {
       list.remove(AssignedTypeNew.managements);
     }
     if (!privilegeBloc.checkPrivilege('166')) {
-      list.remove(AssignedTypeNew.region);
+      list.remove(AssignedTypeNew.regoin);
     }
 
     return list;
@@ -333,7 +335,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
             selectedItem: taskState.selectedAssignTo,
             filterFn: (user, filter) => user.nameUser!.contains(filter),
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.employee) {
+              if (taskState.selectedAssignedToType != AssignedTypeNew.users) {
                 return null;
               }
               if (value == null) {
@@ -365,7 +367,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
             itemAsString: (item) => item!.name_mange,
             value: manageList.selectedValuemanag,
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.department) {
+              if (taskState.selectedAssignedToType != AssignedTypeNew.managements) {
                 return null;
               }
               if (value == null) {
@@ -380,7 +382,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
   }
 
   Widget assignToRegionWidget(TaskState taskState) {
-    if (taskState.selectedAssignedToType == AssignedToType.region)
+    if (taskState.selectedAssignedToType == AssignedTypeNew.regoin)
       return Consumer<RegionProvider>(
         builder: (context, cart, child) {
           final user = context.read<UserProvider>().currentUser;
@@ -397,7 +399,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
             itemAsString: (item) => item!.branchName,
             value: cart.selectedRegionId,
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.region) {
+              if (taskState.selectedAssignedToType != AssignedTypeNew.regoin) {
                 return null;
               }
               if (value == null) {
