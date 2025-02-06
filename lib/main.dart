@@ -11,7 +11,7 @@ import 'services/service_provider.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseOnBackgroundListener(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,name: 'smart_crm');
 }
 
 void main() async {
