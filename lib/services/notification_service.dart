@@ -28,7 +28,7 @@ class NotificationService {
   );
 
   static Future<void> init() async {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,name: 'smart_crm');
     var tokenFcm = await getFcmToken(repeat: 3);
 
     log((tokenFcm).toString(), name: 'FCM Token');
