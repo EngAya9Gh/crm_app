@@ -8,6 +8,7 @@ enum PrivilegeTypeEnum {
   notify,
   report,
   tasks,
+  finance,
   user;
 
   static PrivilegeTypeEnum fromString(String? value) {
@@ -29,6 +30,8 @@ enum PrivilegeTypeEnum {
       return PrivilegeTypeEnum.tasks;
     } else if (value == PrivilegeTypeEnum.user.name) {
       return PrivilegeTypeEnum.user;
+    } else if (value == PrivilegeTypeEnum.finance.name) {
+      return PrivilegeTypeEnum.finance;
     } else if (value == PrivilegeTypeEnum.other.name) {
       return PrivilegeTypeEnum.other;
     } else {
@@ -60,6 +63,8 @@ extension PrivilegeTypeExtension on PrivilegeTypeEnum {
         return 'tasks';
       case PrivilegeTypeEnum.user:
         return 'user';
+      case PrivilegeTypeEnum.finance:
+        return 'finance';
     }
   }
 
@@ -85,6 +90,8 @@ extension PrivilegeTypeExtension on PrivilegeTypeEnum {
         return 'إدارة المهام';
       case PrivilegeTypeEnum.user:
         return 'إدارة المستخدمين';
+      case PrivilegeTypeEnum.finance:
+        return 'إدارة المالية';
     }
   }
 }

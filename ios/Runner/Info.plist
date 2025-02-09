@@ -5,6 +5,7 @@
     <key>CFBundleDisplayName</key>
     <string>Smart CRM</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

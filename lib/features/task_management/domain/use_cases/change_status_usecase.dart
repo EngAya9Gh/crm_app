@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
@@ -6,8 +7,7 @@ import '../../../../core/services/api/result.dart';
 import '../repositories/task_repository.dart';
 
 @injectable
-class ChangeStatusTaskUsecase
-    extends BaseUsecase<Result<ResponseWrapper<void>>, ChangeStatusTaskParams> {
+class ChangeStatusTaskUsecase extends BaseUsecase<Result<ResponseWrapper<void>>, ChangeStatusTaskParams> {
   ChangeStatusTaskUsecase(this.repository);
 
   final TaskRepository repository;
@@ -19,14 +19,19 @@ class ChangeStatusTaskUsecase
 }
 
 class ChangeStatusTaskParams {
-  ChangeStatusTaskParams(this.taskStatusId, this.taskId, this.userId);
+  ChangeStatusTaskParams(this.taskStatusId, this.taskId, this.userId, [this.rate]);
 
   final String taskStatusId;
   final String taskId;
   final String userId;
+  final double? rate;
 
-  Map<String, dynamic> get toMap => {
+  Map<String, dynamic> get toMap {
+    print( (taskStatusId == 11 && rate != null && rate!= 0));
+    return {
         'status_id': this.taskStatusId,
         'id_user': userId,
+        if (taskStatusId == '11') 'rate': rate,
       };
+  }
 }
