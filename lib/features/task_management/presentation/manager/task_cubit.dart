@@ -290,12 +290,13 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(isResetTasksState: true));
   }
 
-  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess, String userId, bool fromDialog) async {
+  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess, String userId, bool fromDialog,[double? rate]) async {
     emit(state.copyWith(changeTaskStatus: const BlocStatus.loading()));
     final response = await _changeStatusTaskUsecase(ChangeStatusTaskParams(
       fromDialog ? taskStatusType.next.id.toString() : taskStatusType.id.toString(),
       taskModel.id.toString(),
       userId,
+      rate,
     ));
 
     response.extract(

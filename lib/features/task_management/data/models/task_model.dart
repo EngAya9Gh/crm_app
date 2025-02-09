@@ -36,6 +36,7 @@ class TaskModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? overDeadline;
+  final num? timeTaken;
   final List<UserModel>? collaborators;
 
   TaskModel({
@@ -63,6 +64,7 @@ class TaskModel {
     this.updatedAt,
     this.overDeadline,
     this.collaborators,
+    this.timeTaken,
   });
 
   TaskModel copyWith({
@@ -90,6 +92,7 @@ class TaskModel {
     DateTime? updatedAt,
     int? overDeadline,
     List<UserModel>? collaborators,
+    num? timeTaken,
   }) =>
       TaskModel(
         id: id ?? this.id,
@@ -116,6 +119,7 @@ class TaskModel {
         updatedAt: updatedAt ?? this.updatedAt,
         overDeadline: overDeadline ?? this.overDeadline,
         collaborators: collaborators ?? this.collaborators,
+        timeTaken: timeTaken ?? this.timeTaken,
       );
 
   factory TaskModel.fromJson(Map<String, dynamic> json) =>
@@ -144,6 +148,7 @@ class TaskModel {
         createdBy: json["created_by"] == null ? null : AssignFromOrToModel.fromJson(json["created_by"]),
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        timeTaken: json["timeTaken"],
       );
 
   Map<String, dynamic> toJson() =>
@@ -168,6 +173,7 @@ class TaskModel {
         "recurring_type": recurringType,
         "recurring_number": recurringNumber,
         "over_deadline": overDeadline,
+        "timeTaken": timeTaken,
         "collaborators": (collaborators??[]).map((e) => e.toJson(),),
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),

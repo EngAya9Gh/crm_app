@@ -3,15 +3,21 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' as Intl;
 
 import '../../../../core/common/extensions/build_context.dart';
+import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/utils/end_points.dart';
+import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/task_cubit.dart';
@@ -82,18 +88,182 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
         onTap: status != null && status != TaskStatusType.Evaluated && context.read<PrivilegesCubit>().checkPrivilege('165')
             ? () {
                 print('object234567890-');
+                ValueNotifier<TaskStatusType> selectedType = ValueNotifier(status);
+                double? rate;
                 showDialog(
                   context: context,
                   barrierDismissible: false,
                   barrierLabel: task.id.toString(),
-                  builder: (context) => BlocProvider.value(
-                    value: _cubit,
-                    child: ChangeStatusTaskDialog(
-                      status: status,
-                      taskModel: task,
-                      tasksCubit: _cubit,
+                  builder: (context) => AlertDialog(
+                    insetPadding: EdgeInsets.zero,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(child: AppText(task.title ?? '')),
+                        IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: AppColors.black,
+                          ),
+                          onPressed: () {
+                            context.pop();
+                          },
+                        ),
+                      ],
                     ),
-                  ),
+                    content: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ValueListenableBuilder(
+                            valueListenable: selectedType,
+                            builder: (context, value, child) => Column(
+                              children: [
+                                AppDropdownButtonFormField<TaskStatusType, TaskStatusType>(
+                                  borderColor: value.color,
+                                  iconColor: value.color,
+                                  items: List.of(TaskStatusType.values)
+                                    ..removeWhere(
+                                      (element) => element.index < status.index,
+                                    ),
+                                  onChange: (value) {
+                                    selectedType.value = value!;
+                                  },
+                                  hint: "القسم",
+                                  itemAsValue: (TaskStatusType? item) => item,
+                                  itemBuilder: (item) => AppText(
+                                    item?.text ?? '',
+                                    color: item?.color,
+                                    fontSize: 18,
+                                  ),
+                                  value: value,
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'هذا الحقل مطلوب.';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                if (status == TaskStatusType.Completed && value.id == 11) ...{
+                                  10.height,
+                                  Row(
+                                    children: [
+                                      Text('التقييم 1/5'),
+                                      RatingBar.builder(
+                                        initialRating: 0,
+                                        minRating: 0,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: false,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          rate = rating;
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                }
+                              ],
+                            ),
+                          ),
+                          10.height,
+                          if (task.description?.isNotEmpty ?? false) ...{
+                            AppText(
+                              task.description ?? '',
+                              fontSize: 15.scaleFontSize,
+                              color: context.colorScheme.grey600,
+                            ),
+                          },
+                          10.height,
+                          Wrap(
+                              spacing: 5,
+                              runSpacing: 5,
+                              children: (task.collaborators ?? [])
+                                  .map((e) => Tooltip(
+                                        message: e.nameUser,
+                                        child: CircleAvatar(
+                                            radius: 20,
+                                            backgroundColor: AppColors.primaryAltLight,
+                                            child: AppText(e.nameUser?.substring(0, 2).toUpperCase())),
+                                      ))
+                                  .toList()),
+                          10.height,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              AppIcon(Icons.date_range_rounded, color: context.colorScheme.grey600),
+                              5.width,
+                              Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: AppText(
+                                  Intl.DateFormat('dd MMM hh:mm a').format(task.startDate ?? DateTime.now()),
+                                  color: context.colorScheme.grey600,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                          10.height,
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      BlocBuilder<TaskCubit, TaskState>(
+                        builder: (context, state) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              AppElevatedButton(
+                                isLoading: state.changeTaskStatus.isLoading(),
+                                appButtonStyle: AppButtonStyle.secondary,
+                                // style: ButtonStyle(
+                                //   backgroundColor: MaterialStateProperty.all(AppColors.primaryMain),
+                                // ),
+                                onPressed: () async {
+                                  if (status == selectedType.value) {
+                                    return;
+                                  }
+                                  _cubit.onChangeTaskStatusStage(
+                                    task,
+                                    status,
+                                    Navigator.of(context).pop,
+                                    context.read<UserProvider>().currentUser.idUser!,
+                                    true,
+                                    rate,
+                                  );
+                                },
+                                text: 'حفظ التغييرات',
+                              ),
+                              10.height,
+                              AppElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(AppColors.primaryMain),
+                                ),
+                                onPressed: () async {
+                                  context.pop();
+                                },
+                                text: 'رجوع',
+                              ),
+                            ],
+                          );
+                        },
+                      )
+                    ],
+                  ), // builder: (context) => BlocProvider.value(
+                  //   value: _cubit,
+                  //   child: ChangeStatusTaskDialog(
+                  //     status: status,
+                  //     taskModel: task,
+                  //     tasksCubit: _cubit,
+                  //   ),
+                  // ),
                 );
               }
             : null,
@@ -136,12 +306,14 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                 child: CircleAvatar(
                                   backgroundImage:
                                       task.assignTo?.image != null ? NetworkImage(EndPoints.baseUrls.laravelFilesUrl + task.assignTo!.image!) : null,
-                                  child: task.assignTo?.image==null?Center(
-                                    child: AppText(
-                                      buffer.toString(),
-                                      color: context.colorScheme.white,
-                                    ),
-                                  ):null,
+                                  child: task.assignTo?.image == null
+                                      ? Center(
+                                          child: AppText(
+                                            buffer.toString(),
+                                            color: context.colorScheme.white,
+                                          ),
+                                        )
+                                      : null,
                                   radius: 22.scaleIconsSize,
                                 ),
                               ),
@@ -233,6 +405,20 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                               // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
                               AppText(
                                 '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser}',
+                                color: AppColors.primaryMain,
+                              ),
+                            ],
+                          ),
+                          if(task.timeTaken!=null)Row(
+                            children: [
+                              AppText(
+                                'عدد الساعات ما بين استلام المهمة واكمالها',
+                                color: context.colorScheme.grey500,
+                                fontSize: 12,
+                              ),
+                              AppText(' --> '),
+                              AppText(
+                                task.timeTaken.toString(),
                                 color: AppColors.primaryMain,
                               ),
                             ],
