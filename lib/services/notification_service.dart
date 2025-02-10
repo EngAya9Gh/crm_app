@@ -108,7 +108,7 @@ class NotificationService {
             title: AppText(
               message.notification?.title,
             ),
-            description: AppText(message.notification?.title),
+            description: AppText(message.notification?.body),
             icon: Icon(
               Icons.notifications_active_sharp,
               color: Colors.green,
@@ -122,7 +122,7 @@ class NotificationService {
           flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             message.notification?.title,
-            message.notification?.title,
+            message.notification?.body,
             NotificationDetails(
               iOS: DarwinNotificationDetails(
                 presentAlert: true,
