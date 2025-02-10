@@ -7,7 +7,7 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<true/>
+	<string>this app needs to access to your location</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
