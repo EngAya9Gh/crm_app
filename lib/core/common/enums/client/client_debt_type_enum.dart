@@ -23,7 +23,7 @@ enum TypeOfInvoice {
   subscriber(text: "مشترك", value: "مشترك"),
   withdrawn(text: "منسحب", value: "منسحب"),
   restrictWithdrawn(text: "منسحب مقيد", value: "مقيد"),
-  // cancelApprovement(text: "الفواتير المعادة للمشرف", value: "الفواتير المعادة من الانسحاب"),
+  cancelApprovement(text: "معلق بالانسحاب", value: "معلق"),
   // cancelWithdraw(text: "الفواتير المعادة من الانسحاب", value: "الفواتير المعادة من الانسحاب"),
   all(text: 'الكل', value: null);
 

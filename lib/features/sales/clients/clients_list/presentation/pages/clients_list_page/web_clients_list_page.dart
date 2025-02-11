@@ -281,6 +281,13 @@ class _WebClientsListPageState extends State<WebClientsListPage> {
                                               },
                                               onSelectChanged:(_){
                                                 if(!context.read<PrivilegesCubit>().checkPrivilege('326')){
+                                                  AppNavigator.go(
+                                                    ClientProfile(idClient: client.idClients),
+                                                    name: AppRoutesNames.clientProfile.inClientsList,
+                                                    pathParameters: {
+                                                      'idClient': client.idClients.toString()
+                                                    },
+                                                  );
                                                   return;
                                                 }
                                                 if(_clientsBloc.pageVariables.selectedItemsId.value.contains(client.idClients)){

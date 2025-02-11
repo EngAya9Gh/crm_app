@@ -57,7 +57,6 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
   void dispose() {
     _mounted = false;
     widget.dateTimeController.removeListener(_onControllerChange);
-    widget.dateTimeController.dispose();
     super.dispose();
   }
 
