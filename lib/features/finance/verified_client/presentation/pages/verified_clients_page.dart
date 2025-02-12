@@ -59,8 +59,8 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                     'get_client_verified',
                     Duration(milliseconds: 500),
                     () => _bloc.add(GetVerifiedClientEvent(
-                        getInvoicesByPrivilegesParams:
-                            (_bloc.state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter:() =>  value, fromPage: true))),
+                        getInvoicesByPrivilegesParams: (_bloc.state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams())
+                            .copyWith(filter: () => value, fromPage: true))),
                   );
                 },
               ),
@@ -88,11 +88,9 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                   } else if (state.verifiedClientList.isFailed() && state.verifiedClientList.isEmpty()) {
                     return AppErrorWidget(
                       onPressed: () {
-                        if (state.hasReachedMax) {
-                          return;
-                        }
                         _bloc.add(GetVerifiedClientEvent(
                             getInvoicesByPrivilegesParams: state.getInvoicesByPrivilegesParams?.copyWith(
+                                fromPage: true,
                           page: (state.getInvoicesByPrivilegesParams?.page ?? 1) + 1,
                         )));
                       },
@@ -102,16 +100,16 @@ class _VerifiedClientPageState extends State<VerifiedClientPage> {
                   }
                   return Expanded(
                     child: AppPaginatedList(
-                      scrollController: ScrollController(),
-                      isLoading: state.verifiedClientList.isLoading(),
+                      isLoading: state.gettingData.isLoading(),
                       items: state.verifiedClientList.data ?? [],
                       hasReachedEnd: state.hasReachedMax,
                       onLoadMore: () {
-                        if (state.hasReachedMax) {
+                        if(state.hasReachedMax){
                           return;
                         }
-                        (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams())
-                            .copyWith(skip: (_bloc.state.getInvoicesByPrivilegesParams?.skip ?? -1) + 1);
+                        _bloc.add(GetVerifiedClientEvent(
+                            getInvoicesByPrivilegesParams: (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams())
+                                .copyWith(fromPage: true,page: ((_bloc.state.getInvoicesByPrivilegesParams?.page ?? 1) + 1))));
                       },
                       itemBuilder: (context, index) {
                         return InkWell(

@@ -7,9 +7,11 @@ class VerifiedInvoiceState {
   final GetInvoicesByPrivilegesParams? getInvoicesByPrivilegesParams;
   final bool hasReachedMax;
   final int totalCount;
+  final BlocStatus gettingData;
 
   const VerifiedInvoiceState({
     this.verifiedInvoiceList = const BlocStatus.initial(),
+    this.gettingData = const BlocStatus.initial(),
     this.changeStatusInvoice = const BlocStatus.initial(),
     this.getInvoicesByPrivilegesParams = const GetInvoicesByPrivilegesParams(),
     this.hasReachedMax = false,
@@ -22,6 +24,7 @@ class VerifiedInvoiceState {
     ValueGetter<GetInvoicesByPrivilegesParams?>? getInvoicesByPrivilegesParams,
     bool? hasReachedMax,
     int? totalCount,
+    BlocStatus? gettingData,
   }) {
     return VerifiedInvoiceState(
       verifiedInvoiceList: verifiedInvoiceList ?? this.verifiedInvoiceList,
@@ -29,6 +32,7 @@ class VerifiedInvoiceState {
       changeStatusInvoice: changeStatusInvoice ?? this.changeStatusInvoice,
       getInvoicesByPrivilegesParams: getInvoicesByPrivilegesParams != null ? getInvoicesByPrivilegesParams() : this.getInvoicesByPrivilegesParams,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      gettingData: gettingData ?? this.gettingData,
     );
   }
 }

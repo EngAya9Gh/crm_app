@@ -2,7 +2,7 @@ import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/common/widgets/app_status_chip.dart';
 
-enum StatusClient { subscriber, withdrawn, unsupported,restrictWithdrawn  }
+enum StatusClient { subscriber, withdrawn, unsupported,restrictWithdrawn ,withdrawal }
 
 extension StatusClientExt on StatusClient {
   String get text {
@@ -15,6 +15,8 @@ extension StatusClientExt on StatusClient {
         return "غير معتمد بعد";
         case StatusClient.restrictWithdrawn:
         return "منسحب مقيد";
+        case StatusClient.withdrawal:
+        return "معلق بالانسحاب";
     }
   }
 
@@ -28,6 +30,8 @@ extension StatusClientExt on StatusClient {
         return Colors.orangeAccent;
       case StatusClient.restrictWithdrawn:
         return AppColors.secondaryMain;
+      case StatusClient.withdrawal:
+        return AppColors.secondaryAltDark;
     }
   }
 }
@@ -37,6 +41,7 @@ Widget prepareStatusWidget({
   required bool? isDeleted,
   required String? isApprove,
   required String? stateclient,
+  final bool? isApproveBackDone,
 }) {
   if (  isDeleted == true) {
     return AppStatusChip(
@@ -66,6 +71,12 @@ Widget prepareStatusWidget({
     return AppStatusChip(
       status: StatusClient.restrictWithdrawn.text,
       color: StatusClient.restrictWithdrawn.color,
+    );
+  }
+  else if(isApproveBackDone??false){
+    return AppStatusChip(
+      status: StatusClient.withdrawal.text,
+      color: StatusClient.withdrawal.color,
     );
   }
   return SizedBox.shrink();

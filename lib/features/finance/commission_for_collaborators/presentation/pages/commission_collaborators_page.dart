@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/Card_invoice_client.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
-import 'package:crm_smart/features/finance/commission_for_collaborators/presentation/pages/analytics_card.dart';
+import 'package:crm_smart/features/finance/commission_for_collaborators/presentation/widgets/analytics_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -156,6 +156,7 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                   child: state.commissionCollaboratorsResponse.when(
                     success: (data) => AppPaginatedList(
                       scrollController: ScrollController(),
+                      isLoading: state.gettingData.isLoading(),
                       items: state.commissionCollaboratorsResponse.data?.invoiceModel ?? [],
                       hasReachedEnd: state.hasReachedMax,
                       onLoadMore: () {

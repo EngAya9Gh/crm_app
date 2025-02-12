@@ -195,6 +195,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               isDeleted: widget.invoice.isDeleted,
                               isApprove: widget.invoice.isApprove,
                               stateclient: widget.invoice.stateclient,
+                              isApproveBackDone: (widget.invoice.approveBackDone != null) ? int.parse(widget.invoice.approveBackDone!) == 0 : null,
                             ),
                           ],
                         ),
@@ -326,7 +327,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ),
                           ],
                         ),
-                        if(widget.transferWidget!=null&&(widget.invoice.dateLastOperation?.isNotEmpty??false))...{
+                        if (widget.transferWidget != null && (widget.invoice.dateLastOperation?.isNotEmpty ?? false)) ...{
                           5.height,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -353,18 +354,18 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                   child:  AppText(
-                                      (widget.invoice.lastOperation!)+ "  (${widget.invoice.userDidOperation})",
-                                      fontFamily: AppFonts.fontFamily1,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
+                                child: AppText(
+                                  (widget.invoice.lastOperation!) + "  (${widget.invoice.userDidOperation})",
+                                  fontFamily: AppFonts.fontFamily1,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
                               ),
                               widget.transferWidget ?? SizedBox.shrink(),
                             ],
                           ),
                         },
-                        widget.commissionWidget??SizedBox.shrink()
+                        widget.commissionWidget ?? SizedBox.shrink()
                       ],
                     ),
                   ),

@@ -6,12 +6,13 @@ class ClientDeptState {
   final GetInvoicesByPrivilegesParams? getInvoicesByPrivilegesParams;
   final bool hasReachedMax;
   final int totalCount;
-
+  final BlocStatus gettingData;
   final BlocStatus reportPayoutClientStatus;
 
   const ClientDeptState({
     this.getClientDeptList = const BlocStatus.initial(),
     this.reportPayoutClientStatus = const BlocStatus.initial(),
+    this.gettingData = const BlocStatus.initial(),
     this.getInvoicesByPrivilegesParams = const GetInvoicesByPrivilegesParams(),
     this.hasReachedMax = false,
     this.totalCount = 0,
@@ -19,6 +20,7 @@ class ClientDeptState {
 
   ClientDeptState copyWith({
     BlocStatus<List<ClientDeptModel>>? getClientDeptList,
+    BlocStatus? gettingData,
     BlocStatus? reportPayoutClientStatus,
     ValueGetter<GetInvoicesByPrivilegesParams?>? getInvoicesByPrivilegesParams,
     bool? hasReachedMax,
@@ -30,7 +32,7 @@ class ClientDeptState {
       totalCount: totalCount ?? this.totalCount,
       getInvoicesByPrivilegesParams: getInvoicesByPrivilegesParams != null ? getInvoicesByPrivilegesParams() : this.getInvoicesByPrivilegesParams,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-
+      gettingData: gettingData ?? this.gettingData,
     );
   }
 }

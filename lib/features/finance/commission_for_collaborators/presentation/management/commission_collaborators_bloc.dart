@@ -27,11 +27,15 @@ class CommissionCollaboratorsBloc extends Bloc<CommissionCollaboratorsEvent, Com
     if ((event.params?.page ?? 1) == 1) {
       emit(state.copyWith(commissionCollaboratorsResponse: BlocStatus.loading()));
     }
-
+    emit(state.copyWith(gettingData: BlocStatus.loading()));
     final result = await _getCommissionCollaboratorsUseCase(event.params ?? CommissionCollaboratorsParams());
     result.fold(
-      (l) => emit(state.copyWith(commissionCollaboratorsResponse: BlocStatus.fail(error: l))),
+      (l) {
+        emit(state.copyWith(gettingData: BlocStatus.fail()));
+        emit(state.copyWith(commissionCollaboratorsResponse: BlocStatus.fail(error: l)));
+      },
       (r) {
+        emit(state.copyWith(gettingData: BlocStatus.success()));
         emit(state.copyWith(hasReachedMax: r.invoiceModel?.isEmpty ?? true, totalCount: r.count));
         /// if the come form page not first page should add data that come to previous data
         if ((event.params?.page ?? 1) > 1) {

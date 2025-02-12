@@ -25,30 +25,34 @@ class ClientDeptBloc extends Bloc<ClientDeptEvent, ClientDeptState> {
     this._getClientDeptUseCase,
     this._reportClientDeptUseCase,
   ) : super(ClientDeptState()) {
-    on<GetClientDeptEvents>(_onHandleGetClientDeptEvents,transformer: droppable());
+    on<GetClientDeptEvents>(_onHandleGetClientDeptEvents, transformer: droppable());
     on<ReportPayoutClientDeptEvents>(_onHandleReportPayoutClientDeptEvents);
     on<ResetFilterEvent>(_onHandleResetFilterEvent);
-
   }
 
   FutureOr<void> _onHandleGetClientDeptEvents(GetClientDeptEvents event, Emitter<ClientDeptState> emit) async {
-    if (event.addNewFilter||(event.getInvoicesByPrivilegesParams?.page??1)==1) {
+    if (event.addNewFilter || (event.getInvoicesByPrivilegesParams?.page ?? 1) == 1) {
       emit(state.copyWith(getClientDeptList: BlocStatus.loading()));
     }
+    emit(state.copyWith(gettingData: BlocStatus.loading()));
     emit(state.copyWith(getInvoicesByPrivilegesParams: () => event.getInvoicesByPrivilegesParams));
     final result = await _getClientDeptUseCase(event.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams());
     result.extract(
+      (l, e) {
+        emit(
+          state.copyWith(getClientDeptList: BlocStatus.fail(error: e),gettingData: BlocStatus.fail()),
+        );
 
-          (l,e) => emit(
-        state.copyWith(getClientDeptList: BlocStatus.fail(error: e)),
-      ),
-          (r) {
-        emit(state.copyWith(hasReachedMax: r.message?.isEmpty??true));
+      },
+      (r) {
+        emit(state.copyWith(hasReachedMax: r.message?.isEmpty ?? true,gettingData: BlocStatus.success()));
         if (!event.addNewFilter) {
-          emit(state.copyWith(getClientDeptList: BlocStatus.success(data: List.of(state.getClientDeptList.data ?? [])..addAll(r.message??[])),totalCount: r.count));
+          emit(state.copyWith(
+              getClientDeptList: BlocStatus.success(data: List.of(state.getClientDeptList.data ?? [])..addAll(r.message ?? [])),
+              totalCount: r.count));
           return;
         }
-        emit(state.copyWith(getClientDeptList: BlocStatus.success(data: r.message),totalCount: r.count));
+        emit(state.copyWith(getClientDeptList: BlocStatus.success(data: r.message), totalCount: r.count));
       },
     );
   }
@@ -62,14 +66,14 @@ class ClientDeptBloc extends Bloc<ClientDeptEvent, ClientDeptState> {
       ),
       (value) {
         emit(
-        state.copyWith(reportPayoutClientStatus: BlocStatus.success()),
-      );
+          state.copyWith(reportPayoutClientStatus: BlocStatus.success()),
+        );
         event.onSuccess?.call();
       },
     );
   }
-  FutureOr<void> _onHandleResetFilterEvent(ResetFilterEvent event, Emitter<ClientDeptState> emit) {
-    emit(state.copyWith(getInvoicesByPrivilegesParams:() =>  GetInvoicesByPrivilegesParams()));
-  }
 
+  FutureOr<void> _onHandleResetFilterEvent(ResetFilterEvent event, Emitter<ClientDeptState> emit) {
+    emit(state.copyWith(getInvoicesByPrivilegesParams: () => GetInvoicesByPrivilegesParams()));
+  }
 }

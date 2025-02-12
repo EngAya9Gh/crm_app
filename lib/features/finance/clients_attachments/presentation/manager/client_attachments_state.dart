@@ -3,6 +3,7 @@ part of 'client_attachments_bloc.dart';
 @immutable
 class ClientAttachmentsState {
   final BlocStatus<List<AttachmentModel>> getListAttachments;
+  final BlocStatus gettingData;
   final GetAttachmentsParams getAttachmentsParams;
   final BlocStatus<List<SubscribedClientsModel>> getAllClients;
   final int selectedSubscriber;
@@ -12,6 +13,7 @@ class ClientAttachmentsState {
   const ClientAttachmentsState({
     this.getListAttachments = const BlocStatus.initial(),
     this.getAttachmentsParams = const GetAttachmentsParams(),
+    this.gettingData = const BlocStatus.initial(),
     this.getAllClients = const BlocStatus.initial(),
     this.selectedSubscriber = -1,
     this.totalCountItem = 0,
@@ -27,6 +29,7 @@ class ClientAttachmentsState {
     int? totalCountItem,
     bool? isRrefresh,
     String? filterClientStateSearch,
+    BlocStatus? gettingData,
   }) {
     return ClientAttachmentsState(
       getListAttachments: getListAttachments ?? this.getListAttachments,
@@ -35,6 +38,7 @@ class ClientAttachmentsState {
       selectedSubscriber: selectedSubscriber ?? this.selectedSubscriber,
       totalCountItem: totalCountItem ?? this.totalCountItem,
       isRrefresh: isRrefresh ?? this.isRrefresh,
+      gettingData: gettingData ?? this.gettingData,
     );
   }
 }

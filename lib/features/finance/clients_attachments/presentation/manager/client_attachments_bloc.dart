@@ -33,10 +33,12 @@ class ClientAttachmentsBloc extends Bloc<ClientAttachmentsEvent, ClientAttachmen
     if (state.getAttachmentsParams.page == 1 || state.isRrefresh) {
       emit(state.copyWith(getListAttachments: BlocStatus.loading()));
     }
+    emit(state.copyWith(gettingData: BlocStatus.loading()));
     try {
       final result = await getAttachmentsUseCase(state.getAttachmentsParams);
       if (state.getAttachmentsParams.page > 1) {
         emit(state.copyWith(
+          gettingData: BlocStatus.success(),
             totalCountItem: result.count,
             getListAttachments: BlocStatus.success(
               data: List.of(state.getListAttachments.data ?? [])..addAll(result.message ?? []),
@@ -47,9 +49,11 @@ class ClientAttachmentsBloc extends Bloc<ClientAttachmentsEvent, ClientAttachmen
       print(result.data);
       // else {
       // }
-      emit(state.copyWith(isRrefresh: false));
+      emit(state.copyWith(isRrefresh: false,
+        gettingData: BlocStatus.success(),
+      ));
     } catch (e) {
-      emit(state.copyWith(getListAttachments: BlocStatus.fail(error: e.toString())));
+      emit(state.copyWith(gettingData: BlocStatus.fail(),getListAttachments: BlocStatus.fail(error: e.toString())));
     }
     // result.fold(
     //   (l) => emit(state.copyWith(getListAttachments: BlocStatus.fail(error: l))),

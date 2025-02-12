@@ -87,7 +87,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                 _invoicesSectionCubit.filtersEntity.filterInvoiceType.value = value;
               },
               compareFn: (typeOfInvoice, filter) {
-                return typeOfInvoice.text == filter;
+                return typeOfInvoice == filter;
               },
               // height: 70.h,
             ),
