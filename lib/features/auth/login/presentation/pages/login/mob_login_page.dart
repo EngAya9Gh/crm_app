@@ -25,12 +25,14 @@ class MobLoginPage extends StatefulWidget {
 
 class _MobLoginPageState extends State<MobLoginPage> {
   late final LoginCubit loginCubit;
+  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     loginCubit = context.read<LoginCubit>();
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class _MobLoginPageState extends State<MobLoginPage> {
       child: AppScaffold(
         backgroundColor: Colors.white,
         body: Form(
-          key: loginCubit.loginFormKey,
+          key: loginFormKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             child: Column(
@@ -83,7 +85,7 @@ class _MobLoginPageState extends State<MobLoginPage> {
                       text: AppStrings.textButtonCode,
                       onPressed: () async {
                         FocusManager.instance.primaryFocus?.unfocus();
-                        if (loginCubit.loginFormKey.currentState!.validate()) {
+                        if (loginFormKey.currentState!.validate()) {
                           await loginCubit.login();
                         }
                       },

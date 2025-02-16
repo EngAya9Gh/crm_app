@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ import '../../../core/common/helpers/app_snackbar.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/config/navigator/app_navigator.dart';
+import '../../../core/config/navigator/app_routes_names.dart';
 import '../../../core/services/cache_services/cache_services.dart';
 import '../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../core/services/di/di_container.dart';
@@ -51,26 +53,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
               child: Column(
                 children: [
                   UserAccountsDrawerHeader(
-                    decoration:
-                        BoxDecoration(color: Colors.white24 //Color(0xFF56ccf2),
-                            ),
+                    decoration: BoxDecoration(color: Colors.white24 //Color(0xFF56ccf2),
+                        ),
                     accountName: Text(
-                      Provider.of<UserProvider>(context, listen: true)
-                          .currentUser
-                          .nameUser
-                          .toString(),
-                      style: TextStyle(
-                          fontFamily: AppFonts.fontFamily1,
-                          color: context.colorScheme.onBackground),
+                      Provider.of<UserProvider>(context, listen: true).currentUser.nameUser.toString(),
+                      style: TextStyle(fontFamily: AppFonts.fontFamily1, color: context.colorScheme.onBackground),
                     ),
                     accountEmail: Text(
-                      Provider.of<UserProvider>(context, listen: true)
-                          .currentUser
-                          .email
-                          .toString(),
-                      style: TextStyle(
-                          fontFamily: AppFonts.fontFamily1,
-                          color: context.colorScheme.onBackground),
+                      Provider.of<UserProvider>(context, listen: true).currentUser.email.toString(),
+                      style: TextStyle(fontFamily: AppFonts.fontFamily1, color: context.colorScheme.onBackground),
                     ),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: AppColors.primaryMain,
@@ -80,10 +71,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           width: 500,
                           height: 500,
                           fit: BoxFit.fill,
-                          imageUrl:
-                              Provider.of<UserProvider>(context, listen: true)
-                                  .currentUser
-                                  .img_image,
+                          imageUrl: Provider.of<UserProvider>(context, listen: true).currentUser.img_image,
                         ),
                       ),
                     ),
@@ -103,8 +91,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     onTap: () => AppNavigator.go(
                       UserScreen(
                         ismyprofile: 'yes',
-                        user: Provider.of<UserProvider>(context, listen: false)
-                            .currentUser,
+                        user: Provider.of<UserProvider>(context, listen: false).currentUser,
                       ),
                       isNew: false,
                     ),
@@ -117,18 +104,35 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         fontSize: 20,
                       ),
                     ),
-                    leading: Icon(
-                      Icons.exit_to_app,
-                      color: AppColors.primaryMain,
+                    leading: Consumer<UserProvider>(
+                      builder: (context, value, child) => value.logoutFromAccount
+                          ? SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: AppLoader(),
+                            )
+                          : Icon(
+                              Icons.exit_to_app,
+                              color: AppColors.primaryMain,
+                            ),
                     ),
                     onTap: () async {
-                      final secureStorage = getIt<CacheServices>(
-                        instanceName: SecureStorageConsumer.name,
+                      Provider.of<UserProvider>(context, listen: false).logout(
+                        onLogoutSuccess: () async {
+                          final secureStorage = getIt<CacheServices>(
+                            instanceName: SecureStorageConsumer.name,
+                          );
+                          await secureStorage
+                              .removeData(
+                            key: AppStrings.secureStorage.token,
+                          )
+                              .then(
+                            (value) {
+                              AppNavigator.goReplacement(LoginPage(),name:AppRoutesNames.generalRoutes.login );
+                            },
+                          );
+                        },
                       );
-                      await secureStorage.removeData(
-                        key: AppStrings.secureStorage.token,
-                      );
-                      AppNavigator.pushReplacement(LoginPage());
                     },
                   ),
                   ListTile(
@@ -191,8 +195,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   Future<void> _downloadUpdateIfAvailable() async {
     try {
-      final isUpdateAvailable =
-          await shorebirdCodePush.isNewPatchAvailableForDownload();
+      final isUpdateAvailable = await shorebirdCodePush.isNewPatchAvailableForDownload();
 
       if (isUpdateAvailable) {
         await shorebirdCodePush.downloadUpdateIfAvailable();
@@ -203,8 +206,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             'جاري تحميل التحديث',
           ],
           onCompletion: () async {
-            await SystemChannels.platform
-                .invokeMethod('SystemNavigator.pop', true);
+            await SystemChannels.platform.invokeMethod('SystemNavigator.pop', true);
           },
         );
         return;
