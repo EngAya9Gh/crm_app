@@ -237,6 +237,12 @@ class _InvoiceViewState extends State<InvoiceView> {
                             invoice.nummostda.toString().trim().isNotEmpty && invoice.nummostda != null
                                 ? CardRow(title: 'عدد المستودعات ', value: invoice.nummostda.toString())
                                 : Container(),
+                            ((int.tryParse(invoice.renewInventory ?? '0') ?? 0) != 0)
+                                ? CardRow(title: 'تجديد المستودعات', value: invoice.renewInventory.toString())
+                                : Container(),
+                            ((int.tryParse(invoice.renewPos ?? '0') ?? 0) != 0)
+                                ? CardRow(title: 'تجديد نقاط البيع', value: invoice.renewPos.toString())
+                                : Container(),
                             invoice.numusers.toString().trim().isNotEmpty && invoice.numusers != null
                                 ? CardRow(title: 'عدد المستخدمين', value: invoice.numusers.toString())
                                 : Container(),

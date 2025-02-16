@@ -55,8 +55,7 @@ class _ChangeCountryState extends State<ChangeCountry> {
                   5.height,
                   Consumer<country_vm>(
                     builder: (context, cart, child) {
-                      if (cart.isGetCountryLoading ||
-                          cart.listcountry.isEmpty) {
+                      if (cart.isGetCountryLoading || cart.listcountry.isEmpty) {
                         return AppLoader();
                       }
 
@@ -64,11 +63,8 @@ class _ChangeCountryState extends State<ChangeCountry> {
                         hint: 'البلد',
                         items: cart.listcountry,
                         itemAsString: (u) => u!.nameCountry,
-                        selectedItem: cart.listcountry.firstWhere(
-                            (element) =>
-                                element.idCountry ==
-                                cart.selectedValueuser.toString(),
-                            orElse: () => cart.listcountry.first),
+                        selectedItem: cart.listcountry
+                            .firstWhere((element) => element.idCountry == cart.selectedValueuser.toString(), orElse: () => cart.listcountry.first),
                         onChanged: (data) {
                           cart.changeValuser(data!.idCountry);
                         },
@@ -87,20 +83,12 @@ class _ChangeCountryState extends State<ChangeCountry> {
                     width: double.infinity,
                     text: 'حفظ',
                     onPressed: () async {
-                      String iduser =
-                          Provider.of<UserProvider>(context, listen: false)
-                              .currentUser
-                              .idUser
-                              .toString();
-                      String fkcountry =
-                          Provider.of<country_vm>(context, listen: false)
-                              .selectedValueuser
-                              .toString();
+                      String iduser = Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString();
+                      String fkcountry = Provider.of<country_vm>(context, listen: false).selectedValueuser.toString();
 
-                      Provider.of<UserProvider>(context, listen: false)
-                          .updateUserVm(
-                        body: {'fk_country': fkcountry},
-                        iduser: null,
+                      Provider.of<UserProvider>(context, listen: false).updateUserVm(
+                        body: {'fk_country': fkcountry, 'isActive': Provider.of<UserProvider>(context, listen: false).currentUser.isActive},
+                        iduser: iduser,
                       );
                     },
                   ),

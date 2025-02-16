@@ -15,16 +15,16 @@ class UserService {
     String params = '',
   }) async {
     final ApiServices _apiServices = getIt<ApiServices>();
-    _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+    _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await _apiServices.postRequestWithFile(
-      endPoint: EndPoints.users.updateUserProfile,
-      queryParameters: {'id_user': idUser},
+      endPoint: EndPoints.users.updateUserProfile(idUser!),
+      // queryParameters: {'id_user': idUser},
       data: body,
     );
 
-    final List data = apiDataHandler(response);
+    final  data = response['message'];
 
-    return UserModel.fromJson(data.first);
+    return UserModel.fromJson(data);
   }
 
   Future<UserModel> UpdateProfileImage({

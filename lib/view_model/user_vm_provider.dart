@@ -203,6 +203,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   bool isDeletingAccount = false;
+  bool logoutFromAccount = false;
 
   deleteAccount(
       {required VoidCallback onDeleteSucceed,
@@ -229,6 +230,29 @@ class UserProvider extends ChangeNotifier {
       isDeletingAccount = false;
       notifyListeners();
       onDeleteFailed?.call();
+    }
+  }
+  logout(
+      {required VoidCallback onLogoutSuccess,
+      VoidCallback? onLogoutFailed}) async {
+    SharedPreferences preferences = getIt<SharedPreferences>();
+
+    logoutFromAccount = true;
+    notifyListeners();
+    try {
+      await Api().post(
+        url: EndPoints.baseUrls.urlLaravel + 'users/logout',
+        body: null,
+      );
+
+      await preferences.clear();
+      logoutFromAccount = false;
+      notifyListeners();
+      onLogoutSuccess.call();
+    } catch (e) {
+      logoutFromAccount = false;
+      notifyListeners();
+      onLogoutFailed?.call();
     }
   }
 

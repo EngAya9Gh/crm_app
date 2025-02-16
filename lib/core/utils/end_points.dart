@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -119,7 +119,7 @@ class _Users {
   String getUsersByType(String usersType) => "users/$usersType";
 
   final String updateProfileImage = "users/update_picture.php";
-  final String updateUserProfile = "users/update_user.php";
+  String updateUserProfile(String id) => "users/$id/edit";
   final String getUsersSales = 'users/sales';
 }
 
