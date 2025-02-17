@@ -969,6 +969,8 @@ import '../../../features/task_management/domain/use_cases/add_comment_task_usec
     as _i356;
 import '../../../features/task_management/domain/use_cases/add_task_usecase.dart'
     as _i111;
+import '../../../features/task_management/domain/use_cases/add_users_report_usecase.dart'
+    as _i668;
 import '../../../features/task_management/domain/use_cases/change_status_usecase.dart'
     as _i831;
 import '../../../features/task_management/domain/use_cases/get_comments_task_usecase.dart'
@@ -2026,6 +2028,8 @@ _i174.GetIt $initGetIt(
       () => _i356.AddCommentTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i111.AddTaskUsecase>(
       () => _i111.AddTaskUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i668.GetUsersReportsTaskUsecase>(
+      () => _i668.GetUsersReportsTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i831.ChangeStatusTaskUsecase>(
       () => _i831.ChangeStatusTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i755.GetCommentsTaskUsecase>(
@@ -2097,13 +2101,6 @@ _i174.GetIt $initGetIt(
         gh<_i568.ExportInvoicesToExcelUsecase>(),
         gh<_i944.ExportInvoicesToPdfUsecase>(),
       ));
-  gh.lazySingleton<_i855.TaskCubit>(() => _i855.TaskCubit(
-        gh<_i111.AddTaskUsecase>(),
-        gh<_i439.GetTasksUsecase>(),
-        gh<_i831.ChangeStatusTaskUsecase>(),
-        gh<_i356.AddCommentTaskUsecase>(),
-        gh<_i755.GetCommentsTaskUsecase>(),
-      ));
   gh.factory<_i349.WaitingAgentsCubit>(
       () => _i349.WaitingAgentsCubit(gh<_i941.GetWaitingAgentsUsecase>()));
   gh.factory<_i301.UsersCubit>(() => _i301.UsersCubit(
@@ -2116,6 +2113,14 @@ _i174.GetIt $initGetIt(
         gh<_i62.GetBranchesForUserUsecase>(),
         gh<_i424.GetUserSelectUsecase>(),
         gh<_i985.GetUsersAllUsecase>(),
+      ));
+  gh.lazySingleton<_i855.TaskCubit>(() => _i855.TaskCubit(
+        gh<_i111.AddTaskUsecase>(),
+        gh<_i439.GetTasksUsecase>(),
+        gh<_i831.ChangeStatusTaskUsecase>(),
+        gh<_i356.AddCommentTaskUsecase>(),
+        gh<_i755.GetCommentsTaskUsecase>(),
+        gh<_i668.GetUsersReportsTaskUsecase>(),
       ));
   return getIt;
 }

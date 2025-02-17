@@ -7,6 +7,7 @@ import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:crm_smart/features/task_management/presentation/pages/ueser_report.dart';
 import 'package:crm_smart/features/task_management/presentation/widgets/task_management_filter_widget.dart';
 import 'package:crm_smart/features/task_management/presentation/widgets/tasks_paginated_list.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
   void initState() {
     super.initState();
     _privilegesCubit = context.read<PrivilegesCubit>();
-    _taskCubit = getIt<TaskCubit>()..init();
+    _taskCubit = getIt<TaskCubit>()
+      ..init();
     // final currentUser = AppConstants.currentUser;
     // departmentId = _privilegesCubit.checkPrivilege('161')
     //     ? '2'
@@ -120,6 +122,23 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                 );
               },
             ),
+            AppTextButton(
+              child: AppText("تقارير\nالموظفين",textAlign: TextAlign.center,color: AppColors.white,),
+              onPressed: () async {
+                final result = await AppNavigator.go(
+                  TaskUsersReportsPage(),
+                  isNew: false,
+                );
+                if (result == true) _taskCubit.getTasks();
+              },
+              textStyle: AppStyles.textStyle.copyWith(
+                fontSize: 16.scaleFontSize,
+                fontWeight: FontWeight.w600,
+                fontFamily: AppFonts.fontFamily1,
+                color: AppColors.white,
+              ),
+              appButtonStyle: AppButtonStyle.secondary,
+            ),
           ],
         ),
         body: Directionality(
@@ -173,10 +192,11 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                         child: AppPaginatedList(
                           scrollDirection: Axis.horizontal,
                           items: TaskStatusType.values,
-                          itemBuilder: (context, index) => stageChip(
-                            TaskStatusType.values[index],
-                            state.selectedStatus == TaskStatusType.values[index],
-                          ),
+                          itemBuilder: (context, index) =>
+                              stageChip(
+                                TaskStatusType.values[index],
+                                state.selectedStatus == TaskStatusType.values[index],
+                              ),
                           separatorBuilder: (context, index) => 10.width,
                         ),
                       ),
@@ -202,10 +222,11 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                         child: TasksPaginatedList(),
                       );
                     },
-                    failure: (error, data) => AppErrorWidget(
-                      message: error,
-                      onPressed: _taskCubit.getTasks,
-                    ),
+                    failure: (error, data) =>
+                        AppErrorWidget(
+                          message: error,
+                          onPressed: _taskCubit.getTasks,
+                        ),
                   );
                 },
               ),
@@ -216,10 +237,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
     );
   }
 
-  stageChip(
-    TaskStatusType status,
-    bool isActive,
-  ) {
+  stageChip(TaskStatusType status,
+      bool isActive,) {
     return InkWell(
       onTap: () {
         _taskCubit.onChangeStatus(status);

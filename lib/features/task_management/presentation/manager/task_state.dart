@@ -24,10 +24,14 @@ class TaskState {
     this.changeTaskStatus = const BlocStatus.initial(),
     this.addComment = const BlocStatus.initial(),
     this.getTaskComment = const BlocStatus.initial(),
+    this.getUsersTaskReports = const BlocStatus.initial(),
+    this.getUsersTaskReportsStatus = const BlocStatus.initial(),
     this.selectedAssignedToType,
     this.myBranch,
     this.myDepartment,
     this.myTasks,
+    this.hasGetAllReports=false,
+    this.totalUserReportCount=0,
   });
 
   final BlocStatus getTasksStatus;
@@ -55,6 +59,10 @@ class TaskState {
   final String? myBranch;
   final BlocStatus addComment;
   final BlocStatus<List<CommentModel>> getTaskComment;
+  final BlocStatus<List<UserReportModel>> getUsersTaskReports;
+  final BlocStatus getUsersTaskReportsStatus;
+  final bool hasGetAllReports;
+  final int totalUserReportCount;
 
   TaskState copyWith({
     BlocStatus? getTasksStatus,
@@ -68,6 +76,8 @@ class TaskState {
     BlocStatus? addTaskStatus,
     BlocStatus? changeTaskStatus,
     BlocStatus<List<CommentModel>>? getTaskComment,
+    BlocStatus<List<UserReportModel>>? getUsersTaskReports,
+    BlocStatus? getUsersTaskReportsStatus,
     BlocStatus? addComment,
     bool isResetAddTask = false,
     Nullable<TaskStatusType?>? selectedStatus,
@@ -84,6 +94,8 @@ class TaskState {
     final Nullable<String?>? myDepartment,
     final Nullable<String?>? myBranch,
     bool isResetTasksState = false,
+    bool? hasGetAllReports,
+    int? totalUserReportCount,
   }) {
     return TaskState(
       selectedAssignTo: isResetAddTask ? null : selectedAssignTo ?? this.selectedAssignTo,
@@ -100,8 +112,12 @@ class TaskState {
       isRecurring: isResetAddTask ? null : isRecurring ?? this.isRecurring,
       addTaskStatus: isResetAddTask ? const BlocStatus.initial() : addTaskStatus ?? this.addTaskStatus,
       getTasksStatus: getTasksStatus ?? this.getTasksStatus,
+      totalUserReportCount: totalUserReportCount ?? this.totalUserReportCount,
       changeTaskStatus: changeTaskStatus ?? this.changeTaskStatus,
       addComment: addComment ?? this.addComment,
+      getUsersTaskReports: getUsersTaskReports ?? this.getUsersTaskReports,
+      getUsersTaskReportsStatus: getUsersTaskReportsStatus ?? this.getUsersTaskReportsStatus,
+      hasGetAllReports: hasGetAllReports ?? this.hasGetAllReports,
       getTaskComment: getTaskComment ?? this.getTaskComment,
       selectedStatus: selectedStatus != null ? selectedStatus.value : this.selectedStatus,
       filterAssignTo: isResetTasksState

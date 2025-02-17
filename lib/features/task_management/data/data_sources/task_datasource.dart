@@ -13,8 +13,10 @@ import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/utils/end_points.dart';
 import '../../../../model/commentmodel.dart';
 import '../../domain/use_cases/add_comment_task_usecase.dart';
+import '../../domain/use_cases/add_users_report_usecase.dart';
 import '../../domain/use_cases/get_tasks_usecase.dart';
 import '../models/user_region_department.dart';
+import '../models/users_report_model.dart';
 
 @injectable
 class TaskDatasource {
@@ -107,6 +109,18 @@ class TaskDatasource {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.post(endPoint: EndPoints.task.addTaskComment(params.taskId), data: params.toMap());
       return ResponseWrapper<bool>(message: true, data: true);
+    }
+
+    return throwAppException(fun);
+  }
+  Future<ResponseWrapper<List<UserReportModel>>> getUsersReports(GetUsersReportsParams params) async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(endPoint: EndPoints.task.getUsersTasksReports, queryParameters: params.toMap());
+      return ResponseWrapper<List<UserReportModel>>(
+        data: [],
+        message: List.from((response['message']).map((e) => UserReportModel.fromJson(e as Map<String, dynamic>))),
+      );
     }
 
     return throwAppException(fun);

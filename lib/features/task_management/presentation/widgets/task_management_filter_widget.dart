@@ -1,11 +1,9 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/features/clients_care/violations_clienta_care/data/models/management_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:crm_smart/features/clients_care/accept_clients/domain/entities/filter_clients_accept_entity.dart';
 
 import '../../../../core/common/helpers/input_validator.dart';
 import '../../../../core/common/models/location/branch_model.dart';
@@ -121,7 +119,7 @@ class TaskManagementFilterWidget extends StatelessWidget {
                 onChanged: (value) {
                   context.read<TaskCubit>().pageVariables.atTime.value = value;
                 },
-                title: AppText("تم تنفيذ المهممة قبل انتهاء الوقت المخصص لها"),
+                title: AppText("تم تنفيذ المهمة قبل انتهاء الوقت المخصص لها"),
               ),
               20.height,
               SwitchListTile(
@@ -129,7 +127,7 @@ class TaskManagementFilterWidget extends StatelessWidget {
                 onChanged: (value) {
                   context.read<TaskCubit>().pageVariables.afterTime.value = value;
                 },
-                title: AppText("تم تنفيذ المهممة بعد انتهاء الوقت المخصص لها"),
+                title: AppText("تم تنفيذ المهمة بعد انتهاء الوقت المخصص لها"),
               ),
               20.height,
               AppElevatedButton(

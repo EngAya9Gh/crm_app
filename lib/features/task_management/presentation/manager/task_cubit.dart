@@ -16,9 +16,11 @@ import '../../../clients_care/violations_clienta_care/data/models/management_mod
 import '../../data/models/task_model.dart';
 import '../../data/models/task_status_info.dart';
 import '../../data/models/user_region_department.dart';
+import '../../data/models/users_report_model.dart';
 import '../../domain/entities/tasks_page_variables_entity.dart';
 import '../../domain/use_cases/add_comment_task_usecase.dart';
 import '../../domain/use_cases/add_task_usecase.dart';
+import '../../domain/use_cases/add_users_report_usecase.dart';
 import '../../domain/use_cases/change_status_usecase.dart';
 import '../../domain/use_cases/get_comments_task_usecase.dart';
 import '../../domain/use_cases/get_tasks_usecase.dart';
@@ -34,6 +36,7 @@ class TaskCubit extends Cubit<TaskState> {
   final ChangeStatusTaskUsecase _changeStatusTaskUsecase;
   final AddCommentTaskUsecase _addCommentTaskUsecase;
   final GetCommentsTaskUsecase _getCommentsTaskUsecase;
+  final GetUsersReportsTaskUsecase _getUsersReportsTaskUsecase;
 
   Map<TaskStatusType, TaskStatusInfo> taskStatusInfo = {
     TaskStatusType.Open: TaskStatusInfo(),
@@ -48,6 +51,7 @@ class TaskCubit extends Cubit<TaskState> {
     this._changeStatusTaskUsecase,
     this._addCommentTaskUsecase,
     this._getCommentsTaskUsecase,
+    this._getUsersReportsTaskUsecase,
   ) : super(TaskState());
 
   TasksPageVariablesEntity pageVariables = TasksPageVariablesEntity();
@@ -381,6 +385,41 @@ class TaskCubit extends Cubit<TaskState> {
           state.copyWith(addComment: BlocStatus.success(data: value.message ?? [])),
         );
         onSuccess?.call();
+      },
+    );
+  }
+
+  getUserTaskReports(GetUsersReportsParams params,[VoidCallback? onSuccess]) async {
+    if(state.getUsersTaskReportsStatus.isLoading()){
+      return;
+    }
+    emit(state.copyWith(getUsersTaskReportsStatus: BlocStatus.loading()));
+    if (params.page == 1) {
+      emit(state.copyWith(getUsersTaskReports: BlocStatus.loading()));
+    }
+    final result = await _getUsersReportsTaskUsecase(params);
+    result.extract(
+      (exception, message) => emit(
+        state.copyWith(getUsersTaskReports: BlocStatus.fail(error: message), getUsersTaskReportsStatus: BlocStatus.fail(error: message)),
+      ),
+      (value) {
+        onSuccess?.call();
+        emit(state.copyWith(hasGetAllReports: (value.message?.isEmpty ?? false)));
+        if (params.page > 1) {
+          emit(
+            state.copyWith(
+                totalUserReportCount: value.count,
+                getUsersTaskReports: BlocStatus.success(data: List.of(state.getUsersTaskReports.data ?? [])..addAll(value.message ?? [])),
+                getUsersTaskReportsStatus: BlocStatus.success()),
+          );
+          return;
+        }
+        emit(
+          state.copyWith(
+              totalUserReportCount: value.count,
+              getUsersTaskReports: BlocStatus.success(data: value.message ?? []),
+              getUsersTaskReportsStatus: BlocStatus.success()),
+        );
       },
     );
   }
