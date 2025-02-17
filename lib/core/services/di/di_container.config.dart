@@ -965,10 +965,14 @@ import '../../../features/task_management/data/repositories/task_repository_impl
     as _i385;
 import '../../../features/task_management/domain/repositories/task_repository.dart'
     as _i956;
+import '../../../features/task_management/domain/use_cases/add_comment_task_usecase.dart'
+    as _i356;
 import '../../../features/task_management/domain/use_cases/add_task_usecase.dart'
     as _i111;
 import '../../../features/task_management/domain/use_cases/change_status_usecase.dart'
     as _i831;
+import '../../../features/task_management/domain/use_cases/get_comments_task_usecase.dart'
+    as _i755;
 import '../../../features/task_management/domain/use_cases/get_tasks_usecase.dart'
     as _i439;
 import '../../../features/task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart'
@@ -2018,10 +2022,14 @@ _i174.GetIt $initGetIt(
       () => _i307.ReturnScheduleVisitToOpenUsecase(gh<_i61.DatesTableRepo>()));
   gh.lazySingleton<_i567.StartDateVisitStatusUsecase>(
       () => _i567.StartDateVisitStatusUsecase(gh<_i61.DatesTableRepo>()));
+  gh.factory<_i356.AddCommentTaskUsecase>(
+      () => _i356.AddCommentTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i111.AddTaskUsecase>(
       () => _i111.AddTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i831.ChangeStatusTaskUsecase>(
       () => _i831.ChangeStatusTaskUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i755.GetCommentsTaskUsecase>(
+      () => _i755.GetCommentsTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i439.GetTasksUsecase>(
       () => _i439.GetTasksUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i526.GetUsersByDepartmentAndRegionUsecase>(() =>
@@ -2032,11 +2040,6 @@ _i174.GetIt $initGetIt(
         gh<_i865.AddActivityCrudUseCase>(),
         gh<_i327.GetActivityTypesUseCase>(),
         gh<_i947.GetSubscribedClientsUseCase>(),
-      ));
-  gh.lazySingleton<_i855.TaskCubit>(() => _i855.TaskCubit(
-        gh<_i111.AddTaskUsecase>(),
-        gh<_i439.GetTasksUsecase>(),
-        gh<_i831.ChangeStatusTaskUsecase>(),
       ));
   gh.factory<_i815.CompanyCubit>(() => _i815.CompanyCubit(
         gh<_i521.GetCommentUsecase>(),
@@ -2093,6 +2096,13 @@ _i174.GetIt $initGetIt(
         gh<_i825.GetInvoiceByIdUsecase>(),
         gh<_i568.ExportInvoicesToExcelUsecase>(),
         gh<_i944.ExportInvoicesToPdfUsecase>(),
+      ));
+  gh.lazySingleton<_i855.TaskCubit>(() => _i855.TaskCubit(
+        gh<_i111.AddTaskUsecase>(),
+        gh<_i439.GetTasksUsecase>(),
+        gh<_i831.ChangeStatusTaskUsecase>(),
+        gh<_i356.AddCommentTaskUsecase>(),
+        gh<_i755.GetCommentsTaskUsecase>(),
       ));
   gh.factory<_i349.WaitingAgentsCubit>(
       () => _i349.WaitingAgentsCubit(gh<_i941.GetWaitingAgentsUsecase>()));

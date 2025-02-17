@@ -281,6 +281,8 @@ class _Task {
   String changeStatusTask(String id) => 'tasks/$id/change-status';
   final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
   final getUserSelect = 'tasks/employees';
+  String addTaskComment(int idTask) => 'tasks/$idTask/add-comment';
+  String getTaskComments(int idTask) => 'tasks/$idTask/comments';
 }
 
 class _Participate {

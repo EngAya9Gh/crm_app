@@ -11,6 +11,8 @@ import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/services/api/api_services.dart';
 import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/utils/end_points.dart';
+import '../../../../model/commentmodel.dart';
+import '../../domain/use_cases/add_comment_task_usecase.dart';
 import '../../domain/use_cases/get_tasks_usecase.dart';
 import '../models/user_region_department.dart';
 
@@ -80,6 +82,31 @@ class TaskDatasource {
         data: List.from((data as List<dynamic>).map((e) => UserRegionDepartment.fromJson(e as Map<String, dynamic>))),
         message: List.from((data).map((e) => UserRegionDepartment.fromJson(e as Map<String, dynamic>))),
       );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<List<CommentModel>>> getTaskComments(AddTaskCommentParams params) async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(endPoint: EndPoints.task.getTaskComments(params.taskId));
+
+      final data = jsonDecode(jsonEncode(response));
+      return ResponseWrapper<List<CommentModel>>(
+        data: List.from((data['message'] as List<dynamic>).map((e) => CommentModel.fromJson(e as Map<String, dynamic>))),
+        message: List.from((data['message']).map((e) => CommentModel.fromJson(e as Map<String, dynamic>))),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<bool>> addTaskComment(AddTaskCommentParams params) async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(endPoint: EndPoints.task.addTaskComment(params.taskId), data: params.toMap());
+      return ResponseWrapper<bool>(message: true, data: true);
     }
 
     return throwAppException(fun);

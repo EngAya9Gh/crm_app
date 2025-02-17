@@ -1,3 +1,5 @@
+import 'package:crm_smart/features/task_management/domain/use_cases/add_comment_task_usecase.dart';
+import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -40,16 +42,22 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<void>>> changeStatusTask(
-      String taskId, Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<void>>> changeStatusTask(String taskId, Map<String, dynamic> body) {
     return toApiResult(() => datasource.changeStatusTask(taskId, body));
   }
 
   @override
-  Future<Result<ResponseWrapper<List<UserRegionDepartment>>>>
-      getUsersByTypeAdministrationAndRegion(Map<String, dynamic> body) {
-    return toApiResult(
-        () => datasource.getUsersByTypeAdministrationAndRegion(body));
+  Future<Result<ResponseWrapper<List<UserRegionDepartment>>>> getUsersByTypeAdministrationAndRegion(Map<String, dynamic> body) {
+    return toApiResult(() => datasource.getUsersByTypeAdministrationAndRegion(body));
   }
 
+  @override
+  Future<Result<ResponseWrapper<bool>>> addTaskComments(AddTaskCommentParams params) {
+    return toApiResult(() => datasource.addTaskComment(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<CommentModel>>>> getTaskComments(AddTaskCommentParams params) {
+    return toApiResult(() => datasource.getTaskComments(params));
+  }
 }

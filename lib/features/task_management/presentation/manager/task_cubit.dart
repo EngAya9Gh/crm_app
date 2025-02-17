@@ -9,6 +9,7 @@ import '../../../../core/common/models/nullable.dart';
 import '../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_constants.dart';
+import '../../../../model/commentmodel.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/usermodel.dart';
 import '../../../clients_care/violations_clienta_care/data/models/management_model.dart';
@@ -16,8 +17,10 @@ import '../../data/models/task_model.dart';
 import '../../data/models/task_status_info.dart';
 import '../../data/models/user_region_department.dart';
 import '../../domain/entities/tasks_page_variables_entity.dart';
+import '../../domain/use_cases/add_comment_task_usecase.dart';
 import '../../domain/use_cases/add_task_usecase.dart';
 import '../../domain/use_cases/change_status_usecase.dart';
+import '../../domain/use_cases/get_comments_task_usecase.dart';
 import '../../domain/use_cases/get_tasks_usecase.dart';
 import '../../../mangement/manage_users/domain/use_cases/get_user_select_task_management_usecase.dart';
 import '../pages/add_task_page.dart';
@@ -29,6 +32,8 @@ class TaskCubit extends Cubit<TaskState> {
   final AddTaskUsecase _addTaskUsecase;
   final GetTasksUsecase _getTasksUsecase;
   final ChangeStatusTaskUsecase _changeStatusTaskUsecase;
+  final AddCommentTaskUsecase _addCommentTaskUsecase;
+  final GetCommentsTaskUsecase _getCommentsTaskUsecase;
 
   Map<TaskStatusType, TaskStatusInfo> taskStatusInfo = {
     TaskStatusType.Open: TaskStatusInfo(),
@@ -41,6 +46,8 @@ class TaskCubit extends Cubit<TaskState> {
     this._addTaskUsecase,
     this._getTasksUsecase,
     this._changeStatusTaskUsecase,
+    this._addCommentTaskUsecase,
+    this._getCommentsTaskUsecase,
   ) : super(TaskState());
 
   TasksPageVariablesEntity pageVariables = TasksPageVariablesEntity();
@@ -208,6 +215,10 @@ class TaskCubit extends Cubit<TaskState> {
             myTasks: state.myTasks,
             myDepartment: state.myDepartment,
             myBranch: pageVariables.selectedBranchModel.value?.branchId,
+            userId: pageVariables.selectedUserModel.value?.idUser,
+            managerId: pageVariables.selectedManagerModel.value?.idMange,
+            atTime: pageVariables.atTime.value,
+            afterTime: pageVariables.afterTime.value,
           ),
         );
         result.fold(
@@ -290,7 +301,8 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(isResetTasksState: true));
   }
 
-  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess, String userId, bool fromDialog,[double? rate]) async {
+  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess, String userId, bool fromDialog,
+      [double? rate]) async {
     emit(state.copyWith(changeTaskStatus: const BlocStatus.loading()));
     final response = await _changeStatusTaskUsecase(ChangeStatusTaskParams(
       fromDialog ? taskStatusType.next.id.toString() : taskStatusType.id.toString(),
@@ -331,9 +343,46 @@ class TaskCubit extends Cubit<TaskState> {
     );
   }
 
-
   onChangeSelectedAssignedToType(AssignedTypeNew? assignedType) {
     emit(state.copyWith(selectedAssignedToType: Nullable.value(assignedType)));
+  }
+
+  onGetTaskComments(int taskId) async {
+    emit(state.copyWith(getTaskComment: BlocStatus.loading()));
+    final result = await _getCommentsTaskUsecase(AddTaskCommentParams(taskId: taskId, content: ''));
+    result.extract(
+      (exception, message) => emit(
+        state.copyWith(getTaskComment: BlocStatus.fail(error: message)),
+      ),
+      (value) {
+        if (value.message?.isEmpty ?? true) {
+          emit(
+            state.copyWith(getTaskComment: BlocStatus.empty()),
+          );
+          return;
+        }
+        emit(
+          state.copyWith(getTaskComment: BlocStatus.success(data: value.message ?? [])),
+        );
+      },
+    );
+  }
+
+  onAddTaskComment(AddTaskCommentParams params, VoidCallback? onSuccess) async {
+    emit(state.copyWith(addComment: BlocStatus.loading()));
+    final result = await _addCommentTaskUsecase(params);
+    result.extract(
+      (exception, message) => emit(
+        state.copyWith(addComment: BlocStatus.fail(error: message)),
+      ),
+      (value) {
+        onGetTaskComments(params.taskId);
+        emit(
+          state.copyWith(addComment: BlocStatus.success(data: value.message ?? [])),
+        );
+        onSuccess?.call();
+      },
+    );
   }
 
   @override

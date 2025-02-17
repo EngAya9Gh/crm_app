@@ -4,7 +4,9 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/services/api/result.dart';
+import '../../../../model/commentmodel.dart';
 import '../../data/models/user_region_department.dart';
+import '../use_cases/add_comment_task_usecase.dart';
 import '../use_cases/get_tasks_usecase.dart';
 
 abstract class TaskRepository {
@@ -18,4 +20,7 @@ abstract class TaskRepository {
 
   Future<Result<ResponseWrapper<List<UserRegionDepartment>>>> getUsersByTypeAdministrationAndRegion(Map<String, dynamic> body);
 
+  Future<Result<ResponseWrapper<List<CommentModel>>>> getTaskComments(AddTaskCommentParams params);
+
+  Future<Result<ResponseWrapper<bool>>> addTaskComments(AddTaskCommentParams params);
 }

@@ -22,6 +22,8 @@ class TaskState {
     this.getTasksStatus = const BlocStatus.initial(),
     this.addTaskStatus = const BlocStatus.initial(),
     this.changeTaskStatus = const BlocStatus.initial(),
+    this.addComment = const BlocStatus.initial(),
+    this.getTaskComment = const BlocStatus.initial(),
     this.selectedAssignedToType,
     this.myBranch,
     this.myDepartment,
@@ -51,6 +53,8 @@ class TaskState {
   final String? myTasks;
   final String? myDepartment;
   final String? myBranch;
+  final BlocStatus addComment;
+  final BlocStatus<List<CommentModel>> getTaskComment;
 
   TaskState copyWith({
     BlocStatus? getTasksStatus,
@@ -63,6 +67,8 @@ class TaskState {
     bool? isRecurring,
     BlocStatus? addTaskStatus,
     BlocStatus? changeTaskStatus,
+    BlocStatus<List<CommentModel>>? getTaskComment,
+    BlocStatus? addComment,
     bool isResetAddTask = false,
     Nullable<TaskStatusType?>? selectedStatus,
     Nullable<UserModel?>? filterAssignFrom,
@@ -95,6 +101,8 @@ class TaskState {
       addTaskStatus: isResetAddTask ? const BlocStatus.initial() : addTaskStatus ?? this.addTaskStatus,
       getTasksStatus: getTasksStatus ?? this.getTasksStatus,
       changeTaskStatus: changeTaskStatus ?? this.changeTaskStatus,
+      addComment: addComment ?? this.addComment,
+      getTaskComment: getTaskComment ?? this.getTaskComment,
       selectedStatus: selectedStatus != null ? selectedStatus.value : this.selectedStatus,
       filterAssignTo: isResetTasksState
           ? null
