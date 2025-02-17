@@ -1,5 +1,8 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/clients_care/violations_clienta_care/data/models/management_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:crm_smart/features/clients_care/accept_clients/domain/entities/filter_clients_accept_entity.dart';
@@ -8,8 +11,13 @@ import '../../../../core/common/helpers/input_validator.dart';
 import '../../../../core/common/models/location/branch_model.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../../model/managmodel.dart';
+import '../../../../model/usermodel.dart';
+import '../../../../provider/manage_provider.dart';
 import '../../../../view_model/regoin_vm.dart';
+import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
+import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../manager/task_cubit.dart';
 
 class TaskManagementFilterWidget extends StatelessWidget {
@@ -33,9 +41,10 @@ class TaskManagementFilterWidget extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: AppTextButton(
                   text: "إعادة الافتراضي",
-                  onPressed: context.read<TaskCubit>().pageVariables.selectedBranchModel.value != null
+                  onPressed: context.read<TaskCubit>().pageVariables.checkIfFilterIsNotEmpty()
                       ? () {
-                          context.read<TaskCubit>().pageVariables.selectedBranchModel.value = null;
+
+                          context.read<TaskCubit>().pageVariables.clearFilters();
                           context.read<TaskCubit>().getTasks();
                           context.pop();
                         }
@@ -62,6 +71,65 @@ class TaskManagementFilterWidget extends StatelessWidget {
                   compareFn: (Branch, selected) => Branch.branchId == selected.branchId,
                   validator: InputValidator.requiredFiled,
                 ),
+              ),
+              20.height,
+              Consumer<manage_provider>(
+                builder: (context, value, child) => CustomSearchableDropDown<ManageModel>(
+                  hint: "الادارة",
+                  items: value.listMangTask,
+                  selectedItem: context.read<TaskCubit>().pageVariables.selectedManagerModel.value,
+                  itemAsString: (manager) => manager?.name_mange??'',
+                  onChanged: (manager) {
+                    if (manager == null) {
+                      return;
+                    }
+                    context.read<TaskCubit>().pageVariables.selectedManagerModel.value = manager;
+                    // widget.onSelected?.call(city);
+                  },
+                  filterFn: (manager, term) {
+                    return manager.name_mange.toLowerCase().contains(term.toLowerCase());
+                  },
+                  compareFn: (manager, selected) => manager.name_mange == manager.name_mange,
+                  validator: InputValidator.requiredFiled,
+                ),
+              ),
+              20.height,
+              BlocSelector<UsersCubit,UsersState,BlocStatus<List<UserModel>>>(
+                selector: (state) => state.getUserSelected,
+                builder: (context, state) => CustomSearchableDropDown<UserModel>(
+                  hint: "الموظف المسند له",
+                  items: state.data??[],
+                  selectedItem: context.read<TaskCubit>().pageVariables.selectedUserModel.value,
+                  itemAsString: (user) => user?.nameUser??'',
+                  onChanged: (user) {
+                    if (user == null) {
+                      return;
+                    }
+                    context.read<TaskCubit>().pageVariables.selectedUserModel.value = user;
+                    // widget.onSelected?.call(city);
+                  },
+                  filterFn: (user, term) {
+                    return user.nameUser!.toLowerCase().contains(term.toLowerCase());
+                  },
+                  compareFn: (manager, selected) => manager.name_mange == manager.name_mange,
+                  validator: InputValidator.requiredFiled,
+                ),
+              ),
+              20.height,
+              SwitchListTile(
+                value: context.read<TaskCubit>().pageVariables.atTime.value??false,
+                onChanged: (value) {
+                  context.read<TaskCubit>().pageVariables.atTime.value = value;
+                },
+                title: AppText("تم تنفيذ المهممة قبل انتهاء الوقت المخصص لها"),
+              ),
+              20.height,
+              SwitchListTile(
+                value: context.read<TaskCubit>().pageVariables.afterTime.value??false,
+                onChanged: (value) {
+                  context.read<TaskCubit>().pageVariables.afterTime.value = value;
+                },
+                title: AppText("تم تنفيذ المهممة بعد انتهاء الوقت المخصص لها"),
               ),
               20.height,
               AppElevatedButton(

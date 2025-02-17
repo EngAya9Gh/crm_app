@@ -89,12 +89,12 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
         onTap: status != null && context.read<PrivilegesCubit>().checkPrivilege('165')
             ? () {
                 print('object234567890-');
-
+                _cubit.onGetTaskComments(task.id!);
                 showDialog(
                   context: context,
                   barrierDismissible: false,
                   barrierLabel: task.id.toString(),
-                  builder: (context) =>DialogTaskDetail(task:task,status:status,cubit:_cubit) , // builder: (context) => BlocProvider.value(
+                  builder: (context) => DialogTaskDetail(task: task, status: status, cubit: _cubit), // builder: (context) => BlocProvider.value(
                   //   value: _cubit,
                   //   child: ChangeStatusTaskDialog(
                   //     status: status,
@@ -247,20 +247,21 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                               ),
                             ],
                           ),
-                          if(task.timeTaken!=null)Row(
-                            children: [
-                              AppText(
-                                'عدد الساعات ما بين استلام المهمة واكمالها',
-                                color: context.colorScheme.grey500,
-                                fontSize: 12,
-                              ),
-                              AppText(' --> '),
-                              AppText(
-                                task.timeTaken.toString(),
-                                color: AppColors.primaryMain,
-                              ),
-                            ],
-                          ),
+                          if (task.timeTaken != null)
+                            Row(
+                              children: [
+                                AppText(
+                                  'عدد الساعات ما بين استلام المهمة واكمالها',
+                                  color: context.colorScheme.grey500,
+                                  fontSize: 12,
+                                ),
+                                AppText(' --> '),
+                                AppText(
+                                  task.timeTaken.toString(),
+                                  color: AppColors.primaryMain,
+                                ),
+                              ],
+                            ),
                           if (task.client != null) ...{
                             AppText(
                               task.client?.nameEnterprise ?? '',

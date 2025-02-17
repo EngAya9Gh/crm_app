@@ -23,11 +23,13 @@ import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
+import '../../../../provider/manage_provider.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../manager/task_cubit.dart';
 import 'add_task_page.dart';
 
@@ -66,7 +68,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
     //         : null;
 
     // userId = _privilegesCubit.checkPrivilege('163') ? currentUser.idUser : null;
-
+    context.read<UsersCubit>().onGetUserSelected();
+    context.read<manage_provider>().getManagesTask();
     scheduleMicrotask(() {
       // _taskCubit
       //   ..onChangeMyDepartment(departmentId)

@@ -160,7 +160,7 @@ class _TaskManagementPageState extends State<TaskManagementPage> {
                     ),
                   ),
                   children: TaskStatusType.values.map((status) =>
-                      DragDropListBuilder.build(status, _taskCubit)
+                      DragDropListBuilder.build(status, _taskCubit,context)
                   ).toList(),
                 );
               },

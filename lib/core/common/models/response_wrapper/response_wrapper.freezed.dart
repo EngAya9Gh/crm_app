@@ -30,13 +30,9 @@ mixin _$ResponseWrapper<T> {
   @JsonKey(name: "count")
   int? get count => throw _privateConstructorUsedError;
 
-  /// Serializes this ResponseWrapper to a JSON map.
   Map<String, dynamic> toJson(Object? Function(T) toJsonT) =>
       throw _privateConstructorUsedError;
-
-  /// Create a copy of ResponseWrapper
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $ResponseWrapperCopyWith<T, ResponseWrapper<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -65,8 +61,6 @@ class _$ResponseWrapperCopyWithImpl<T, $Res, $Val extends ResponseWrapper<T>>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ResponseWrapper
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -125,8 +119,6 @@ class __$$ResponseWrapperImplCopyWithImpl<T, $Res>
       $Res Function(_$ResponseWrapperImpl<T>) _then)
       : super(_value, _then);
 
-  /// Create a copy of ResponseWrapper
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -206,7 +198,7 @@ class _$ResponseWrapperImpl<T> implements _ResponseWrapper<T> {
             (identical(other.count, count) || other.count == count));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -216,9 +208,7 @@ class _$ResponseWrapperImpl<T> implements _ResponseWrapper<T> {
       const DeepCollectionEquality().hash(data),
       count);
 
-  /// Create a copy of ResponseWrapper
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ResponseWrapperImplCopyWith<T, _$ResponseWrapperImpl<T>> get copyWith =>
@@ -256,11 +246,8 @@ abstract class _ResponseWrapper<T> implements ResponseWrapper<T> {
   @override
   @JsonKey(name: "count")
   int? get count;
-
-  /// Create a copy of ResponseWrapper
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ResponseWrapperImplCopyWith<T, _$ResponseWrapperImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

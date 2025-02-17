@@ -90,9 +90,6 @@ class _$PageStateCopyWithImpl<T, $Res, $Val extends PageState<T>>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of PageState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -109,9 +106,6 @@ class __$$initImplCopyWithImpl<T, $Res>
   __$$initImplCopyWithImpl(
       _$initImpl<T> _value, $Res Function(_$initImpl<T>) _then)
       : super(_value, _then);
-
-  /// Create a copy of PageState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -233,9 +227,6 @@ class __$$LodaingImplCopyWithImpl<T, $Res>
   __$$LodaingImplCopyWithImpl(
       _$LodaingImpl<T> _value, $Res Function(_$LodaingImpl<T>) _then)
       : super(_value, _then);
-
-  /// Create a copy of PageState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -360,8 +351,6 @@ class __$$LoadedImplCopyWithImpl<T, $Res>
       _$LoadedImpl<T> _value, $Res Function(_$LoadedImpl<T>) _then)
       : super(_value, _then);
 
-  /// Create a copy of PageState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -401,9 +390,7 @@ class _$LoadedImpl<T> extends _Loaded<T> {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
 
-  /// Create a copy of PageState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadedImplCopyWith<T, _$LoadedImpl<T>> get copyWith =>
@@ -495,10 +482,7 @@ abstract class _Loaded<T> extends PageState<T> {
   const _Loaded._() : super._();
 
   T get data;
-
-  /// Create a copy of PageState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<T, _$LoadedImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -517,9 +501,6 @@ class __$$EmptyImplCopyWithImpl<T, $Res>
   __$$EmptyImplCopyWithImpl(
       _$EmptyImpl<T> _value, $Res Function(_$EmptyImpl<T>) _then)
       : super(_value, _then);
-
-  /// Create a copy of PageState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -644,8 +625,6 @@ class __$$ErrorImplCopyWithImpl<T, $Res>
       _$ErrorImpl<T> _value, $Res Function(_$ErrorImpl<T>) _then)
       : super(_value, _then);
 
-  /// Create a copy of PageState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -685,9 +664,7 @@ class _$ErrorImpl<T> extends _Error<T> {
   @override
   int get hashCode => Object.hash(runtimeType, exception);
 
-  /// Create a copy of PageState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<T, _$ErrorImpl<T>> get copyWith =>
@@ -779,10 +756,7 @@ abstract class _Error<T> extends PageState<T> {
   const _Error._() : super._();
 
   Exception? get exception;
-
-  /// Create a copy of PageState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<T, _$ErrorImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
