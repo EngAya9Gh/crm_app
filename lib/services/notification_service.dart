@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,6 +15,7 @@ import '../core/config/navigator/app_navigator.dart';
 import '../features/app/presentation/widgets/app_text.dart';
 import '../features/notifications/presentation/manager/notifications_cubit.dart';
 import '../firebase_options.dart';
+import '../view_model/user_vm_provider.dart';
 
 class NotificationService {
   static final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -77,6 +79,9 @@ class NotificationService {
               ),
             ));
         String typeNotify = message.data['Typenotify'];
+        if(message.data['type_notify']=="task"){
+          getIt<UserProvider>().getCurrentUser();
+        }
         AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
       }
     });
@@ -87,12 +92,18 @@ class NotificationService {
         log('${message.notification?.title}');
         {
           String typeNotify = message.data['Typenotify'];
+          if(message.data['type_notify']=="task"){
+            getIt<UserProvider>().getCurrentUser();
+          }
           AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
         }
       },
     );
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
+        if(message.data['type_notify']=="task"){
+          getIt<UserProvider>().getCurrentUser();
+        }
         log('///////////////////////////');
         log('$message.contentAvailable');
         log(message.data.toString());

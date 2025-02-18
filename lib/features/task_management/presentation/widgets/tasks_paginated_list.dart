@@ -3,25 +3,18 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
-import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_drop_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' as Intl;
 
 import '../../../../core/common/extensions/build_context.dart';
-import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/utils/end_points.dart';
-import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../manager/task_cubit.dart';
-import '../pages/change_status_dialog.dart';
 import 'dialog_task_detail.dart';
 
 class TasksPaginatedList extends StatefulWidget {
@@ -88,7 +81,6 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
       child: InkWell(
         onTap: status != null && context.read<PrivilegesCubit>().checkPrivilege('165')
             ? () {
-                print('object234567890-');
                 _cubit.onGetTaskComments(task.id!);
                 showDialog(
                   context: context,
