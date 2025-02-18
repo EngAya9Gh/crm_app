@@ -252,7 +252,9 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                                         ? selectedValueManage
                                         : selectedRegionId;
                                     _taskCubit.addTaskAction(
-                                        onSuccess: () => Navigator.pop(context, selectedPublicType == PublicType.linkComment),
+                                        onSuccess: () {
+                                          Navigator.pop(context, selectedPublicType == PublicType.linkComment);
+                                        },
                                         addTaskParams: AddTaskParams(
                                             title: selectedPublicType == PublicType.other ? _taskNameController.text : selectedPublicType?.text,
                                             description: _taskDescriptionController.text,

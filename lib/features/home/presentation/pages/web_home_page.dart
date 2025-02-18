@@ -19,6 +19,7 @@ import '../../../../core/common/widgets/app_loader.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_constants.dart';
+import '../../../../ui/screen/user/userview.dart';
 import '../../../../view_model/product_vm.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/typeclient.dart';
@@ -112,7 +113,7 @@ class _WebHomePageState extends State<WebHomePage> {
                             onTap: () {
                               AppNavigator.go(
                                 NotificationsPage(),
-                                name: AppRoutesNames.generalRoutes.versions,
+                                name: AppRoutesNames.generalRoutes.notifications,
                               );
                               _notificationsCubit.markNotificationsAsRead();
                             },
@@ -164,15 +165,26 @@ class _WebHomePageState extends State<WebHomePage> {
                             ),
                           ),
                           12.horizontal,
-                          CircleAvatar(
-                            backgroundColor: AppColors.primaryMain,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(45),
-                              child: AppCachedNetworkImage(
-                                width: 500,
-                                height: 500,
-                                fit: BoxFit.fill,
-                                imageUrl: AppConstants.currentUser.img_image,
+                          InkWell(
+                            onTap: () {
+                              AppNavigator.go(
+                                UserScreen(
+                                  ismyprofile: 'yes',
+                                  user: Provider.of<UserProvider>(context, listen: false).currentUser,
+                                ),
+                                isNew: false,
+                              );
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: AppColors.primaryMain,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(45),
+                                child: AppCachedNetworkImage(
+                                  width: 500,
+                                  height: 500,
+                                  fit: BoxFit.fill,
+                                  imageUrl: AppConstants.currentUser.img_image,
+                                ),
                               ),
                             ),
                           ),

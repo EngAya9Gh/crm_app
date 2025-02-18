@@ -133,7 +133,6 @@ class UserProvider extends ChangeNotifier {
     currentUser.path = path;
     notifyListeners();
   }
-
   Future<void> updateUserVm({
     required Map<String, dynamic> body,
     String? iduser,

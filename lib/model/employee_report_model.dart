@@ -28,7 +28,7 @@ class EmployeeReportModel {
         target: json["target"],
         img_image:json['img_image']==null?null: json['img_image'].toString().trim().isEmpty
             ? json['img_image']
-            : EndPoints.baseUrls.laravelFilesUrl +'profile/'+ json['img_image'],
+            : EndPoints.baseUrls.laravelFilesUrl + json['img_image'],
       );
 
   Map<String, dynamic> toJson() => {

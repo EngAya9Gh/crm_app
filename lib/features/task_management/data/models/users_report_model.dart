@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import '../../../../core/utils/end_points.dart';
+
 UserReportModel userReportModelFromJson(String str) => UserReportModel.fromJson(json.decode(str));
 
 String userReportModelToJson(UserReportModel data) => json.encode(data.toJson());
@@ -59,28 +61,28 @@ class UserReportModel {
       );
 
   factory UserReportModel.fromJson(Map<String, dynamic> json) => UserReportModel(
-    idUser: json["id_user"],
-    nameUser: json["nameUser"],
-    imgImage: json["img_image"],
-    tasksCount: json["tasks_count"],
-    taskOpenedCount: json["task_opened_count"],
-    taskReceivedCount: json["task_received_count"],
-    taskCompletedCount: json["task_completed_count"],
-    taskEvaluatedCount: json["task_evaluated_count"],
-    averageTimeTaken: json["average_time_taken"],
-    averageRate: json["average_rate"],
-  );
+        idUser: json["id_user"],
+        nameUser: json["nameUser"],
+        imgImage: json["img_image"] != null ? EndPoints.baseUrls.laravelFilesUrl + json['img_image'] : null,
+        tasksCount: json["tasks_count"],
+        taskOpenedCount: json["task_opened_count"],
+        taskReceivedCount: json["task_received_count"],
+        taskCompletedCount: json["task_completed_count"],
+        taskEvaluatedCount: json["task_evaluated_count"],
+        averageTimeTaken: json["average_time_taken"],
+        averageRate: json["average_rate"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id_user": idUser,
-    "nameUser": nameUser,
-    "img_image": imgImage,
-    "tasks_count": tasksCount,
-    "task_opened_count": taskOpenedCount,
-    "task_received_count": taskReceivedCount,
-    "task_completed_count": taskCompletedCount,
-    "task_evaluated_count": taskEvaluatedCount,
-    "average_time_taken": averageTimeTaken,
-    "average_rate": averageRate,
-  };
+        "id_user": idUser,
+        "nameUser": nameUser,
+        "img_image": imgImage,
+        "tasks_count": tasksCount,
+        "task_opened_count": taskOpenedCount,
+        "task_received_count": taskReceivedCount,
+        "task_completed_count": taskCompletedCount,
+        "task_evaluated_count": taskEvaluatedCount,
+        "average_time_taken": averageTimeTaken,
+        "average_rate": averageRate,
+      };
 }

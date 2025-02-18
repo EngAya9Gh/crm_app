@@ -28,7 +28,7 @@ class _VersionPageState extends State<VersionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'الاصدارت', showBackButton: true),
+      appBar: CustomAppBar(title: 'التحديثات', showBackButton: true),
       body: Directionality(
         textDirection: TextDirection.ltr,
         child: BlocBuilder<VersionsBloc, VersionsState>(

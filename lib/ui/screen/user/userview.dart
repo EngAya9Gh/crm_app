@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,6 @@ import '../../../model/usermodel.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/container_boxShadows.dart';
 import '../../widgets/custom_widget/app_card_row.dart';
-import '../../widgets/custom_widget/text_uitil.dart';
 import 'edit_profile.dart';
 import 'edituser.dart';
 
@@ -60,13 +60,14 @@ class _UserScreenState extends State<UserScreen> {
                       ))
                   : Container(),
         ],
-        title: TextUtilis(
+        title: AppText(
           color: Colors.white,
-          fontSize: 35,
+          fontSize: 35.scaleFontSize,
           fontWeight: FontWeight.bold,
-          textstring: widget.user.nameUser.toString(),
+          widget.user.nameUser.toString(),
+          // textstring: widget.user.nameUser.toString(),
           //userVm.currentUserModel.nameUser.toString(),
-          underline: TextDecoration.none,
+          // underline: TextDecoration.none,
         ),
         backgroundColor: AppColors.primaryMain,
         centerTitle: true,
@@ -108,8 +109,7 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       Expanded(
                         child: SingleChildScrollView(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           child: Column(
                             children: [
                               ContainerShadows(
@@ -124,8 +124,7 @@ class _UserScreenState extends State<UserScreen> {
                                     child: AppCardRow(
                                       value: userVm.currentUser.name_mange,
                                       title: 'الإدارات',
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     ),
                                   )),
                               SizedBox(
@@ -141,15 +140,9 @@ class _UserScreenState extends State<UserScreen> {
                                     right: 10,
                                   ),
                                   child: AppCardRow(
-                                    value: userVm.currentUser.nameRegoin
-                                                .toString() ==
-                                            "null"
-                                        ? ""
-                                        : userVm.currentUser.nameRegoin
-                                            .toString(),
+                                    value: userVm.currentUser.nameRegoin.toString() == "null" ? "" : userVm.currentUser.nameRegoin.toString(),
                                     title: 'الفرع',
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   ),
                                 ),
                               ),
@@ -166,11 +159,9 @@ class _UserScreenState extends State<UserScreen> {
                                     child: AppCardRow(
                                       value:
                                           //controllerUser.userall![widget.index]
-                                          userVm.currentUser.name_level
-                                              .toString(),
+                                          userVm.currentUser.name_level.toString(),
                                       title: 'المستوى',
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     ),
                                   )),
                               SizedBox(height: 10),
@@ -186,12 +177,9 @@ class _UserScreenState extends State<UserScreen> {
                                     child: AppCardRow(
                                       value:
                                           //controllerUser.userall![widget.index]
-                                          userVm.currentUser.isActive == "1"
-                                              ? 'نشط'
-                                              : 'غير نشط',
+                                          userVm.currentUser.isActive == "1" ? 'نشط' : 'غير نشط',
                                       title: 'الحالة',
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     ),
                                   )),
                               SizedBox(
@@ -207,17 +195,17 @@ class _UserScreenState extends State<UserScreen> {
                                       right: 10,
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        TextUtilis(
-                                          color: Colors.black,
-                                          fontSize: 35,
-                                          fontWeight: FontWeight.bold,
-                                          textstring: userVm.currentUser.email
-                                              .toString(),
-                                          underline: TextDecoration.none,
-                                        ),
+                                        AppText(
+                                            color: Colors.black,
+                                            fontSize: 25.scaleFontSize,
+                                            fontWeight: FontWeight.bold,
+                                            // textstring: userVm.currentUser.email
+                                            userVm.currentUser.email
+                                            //     .toString(),
+                                            // underline: TextDecoration.none,
+                                            ),
                                         IconButton(
                                           onPressed: () {
                                             // controllerUser.onPressEmail(
@@ -246,8 +234,7 @@ class _UserScreenState extends State<UserScreen> {
                                       right: 10,
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         AppText(
                                           "الهاتف",
@@ -255,10 +242,7 @@ class _UserScreenState extends State<UserScreen> {
                                         ),
                                         InkWell(
                                           onTap: () async {
-                                            await FlutterPhoneDirectCaller
-                                                .callNumber(userVm
-                                                    .currentUser.mobile
-                                                    .toString());
+                                            await FlutterPhoneDirectCaller.callNumber(userVm.currentUser.mobile.toString());
                                           },
                                           child: AppText(
                                             userVm.currentUser.mobile,
@@ -284,12 +268,9 @@ class _UserScreenState extends State<UserScreen> {
                                     child: AppCardRow(
                                       value:
                                           //controllerUser.userall![widget.index]
-                                          HelperFunctions.getNameShort(widget
-                                              .user.nameuserAdd
-                                              .toString()),
+                                          HelperFunctions.getNameShort(widget.user.nameuserAdd.toString()),
                                       title: 'تمت الإضافة من قبل ',
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     ),
                                   )),
                               SizedBox(
@@ -307,11 +288,9 @@ class _UserScreenState extends State<UserScreen> {
                                     child: AppCardRow(
                                       value:
                                           //controllerUser.userall![widget.index]
-                                          userVm.currentUser.created_at
-                                              .toString(),
+                                          userVm.currentUser.created_at.toString(),
                                       title: 'تاريخ الإضافة',
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     ),
                                   )),
                               SizedBox(
@@ -329,12 +308,9 @@ class _UserScreenState extends State<UserScreen> {
                                           right: 10,
                                         ),
                                         child: AppCardRow(
-                                          value: HelperFunctions.getNameShort(
-                                              userVm.currentUser.nameuserupdate
-                                                  .toString()),
+                                          value: HelperFunctions.getNameShort(userVm.currentUser.nameuserupdate.toString()),
                                           title: 'تم التعديل من قبل ',
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         ),
                                       )),
                               SizedBox(
@@ -354,11 +330,9 @@ class _UserScreenState extends State<UserScreen> {
                                         child: AppCardRow(
                                           value:
                                               //controllerUser.userall![widget.index]
-                                              userVm.currentUser.updated_at
-                                                  .toString(),
+                                              userVm.currentUser.updated_at.toString(),
                                           title: 'تاريخ التعديل',
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         ),
                                       )),
                             ],

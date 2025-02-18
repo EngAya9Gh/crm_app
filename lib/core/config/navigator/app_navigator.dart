@@ -13,6 +13,7 @@ import '../../../features/auth/login/presentation/pages/login/login_page.dart';
 import '../../../features/auth/login/presentation/pages/otp/verify_otp_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
 import '../../../features/task_management/presentation/pages/task_management_list_page.dart';
+import '../../../features/task_management/presentation/pages/ueser_report.dart';
 import '../../../features/versions/presentation/widgets/add_new_entry_version_page.dart';
 import '../../../features/versions/presentation/widgets/new_entry_version_widget.dart';
 import '../../../model/versionModel.dart';
@@ -192,17 +193,24 @@ abstract class AppRouter {
                 name: section.path.split('/').last,
                 path: section.path,
                 builder: (context, state) => section.page,
-                routes: List.generate(
-                  section.subSections.length,
-                  (index) {
-                    final subSection = section.subSections[index];
-                    return GoRoute(
-                      name: subSection.path.split('/').last,
-                      path: subSection.path,
-                      builder: (context, state) => subSection.page,
-                    );
-                  },
-                ),
+                routes: [
+                  GoRoute(
+                    path: (AppRoutesPaths.homeSections.taskManagement+'reports').split('/').last,
+                    name: AppRoutesPaths.homeSections.taskManagement+'reports',
+                    builder: (context, state) => TaskUsersReportsPage(),
+                  ),
+                  ...List.generate(
+                    section.subSections.length,
+                    (index) {
+                      final subSection = section.subSections[index];
+                      return GoRoute(
+                        name: subSection.path.split('/').last,
+                        path: subSection.path,
+                        builder: (context, state) => subSection.page,
+                      );
+                    },
+                  )
+                ],
               ),
         ],
       ),
@@ -212,18 +220,15 @@ abstract class AppRouter {
           path: AppRoutesPaths.notifications,
           builder: (context, state) => NotificationsPage(),
         ),
-        GoRoute(
-          name: AppRoutesNames.generalRoutes.versions,
-          path: AppRoutesPaths.versions,
-          builder: (context, state) => VersionsPage(),
-          routes: [
-            GoRoute(
-              name: AppRoutesNames.generalRoutes.addVersions,
-              path: AppRoutesPaths.addVersions,
-              builder: (context, state) => AddVersionPage(versionModel: state.extra as VersionModel?,),
-            )   
-          ]
-        ),
+        GoRoute(name: AppRoutesNames.generalRoutes.versions, path: AppRoutesPaths.versions, builder: (context, state) => VersionsPage(), routes: [
+          GoRoute(
+            name: AppRoutesNames.generalRoutes.addVersions,
+            path: AppRoutesPaths.addVersions,
+            builder: (context, state) => AddVersionPage(
+              versionModel: state.extra as VersionModel?,
+            ),
+          )
+        ]),
       ]),
 
       // GoRoute(

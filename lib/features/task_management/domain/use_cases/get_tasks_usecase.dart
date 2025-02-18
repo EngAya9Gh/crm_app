@@ -75,7 +75,7 @@ class GetTaskParams {
         'status': statusName,
         'branch_id': myBranch,
         'user_id': userId,
-        'manager_id': managerId,
+        'management_id': managerId,
         if (atTime != null&&atTime!) 'done_at_time': 1,
         if (afterTime != null&&afterTime!) 'time_out': 1,
         /*

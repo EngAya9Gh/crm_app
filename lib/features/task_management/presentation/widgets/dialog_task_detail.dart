@@ -17,13 +17,14 @@ import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_constants.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../manager/task_cubit.dart';
 
 class DialogTaskDetail extends StatefulWidget {
-  const DialogTaskDetail({super.key, required this.task, required this.status, required this.cubit, this.canDrag=false});
+  const DialogTaskDetail({super.key, required this.task, required this.status, required this.cubit, this.canDrag = false});
 
   final TaskModel task;
   final TaskStatusType status;
@@ -73,60 +74,101 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              ValueListenableBuilder(
-                valueListenable: selectedType,
-                builder: (context, value, child) => Column(
-                  children: [
-                  if(!widget.canDrag)  AppDropdownButtonFormField<TaskStatusType, TaskStatusType>(
-                      borderColor: value.color,
-                      iconColor: value.color,
-                      items: List.of(TaskStatusType.values)
-                        ..removeWhere(
-                          (element) => element.index < widget.status.index,
-                        ),
-                      onChange: (value) {
-                        selectedType.value = value!;
-                      },
-                      hint: "القسم",
-                      itemAsValue: (TaskStatusType? item) => item,
-                      itemBuilder: (item) => AppText(
-                        item?.text ?? '',
-                        color: item?.color,
-                        fontSize: 18,
-                      ),
-                      value: value,
-                      validator: (value) {
-                        if (value == null) {
-                          return 'هذا الحقل مطلوب.';
-                        }
-                        return null;
-                      },
-                    ),
-                    if ((widget.status == TaskStatusType.Completed || widget.task.rate != null) && value.id == 11) ...{
-                      10.height,
-                      Row(
-                        children: [
-                          AppText('التقييم 1/5'),
-                          RatingBar.builder(
-                            initialRating: widget.task.rate?.toDouble() ?? 0,
-                            minRating: 0,
-                            direction: Axis.horizontal,
-                            allowHalfRating: false,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
+              BlocBuilder<TaskCubit, TaskState>(
+                builder: (context, state) {
+                  return ValueListenableBuilder(
+                    valueListenable: selectedType,
+                    builder: (context, value, child) => Column(
+                      children: [
+                        if (!widget.canDrag)
+                          AppDropdownButtonFormField<TaskStatusType, TaskStatusType>(
+                            borderColor: value.color,
+                            iconColor: value.color,
+                            items: List.of(TaskStatusType.values)
+                              ..removeWhere(
+                                (element) => element.index < widget.status.index,
+                              ),
+                            onChange: (value) {
+                              selectedType.value = value!;
+                              if (widget.status == selectedType.value || state.changeTaskStatus.isLoading()||(value.id==11&&widget.status == TaskStatusType.Completed)) {
+                                return;
+                              }
+                              AppConstants.debounceFunction(
+                                () {
+                                  return widget.cubit.onChangeTaskStatusStage(
+                                    widget.task,
+                                    widget.status,
+                                    () {},
+                                    // Navigator.of(context).pop,
+                                    context.read<UserProvider>().currentUser.idUser!, true,
+                                    rate,
+                                  );
+                                },
+                                tag: "change-status",
+                                isDebounced: true,
+                              );
+                            },
+                            hint: "القسم",
+                            itemAsValue: (TaskStatusType? item) => item,
+                            itemBuilder: (item) => AppText(
+                              item?.text ?? '',
+                              color: item?.color,
+                              fontSize: 18,
                             ),
-                            onRatingUpdate: (rating) {
-                              rate = rating;
+                            value: value,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'هذا الحقل مطلوب.';
+                              }
+                              return null;
                             },
                           ),
-                        ],
-                      ),
-                    }
-                  ],
-                ),
+                        if ((widget.status == TaskStatusType.Completed || widget.task.rate != null) && value.id == 11) ...{
+                          10.height,
+                          Row(
+                            children: [
+                              AppText('التقييم 1/5'),
+                              RatingBar.builder(
+                                initialRating: widget.task.rate?.toDouble() ?? 0,
+                                minRating: 0,
+                                direction: Axis.horizontal,
+                                allowHalfRating: false,
+                                itemCount: 5,
+                                itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                                itemBuilder: (context, _) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (rating) {
+
+                                  if (widget.status == selectedType.value) {
+                                    return;
+                                  }
+                                  AppConstants.debounceFunction(
+                                    () {
+                                      return widget.cubit.onChangeTaskStatusStage(
+                                        widget.task,
+                                        widget.status,
+                                            () {},
+                                        // Navigator.of(context).pop,
+                                        context.read<UserProvider>().currentUser.idUser!,
+                                        true,
+                                        rating,
+                                      );
+                                    },
+                                    tag: "change-rate",
+                                    isDebounced: true,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        },
+                        (state.changeTaskStatus.isLoading()) ? Center(child: AppLoader()) : SizedBox.shrink(),
+                      ],
+                    ),
+                  );
+                },
               ),
               10.height,
               if (widget.task.description?.isNotEmpty ?? false) ...{
@@ -186,20 +228,27 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                       10.width,
                       InkWell(
                         onTap: () {
-                          widget.cubit.onAddTaskComment(AddTaskCommentParams(taskId: widget.task.id!, content: textController.text),() {
-                            textController.clear();
-                          },);
+                          widget.cubit.onAddTaskComment(
+                            AddTaskCommentParams(taskId: widget.task.id!, content: textController.text),
+                            () {
+                              textController.clear();
+                            },
+                          );
                         },
                         child: BlocSelector<TaskCubit, TaskState, BlocStatus>(
-                          selector: (state) =>state.addComment,
+                          selector: (state) => state.addComment,
                           builder: (context, state) {
                             return CircleAvatar(
                                 radius: 16,
                                 backgroundColor: AppColors.primaryMain,
-                                child: state.isLoading()?AppLoader(color: AppColors.white,):AppIcon(
-                                  Icons.send,
-                                  color: AppColors.white,
-                                ));
+                                child: state.isLoading()
+                                    ? AppLoader(
+                                        color: AppColors.white,
+                                      )
+                                    : AppIcon(
+                                        Icons.send,
+                                        color: AppColors.white,
+                                      ));
                           },
                         ),
                       )
@@ -217,7 +266,6 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                         itemCount: data?.length ?? 0,
                         itemBuilder: (context, index) => Padding(
                           padding: EdgeInsetsDirectional.only(top: 5),
-
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -226,14 +274,18 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                                   backgroundColor: AppColors.primaryMain,
                                   child: AppText(
                                     data?[index].commentedBy?.nameUser?.substring(0, 2).toUpperCase(),
-                                    fontSize: 12,fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
                                   )),
                               10.width,
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    AppText(data?[index].commentedBy?.nameUser,fontWeight: FontWeight.bold,),
+                                    AppText(
+                                      data?[index].commentedBy?.nameUser,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                     5.height,
                                     AppText(data?[index].content),
                                     5.height,
@@ -259,48 +311,48 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
             ],
           ),
         ),
-        actions: [
-          BlocBuilder<TaskCubit, TaskState>(
-            builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AppElevatedButton(
-                    isLoading: state.changeTaskStatus.isLoading(),
-                    appButtonStyle: AppButtonStyle.secondary,
-                    // style: ButtonStyle(
-                    //   backgroundColor: MaterialStateProperty.all(AppColors.primaryMain),
-                    // ),
-                    onPressed: () async {
-                      if (widget.status == selectedType.value) {
-                        return;
-                      }
-                      widget.cubit.onChangeTaskStatusStage(
-                        widget.task,
-                        widget.status,
-                        Navigator.of(context).pop,
-                        context.read<UserProvider>().currentUser.idUser!,
-                        true,
-                        rate,
-                      );
-                    },
-                    text: 'حفظ التغييرات',
-                  ),
-                  10.height,
-                  AppElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(AppColors.primaryMain),
-                    ),
-                    onPressed: () async {
-                      context.pop();
-                    },
-                    text: 'رجوع',
-                  ),
-                ],
-              );
-            },
-          )
-        ],
+        // actions: [
+        //   BlocBuilder<TaskCubit, TaskState>(
+        //     builder: (context, state) {
+        //       return Column(
+        //         crossAxisAlignment: CrossAxisAlignment.stretch,
+        //         children: [
+        //           AppElevatedButton(
+        //             isLoading: state.changeTaskStatus.isLoading(),
+        //             appButtonStyle: AppButtonStyle.secondary,
+        //             // style: ButtonStyle(
+        //             //   backgroundColor: MaterialStateProperty.all(AppColors.primaryMain),
+        //             // ),
+        //             onPressed: () async {
+        //               if (widget.status == selectedType.value) {
+        //                 return;
+        //               }
+        //               widget.cubit.onChangeTaskStatusStage(
+        //                 widget.task,
+        //                 widget.status,
+        //                 Navigator.of(context).pop,
+        //                 context.read<UserProvider>().currentUser.idUser!,
+        //                 true,
+        //                 rate,
+        //               );
+        //             },
+        //             text: 'حفظ التغييرات',
+        //           ),
+        //           10.height,
+        //           AppElevatedButton(
+        //             style: ButtonStyle(
+        //               backgroundColor: MaterialStateProperty.all(AppColors.primaryMain),
+        //             ),
+        //             onPressed: () async {
+        //               context.pop();
+        //             },
+        //             text: 'رجوع',
+        //           ),
+        //         ],
+        //       );
+        //     },
+        //   )
+        // ],
       ),
     );
   }

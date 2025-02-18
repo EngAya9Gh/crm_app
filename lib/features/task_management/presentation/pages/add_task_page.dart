@@ -209,7 +209,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           ? selectedValueManage
                           : selectedRegionId;
                       _taskCubit.addTaskAction(
-                          onSuccess: () => AppNavigator.pop(result: true),
+                          onSuccess: () {
+                            AppNavigator.pop(result: true);
+                          },
                           addTaskParams: AddTaskParams(
                               title: _taskNameController.text,
                               description: _taskDescriptionController.text,

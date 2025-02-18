@@ -27,11 +27,11 @@ class ChangeStatusTaskParams {
   final double? rate;
 
   Map<String, dynamic> get toMap {
-    print( (taskStatusId == 11 && rate != null && rate!= 0));
+    print((taskStatusId == 11 && rate != null && rate != 0));
     return {
-        'status_id': this.taskStatusId,
-        'id_user': userId,
-        if (taskStatusId == '11') 'rate': rate,
-      };
+      'status_id': this.taskStatusId,
+      'id_user': userId,
+      if (taskStatusId == '11' && rate != null) 'rate': rate,
+    };
   }
 }
