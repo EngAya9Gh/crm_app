@@ -79,8 +79,8 @@ class NotificationService {
               ),
             ));
         String typeNotify = message.data['Typenotify'];
-        if(message.data['type_notify']=="task"){
-          getIt<UserProvider>().getCurrentUser();
+        if(message.data['title']== "مهمة جديدة"){
+          AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
         }
         AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
       }
@@ -92,8 +92,8 @@ class NotificationService {
         log('${message.notification?.title}');
         {
           String typeNotify = message.data['Typenotify'];
-          if(message.data['type_notify']=="task"){
-            getIt<UserProvider>().getCurrentUser();
+          if(message.data['title']== "مهمة جديدة"){
+            AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
           }
           AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
         }
@@ -101,8 +101,8 @@ class NotificationService {
     );
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
-        if(message.data['type_notify']=="task"){
-          getIt<UserProvider>().getCurrentUser();
+        if(message.data['title']== "مهمة جديدة"){
+          AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
         }
         log('///////////////////////////');
         log('$message.contentAvailable');

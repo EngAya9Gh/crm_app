@@ -361,6 +361,8 @@ import '../../../features/finance/commission_for_collaborators/domain/repositori
     as _i654;
 import '../../../features/finance/commission_for_collaborators/domain/use_cases/get_commission_collaborators_usecase.dart'
     as _i290;
+import '../../../features/finance/commission_for_collaborators/domain/use_cases/get_participate_select_usecase.dart'
+    as _i454;
 import '../../../features/finance/commission_for_collaborators/presentation/management/commission_collaborators_bloc.dart'
     as _i685;
 import '../../../features/finance/verified_client/data/data_sources/verified_client_datasource.dart'
@@ -1465,6 +1467,9 @@ _i174.GetIt $initGetIt(
   gh.factory<_i290.GetCommissionCollaboratorsUseCase>(() =>
       _i290.GetCommissionCollaboratorsUseCase(
           gh<_i654.CommissionCollaboratorsRepository>()));
+  gh.factory<_i454.GetParticipateSelectUseCase>(() =>
+      _i454.GetParticipateSelectUseCase(
+          gh<_i654.CommissionCollaboratorsRepository>()));
   gh.lazySingleton<_i780.GetAllUsersUseCase>(
       () => _i780.GetAllUsersUseCase(gh<_i887.InvoicesSectionRepo>()));
   gh.lazySingleton<_i228.ClientsDebtsRepo>(
@@ -1820,9 +1825,6 @@ _i174.GetIt $initGetIt(
   gh.factory<_i583.DelayInstallReportsCubit>(() =>
       _i583.DelayInstallReportsCubit(
           gh<_i767.GetDelayInstallReportsUseCase>()));
-  gh.factory<_i685.CommissionCollaboratorsBloc>(() =>
-      _i685.CommissionCollaboratorsBloc(
-          gh<_i290.GetCommissionCollaboratorsUseCase>()));
   gh.factory<_i149.ClientTaskBloc>(
       () => _i149.ClientTaskBloc(gh<_i613.GetClientTasksUsecase>()));
   gh.factory<_i593.DatesTimelineBloc>(
@@ -1899,6 +1901,11 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i1010.GetAgentInvoiceListUsecase>(() =>
       _i1010.GetAgentInvoiceListUsecase(
           gh<_i834.AgentsDistributorsProfileRepo>()));
+  gh.factory<_i685.CommissionCollaboratorsBloc>(
+      () => _i685.CommissionCollaboratorsBloc(
+            gh<_i290.GetCommissionCollaboratorsUseCase>(),
+            gh<_i454.GetParticipateSelectUseCase>(),
+          ));
   gh.factory<_i233.AddRejectReasonsUsecase>(() =>
       _i233.AddRejectReasonsUsecase(gh<_i745.ManageWithdrawalsRepository>()));
   gh.factory<_i95.EditRejectReasonsUsecase>(() =>

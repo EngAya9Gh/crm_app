@@ -184,7 +184,7 @@ class TaskUsersReportsPageState extends State<TaskUsersReportsPage> {
                                 ),
                               ),
                               SizedBox(width: 8),
-                              AppText(item.nameUser, color: AppColors.black, fontWeight: FontWeight.bold, fontSize: 12)
+                              Expanded(child: AppText(item.nameUser, color: AppColors.black, fontWeight: FontWeight.bold, fontSize: 12))
                             ],
                           ),
                           width: MediaQuery.of(context).size.width * 0.4,

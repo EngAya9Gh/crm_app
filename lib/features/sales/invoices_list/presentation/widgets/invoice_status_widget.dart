@@ -73,11 +73,11 @@ Widget prepareStatusWidget({
       color: StatusClient.restrictWithdrawn.color,
     );
   }
-  else if(isApproveBackDone??false){
-    return AppStatusChip(
-      status: StatusClient.withdrawal.text,
-      color: StatusClient.withdrawal.color,
-    );
-  }
+  // else if(isApproveBackDone??false){
+  //   return AppStatusChip(
+  //     status: StatusClient.withdrawal.text,
+  //     color: StatusClient.withdrawal.color,
+  //   );
+  // }
   return SizedBox.shrink();
 }

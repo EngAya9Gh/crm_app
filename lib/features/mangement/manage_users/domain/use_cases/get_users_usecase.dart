@@ -34,7 +34,7 @@ class GetUsersParams {
   final ManageModel? management;
   final LevelModel? level;
   final List<PrivilegeModel>? privileges;
-
+  final String? type;
   const GetUsersParams({
     this.skip = 0,
     this.limit = 25,
@@ -44,6 +44,7 @@ class GetUsersParams {
     this.management,
     this.level,
     this.privileges,
+    this.type,
   });
 
   toParams() {
@@ -55,6 +56,7 @@ class GetUsersParams {
       'fk_regoin': branch?.branchId,
       'type_administration': management?.idMange,
       'type_level': level?.idLevel,
+      'type': type,
       ..._preparePrivileges(),
     };
   }

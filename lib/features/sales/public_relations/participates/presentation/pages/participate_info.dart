@@ -52,11 +52,11 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                         onPressed: () async {
                           final phoneNo = state.currentPaticipate!.mobile_participate;
                           if (kIsWeb) {
-                            HelperFunctions.copyToClipboard(phoneNo);
+                            HelperFunctions.copyToClipboard(phoneNo??'');
 
                             return;
                           }
-                          await FlutterPhoneDirectCaller.callNumber(phoneNo);
+                          await FlutterPhoneDirectCaller.callNumber(phoneNo??'');
                         },
                         icon: AppIcon(
                           kIsWeb ? Icons.copy : Icons.call,
@@ -69,11 +69,11 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                       onPressed: () async {
                         final phoneNo = state.currentPaticipate!.mobile_participate;
                         if (kIsWeb) {
-                          HelperFunctions.copyToClipboard(phoneNo);
+                          HelperFunctions.copyToClipboard(phoneNo??'');
 
                           return;
                         }
-                        await FlutterPhoneDirectCaller.callNumber(phoneNo);
+                        await FlutterPhoneDirectCaller.callNumber(phoneNo??'');
                       },
                       child: AppText(
                         state.currentPaticipate!.mobile_participate.toString(),

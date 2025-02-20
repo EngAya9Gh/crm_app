@@ -12,3 +12,5 @@ class GetCommissionCollaboratorsEvent extends CommissionCollaboratorsEvent{
     this.onSuccess,
   });
 }
+
+class GetParticipateSelectEvent extends CommissionCollaboratorsEvent{}

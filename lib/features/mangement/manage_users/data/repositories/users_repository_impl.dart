@@ -98,6 +98,6 @@ class UsersRepositoryImpl extends UsersRepository {
 
   @override
   Future<Result<ResponseWrapper<List<UserModel>>>> getUsersAll(GetUsersParams params) {
-    return toApiResult(() => datasource.getUsersAll());
+    return toApiResult(() => datasource.getUsersAll(params));
   }
 }

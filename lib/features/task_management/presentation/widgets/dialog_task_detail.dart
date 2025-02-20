@@ -97,10 +97,10 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                                 () {
                                   return widget.cubit.onChangeTaskStatusStage(
                                     widget.task,
-                                    widget.status,
+                                    selectedType.value,
                                     () {},
                                     // Navigator.of(context).pop,
-                                    context.read<UserProvider>().currentUser.idUser!, true,
+                                    context.read<UserProvider>().currentUser.idUser!, false,
                                     rate,
                                   );
                                 },
@@ -148,11 +148,11 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                                     () {
                                       return widget.cubit.onChangeTaskStatusStage(
                                         widget.task,
-                                        widget.status,
+                                        selectedType.value,
                                             () {},
                                         // Navigator.of(context).pop,
                                         context.read<UserProvider>().currentUser.idUser!,
-                                        true,
+                                        false,
                                         rating,
                                       );
                                     },

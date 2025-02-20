@@ -139,11 +139,11 @@ class UsersCubit extends Cubit<UsersState> {
     );
   }
 
-  Future<void> getUsersAll() async {
+  Future<void> getUsersAll([String? type]) async {
     AppConstants.debounceFunction(
       () async {
         emit(state.copyWith(getUsersStatus: const BlocStatus.loading()));
-        final allUsers = await _getUsersAllUsecase(GetUsersParams());
+        final allUsers = await _getUsersAllUsecase(GetUsersParams(type: type));
 
         allUsers.extract(
           (exception, message) {

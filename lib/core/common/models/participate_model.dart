@@ -7,9 +7,9 @@ class ParticipateModel extends UserEntity with EquatableMixin {
   ParticipateModel({
     required this.id_participate,
     required this.name_participate,
-    required this.mobile_participate,
-    required this.namebank_participate,
-    required this.numberbank_participate,
+    this.mobile_participate,
+    this.namebank_participate,
+    this.numberbank_participate,
     this.addDate,
     this.updateDate,
     this.fkUserAdd,
@@ -25,9 +25,9 @@ class ParticipateModel extends UserEntity with EquatableMixin {
 
   final String id_participate;
   final String name_participate;
-  final String mobile_participate;
-  final String namebank_participate;
-  final String numberbank_participate;
+  final String? mobile_participate;
+  final String? namebank_participate;
+  final String? numberbank_participate;
   final String? addDate;
   final String? updateDate;
   final String? fkUserAdd;

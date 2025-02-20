@@ -42,7 +42,7 @@ abstract class UsersDatasource {
   Future<PaginationResponseWrapper> getUserById(GetUserByIdParams params);
 
   Future<ResponseWrapper<List<UserModel>>> getUserSelected();
-  Future<ResponseWrapper<List<UserModel>>> getUsersAll();
+  Future<ResponseWrapper<List<UserModel>>> getUsersAll(GetUsersParams params);
 }
 
 @LazySingleton(as: UsersDatasource)
@@ -187,11 +187,11 @@ class UsersDatasourceImpl implements UsersDatasource {
   }
 
   @override
-  Future<ResponseWrapper<List<UserModel>>> getUsersAll() {
+  Future<ResponseWrapper<List<UserModel>>> getUsersAll(GetUsersParams params) {
     fun() async {
       var _apiServices = getIt<ApiServices>();
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _apiServices.get(endPoint: EndPoints.users.getUsersAll);
+      final response = await _apiServices.get(endPoint: EndPoints.users.getUsersAll,queryParameters: {'type':params.type});
 
       return ResponseWrapper<List<UserModel>>(
         data: List.from((response['message'] as List<dynamic>).map((e) => UserModel.fromJson(e as Map<String, dynamic>))),

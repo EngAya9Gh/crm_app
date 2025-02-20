@@ -6,9 +6,11 @@ class CommissionCollaboratorsState {
   final BlocStatus gettingData;
   final bool hasReachedMax;
   final int totalCount;
+  final BlocStatus<List<ParticipateModel>> listParticipate;
   const CommissionCollaboratorsState({
     this.commissionCollaboratorsResponse = const BlocStatus.initial(),
     this.gettingData = const BlocStatus.initial(),
+    this.listParticipate = const BlocStatus.initial(),
     this.hasReachedMax = false,
     this.totalCount = 0,
   });
@@ -16,6 +18,7 @@ class CommissionCollaboratorsState {
   CommissionCollaboratorsState copyWith({
     BlocStatus<CommissionCollaboratorsResponseModel>? commissionCollaboratorsResponse,
     BlocStatus? gettingData,
+    BlocStatus<List<ParticipateModel>>? listParticipate,
     bool? hasReachedMax,
     int? totalCount,
   }) {
@@ -24,6 +27,7 @@ class CommissionCollaboratorsState {
       gettingData: gettingData ?? this.gettingData,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       totalCount: totalCount ?? this.totalCount,
+      listParticipate: listParticipate ?? this.listParticipate,
     );
   }
 }

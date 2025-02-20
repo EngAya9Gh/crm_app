@@ -9,13 +9,17 @@ import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_fonts.dart';
+import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
+import '../../../../sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../../sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import '../../domain/use_cases/get_commission_collaborators_usecase.dart';
 import '../management/commission_collaborators_bloc.dart';
+import '../widgets/filter_commission_ccollaborators_sheet.dart';
 
 class CommissionCollaboratorsPage extends StatefulWidget {
   const CommissionCollaboratorsPage({super.key});
@@ -26,14 +30,18 @@ class CommissionCollaboratorsPage extends StatefulWidget {
 
 class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage> {
   late final CommissionCollaboratorsBloc _bloc;
-
+  late final ClientsListBloc userBloc;
+  CommissionCollaboratorsParams params = CommissionCollaboratorsParams();
   final TextEditingController searchController = TextEditingController();
   int nextPage = 2;
 
   @override
   void initState() {
     super.initState();
-    _bloc = context.read<CommissionCollaboratorsBloc>()..add(GetCommissionCollaboratorsEvent());
+    userBloc = context.read<ClientsListBloc>()..add(GetUsersSales());
+    _bloc = context.read<CommissionCollaboratorsBloc>()
+      ..add(GetCommissionCollaboratorsEvent())
+      ..add(GetParticipateSelectEvent());
     context.read<InvoicesSectionCubit>().clearFilters();
   }
 
@@ -49,21 +57,44 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
             child: Column(
               children: [
                 10.height,
-                CustomSearchWidget(
-                  searchController: searchController,
-                  onChanged: (value) {
-                    ///after search success form page 1 should increase second page
-                    AppConstants.debounceFunction(
-                      () => _bloc.add(GetCommissionCollaboratorsEvent(
-                        params: CommissionCollaboratorsParams(page: 1, filter: searchController.text),
-                        onSuccess: (value) {
-                          nextPage = 2;
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomSearchWidget(
+                        searchController: searchController,
+                        onChanged: (value) {
+                          params = CommissionCollaboratorsParams(page: 1, filter: searchController.text);
+                          ///after search success form page 1 should increase second page
+                          AppConstants.debounceFunction(
+                            () => _bloc.add(GetCommissionCollaboratorsEvent(
+                              params: params,
+                              onSuccess: (value) {
+                                nextPage = 2;
+                              },
+                            )),
+                            tag: "search_commission_collaborators_list",
+                            isDebounced: true,
+                          );
                         },
-                      )),
-                      tag: "search_commission_collaborators_list",
-                      isDebounced: true,
-                    );
-                  },
+                      ),
+                    ),
+                    CustomFilterIcon(
+                      onTap: () async {
+                        final value = await AppBottomSheet.show(
+                          context: context,
+                          child: FilterCommissionCollaboratorsSheet(
+                            params: params,
+                            bloc: _bloc,
+                            userBloc: userBloc,
+                          ),
+                        );
+                        if (value!=null) {
+                          params = value;
+                        }
+                      },
+                    ),
+                    8.width,
+                  ],
                 ),
                 10.height,
                 ExpansionTile(
@@ -133,7 +164,9 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                           ),
                         ),
                         Spacer(),
-                        Spacer(flex: 3,),
+                        Spacer(
+                          flex: 3,
+                        ),
                         Spacer(),
                       ],
                     ),
@@ -160,8 +193,9 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                       items: state.commissionCollaboratorsResponse.data?.invoiceModel ?? [],
                       hasReachedEnd: state.hasReachedMax,
                       onLoadMore: () {
+                        params = CommissionCollaboratorsParams(page: nextPage, filter: searchController.text);
                         _bloc.add(GetCommissionCollaboratorsEvent(
-                          params: CommissionCollaboratorsParams(page: nextPage, filter: searchController.text),
+                          params: params,
                           onSuccess: (value) {
                             nextPage = value;
                           },

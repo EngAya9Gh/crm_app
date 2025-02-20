@@ -561,6 +561,7 @@ class _Finance {
   String deportClient(String id) => 'deportClient/$id';
   final String getClientDept = 'clientsDept';
   final String participateInvoices = 'participateInvoices';
+  final String participatesSelect = 'participates/select';
 
   String reportClientDept(String id) => 'clientPayoutReport/$id';
 }
