@@ -42,5 +42,5 @@ abstract class UsersRepository {
 
   Future<Either<String, List<BranchModel>>> getBranchesForUser(GetBranchesForUserParams params);
 
-  Future<Result<ResponseWrapper<List<UserModel>>>> getUserSelected();
+  Future<Result<ResponseWrapper<List<UserModel>>>> getUserSelected([GetUsersParams? params]);
 }

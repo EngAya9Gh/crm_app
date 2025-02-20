@@ -251,9 +251,9 @@ class UsersCubit extends Cubit<UsersState> {
     );
   }
 
-  onGetUserSelected() async {
+  onGetUserSelected([String? type]) async {
     emit(state.copyWith(getUserSelected: const BlocStatus.loading()));
-    final response = await _getUserSelectUsecase();
+    final response = await _getUserSelectUsecase(GetUsersParams(type: type));
 
     response.extract(
       (exception, message) {

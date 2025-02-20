@@ -41,7 +41,8 @@ abstract class UsersDatasource {
 
   Future<PaginationResponseWrapper> getUserById(GetUserByIdParams params);
 
-  Future<ResponseWrapper<List<UserModel>>> getUserSelected();
+  Future<ResponseWrapper<List<UserModel>>> getUserSelected([GetUsersParams? params]);
+
   Future<ResponseWrapper<List<UserModel>>> getUsersAll(GetUsersParams params);
 }
 
@@ -171,11 +172,18 @@ class UsersDatasourceImpl implements UsersDatasource {
     }
   }
 
-  Future<ResponseWrapper<List<UserModel>>> getUserSelected() async {
+  Future<ResponseWrapper<List<UserModel>>> getUserSelected([GetUsersParams? params]) async {
     fun() async {
       var _apiServices = getIt<ApiServices>();
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _apiServices.get(endPoint: EndPoints.task.getUserSelect);
+      final response = await _apiServices.get(
+        endPoint: EndPoints.task.getUserSelect,
+        queryParameters: {
+          'type': params?.type,
+        }..removeWhere(
+            (key, value) => value == null || value == '',
+          ),
+      );
 
       return ResponseWrapper<List<UserModel>>(
         data: List.from((response['message'] as List<dynamic>).map((e) => UserModel.fromJson(e as Map<String, dynamic>))),
@@ -191,7 +199,7 @@ class UsersDatasourceImpl implements UsersDatasource {
     fun() async {
       var _apiServices = getIt<ApiServices>();
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _apiServices.get(endPoint: EndPoints.users.getUsersAll,queryParameters: {'type':params.type});
+      final response = await _apiServices.get(endPoint: EndPoints.users.getUsersAll);
 
       return ResponseWrapper<List<UserModel>>(
         data: List.from((response['message'] as List<dynamic>).map((e) => UserModel.fromJson(e as Map<String, dynamic>))),

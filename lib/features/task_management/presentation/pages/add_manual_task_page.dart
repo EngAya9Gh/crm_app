@@ -82,7 +82,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
     _usersCubit = context.read<UsersCubit>()
       ..storeCurrentUser(currentUser)
       ..getUsers()
-      ..onGetUserSelected();
+      ..onGetUserSelected('active');
 
     _taskNameController = TextEditingController();
     _deadLineDateController = TextEditingController();

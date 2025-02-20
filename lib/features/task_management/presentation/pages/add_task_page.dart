@@ -139,8 +139,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
     //
     _usersCubit = context.read<UsersCubit>()
       ..storeCurrentUser(currentUser)
-      ..getUsersAll('active')
-      ..onGetUserSelected();
+      ..getUsersAll()
+      ..onGetUserSelected('active');
 
     _taskNameController = TextEditingController();
     _startDateController = TextEditingController();
