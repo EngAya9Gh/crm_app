@@ -85,7 +85,9 @@ class _ImageProfileState extends State<ImageProfile> {
                 _userProvider.updateProfileImage(
                   file: pickedFile.file,
                   iduser: AppConstants.currentUser.idUser,
-                );
+                  params: {
+                    'isActive': AppConstants.currentUser.isActive
+                  });
               },
             )
           ],

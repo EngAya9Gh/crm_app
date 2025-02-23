@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
@@ -95,15 +96,30 @@ class _UserScreenState extends State<UserScreen> {
                           radius: 60.0,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
-                            child: AppPlatformImage(
-                              fileModel: FileModel(
-                                path: userVm.currentUser.path,
-                                url: userVm.currentUser.img_image,
-                              ),
-                              width: 500,
-                              height: 500,
-                              fit: BoxFit.fill,
-                            ),
+                            child: kIsWeb
+                                ? Image.network(
+                                    userVm.currentUser.path ?? '',
+                                    fit: BoxFit.cover,
+                                    width: 500,
+                                    height: 500,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      debugPrint('error in image => $error');
+                                      return Icon(
+                                        Icons.person,
+                                        size: 50,
+                                        color: Colors.lightBlueAccent,
+                                      );
+                                    },
+                                  )
+                                : AppPlatformImage(
+                                    fileModel: FileModel(
+                                      path: userVm.currentUser.path,
+                                      url: userVm.currentUser.img_image,
+                                    ),
+                                    width: 500,
+                                    height: 500,
+                                    fit: BoxFit.fill,
+                                  ),
                           ),
                         ),
                       ),
@@ -199,7 +215,7 @@ class _UserScreenState extends State<UserScreen> {
                                       children: [
                                         AppText(
                                             color: Colors.black,
-                                            fontSize: 25.scaleFontSize,
+                                            fontSize: 22.scaleFontSize,
                                             fontWeight: FontWeight.bold,
                                             // textstring: userVm.currentUser.email
                                             userVm.currentUser.email

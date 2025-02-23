@@ -18,6 +18,9 @@ import '../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_constants.dart';
+import '../../../../core/utils/end_points.dart';
+import '../../../../ui/widgets/app_file_viewer.dart';
+import '../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_text.dart';
@@ -70,245 +73,265 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
         ),
         content: SizedBox(
           width: 500.scaleWidth,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BlocBuilder<TaskCubit, TaskState>(
-                builder: (context, state) {
-                  return ValueListenableBuilder(
-                    valueListenable: selectedType,
-                    builder: (context, value, child) => Column(
-                      children: [
-                        if (!widget.canDrag)
-                          AppDropdownButtonFormField<TaskStatusType, TaskStatusType>(
-                            borderColor: value.color,
-                            iconColor: value.color,
-                            items: List.of(TaskStatusType.values)
-                              ..removeWhere(
-                                (element) => element.index < widget.status.index,
-                              ),
-                            onChange: (value) {
-                              selectedType.value = value!;
-                              if (widget.status == selectedType.value || state.changeTaskStatus.isLoading()||(value.id==11&&widget.status == TaskStatusType.Completed)) {
-                                return;
-                              }
-                              AppConstants.debounceFunction(
-                                () {
-                                  return widget.cubit.onChangeTaskStatusStage(
-                                    widget.task,
-                                    selectedType.value,
-                                    () {},
-                                    // Navigator.of(context).pop,
-                                    context.read<UserProvider>().currentUser.idUser!, false,
-                                    rate,
-                                  );
-                                },
-                                tag: "change-status",
-                                isDebounced: true,
-                              );
-                            },
-                            hint: "القسم",
-                            itemAsValue: (TaskStatusType? item) => item,
-                            itemBuilder: (item) => AppText(
-                              item?.text ?? '',
-                              color: item?.color,
-                              fontSize: 18,
-                            ),
-                            value: value,
-                            validator: (value) {
-                              if (value == null) {
-                                return 'هذا الحقل مطلوب.';
-                              }
-                              return null;
-                            },
-                          ),
-                        if ((widget.status == TaskStatusType.Completed || widget.task.rate != null) && value.id == 11) ...{
-                          10.height,
-                          Row(
-                            children: [
-                              AppText('التقييم 1/5'),
-                              RatingBar.builder(
-                                initialRating: widget.task.rate?.toDouble() ?? 0,
-                                minRating: 0,
-                                direction: Axis.horizontal,
-                                allowHalfRating: false,
-                                itemCount: 5,
-                                itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
+          height:500.scaleHeight,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                BlocBuilder<TaskCubit, TaskState>(
+                  builder: (context, state) {
+                    return ValueListenableBuilder(
+                      valueListenable: selectedType,
+                      builder: (context, value, child) => Column(
+                        children: [
+                          if (!widget.canDrag)
+                            AppDropdownButtonFormField<TaskStatusType, TaskStatusType>(
+                              borderColor: value.color,
+                              iconColor: value.color,
+                              items: List.of(TaskStatusType.values)
+                                ..removeWhere(
+                                  (element) => element.index < widget.status.index,
                                 ),
-                                onRatingUpdate: (rating) {
-
-                                  if (widget.status == selectedType.value) {
-                                    return;
-                                  }
-                                  AppConstants.debounceFunction(
-                                    () {
-                                      return widget.cubit.onChangeTaskStatusStage(
-                                        widget.task,
-                                        selectedType.value,
-                                            () {},
-                                        // Navigator.of(context).pop,
-                                        context.read<UserProvider>().currentUser.idUser!,
-                                        false,
-                                        rating,
-                                      );
-                                    },
-                                    tag: "change-rate",
-                                    isDebounced: true,
-                                  );
-                                },
+                              onChange: (value) {
+                                selectedType.value = value!;
+                                if (widget.status == selectedType.value || state.changeTaskStatus.isLoading()||(value.id==11)) {
+                                  return;
+                                }
+                                AppConstants.debounceFunction(
+                                  () {
+                                    return widget.cubit.onChangeTaskStatusStage(
+                                      widget.task,
+                                      selectedType.value,
+                                      () {},
+                                      // Navigator.of(context).pop,
+                                      context.read<UserProvider>().currentUser.idUser!, false,
+                                      rate,
+                                    );
+                                  },
+                                  tag: "change-status",
+                                  isDebounced: true,
+                                );
+                              },
+                              hint: "القسم",
+                              itemAsValue: (TaskStatusType? item) => item,
+                              itemBuilder: (item) => AppText(
+                                item?.text ?? '',
+                                color: item?.color,
+                                fontSize: 18,
                               ),
-                            ],
+                              value: value,
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'هذا الحقل مطلوب.';
+                                }
+                                return null;
+                              },
+                            ),
+                          if ( value.id == 11) ...{
+                            10.height,
+                            Row(
+                              children: [
+                                AppText('التقييم 1/5'),
+                                RatingBar.builder(
+                                  initialRating: widget.task.rate?.toDouble() ?? 0,
+                                  minRating: 0,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: false,
+                                  itemCount: 5,
+                                  itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating) {
+
+                                    if (widget.status == selectedType.value) {
+                                      return;
+                                    }
+                                    AppConstants.debounceFunction(
+                                      () {
+                                        return widget.cubit.onChangeTaskStatusStage(
+                                          widget.task,
+                                          selectedType.value,
+                                              () {},
+                                          // Navigator.of(context).pop,
+                                          context.read<UserProvider>().currentUser.idUser!,
+                                          false,
+                                          rating,
+                                        );
+                                      },
+                                      tag: "change-rate",
+                                      isDebounced: true,
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          },
+                          (state.changeTaskStatus.isLoading()) ? Center(child: AppLoader()) : SizedBox.shrink(),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                10.height,
+                if (widget.task.description?.isNotEmpty ?? false) ...{
+                  AppText(
+                    widget.task.description ?? '',
+                    fontSize: 15.scaleFontSize,
+                    color: context.colorScheme.grey600,
+                  ),
+                },
+                10.height,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: InkWell(
+                    onTap: () => AppFileViewer(
+                      imageSource: ImageSourceViewer.network,
+                      urls: [EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?.firstOrNull?.filePath??'')],
+                    ).show(context),
+                    child: FancyImageShimmerViewer(
+                      width: 500.scaleWidth,
+                      height: 150.scaleHeight,
+                      imageUrl: EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?.firstOrNull?.filePath??''),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                10.height,
+                Wrap(
+                    spacing: 5,
+                    runSpacing: 5,
+                    children: (widget.task.collaborators ?? [])
+                        .map((e) => Tooltip(
+                              message: e.nameUser,
+                              child: CircleAvatar(
+                                  radius: 20, backgroundColor: AppColors.primaryAltLight, child: AppText(e.nameUser?.substring(0, 2).toUpperCase())),
+                            ))
+                        .toList()),
+                10.height,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    AppIcon(Icons.date_range_rounded, color: context.colorScheme.grey600),
+                    5.width,
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: AppText(
+                        Intl.DateFormat('dd MMM hh:mm a').format(widget.task.startDate ?? DateTime.now()),
+                        color: context.colorScheme.grey600,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
+                  ],
+                ),
+                10.height,
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                            radius: 15,
+                            backgroundColor: AppColors.primaryMain,
+                            child: AppText(
+                              context.read<UserProvider>().currentUser.nameUser?.substring(0, 2).toUpperCase(),
+                              fontSize: 12,
+                            )),
+                        10.width,
+                        Expanded(
+                          child: AppTextField(
+                            hintText: 'اكتب تعليقا',
+                            controller: textController,
                           ),
-                        },
-                        (state.changeTaskStatus.isLoading()) ? Center(child: AppLoader()) : SizedBox.shrink(),
+                        ),
+                        10.width,
+                        InkWell(
+                          onTap: () {
+                            widget.cubit.onAddTaskComment(
+                              AddTaskCommentParams(taskId: widget.task.id!, content: textController.text),
+                              () {
+                                textController.clear();
+                              },
+                            );
+                          },
+                          child: BlocSelector<TaskCubit, TaskState, BlocStatus>(
+                            selector: (state) => state.addComment,
+                            builder: (context, state) {
+                              return CircleAvatar(
+                                  radius: 16,
+                                  backgroundColor: AppColors.primaryMain,
+                                  child: state.isLoading()
+                                      ? AppLoader(
+                                          color: AppColors.white,
+                                        )
+                                      : AppIcon(
+                                          Icons.send,
+                                          color: AppColors.white,
+                                        ));
+                            },
+                          ),
+                        )
                       ],
                     ),
-                  );
-                },
-              ),
-              10.height,
-              if (widget.task.description?.isNotEmpty ?? false) ...{
-                AppText(
-                  widget.task.description ?? '',
-                  fontSize: 15.scaleFontSize,
-                  color: context.colorScheme.grey600,
+                  ],
                 ),
-              },
-              10.height,
-              Wrap(
-                  spacing: 5,
-                  runSpacing: 5,
-                  children: (widget.task.collaborators ?? [])
-                      .map((e) => Tooltip(
-                            message: e.nameUser,
-                            child: CircleAvatar(
-                                radius: 20, backgroundColor: AppColors.primaryAltLight, child: AppText(e.nameUser?.substring(0, 2).toUpperCase())),
-                          ))
-                      .toList()),
-              10.height,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  AppIcon(Icons.date_range_rounded, color: context.colorScheme.grey600),
-                  5.width,
-                  Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: AppText(
-                      Intl.DateFormat('dd MMM hh:mm a').format(widget.task.startDate ?? DateTime.now()),
-                      color: context.colorScheme.grey600,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ),
-                ],
-              ),
-              10.height,
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                          radius: 15,
-                          backgroundColor: AppColors.primaryMain,
-                          child: AppText(
-                            context.read<UserProvider>().currentUser.nameUser?.substring(0, 2).toUpperCase(),
-                            fontSize: 12,
-                          )),
-                      10.width,
-                      Expanded(
-                        child: AppTextField(
-                          hintText: 'اكتب تعليقا',
-                          controller: textController,
-                        ),
-                      ),
-                      10.width,
-                      InkWell(
-                        onTap: () {
-                          widget.cubit.onAddTaskComment(
-                            AddTaskCommentParams(taskId: widget.task.id!, content: textController.text),
-                            () {
-                              textController.clear();
-                            },
-                          );
-                        },
-                        child: BlocSelector<TaskCubit, TaskState, BlocStatus>(
-                          selector: (state) => state.addComment,
-                          builder: (context, state) {
-                            return CircleAvatar(
-                                radius: 16,
-                                backgroundColor: AppColors.primaryMain,
-                                child: state.isLoading()
-                                    ? AppLoader(
-                                        color: AppColors.white,
-                                      )
-                                    : AppIcon(
-                                        Icons.send,
-                                        color: AppColors.white,
-                                      ));
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              BlocBuilder<TaskCubit, TaskState>(
-                builder: (context, state) {
-                  return state.getTaskComment.when(
-                    empty: () => AppErrorWidget(message: 'لا يوجد تعليقات بعد'),
-                    success: (data) => SizedBox(
-                      height: 200,
-                      child: ListView.builder(
-                        itemCount: data?.length ?? 0,
-                        itemBuilder: (context, index) => Padding(
-                          padding: EdgeInsetsDirectional.only(top: 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                  radius: 15,
-                                  backgroundColor: AppColors.primaryMain,
-                                  child: AppText(
-                                    data?[index].commentedBy?.nameUser?.substring(0, 2).toUpperCase(),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              10.width,
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AppText(
-                                      data?[index].commentedBy?.nameUser,
+                BlocBuilder<TaskCubit, TaskState>(
+                  builder: (context, state) {
+                    return state.getTaskComment.when(
+                      empty: () => AppErrorWidget(message: 'لا يوجد تعليقات بعد'),
+                      success: (data) => SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: data?.length ?? 0,
+                          itemBuilder: (context, index) => Padding(
+                            padding: EdgeInsetsDirectional.only(top: 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                    radius: 15,
+                                    backgroundColor: AppColors.primaryMain,
+                                    child: AppText(
+                                      data?[index].commentedBy?.nameUser?.substring(0, 2).toUpperCase(),
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold,
-                                    ),
-                                    5.height,
-                                    AppText(data?[index].content),
-                                    5.height,
-                                    AppText(
-                                      Intl.DateFormat('dd MMM hh:mm a').format(DateTime.tryParse(data?[index].date_comment ?? '') ?? DateTime.now()),
-                                      color: context.colorScheme.grey600,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    )
-                                  ],
+                                    )),
+                                10.width,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      AppText(
+                                        data?[index].commentedBy?.nameUser,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      5.height,
+                                      AppText(data?[index].content),
+                                      5.height,
+                                      AppText(
+                                        Intl.DateFormat('dd MMM hh:mm a').format(DateTime.tryParse(data?[index].date_comment ?? '') ?? DateTime.now()),
+                                        color: context.colorScheme.grey600,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    failure: (error, data) => AppErrorWidget(message: error),
-                  );
-                },
-              ),
-              10.height,
-            ],
+                      failure: (error, data) => AppErrorWidget(message: error),
+                    );
+                  },
+                ),
+                10.height,
+              ],
+            ),
           ),
         ),
         // actions: [

@@ -99,7 +99,7 @@ class UserModel extends UserEntity {
       created_at: ApiHelper.handleString(jsonData['created_at']),
       img_image: jsonData['img_image'] == null
           ? ''
-          : EndPoints.baseUrls.urlImage + jsonData['img_image'],
+          : EndPoints.baseUrls.laravelFilesUrl + jsonData['img_image'],
       img_thumbnail: jsonData['img_thumbnail'] == null
           ? ''
           : EndPoints.baseUrls.urlImage + jsonData['img_thumbnail'],
