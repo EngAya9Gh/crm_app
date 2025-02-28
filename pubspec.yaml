@@ -8,7 +8,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  phone_state: ^2.1.1
+#  phone_state: ^2.1.1
   provider: ^6.0.3
   cupertino_icons: ^1.0.5
   shared_preferences: ^2.0.15
