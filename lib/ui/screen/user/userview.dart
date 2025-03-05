@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+// import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/helpers/helper_functions.dart';
@@ -258,7 +258,7 @@ class _UserScreenState extends State<UserScreen> {
                                         ),
                                         InkWell(
                                           onTap: () async {
-                                            await FlutterPhoneDirectCaller.callNumber(userVm.currentUser.mobile.toString());
+                                            // await FlutterPhoneDirectCaller.callNumber(userVm.currentUser.mobile.toString());
                                           },
                                           child: AppText(
                                             userVm.currentUser.mobile,

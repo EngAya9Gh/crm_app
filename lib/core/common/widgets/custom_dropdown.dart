@@ -45,7 +45,7 @@ class CustomDropDown<T> extends StatelessWidget {
     return AbsorbPointer(
       absorbing: isDisabled,
       child: DropdownSearch<T>(
-        items: items,
+        items: (filter, loadProps) => items,
         itemAsString: itemAsString,
         onChanged: isDisabled ? null : onChanged,
         selectedItem: selectedItem,
@@ -66,7 +66,7 @@ class CustomDropDown<T> extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          itemBuilder: (context, item, isSelected) {
+          itemBuilder: (context, item, isDisabled, isSelected) {
             Widget child = Container(
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               decoration: BoxDecoration(
@@ -93,9 +93,9 @@ class CustomDropDown<T> extends StatelessWidget {
             );
           },
         ),
-        dropdownDecoratorProps: DropDownDecoratorProps(
+        decoratorProps: DropDownDecoratorProps(
           textAlignVertical: TextAlignVertical.center,
-          dropdownSearchDecoration: _dropdownSearchDecoration(context),
+          decoration: _dropdownSearchDecoration(context),
           baseStyle: AppStyles.textStyle.copyWith(
             fontSize: 18.scaleFontSize,
           ),

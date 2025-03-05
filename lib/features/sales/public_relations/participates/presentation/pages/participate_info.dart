@@ -2,7 +2,7 @@ import 'package:crm_smart/features/sales/public_relations/participates/presentat
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+// import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/common/helpers/helper_functions.dart';
@@ -56,7 +56,8 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
 
                             return;
                           }
-                          await FlutterPhoneDirectCaller.callNumber(phoneNo??'');
+                          await HelperFunctions.urlLauncherPhone(phoneNo??'');
+                          // await FlutterPhoneDirectCaller.callNumber(phoneNo??'');
                         },
                         icon: AppIcon(
                           kIsWeb ? Icons.copy : Icons.call,
@@ -73,7 +74,8 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
 
                           return;
                         }
-                        await FlutterPhoneDirectCaller.callNumber(phoneNo??'');
+                        await HelperFunctions.urlLauncherPhone(phoneNo??'');
+                        // await FlutterPhoneDirectCaller.callNumber(phoneNo??'');
                       },
                       child: AppText(
                         state.currentPaticipate!.mobile_participate.toString(),

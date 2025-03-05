@@ -4,7 +4,7 @@ import 'package:crm_smart/features/sales/clients/clients_list/presentation/widge
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+// import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/models/client_model.dart';
@@ -218,8 +218,10 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                       clientModel.mobile.toString());
                                   return;
                                 }
-                                await FlutterPhoneDirectCaller.callNumber(
-                                    clientModel.mobile.toString());
+                                await HelperFunctions.urlLauncherPhone( clientModel.mobile.toString());
+
+                                // await FlutterPhoneDirectCaller.callNumber(
+                                //     clientModel.mobile.toString());
                               },
                               icon: AppIcon(
                                 kIsWeb ? Icons.copy : Icons.call,
@@ -238,8 +240,10 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                 clientModel.mobile.toString());
                             return;
                           }
-                          await FlutterPhoneDirectCaller.callNumber(
-                              clientModel.mobile.toString());
+                          await HelperFunctions.urlLauncherPhone( clientModel.mobile.toString());
+
+                          // await FlutterPhoneDirectCaller.callNumber(
+                          //     clientModel.mobile.toString());
                         },
                         child: AppText(
                           clientModel.mobile.toString(),

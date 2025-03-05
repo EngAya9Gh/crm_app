@@ -16,17 +16,12 @@ class HelperFunctions {
     return instance;
   }
 
-  static HelperFunctions get instance =>
-      _instance ??= HelperFunctions._singleton();
+  static HelperFunctions get instance => _instance ??= HelperFunctions._singleton();
 
-  bool hasReachedMax<T>(List<T>? list) =>
-      (list ?? []).length < AppConstants.kPerPage;
+  bool hasReachedMax<T>(List<T>? list) => (list ?? []).length < AppConstants.kPerPage;
 
   List<T> intersection<T>(Iterable<Iterable<T>> iterables) {
-    return iterables
-        .map((e) => e.toSet())
-        .reduce((a, b) => a.intersection(b))
-        .toList();
+    return iterables.map((e) => e.toSet()).reduce((a, b) => a.intersection(b)).toList();
   }
 
   static String? JsonStringNullHandler(dynamic value) {
@@ -37,6 +32,13 @@ class HelperFunctions {
     await launchUrl(
       Uri.parse(url),
       webOnlyWindowName: isNewTab ? '_blank' : '_self',
+    );
+  }
+
+  static Future<void> urlLauncherPhone(String number) async {
+    await launchUrl(
+      Uri(scheme: 'tel', path: number),
+      // webOnlyWindowName: isNewTab ? '_blank' : '_self',
     );
   }
 
@@ -118,8 +120,6 @@ class HelperFunctions {
   }
 
   static String getNameShort(String name) {
-    return name.length > 15
-        ? '..' + name.substring(0, 15).toString()
-        : name.toString();
+    return name.length > 15 ? '..' + name.substring(0, 15).toString() : name.toString();
   }
 }

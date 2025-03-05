@@ -31,12 +31,12 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  final shorebirdCodePush = ShorebirdCodePush();
+  final shorebirdCodePush = ShorebirdUpdater();
   bool checkingForUpdate = false;
 
   @override
   void initState() {
-    shorebirdCodePush.currentPatchNumber().then((value) {
+    shorebirdCodePush.readCurrentPatch().then((value) {
       debugPrint('current patch number is $value');
     });
     super.initState();
@@ -195,10 +195,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   Future<void> _downloadUpdateIfAvailable() async {
     try {
-      final isUpdateAvailable = await shorebirdCodePush.isNewPatchAvailableForDownload();
+      final isUpdateAvailable = await shorebirdCodePush.checkForUpdate()==UpdateStatus.outdated;
 
       if (isUpdateAvailable) {
-        await shorebirdCodePush.downloadUpdateIfAvailable();
+        await shorebirdCodePush.update();
         await Future.delayed(const Duration(milliseconds: 500));
         AppSnackbar.showListOfSnackBars(
           snackbarsMessages: [

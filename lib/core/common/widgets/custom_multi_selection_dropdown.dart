@@ -43,19 +43,17 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   });
 
   @override
-  State<CustomMultiSelectionDropdown<T>> createState() =>
-      _CustomMultiSelectionDropdownState<T>();
+  State<CustomMultiSelectionDropdown<T>> createState() => _CustomMultiSelectionDropdownState<T>();
 }
 
-class _CustomMultiSelectionDropdownState<T>
-    extends State<CustomMultiSelectionDropdown<T>> {
+class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDropdown<T>> {
   final _popupCustomValidationKey = GlobalKey<DropdownSearchState<T>>();
 
   @override
   Widget build(BuildContext context) {
     final Widget child = DropdownSearch<T>.multiSelection(
       key: _popupCustomValidationKey,
-      items: widget.items,
+      items: (filter, loadProps) => widget.items,
       selectedItems: widget.selectedItems,
       itemAsString: widget.itemAsString,
       filterFn: widget.filterFn,
@@ -64,15 +62,10 @@ class _CustomMultiSelectionDropdownState<T>
         widget.onSave!(value);
       },
       enabled: widget.isDisabled != true,
-      validator: widget.validator ??
-          (widget.isRequired
-              ? (value) => value == null || value.isEmpty
-                  ? AppStrings.messageEmpty
-                  : null
-              : null),
+      validator: widget.validator ?? (widget.isRequired ? (value) => value == null || value.isEmpty ? AppStrings.messageEmpty : null : null),
       // suffix icon props
-      dropdownButtonProps: DropdownButtonProps(
-        color: widget.isDisabled == true ? Colors.grey : null,
+      suffixProps: DropdownSuffixProps(
+        dropdownButtonProps: DropdownButtonProps(color: widget.isDisabled == true ? Colors.grey : null),
       ),
       // popup props
       popupProps: PopupPropsMultiSelection.dialog(
@@ -125,7 +118,7 @@ class _CustomMultiSelectionDropdownState<T>
             fontSize: 18.scaleFontSize,
           ),
         ),
-        selectionWidget: (context, item, isSelected) {
+        checkBoxBuilder: (context, item, isDisabled, isSelected) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: isSelected
@@ -146,12 +139,11 @@ class _CustomMultiSelectionDropdownState<T>
             child: child,
           );
         },
-        validationWidgetBuilder: (ctx, items) {
+        validationBuilder: (ctx, items) {
           return AppElevatedButton(
             text: "حفظ",
             onPressed: () {
-              _popupCustomValidationKey.currentState
-                  ?.changeSelectedItems(items);
+              _popupCustomValidationKey.currentState?.changeSelectedItems(items);
               _popupCustomValidationKey.currentState?.popupOnValidate();
             },
           );
@@ -173,15 +165,13 @@ class _CustomMultiSelectionDropdownState<T>
             vertical: 10,
           ),
         ),
-        itemBuilder: (context, item, isSelected) {
+        itemBuilder: (context, item, isDisabled, isSelected) {
           return Directionality(
             textDirection: TextDirection.rtl,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               decoration: BoxDecoration(
-                color: isSelected
-                    ? Colors.grey.withOpacity(0.2)
-                    : Colors.transparent,
+                color: isSelected ? Colors.grey.withOpacity(0.2) : Colors.transparent,
               ),
               child: AppText(
                 widget.itemAsString!(item),
@@ -201,12 +191,7 @@ class _CustomMultiSelectionDropdownState<T>
         return Padding(
           padding: EdgeInsets.all(8),
           child: AppText(
-            selectedItems.isEmpty
-                ? widget.hint ?? ''
-                : selectedItems
-                    .map((e) => widget.itemAsString!(e))
-                    .toList()
-                    .join(', '),
+            selectedItems.isEmpty ? widget.hint ?? '' : selectedItems.map((e) => widget.itemAsString!(e)).toList().join(', '),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             color: Colors.grey,
@@ -215,8 +200,8 @@ class _CustomMultiSelectionDropdownState<T>
         );
       },
       // button decoration
-      dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: widget.dropdownSearchDecoration ??
+      decoratorProps: DropDownDecoratorProps(
+        decoration: widget.dropdownSearchDecoration ??
             AppStyles.roundedDropdownButtonDecoration(
               context: context,
               hintText: widget.hint ?? '',
