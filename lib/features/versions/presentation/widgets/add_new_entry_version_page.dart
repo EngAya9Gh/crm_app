@@ -66,7 +66,7 @@ class _AddVersionPageState extends State<AddVersionPage> {
             child: Column(
               children: [
                 AppTextField(
-                  hintText: "رقم الاصدار",
+                  hintText: "رقم التحديث",
                   controller: versionNo,
                   isRequired: true,
                   enabled: widget.versionModel == null,

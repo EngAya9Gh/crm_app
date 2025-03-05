@@ -8,8 +8,7 @@ import '../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/task_repository.dart';
 
 @injectable
-class GetTasksUsecase extends BaseUsecase<
-    Either<String, PaginationResponseWrapper>, GetTaskParams> {
+class GetTasksUsecase extends BaseUsecase<Either<String, PaginationResponseWrapper>, GetTaskParams> {
   GetTasksUsecase(this.repository);
 
   final TaskRepository repository;
@@ -40,6 +39,10 @@ class GetTaskParams {
   final String? myTasks;
   final String? myBranch;
   final String? myDepartment;
+  final String? userId;
+  final String? managerId;
+  final bool? atTime;
+  final bool? afterTime;
 
   GetTaskParams({
     this.skip = 0,
@@ -59,14 +62,23 @@ class GetTaskParams {
     this.myDepartment,
     this.myBranch,
     this.myTasks,
+    this.userId,
+    this.managerId,
+    this.atTime,
+    this.afterTime,
   });
 
   Map<String, dynamic> get toMap => {
-        'skip': ApiHelper.calculatePage(skip: skip, limit: limit),
+        'page': ApiHelper.calculatePage(skip: skip, limit: limit),
         'limit': limit,
         'filter': filter,
-        'status': statusName,/*
-        'assigned_by': assignedBy,
+        'status': statusName,
+        'branch_id': myBranch,
+        'user_id': userId,
+        'management_id': managerId,
+        if (atTime != null&&atTime!) 'done_at_time': 1,
+        if (afterTime != null&&afterTime!) 'time_out': 1,
+        /*
         'assigned_to': assignedTo,
         'date_time_created': dateTimeCreated?.toIso8601String(),
         'start_date_to':

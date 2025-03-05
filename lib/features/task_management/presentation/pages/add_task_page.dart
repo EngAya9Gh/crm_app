@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,7 @@ import '../../../../core/common/enums/enums.dart';
 import '../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/common/helpers/input_validator.dart';
+import '../../../../core/common/models/file_model.dart';
 import '../../../../core/common/models/location/branch_model.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
@@ -29,6 +31,7 @@ import '../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../../core/common/widgets/files/app_platform_image.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
@@ -39,10 +42,12 @@ import '../../../../model/managmodel.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
 import '../../../../ui/screen/invoice/invoice_images_file.dart';
+import '../../../../ui/widgets/app_file_viewer.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
+import '../../../clients_care/violations_clienta_care/data/models/management_model.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
@@ -56,7 +61,7 @@ enum AssignedToType { employee, department, region }
 enum AssignedTypeNew {
   users(text: 'موظف'),
   managements(text: 'قسم'),
-  region(text: 'فرع');
+  regoin(text: 'فرع');
 
   final String text;
 
@@ -127,19 +132,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
   void initState() {
     privilegeBloc = getIt<PrivilegesCubit>();
     currentUser = context.read<UserProvider>().currentUser;
-    departmentId = privilegeBloc.checkPrivilege('174')
-        ? '2'
-        : privilegeBloc.checkPrivilege('169')
-            ? null
-            : privilegeBloc.checkPrivilege('168') || privilegeBloc.checkPrivilege('166')
-                ? currentUser.typeAdministration
-                : null;
-    regionId = privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
-
+    // departmentId = privilegeBloc.checkPrivilege('174')
+    //     ? '2'
+    //     : privilegeBloc.checkPrivilege('169')
+    //         ? null
+    //         : privilegeBloc.checkPrivilege('168') || privilegeBloc.checkPrivilege('166')
+    //             ? currentUser.typeAdministration
+    //             : null;
+    // regionId = privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
+    //
     _usersCubit = context.read<UsersCubit>()
       ..storeCurrentUser(currentUser)
-      ..getUsers()
-      ..getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId);
+      ..getUsersAll()
+      ..onGetUserSelected('active');
 
     _taskNameController = TextEditingController();
     _startDateController = TextEditingController();
@@ -151,10 +156,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<RegionProvider>()
         ..changeValuser(null, true)
-        ..getRegions();
+        ..getRegionsTasks();
       context.read<manage_provider>()
         ..changevalue(null)
-        ..getManages();
+        ..getManagesTask();
     });
     super.initState();
   }
@@ -162,7 +167,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   List<AssignedTypeNew> get assignedToList {
     final list = List.of(AssignedTypeNew.values);
     if (!privilegeBloc.checkPrivilege('167') && !privilegeBloc.checkPrivilege('174')) {
-      list.remove(AssignedTypeNew.region);
+      list.remove(AssignedTypeNew.regoin);
     }
     if (!privilegeBloc.checkPrivilege('168') && !privilegeBloc.checkPrivilege('169')) {
       list.remove(AssignedTypeNew.managements);
@@ -202,15 +207,22 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
                       final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
                       final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
+                      var assignToId = state.selectedAssignedToType == AssignedTypeNew.users
+                          ? state.selectedAssignTo?.idUser.toString()
+                          : state.selectedAssignedToType == AssignedTypeNew.managements
+                              ? selectedValueManage
+                              : selectedRegionId;
                       _taskCubit.addTaskAction(
-                          onSuccess: () => AppNavigator.pop(result: true),
+                          onSuccess: () {
+                            AppNavigator.pop(result: true);
+                          },
                           addTaskParams: AddTaskParams(
                               title: _taskNameController.text,
                               description: _taskDescriptionController.text,
                               assignFrom: AssignedTypeNew.users.name.toString(),
                               assignFromId: currentUser.idUser!,
                               assignTo: state.selectedAssignedToType?.name,
-                              assignToId: state.selectedAssignTo!.idUser.toString(),
+                              assignToId: assignToId,
                               userId: currentUser.idUser!,
                               startDate: state.startDate,
                               file: state.attachmentFile,
@@ -268,7 +280,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       builder: (context, state) {
                         return CustomMultiSelectionDropdown<UserModel>(
                           hint: 'المشاركين*',
-                          items: _usersCubit.pageVariables.usersList,
+                          items: _usersCubit.pageVariables.usersAllList,
                           selectedItems: taskState.selectedParticipant ?? [],
                           onSave: _taskCubit.onChangeParticipants,
                           itemAsString: (u) => u!.userAsString(),
@@ -449,6 +461,31 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       icon: Icons.attach_file_rounded,
                     ),
                     10.height,
+                    BlocBuilder<TaskCubit, TaskState>(
+                      builder: (context, state) {
+                        return AnimatedSwitcher(
+                          duration: Duration(milliseconds: 500),
+                          transitionBuilder: (widget, animation) => FadeTransition(
+                            opacity: animation,
+                            child: widget,
+                          ),
+                          child: state.attachmentFile==null
+                              ? SizedBox.shrink()
+                              : InkWell(
+                            onTap: () => AppFileViewer(
+                              imageSource: ImageSourceViewer.file,
+                              files: [XFile(state.attachmentFile!.path)],
+                            ).show(context),
+                            child: AppPlatformImage(
+                              fileModel: FileModel(file: XFile(state.attachmentFile!.path)),
+                              fit: BoxFit.cover,
+                              width: 110.scaleIconsSize,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    10.height,
                     AppText('اسناد إلى'),
                     5.height,
                     AppCardContainer(
@@ -467,6 +504,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     assignToEmployeeWidget(taskState),
                     assignToRegionWidget(taskState),
                     assignToDepartmentWidget(taskState),
+                    40.height,
                   ],
                 ),
               );
@@ -481,15 +519,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (taskState.selectedAssignedToType == AssignedTypeNew.users)
       return BlocBuilder<UsersCubit, UsersState>(
         builder: (context, state) {
-          return CustomSearchableDropDown<UserRegionDepartment>(
+          return CustomSearchableDropDown<UserModel>(
             hint: 'الموظف',
-            items: state.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
+            items: state.getUserSelected.data ?? [],
             itemAsString: (u) => u!.nameUser!,
             onChanged: _taskCubit.onChangeAssignTo,
             selectedItem: taskState.selectedAssignTo,
             filterFn: (user, filter) => user.nameUser!.contains(filter),
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.employee) {
+              if (taskState.selectedAssignedToType != AssignedTypeNew.users) {
                 return null;
               }
               if (value == null) {
@@ -509,10 +547,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
         builder: (context, manageList, child) {
           final userDepartment = context.read<UserProvider>().currentUser.typeAdministration;
           final list = getIt<PrivilegesCubit>().checkPrivilege('169')
-              ? manageList.listtext
+              ? manageList.listMangTask
               : getIt<PrivilegesCubit>().checkPrivilege('168') || getIt<PrivilegesCubit>().checkPrivilege('174')
-                  ? manageList.listtext.where((element) => element.idMange == userDepartment).toList()
-                  : manageList.listtext;
+                  ? manageList.listMangTask.where((element) => element.idMange == userDepartment).toList()
+                  : manageList.listMangTask;
 
           return CustomDropDown<ManageModel>(
             hint: 'القسم',
@@ -525,7 +563,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               manageList.changevalue(data!.idMange);
             },
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.department) {
+              if (taskState.selectedAssignedToType != AssignedTypeNew.managements) {
                 return null;
               }
               if (value == null) {
@@ -540,15 +578,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Widget assignToRegionWidget(TaskState taskState) {
-    if (taskState.selectedAssignedToType == AssignedToType.region)
+    if (taskState.selectedAssignedToType == AssignedTypeNew.regoin)
       return Consumer<RegionProvider>(
         builder: (context, cart, child) {
           final user = context.read<UserProvider>().currentUser;
           final list = privilegeBloc.checkPrivilege('169')
-              ? cart.listRegion
+              ? cart.listRegionTaskFilter
               : privilegeBloc.checkPrivilege('167')
-                  ? cart.listRegion.where((element) => element.branchId == user.fkRegoin).toList()
-                  : cart.listRegion;
+                  ? cart.listRegionTaskFilter.where((element) => element.branchId == user.fkRegoin).toList()
+                  : cart.listRegionTaskFilter;
           return CustomDropDown<BranchModel>(
             hint: 'الفرع',
             items: list,
@@ -560,7 +598,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               cart.changeVal(data!.branchId);
             },
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.region) {
+              if (taskState.selectedAssignedToType != AssignedTypeNew.regoin) {
                 return null;
               }
               if (value == null) {

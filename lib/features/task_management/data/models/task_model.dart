@@ -4,6 +4,10 @@
 
 import 'dart:convert';
 
+import 'package:crm_smart/model/usermodel.dart';
+
+import '../../../../core/common/models/client_model.dart';
+
 TaskModel taskModelFromJson(String str) => TaskModel.fromJson(json.decode(str));
 
 String taskModelToJson(TaskModel data) => json.encode(data.toJson());
@@ -17,7 +21,7 @@ class TaskModel {
   final AssignFromOrToModel? assignTo;
   final String? assignToModel;
   final Status? status;
-  final dynamic client;
+  final ClientModel? client;
   final Invoice? invoice;
   final dynamic communicationId;
   final dynamic group;
@@ -31,6 +35,11 @@ class TaskModel {
   final AssignFromOrToModel? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final int? overDeadline;
+  final num? timeTaken;
+  final num? rate;
+  final List<UserModel>? collaborators;
+  final List<FileAttachmentTaskModel>? attachments;
 
   TaskModel({
     this.id,
@@ -55,6 +64,11 @@ class TaskModel {
     this.createdBy,
     this.createdAt,
     this.updatedAt,
+    this.overDeadline,
+    this.collaborators,
+    this.timeTaken,
+    this.rate,
+    this.attachments,
   });
 
   TaskModel copyWith({
@@ -66,7 +80,7 @@ class TaskModel {
     AssignFromOrToModel? assignTo,
     String? assignToModel,
     Status? status,
-    dynamic client,
+    ClientModel? client,
     Invoice? invoice,
     dynamic communicationId,
     dynamic group,
@@ -80,6 +94,11 @@ class TaskModel {
     AssignFromOrToModel? createdBy,
     DateTime? createdAt,
     DateTime? updatedAt,
+    int? overDeadline,
+    List<UserModel>? collaborators,
+    num? timeTaken,
+    num? rate,
+    List<FileAttachmentTaskModel>? attachments,
   }) =>
       TaskModel(
         id: id ?? this.id,
@@ -104,57 +123,75 @@ class TaskModel {
         createdBy: createdBy ?? this.createdBy,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        overDeadline: overDeadline ?? this.overDeadline,
+        collaborators: collaborators ?? this.collaborators,
+        timeTaken: timeTaken ?? this.timeTaken,
+        rate: rate ?? this.rate,
+        attachments: attachments ?? this.attachments,
       );
 
   factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
-    id: json["id"],
-    title: json["title"],
-    description: json["description"],
-    assignFrom: json["assign_from"] == null ? null : AssignFromOrToModel.fromJson(json["assign_from"]),
-    assignFromModel: json["assign_from_model"],
-    assignTo: json["assign_to"] == null ? null : AssignFromOrToModel.fromJson(json["assign_to"]),
-    assignToModel: json["assign_to_model"],
-    status: json["status"] == null ? null : Status.fromJson(json["status"]),
-    client: json["client"],
-    invoice: json["invoice"] == null ? null : Invoice.fromJson(json["invoice"]),
-    communicationId: json["communication_id"],
-    group: json["group"],
-    code: json["code"],
-    startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
-    deadline: json["deadline"],
-    type: json["type"],
-    completionPercentage: json["completion_percentage"],
-    recurringType: json["recurring_type"],
-    recurringNumber: json["recurring_number"],
-    createdBy: json["created_by"] == null ? null : AssignFromOrToModel.fromJson(json["created_by"]),
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        title: json["title"],
+        description: json["description"],
+        assignFrom: json["assign_from"] == null ? null : AssignFromOrToModel.fromJson(json["assign_from"]),
+        assignFromModel: json["assign_from_model"],
+        assignTo: json["assign_to"] == null ? null : AssignFromOrToModel.fromJson(json["assign_to"]),
+        assignToModel: json["assign_to_model"],
+        status: json["status"] == null ? null : Status.fromJson(json["status"]),
+        client: json["client"] == null ? null : ClientModel.fromJson(json["client"]),
+        invoice: json["invoice"] == null ? null : Invoice.fromJson(json["invoice"]),
+        communicationId: json["communication_id"],
+        group: json["group"],
+        code: json["code"],
+        startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
+        deadline: json["deadline"],
+        type: json["type"],
+        completionPercentage: json["completion_percentage"],
+        recurringType: json["recurring_type"],
+        recurringNumber: json["recurring_number"],
+        overDeadline: json["over_deadline"],
+        collaborators: (json["collaborators"] as List<dynamic>).map((e) => UserModel.fromJson(e)).toList(),
+        createdBy: json["created_by"] == null ? null : AssignFromOrToModel.fromJson(json["created_by"]),
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        timeTaken: json["timeTaken"],
+        rate: json["rate"],
+        attachments: json["attachments"] == null ? [] : List.of(json["attachments"]).map((e) => FileAttachmentTaskModel.fromJson(e)).toList(),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "description": description,
-    "assign_from": assignFrom?.toJson(),
-    "assign_from_model": assignFromModel,
-    "assign_to": assignTo?.toJson(),
-    "assign_to_model": assignToModel,
-    "status": status?.toJson(),
-    "client": client,
-    "invoice": invoice?.toJson(),
-    "communication_id": communicationId,
-    "group": group,
-    "code": code,
-    "start_date": startDate?.toIso8601String(),
-    "deadline": deadline,
-    "type": type,
-    "completion_percentage": completionPercentage,
-    "recurring_type": recurringType,
-    "recurring_number": recurringNumber,
-    "created_by": createdBy?.toJson(),
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-  };
+        "id": id,
+        "title": title,
+        "description": description,
+        "assign_from": assignFrom?.toJson(),
+        "assign_from_model": assignFromModel,
+        "assign_to": assignTo?.toJson(),
+        "assign_to_model": assignToModel,
+        "status": status?.toJson(),
+        "client": client,
+        "invoice": invoice?.toJson(),
+        "communication_id": communicationId,
+        "group": group,
+        "code": code,
+        "start_date": startDate?.toIso8601String(),
+        "deadline": deadline,
+        "type": type,
+        "completion_percentage": completionPercentage,
+        "recurring_type": recurringType,
+        "recurring_number": recurringNumber,
+        "over_deadline": overDeadline,
+        "timeTaken": timeTaken,
+        "rate": rate,
+        "collaborators": (collaborators ?? []).map(
+          (e) => e.toJson(),
+        ),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "attachments": List<FileAttachmentTaskModel>.of(attachments ?? []).map(
+          (e) => e.toJson(),
+        ),
+      };
 }
 
 class AssignFromOrToModel {
@@ -164,6 +201,7 @@ class AssignFromOrToModel {
   final String? nameMange;
   final String? nameRegion;
   final String? nameUser;
+  final String? image;
   final dynamic fkCountry;
 
   AssignFromOrToModel({
@@ -174,10 +212,8 @@ class AssignFromOrToModel {
     this.nameRegion,
     this.nameUser,
     this.fkCountry,
+    this.image,
   });
-
-
-
 
   AssignFromOrToModel copyWith({
     int? idMange,
@@ -186,7 +222,8 @@ class AssignFromOrToModel {
     String? nameMange,
     String? nameRegion,
     String? nameUser,
-    dynamic? fkCountry,
+    String? image,
+    dynamic fkCountry,
   }) {
     return AssignFromOrToModel(
       idMange: idMange ?? this.idMange,
@@ -196,6 +233,7 @@ class AssignFromOrToModel {
       nameRegion: nameRegion ?? this.nameRegion,
       nameUser: nameUser ?? this.nameUser,
       fkCountry: fkCountry ?? this.fkCountry,
+      image: image ?? this.image,
     );
   }
 
@@ -207,6 +245,7 @@ class AssignFromOrToModel {
       'name_mange': this.nameMange,
       'name_regoin': this.nameRegion,
       'nameUser': this.nameUser,
+      'img_image': this.image,
       'fk_country': this.fkCountry,
     };
   }
@@ -219,6 +258,7 @@ class AssignFromOrToModel {
       nameMange: map['name_mange'] as String?,
       nameRegion: map['name_regoin'] as String?,
       nameUser: map['nameUser'] as String?,
+      image: map['img_image'] as String?,
       fkCountry: map['fk_country'] as dynamic,
     );
   }
@@ -243,14 +283,14 @@ class Invoice {
       );
 
   factory Invoice.fromJson(Map<String, dynamic> json) => Invoice(
-    idInvoice: json["id_invoice"],
-    addressInvoice: json["address_invoice"],
-  );
+        idInvoice: json["id_invoice"],
+        addressInvoice: json["address_invoice"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id_invoice": idInvoice,
-    "address_invoice": addressInvoice,
-  };
+        "id_invoice": idInvoice,
+        "address_invoice": addressInvoice,
+      };
 }
 
 class Status {
@@ -284,20 +324,20 @@ class Status {
       );
 
   factory Status.fromJson(Map<String, dynamic> json) => Status(
-    id: json["id"],
-    name: json["name"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    pivot: json["pivot"] == null ? null : Pivot.fromJson(json["pivot"]),
-  );
+        id: json["id"],
+        name: json["name"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        pivot: json["pivot"] == null ? null : Pivot.fromJson(json["pivot"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "pivot": pivot?.toJson(),
-  };
+        "id": id,
+        "name": name,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "pivot": pivot?.toJson(),
+      };
 }
 
 class Pivot {
@@ -327,16 +367,75 @@ class Pivot {
       );
 
   factory Pivot.fromJson(Map<String, dynamic> json) => Pivot(
-    taskId: json["task_id"],
-    taskStatusId: json["task_status_id"],
-    changedDate: json["changed_date"] == null ? null : DateTime.parse(json["changed_date"]),
-    changedBy: json["changed_by"],
-  );
+        taskId: json["task_id"],
+        taskStatusId: json["task_status_id"],
+        changedDate: json["changed_date"] == null ? null : DateTime.parse(json["changed_date"]),
+        changedBy: json["changed_by"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "task_id": taskId,
-    "task_status_id": taskStatusId,
-    "changed_date": changedDate?.toIso8601String(),
-    "changed_by": changedBy,
-  };
+        "task_id": taskId,
+        "task_status_id": taskStatusId,
+        "changed_date": changedDate?.toIso8601String(),
+        "changed_by": changedBy,
+      };
+}
+
+class FileAttachmentTaskModel {
+  final int? id;
+  final DateTime? createDate;
+  final String? filePath;
+  final int? taskId;
+  final int? createdBy;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  FileAttachmentTaskModel({
+    this.id,
+    this.createDate,
+    this.filePath,
+    this.taskId,
+    this.createdBy,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  FileAttachmentTaskModel copyWith({
+    int? id,
+    DateTime? createDate,
+    String? filePath,
+    int? taskId,
+    int? createdBy,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) =>
+      FileAttachmentTaskModel(
+        id: id ?? this.id,
+        createDate: createDate ?? this.createDate,
+        filePath: filePath ?? this.filePath,
+        taskId: taskId ?? this.taskId,
+        createdBy: createdBy ?? this.createdBy,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+
+  factory FileAttachmentTaskModel.fromJson(Map<String, dynamic> json) => FileAttachmentTaskModel(
+        id: json["id"],
+        createDate: json["create_date"] == null ? null : DateTime.parse(json["create_date"]),
+        filePath: json["file_path"],
+        taskId: json["task_id"],
+        createdBy: json["created_by"],
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "create_date": createDate?.toIso8601String(),
+        "file_path": filePath,
+        "task_id": taskId,
+        "created_by": createdBy,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 }

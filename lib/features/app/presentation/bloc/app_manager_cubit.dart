@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/features/auth/login/presentation/pages/login/login_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -202,9 +203,15 @@ class AppManagerCubit extends Cubit<AppManagerState> {
   }
 
   void _gotoLogin() {
-    AppNavigator.go(
-      LoginPage(),
-      name: AppRoutesNames.generalRoutes.login,
+    if (kIsWeb) {
+      AppNavigator.go(
+        LoginPage(),
+        name: AppRoutesNames.generalRoutes.login,
+      );
+      return;
+    }
+    AppRouter.goRouter.pushReplacementNamed(
+      AppRoutesNames.generalRoutes.login,
     );
   }
 

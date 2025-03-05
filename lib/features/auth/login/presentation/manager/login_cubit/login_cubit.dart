@@ -37,9 +37,9 @@ class LoginCubit extends Cubit<LoginState> {
     this._validateTokenUsecase,
   ) : super(LoginState());
 
-  final loginFormKey = GlobalKey<FormState>();
+  // final loginFormKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
-  final otpFormKey = GlobalKey<FormState>();
+  // final otpFormKey = GlobalKey<FormState>();
   final otpCodeController = TextEditingController();
 
   Future<void> login() async {

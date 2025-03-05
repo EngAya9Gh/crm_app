@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:flutter/foundation.dart';
@@ -24,25 +25,26 @@ class VerifiedClientBloc extends Bloc<VerifiedClientEvent, VerifiedClientState> 
     this._getVerifiedClientUseCase,
     this._verifiedClientUseCase,
   ) : super(VerifiedClientState()) {
-    on<GetVerifiedClientEvent>(_onHandleGetVerifiedClientEvent);
+    on<GetVerifiedClientEvent>(_onHandleGetVerifiedClientEvent,transformer: droppable());
     on<ChangeStatusVerifiedClientEvent>(_onHandleChangeStatusVerifiedClientEvent);
     on<ResetFilterEvent>(_onHandleResetFilterEvent);
   }
 
   FutureOr<void> _onHandleGetVerifiedClientEvent(GetVerifiedClientEvent event, Emitter<VerifiedClientState> emit) async {
-    if (!event.addNewFilter) {
+    if (event.addNewFilter) {
       emit(state.copyWith(verifiedClientList: BlocStatus.loading()));
     }
+    emit(state.copyWith(gettingData: BlocStatus.loading()));
     emit(state.copyWith(getInvoicesByPrivilegesParams: () => event.getInvoicesByPrivilegesParams));
     final result = await _getVerifiedClientUseCase(event.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams());
     result.extract(
 
       (l,e) => emit(
-        state.copyWith(verifiedClientList: BlocStatus.fail(error: e)),
+        state.copyWith(verifiedClientList: BlocStatus.fail(error: e),gettingData: BlocStatus.fail()),
       ),
       (r) {
-        emit(state.copyWith(hasReachedMax: r.message?.isEmpty??true));
-        if (event.addNewFilter) {
+        emit(state.copyWith(hasReachedMax: r.message?.isEmpty??true,gettingData: BlocStatus.success()));
+        if (!event.addNewFilter) {
           emit(state.copyWith(verifiedClientList: BlocStatus.success(data: List.of(state.verifiedClientList.data ?? [])..addAll(r.message??[])),totalCount: r.count));
           return;
         }

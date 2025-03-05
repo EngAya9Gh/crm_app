@@ -204,7 +204,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     } else if (filtersEntity.filterInvoicesSellerType.value!.isParticipate()) {
       await _getParticipateList();
     } else if (filtersEntity.filterInvoicesSellerType.value!.isEmployee()) {
-      await _getAllUsers();
+      await getAllUsers();
     }
   }
 
@@ -249,7 +249,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     );
   }
 
-  Future<void> _getAllUsers() async {
+  Future<void> getAllUsers() async {
     emit(state.copyWith(getUsersState: const BlocStatus.loading()));
 
     final result = await _getUsersSalesUseCases(GetUsersSalesParams());

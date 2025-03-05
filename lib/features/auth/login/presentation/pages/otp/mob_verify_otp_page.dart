@@ -28,6 +28,7 @@ class MobVerifyOtpPage extends StatefulWidget {
 
 class _MobVerifyOtpPageState extends State<MobVerifyOtpPage> {
   late final LoginCubit loginCubit;
+  GlobalKey<FormState>otpFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -58,7 +59,7 @@ class _MobVerifyOtpPageState extends State<MobVerifyOtpPage> {
             padding: EdgeInsets.symmetric(horizontal: 87.scaleWidth),
             child: Center(
               child: Form(
-                key: loginCubit.otpFormKey,
+                key: otpFormKey,
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -102,7 +103,7 @@ class _MobVerifyOtpPageState extends State<MobVerifyOtpPage> {
                               text: AppStrings.textButtonCode,
                               onPressed: () async {
                                 FocusManager.instance.primaryFocus?.unfocus();
-                                if (loginCubit.otpFormKey.currentState!
+                                if (otpFormKey.currentState!
                                     .validate()) {
                                   await loginCubit.verifyOtp(context);
                                 }

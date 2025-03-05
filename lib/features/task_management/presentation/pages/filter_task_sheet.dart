@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +21,7 @@ import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
+import '../../../clients_care/violations_clienta_care/data/models/management_model.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../data/models/user_region_department.dart';
@@ -44,35 +46,31 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
   @override
   void initState() {
     privilegeBloc = getIt<PrivilegesCubit>();
-    final currentUser = context.read<UserProvider>().currentUser;
-    departmentId = privilegeBloc.checkPrivilege('159')
-        ? currentUser.typeAdministration
-        : null;
-    regionId =
-        privilegeBloc.checkPrivilege('162') ? currentUser.fkRegoin : null;
-
+    // final currentUser = context.read<UserProvider>().currentUser;
+    // departmentId = privilegeBloc.checkPrivilege('159')
+    //     ? currentUser.typeAdministration
+    //     : null;
+    // regionId =
+    //     privilegeBloc.checkPrivilege('162') ? currentUser.fkRegoin : null;
+    //
     _taskCubit = getIt<TaskCubit>();
-    _usersCubit = context.read<UsersCubit>()
-      ..getUsersByDepartmentAndRegion(
-          regionId: regionId, departmentId: departmentId);
+    _usersCubit = context.read<UsersCubit>()..onGetUserSelected();
 
     _fromDateController = TextEditingController();
     _toDateController = TextEditingController();
     if (_taskCubit.state.filterFromDate != null) {
-      _fromDateController.text = Intl.DateFormat('dd MMM yyyy')
-          .format(_taskCubit.state.filterFromDate!);
+      _fromDateController.text = Intl.DateFormat('dd MMM yyyy').format(_taskCubit.state.filterFromDate!);
     }
     if (_taskCubit.state.filterToDate != null) {
-      _toDateController.text =
-          Intl.DateFormat('dd MMM yyyy').format(_taskCubit.state.filterToDate!);
+      _toDateController.text = Intl.DateFormat('dd MMM yyyy').format(_taskCubit.state.filterToDate!);
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<RegionProvider>()
         ..changeValuser(null, true)
-        ..getRegions();
+        ..getRegionsTasks();
       context.read<manage_provider>()
         ..changevalue(null)
-        ..getManages();
+        ..getManagesTask();
     });
     super.initState();
   }
@@ -116,12 +114,10 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                               Expanded(
                                 child: Consumer<manage_provider>(
                                   builder: (context, manageList, child) {
-                                    final list = manageList.listtext;
-                                    return AppDropdownButtonFormField<
-                                        ManageModel, ManageModel>(
+                                    final list = manageList.listMangTask;
+                                    return AppDropdownButtonFormField<ManageModel, ManageModel>(
                                       items: list,
-                                      onChange: (value) => _taskCubit
-                                          .onChangeDepartmentFrom(value),
+                                      onChange: (value) => _taskCubit.onChangeDepartmentFrom(value),
                                       hint: "من القسم",
                                       itemAsValue: (ManageModel? item) => item,
                                       itemAsString: (item) => item!.name_mange,
@@ -134,12 +130,10 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                               Expanded(
                                 child: Consumer<manage_provider>(
                                   builder: (context, manageList, child) {
-                                    final list = manageList.listtext;
-                                    return AppDropdownButtonFormField<
-                                        ManageModel, ManageModel>(
+                                    final list = manageList.listMangTask;
+                                    return AppDropdownButtonFormField<ManageModel, ManageModel>(
                                       items: list,
-                                      onChange: (value) => _taskCubit
-                                          .onChangeDepartmentTo(value),
+                                      onChange: (value) => _taskCubit.onChangeDepartmentTo(value),
                                       hint: "إلى القسم",
                                       itemAsValue: (ManageModel? item) => item,
                                       itemAsString: (item) => item!.name_mange,
@@ -158,12 +152,10 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                               Expanded(
                                 child: Consumer<RegionProvider>(
                                   builder: (context, cart, child) {
-                                    final list = cart.listRegion;
-                                    return AppDropdownButtonFormField<
-                                        BranchModel, BranchModel>(
+                                    final list = cart.listRegionTaskFilter;
+                                    return AppDropdownButtonFormField<BranchModel, BranchModel>(
                                       items: list,
-                                      onChange: (value) =>
-                                          _taskCubit.onChangeRegionFrom(value),
+                                      onChange: (value) => _taskCubit.onChangeRegionFrom(value),
                                       hint: "من الفرع",
                                       itemAsValue: (BranchModel? item) => item,
                                       itemAsString: (item) => item!.branchName,
@@ -176,13 +168,11 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                               Expanded(
                                 child: Consumer<RegionProvider>(
                                   builder: (context, cart, child) {
-                                    final list = cart.listRegion;
+                                    final list = cart.listRegionTaskFilter;
 
-                                    return AppDropdownButtonFormField<
-                                        BranchModel, BranchModel>(
+                                    return AppDropdownButtonFormField<BranchModel, BranchModel>(
                                       items: list,
-                                      onChange: (value) =>
-                                          _taskCubit.onChangeRegionTo(value),
+                                      onChange: (value) => _taskCubit.onChangeRegionTo(value),
                                       hint: "إلى الفرع",
                                       itemAsValue: (BranchModel? item) => item,
                                       itemAsString: (item) => item!.branchName,
@@ -218,18 +208,13 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 onTap: () async {
                                   DateTime? date = await showDatePicker(
                                     context: context,
-                                    initialDate:
-                                        state.filterFromDate ?? DateTime.now(),
-                                    firstDate: DateTime.now()
-                                        .subtract(Duration(days: 365 * 2)),
-                                    lastDate:
-                                        DateTime.now().add(Duration(days: 365)),
+                                    initialDate: state.filterFromDate ?? DateTime.now(),
+                                    firstDate: DateTime.now().subtract(Duration(days: 365 * 2)),
+                                    lastDate: DateTime.now().add(Duration(days: 365)),
                                   );
                                   if (date == null) return;
 
-                                  _fromDateController.text =
-                                      Intl.DateFormat('dd MMM yyyy')
-                                          .format(date);
+                                  _fromDateController.text = Intl.DateFormat('dd MMM yyyy').format(date);
                                   _taskCubit.onChangeFilterFromDate(date);
                                 },
                                 child: IgnorePointer(
@@ -252,19 +237,14 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 onTap: () async {
                                   DateTime? date = await showDatePicker(
                                     context: context,
-                                    initialDate:
-                                        state.filterToDate ?? DateTime.now(),
-                                    firstDate: DateTime.now()
-                                        .subtract(Duration(days: 365 * 2)),
-                                    lastDate:
-                                        DateTime.now().add(Duration(days: 365)),
+                                    initialDate: state.filterToDate ?? DateTime.now(),
+                                    firstDate: DateTime.now().subtract(Duration(days: 365 * 2)),
+                                    lastDate: DateTime.now().add(Duration(days: 365)),
                                   );
 
                                   if (date == null) return;
 
-                                  _toDateController.text =
-                                      Intl.DateFormat('dd MMM yyyy')
-                                          .format(date);
+                                  _toDateController.text = Intl.DateFormat('dd MMM yyyy').format(date);
                                   _taskCubit.onChangeToDate(date);
                                 },
                                 child: IgnorePointer(
@@ -289,19 +269,15 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                             Expanded(
                               child: BlocBuilder<UsersCubit, UsersState>(
                                 builder: (context, userState) {
-                                  return CustomSearchableDropDown<
-                                      UserRegionDepartment>(
+                                  return CustomSearchableDropDown<UserModel>(
                                     hint: 'اسناد من',
-                                    items: userState.usersByDepartmentAndRegion
-                                            .getDataWhenSuccess ??
-                                        [],
-                                    itemAsString: (u) => u!.nameUser!,
+                                    items: userState.getUserSelected.data ?? [],
+                                    itemAsString: (u) => u!.nameUser.toString(),
                                     onChanged: (data) {
                                       _taskCubit.onChangeFilterAssignFrom(data);
                                     },
                                     selectedItem: state.filterAssignFrom,
-                                    filterFn: (user, filter) =>
-                                        user.nameUser!.contains(filter),
+                                    filterFn: (user, filter) => user.nameUser!.contains(filter),
                                   );
                                 },
                               ),
@@ -310,23 +286,17 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                             Expanded(
                               child: BlocBuilder<UsersCubit, UsersState>(
                                 builder: (context, userState) {
-                                  return CustomSearchableDropDown<
-                                      UserRegionDepartment>(
+                                  return CustomSearchableDropDown<UserRegionDepartment>(
                                     hint: 'اسناد إلى',
-                                    items: userState.usersByDepartmentAndRegion
-                                            .getDataWhenSuccess ??
-                                        [],
+                                    items: userState.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
                                     itemAsString: (u) => u!.nameUser!,
                                     onChanged: (data) {
                                       _taskCubit.onChangeFilterAssignTo(data);
                                     },
                                     selectedItem: state.filterAssignTo,
-                                    filterFn: (user, filter) =>
-                                        user.nameUser!.contains(filter),
-                                    compareFn: (item, selectedItem) =>
-                                        item.idUser == selectedItem.idUser,
-                                    buttonDecoration: AppStyles
-                                        .roundedDropdownButtonDecoration(
+                                    filterFn: (user, filter) => user.nameUser!.contains(filter),
+                                    compareFn: (item, selectedItem) => item.idUser == selectedItem.idUser,
+                                    buttonDecoration: AppStyles.roundedDropdownButtonDecoration(
                                       context: context,
                                       hintText: 'اسناد إلى',
                                     ),

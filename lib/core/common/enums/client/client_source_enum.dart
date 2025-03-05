@@ -1,6 +1,7 @@
 enum ClientSourceEnum {
   field,
   facebook,
+  facebookwhats,
   google,
   twitter,
   site,
@@ -27,6 +28,8 @@ enum ClientSourceEnum {
         return ClientSourceEnum.field;
       case 'فيسبوك':
         return ClientSourceEnum.facebook;
+      case 'فيسبوك واتس':
+        return ClientSourceEnum.facebookwhats;
       case 'غوغل':
         return ClientSourceEnum.google;
       case 'تويتر':
@@ -70,6 +73,8 @@ extension ClientSourceEnumExtension on ClientSourceEnum {
         return 'ميداني';
       case ClientSourceEnum.facebook:
         return 'فيسبوك';
+      case ClientSourceEnum.facebookwhats:
+        return 'فيسبوك واتس';
       case ClientSourceEnum.google:
         return 'غوغل';
       case ClientSourceEnum.twitter:

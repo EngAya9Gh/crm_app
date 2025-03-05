@@ -30,6 +30,7 @@ class WebOtpRightSide extends StatefulWidget {
 
 class _WebOtpRightSideState extends State<WebOtpRightSide> {
   late final LoginCubit loginCubit;
+  GlobalKey<FormState> otpFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -61,7 +62,7 @@ class _WebOtpRightSideState extends State<WebOtpRightSide> {
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 87.scaleWidth),
               child: Form(
-                key: loginCubit.otpFormKey,
+                key: otpFormKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -108,7 +109,7 @@ class _WebOtpRightSideState extends State<WebOtpRightSide> {
                             isLoading: state.verifyOtpStatus.isLoading(),
                             onPressed: () async {
                               FocusManager.instance.primaryFocus?.unfocus();
-                              if (loginCubit.otpFormKey.currentState!
+                              if (otpFormKey.currentState!
                                   .validate()) {
                                 await loginCubit.verifyOtp(context);
                               }

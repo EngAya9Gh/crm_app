@@ -10,6 +10,7 @@ class ClientsListState extends Equatable {
   final ChangeClientCommunicationParam? changeClientCommunicationParams;
   final PageState<List<RecommendedClient>> recommendedClientsState;
   final BlocStatus actionClientBlocStatus;
+  final BlocStatus assignClientsToEmployeeStatus;
   final BlocStatus<List<SimilarClient>> similarClientsState;
   bool myclient_parm;
 
@@ -39,6 +40,7 @@ class ClientsListState extends Equatable {
     this.recommendedClientsState = const PageState.init(),
     this.similarClientsState = const BlocStatus.initial(),
     this.actionClientBlocStatus = const BlocStatus.initial(),
+    this.assignClientsToEmployeeStatus = const BlocStatus.initial(),
     this.myclient_parm = false,
     this.clientSupportFilesList = const [],
     this.getClientSupportFilesStatus = const BlocStatus.initial(),
@@ -67,6 +69,7 @@ class ClientsListState extends Equatable {
     PageState<List<RecommendedClient>>? recommendedClientsState,
     BlocStatus<List<SimilarClient>>? similarClientsState,
     final BlocStatus? actionClientBlocStatus,
+    BlocStatus? assignClientsToEmployeeStatus,
     bool restFilter = false,
     bool myclient = false,
     List<ClientSupportFileModel>? clientSupportFilesList,
@@ -124,6 +127,7 @@ class ClientsListState extends Equatable {
       exportClientsToExcelStatus:
           exportClientsToExcelStatus ?? this.exportClientsToExcelStatus,
       usersSales: usersSales ?? this.usersSales,
+      assignClientsToEmployeeStatus: assignClientsToEmployeeStatus ?? this.assignClientsToEmployeeStatus,
     );
   }
 
@@ -146,7 +150,8 @@ class ClientsListState extends Equatable {
       getLinkClientsStatus,
       exportClientsToExcelStatus,
       exportClientsToExcelStatus,
-      usersSales
+      usersSales,
+      assignClientsToEmployeeStatus,
     ];
   }
 }

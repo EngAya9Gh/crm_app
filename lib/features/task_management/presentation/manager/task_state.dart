@@ -22,14 +22,20 @@ class TaskState {
     this.getTasksStatus = const BlocStatus.initial(),
     this.addTaskStatus = const BlocStatus.initial(),
     this.changeTaskStatus = const BlocStatus.initial(),
+    this.addComment = const BlocStatus.initial(),
+    this.getTaskComment = const BlocStatus.initial(),
+    this.getUsersTaskReports = const BlocStatus.initial(),
+    this.getUsersTaskReportsStatus = const BlocStatus.initial(),
     this.selectedAssignedToType,
     this.myBranch,
     this.myDepartment,
     this.myTasks,
+    this.hasGetAllReports=false,
+    this.totalUserReportCount=0,
   });
 
   final BlocStatus getTasksStatus;
-  final UserRegionDepartment? selectedAssignTo;
+  final UserModel? selectedAssignTo;
   final List<UserModel>? selectedParticipant;
   final DateTime? startDate;
   final DateTime? deadLineDate;
@@ -38,7 +44,7 @@ class TaskState {
   final bool? isRecurring;
   final BlocStatus addTaskStatus;
   final TaskStatusType? selectedStatus;
-  final UserRegionDepartment? filterAssignFrom;
+  final UserModel? filterAssignFrom;
   final UserRegionDepartment? filterAssignTo;
   final DateTime? filterFromDate;
   final DateTime? filterToDate;
@@ -51,10 +57,16 @@ class TaskState {
   final String? myTasks;
   final String? myDepartment;
   final String? myBranch;
+  final BlocStatus addComment;
+  final BlocStatus<List<CommentModel>> getTaskComment;
+  final BlocStatus<List<UserReportModel>> getUsersTaskReports;
+  final BlocStatus getUsersTaskReportsStatus;
+  final bool hasGetAllReports;
+  final int totalUserReportCount;
 
   TaskState copyWith({
     BlocStatus? getTasksStatus,
-    UserRegionDepartment? selectedAssignTo,
+    UserModel? selectedAssignTo,
     List<UserModel>? selectedParticipant,
     DateTime? startDate,
     DateTime? deadLineDate,
@@ -63,9 +75,13 @@ class TaskState {
     bool? isRecurring,
     BlocStatus? addTaskStatus,
     BlocStatus? changeTaskStatus,
+    BlocStatus<List<CommentModel>>? getTaskComment,
+    BlocStatus<List<UserReportModel>>? getUsersTaskReports,
+    BlocStatus? getUsersTaskReportsStatus,
+    BlocStatus? addComment,
     bool isResetAddTask = false,
     Nullable<TaskStatusType?>? selectedStatus,
-    Nullable<UserRegionDepartment?>? filterAssignFrom,
+    Nullable<UserModel?>? filterAssignFrom,
     Nullable<UserRegionDepartment?>? filterAssignTo,
     Nullable<DateTime?>? filterFromDate,
     Nullable<DateTime?>? filterToDate,
@@ -78,13 +94,12 @@ class TaskState {
     final Nullable<String?>? myDepartment,
     final Nullable<String?>? myBranch,
     bool isResetTasksState = false,
+    bool? hasGetAllReports,
+    int? totalUserReportCount,
   }) {
     return TaskState(
-      selectedAssignTo:
-          isResetAddTask ? null : selectedAssignTo ?? this.selectedAssignTo,
-      selectedParticipant: isResetAddTask
-          ? null
-          : selectedParticipant ?? this.selectedParticipant,
+      selectedAssignTo: isResetAddTask ? null : selectedAssignTo ?? this.selectedAssignTo,
+      selectedParticipant: isResetAddTask ? null : selectedParticipant ?? this.selectedParticipant,
       selectedAssignedToType: isResetAddTask
           ? null
           : selectedAssignedToType?.value != null
@@ -92,19 +107,19 @@ class TaskState {
               : this.selectedAssignedToType,
       startDate: isResetAddTask ? null : startDate ?? this.startDate,
       deadLineDate: isResetAddTask ? null : deadLineDate ?? this.deadLineDate,
-      attachmentFile:
-          isResetAddTask ? null : attachmentFile ?? this.attachmentFile,
-      selectedRecurringType: isResetAddTask
-          ? null
-          : selectedRecurringType ?? this.selectedRecurringType,
+      attachmentFile: isResetAddTask ? null : attachmentFile ?? this.attachmentFile,
+      selectedRecurringType: isResetAddTask ? null : selectedRecurringType ?? this.selectedRecurringType,
       isRecurring: isResetAddTask ? null : isRecurring ?? this.isRecurring,
-      addTaskStatus: isResetAddTask
-          ? const BlocStatus.initial()
-          : addTaskStatus ?? this.addTaskStatus,
+      addTaskStatus: isResetAddTask ? const BlocStatus.initial() : addTaskStatus ?? this.addTaskStatus,
       getTasksStatus: getTasksStatus ?? this.getTasksStatus,
+      totalUserReportCount: totalUserReportCount ?? this.totalUserReportCount,
       changeTaskStatus: changeTaskStatus ?? this.changeTaskStatus,
-      selectedStatus:
-          selectedStatus != null ? selectedStatus.value : this.selectedStatus,
+      addComment: addComment ?? this.addComment,
+      getUsersTaskReports: getUsersTaskReports ?? this.getUsersTaskReports,
+      getUsersTaskReportsStatus: getUsersTaskReportsStatus ?? this.getUsersTaskReportsStatus,
+      hasGetAllReports: hasGetAllReports ?? this.hasGetAllReports,
+      getTaskComment: getTaskComment ?? this.getTaskComment,
+      selectedStatus: selectedStatus != null ? selectedStatus.value : this.selectedStatus,
       filterAssignTo: isResetTasksState
           ? null
           : filterAssignTo != null
@@ -145,8 +160,7 @@ class TaskState {
           : departmentTo != null
               ? departmentTo.value
               : this.departmentTo,
-      myDepartment:
-          myDepartment != null ? myDepartment.value : this.myDepartment,
+      myDepartment: myDepartment != null ? myDepartment.value : this.myDepartment,
       myBranch: myBranch != null ? myBranch.value : this.myBranch,
       myTasks: myTasks != null ? myTasks.value : this.myTasks,
     );
@@ -179,6 +193,7 @@ extension TaskStatusExt on TaskStatusType {
         return "مستلمة";
     }
   }
+
   String get engText {
     switch (this) {
       case TaskStatusType.Open:
@@ -268,13 +283,7 @@ const carePublicTypeList = [
   PublicType.other,
 ];
 
-const ticketPublicTypeList = [
-  PublicType.addTicket,
-  PublicType.closeTicket,
-  PublicType.receiveTicket,
-  PublicType.rateTicket,
-  PublicType.other
-];
+const ticketPublicTypeList = [PublicType.addTicket, PublicType.closeTicket, PublicType.receiveTicket, PublicType.rateTicket, PublicType.other];
 
 enum PublicType {
   ///client
@@ -309,7 +318,6 @@ enum PublicType {
   closeTicket,
   rateTicket,
   other,
-
 
   ///tasks
   addTask
@@ -359,8 +367,8 @@ extension PublicTypeExt on PublicType {
       case PublicType.rateTicket:
         return 'تقييم تذكرة';
       case PublicType.other:
-        return 'آخرى';
-        case PublicType.addTask:
+        return 'أخرى';
+      case PublicType.addTask:
         return 'اضافة مهمة';
     }
   }
@@ -409,7 +417,7 @@ extension PublicTypeExt on PublicType {
         return 'rateTicket';
       case PublicType.other:
         return 'other';
-        case PublicType.addTask:
+      case PublicType.addTask:
         return 'add task';
     }
   }

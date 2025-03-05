@@ -25,6 +25,7 @@ import '../../domain/entities/filter_clients_list_entity.dart';
 import '../../domain/entities/linked_clients_page_variables_entity.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
+import '../../domain/use_cases/assign_client_to_employee_usecase.dart';
 import '../../domain/use_cases/change_client_communication_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
@@ -144,6 +145,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final LinkSelectedClientsUseCase _linkSelectedClientsUseCase;
   final ExportClientsToExcelUseCase _exportClientsToExcelUseCase;
   final GetUsersSalesUseCase _getUsersSalesUseCase;
+  final AssignClientToEmployeesUsecase _assignClientToEmployeesUsecase;
 
   ClientsListBloc(
     this._getClientsWithFilterUserUsecase,
@@ -166,6 +168,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._linkSelectedClientsUseCase,
     this._exportClientsToExcelUseCase,
     this._getUsersSalesUseCase,
+    this._assignClientToEmployeesUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
@@ -188,6 +191,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<StoreClientCommunicationEvent>(_onStoreClientCommunicationEvent);
     on<ChangeClientCommunicationEvent>(_onChangeClientCommunicationEvent);
     on<GetUsersSales>(_onChangeGetUsersSales);
+    on<AssignClientsToEmployeesEvent>(_onAssignClientsToEmployeesEvent);
   }
 
   final TextEditingController searchController = TextEditingController();
@@ -784,5 +788,22 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       );
       },
     );
+  }
+
+  FutureOr<void> _onAssignClientsToEmployeesEvent(AssignClientsToEmployeesEvent event, Emitter<ClientsListState> emit)async {
+    emit(state.copyWith(assignClientsToEmployeeStatus: BlocStatus.loading()));
+    final result = await _assignClientToEmployeesUsecase(AssignClientsToEmployeeParams(fk_user: event.fkUser, clientsId: pageVariables.selectedItemsId.value));
+    result.extract(
+          (exception, message) => emit(
+        state.copyWith(assignClientsToEmployeeStatus: BlocStatus.fail(error: message)),
+      ),
+          (value) {
+        emit(
+          state.copyWith(assignClientsToEmployeeStatus: BlocStatus.success()),
+        );
+        event.onSucess?.call();
+        },
+    );
+
   }
 }

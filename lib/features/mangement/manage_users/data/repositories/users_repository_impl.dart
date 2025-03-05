@@ -32,12 +32,10 @@ class UsersRepositoryImpl extends UsersRepository {
   }
 
   @override
-  Future<Either<String, PaginationResponseWrapper>> getUserById(
-      GetUserByIdParams params) async {
+  Future<Either<String, PaginationResponseWrapper>> getUserById(GetUserByIdParams params) async {
     try {
       final data = await datasource.getUserById(params);
-      return Right(
-          data.copyWith(data: UserModel.fromJson((data.data as List).first)));
+      return Right(data.copyWith(data: UserModel.fromJson((data.data as List).first)));
     } catch (e) {
       debugPrint("error in getUserById => $e");
       return Left(e.toString());
@@ -53,19 +51,15 @@ class UsersRepositoryImpl extends UsersRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<UserModel>>> updateUser(
-      {required Map<String, dynamic> body,
-      required Map<String, dynamic> param}) {
+  Future<Result<ResponseWrapper<UserModel>>> updateUser({required Map<String, dynamic> body, required Map<String, dynamic> param}) {
     return toApiResult(() => datasource.editUser(body: body, param: param));
   }
 
   @override
-  Future<Either<String, List<BranchModel>>> getBranchesForUser(
-      GetBranchesForUserParams params) async {
+  Future<Either<String, List<BranchModel>>> getBranchesForUser(GetBranchesForUserParams params) async {
     try {
       final data = await datasource.getBranchesForUser(params);
-      List<BranchModel> branches =
-          List<BranchModel>.from(data.map((e) => BranchModel.fromJson(e)));
+      List<BranchModel> branches = List<BranchModel>.from(data.map((e) => BranchModel.fromJson(e)));
       return Right(branches);
     } catch (e) {
       debugPrint("error in getBranchesForUser => $e");
@@ -74,12 +68,10 @@ class UsersRepositoryImpl extends UsersRepository {
   }
 
   @override
-  Future<Either<String, List<LevelModel>>> getLevelsForUser(
-      GetLevelsForUserParams params) async {
+  Future<Either<String, List<LevelModel>>> getLevelsForUser(GetLevelsForUserParams params) async {
     try {
       final data = await datasource.getLevelsForUser(params);
-      List<LevelModel> levels =
-          List<LevelModel>.from(data.map((e) => LevelModel.fromMap(e)));
+      List<LevelModel> levels = List<LevelModel>.from(data.map((e) => LevelModel.fromMap(e)));
       return Right(levels);
     } catch (e) {
       debugPrint("error in getLevelsForUser => $e");
@@ -88,16 +80,24 @@ class UsersRepositoryImpl extends UsersRepository {
   }
 
   @override
-  Future<Either<String, List<ManageModel>>> getManagesForUser(
-      GetManagesForUserParams params) async {
+  Future<Either<String, List<ManageModel>>> getManagesForUser(GetManagesForUserParams params) async {
     try {
       final data = await datasource.getManagesForUser(params);
-      List<ManageModel> manages =
-          List<ManageModel>.from(data.map((e) => ManageModel.fromMap(e)));
+      List<ManageModel> manages = List<ManageModel>.from(data.map((e) => ManageModel.fromMap(e)));
       return Right(manages);
     } catch (e) {
       debugPrint("error in getManagesForUser => $e");
       return Left(e.toString());
     }
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<UserModel>>>> getUserSelected([GetUsersParams? params]) {
+    return toApiResult(() => datasource.getUserSelected(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<UserModel>>>> getUsersAll(GetUsersParams params) {
+    return toApiResult(() => datasource.getUsersAll(params));
   }
 }

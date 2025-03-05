@@ -31,12 +31,19 @@ class WebLoginRightSide extends StatefulWidget {
 
 class _WebLoginRightSideState extends State<WebLoginRightSide> {
   late final LoginCubit loginCubit;
+  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     loginCubit = context.read<LoginCubit>();
     super.initState();
   }
+
+  // @override
+  // void dispose() {
+  //   loginFormKey=GlobalKey<FormState>();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +70,7 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 87.scaleWidth),
             child: Form(
-              key: loginCubit.loginFormKey,
+              key: loginFormKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +114,7 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
                           isLoading: state.loginStatus.isLoading(),
                           onPressed: () async {
                             FocusManager.instance.primaryFocus?.unfocus();
-                            if (loginCubit.loginFormKey.currentState!
+                            if (loginFormKey.currentState!
                                 .validate()) {
                               await loginCubit.login();
                             }

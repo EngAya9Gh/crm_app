@@ -184,8 +184,7 @@ class GetHighSimilarClientsListEvent extends ClientsListEvent {
   final GetHighSimilarClientsParams getHighSimilarClientsParams;
   final ValueChanged<List<SimilarClient>>? onSuccess;
 
-  const GetHighSimilarClientsListEvent(
-    this.getHighSimilarClientsParams, {
+  const GetHighSimilarClientsListEvent(this.getHighSimilarClientsParams, {
     this.onSuccess,
   });
 
@@ -210,4 +209,13 @@ class GetUsersSales extends ClientsListEvent {
 
   @override
   List<Object?> get props => [type];
+}
+
+class AssignClientsToEmployeesEvent extends ClientsListEvent {
+  final String fkUser;
+  final VoidCallback? onSucess;
+  const AssignClientsToEmployeesEvent({
+    required this.fkUser,
+    this.onSucess,
+  });
 }

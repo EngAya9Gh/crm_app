@@ -17,6 +17,7 @@ import '../../../features/common/client_profile/logs_tab/presentation/pages/clie
 import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
 import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
+import '../../../features/common/client_profile/tasks_tab/presentation/pages/client_tasks_tab_page.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../features/sales/clients/clients_list/presentation/widgets/client_info_section.dart';
 import '../../../model/invoiceModel.dart';
@@ -231,6 +232,7 @@ class _ClientProfileState extends State<ClientProfile>
       Text('المواعيد', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       if (context.read<PrivilegesCubit>().checkPrivilege('282'))
         Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+        Text('المهام', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
     ];
   }
 
@@ -254,6 +256,7 @@ class _ClientProfileState extends State<ClientProfile>
       ClientActivitiesPage(client: client),
       ClientsDatesPage(client: client),
       ClientLogsTabPage(client: client),
+      ClientTasksTabPage(client: client),
     ];
   }
 }

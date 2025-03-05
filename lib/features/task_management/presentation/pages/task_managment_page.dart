@@ -1,6 +1,8 @@
 
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
+import 'package:crm_smart/features/task_management/presentation/pages/ueser_report.dart';
 import 'package:crm_smart/features/task_management/presentation/widgets/task_web_widgets/drag_drop_list_footer.dart';
 
 import 'package:intl/intl.dart' as Intl;
@@ -8,8 +10,13 @@ import '../../../../core/common/helpers/get_color_by_taskstatus.dart';
 import '../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../core/config/navigator/app_navigator.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_constants.dart';
+import '../../../../core/utils/app_fonts.dart';
+import '../../../../core/utils/app_styles.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
@@ -33,35 +40,35 @@ class TaskManagementPage extends StatefulWidget {
 class _TaskManagementPageState extends State<TaskManagementPage> {
 
   late TaskCubit _taskCubit;
-  String? regionId;
-  String? departmentId;
-  String? userId;
+  // String? regionId;
+  // String? departmentId;
+  // String? userId;
 
   @override
   void initState() {
     super.initState();
     _taskCubit = getIt<TaskCubit>()..init();
-    final currentUser = AppConstants.currentUser;
-    final privilegesCubit = context.read<PrivilegesCubit>();
+    // final currentUser = AppConstants.currentUser;
+    // final privilegesCubit = context.read<PrivilegesCubit>();
 
-    String? departmentId = privilegesCubit.checkPrivilege('161')
-        ? '2'
-        : privilegesCubit.checkPrivilege('160')
-        ? null
-        : privilegesCubit.checkPrivilege('159')
-        ? currentUser.typeAdministration
-        : null;
-    String? regionId = privilegesCubit.checkPrivilege('161')
-        ? null
-        : privilegesCubit.checkPrivilege('162')
-        ? currentUser.fkRegoin
-        : null;
-    String? userId = privilegesCubit.checkPrivilege('163') ? currentUser.idUser : null;
+    // String? departmentId = privilegesCubit.checkPrivilege('161')
+    //     ? '2'
+    //     : privilegesCubit.checkPrivilege('160')
+    //     ? null
+    //     : privilegesCubit.checkPrivilege('159')
+    //     ? currentUser.typeAdministration
+    //     : null;
+    // String? regionId = privilegesCubit.checkPrivilege('161')
+    //     ? null
+    //     : privilegesCubit.checkPrivilege('162')
+    //     ? currentUser.fkRegoin
+    //     : null;
+    // String? userId = privilegesCubit.checkPrivilege('163') ? currentUser.idUser : null;
 
-    _taskCubit
-      ..onChangeMyDepartment(departmentId)
-      ..onChangeMyBranch(regionId)
-      ..onChangeMyTasks(userId);
+    // _taskCubit
+    //   ..onChangeMyDepartment(departmentId)
+    //   ..onChangeMyBranch(regionId)
+    //   ..onChangeMyTasks(userId);
     // _taskCubit.getTasks();
     _taskCubit.loadInitialData();
 
@@ -102,6 +109,17 @@ class _TaskManagementPageState extends State<TaskManagementPage> {
                   return SizedBox.shrink();
                 },
               ),
+              AppTextButton(
+                child: AppText("تقارير\nالموظفين",textAlign: TextAlign.center,color: AppColors.primaryMain,),
+                onPressed: () async {
+                  final result = await AppNavigator.go(
+                    TaskUsersReportsPage(),
+                    isNew: false,
+                  );
+                  if (result == true) _taskCubit.getTasks();
+                },
+                appButtonStyle: AppButtonStyle.secondary,
+              )
             ],
           ),
         ),
@@ -160,7 +178,7 @@ class _TaskManagementPageState extends State<TaskManagementPage> {
                     ),
                   ),
                   children: TaskStatusType.values.map((status) =>
-                      DragDropListBuilder.build(status, _taskCubit)
+                      DragDropListBuilder.build(status, _taskCubit,context)
                   ).toList(),
                 );
               },

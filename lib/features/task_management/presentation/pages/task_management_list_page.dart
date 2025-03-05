@@ -5,9 +5,10 @@ import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:crm_smart/core/common/widgets/count_paginated_list.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:crm_smart/features/task_management/presentation/pages/ueser_report.dart';
+import 'package:crm_smart/features/task_management/presentation/widgets/task_management_filter_widget.dart';
 import 'package:crm_smart/features/task_management/presentation/widgets/tasks_paginated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,11 +24,13 @@ import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_fonts.dart';
+import '../../../../provider/manage_provider.dart';
+import '../../../../view_model/regoin_vm.dart';
 import '../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
-import '../../../clients_care/accept_clients/presentation/widgets/filter_client_accept_sheet.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../manager/task_cubit.dart';
 import 'add_task_page.dart';
 
@@ -41,37 +44,42 @@ class TaskManagementListPage extends StatefulWidget {
 class _TaskManagementListPageState extends State<TaskManagementListPage> {
   late TaskCubit _taskCubit;
   late PrivilegesCubit _privilegesCubit;
-  String? regionId;
-  String? departmentId;
-  String? userId;
 
+  // String? regionId;
+  // String? departmentId;
+  // String? userId;
+  //
   @override
   void initState() {
     super.initState();
     _privilegesCubit = context.read<PrivilegesCubit>();
-    _taskCubit = getIt<TaskCubit>()..init();
-    final currentUser = AppConstants.currentUser;
-    departmentId = _privilegesCubit.checkPrivilege('161')
-        ? '2'
-        : _privilegesCubit.checkPrivilege('160')
-            ? null
-            : _privilegesCubit.checkPrivilege('159')
-                ? currentUser.typeAdministration
-                : null;
-    regionId = _privilegesCubit.checkPrivilege('161')
-        ? null
-        : _privilegesCubit.checkPrivilege('162')
-            ? currentUser.fkRegoin
-            : null;
+    _taskCubit = getIt<TaskCubit>()
+      ..init();
+    // final currentUser = AppConstants.currentUser;
+    // departmentId = _privilegesCubit.checkPrivilege('161')
+    //     ? '2'
+    //     : _privilegesCubit.checkPrivilege('160')
+    //         ? null
+    //         : _privilegesCubit.checkPrivilege('159')
+    //             ? currentUser.typeAdministration
+    //             : null;
+    // regionId = _privilegesCubit.checkPrivilege('161')
+    //     ? null
+    //     : _privilegesCubit.checkPrivilege('162')
+    //         ? currentUser.fkRegoin
+    //         : null;
 
-    userId = _privilegesCubit.checkPrivilege('163') ? currentUser.idUser : null;
-
+    // userId = _privilegesCubit.checkPrivilege('163') ? currentUser.idUser : null;
+    context.read<UsersCubit>().onGetUserSelected();
+    context.read<manage_provider>().getManagesTask();
     scheduleMicrotask(() {
-      _taskCubit
-        ..onChangeMyDepartment(departmentId)
-        ..onChangeMyBranch(regionId)
-        ..onChangeMyTasks(userId);
-
+      // _taskCubit
+      //   ..onChangeMyDepartment(departmentId)
+      //   ..onChangeMyBranch(regionId)
+      //   ..onChangeMyTasks(userId);
+      context.read<RegionProvider>()
+        ..changeValuser(null, true)
+        ..getRegionsTasks();
       _taskCubit.getTasks();
     });
   }
@@ -114,6 +122,23 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                 );
               },
             ),
+            AppTextButton(
+              child: AppText("تقارير\nالموظفين",textAlign: TextAlign.center,color: AppColors.white,),
+              onPressed: () async {
+                final result = await AppNavigator.go(
+                  TaskUsersReportsPage(),
+                  isNew: false,
+                );
+                if (result == true) _taskCubit.getTasks();
+              },
+              textStyle: AppStyles.textStyle.copyWith(
+                fontSize: 16.scaleFontSize,
+                fontWeight: FontWeight.w600,
+                fontFamily: AppFonts.fontFamily1,
+                color: AppColors.white,
+              ),
+              appButtonStyle: AppButtonStyle.secondary,
+            ),
           ],
         ),
         body: Directionality(
@@ -122,14 +147,12 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
             children: [
               10.height,
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
                 child: Row(
                   children: [
                     Expanded(
                       child: CustomSearchWidget(
-                        searchController:
-                            _taskCubit.pageVariables.searchController,
+                        searchController: _taskCubit.pageVariables.searchController,
                         onChanged: (value) {
                           _taskCubit.getTasks(isDebounced: true);
                         },
@@ -139,7 +162,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                       onTap: () async {
                         final value = await AppBottomSheet.show(
                           context: context,
-                          child: FilterClientAcceptSheet(),
+                          child: TaskManagementFilterWidget(),
                         );
                         if (value != true) {
                           // _taskCubit.returnToPreviousState();
@@ -169,10 +192,11 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                         child: AppPaginatedList(
                           scrollDirection: Axis.horizontal,
                           items: TaskStatusType.values,
-                          itemBuilder: (context, index) => stageChip(
-                            TaskStatusType.values[index],
-                            state.selectedStatus == TaskStatusType.values[index],
-                          ),
+                          itemBuilder: (context, index) =>
+                              stageChip(
+                                TaskStatusType.values[index],
+                                state.selectedStatus == TaskStatusType.values[index],
+                              ),
                           separatorBuilder: (context, index) => 10.width,
                         ),
                       ),
@@ -185,15 +209,12 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: CountPaginatedList<TaskCubit, TaskState>(
                   label: 'عدد المهام',
-                  countSelector: (state) =>
-                      _taskCubit.pageVariables.allList.length,
+                  countSelector: (state) => _taskCubit.pageVariables.allList.length,
                   totalCount: (state) => _taskCubit.pageVariables.totalCount,
                 ),
               ),
               BlocBuilder<TaskCubit, TaskState>(
-                buildWhen: (previous, current) =>
-                    previous.getTasksStatus != current.getTasksStatus &&
-                    _taskCubit.pageVariables.isNewFilter,
+                buildWhen: (previous, current) => previous.getTasksStatus != current.getTasksStatus && _taskCubit.pageVariables.isNewFilter,
                 builder: (context, state) {
                   return state.getTasksStatus.when(
                     success: (data) {
@@ -201,10 +222,11 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                         child: TasksPaginatedList(),
                       );
                     },
-                    failure: (error, data) => AppErrorWidget(
-                      message: error,
-                      onPressed: _taskCubit.getTasks,
-                    ),
+                    failure: (error, data) =>
+                        AppErrorWidget(
+                          message: error,
+                          onPressed: _taskCubit.getTasks,
+                        ),
                   );
                 },
               ),
@@ -215,10 +237,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
     );
   }
 
-  stageChip(
-    TaskStatusType status,
-    bool isActive,
-  ) {
+  stageChip(TaskStatusType status,
+      bool isActive,) {
     return InkWell(
       onTap: () {
         _taskCubit.onChangeStatus(status);
@@ -235,8 +255,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
         duration: const Duration(milliseconds: 300),
         child: AppText(
           status.text,
-          color:
-              isActive ? context.colorScheme.white : context.colorScheme.black,
+          color: isActive ? context.colorScheme.white : context.colorScheme.black,
         ),
       ),
     );

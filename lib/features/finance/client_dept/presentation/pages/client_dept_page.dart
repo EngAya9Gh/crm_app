@@ -122,6 +122,7 @@ class ClientDeptPageState extends State<ClientDeptPage> {
                     scrollController: ScrollController(),
                     items: state.getClientDeptList.data ?? [],
                     hasReachedEnd: state.hasReachedMax,
+                    isLoading: state.gettingData.isLoading(),
                     onLoadMore: () {
                       if (state.hasReachedMax) {
                         return;

@@ -31,12 +31,8 @@ mixin _$UpdateConfig {
   @JsonKey(name: "is_required", fromJson: UpdateConfig.isRequiredFromJson)
   bool? get isRequired => throw _privateConstructorUsedError;
 
-  /// Serializes this UpdateConfig to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UpdateConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UpdateConfigCopyWith<UpdateConfig> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -67,8 +63,6 @@ class _$UpdateConfigCopyWithImpl<$Res, $Val extends UpdateConfig>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UpdateConfig
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -129,8 +123,6 @@ class __$$UpdateConfigImplCopyWithImpl<$Res>
       _$UpdateConfigImpl _value, $Res Function(_$UpdateConfigImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of UpdateConfig
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -219,14 +211,12 @@ class _$UpdateConfigImpl extends _UpdateConfig {
                 other.isRequired == isRequired));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, idVersion, nameVersion,
       linkVersion, typeVersion, isRequired);
 
-  /// Create a copy of UpdateConfig
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateConfigImplCopyWith<_$UpdateConfigImpl> get copyWith =>
@@ -269,11 +259,8 @@ abstract class _UpdateConfig extends UpdateConfig {
   @override
   @JsonKey(name: "is_required", fromJson: UpdateConfig.isRequiredFromJson)
   bool? get isRequired;
-
-  /// Create a copy of UpdateConfig
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UpdateConfigImplCopyWith<_$UpdateConfigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

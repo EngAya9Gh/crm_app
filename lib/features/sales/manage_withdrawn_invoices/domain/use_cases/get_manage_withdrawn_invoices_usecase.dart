@@ -31,6 +31,8 @@ class GetManageWithdrawnInvoicesParams {
   final String? searchQuery;
   final WithdrawalInvoiceStatusEnum? status;
   final BranchModel? branch;
+  final String? fkIdUser;
+  final String? userWithdraw;
 
   const GetManageWithdrawnInvoicesParams({
     this.skip = 0,
@@ -38,6 +40,8 @@ class GetManageWithdrawnInvoicesParams {
     this.searchQuery,
     this.status,
     this.branch,
+    this.fkIdUser,
+    this.userWithdraw,
   });
 
   Map<String, dynamic> toMap() {
@@ -47,6 +51,8 @@ class GetManageWithdrawnInvoicesParams {
       'filter': searchQuery,
       "status": status?.toParam,
       "fk_regoin_invoice": branch?.branchId,
+      "fk_idUser": fkIdUser,
+      "user_withdraw": userWithdraw,
     }..removeWhere((key, value) => value == null || value == '');
   }
 }

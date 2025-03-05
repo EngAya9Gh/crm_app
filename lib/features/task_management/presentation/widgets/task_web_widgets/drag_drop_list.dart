@@ -9,7 +9,7 @@ import 'drag_drop_list_footer.dart';
 import 'empty_list_holder.dart';
 
 class DragDropListBuilder {
-  static DragAndDropList build(TaskStatusType status, TaskCubit taskCubit) {
+  static DragAndDropList build(TaskStatusType status, TaskCubit taskCubit,BuildContext context) {
     final statusInfo = taskCubit.taskStatusInfo[status];
     final loadingStatus = statusInfo?.loadingStatus ?? const BlocStatus.initial();
 
@@ -28,7 +28,7 @@ class DragDropListBuilder {
     } else if (statusInfo?.tasks.isEmpty ?? true) {
       listItems.add(EmptyListPlaceholder.build());
     } else {
-      listItems.addAll(statusInfo!.tasks.map((task) => TaskCard.build(task)));
+      listItems.addAll(statusInfo!.tasks.map((task) => TaskCard.build(task,context)));
     }
 
     return DragAndDropList(

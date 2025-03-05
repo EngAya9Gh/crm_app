@@ -1,15 +1,20 @@
 import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
+import 'package:crm_smart/features/clients_care/violations_clienta_care/data/models/management_model.dart';
 import 'package:crm_smart/features/mangement/manage_users/domain/use_cases/get_user_by_id_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+
 import '../../../../../core/errors/base_app_exception.dart';
 import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/services/api/api_utils.dart';
+import '../../../../../core/services/api/result.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/usermodel.dart';
+import '../../../../task_management/data/models/user_region_department.dart';
 import '../../domain/use_cases/get_branches_for_user_usecase.dart';
 import '../../domain/use_cases/get_levels_for_user_usecase.dart';
 import '../../domain/use_cases/get_manages_for_user_usecase.dart';
@@ -35,6 +40,10 @@ abstract class UsersDatasource {
   Future<dynamic> getBranchesForUser(GetBranchesForUserParams params);
 
   Future<PaginationResponseWrapper> getUserById(GetUserByIdParams params);
+
+  Future<ResponseWrapper<List<UserModel>>> getUserSelected([GetUsersParams? params]);
+
+  Future<ResponseWrapper<List<UserModel>>> getUsersAll(GetUsersParams params);
 }
 
 @LazySingleton(as: UsersDatasource)
@@ -43,8 +52,7 @@ class UsersDatasourceImpl implements UsersDatasource {
 
   UsersDatasourceImpl(this._api);
 
-  Future<ResponseWrapper<List<UserModel>>> getAllUsers(
-      GetUsersParams params) async {
+  Future<ResponseWrapper<List<UserModel>>> getAllUsers(GetUsersParams params) async {
     fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
@@ -71,7 +79,7 @@ class UsersDatasourceImpl implements UsersDatasource {
     _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await _api.get(
       endPoint: EndPoints.users.getUsers,
-      queryParameters: params.toParams(),
+      // queryParameters: params.toParams(),
     );
 
     return PaginationResponseWrapper.fromJson(response);
@@ -84,8 +92,7 @@ class UsersDatasourceImpl implements UsersDatasource {
     fun() async {
       try {
         _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-        final response =
-            await _api.post(endPoint: EndPoints.users.addUser, data: body);
+        final response = await _api.post(endPoint: EndPoints.users.addUser, data: body);
 
         return ResponseWrapper<UserModel>.fromJson(
           response,
@@ -163,5 +170,43 @@ class UsersDatasourceImpl implements UsersDatasource {
       debugPrint('error in getManagesForUser ${e.message}');
       throw e.message;
     }
+  }
+
+  Future<ResponseWrapper<List<UserModel>>> getUserSelected([GetUsersParams? params]) async {
+    fun() async {
+      var _apiServices = getIt<ApiServices>();
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(
+        endPoint: EndPoints.task.getUserSelect,
+        queryParameters: {
+          'type': params?.type,
+        }..removeWhere(
+            (key, value) => value == null || value == '',
+          ),
+      );
+
+      return ResponseWrapper<List<UserModel>>(
+        data: List.from((response['message'] as List<dynamic>).map((e) => UserModel.fromJson(e as Map<String, dynamic>))),
+        message: List.from((response['message']).map((e) => UserModel.fromJson(e as Map<String, dynamic>))),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  @override
+  Future<ResponseWrapper<List<UserModel>>> getUsersAll(GetUsersParams params) {
+    fun() async {
+      var _apiServices = getIt<ApiServices>();
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(endPoint: EndPoints.users.getUsersAll);
+
+      return ResponseWrapper<List<UserModel>>(
+        data: List.from((response['message'] as List<dynamic>).map((e) => UserModel.fromJson(e as Map<String, dynamic>))),
+        message: List.from((response['message']).map((e) => UserModel.fromJson(e as Map<String, dynamic>))),
+      );
+    }
+
+    return throwAppException(fun);
   }
 }

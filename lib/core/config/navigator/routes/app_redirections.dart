@@ -52,7 +52,9 @@ class AppRedirections {
     final path = state.fullPath;
     if (path ==
         AppRoutesPaths.routeFullPathByName(
-            AppRoutesNames.generalRoutes.login)) {
+            AppRoutesNames.generalRoutes.login)||path ==
+        AppRoutesPaths.routeFullPathByName(
+            AppRoutesNames.generalRoutes.otp)) {
       final tokenState = await _validateToken(context);
       UserModel? user = await _getUser(context);
 

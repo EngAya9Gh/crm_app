@@ -9,6 +9,7 @@ import '../model/usermodel.dart';
 class RegionProvider extends ChangeNotifier {
   List<BranchModel> listRegion = [];
   List<BranchModel> listRegionFilter = [];
+  List<BranchModel> listRegionTaskFilter = [];
   String? selectedRegionId;
 
   void changeVal(String? val) {
@@ -58,6 +59,31 @@ class RegionProvider extends ChangeNotifier {
       }
       listRegionFilter = List.from(listRegion); // [...listregoin];listregoin.tolist();
       listRegionFilter.insert(0, BranchModel(branchId: '0', branchName: 'الكل', countryId: ''));
+      notifyListeners();
+      //var  data=await RegoinService().getRegoinByCountry("1");
+      //listregoin= data as  List<RegoinModel>;}
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      debugPrint('Error in getRegions in RegionProvider: $e');
+    }
+  }
+
+  Future<void> getRegionsTasks() async {
+    try {
+      listRegionTaskFilter = [];
+      if (listRegionTaskFilter.isEmpty) {
+        var data;
+        final ApiServices apiServices = getIt<ApiServices>();
+        apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+        data = await apiServices.get(endPoint: EndPoints.branches.tasksBranches);
+        // data = await Api().get(url: EndPoints.baseUrls.url + 'country/get_regoinByIdCountry.php?fk_country=${userCurrent!.fkCountry}');
+        if (data['message'] != null) {
+          for (int i = 0; i < data['message'].length; i++) {
+            listRegionTaskFilter.add(BranchModel.fromJson(data['message'][i]));
+          }
+        }
+      }
+      listRegionTaskFilter = List.from(listRegionTaskFilter); // [...listregoin];listregoin.tolist();
       notifyListeners();
       //var  data=await RegoinService().getRegoinByCountry("1");
       //listregoin= data as  List<RegoinModel>;}

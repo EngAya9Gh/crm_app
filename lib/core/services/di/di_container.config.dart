@@ -299,6 +299,16 @@ import '../../../features/common/client_profile/support_tab/domain/use_cases/set
     as _i896;
 import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart'
     as _i565;
+import '../../../features/common/client_profile/tasks_tab/data/data_sources/client_tasks_tab_data_source.dart'
+    as _i769;
+import '../../../features/common/client_profile/tasks_tab/data/repositories/client_tasks_tab_repo_impl.dart'
+    as _i694;
+import '../../../features/common/client_profile/tasks_tab/domain/repositories/client_tasks_tab_repo.dart'
+    as _i790;
+import '../../../features/common/client_profile/tasks_tab/domain/use_cases/get_client_tasks_usecase.dart'
+    as _i613;
+import '../../../features/common/client_profile/tasks_tab/presentation/manager/client_task_bloc.dart'
+    as _i149;
 import '../../../features/common/regions/data/data_sources/regions_datasource.dart'
     as _i134;
 import '../../../features/common/regions/data/repositories/regions_repository_impl.dart'
@@ -343,6 +353,18 @@ import '../../../features/finance/clients_attachments/domain/use_cases/get_attac
     as _i559;
 import '../../../features/finance/clients_attachments/presentation/manager/client_attachments_bloc.dart'
     as _i476;
+import '../../../features/finance/commission_for_collaborators/data/data_sources/commission_collaborators_datasource.dart'
+    as _i262;
+import '../../../features/finance/commission_for_collaborators/data/repositories/commission_collaborators_repo_impl.dart'
+    as _i421;
+import '../../../features/finance/commission_for_collaborators/domain/repositories/commission_collaborators_repo.dart'
+    as _i654;
+import '../../../features/finance/commission_for_collaborators/domain/use_cases/get_commission_collaborators_usecase.dart'
+    as _i290;
+import '../../../features/finance/commission_for_collaborators/domain/use_cases/get_participate_select_usecase.dart'
+    as _i454;
+import '../../../features/finance/commission_for_collaborators/presentation/management/commission_collaborators_bloc.dart'
+    as _i685;
 import '../../../features/finance/verified_client/data/data_sources/verified_client_datasource.dart'
     as _i860;
 import '../../../features/finance/verified_client/data/repositories/verified_client_repo_impl.dart'
@@ -433,6 +455,10 @@ import '../../../features/mangement/manage_users/domain/use_cases/get_manages_fo
     as _i944;
 import '../../../features/mangement/manage_users/domain/use_cases/get_user_by_id_usecase.dart'
     as _i653;
+import '../../../features/mangement/manage_users/domain/use_cases/get_user_select_task_management_usecase.dart'
+    as _i424;
+import '../../../features/mangement/manage_users/domain/use_cases/get_users_all_usecase.dart'
+    as _i985;
 import '../../../features/mangement/manage_users/domain/use_cases/get_users_usecase.dart'
     as _i18;
 import '../../../features/mangement/manage_users/presentation/manager/users_cubit.dart'
@@ -525,6 +551,8 @@ import '../../../features/sales/clients/clients_list/domain/use_cases/add_client
     as _i824;
 import '../../../features/sales/clients/clients_list/domain/use_cases/approve_reject_client_usecase.dart'
     as _i34;
+import '../../../features/sales/clients/clients_list/domain/use_cases/assign_client_to_employee_usecase.dart'
+    as _i586;
 import '../../../features/sales/clients/clients_list/domain/use_cases/change_client_communication_usecase.dart'
     as _i688;
 import '../../../features/sales/clients/clients_list/domain/use_cases/change_type_client_usecase.dart'
@@ -939,10 +967,16 @@ import '../../../features/task_management/data/repositories/task_repository_impl
     as _i385;
 import '../../../features/task_management/domain/repositories/task_repository.dart'
     as _i956;
+import '../../../features/task_management/domain/use_cases/add_comment_task_usecase.dart'
+    as _i356;
 import '../../../features/task_management/domain/use_cases/add_task_usecase.dart'
     as _i111;
+import '../../../features/task_management/domain/use_cases/add_users_report_usecase.dart'
+    as _i668;
 import '../../../features/task_management/domain/use_cases/change_status_usecase.dart'
     as _i831;
+import '../../../features/task_management/domain/use_cases/get_comments_task_usecase.dart'
+    as _i755;
 import '../../../features/task_management/domain/use_cases/get_tasks_usecase.dart'
     as _i439;
 import '../../../features/task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart'
@@ -1115,6 +1149,8 @@ _i174.GetIt $initGetIt(
       () => _i973.ClientAttachmentsDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i620.ClientDeptDatasource>(
       () => _i620.ClientDeptDatasource(gh<_i124.ApiServices>()));
+  gh.factory<_i262.CommissionForCollaboratorsDatasource>(() =>
+      _i262.CommissionForCollaboratorsDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i860.VerifiedClientsDatasource>(
       () => _i860.VerifiedClientsDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i8.VerifiedInvoicesDatasource>(
@@ -1174,8 +1210,12 @@ _i174.GetIt $initGetIt(
           gh<_i517.ClientsCareReportsDatasource>()));
   gh.lazySingleton<_i25.ExceededClientsRepo>(() =>
       _i372.ExceededClientsRepoImpl(gh<_i87.ExceededClientsDatasource>()));
+  gh.lazySingleton<_i769.ClientTasksTabDataSource>(
+      () => _i769.ClientTasksTabDataSourceImpl(gh<_i124.ApiServices>()));
   gh.factory<_i1001.ActionUserUsecase>(
       () => _i1001.ActionUserUsecase(gh<_i586.UsersRepository>()));
+  gh.factory<_i424.GetUserSelectUsecase>(
+      () => _i424.GetUserSelectUsecase(gh<_i586.UsersRepository>()));
   gh.lazySingleton<_i495.ViolationsRepository>(() =>
       _i245.ViolationsRepositoryImpl(
           gh<_i823.ViolationsClientsCareDatasource>()));
@@ -1333,6 +1373,8 @@ _i174.GetIt $initGetIt(
       () => _i203.GetPrivilegesUsecase(gh<_i805.PrivilegesRepo>()));
   gh.singletonAsync<_i74.CacheServices>(() async =>
       _i818.PrefsConsumer(await gh.getAsync<_i460.SharedPreferences>()));
+  gh.lazySingleton<_i790.ClientTasksTabRepo>(
+      () => _i694.ClientTasksTabRepoImpl(gh<_i769.ClientTasksTabDataSource>()));
   gh.lazySingleton<_i866.AgentsDistributorsActionsRepo>(() =>
       _i368.AgentsDistributorsActionsRepoImpl(
           gh<_i113.AgentsDistributorsActionsDataSource>()));
@@ -1365,6 +1407,9 @@ _i174.GetIt $initGetIt(
       () => _i23.GetWrongNumbersUsecase(gh<_i833.WrongNumbersRepo>()));
   gh.lazySingleton<_i26.GetClientsAcceptUseCase>(
       () => _i26.GetClientsAcceptUseCase(gh<_i551.ClientsAcceptRepository>()));
+  gh.factory<_i654.CommissionCollaboratorsRepository>(() =>
+      _i421.ClientDeptRepoImpl(
+          gh<_i262.CommissionForCollaboratorsDatasource>()));
   gh.lazySingleton<_i5.GeneralConfigsRepository>(() =>
       _i188.GeneralConfigsRepositoryImpl(gh<_i576.GeneralConfigsDatasource>()));
   gh.lazySingleton<_i620.GetNotificationsUsecase>(
@@ -1419,6 +1464,12 @@ _i174.GetIt $initGetIt(
       () => _i1045.SetDateDoneUsecase(gh<_i843.SupportTabRepo>()));
   gh.lazySingleton<_i896.SetReadyInstallUsecase>(
       () => _i896.SetReadyInstallUsecase(gh<_i843.SupportTabRepo>()));
+  gh.factory<_i290.GetCommissionCollaboratorsUseCase>(() =>
+      _i290.GetCommissionCollaboratorsUseCase(
+          gh<_i654.CommissionCollaboratorsRepository>()));
+  gh.factory<_i454.GetParticipateSelectUseCase>(() =>
+      _i454.GetParticipateSelectUseCase(
+          gh<_i654.CommissionCollaboratorsRepository>()));
   gh.lazySingleton<_i780.GetAllUsersUseCase>(
       () => _i780.GetAllUsersUseCase(gh<_i887.InvoicesSectionRepo>()));
   gh.lazySingleton<_i228.ClientsDebtsRepo>(
@@ -1449,6 +1500,8 @@ _i174.GetIt $initGetIt(
       () => _i1026.GetLevelsForUserUsecase(gh<_i586.UsersRepository>()));
   gh.lazySingleton<_i944.GetManagesForUserUsecase>(
       () => _i944.GetManagesForUserUsecase(gh<_i586.UsersRepository>()));
+  gh.factory<_i985.GetUsersAllUsecase>(
+      () => _i985.GetUsersAllUsecase(gh<_i586.UsersRepository>()));
   gh.factory<_i18.GetUsersUsecase>(
       () => _i18.GetUsersUsecase(gh<_i586.UsersRepository>()));
   gh.factory<_i653.GetUserByIdUsecase>(
@@ -1555,6 +1608,8 @@ _i174.GetIt $initGetIt(
       () => _i824.AddClientUserUsecase(gh<_i952.ClientsListRepository>()));
   gh.factory<_i34.ApproveRejectClientUsecase>(
       () => _i34.ApproveRejectClientUsecase(gh<_i952.ClientsListRepository>()));
+  gh.factory<_i586.AssignClientToEmployeesUsecase>(() =>
+      _i586.AssignClientToEmployeesUsecase(gh<_i952.ClientsListRepository>()));
   gh.factory<_i688.ChangeClientCommunicationUseCase>(() =>
       _i688.ChangeClientCommunicationUseCase(
           gh<_i952.ClientsListRepository>()));
@@ -1582,6 +1637,8 @@ _i174.GetIt $initGetIt(
       () => _i912.TransferClientUserUsecase(gh<_i952.ClientsListRepository>()));
   gh.lazySingleton<_i467.GetHighSimilarClientsUsecase>(() =>
       _i467.GetHighSimilarClientsUsecase(gh<_i952.ClientsListRepository>()));
+  gh.lazySingleton<_i613.GetClientTasksUsecase>(
+      () => _i613.GetClientTasksUsecase(gh<_i790.ClientTasksTabRepo>()));
   gh.factory<_i282.EmployeesSalesReportsCubit>(() =>
       _i282.EmployeesSalesReportsCubit(
           gh<_i935.GetEmployeesSalesReportsUsecase>()));
@@ -1768,6 +1825,8 @@ _i174.GetIt $initGetIt(
   gh.factory<_i583.DelayInstallReportsCubit>(() =>
       _i583.DelayInstallReportsCubit(
           gh<_i767.GetDelayInstallReportsUseCase>()));
+  gh.factory<_i149.ClientTaskBloc>(
+      () => _i149.ClientTaskBloc(gh<_i613.GetClientTasksUsecase>()));
   gh.factory<_i593.DatesTimelineBloc>(
       () => _i593.DatesTimelineBloc(gh<_i512.GetTimelineByEmployeeUseCase>()));
   gh.factory<_i692.GreetingCommunicationCubit>(() =>
@@ -1842,6 +1901,11 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i1010.GetAgentInvoiceListUsecase>(() =>
       _i1010.GetAgentInvoiceListUsecase(
           gh<_i834.AgentsDistributorsProfileRepo>()));
+  gh.factory<_i685.CommissionCollaboratorsBloc>(
+      () => _i685.CommissionCollaboratorsBloc(
+            gh<_i290.GetCommissionCollaboratorsUseCase>(),
+            gh<_i454.GetParticipateSelectUseCase>(),
+          ));
   gh.factory<_i233.AddRejectReasonsUsecase>(() =>
       _i233.AddRejectReasonsUsecase(gh<_i745.ManageWithdrawalsRepository>()));
   gh.factory<_i95.EditRejectReasonsUsecase>(() =>
@@ -1897,6 +1961,29 @@ _i174.GetIt $initGetIt(
         gh<_i937.ExceededClientsUseCase>(),
         gh<_i824.TransferExceededClientsUseCase>(),
       ));
+  gh.factory<_i631.ClientsListBloc>(() => _i631.ClientsListBloc(
+        gh<_i574.GetClientsWithFilterUserUsecase>(),
+        gh<_i143.GetRecommendedClientsUsecase>(),
+        gh<_i1047.GetSimilarClientsUsecase>(),
+        gh<_i824.AddClientUserUsecase>(),
+        gh<_i190.EditClientUserUsecase>(),
+        gh<_i137.ChangeTypeClientUsecase>(),
+        gh<_i688.ChangeClientCommunicationUseCase>(),
+        gh<_i592.StoreClientCommunicationUseCase>(),
+        gh<_i34.ApproveRejectClientUsecase>(),
+        gh<_i588.CrudClientSupportFilesUsecase>(),
+        gh<_i218.GetClientSupportFilesUsecase>(),
+        gh<_i912.TransferClientUserUsecase>(),
+        gh<_i679.ReceiveClientUserUsecase>(),
+        gh<_i999.GetClientMarketingReportUsecase>(),
+        gh<_i467.GetHighSimilarClientsUsecase>(),
+        gh<_i400.FetchLinkClientsUseCase>(),
+        gh<_i314.FetchPaginatedClientsUsecase>(),
+        gh<_i987.LinkSelectedClientsUseCase>(),
+        gh<_i944.ExportClientsToExcelUseCase>(),
+        gh<_i449.GetUsersSalesUseCase>(),
+        gh<_i586.AssignClientToEmployeesUsecase>(),
+      ));
   gh.factory<_i618.ManageWithdrawalsCubit>(() => _i618.ManageWithdrawalsCubit(
         gh<_i134.GetUserSeriesUsecase>(),
         gh<_i898.UpdateSeriesUsecase>(),
@@ -1944,10 +2031,16 @@ _i174.GetIt $initGetIt(
       () => _i307.ReturnScheduleVisitToOpenUsecase(gh<_i61.DatesTableRepo>()));
   gh.lazySingleton<_i567.StartDateVisitStatusUsecase>(
       () => _i567.StartDateVisitStatusUsecase(gh<_i61.DatesTableRepo>()));
+  gh.factory<_i356.AddCommentTaskUsecase>(
+      () => _i356.AddCommentTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i111.AddTaskUsecase>(
       () => _i111.AddTaskUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i668.GetUsersReportsTaskUsecase>(
+      () => _i668.GetUsersReportsTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i831.ChangeStatusTaskUsecase>(
       () => _i831.ChangeStatusTaskUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i755.GetCommentsTaskUsecase>(
+      () => _i755.GetCommentsTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i439.GetTasksUsecase>(
       () => _i439.GetTasksUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i526.GetUsersByDepartmentAndRegionUsecase>(() =>
@@ -1958,42 +2051,6 @@ _i174.GetIt $initGetIt(
         gh<_i865.AddActivityCrudUseCase>(),
         gh<_i327.GetActivityTypesUseCase>(),
         gh<_i947.GetSubscribedClientsUseCase>(),
-      ));
-  gh.lazySingleton<_i855.TaskCubit>(() => _i855.TaskCubit(
-        gh<_i111.AddTaskUsecase>(),
-        gh<_i439.GetTasksUsecase>(),
-        gh<_i831.ChangeStatusTaskUsecase>(),
-      ));
-  gh.factory<_i301.UsersCubit>(() => _i301.UsersCubit(
-        gh<_i18.GetUsersUsecase>(),
-        gh<_i653.GetUserByIdUsecase>(),
-        gh<_i1001.ActionUserUsecase>(),
-        gh<_i526.GetUsersByDepartmentAndRegionUsecase>(),
-        gh<_i944.GetManagesForUserUsecase>(),
-        gh<_i1026.GetLevelsForUserUsecase>(),
-        gh<_i62.GetBranchesForUserUsecase>(),
-      ));
-  gh.factory<_i631.ClientsListBloc>(() => _i631.ClientsListBloc(
-        gh<_i574.GetClientsWithFilterUserUsecase>(),
-        gh<_i143.GetRecommendedClientsUsecase>(),
-        gh<_i1047.GetSimilarClientsUsecase>(),
-        gh<_i824.AddClientUserUsecase>(),
-        gh<_i190.EditClientUserUsecase>(),
-        gh<_i137.ChangeTypeClientUsecase>(),
-        gh<_i688.ChangeClientCommunicationUseCase>(),
-        gh<_i592.StoreClientCommunicationUseCase>(),
-        gh<_i34.ApproveRejectClientUsecase>(),
-        gh<_i588.CrudClientSupportFilesUsecase>(),
-        gh<_i218.GetClientSupportFilesUsecase>(),
-        gh<_i912.TransferClientUserUsecase>(),
-        gh<_i679.ReceiveClientUserUsecase>(),
-        gh<_i999.GetClientMarketingReportUsecase>(),
-        gh<_i467.GetHighSimilarClientsUsecase>(),
-        gh<_i400.FetchLinkClientsUseCase>(),
-        gh<_i314.FetchPaginatedClientsUsecase>(),
-        gh<_i987.LinkSelectedClientsUseCase>(),
-        gh<_i944.ExportClientsToExcelUseCase>(),
-        gh<_i449.GetUsersSalesUseCase>(),
       ));
   gh.factory<_i815.CompanyCubit>(() => _i815.CompanyCubit(
         gh<_i521.GetCommentUsecase>(),
@@ -2053,6 +2110,25 @@ _i174.GetIt $initGetIt(
       ));
   gh.factory<_i349.WaitingAgentsCubit>(
       () => _i349.WaitingAgentsCubit(gh<_i941.GetWaitingAgentsUsecase>()));
+  gh.factory<_i301.UsersCubit>(() => _i301.UsersCubit(
+        gh<_i18.GetUsersUsecase>(),
+        gh<_i653.GetUserByIdUsecase>(),
+        gh<_i1001.ActionUserUsecase>(),
+        gh<_i526.GetUsersByDepartmentAndRegionUsecase>(),
+        gh<_i944.GetManagesForUserUsecase>(),
+        gh<_i1026.GetLevelsForUserUsecase>(),
+        gh<_i62.GetBranchesForUserUsecase>(),
+        gh<_i424.GetUserSelectUsecase>(),
+        gh<_i985.GetUsersAllUsecase>(),
+      ));
+  gh.lazySingleton<_i855.TaskCubit>(() => _i855.TaskCubit(
+        gh<_i111.AddTaskUsecase>(),
+        gh<_i439.GetTasksUsecase>(),
+        gh<_i831.ChangeStatusTaskUsecase>(),
+        gh<_i356.AddCommentTaskUsecase>(),
+        gh<_i755.GetCommentsTaskUsecase>(),
+        gh<_i668.GetUsersReportsTaskUsecase>(),
+      ));
   return getIt;
 }
 

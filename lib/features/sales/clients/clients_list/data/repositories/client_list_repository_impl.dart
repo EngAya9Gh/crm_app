@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/sales/clients/clients_list/domain/use_cases/assign_client_to_employee_usecase.dart';
 import 'package:crm_smart/features/sales/clients/clients_list/domain/use_cases/get_high_similar_cleints_usecase.dart';
 import 'package:crm_smart/features/sales/clients/clients_list/domain/use_cases/get_users_sales_usecase.dart';
 import 'package:dartz/dartz.dart';
@@ -213,5 +214,11 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
 
   @override
   Future<Result<ResponseWrapper<List<UserEntity>>>> getUsersSales(GetUsersSalesParams params) async {
-      return toApiResult(() => datasource.getUsersSales(params));}
+    return toApiResult(() => datasource.getUsersSales(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<bool>>> assignClientsToEmployee(AssignClientsToEmployeeParams params) {
+    return toApiResult(() => datasource.assignClientsToEmployee(params));
+  }
 }

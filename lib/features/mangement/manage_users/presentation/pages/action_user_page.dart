@@ -50,7 +50,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
   final TextEditingController nameController = TextEditingController();
   String isActive = '1';
 
-  UserModel? get user => widget.user ?? _usersCubit.state.currentUser;
+  UserModel? get user  => widget.user ?? _usersCubit.state.currentUser;
 
   late final bool isEdit;
 
@@ -303,7 +303,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
             ? (hasChanges ? selectedMainCityIds : [])
             : selectedMainCityIds,
         isActive: isActive,
-        userId: user?.idUser,
+        userId:isEdit? user?.idUser:null,
       ),
       mainCityList: selectedRegion.map((e) => e.asUserRegion()).toList(),
       onSuccess: (String? value) {

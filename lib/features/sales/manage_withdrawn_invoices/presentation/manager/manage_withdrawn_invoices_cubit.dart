@@ -18,10 +18,8 @@ class ManageWithdrawnInvoicesCubit extends Cubit<ManageWithdrawnInvoicesState> {
     this._getManageWithdrawnInvoicesUsecase,
   ) : super(ManageWithdrawnInvoicesState());
 
-  ManageWithdrawnInvoicesPageVariablesEntity pageVariables =
-      ManageWithdrawnInvoicesPageVariablesEntity();
-  FilterManageWithdrawnInvoicesEntity filterEntity =
-      FilterManageWithdrawnInvoicesEntity();
+  ManageWithdrawnInvoicesPageVariablesEntity pageVariables = ManageWithdrawnInvoicesPageVariablesEntity();
+  FilterManageWithdrawnInvoicesEntity filterEntity = FilterManageWithdrawnInvoicesEntity();
 
   void init() {
     pageVariables = ManageWithdrawnInvoicesPageVariablesEntity();
@@ -50,6 +48,8 @@ class ManageWithdrawnInvoicesCubit extends Cubit<ManageWithdrawnInvoicesState> {
             searchQuery: pageVariables.searchController.text,
             status: filterEntity.statusNotifier.value,
             branch: filterEntity.branchNotifier.value,
+            fkIdUser: filterEntity.selectedUserSales.value?.id,
+            userWithdraw: filterEntity.withDrawnUser.value?.id,
           ),
         );
         result.fold(

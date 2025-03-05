@@ -1,6 +1,8 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/common/enums/client/client_debt_type_enum.dart';
+import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/models/user_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +12,7 @@ import '../../../../../core/common/enums/devices_state_enum.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/enums/seller_type_enum.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
+import '../../../../../core/common/models/participate_model.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
@@ -18,6 +21,7 @@ import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../view_model/regoin_vm.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../common/branches/presentation/pages/branch_searchable_drop_down.dart';
+import '../../../../finance/commission_for_collaborators/presentation/management/commission_collaborators_bloc.dart';
 import '../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../manager/invoices_section_cubit.dart';
@@ -67,9 +71,9 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                     text: "إعادة الافتراضي",
                     onPressed: _invoicesSectionCubit.filtersEntity.checkIfFilterIsNotEmpty()
                         ? () {
-                            _invoicesSectionCubit.clearFilters();
-                            _filterAndCloseDialog();
-                          }
+                      _invoicesSectionCubit.clearFilters();
+                      _filterAndCloseDialog();
+                    }
                         : null,
                     appButtonStyle: AppButtonStyle.secondary,
                   );
@@ -87,7 +91,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                 _invoicesSectionCubit.filtersEntity.filterInvoiceType.value = value;
               },
               compareFn: (typeOfInvoice, filter) {
-                return typeOfInvoice.text == filter;
+                return typeOfInvoice == filter;
               },
               // height: 70.h,
             ),
@@ -110,6 +114,9 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
               height: 160.h,
               selectedItem: _invoicesSectionCubit.filtersEntity.filterInvoicesSellerType.value,
               onChanged: (value) async {
+                if (value!.isParticipate()) {
+                  context.read<CommissionCollaboratorsBloc>().add(GetParticipateSelectEvent());
+                };
                 _invoicesSectionCubit.filtersEntity.filterInvoicesSellerType.value = value;
                 _invoicesSectionCubit.getUsers();
               },
@@ -124,6 +131,27 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                       return Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: FilterUsersDropDown(),
+                      );
+                    },
+                  );
+                }
+                else if (_invoicesSectionCubit.filtersEntity.filterInvoicesSellerType.value?.isParticipate()??false) {
+                  BlocBuilder<CommissionCollaboratorsBloc, CommissionCollaboratorsState>(
+                    builder: (context, state) {
+                      return state.listParticipate.when(
+                        success: (data) =>
+                            CustomDropDown<ParticipateModel>(
+                              hint: "المتعاونين",
+                              items: data ?? [],
+                              itemAsString: (item) => item!.name,
+                              selectedItem: state.listParticipate.data?.firstWhereOrNull((e) => e.id_participate == _invoicesSectionCubit.filtersEntity.filterSelectedUser.value?.id),
+                              onChanged: (value) {
+                                if (value == null) return;
+                                _invoicesSectionCubit.filtersEntity.filterSelectedUser.value = UserEntity(id: value.id_participate, name: value.name_participate);
+                              },
+                              // filterFn: (participate, filter) => participate.name_participate == filter,
+                            ),
+                        failure: (error, data) => SizedBox.shrink(),
                       );
                     },
                   );

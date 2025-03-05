@@ -10,6 +10,7 @@ import '../../../../../../model/similar_client.dart';
 import '../../data/models/client_marketing_meport_model.dart';
 import '../../data/models/client_support_file_model.dart';
 import '../../data/models/recommended_client.dart';
+import '../use_cases/assign_client_to_employee_usecase.dart';
 import '../use_cases/crud_client_support_files_usecase.dart';
 import '../use_cases/get_client_marketing_report_usecase.dart';
 import '../use_cases/get_client_support_files_usecase.dart';
@@ -34,6 +35,7 @@ abstract class ClientsListRepository {
 
   Future<Result<ResponseWrapper<ClientModel>>> editClient(
       Map<String, dynamic> body, Map<String, dynamic> params);
+  Future<Result<ResponseWrapper<bool>>> assignClientsToEmployee(AssignClientsToEmployeeParams params);
 
   Future<Result<ResponseWrapper<ClientModel>>> changeTypeClient(
       Map<String, dynamic> body, Map<String, dynamic> params, String id);

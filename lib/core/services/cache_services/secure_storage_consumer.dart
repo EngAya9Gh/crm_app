@@ -47,9 +47,9 @@ class SecureStorageConsumer extends CacheServices {
       return await _secureStorage.read(key: key);
     } catch (e) {
       getIt<Logger>().e(e.toString());
-      throw CacheExceptions(
-        message: 'Error while getting data from secure storage : $e',
-      );
+      // throw CacheExceptions(
+      //   message: 'Error while getting data from secure storage : $e',
+      // );
     }
   }
 

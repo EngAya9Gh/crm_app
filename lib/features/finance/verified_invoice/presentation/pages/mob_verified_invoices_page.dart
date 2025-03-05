@@ -149,7 +149,7 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                   return Expanded(
                     child: AppPaginatedList(
                       scrollController: ScrollController(),
-                      isLoading: state.verifiedInvoiceList.isLoading(),
+                      isLoading: state.gettingData.isLoading(),
                       items: state.verifiedInvoiceList.data ?? [],
                       hasReachedEnd: state.hasReachedMax,
                       onLoadMore: () {

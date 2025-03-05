@@ -92,8 +92,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     privilegeCubit = context.read<PrivilegesCubit>();
     companyProvider = context.read<CompanyProvider>();
     _bloc = context.read<ClientsListBloc>()..add(GetRecommendedClientsEvent());
-    _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()
-      ..getReasonReject();
+    _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()..getReasonReject();
     _mainCityProvider = context.read<MainCityProvider>();
     _clientTypeProvider = context.read<ClientTypeProvider>();
     userProvider = context.read<UserProvider>();
@@ -111,16 +110,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     if (!LocationServices.isValidLatLang(locationController.text)) {
       locationController.clear();
     }
-    nameEnterpriseController =
-        TextEditingController(text: widget.client?.nameEnterprise);
+    nameEnterpriseController = TextEditingController(text: widget.client?.nameEnterprise);
     anotherNumberController = TextEditingController(text: widget.client?.phone);
-    addressClientController =
-        TextEditingController(text: widget.client?.address_client);
-    descriptionActivityController =
-        TextEditingController(text: widget.client?.descActivController);
+    addressClientController = TextEditingController(text: widget.client?.address_client);
+    descriptionActivityController = TextEditingController(text: widget.client?.descActivController);
     reasonController = TextEditingController(text: widget.client?.reasonChange);
-    offerPriceController =
-        TextEditingController(text: widget.client?.offer_price);
+    offerPriceController = TextEditingController(text: widget.client?.offer_price);
     reasonClassController = TextEditingController(
         text: widget.client?.reason_class != null
             ? widget.client?.reason_class != ""
@@ -128,8 +123,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                 : ""
             : null);
 
-    _selectedActivitySizeType =
-        ActivitySizeTypeEnum.fromString(widget.client?.size_activity);
+    _selectedActivitySizeType = ActivitySizeTypeEnum.fromString(widget.client?.size_activity);
 
     _selectedClientRegistrationTye = !isEdit
         ? null
@@ -144,56 +138,33 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
     _selectedARecommendedClient = widget.client?.fkClientSource;
     selectedCity = widget.client?.city;
-    BlocProvider.of<ClientsListBloc>(context).subscribingIntentionLevel =
-        widget.client?.subscribingIntentionLevel;
+    BlocProvider.of<ClientsListBloc>(context).subscribingIntentionLevel = widget.client?.subscribingIntentionLevel;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       userProvider.selectedSourceClient = _initSelectedClientSource();
       if (_selectedClientRegistrationTye != null) {
-        userProvider
-            .changeClientRegistrationTypeStatus(_selectedClientRegistrationTye);
+        userProvider.changeClientRegistrationTypeStatus(_selectedClientRegistrationTye);
       }
       _mainCityProvider.changevalue(null);
 
-      _mainCityProvider
-        ..getcityAll(
-            onSuccess: isEdit
-                ? () => _mainCityProvider.changevalue(widget.client?.city)
-                : null);
+      _mainCityProvider..getcityAll(onSuccess: isEdit ? () => _mainCityProvider.changevalue(widget.client?.city) : null);
 
       activityViewmodel = context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities(
-            onSuccess: isEdit
-                ? () => context
-                    .read<ActivityProvider>()
-                    .onChangeSelectedActivityTypeId(
-                        widget.client?.activityTypeFk)
-                : null);
+            onSuccess: isEdit ? () => context.read<ActivityProvider>().onChangeSelectedActivityTypeId(widget.client?.activityTypeFk) : null);
       companyProvider
         ..initValueOut()
-        ..getcompany(
-            onSuccess: isEdit
-                ? () => context
-                    .read<CompanyProvider>()
-                    .changevalueOut(widget.client?.presystem)
-                : null);
+        ..getcompany(onSuccess: isEdit ? () => context.read<CompanyProvider>().changevalueOut(widget.client?.presystem) : null);
 
-      context
-          .read<switch_provider>()
-          .changeboolValue(widget.client?.ismarketing == '1');
+      context.read<switch_provider>().changeboolValue(widget.client?.ismarketing == '1');
 
       _clientTypeProvider.type_of_client =
-          widget.client?.typeClient == "تفاوض" ||
-                  widget.client?.typeClient == "عرض سعر" ||
-                  widget.client?.typeClient == "مستبعد"
+          widget.client?.typeClient == "تفاوض" || widget.client?.typeClient == "عرض سعر" || widget.client?.typeClient == "مستبعد"
               ? ['تفاوض', 'عرض سعر', 'مستبعد']
               : [];
 
-      if (widget.client?.typeClient == "تفاوض" ||
-          widget.client?.typeClient == "عرض سعر" ||
-          widget.client?.typeClient == "مستبعد") {
-        _clientTypeProvider.selectedValuemanag =
-            widget.client?.typeClient.toString();
+      if (widget.client?.typeClient == "تفاوض" || widget.client?.typeClient == "عرض سعر" || widget.client?.typeClient == "مستبعد") {
+        _clientTypeProvider.selectedValuemanag = widget.client?.typeClient.toString();
       }
       if (widget.client?.typeClient == "مشترك") {
         _clientTypeProvider.selectedValuemanag = null;
@@ -208,9 +179,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   ClientSourceEnum? _initSelectedClientSource() {
     if (!isEdit) return ClientSourceEnum.field;
 
-    return widget.client?.sourcclient == null
-        ? ClientSourceEnum.field
-        : ClientSourceEnum.fromString(widget.client?.sourcclient!);
+    return widget.client?.sourcclient == null ? ClientSourceEnum.field : ClientSourceEnum.fromString(widget.client?.sourcclient!);
   }
 
   @override
@@ -249,8 +218,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
             valueListenable: clientName,
             builder: (context, value, _) {
               return SmartCrmAppBar(
-                appBarParams:
-                    AppBarParams(title: isEdit ? value : "إضافة عميل"),
+                appBarParams: AppBarParams(title: isEdit ? value : "إضافة عميل"),
               );
             },
           ),
@@ -259,8 +227,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
           key: _fromKey,
           child: Directionality(
             textDirection: TextDirection.rtl,
-            child: Consumer<ClientTypeProvider>(
-                builder: (context, clientTypeProvider, child) {
+            child: Consumer<ClientTypeProvider>(builder: (context, clientTypeProvider, child) {
               return Column(
                 children: [
                   Expanded(
@@ -328,8 +295,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                   _selectedActivitySizeType = value;
                                 },
                                 validator: (value) {
-                                  if (_selectedClientRegistrationTye == 'خاطئ')
-                                    return null;
+                                  if (_selectedClientRegistrationTye == 'خاطئ') return null;
                                   return InputValidator.requiredFiled(value);
                                 },
                               ),
@@ -342,8 +308,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           minLines: 3,
                           textInputAction: TextInputAction.newline,
                           validator: (value) {
-                            if (_selectedClientRegistrationTye == 'خاطئ')
-                              return null;
+                            if (_selectedClientRegistrationTye == 'خاطئ') return null;
                             return InputValidator.requiredFiled(value);
                           },
                           controller: descriptionActivityController,
@@ -359,19 +324,18 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                     hint: "المدينة*",
                                     items: cart.listcity,
                                     itemAsString: (city) => city!.cityName,
-                                    selectedItem: cart.listcity
-                                        .firstWhereOrNull((element) =>
-                                            element.cityId == selectedCity),
+                                    selectedItem: cart.listcity.firstWhereOrNull((element) => element.cityId == selectedCity),
                                     onChanged: (data) {
                                       if (data == null) {
                                         return;
                                       }
                                       selectedCity = data.cityId;
                                     },
-                                    filterFn: (city, filter) =>
-                                        city.searchString(filter),
+                                    filterFn: (city, filter) => city.searchString(filter),
                                     validator: (value) {
-                                      if (value == null) {
+                                      if (context.read<UserProvider>().selectedClientRegistrationType == "خاطئ") {
+                                        return null;
+                                      } else if (value == null) {
                                         return 'هذا الحقل مطلوب.';
                                       }
                                       return null;
@@ -386,8 +350,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 labelText: "عنوان العميل*",
                                 maxLines: 1,
                                 validator: (value) {
-                                  if (_selectedClientRegistrationTye == 'خاطئ')
-                                    return null;
+                                  if (_selectedClientRegistrationTye == 'خاطئ') return null;
                                   return InputValidator.requiredFiled(value);
                                 },
                                 controller: addressClientController,
@@ -403,12 +366,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                         15.verticalSpace,
                         CustomSearchableDropDown<ClientSourceEnum>(
                           hint: "مصدر العميل*",
-                          items: isEdit
+                          items: context.read<PrivilegesCubit>().checkPrivilege('286')
                               ? ClientSourceEnum.values
-                              : [
-                                  ClientSourceEnum.field,
-                                  ClientSourceEnum.recommendedClient
-                                ],
+                              : [ClientSourceEnum.field, ClientSourceEnum.recommendedClient],
                           selectedItem: userProvider.selectedSourceClient,
                           itemAsString: (item) => item!.value,
                           validator: (value) {
@@ -424,9 +384,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             }
                           },
                           filterFn: (clientSource, filter) {
-                            return clientSource.value
-                                .toLowerCase()
-                                .contains(filter.toLowerCase());
+                            return clientSource.value.toLowerCase().contains(filter.toLowerCase());
                           },
                           compareFn: (a, b) => a.value == b.value,
                         ),
@@ -435,44 +393,28 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                           builder: (context, value, child) {
                             return Column(
                               children: [
-                                if ((userProvider.selectedSourceClient ==
-                                    ClientSourceEnum.recommendedClient)) ...{
-                                  BlocBuilder<ClientsListBloc,
-                                      ClientsListState>(
+                                if ((userProvider.selectedSourceClient == ClientSourceEnum.recommendedClient)) ...{
+                                  BlocBuilder<ClientsListBloc, ClientsListState>(
                                     builder: (context, state) {
-                                      final recommendedList = state
-                                              .recommendedClientsState
-                                              .getDataWhenSuccess ??
-                                          [];
+                                      final recommendedList = state.recommendedClientsState.getDataWhenSuccess ?? [];
 
-                                      return CustomSearchableDropDown<
-                                          RecommendedClient>(
+                                      return CustomSearchableDropDown<RecommendedClient>(
                                         hint: 'العملاء*',
                                         items: recommendedList,
-                                        itemAsString: (item) =>
-                                            item!.nameEnterprise!,
+                                        itemAsString: (item) => item!.nameEnterprise!,
                                         validator: InputValidator.requiredFiled,
                                         filterFn: (item, query) {
-                                          return item.nameEnterprise!
-                                              .toLowerCase()
-                                              .contains(query.toLowerCase());
+                                          return item.nameEnterprise!.toLowerCase().contains(query.toLowerCase());
                                         },
                                         compareFn: (item, query) {
-                                          return item.nameEnterprise!
-                                                  .toLowerCase() ==
-                                              query.nameEnterprise!
-                                                  .toLowerCase();
+                                          return item.nameEnterprise!.toLowerCase() == query.nameEnterprise!.toLowerCase();
                                         },
-                                        selectedItem: recommendedList
-                                            .firstWhereOrNull((element) =>
-                                                element.fkClient ==
-                                                _selectedARecommendedClient),
+                                        selectedItem: recommendedList.firstWhereOrNull((element) => element.fkClient == _selectedARecommendedClient),
                                         onChanged: (value) {
                                           if (value == null) {
                                             return;
                                           }
-                                          _selectedARecommendedClient =
-                                              value.fkClient;
+                                          _selectedARecommendedClient = value.fkClient;
                                           setState(() {});
                                         },
                                       );
@@ -493,41 +435,30 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                     hint: "نوع التسجيل*",
                                     items: ClientRegistrationType.values,
                                     itemAsString: (item) => item!.value,
-                                    selectedItem:
-                                        ClientRegistrationType.fromString(
-                                            _selectedClientRegistrationTye),
+                                    selectedItem: ClientRegistrationType.fromString(_selectedClientRegistrationTye),
                                     onChanged: (value) {
                                       if (value == null) {
                                         return;
                                       }
-                                      _selectedClientRegistrationTye =
-                                          value.value;
-                                      userProv
-                                          .changeClientRegistrationTypeStatus(
-                                              value.value);
+                                      _selectedClientRegistrationTye = value.value;
+                                      userProv.changeClientRegistrationTypeStatus(value.value);
                                     },
                                     validator: InputValidator.requiredFiled,
                                     height: (135.0).scaleHeight,
                                   ),
                                   15.verticalSpace,
-                                  if (_showClassificationType(userProv
-                                      .selectedClientRegistrationType)) ...[
+                                  if (_showClassificationType(userProv.selectedClientRegistrationType)) ...[
                                     CustomDropDown<ClientsClassification>(
                                       hint: "نوع التصنيف*",
                                       items: ClientsClassification.values,
                                       itemAsString: (item) => item!.value,
-                                      selectedItem:
-                                          ClientsClassification.fromString(
-                                              _selectedClientsClassification),
+                                      selectedItem: ClientsClassification.fromString(_selectedClientsClassification),
                                       onChanged: (value) {
                                         if (value == null) {
                                           return;
                                         }
-                                        _selectedClientsClassification =
-                                            value.value;
-                                        userProv
-                                            .changeClientClassificationTypeStatus(
-                                                value.value);
+                                        _selectedClientsClassification = value.value;
+                                        userProv.changeClientClassificationTypeStatus(value.value);
                                       },
                                       validator: InputValidator.requiredFiled,
                                     ),
@@ -540,21 +471,15 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                         ),
                         if (_isNotFieldOrRecommended()) ...{
                           Selector<UserProvider, String>(
-                              selector: (context, userPro) =>
-                                  userPro.selectedClientRegistrationType,
+                              selector: (context, userPro) => userPro.selectedClientRegistrationType,
                               builder: (context, userProvider, child) {
-                                return userProvider ==
-                                            ClientsClassification.other.value ||
-                                        (_selectedClientRegistrationTye ==
-                                                "خاطئ" &&
-                                            isEdit)
+                                return userProvider == ClientsClassification.other.value || (_selectedClientRegistrationTye == "خاطئ" && isEdit)
                                     ? 15.verticalSpace
                                     : IgnorePointer();
                               }),
                         },
                         if (_isNotFieldOrRecommended()) ...{
-                          Consumer<UserProvider>(
-                              builder: (contex, userProv, child) {
+                          Consumer<UserProvider>(builder: (contex, userProv, child) {
                             if (_showReasonField()) {
                               return AppTextField(
                                 labelText: "ادخل السبب",
@@ -566,16 +491,11 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             return IgnorePointer();
                           }),
                         },
-                        Consumer<UserProvider>(
-                            builder: (contex, userPr, child) {
-                          return userPr.selectedClientClassificationType ==
-                                          ClientsClassification.other.value &&
-                                      userPr.selectedClientRegistrationType ==
-                                          "خاطئ" ||
-                                  (userPr.selectedClientClassificationType ==
-                                          ClientsClassification.other.value &&
-                                      userPr.selectedClientRegistrationType ==
-                                          "خاطئ" &&
+                        Consumer<UserProvider>(builder: (contex, userPr, child) {
+                          return userPr.selectedClientClassificationType == ClientsClassification.other.value &&
+                                      userPr.selectedClientRegistrationType == "خاطئ" ||
+                                  (userPr.selectedClientClassificationType == ClientsClassification.other.value &&
+                                      userPr.selectedClientRegistrationType == "خاطئ" &&
                                       isEdit)
                               ? 15.verticalSpace
                               : IgnorePointer();
@@ -587,10 +507,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                               hint: "نظام سابق",
                               items: company.list_company,
                               itemAsString: (item) => item!.name_company!,
-                              selectedItem: company.list_company
-                                  .firstWhereOrNull((element) =>
-                                      element.id_Company ==
-                                      company.selectedValueOut),
+                              selectedItem: company.list_company.firstWhereOrNull((element) => element.id_Company == company.selectedValueOut),
                               onChanged: (value) {
                                 company.changevalueOut(value!.id_Company);
                               },
@@ -601,8 +518,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                         BlocBuilder<ClientsListBloc, ClientsListState>(
                           builder: (context, state) {
                             return SubscribingIntentionLevelWidget(
-                              subscribingIntentionLevel:
-                                  _bloc.subscribingIntentionLevel,
+                              subscribingIntentionLevel: _bloc.subscribingIntentionLevel,
                               onChanged: (value) {
                                 _bloc.subscribingIntentionLevel = value!;
                               },
@@ -644,17 +560,13 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   }
 
   bool _isNotFieldOrRecommended() {
-    return userProvider.selectedSourceClient?.value !=
-            ClientSourceEnum.field.value &&
-        userProvider.selectedSourceClient?.value !=
-            ClientSourceEnum.recommendedClient.value;
+    return userProvider.selectedSourceClient?.value != ClientSourceEnum.field.value &&
+        userProvider.selectedSourceClient?.value != ClientSourceEnum.recommendedClient.value;
   }
 
   bool _showReasonField() {
-    if (userProvider.selectedClientClassificationType ==
-            ClientsClassification.other.value &&
-        userProvider.selectedClientRegistrationType ==
-            ClientRegistrationType.wrong.value) {
+    if (userProvider.selectedClientClassificationType == ClientsClassification.other.value &&
+        userProvider.selectedClientRegistrationType == ClientRegistrationType.wrong.value) {
       return true;
     }
 
@@ -663,13 +575,10 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
   bool _showClassificationType(String registrationType) {
     return (registrationType == ClientRegistrationType.wrong.value) ||
-        (_selectedClientRegistrationTye == ClientRegistrationType.wrong.value &&
-            isEdit);
+        (_selectedClientRegistrationTye == ClientRegistrationType.wrong.value && isEdit);
   }
 
-  bool get isShowingClientStatus =>
-      widget.client?.typeClient != "مشترك" &&
-      widget.client?.typeClient != "منسحب";
+  bool get isShowingClientStatus => widget.client?.typeClient != "مشترك" && widget.client?.typeClient != "منسحب";
 
   bool get isEdit => widget.client != null;
 
@@ -677,18 +586,13 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     final EditClientParams editClientParams = EditClientParams(
       nameClient: nameClientController.text,
       nameEnterprise: nameEnterpriseController.text,
-      city: selectedCity!,
+      city: selectedCity,
       mobile: mobileController.text,
       anotherPhoneNumber: anotherNumberController.text,
       addressClient: addressClientController.text,
-      selectedActivityIdType: activityViewmodel.selectedActivity == null
-          ? null
-          : activityViewmodel.selectedActivity?.id_activity_type,
-      isMarketing: userProvider.selectedSourceClient?.value !=
-              ClientSourceEnum.field.value
-          ? (userProvider.selectedSourceClient?.value == "عميل موصى به"
-              ? '2'
-              : '1')
+      selectedActivityIdType: activityViewmodel.selectedActivity == null ? null : activityViewmodel.selectedActivity?.id_activity_type,
+      isMarketing: userProvider.selectedSourceClient?.value != ClientSourceEnum.field.value
+          ? (userProvider.selectedSourceClient?.value == "عميل موصى به" ? '2' : '1')
           : '0',
       sourceClient: userProvider.selectedSourceClient!.value,
       descriptionActivity: descriptionActivityController.text,
@@ -699,16 +603,11 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       statusClient: context.read<CompanyProvider>().selectedValueOut,
       clientId: widget.client!.idClients!,
       type_record: context.read<UserProvider>().selectedClientRegistrationType,
-      type_classification:
-          context.read<UserProvider>().selectedClientRegistrationType == "خاطئ"
-              ? context.read<UserProvider>().selectedClientClassificationType
-              : "null",
-      reason_class: context
-                      .read<UserProvider>()
-                      .selectedClientRegistrationType ==
-                  "خاطئ" &&
-              context.read<UserProvider>().selectedClientClassificationType ==
-                  ClientsClassification.other.value
+      type_classification: context.read<UserProvider>().selectedClientRegistrationType == "خاطئ"
+          ? context.read<UserProvider>().selectedClientClassificationType
+          : "null",
+      reason_class: context.read<UserProvider>().selectedClientRegistrationType == "خاطئ" &&
+              context.read<UserProvider>().selectedClientClassificationType == ClientsClassification.other.value
           ? reasonClassController.text
           : "null",
     );
@@ -728,14 +627,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       mobile: mobileController.text,
       anotherPhoneNumber: anotherNumberController.text,
       addressClient: addressClientController.text,
-      selectedActivityIdType: activityViewmodel.selectedActivity == null
-          ? null
-          : activityViewmodel.selectedActivity?.id_activity_type,
-      isMarketing: userProvider.selectedSourceClient?.value !=
-              ClientSourceEnum.field.value
-          ? (userProvider.selectedSourceClient?.value == "عميل موصى به"
-              ? '2'
-              : '1')
+      selectedActivityIdType: activityViewmodel.selectedActivity == null ? null : activityViewmodel.selectedActivity?.id_activity_type,
+      isMarketing: userProvider.selectedSourceClient?.value != ClientSourceEnum.field.value
+          ? (userProvider.selectedSourceClient?.value == "عميل موصى به" ? '2' : '1')
           : '0',
       sourceClient: userProvider.selectedSourceClient!.value,
       descriptionActivity: descriptionActivityController.text,
@@ -746,16 +640,17 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       location: locationController.text,
       statusClient: context.read<CompanyProvider>().selectedValueOut,
       type_record: context.read<UserProvider>().selectedClientRegistrationType,
-      type_classification:
-          context.read<UserProvider>().selectedClientClassificationType,
+      type_classification: context.read<UserProvider>().selectedClientClassificationType,
       reason_class: reasonClassController.text,
     );
 
-    AppNavigator.go(SimilarDialog(
-      phone: mobileController.text,
-      name_enterprise: nameEnterpriseController.text,
-      nameClient: nameClientController.text,
-      addClientParams: addClientParams,
-    ),isNew: false);
+    AppNavigator.go(
+        SimilarDialog(
+          phone: mobileController.text,
+          name_enterprise: nameEnterpriseController.text,
+          nameClient: nameClientController.text,
+          addClientParams: addClientParams,
+        ),
+        isNew: false);
   }
 }

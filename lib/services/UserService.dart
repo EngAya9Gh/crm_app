@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../api/api.dart';
@@ -15,34 +19,38 @@ class UserService {
     String params = '',
   }) async {
     final ApiServices _apiServices = getIt<ApiServices>();
-    _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+    _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await _apiServices.postRequestWithFile(
-      endPoint: EndPoints.users.updateUserProfile,
-      queryParameters: {'id_user': idUser},
+      endPoint: EndPoints.users.updateUserProfile(idUser!),
+      // queryParameters: {'id_user': idUser},
       data: body,
     );
 
-    final List data = apiDataHandler(response);
+    final data = response['message'];
 
-    return UserModel.fromJson(data.first);
+    return UserModel.fromJson(data);
   }
 
   Future<UserModel> UpdateProfileImage({
     XFile? file,
     Map<String, dynamic>? params,
+    String? iduser,
   }) async {
+    FormData formData = FormData();
+    params?.forEach((key, value) {
+      formData.fields.add(MapEntry(key, value));
+    });
     final ApiServices _apiServices = getIt<ApiServices>();
-    _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+    _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await _apiServices.postRequestWithFile(
-      endPoint: EndPoints.users.updateProfileImage,
+      endPoint: EndPoints.users.updateUserProfile(iduser!),
       file: file,
-      queryParameters: params,
-      data: {},
+      data: formData,
     );
 
-    final List data = apiDataHandler(response);
+    final data = response['message'];
 
-    return UserModel.fromJson(data.first);
+    return UserModel.fromJson(data);
   }
 
   Future<List<UserModel>> usersServices() async {

@@ -126,8 +126,9 @@ class _ClientAttachmentsPageState extends State<ClientAttachmentsPage> {
                     builder: (context, state) => state.getListAttachments.when(
                           loading: () => AppLoader(),
                           success: (data) => AppPaginatedGridView(
+                            isLoading: state.gettingData.isLoading(),
                             onLoadMore: () {
-                              _bloc
+                           _bloc
                                 ..add(ChangeFilterClientEvent(
                                     getAttachmentsParams: _bloc.state.getAttachmentsParams.copyWith(page: state.getAttachmentsParams.page + 1)))
                                 ..add(GetAttachmentsEvent());

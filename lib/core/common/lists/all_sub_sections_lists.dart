@@ -18,6 +18,7 @@ import '../../../features/clients_care/special_clients/presentation/pages/specia
 import '../../../features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
 import '../../../features/finance/client_dept/presentation/pages/client_dept_page.dart';
 import '../../../features/finance/clients_attachments/presentation/pages/client_attachments_page.dart';
+import '../../../features/finance/commission_for_collaborators/presentation/pages/commission_collaborators_page.dart';
 import '../../../features/finance/verified_client/presentation/pages/verified_clients_page.dart';
 import '../../../features/finance/verified_invoice/presentation/pages/mob_verified_invoices_page.dart';
 import '../../../features/finance/verified_invoice/presentation/pages/web_verified_invoices_page.dart';
@@ -330,6 +331,13 @@ abstract class AllSubSectionsLists {
       page: VerifiedClientPage(),
       title: 'عملاء للتوثيق',
       path: AppRoutesPaths.financeSections.clientTransfer,
+      subSections: [],
+    ),
+    SectionModel(
+      privilegeId: "327",
+      page: CommissionCollaboratorsPage(),
+      title: 'عمولة المتعاونين',
+      path: AppRoutesPaths.financeSections.commissionCollaborators,
       subSections: [],
     ),
   ];

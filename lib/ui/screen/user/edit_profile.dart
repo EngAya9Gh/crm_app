@@ -71,6 +71,7 @@ class _EditProfileState extends State<EditProfile> {
                   'email': emailController.text,
                   'nameUser': nameUserController.text,
                   'mobile': mobileController.text,
+                  'isActive':_userProvider.currentUser.isActive
                 };
                 await _userProvider.updateUserVm(
                   body: body,

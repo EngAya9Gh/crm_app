@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.production ;
+  static AppMode appMode = AppMode.production;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -111,6 +111,7 @@ class _Users {
   String updateUser(String idUser) => 'users/$idUser/edit';
   final allUsers = 'users/getUser.php';
   final getAllUsers = 'users/all-users';
+  final getUsersAll = 'users/all';
   final getCurrentUser = 'GetCurrentUser';
   final getLevelsForUser = 'level-for-user';
   final getManagesForUser = 'admin-for-user';
@@ -118,7 +119,7 @@ class _Users {
   String getUsersByType(String usersType) => "users/$usersType";
 
   final String updateProfileImage = "users/update_picture.php";
-  final String updateUserProfile = "users/update_user.php";
+  String updateUserProfile(String id) => "users/$id/edit";
   final String getUsersSales = 'users/sales';
 }
 
@@ -184,6 +185,7 @@ class _Care {
   final String getManagement = "admin-for-user";
   final String getViolationTypes = "violations/types";
   final String getActivitiesTypes = "activities/types";
+
   String communicationsByClient(String id) => "communications/by-client/$id";
 
   String updateActivity(String activityId) => "activities/$activityId/edit";
@@ -218,6 +220,7 @@ class _Client {
   final updateClient = "updateClient/"; // "client/clientUpdate.php";
   String editClientByTypeClient(String idClient) => "editClientByTypeClient/$idClient";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
+  final transferMultiClient = "transferMultiClient";
   final storeClientCommunication = "communication-details";
 
   String changeClientCommunication(String idClient) => "communication-details/$idClient/edit";
@@ -265,6 +268,8 @@ class _Client {
   String getClientLogs(String idClient) {
     return "change-log/$idClient";
   }
+
+  String getClientTasks(String idClient) => 'clientTasks/$idClient';
 }
 
 class _Task {
@@ -275,6 +280,10 @@ class _Task {
 
   String changeStatusTask(String id) => 'tasks/$id/change-status';
   final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
+  final getUserSelect = 'tasks/employees';
+  final getUsersTasksReports = 'tasks/report';
+  String addTaskComment(int idTask) => 'tasks/$idTask/add-comment';
+  String getTaskComments(int idTask) => 'tasks/$idTask/comments';
 }
 
 class _Participate {
@@ -336,6 +345,7 @@ class _Invoice {
 
   // ?type_seller=1&fk_regoin_invoice=11&TypeReadyClient&from&to&search_query&fk_agent&participate_fk&fk_idUser
   final String getInvoicesByPrivileges = 'getInvoicesByPrivilages';
+
   String exportInvoiceToPdf(String id) => 'exportInvoice/$id';
 
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
@@ -491,6 +501,7 @@ class _Management {
   const _Management();
 
   final String getManagement = 'managements';
+  final String tasksManagement = 'tasks/management';
   final String addManagement = 'managements';
 
   String updateManagement(int id) => 'managements/$id/edit';
@@ -534,6 +545,7 @@ class _Branches {
 
   final String getBranches = 'branches';
   final String addBranches = 'branches';
+  final String tasksBranches = 'tasks/branches';
 
   String updateBranches(String id) => 'branches/$id/edit';
 }
@@ -548,6 +560,9 @@ class _Finance {
 
   String deportClient(String id) => 'deportClient/$id';
   final String getClientDept = 'clientsDept';
+  final String participateInvoices = 'participateInvoices';
+  final String participatesSelect = 'participates/select';
+
   String reportClientDept(String id) => 'clientPayoutReport/$id';
 }
 

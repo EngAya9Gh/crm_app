@@ -27,6 +27,7 @@ import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_text.dart';
+import '../../../clients_care/violations_clienta_care/data/models/management_model.dart';
 import '../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../data/models/user_region_department.dart';
@@ -69,19 +70,19 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
     _taskCubit = getIt<TaskCubit>();
 
     currentUser = context.read<UserProvider>().currentUser;
-    departmentId = privilegeBloc.checkPrivilege('174')
-        ? '2'
-        : privilegeBloc.checkPrivilege('169')
-            ? null
-            : privilegeBloc.checkPrivilege('168') || privilegeBloc.checkPrivilege('166')
-                ? currentUser.typeAdministration
-                : null;
-    regionId = privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
+    // departmentId = privilegeBloc.checkPrivilege('174')
+    //     ? '2'
+    //     : privilegeBloc.checkPrivilege('169')
+    //         ? null
+    //         : privilegeBloc.checkPrivilege('168') || privilegeBloc.checkPrivilege('166')
+    //             ? currentUser.typeAdministration
+    //             : null;
+    // regionId = privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
 
     _usersCubit = context.read<UsersCubit>()
       ..storeCurrentUser(currentUser)
       ..getUsers()
-      ..getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId);
+      ..onGetUserSelected('active');
 
     _taskNameController = TextEditingController();
     _deadLineDateController = TextEditingController();
@@ -92,10 +93,10 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<RegionProvider>()
         ..changeValuser(null, true)
-        ..getRegions();
+        ..getRegionsTasks();
       context.read<manage_provider>()
         ..changevalue(null)
-        ..getManages();
+        ..getManagesTask();
     });
 
     super.initState();
@@ -245,19 +246,25 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
 
                                     final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
                                     final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
-
+                                 var assignToId=   state.selectedAssignedToType == AssignedTypeNew.users
+                                        ? state.selectedAssignTo?.idUser.toString()
+                                        : state.selectedAssignedToType == AssignedTypeNew.managements
+                                        ? selectedValueManage
+                                        : selectedRegionId;
                                     _taskCubit.addTaskAction(
-                                        onSuccess: () => Navigator.pop(context, selectedPublicType == PublicType.linkComment),
+                                        onSuccess: () {
+                                          Navigator.pop(context, selectedPublicType == PublicType.linkComment);
+                                        },
                                         addTaskParams: AddTaskParams(
-                                            title:  selectedPublicType == PublicType.other
-                                                ? _taskNameController.text
-                                                : selectedPublicType?.text,
+                                            title: selectedPublicType == PublicType.other ? _taskNameController.text : selectedPublicType?.text,
                                             description: _taskDescriptionController.text,
                                             assignFrom: AssignedTypeNew.users.name.toString(),
                                             assignFromId: currentUser.idUser!,
                                             assignTo: state.selectedAssignedToType?.name,
-                                            assignToId: state.selectedAssignTo!.idUser.toString(),
+                                            assignToId: assignToId,
                                             userId: currentUser.idUser!,
+                                             clientId: widget.clientId,
+                                             invoiceId: widget.invoiceId,
                                             startDate: state.startDate,
                                             file: state.attachmentFile,
                                             deadLineDate: state.deadLineDate,
@@ -306,13 +313,13 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
   List<AssignedTypeNew> get assignedToList {
     final list = List.of(AssignedTypeNew.values);
     if (!privilegeBloc.checkPrivilege('167') && !privilegeBloc.checkPrivilege('174')) {
-      list.remove(AssignedTypeNew.region);
+      list.remove(AssignedTypeNew.regoin);
     }
     if (!privilegeBloc.checkPrivilege('168') && !privilegeBloc.checkPrivilege('169')) {
       list.remove(AssignedTypeNew.managements);
     }
     if (!privilegeBloc.checkPrivilege('166')) {
-      list.remove(AssignedTypeNew.region);
+      list.remove(AssignedTypeNew.regoin);
     }
 
     return list;
@@ -322,17 +329,17 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
     if (taskState.selectedAssignedToType == AssignedTypeNew.users)
       return BlocBuilder<UsersCubit, UsersState>(
         builder: (context, state) {
-          return CustomSearchableDropDown<UserRegionDepartment>(
+          return CustomSearchableDropDown<UserModel>(
             hint: "الموظف",
-            items: state.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
-            itemAsString: (u) => u!.nameUser!,
+            items: state.getUserSelected.data ?? [],
+            itemAsString: (u) => u!.nameUser.toString(),
             onChanged: (data) {
               _taskCubit.onChangeAssignTo(data);
             },
             selectedItem: taskState.selectedAssignTo,
             filterFn: (user, filter) => user.nameUser!.contains(filter),
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.employee) {
+              if (taskState.selectedAssignedToType != AssignedTypeNew.users) {
                 return null;
               }
               if (value == null) {
@@ -352,10 +359,10 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
         builder: (context, manageList, child) {
           final userDepartment = context.read<UserProvider>().currentUser.typeAdministration;
           final list = getIt<PrivilegesCubit>().checkPrivilege('169')
-              ? manageList.listtext
+              ? manageList.listMangTask
               : getIt<PrivilegesCubit>().checkPrivilege('168') || getIt<PrivilegesCubit>().checkPrivilege('174')
-                  ? manageList.listtext.where((element) => element.idMange == userDepartment).toList()
-                  : manageList.listtext;
+                  ? manageList.listMangTask.where((element) => element.idMange == userDepartment).toList()
+                  : manageList.listMangTask;
           return AppDropdownButtonFormField<ManageModel, String>(
             items: list,
             onChange: (value) => manageList.changevalue(value ?? ''),
@@ -364,7 +371,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
             itemAsString: (item) => item!.name_mange,
             value: manageList.selectedValuemanag,
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.department) {
+              if (taskState.selectedAssignedToType != AssignedTypeNew.managements) {
                 return null;
               }
               if (value == null) {
@@ -379,15 +386,15 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
   }
 
   Widget assignToRegionWidget(TaskState taskState) {
-    if (taskState.selectedAssignedToType == AssignedToType.region)
+    if (taskState.selectedAssignedToType == AssignedTypeNew.regoin)
       return Consumer<RegionProvider>(
         builder: (context, cart, child) {
           final user = context.read<UserProvider>().currentUser;
           final list = privilegeBloc.checkPrivilege('169')
-              ? cart.listRegion
+              ? cart.listRegionTaskFilter
               : privilegeBloc.checkPrivilege('167')
-                  ? cart.listRegion.where((element) => element.branchId == user.fkRegoin).toList()
-                  : cart.listRegion;
+                  ? cart.listRegionTaskFilter.where((element) => element.branchId == user.fkRegoin).toList()
+                  : cart.listRegionTaskFilter;
           return AppDropdownButtonFormField<BranchModel, String>(
             items: list,
             onChange: cart.changeVal,
@@ -396,7 +403,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
             itemAsString: (item) => item!.branchName,
             value: cart.selectedRegionId,
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.region) {
+              if (taskState.selectedAssignedToType != AssignedTypeNew.regoin) {
                 return null;
               }
               if (value == null) {

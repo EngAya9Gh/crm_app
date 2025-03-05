@@ -68,12 +68,13 @@ class _EditInvoiceState extends State<EditInvoice> {
     if (pickedDate != null) {
       _currentDateCreate = pickedDate;
       if (mounted) {
-        setState(() {});
+        // setState(() {});
       }
     }
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue2(_currentDateCreate);
+    });
   }
 
   final _globalKey = GlobalKey<FormState>();

@@ -1,11 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
-import 'package:crm_smart/features/finance/verified_invoice/presentation/manager/verified_invoice_bloc.dart';
-import 'package:crm_smart/features/finance/verified_invoice/presentation/manager/verified_invoice_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 
 import '../../../features/app/presentation/widgets/app_text.dart';
@@ -17,14 +13,10 @@ import '../../../ui/screen/client/client_profile.dart';
 import '../../../ui/screen/invoice/invoiceView.dart';
 import '../../config/navigator/app_routes_names.dart';
 import '../../utils/app_colors.dart';
-import '../../utils/app_constants.dart';
 import '../../utils/app_fonts.dart';
 import '../enums/withdrawal_status_enum.dart';
 import '../helpers/helper_functions.dart';
 import '../helpers/number_formatter.dart';
-import 'app_dialog.dart';
-import 'app_elevated_button.dart';
-import 'app_status_chip.dart';
 
 enum StatusClient { subscriber, withdrawn, unsupported, restrictWithdrawn }
 
@@ -62,6 +54,7 @@ class CardInvoiceClient extends StatefulWidget {
   final bool isFromWithdrawalsInvoicesList;
   final String routeName;
   final Widget? transferWidget;
+  final Widget? commissionWidget;
 
   CardInvoiceClient({
     super.key,
@@ -70,6 +63,7 @@ class CardInvoiceClient extends StatefulWidget {
     this.isFromWithdrawalsInvoicesList = false,
     this.routeName = '',
     this.transferWidget,
+    this.commissionWidget,
   });
 
   @override
@@ -201,6 +195,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               isDeleted: widget.invoice.isDeleted,
                               isApprove: widget.invoice.isApprove,
                               stateclient: widget.invoice.stateclient,
+                              isApproveBackDone: (widget.invoice.approveBackDone != null) ? int.parse(widget.invoice.approveBackDone!) == 0 : null,
                             ),
                           ],
                         ),
@@ -332,7 +327,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ),
                           ],
                         ),
-                        if(widget.transferWidget!=null&&(widget.invoice.dateLastOperation?.isNotEmpty??false))...{
+                        if (widget.transferWidget != null && (widget.invoice.dateLastOperation?.isNotEmpty ?? false)) ...{
                           5.height,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -359,17 +354,18 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                   child:  AppText(
-                                      (widget.invoice.lastOperation!)+ "  (${widget.invoice.userDidOperation})",
-                                      fontFamily: AppFonts.fontFamily1,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
+                                child: AppText(
+                                  (widget.invoice.lastOperation!) + "  (${widget.invoice.userDidOperation})",
+                                  fontFamily: AppFonts.fontFamily1,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
                               ),
                               widget.transferWidget ?? SizedBox.shrink(),
                             ],
                           ),
                         },
+                        widget.commissionWidget ?? SizedBox.shrink()
                       ],
                     ),
                   ),

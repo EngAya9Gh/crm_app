@@ -133,7 +133,6 @@ class UserProvider extends ChangeNotifier {
     currentUser.path = path;
     notifyListeners();
   }
-
   Future<void> updateUserVm({
     required Map<String, dynamic> body,
     String? iduser,
@@ -158,13 +157,15 @@ class UserProvider extends ChangeNotifier {
   Future<void> updateProfileImage({
     String? iduser,
     XFile? file,
+    Map<String, dynamic>? params,
   }) async {
     isUpdate = true;
     notifyListeners();
     int index = allUsers.indexWhere((element) => element.idUser == iduser);
     UserModel ustemp = await UserService().UpdateProfileImage(
       file: file,
-      params: {'id_user': iduser},
+      iduser: iduser,
+      params: params,
     );
     allUsers[index] = ustemp;
     updateUserList(ustemp);
@@ -203,6 +204,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   bool isDeletingAccount = false;
+  bool logoutFromAccount = false;
 
   deleteAccount(
       {required VoidCallback onDeleteSucceed,
@@ -229,6 +231,29 @@ class UserProvider extends ChangeNotifier {
       isDeletingAccount = false;
       notifyListeners();
       onDeleteFailed?.call();
+    }
+  }
+  logout(
+      {required VoidCallback onLogoutSuccess,
+      VoidCallback? onLogoutFailed}) async {
+    SharedPreferences preferences = getIt<SharedPreferences>();
+
+    logoutFromAccount = true;
+    notifyListeners();
+    try {
+      await Api().post(
+        url: EndPoints.baseUrls.urlLaravel + 'users/logout',
+        body: null,
+      );
+
+      await preferences.clear();
+      logoutFromAccount = false;
+      notifyListeners();
+      onLogoutSuccess.call();
+    } catch (e) {
+      logoutFromAccount = false;
+      notifyListeners();
+      onLogoutFailed?.call();
     }
   }
 

@@ -9,15 +9,22 @@ import '../../../../core/common/models/nullable.dart';
 import '../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_constants.dart';
+import '../../../../model/commentmodel.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/usermodel.dart';
+import '../../../clients_care/violations_clienta_care/data/models/management_model.dart';
 import '../../data/models/task_model.dart';
 import '../../data/models/task_status_info.dart';
 import '../../data/models/user_region_department.dart';
+import '../../data/models/users_report_model.dart';
 import '../../domain/entities/tasks_page_variables_entity.dart';
+import '../../domain/use_cases/add_comment_task_usecase.dart';
 import '../../domain/use_cases/add_task_usecase.dart';
+import '../../domain/use_cases/add_users_report_usecase.dart';
 import '../../domain/use_cases/change_status_usecase.dart';
+import '../../domain/use_cases/get_comments_task_usecase.dart';
 import '../../domain/use_cases/get_tasks_usecase.dart';
+import '../../../mangement/manage_users/domain/use_cases/get_user_select_task_management_usecase.dart';
 import '../pages/add_task_page.dart';
 
 part 'task_state.dart';
@@ -27,6 +34,9 @@ class TaskCubit extends Cubit<TaskState> {
   final AddTaskUsecase _addTaskUsecase;
   final GetTasksUsecase _getTasksUsecase;
   final ChangeStatusTaskUsecase _changeStatusTaskUsecase;
+  final AddCommentTaskUsecase _addCommentTaskUsecase;
+  final GetCommentsTaskUsecase _getCommentsTaskUsecase;
+  final GetUsersReportsTaskUsecase _getUsersReportsTaskUsecase;
 
   Map<TaskStatusType, TaskStatusInfo> taskStatusInfo = {
     TaskStatusType.Open: TaskStatusInfo(),
@@ -39,6 +49,9 @@ class TaskCubit extends Cubit<TaskState> {
     this._addTaskUsecase,
     this._getTasksUsecase,
     this._changeStatusTaskUsecase,
+    this._addCommentTaskUsecase,
+    this._getCommentsTaskUsecase,
+    this._getUsersReportsTaskUsecase,
   ) : super(TaskState());
 
   TasksPageVariablesEntity pageVariables = TasksPageVariablesEntity();
@@ -47,7 +60,7 @@ class TaskCubit extends Cubit<TaskState> {
     pageVariables = TasksPageVariablesEntity();
   }
 
-  onChangeAssignTo(UserRegionDepartment? userModel) {
+  onChangeAssignTo(UserModel? userModel) {
     if (userModel == null) return;
     emit(state.copyWith(selectedAssignTo: userModel));
   }
@@ -196,7 +209,7 @@ class TaskCubit extends Cubit<TaskState> {
             filter: pageVariables.searchController.text,
             statusName: ((state.selectedStatus?.id ?? 1)),
             assignedTo: state.filterAssignTo?.idUser?.toString(),
-            assignedBy: state.filterAssignFrom?.idUser?.toString(),
+            assignedBy: state.filterAssignFrom?.idUser.toString(),
             startDateFrom: state.filterFromDate,
             startDateTo: state.filterToDate,
             departmentFrom: state.departmentFrom?.idMange,
@@ -205,7 +218,11 @@ class TaskCubit extends Cubit<TaskState> {
             regionTo: state.regionTo?.branchId,
             myTasks: state.myTasks,
             myDepartment: state.myDepartment,
-            myBranch: state.myBranch,
+            myBranch: pageVariables.selectedBranchModel.value?.branchId,
+            userId: pageVariables.selectedUserModel.value?.idUser,
+            managerId: pageVariables.selectedManagerModel.value?.idMange,
+            atTime: pageVariables.atTime.value,
+            afterTime: pageVariables.afterTime.value,
           ),
         );
         result.fold(
@@ -243,7 +260,7 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(filterToDate: Nullable.value(date)));
   }
 
-  onChangeFilterAssignFrom(UserRegionDepartment? user) {
+  onChangeFilterAssignFrom(UserModel? user) {
     emit(state.copyWith(filterAssignFrom: Nullable.value(user)));
   }
 
@@ -288,12 +305,14 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(isResetTasksState: true));
   }
 
-  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess, String userId, bool fromDialog) async {
+  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess, String userId, bool fromDialog,
+      [double? rate]) async {
     emit(state.copyWith(changeTaskStatus: const BlocStatus.loading()));
     final response = await _changeStatusTaskUsecase(ChangeStatusTaskParams(
       fromDialog ? taskStatusType.next.id.toString() : taskStatusType.id.toString(),
       taskModel.id.toString(),
       userId,
+      rate,
     ));
 
     response.extract(
@@ -330,6 +349,79 @@ class TaskCubit extends Cubit<TaskState> {
 
   onChangeSelectedAssignedToType(AssignedTypeNew? assignedType) {
     emit(state.copyWith(selectedAssignedToType: Nullable.value(assignedType)));
+  }
+
+  onGetTaskComments(int taskId) async {
+    emit(state.copyWith(getTaskComment: BlocStatus.loading()));
+    final result = await _getCommentsTaskUsecase(AddTaskCommentParams(taskId: taskId, content: ''));
+    result.extract(
+      (exception, message) => emit(
+        state.copyWith(getTaskComment: BlocStatus.fail(error: message)),
+      ),
+      (value) {
+        if (value.message?.isEmpty ?? true) {
+          emit(
+            state.copyWith(getTaskComment: BlocStatus.empty()),
+          );
+          return;
+        }
+        emit(
+          state.copyWith(getTaskComment: BlocStatus.success(data: value.message ?? [])),
+        );
+      },
+    );
+  }
+
+  onAddTaskComment(AddTaskCommentParams params, VoidCallback? onSuccess) async {
+    emit(state.copyWith(addComment: BlocStatus.loading()));
+    final result = await _addCommentTaskUsecase(params);
+    result.extract(
+      (exception, message) => emit(
+        state.copyWith(addComment: BlocStatus.fail(error: message)),
+      ),
+      (value) {
+        onGetTaskComments(params.taskId);
+        emit(
+          state.copyWith(addComment: BlocStatus.success(data: value.message ?? [])),
+        );
+        onSuccess?.call();
+      },
+    );
+  }
+
+  getUserTaskReports(GetUsersReportsParams params,[VoidCallback? onSuccess]) async {
+    if(state.getUsersTaskReportsStatus.isLoading()){
+      return;
+    }
+    emit(state.copyWith(getUsersTaskReportsStatus: BlocStatus.loading()));
+    if (params.page == 1) {
+      emit(state.copyWith(getUsersTaskReports: BlocStatus.loading()));
+    }
+    final result = await _getUsersReportsTaskUsecase(params);
+    result.extract(
+      (exception, message) => emit(
+        state.copyWith(getUsersTaskReports: BlocStatus.fail(error: message), getUsersTaskReportsStatus: BlocStatus.fail(error: message)),
+      ),
+      (value) {
+        onSuccess?.call();
+        emit(state.copyWith(hasGetAllReports: (value.message?.isEmpty ?? false)));
+        if (params.page > 1) {
+          emit(
+            state.copyWith(
+                totalUserReportCount: value.count,
+                getUsersTaskReports: BlocStatus.success(data: List.of(state.getUsersTaskReports.data ?? [])..addAll(value.message ?? [])),
+                getUsersTaskReportsStatus: BlocStatus.success()),
+          );
+          return;
+        }
+        emit(
+          state.copyWith(
+              totalUserReportCount: value.count,
+              getUsersTaskReports: BlocStatus.success(data: value.message ?? []),
+              getUsersTaskReportsStatus: BlocStatus.success()),
+        );
+      },
+    );
   }
 
   @override

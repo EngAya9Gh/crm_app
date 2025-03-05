@@ -19,6 +19,7 @@ import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/similar_client.dart';
 import '../../../../../../model/usermodel.dart';
+import '../../domain/use_cases/assign_client_to_employee_usecase.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
@@ -245,6 +246,20 @@ class ClientsListDatasource {
       api.changeBaseUrl(EndPoints.baseUrls.url);
       final client = ClientModel.fromJson(response['data']);
       return ResponseWrapper(message: client, data: client);
+    }
+
+    return throwAppException(fun);
+  }
+  Future<ResponseWrapper<bool>> assignClientsToEmployee(AssignClientsToEmployeeParams params) async {
+    fun() async {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+        endPoint: EndPoints.client.transferMultiClient,
+        data: params.toMap(),
+      );
+
+      api.changeBaseUrl(EndPoints.baseUrls.url);
+      return ResponseWrapper(message: true,data: true);
     }
 
     return throwAppException(fun);

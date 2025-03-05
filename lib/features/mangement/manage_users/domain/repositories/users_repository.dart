@@ -4,9 +4,11 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../../core/common/models/location/branch_model.dart';
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+
 import '../../../../../core/services/api/result.dart';
 import '../../../../../model/managmodel.dart';
 import '../../../../../model/usermodel.dart';
+
 import '../../../manage_privileges/levels/data/models/level_model.dart';
 import '../use_cases/get_branches_for_user_usecase.dart';
 import '../use_cases/get_levels_for_user_usecase.dart';
@@ -17,6 +19,8 @@ abstract class UsersRepository {
   Future<Result<ResponseWrapper<List<UserModel>>>> getUsers(
     GetUsersParams params,
   );
+
+  Future<Result<ResponseWrapper<List<UserModel>>>> getUsersAll(GetUsersParams params);
 
   Future<Either<String, PaginationResponseWrapper>> getUserById(
     GetUserByIdParams params,
@@ -32,12 +36,11 @@ abstract class UsersRepository {
     required Map<String, dynamic> param,
   });
 
-  Future<Either<String, List<ManageModel>>> getManagesForUser(
-      GetManagesForUserParams params);
+  Future<Either<String, List<ManageModel>>> getManagesForUser(GetManagesForUserParams params);
 
-  Future<Either<String, List<LevelModel>>> getLevelsForUser(
-      GetLevelsForUserParams params);
+  Future<Either<String, List<LevelModel>>> getLevelsForUser(GetLevelsForUserParams params);
 
-  Future<Either<String, List<BranchModel>>> getBranchesForUser(
-      GetBranchesForUserParams params);
+  Future<Either<String, List<BranchModel>>> getBranchesForUser(GetBranchesForUserParams params);
+
+  Future<Result<ResponseWrapper<List<UserModel>>>> getUserSelected([GetUsersParams? params]);
 }
