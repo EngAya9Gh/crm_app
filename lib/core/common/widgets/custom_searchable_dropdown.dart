@@ -32,7 +32,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
   final bool Function(T, T)? compareFn;
   final String? Function(T?)? validator;
   final InputDecoration? buttonDecoration;
-  final Widget Function(BuildContext, T, bool)? itemBuilder;
+  final DropdownSearchPopupItemBuilder<T>? itemBuilder;
   final bool isRequired;
   final bool enabled;
 
@@ -78,29 +78,27 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
           ),
         ),
         itemBuilder: itemBuilder ??
-            (context, item, isSelected) {
-              return Directionality(
-                textDirection: TextDirection.rtl,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: isSelected ? Colors.grey : Colors.transparent,
-                  ),
-                  child: AppText(
-                    itemAsString(item),
-                    fontSize: 18,
-                    style: AppStyles.textStyle.copyWith(
-                      overflow: TextOverflow.ellipsis,
+            (context, item, isDisabled, isSelected) => Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: isSelected ? Colors.grey : Colors.transparent,
+                    ),
+                    child: AppText(
+                      itemAsString(item),
+                      fontSize: 18,
+                      style: AppStyles.textStyle.copyWith(
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ),
-              );
-            },
       ),
-      enabled:enabled ,
-      dropdownDecoratorProps: DropDownDecoratorProps(
+      enabled: enabled,
+      decoratorProps: DropDownDecoratorProps(
         textAlignVertical: TextAlignVertical.center,
-        dropdownSearchDecoration: buttonDecoration ??
+        decoration: buttonDecoration ??
             AppStyles.roundedDropdownButtonDecoration(
               context: context,
               hintText: hint,
@@ -116,12 +114,11 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
       ),
       filterFn: filterFn,
       compareFn: compareFn,
-      items: items,
+      items: (filter, loadProps) => items,
       itemAsString: itemAsString,
       onChanged: onChanged,
       selectedItem: selectedItem,
-      validator:
-          validator ?? (isRequired ? InputValidator.requiredFiled : null),
+      validator: validator ?? (isRequired ? InputValidator.requiredFiled : null),
     );
   }
 }

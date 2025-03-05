@@ -53,7 +53,7 @@ class CustomEventClientInvoicesDropDown extends StatelessWidget {
               filterFn: (item, filter) {
                 return item.value.toLowerCase().contains(filter.toLowerCase());
               },
-              itemBuilder: (context, item, isSelected) {
+              itemBuilder: (context, item, isDisabled, isSelected)  {
                 return Directionality(
                   textDirection: TextDirection.rtl,
                   child: Card(

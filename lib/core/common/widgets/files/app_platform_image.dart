@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/file_model.dart';
@@ -57,20 +58,20 @@ class AppPlatformImage extends StatelessWidget {
 
   Widget _buildLocalImage(String path) {
     return Image.file(
-      File(path),
-      fit: fit ?? BoxFit.cover,
-      width: width,
-      height: height,
-      errorBuilder: (context, error, stackTrace) {
-        debugPrint('error in image => $error');
-        return errorWidget ??
-            Icon(
-              Icons.person,
-              size: 50,
-              color: Colors.lightBlueAccent,
-            );
-      },
-    );
+            File(path),
+            fit: fit ?? BoxFit.cover,
+            width: width,
+            height: height,
+            errorBuilder: (context, error, stackTrace) {
+              debugPrint('error in image => $error');
+              return errorWidget ??
+                  Icon(
+                    Icons.person,
+                    size: 50,
+                    color: Colors.lightBlueAccent,
+                  );
+            },
+          );
   }
 
   Widget _buildNetworkImage(String path) {

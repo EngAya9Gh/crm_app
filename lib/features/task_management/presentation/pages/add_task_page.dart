@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,7 @@ import '../../../../core/common/enums/enums.dart';
 import '../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/common/helpers/input_validator.dart';
+import '../../../../core/common/models/file_model.dart';
 import '../../../../core/common/models/location/branch_model.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
@@ -29,6 +31,7 @@ import '../../../../core/common/widgets/app_scaffold.dart';
 import '../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../../core/common/widgets/files/app_platform_image.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
@@ -39,6 +42,7 @@ import '../../../../model/managmodel.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
 import '../../../../ui/screen/invoice/invoice_images_file.dart';
+import '../../../../ui/widgets/app_file_viewer.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_text.dart';
@@ -203,11 +207,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
                       final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
                       final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
-                      var assignToId=   state.selectedAssignedToType == AssignedTypeNew.users
+                      var assignToId = state.selectedAssignedToType == AssignedTypeNew.users
                           ? state.selectedAssignTo?.idUser.toString()
                           : state.selectedAssignedToType == AssignedTypeNew.managements
-                          ? selectedValueManage
-                          : selectedRegionId;
+                              ? selectedValueManage
+                              : selectedRegionId;
                       _taskCubit.addTaskAction(
                           onSuccess: () {
                             AppNavigator.pop(result: true);
@@ -276,7 +280,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       builder: (context, state) {
                         return CustomMultiSelectionDropdown<UserModel>(
                           hint: 'المشاركين*',
-                          items:  _usersCubit.pageVariables.usersAllList,
+                          items: _usersCubit.pageVariables.usersAllList,
                           selectedItems: taskState.selectedParticipant ?? [],
                           onSave: _taskCubit.onChangeParticipants,
                           itemAsString: (u) => u!.userAsString(),
@@ -457,6 +461,31 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       icon: Icons.attach_file_rounded,
                     ),
                     10.height,
+                    BlocBuilder<TaskCubit, TaskState>(
+                      builder: (context, state) {
+                        return AnimatedSwitcher(
+                          duration: Duration(milliseconds: 500),
+                          transitionBuilder: (widget, animation) => FadeTransition(
+                            opacity: animation,
+                            child: widget,
+                          ),
+                          child: state.attachmentFile==null
+                              ? SizedBox.shrink()
+                              : InkWell(
+                            onTap: () => AppFileViewer(
+                              imageSource: ImageSourceViewer.file,
+                              files: [XFile(state.attachmentFile!.path)],
+                            ).show(context),
+                            child: AppPlatformImage(
+                              fileModel: FileModel(file: XFile(state.attachmentFile!.path)),
+                              fit: BoxFit.cover,
+                              width: 110.scaleIconsSize,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    10.height,
                     AppText('اسناد إلى'),
                     5.height,
                     AppCardContainer(
@@ -475,6 +504,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     assignToEmployeeWidget(taskState),
                     assignToRegionWidget(taskState),
                     assignToDepartmentWidget(taskState),
+                    40.height,
                   ],
                 ),
               );

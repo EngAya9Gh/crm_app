@@ -157,13 +157,15 @@ class UserProvider extends ChangeNotifier {
   Future<void> updateProfileImage({
     String? iduser,
     XFile? file,
+    Map<String, dynamic>? params,
   }) async {
     isUpdate = true;
     notifyListeners();
     int index = allUsers.indexWhere((element) => element.idUser == iduser);
     UserModel ustemp = await UserService().UpdateProfileImage(
       file: file,
-      params: {'id_user': iduser},
+      iduser: iduser,
+      params: params,
     );
     allUsers[index] = ustemp;
     updateUserList(ustemp);
