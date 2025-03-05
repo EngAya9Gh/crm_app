@@ -586,7 +586,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
     final EditClientParams editClientParams = EditClientParams(
       nameClient: nameClientController.text,
       nameEnterprise: nameEnterpriseController.text,
-      city: selectedCity!,
+      city: selectedCity,
       mobile: mobileController.text,
       anotherPhoneNumber: anotherNumberController.text,
       addressClient: addressClientController.text,

@@ -35,7 +35,7 @@ class EditClientParams {
   // final String? rejectId;
   final String nameClient;
   final String nameEnterprise;
-  final String city;
+  String? city;
 
   // final String typeClient;
   final String mobile;
@@ -61,7 +61,7 @@ class EditClientParams {
     this.statusClient,
     required this.nameClient,
     required this.nameEnterprise,
-    required this.city,
+    this.city,
     required this.mobile,
     required this.anotherPhoneNumber,
     required this.addressClient,
