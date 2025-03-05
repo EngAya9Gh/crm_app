@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
@@ -8,32 +10,44 @@ import '../core/utils/app_strings.dart';
 
 class LoggingInterceptor implements InterceptorContract {
   @override
-  Future<RequestData> interceptRequest({required RequestData data}) async {
+  Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     final secureStorage = getIt<CacheServices>(
       instanceName: SecureStorageConsumer.name,
     );
     var token =
         await secureStorage.getData(key: AppStrings.secureStorage.token);
 
-    data.headers['AuthToken'] = 'Bearer $token';
-    data.headers['Authorization'] = 'Bearer $token';
+    request.headers['AuthToken'] = 'Bearer $token';
+    request.headers['Authorization'] = 'Bearer $token';
 
     debugPrint('HTTP Request*************************************');
-    debugPrint('headers => ${data.headers}');
-    debugPrint('${data.method.name} => ${data.url}');
-    debugPrint('query params => ${data.params}');
-    debugPrint('body => ${data.body}');
+    debugPrint('headers => ${request.headers}');
+    debugPrint('${request.method} => ${request.url}');
+    // debugPrint('query params => ${request.params}');
+    // debugPrint('body => ${request.body}');
     debugPrint("HTTP End Request*************************************");
-    return data;
+    return request;
   }
 
   @override
-  Future<ResponseData> interceptResponse({required ResponseData data}) async {
+  Future<BaseResponse> interceptResponse({required BaseResponse response}) async {
     debugPrint('HTTP Response*************************************');
-    debugPrint('headers => ${data.headers}');
-    debugPrint('url => ${data.url}');
+    debugPrint('headers => ${response.headers}');
+    // debugPrint('url => ${response.url}');
     // debugPrint('body is ${data.body.runtimeType} => ${data.body}');
     debugPrint("HTTP End Response*************************************");
-    return data;
+    return response;
+  }
+
+  @override
+  FutureOr<bool> shouldInterceptRequest() {
+    // TODO: implement shouldInterceptRequest
+    throw UnimplementedError();
+  }
+
+  @override
+  FutureOr<bool> shouldInterceptResponse() {
+    // TODO: implement shouldInterceptResponse
+    throw UnimplementedError();
   }
 }

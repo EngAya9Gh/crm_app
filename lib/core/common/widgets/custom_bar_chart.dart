@@ -26,7 +26,7 @@ class CustomBarChart extends StatelessWidget {
       primaryYAxis: charts.NumericAxis(),
       title: charts.ChartTitle(text: title),
       tooltipBehavior: charts.TooltipBehavior(enable: true),
-      series: <charts.ChartSeries<BarModel, String>>[
+      series: <charts.CartesianSeries<BarModel, String>>[
         charts.BarSeries<BarModel, String>(
           dataSource: dataList,
           xValueMapper: (BarModel sales, _) =>

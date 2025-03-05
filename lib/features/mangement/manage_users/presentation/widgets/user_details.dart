@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+// import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import '../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../model/usermodel.dart';
@@ -28,7 +29,8 @@ class UserDetails extends StatelessWidget {
           10.height,
           InkWell(
             onTap: () async {
-              await FlutterPhoneDirectCaller.callNumber(user.mobile.toString());
+              await HelperFunctions.urlLauncherPhone(user.mobile.toString());
+              // await FlutterPhoneDirectCaller.callNumber(user.mobile.toString());
             },
             child: _buildInfoCard('الهاتف', user.mobile.toString()),
           ),

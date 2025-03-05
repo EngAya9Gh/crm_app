@@ -1,10 +1,11 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+// import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../../core/common/enums/enums.dart';
+import '../../../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../../../core/utils/app_colors.dart';
@@ -67,8 +68,9 @@ class _AgentInfoState extends State<AgentInfo> {
                             borderRadius: BorderRadius.all(Radius.circular(10))),
                         child: IconButton(
                           onPressed: () async {
-                            await FlutterPhoneDirectCaller.callNumber(
-                                cubit.currentAgent!.mobileAgent.toString());
+                            await HelperFunctions.urlLauncherPhone( cubit.currentAgent!.mobileAgent.toString());
+                            // await FlutterPhoneDirectCaller.callNumber(
+                            //     cubit.currentAgent!.mobileAgent.toString());
                           },
                           icon: AppIcon(
                             Icons.call,
@@ -80,8 +82,10 @@ class _AgentInfoState extends State<AgentInfo> {
                       AppTextButton(
                         text: cubit.currentAgent!.mobileAgent,
                         onPressed: () async {
-                          await FlutterPhoneDirectCaller.callNumber(
-                              cubit.currentAgent!.mobileAgent.toString());
+                          await HelperFunctions.urlLauncherPhone(cubit.currentAgent!.mobileAgent.toString());
+
+                          // await FlutterPhoneDirectCaller.callNumber(
+                          //     cubit.currentAgent!.mobileAgent.toString());
                         },
                       ),
                     ],

@@ -30,13 +30,9 @@ abstract class AppInit {
     await initializeDateFormatting();
   }
 
-
-
-
-
   static Future<void> _initBloc() async {
     HydratedBloc.storage = await HydratedStorage.build(
-      storageDirectory: kIsWeb ? HydratedStorage.webStorageDirectory : await getApplicationDocumentsDirectory(),
+      storageDirectory: kIsWeb ? HydratedStorageDirectory.web : HydratedStorageDirectory((await getTemporaryDirectory()).path),
     );
     Bloc.observer = AppBlocObserver();
   }
