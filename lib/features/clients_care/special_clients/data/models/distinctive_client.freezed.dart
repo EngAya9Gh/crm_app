@@ -37,8 +37,12 @@ mixin _$DistinctiveClient {
   @JsonKey(name: "name_client")
   String? get nameClient => throw _privateConstructorUsedError;
 
+  /// Serializes this DistinctiveClient to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DistinctiveClient
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DistinctiveClientCopyWith<DistinctiveClient> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -70,6 +74,8 @@ class _$DistinctiveClientCopyWithImpl<$Res, $Val extends DistinctiveClient>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DistinctiveClient
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -146,6 +152,8 @@ class __$$DistinctiveClientImplCopyWithImpl<$Res>
       $Res Function(_$DistinctiveClientImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of DistinctiveClient
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -263,12 +271,14 @@ class _$DistinctiveClientImpl implements _DistinctiveClient {
                 other.nameClient == nameClient));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, dateCreate, fkClient,
       nameEnterprise, nameUser, mobile, fkRegoin, nameRegoin, nameClient);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DistinctiveClient
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DistinctiveClientImplCopyWith<_$DistinctiveClientImpl> get copyWith =>
@@ -322,8 +332,11 @@ abstract class _DistinctiveClient implements DistinctiveClient {
   @override
   @JsonKey(name: "name_client")
   String? get nameClient;
+
+  /// Create a copy of DistinctiveClient
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DistinctiveClientImplCopyWith<_$DistinctiveClientImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

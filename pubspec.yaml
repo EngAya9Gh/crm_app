@@ -103,6 +103,7 @@ dependencies:
   open_filex: ^4.5.0
   easy_sidemenu: ^0.6.0
   flutter_expanded_tile: ^0.4.0
+  mocktail: ^1.0.4
 
 dependency_overrides:
   web: ^1.1.0
