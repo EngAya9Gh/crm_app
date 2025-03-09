@@ -109,6 +109,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                                 builder: (context, value, _) {
                                   return CustomDropDown<String>(
                                     hint: 'تصنيفات الروابط',
+                                    compareFn:  (item, selectedItem) => item== selectedItem,
                                     items: clientTypeVm.typeOfLinks,
                                     itemAsString: (item) => item!,
                                     selectedItem: value,

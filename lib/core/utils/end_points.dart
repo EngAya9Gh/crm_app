@@ -468,6 +468,7 @@ class _Reports {
   final String getClientsCareReports = 'reports/care_report.php';
   final String getEvaluationLevelReport = 'reports/report_care_rate.php';
   final String getPeriodicCommunicationReports = "reports/care_communication_report.php";
+  final String getRecommendedClientReports = "recommendClients";
 }
 
 class _Notifications {

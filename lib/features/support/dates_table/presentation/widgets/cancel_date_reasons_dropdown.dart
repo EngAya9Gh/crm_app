@@ -44,6 +44,7 @@ class _CancelDateReasonsDropdownState extends State<CancelDateReasonsDropdown> {
           success: (data) {
             return CustomDropDown<CancelDateReasonModel>(
               hint: "سبب الإلغاء *",
+              compareFn:  (item, selectedItem) => item.id == selectedItem.id,
               items: state.getCancelReasonsStatus.data,
               itemAsString: (item) => item?.reason ?? "",
               validator: InputValidator.requiredFiled,

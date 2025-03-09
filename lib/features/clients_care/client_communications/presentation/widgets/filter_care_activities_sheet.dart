@@ -66,6 +66,7 @@ class _FilterCareActivitiesSheetState extends State<FilterCareActivitiesSheet> {
                     hint: "الحالة",
                     items: ActivityStateEnum.values,
                     itemAsString: (item) => item!.name,
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     selectedItem: _bloc.pageVariables.activityState.value==null?null:ActivityStateExtension.fromValue(_bloc.pageVariables.activityState.value??""),
                     onChanged: (value) {
                       if (value == null) return;
@@ -77,6 +78,7 @@ class _FilterCareActivitiesSheetState extends State<FilterCareActivitiesSheet> {
                   CustomDropDown<ActivityPriorityEnum>(
                     hint: "الاولوية",
                     items: ActivityPriorityEnum.values,
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     itemAsString: (item) => item!.name,
                     selectedItem:_bloc.pageVariables.priority.value==null?null: ActivityPriorityExtension.fromValue(_bloc.pageVariables.priority.value??""),
                     onChanged: (value) {

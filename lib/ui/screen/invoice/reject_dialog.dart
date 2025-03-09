@@ -158,6 +158,7 @@ class _RejectDialogState extends State<RejectDialog> {
                         return CustomDropDown<ReasonModel>(
                           hint: "",
                           items: cart.type_of_out,
+                          compareFn:  (item, selectedItem) => item.idReason == selectedItem.idReason,
                           itemAsString: (item) => item!.nameReason,
                           selectedItem: cart.type_of_out.firstWhereOrNull(
                             (element) =>

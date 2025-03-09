@@ -89,6 +89,7 @@ class _AgentsSearchAndFilterState extends State<AgentsSearchAndFilter> {
                           return CustomDropDown<AgentStateEnum>(
                             hint: 'حالة الوكيل',
                             items: AgentStateEnum.values,
+                            compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                             selectedItem: cubit.filterAgentState.value,
                             itemAsString: (item) => item!.value,
                             height: 105.h,
@@ -104,6 +105,7 @@ class _AgentsSearchAndFilterState extends State<AgentsSearchAndFilter> {
                       CustomDropDown<AgentSourceEnum>(
                         hint: 'مصدر الوكيل',
                         items: AgentSourceEnum.values,
+                        compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                         itemAsString: (item) => item!.value,
                         selectedItem: cubit.filterAgentSource.value,
                         onChanged: (value) {

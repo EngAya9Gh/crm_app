@@ -105,6 +105,7 @@ class _FilterSupportClientsInvoicesSheetState
               builder: (context, value, child) {
                 return CustomDropDown(
                   hint: 'الحالة',
+                  compareFn:  (item, selectedItem) => item== selectedItem,
                   items: value.listtype_install,
                   itemAsString: (u) => u.toString(),
                   selectedItem: _cubit.filterEntity.statusNotifier.value,

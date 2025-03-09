@@ -78,6 +78,7 @@ class _ParticipatesFilterSheetState extends State<ParticipatesFilterSheet> {
             CustomDropDown<StateParticipateEnum>(
               hint: 'حالة المتعاون',
               items: StateParticipateEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem:
                   _participateListBloc.filterVariables.stateParticipate.value,

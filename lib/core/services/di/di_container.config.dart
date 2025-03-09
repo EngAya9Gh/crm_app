@@ -199,6 +199,16 @@ import '../../../features/clients_care/previous_ratings/domain/use_cases/get_pre
     as _i710;
 import '../../../features/clients_care/previous_ratings/presentation/manager/previous_ratings_cubit.dart'
     as _i999;
+import '../../../features/clients_care/recommended_client/data/data_sources/recommended_client_reports_datasource.dart'
+    as _i924;
+import '../../../features/clients_care/recommended_client/data/repositories/recommended_client_reports_repo_impl.dart'
+    as _i105;
+import '../../../features/clients_care/recommended_client/domain/repositories/recommended_client_reports_repo.dart'
+    as _i656;
+import '../../../features/clients_care/recommended_client/domain/use_cases/get_recommended_client_reports_usecase.dart'
+    as _i56;
+import '../../../features/clients_care/recommended_client/presentation/manager/recommended_client_bloc.dart'
+    as _i65;
 import '../../../features/clients_care/special_clients/data/data_sources/special_clients_datasource.dart'
     as _i11;
 import '../../../features/clients_care/special_clients/data/repositories/special_clients_repository_impl.dart'
@@ -1030,6 +1040,8 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i1065.Api>(() => _i1065.Api());
   gh.lazySingleton<_i645.Location>(() => appModule.location);
   gh.singleton<_i124.ApiServices>(() => _i96.DioServices(gh<_i361.Dio>()));
+  gh.lazySingleton<_i924.RecommendedClientReportsDatasource>(() =>
+      _i924.RecommendedClientReportsDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i1006.SupportClientsAcceptDatasource>(
       () => _i1006.SupportClientsAcceptDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i946.EvaluationLevelReportDatasource>(
@@ -1089,6 +1101,9 @@ _i174.GetIt $initGetIt(
       () => _i357.LinkClientApiService(gh<_i361.Dio>()));
   gh.lazySingleton<_i309.NotificationsDatasource>(
       () => _i309.NotificationsDatasourceImpl(gh<_i124.ApiServices>()));
+  gh.lazySingleton<_i656.RecommendedClientsReportsRepo>(() =>
+      _i105.RecommendedClientsReportsRepoImpl(
+          gh<_i924.RecommendedClientReportsDatasource>()));
   gh.lazySingleton<_i547.NotUsingSystemRepo>(
       () => _i204.NotUsingSystemRepoImpl(gh<_i627.NotUsingSystemDatasource>()));
   gh.lazySingleton<_i833.WrongNumbersRepo>(
@@ -1242,6 +1257,12 @@ _i174.GetIt $initGetIt(
           gh<_i1070.ClientsInstallReportsRepo>()));
   gh.lazySingleton<_i412.PreviousRatingsRepo>(() =>
       _i389.PreviousRatingsRepoImpl(gh<_i265.PreviousRatingsDatasource>()));
+  gh.lazySingleton<_i56.GetRecommendClientsReportsUsecase>(() =>
+      _i56.GetRecommendClientsReportsUsecase(
+          gh<_i656.RecommendedClientsReportsRepo>()));
+  gh.factory<_i65.RecommendedClientReportsBloc>(() =>
+      _i65.RecommendedClientReportsBloc(
+          gh<_i56.GetRecommendClientsReportsUsecase>()));
   gh.lazySingleton<_i566.ClientLogsTabRepo>(
       () => _i313.ClientLogsTabRepoImpl(gh<_i40.ClientLogsTabDataSource>()));
   gh.lazySingleton<_i1028.DeletedInvoicesDatasource>(
@@ -1984,6 +2005,30 @@ _i174.GetIt $initGetIt(
         gh<_i206.GetVerifiedInvoiceUseCase>(),
         gh<_i1029.VerifiedInvoiceUseCase>(),
       ));
+  gh.factory<_i631.ClientsListBloc>(() => _i631.ClientsListBloc(
+        gh<_i574.GetClientsWithFilterUserUsecase>(),
+        gh<_i143.GetRecommendedClientsUsecase>(),
+        gh<_i1047.GetSimilarClientsUsecase>(),
+        gh<_i824.AddClientUserUsecase>(),
+        gh<_i190.EditClientUserUsecase>(),
+        gh<_i137.ChangeTypeClientUsecase>(),
+        gh<_i688.ChangeClientCommunicationUseCase>(),
+        gh<_i592.StoreClientCommunicationUseCase>(),
+        gh<_i34.ApproveRejectClientUsecase>(),
+        gh<_i588.CrudClientSupportFilesUsecase>(),
+        gh<_i218.GetClientSupportFilesUsecase>(),
+        gh<_i912.TransferClientUserUsecase>(),
+        gh<_i679.ReceiveClientUserUsecase>(),
+        gh<_i999.GetClientMarketingReportUsecase>(),
+        gh<_i467.GetHighSimilarClientsUsecase>(),
+        gh<_i400.FetchLinkClientsUseCase>(),
+        gh<_i314.FetchPaginatedClientsUsecase>(),
+        gh<_i987.LinkSelectedClientsUseCase>(),
+        gh<_i944.ExportClientsToExcelUseCase>(),
+        gh<_i449.GetUsersSalesUseCase>(),
+        gh<_i586.AssignClientToEmployeesUsecase>(),
+        gh<_i744.GetRecommendedClientsFilterClientUsecase>(),
+      ));
   gh.factory<_i938.ManageWithdrawnInvoicesCubit>(() =>
       _i938.ManageWithdrawnInvoicesCubit(
           gh<_i707.GetManageWithdrawnInvoicesUsecase>()));
@@ -2080,30 +2125,6 @@ _i174.GetIt $initGetIt(
       () => _i225.ClientsDatesCubit(gh<_i555.GetAllClientsDatesUseCase>()));
   gh.factory<_i819.WithdrawnInvoicesCubit>(() =>
       _i819.WithdrawnInvoicesCubit(gh<_i209.GetWithdrawnInvoicesUsecase>()));
-  gh.factory<_i631.ClientsListBloc>(() => _i631.ClientsListBloc(
-        gh<_i574.GetClientsWithFilterUserUsecase>(),
-        gh<_i143.GetRecommendedClientsUsecase>(),
-        gh<_i1047.GetSimilarClientsUsecase>(),
-        gh<_i824.AddClientUserUsecase>(),
-        gh<_i190.EditClientUserUsecase>(),
-        gh<_i137.ChangeTypeClientUsecase>(),
-        gh<_i688.ChangeClientCommunicationUseCase>(),
-        gh<_i592.StoreClientCommunicationUseCase>(),
-        gh<_i34.ApproveRejectClientUsecase>(),
-        gh<_i588.CrudClientSupportFilesUsecase>(),
-        gh<_i218.GetClientSupportFilesUsecase>(),
-        gh<_i912.TransferClientUserUsecase>(),
-        gh<_i679.ReceiveClientUserUsecase>(),
-        gh<_i999.GetClientMarketingReportUsecase>(),
-        gh<_i467.GetHighSimilarClientsUsecase>(),
-        gh<_i400.FetchLinkClientsUseCase>(),
-        gh<_i314.FetchPaginatedClientsUsecase>(),
-        gh<_i987.LinkSelectedClientsUseCase>(),
-        gh<_i944.ExportClientsToExcelUseCase>(),
-        gh<_i449.GetUsersSalesUseCase>(),
-        gh<_i586.AssignClientToEmployeesUsecase>(),
-        gh<_i744.GetRecommendedClientsFilterClientUsecase>(),
-      ));
   gh.factory<_i401.InvoicesSectionCubit>(() => _i401.InvoicesSectionCubit(
         gh<_i351.GetInvoicesByPrivilegesUsecase>(),
         gh<_i1046.GetAgentsAndDistributorsUseCase>(),

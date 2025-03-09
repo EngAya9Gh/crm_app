@@ -131,6 +131,7 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
               hint: "الحالة",
               items: TypeClientEnum.values,
               itemAsString: (item) => item!.value,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               selectedItem:
                   _latestUpdatesCubit.filterEntity.typeClientNotifier.value,
               onChanged: (type) {
@@ -165,6 +166,7 @@ class _FilterLatestUpdatesSheetState extends State<FilterLatestUpdatesSheet> {
             CustomDropDown(
               hint: "التعليقات",
               items: NoCommentsEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem:
                   _latestUpdatesCubit.filterEntity.commentsNotifier.value,

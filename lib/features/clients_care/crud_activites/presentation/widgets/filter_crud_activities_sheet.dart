@@ -64,6 +64,7 @@ class _FilterCrudActivitiesSheetState extends State<FilterCrudActivitiesSheet> {
                     hint: "الحالة",
                     items: ActivityStateEnum.values,
                     itemAsString: (item) => item!.name,
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     selectedItem: _bloc.pageVariables.activityState.value==null?null:ActivityStateExtension.fromValue(_bloc.pageVariables.activityState.value??""),
                     onChanged: (value) {
                       if (value == null) return;
@@ -76,6 +77,7 @@ class _FilterCrudActivitiesSheetState extends State<FilterCrudActivitiesSheet> {
                     hint: "الاولوية",
                     items: ActivityPriorityEnum.values,
                     itemAsString: (item) => item!.name,
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     selectedItem:_bloc.pageVariables.priority.value==null?null: ActivityPriorityExtension.fromValue(_bloc.pageVariables.priority.value??""),
                     onChanged: (value) {
                       if (value == null) return;

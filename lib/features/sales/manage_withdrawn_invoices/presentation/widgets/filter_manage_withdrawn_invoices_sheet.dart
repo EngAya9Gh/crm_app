@@ -70,6 +70,7 @@ class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdra
         CustomDropDown<WithdrawalInvoiceStatusEnum>(
           hint: 'الحالة',
           items: WithdrawalInvoiceStatusEnum.values,
+          compareFn:  (item, selectedItem) => item.index == selectedItem.index,
           itemAsString: (item) => item!.value,
           selectedItem: _cubit.filterEntity.statusNotifier.value,
           onChanged: (status) {
@@ -92,7 +93,7 @@ class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdra
                 return user.name.contains(filter);
               },
               compareFn: (user, value) {
-                return user.name == value;
+                return user.name == value.name;
               },
             );
           },
@@ -112,7 +113,7 @@ class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdra
                 return user.name.contains(filter);
               },
               compareFn: (user, value) {
-                return user.name == value;
+                return user.name == value.name;
               },
             );
           },

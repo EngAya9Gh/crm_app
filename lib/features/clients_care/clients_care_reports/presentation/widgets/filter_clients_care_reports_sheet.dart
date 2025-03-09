@@ -65,6 +65,7 @@ class _FilterClientsCareReportsSheetState
               items: PeriodTypeEnum.values,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.periodTypeNotifier.value,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               onChanged: (value) {
                 _cubit.filterEntity.setPeriodTypeNotifierValue = value!;
                 _cubit.filterEntity.changeReportTypeAccordingToPeriod();
@@ -111,6 +112,7 @@ class _FilterClientsCareReportsSheetState
               hint: 'النوع',
               items: CareReportTypeEnum.values,
               itemAsString: (item) => item!.value,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               selectedItem: _cubit.filterEntity.typeCareNotifier.value,
               onChanged: (value) {
                 _cubit.filterEntity.setTypeCareNotifierValue = value!;

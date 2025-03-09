@@ -118,6 +118,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             items: ClientRegistrationType.values
                                 .map((e) => e.value)
                                 .toList(),
+                            compareFn:  (item, selectedItem) => item == selectedItem,
                             itemAsString: (item) => item!,
                             selectedItem: value,
                             onChanged: (value) {
@@ -145,6 +146,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             items: ClientsClassification.values
                                 .map((e) => e.value)
                                 .toList(),
+                            compareFn:  (item, selectedItem) => item== selectedItem,
                             itemAsString: (item) => item!,
                             selectedItem: value,
                             onChanged: (value) {

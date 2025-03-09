@@ -88,6 +88,7 @@ class _FilterCommissionCollaboratorsSheetState extends State<FilterCommissionCol
                   success: (data) => CustomDropDown<ParticipateModel>(
                     hint: "المتعاونين",
                     items: List.of(data ?? []),
+                    compareFn:  (item, selectedItem) => item.id_participate == selectedItem.id_participate,
                     itemAsString: (item) => item!.name_participate,
                     selectedItem: state.listParticipate.data?.firstWhereOrNull((e) => e.id_participate == selectedParticipateId.value),
                     onChanged: (value) {
@@ -107,6 +108,7 @@ class _FilterCommissionCollaboratorsSheetState extends State<FilterCommissionCol
                   success: (data) => CustomDropDown<UserModel>(
                     hint: "الموظفين",
                     items: data ?? [],
+                    compareFn:  (item, selectedItem) => item.id == selectedItem.id,
                     itemAsString: (item) => item!.nameUser!,
                     selectedItem: (state.usersSales.data as List<UserModel>?)?.firstWhereOrNull((e) => e.id == selectedUserId.value),
                     onChanged: (value) {

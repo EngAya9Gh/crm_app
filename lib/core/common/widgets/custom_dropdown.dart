@@ -21,7 +21,7 @@ class CustomDropDown<T> extends StatelessWidget {
     this.itemAsIcon,
     this.padding,
     this.label,
-    this.isDisabled = false, this.compareFn,
+    this.isDisabled = false,required this.compareFn,
   });
 
   final String hint;
@@ -37,7 +37,7 @@ class CustomDropDown<T> extends StatelessWidget {
   final bool isDisabled;
   final Icon Function(T?)? itemAsIcon;
   // TODO MAKE REQUIRED
-  final bool Function(T, T)? compareFn;
+  final bool Function(T, T) compareFn;
 
   // padding
   final EdgeInsetsGeometry? padding;

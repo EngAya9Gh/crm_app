@@ -43,6 +43,7 @@ class _QuarterPageState extends State<QuarterPage> {
               return CustomDropDown(
                 hint: 'حدد السنة',
                 items: years,
+                compareFn:  (item, selectedItem) => item == selectedItem,
                 itemAsString: (item) => item!,
                 selectedItem: selectedYear.toString(),
                 onChanged: (value) {
@@ -63,6 +64,7 @@ class _QuarterPageState extends State<QuarterPage> {
               return CustomDropDown(
                 hint: 'حدد الربع',
                 items: quarters,
+                compareFn:  (item, selectedItem) => item == selectedItem,
                 itemAsString: (item) => item!,
                 selectedItem: selectedQuarter,
                 onChanged: (value) {

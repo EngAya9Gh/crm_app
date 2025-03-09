@@ -301,6 +301,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                   hint: 'النشاط',
                                   items: cart.activitiesList,
                                   itemAsString: (u) => u!.userAsString(),
+                                  compareFn:  (item, selectedItem) => item.id_activity_type == selectedItem.id_activity_type,
                                   filterFn: (user, filter) {
                                     return user.getFilterActivityType(filter);
                                   },

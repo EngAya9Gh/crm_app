@@ -35,6 +35,7 @@ class FilterUsersDropDown extends StatelessWidget {
           filterFn: (item, query) {
             return item.name.contains(query);
           },
+          compareFn:  (item, selectedItem) => item.id == selectedItem.id,
           onChanged: (user) {
             if (user == null) return;
             _invoicesTabCubit.filtersEntity.filterSelectedUser.value = user;

@@ -66,6 +66,7 @@ class _FilterNotificationsSheetState extends State<FilterNotificationsSheet> {
                 _cubit.filterEntity.notificationTypeNotifier.value = value;
               },
               selectedItem: _cubit.filterEntity.notificationTypeNotifier.value,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               filterFn: (NotificationTypeEnum, String) {
                 return NotificationTypeEnum.value.contains(String);
               },

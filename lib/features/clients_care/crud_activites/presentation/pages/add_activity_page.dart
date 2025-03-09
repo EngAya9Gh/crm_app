@@ -24,19 +24,22 @@ import '../manager/crud_activities_bloc.dart';
 
 class AddActivityPage extends StatefulWidget {
   const AddActivityPage({this.activity, super.key});
+
   final ClientActivityModel? activity;
+
   @override
   State<AddActivityPage> createState() => _AddActivityPageState();
 }
 
 class _AddActivityPageState extends State<AddActivityPage> {
   late final CrudActivitiesBloc _bloc;
+
   @override
   void initState() {
     super.initState();
     _bloc = context.read<CrudActivitiesBloc>();
     _bloc.addActivityEntity.clear();
-    if(_bloc.addActivityEntity.wholeDay.value){
+    if (_bloc.addActivityEntity.wholeDay.value) {
       _bloc.add(ChangeWholeDayValueEvent());
     }
     if (widget.activity != null) {
@@ -49,23 +52,20 @@ class _AddActivityPageState extends State<AddActivityPage> {
     if (_bloc.addActivityEntity.subscribedClientsList.value.isEmpty) {
       _bloc.add(GetSubscribedClientsEvent());
     }
-
-
   }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(title:widget.activity == null ? "إضافة نشاط" : 'تعديل نشاط',showBackButton: true),
+      appBar: CustomAppBar(title: widget.activity == null ? "إضافة نشاط" : 'تعديل نشاط', showBackButton: true),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Form(
           key: _bloc.addActivityEntity.globalKey,
           child: BlocBuilder<CrudActivitiesBloc, CrudActivitiesState>(
-            buildWhen: (previous, current) => previous.addClientActivityStatus !=
-                    current.addClientActivityStatus ||
-                previous.updateClientActivityStatus !=
-                    current.updateClientActivityStatus,
+            buildWhen: (previous, current) =>
+                previous.addClientActivityStatus != current.addClientActivityStatus ||
+                previous.updateClientActivityStatus != current.updateClientActivityStatus,
             builder: (context, state) {
               return RepaintBoundary(
                 child: ModalProgressHUD(
@@ -77,42 +77,38 @@ class _AddActivityPageState extends State<AddActivityPage> {
                       BlocSelector<CrudActivitiesBloc, CrudActivitiesState, BlocStatus>(
                         selector: (state) => state.getActivityTypesStatus,
                         builder: (context, getActivityTypesStatus) {
-                          return  getActivityTypesStatus.isLoading()
+                          return getActivityTypesStatus.isLoading()
                               ? AppLoader()
-                              :CustomDropDown<ActivityTypeModel>(
-                            hint: "نوع النشاط",
-                            isDisabled:widget.activity==null?false:widget.activity!.state=="completed",
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            items: _bloc
-                                .addActivityEntity.addActivityTypesList.value,
-                            itemAsString: (item) => item!.name,
-                            selectedItem: _bloc.addActivityEntity
-                                .selectedActivityType.value ==
-                                null
-                                ? null
-                                : _bloc.addActivityEntity.selectedActivityType
-                                .value,
-                            onChanged: (value) {
-                              if (value == null) return;
-                              _bloc.addActivityEntity.selectedActivityType
-                                  .value = value;
-                            },
-                            validator: InputValidator.requiredFiled,
-                          );
+                              : CustomDropDown<ActivityTypeModel>(
+                                  hint: "نوع النشاط",
+                                  isDisabled: widget.activity == null ? false : widget.activity!.state == "completed",
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  items: _bloc.addActivityEntity.addActivityTypesList.value,
+                                  itemAsString: (item) => item!.name,
+                            compareFn:  (item, selectedItem) => item.id == selectedItem.id,
+                                  selectedItem: _bloc.addActivityEntity.selectedActivityType.value == null
+                                      ? null
+                                      : _bloc.addActivityEntity.selectedActivityType.value,
+                                  onChanged: (value) {
+                                    if (value == null) return;
+                                    _bloc.addActivityEntity.selectedActivityType.value = value;
+                                  },
+                                  validator: InputValidator.requiredFiled,
+                                );
                         },
                       ),
                       10.height,
                       AppTextField(
                         hintText: "العنوان",
                         controller: _bloc.addActivityEntity.nameController,
-                        enabled: !(widget.activity==null?false:widget.activity!.state=="completed"),
+                        enabled: !(widget.activity == null ? false : widget.activity!.state == "completed"),
                         isRequired: true,
                       ),
                       10.height,
                       AppTextField(
                         hintText: "الوصف",
                         controller: _bloc.addActivityEntity.descriptionController,
-                        enabled: !(widget.activity==null?false:widget.activity!.state=="completed"),
+                        enabled: !(widget.activity == null ? false : widget.activity!.state == "completed"),
                         isRequired: true,
                         maxLines: 3,
                       ),
@@ -120,9 +116,8 @@ class _AddActivityPageState extends State<AddActivityPage> {
                       CustomDateTimePicker(
                         dateTimeType: DateTimeEnum.both,
                         hintText: 'تاريخ البداية',
-                        enabled: !(widget.activity==null?false:widget.activity!.state=="completed"),
-                        dateTimeController:
-                            _bloc.addActivityEntity.startDateController,
+                        enabled: !(widget.activity == null ? false : widget.activity!.state == "completed"),
+                        dateTimeController: _bloc.addActivityEntity.startDateController,
                         style2: true,
                       ),
                       10.height,
@@ -132,7 +127,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
                           return CustomDateTimePicker(
                             dateTimeType: DateTimeEnum.both,
                             hintText: 'تاريخ النهاية',
-                            enabled: !(widget.activity==null?false:widget.activity!.state=="completed"),
+                            enabled: !(widget.activity == null ? false : widget.activity!.state == "completed"),
                             dateTimeController: _bloc.addActivityEntity.endDateController,
                             style2: true,
                             isRequired: !wholeDay,
@@ -147,16 +142,14 @@ class _AddActivityPageState extends State<AddActivityPage> {
                               textDirection: TextDirection.rtl,
                               child: CustomDropDown<ActivityStateEnum>(
                                 hint: "الحالة",
-                                isDisabled:widget.activity==null?false:widget.activity!.state=="completed",
+                                isDisabled: widget.activity == null ? false : widget.activity!.state == "completed",
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 items: ActivityStateEnum.values,
+                                compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                                 itemAsString: (item) => item!.name,
-                                selectedItem:
-                                _bloc.addActivityEntity.activityState.value == null
+                                selectedItem: _bloc.addActivityEntity.activityState.value == null
                                     ? null
-                                    : ActivityStateExtension.fromValue(
-                                    _bloc.addActivityEntity.activityState.value ??
-                                        ""),
+                                    : ActivityStateExtension.fromValue(_bloc.addActivityEntity.activityState.value ?? ""),
                                 itemAsIcon: (value) {
                                   return Icon(
                                     value!.icon,
@@ -166,8 +159,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
                                 },
                                 onChanged: (value) {
                                   if (value == null) return;
-                                  _bloc.addActivityEntity.activityState.value =
-                                      value.enName;
+                                  _bloc.addActivityEntity.activityState.value = value.enName;
                                 },
                                 validator: InputValidator.requiredFiled,
                               ),
@@ -176,13 +168,11 @@ class _AddActivityPageState extends State<AddActivityPage> {
                           SizedBox(width: 10),
                           AppIcon(
                             _bloc.addActivityEntity.activityState.value == null
-                                ?Icons.schedule
-                                :ActivityStateExtension.fromValue(
-                                _bloc.addActivityEntity.activityState.value ?? "").icon,
+                                ? Icons.schedule
+                                : ActivityStateExtension.fromValue(_bloc.addActivityEntity.activityState.value ?? "").icon,
                             color: _bloc.addActivityEntity.activityState.value == null
                                 ? ActivityStateEnum.schedule.color
-                                : ActivityStateExtension.fromValue(
-                                _bloc.addActivityEntity.activityState.value ?? "").color,
+                                : ActivityStateExtension.fromValue(_bloc.addActivityEntity.activityState.value ?? "").color,
                           ),
                         ],
                       ),
@@ -194,13 +184,12 @@ class _AddActivityPageState extends State<AddActivityPage> {
                               hint: "الأولوية",
                               items: ActivityPriorityEnum.values,
                               padding: EdgeInsets.symmetric(horizontal: 10),
-                              isDisabled:widget.activity==null?false:widget.activity!.state=="completed",
+                              isDisabled: widget.activity == null ? false : widget.activity!.state == "completed",
                               itemAsString: (item) => item!.name,
-                              selectedItem:
-                              _bloc.addActivityEntity.priority.value == null
+                              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
+                              selectedItem: _bloc.addActivityEntity.priority.value == null
                                   ? null
-                                  : ActivityPriorityExtension.fromValue(
-                                  _bloc.addActivityEntity.priority.value ?? ""),
+                                  : ActivityPriorityExtension.fromValue(_bloc.addActivityEntity.priority.value ?? ""),
                               onChanged: (value) {
                                 if (value == null) return;
                                 _bloc.addActivityEntity.priority.value = value.enName;
@@ -220,8 +209,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
                             Icons.flag,
                             color: _bloc.addActivityEntity.priority.value == null
                                 ? ActivityPriorityEnum.normal.color
-                                : ActivityPriorityExtension.fromValue(
-                                _bloc.addActivityEntity.priority.value ?? "").color,
+                                : ActivityPriorityExtension.fromValue(_bloc.addActivityEntity.priority.value ?? "").color,
                           ),
                         ],
                       ),
@@ -229,37 +217,32 @@ class _AddActivityPageState extends State<AddActivityPage> {
                       BlocSelector<CrudActivitiesBloc, CrudActivitiesState, BlocStatus>(
                         selector: (state) => state.getSubscribedClientsStatus,
                         builder: (context, getSubscribedClientsStatus) {
-                          return  getSubscribedClientsStatus.isLoading()
+                          return getSubscribedClientsStatus.isLoading()
                               ? AppLoader()
                               : CustomSearchableDropDown<SubscribedClientModel>(
-                            hint: 'العميل',
-                            enabled: !(widget.activity==null?false:widget.activity!.state=="completed"),
-                            items:_bloc
-                                .addActivityEntity.subscribedClientsList.value,
-                            itemAsString: (item) => item!.name,
-                            selectedItem:
-                            _bloc.addActivityEntity.selectedClient.value,
-                            onChanged: (widget.activity!=null && widget.activity!.state=="completed")?null
-                                : (value) async {
-                              _bloc.addActivityEntity.selectedClient.value =
-                                  value;
-                            },
-                            validator: (value) {
-                              return InputValidator.requiredFiled(value);
-                            },
-                            filterFn: (item, filter) {
-                              return item.name
-                                  .toLowerCase()
-                                  .contains(filter.toLowerCase());
-                            },
-                          );
+                                  hint: 'العميل',
+                                  enabled: !(widget.activity == null ? false : widget.activity!.state == "completed"),
+                                  items: _bloc.addActivityEntity.subscribedClientsList.value,
+                                  itemAsString: (item) => item!.name,
+                                  selectedItem: _bloc.addActivityEntity.selectedClient.value,
+                                  onChanged: (widget.activity != null && widget.activity!.state == "completed")
+                                      ? null
+                                      : (value) async {
+                                          _bloc.addActivityEntity.selectedClient.value = value;
+                                        },
+                                  validator: (value) {
+                                    return InputValidator.requiredFiled(value);
+                                  },
+                                  filterFn: (item, filter) {
+                                    return item.name.toLowerCase().contains(filter.toLowerCase());
+                                  },
+                                  compareFn: (item, selectedItem) => item.id == selectedItem.id);
                         },
                       ),
                       10.height,
                       Row(
                         children: [
-                          BlocSelector<CrudActivitiesBloc, CrudActivitiesState,
-                              bool>(
+                          BlocSelector<CrudActivitiesBloc, CrudActivitiesState, bool>(
                             selector: (state) => state.wholeDay,
                             builder: (context, wholeDay) {
                               return Checkbox(
@@ -268,8 +251,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
                                   _bloc.add(ChangeWholeDayValueEvent());
                                   _bloc.addActivityEntity.wholeDay.value = value!;
                                   if (_bloc.addActivityEntity.wholeDay.value) {
-                                    _bloc.addActivityEntity.endDateController
-                                        .text = '';
+                                    _bloc.addActivityEntity.endDateController.text = '';
                                   }
                                 },
                               );
@@ -279,41 +261,41 @@ class _AddActivityPageState extends State<AddActivityPage> {
                         ],
                       ),
                       AppElevatedButton(
-                        onPressed:(widget.activity!=null && widget.activity!.state=="completed")?null
+                        onPressed: (widget.activity != null && widget.activity!.state == "completed")
+                            ? null
                             : () {
-                          if (_bloc.addActivityEntity.globalKey.currentState!
-                              .validate()) {
-                            if(_bloc.addActivityEntity.endDateController.text!=''){
-                              bool isAfter = IsStartAfterEnd(_bloc.addActivityEntity.startDateController.text, _bloc.addActivityEntity.endDateController.text,isDate: true);
-                              if(isAfter){
-                                AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
-                                return;
-                              }
-                            }
-                            if(widget.activity==null){
-                              _bloc.add(
-                                AddActivityEvent(
-                                  onSuccess: () {
-                                    AppSnackbar.showSnakeBar(
-                                        "تمت اضافة النشاط بنجاح");
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              );
-                            }else{
-                              _bloc.add(
-                                UpdateCrudActivityEvent(activityId:widget.activity!.id.toString(),
-                                  onSuccess: () {
-                                    AppSnackbar.showSnakeBar(
-                                        "تمت تعديل النشاط بنجاح");
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              );
-                            }
-
-                          }
-                        },
+                                if (_bloc.addActivityEntity.globalKey.currentState!.validate()) {
+                                  if (_bloc.addActivityEntity.endDateController.text != '') {
+                                    bool isAfter = IsStartAfterEnd(
+                                        _bloc.addActivityEntity.startDateController.text, _bloc.addActivityEntity.endDateController.text,
+                                        isDate: true);
+                                    if (isAfter) {
+                                      AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
+                                      return;
+                                    }
+                                  }
+                                  if (widget.activity == null) {
+                                    _bloc.add(
+                                      AddActivityEvent(
+                                        onSuccess: () {
+                                          AppSnackbar.showSnakeBar("تمت اضافة النشاط بنجاح");
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    _bloc.add(
+                                      UpdateCrudActivityEvent(
+                                        activityId: widget.activity!.id.toString(),
+                                        onSuccess: () {
+                                          AppSnackbar.showSnakeBar("تمت تعديل النشاط بنجاح");
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
                         child: Text(widget.activity == null ? "إضافة" : "تعديل"),
                       ),
                     ],

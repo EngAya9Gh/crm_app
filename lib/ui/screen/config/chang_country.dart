@@ -73,7 +73,7 @@ class _ChangeCountryState extends State<ChangeCountry> {
                           return user.nameCountry.contains(filter);
                         },
                         compareFn: (user, value) {
-                          return user.idCountry == value;
+                          return user.idCountry == value.idCountry;
                         },
                       );
                     },

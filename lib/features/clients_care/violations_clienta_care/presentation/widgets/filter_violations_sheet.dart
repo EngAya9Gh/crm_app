@@ -74,6 +74,7 @@ class _FilterViolationsSheetState extends State<FilterViolationsSheet> {
             CustomDropDown<ManagementModel>(
               hint: "الادارة",
               items: _cubit.pageVariables.managementList,
+              compareFn:  (item, selectedItem) => item.idManage == selectedItem.idManage,
               itemAsString: (item) => item!.nameManage,
               selectedItem:_cubit.filterEntity.management.value,
               onChanged: (value) {
@@ -85,6 +86,7 @@ class _FilterViolationsSheetState extends State<FilterViolationsSheet> {
             CustomDropDown<ViolationType>(
               hint: "نوع المخالفة",
               items: _cubit.pageVariables.violationTypeList,
+              compareFn:  (item, selectedItem) => item.id == selectedItem.id,
               itemAsString: (item) => item!.name,
               selectedItem:_cubit.filterEntity.violationType.value,
               onChanged: (value) {

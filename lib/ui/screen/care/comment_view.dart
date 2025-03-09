@@ -158,6 +158,7 @@ class _CommentViewState extends State<CommentView> {
                                               child: CustomDropDown(
                                                 hint: 'نوع التعليق',
                                                 items: CommentTypeEnum.values,
+                                                compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                                                 itemAsString: (value) => value!.value,
                                                 selectedItem: value?.type_comment != null
                                                     ? CommentTypeEnum.values.firstWhere((element) => element.value == value!.type_comment)
@@ -257,6 +258,7 @@ class _CommentViewState extends State<CommentView> {
                   child: CustomDropDown(
                     label: 'نوع التعليق',
                     hint: 'نوع التعليق',
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     items: CommentTypeEnum.values.where(excludedTypes).toList(),
                     itemAsString: (value) => value!.value,
                     selectedItem: _filterCommentType,

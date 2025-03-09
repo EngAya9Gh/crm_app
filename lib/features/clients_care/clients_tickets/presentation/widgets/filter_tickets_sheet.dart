@@ -88,6 +88,7 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
               hint: 'مصدر التذكرة',
               items: TicketSourceEnum.values,
               itemAsString: (e) => e!.value,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               selectedItem: _cubit.filterEntity.ticketSourceListNotifier.value,
               onChanged: (value) {
                 _cubit.filterEntity.ticketSourceListNotifier.value = value!;

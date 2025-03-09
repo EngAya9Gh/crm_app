@@ -72,6 +72,7 @@ class _ClientsTransferApprovalsSheetState
             CustomDropDown<InvoiceStatusEnum>(
               hint: "الحالة",
               items: InvoiceStatusEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.invoiceStateNotifier.value,
               onChanged: (value) {

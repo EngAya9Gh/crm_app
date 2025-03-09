@@ -137,6 +137,7 @@ class _FilterPeriodicCommunicationSheetState extends State<FilterPeriodicCommuni
               CustomDropDown<PeriodicCommunicationClientTypeEnum>(
                 hint: "نوع العميل",
                 items: PeriodicCommunicationClientTypeEnum.values,
+                compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                 itemAsString: (item) => item!.value,
                 selectedItem: _cubit.filterEntity.type.value,
                 onChanged: (value) => _cubit.filterEntity.type.value = value,

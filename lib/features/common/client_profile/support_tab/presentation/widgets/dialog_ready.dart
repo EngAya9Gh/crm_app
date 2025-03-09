@@ -73,6 +73,7 @@ class _DialogReadyState extends State<DialogReady> {
                                   hint: 'السبب',
                                   items: cart.list_reason_suspend,
                                   itemAsString: (item) => item!,
+                                  compareFn:  (item, selectedItem) => item== selectedItem,
                                   selectedItem: cart.selectedValuemanag,
                                   onChanged: (value) {
                                     cart.changevalue(value);
@@ -88,6 +89,7 @@ class _DialogReadyState extends State<DialogReady> {
                                   hint: 'السبب',
                                   items: cart.list_reason_sales,
                                   itemAsString: (item) => item!,
+                                  compareFn:  (item, selectedItem) => item == selectedItem,
                                   selectedItem: cart.selectedValue_sales,
                                   onChanged: (value) {
                                     cart.changevalue_sales(value!);

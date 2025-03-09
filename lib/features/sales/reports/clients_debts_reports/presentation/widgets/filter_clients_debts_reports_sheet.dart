@@ -96,6 +96,7 @@ class _FilterClientsDebtsReportsSheetState extends State<FilterClientsDebtsRepor
                       if (data == null) return;
                       _cubit.filterEntity.userNotifier.value = data;
                     },
+                    compareFn:  (item, selectedItem) => item.idUser == selectedItem.idUser,
                     selectedItem: _cubit.filterEntity.userNotifier.value,
                     filterFn: (user, filter) => user.getfilteruser(filter),
                   );
@@ -104,6 +105,7 @@ class _FilterClientsDebtsReportsSheetState extends State<FilterClientsDebtsRepor
             ],
             10.height,
             CustomDropDown<InvoiceTypeEnum>(
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               hint: 'نوع الفاتورة',
               items: InvoiceTypeEnum.values,
               itemAsString: (item) => item!.value,
