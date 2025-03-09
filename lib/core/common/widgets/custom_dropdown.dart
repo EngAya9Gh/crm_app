@@ -21,7 +21,7 @@ class CustomDropDown<T> extends StatelessWidget {
     this.itemAsIcon,
     this.padding,
     this.label,
-    this.isDisabled = false,
+    this.isDisabled = false, this.compareFn,
   });
 
   final String hint;
@@ -36,6 +36,8 @@ class CustomDropDown<T> extends StatelessWidget {
   final String? label;
   final bool isDisabled;
   final Icon Function(T?)? itemAsIcon;
+  // TODO MAKE REQUIRED
+  final bool Function(T, T)? compareFn;
 
   // padding
   final EdgeInsetsGeometry? padding;
@@ -47,6 +49,7 @@ class CustomDropDown<T> extends StatelessWidget {
       child: DropdownSearch<T>(
         items: (filter, loadProps) => items,
         itemAsString: itemAsString,
+        compareFn:compareFn,
         onChanged: isDisabled ? null : onChanged,
         selectedItem: selectedItem,
         validator: validator,

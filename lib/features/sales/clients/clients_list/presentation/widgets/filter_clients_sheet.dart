@@ -208,6 +208,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   return CustomSearchableDropDown<UserEntity>(
                     hint: 'الموظف',
                     items: state.usersSales.data??[],
+                    compareFn:  (item, selectedItem) => item.id == selectedItem.id,
                     itemAsString: (u) => u!.name,
                     onChanged: (data) {
                       if (data == null) return;
@@ -232,6 +233,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             child: CustomSearchableDropDown<ActivityModel>(
                               hint: 'النشاط',
                               items: activityVm.activitiesList,
+                              compareFn:  (item, selectedItem) => item.id_activity_type == selectedItem.id_activity_type,
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 if (data == null) return;
@@ -251,6 +253,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             child: CustomDropDown<ActivitySizeTypeEnum>(
                               hint: "حجم النشاط*",
                               height: 100.h,
+                              compareFn: (item, selectedItem) => item.index == selectedItem.index,
                               items: ActivitySizeTypeEnum.values,
                               itemAsString: (item) => item!.value,
                               selectedItem:

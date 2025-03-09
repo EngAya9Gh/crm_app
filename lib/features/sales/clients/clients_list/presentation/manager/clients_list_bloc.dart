@@ -17,6 +17,7 @@ import '../../../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../../../core/common/models/page_state/page_state.dart';
 import '../../../../../../core/utils/app_constants.dart';
 import '../../../../../../model/similar_client.dart';
+import '../../../../../finance/clients_attachments/data/models/subscribed_clients_model.dart';
 import '../../data/models/client_marketing_meport_model.dart';
 import '../../data/models/client_support_file_model.dart';
 import '../../data/models/recommended_client.dart';
@@ -37,6 +38,7 @@ import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 import '../../domain/use_cases/get_high_similar_cleints_usecase.dart';
+import '../../domain/use_cases/get_recommended_cleints_for_add_edit_client_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../../domain/use_cases/get_users_sales_usecase.dart';
@@ -146,6 +148,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final ExportClientsToExcelUseCase _exportClientsToExcelUseCase;
   final GetUsersSalesUseCase _getUsersSalesUseCase;
   final AssignClientToEmployeesUsecase _assignClientToEmployeesUsecase;
+  final GetRecommendedClientsFilterClientUsecase _getRecommendedClientsFilterUsecase;
 
   ClientsListBloc(
     this._getClientsWithFilterUserUsecase,
@@ -169,9 +172,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._exportClientsToExcelUseCase,
     this._getUsersSalesUseCase,
     this._assignClientToEmployeesUsecase,
+    this._getRecommendedClientsFilterUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
+    on<GetRecommendedClientsFilterEvent>(_onGetRecommendedClientsForAddEditClientFilterEvent);
     on<GetSimilarClientsListEvent>(_onGetSimilarClientsEvent);
     on<AddClientEvent>(_onAddClientEvent);
     on<EditClientEvent>(_onEditClientEvent);
@@ -401,6 +406,26 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       },
       (value) {
         emit(state.copyWith(recommendedClientsState: PageState.loaded(data: value.message ?? [])));
+        event.onSuccess?.call(value.message ?? []);
+      },
+    );
+  }
+  FutureOr<void> _onGetRecommendedClientsForAddEditClientFilterEvent(GetRecommendedClientsFilterEvent event, Emitter<ClientsListState> emit) async {
+    if (state.recommendedClientsForFilterState.isLoaded) {
+      emit(state.copyWith(recommendedClientsAddEditState: state.recommendedClientsForFilterState));
+      return;
+    }
+    emit(state.copyWith(recommendedClientsAddEditState: PageState.loading()));
+
+    final response = await _getRecommendedClientsFilterUsecase();
+
+    response.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(recommendedClientsAddEditState: PageState.error()));
+      },
+      (value) {
+        emit(state.copyWith(recommendedClientsAddEditState: PageState.loaded(data: value.message ?? [])));
         event.onSuccess?.call(value.message ?? []);
       },
     );

@@ -19,6 +19,7 @@ class ActivityType extends StatelessWidget {
         return Consumer<ActivityProvider>(
           builder: (context, cart, child) {
             return CustomSearchableDropDown<ActivityModel>(
+              compareFn:  (item, selectedItem) => item.id_activity_type == selectedItem.id_activity_type,
               hint: _isRequiredActivity(value) ? "نوع النشاط*" : "نوع النشاط",
               items: cart.activitiesList,
               itemAsString: (u) => u!.userAsString(),

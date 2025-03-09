@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -164,6 +164,7 @@ class _Care {
 
   final communicationRepeat = 'care/getcommuncation_repeat_star.php';
   final getRecommendedClients = 'care/get_recommand_care.php';
+  final getRecommendedClientsFilterClient = 'subscribedClients';
   final String viewComments = "viewComments";
 
   final String getClientsAccept = 'getClientsAccept';

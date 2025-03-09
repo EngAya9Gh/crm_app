@@ -23,6 +23,7 @@ class SubscribingIntentionLevelWidget extends StatelessWidget {
           child: CustomDropDown<SubscribingIntentionLevelEnum>(
             hint: "نية الاشتراك",
             items: SubscribingIntentionLevelEnum.values,
+            compareFn:  (item, selectedItem) => item.index == selectedItem.index,
             itemAsString: (value) => value!.value,
             height: 165.scaleHeight,
             selectedItem: subscribingIntentionLevel,
