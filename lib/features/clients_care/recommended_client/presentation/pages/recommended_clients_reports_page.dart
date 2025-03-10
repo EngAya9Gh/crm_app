@@ -35,7 +35,7 @@ class _RecommendedClientsReportState extends State<RecommendedClientsReportPage>
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: CustomAppBar(
-        title: 'تقارير العملاء الذين قاموا بالتوصية',
+        title: 'تقارير عملاء التوصية',
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
@@ -83,8 +83,8 @@ class _RecommendedClientsReportState extends State<RecommendedClientsReportPage>
                               columns: <DataColumn>[
                                 AppDataTableColumn('رقم العنصر'),
                                 AppDataTableColumn('اسم المؤسسة'),
-                                AppDataTableColumn('اسم العميل'),
-                                AppDataTableColumn('عدد العملاء\nالموصى بهم'),
+                                // AppDataTableColumn('اسم العميل'),
+                                AppDataTableColumn('عملاء التوصية'),
                               ],
                               rows: (data ?? []).mapIndexed((index, item) {
                                 return DataRow(
@@ -95,12 +95,12 @@ class _RecommendedClientsReportState extends State<RecommendedClientsReportPage>
                                     ),
                                     AppDataTableCell(
                                       value: item.nameEnterprise,
-                                      width: MediaQuery.of(context).size.width * 0.35,
+                                      width: MediaQuery.of(context).size.width * 0.45,
                                     ),
-                                    AppDataTableCell(
-                                      value: item.nameClient,
-                                      width: MediaQuery.of(context).size.width * 0.35,
-                                    ),
+                                    // AppDataTableCell(
+                                    //   value: item.nameClient,
+                                    //   width: MediaQuery.of(context).size.width * 0.35,
+                                    // ),
                                     AppDataTableCell(
                                       value: "${item.numberOfClientsRecommended ?? 0}",
                                       alignment: Alignment.center,

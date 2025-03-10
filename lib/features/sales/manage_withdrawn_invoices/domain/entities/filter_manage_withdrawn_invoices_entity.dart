@@ -9,15 +9,24 @@ class FilterManageWithdrawnInvoicesEntity {
   FilterManageWithdrawnInvoicesEntity();
 
   ValueNotifier<WithdrawalInvoiceStatusEnum> statusNotifier = ValueNotifier<WithdrawalInvoiceStatusEnum>(WithdrawalInvoiceStatusEnum.user);
-  ValueNotifier<BranchModel?> branchNotifier = ValueNotifier<BranchModel?>(null);
+  ValueNotifier<List<BranchModel>> branchNotifier = ValueNotifier<List<BranchModel>>([]);
   final ValueNotifier<UserEntity?> selectedUserSales = ValueNotifier(null);
   final ValueNotifier<UserModel?> withDrawnUser = ValueNotifier(null);
+  final ValueNotifier<bool> sortAsc = ValueNotifier(true);
+  TextEditingController dateApproveFromController = TextEditingController();
+  TextEditingController dateApproveToController = TextEditingController();
+  TextEditingController dateWithdrawnFromController = TextEditingController();
+  TextEditingController dateWithdrawnToController = TextEditingController();
 
   void clearFilters() {
     statusNotifier.value = WithdrawalInvoiceStatusEnum.user;
-    branchNotifier.value = null;
+    branchNotifier.value = [];
     selectedUserSales.value = null;
     withDrawnUser.value = null;
+    dateApproveFromController.clear();
+    dateApproveToController.clear();
+    dateWithdrawnFromController.clear();
+    dateWithdrawnToController.clear();
   }
 
   FilterManageWithdrawnInvoicesEntity? _previousState;
@@ -27,7 +36,12 @@ class FilterManageWithdrawnInvoicesEntity {
       ..statusNotifier.value = this.statusNotifier.value
       ..selectedUserSales.value = this.selectedUserSales.value
       ..withDrawnUser.value = this.withDrawnUser.value
-      ..branchNotifier.value = this.branchNotifier.value;
+      ..branchNotifier.value = List.of(this.branchNotifier.value)
+      ..sortAsc.value = this.sortAsc.value
+      ..dateApproveFromController.text = this.dateApproveFromController.text
+      ..dateApproveToController.text = this.dateApproveToController.text
+      ..dateWithdrawnFromController.text = this.dateWithdrawnFromController.text
+      ..dateWithdrawnToController.text = this.dateWithdrawnToController.text;
   }
 
   FilterManageWithdrawnInvoicesEntity get returnToPreviousState {
@@ -44,13 +58,22 @@ class FilterManageWithdrawnInvoicesEntity {
       branchNotifier,
       selectedUserSales,
       withDrawnUser,
+      sortAsc,
+      dateApproveFromController,
+      dateApproveToController,
+      dateWithdrawnFromController,
+      dateWithdrawnToController,
     ];
   }
 
   bool checkIfFilterIsNotEmpty() {
     return statusNotifier.value != WithdrawalInvoiceStatusEnum.user ||
-        branchNotifier.value != null ||
+        branchNotifier.value.isNotEmpty ||
         selectedUserSales.value != null ||
-        withDrawnUser.value != null;
+        withDrawnUser.value != null ||
+        dateApproveFromController.text.isNotEmpty ||
+        dateApproveToController.text.isNotEmpty ||
+        dateWithdrawnFromController.text.isNotEmpty ||
+        dateWithdrawnToController.text.isNotEmpty;
   }
 }

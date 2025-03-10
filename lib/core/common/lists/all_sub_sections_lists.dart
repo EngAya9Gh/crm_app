@@ -345,7 +345,7 @@ abstract class AllSubSectionsLists {
       path: AppRoutesPaths.careSubSections.clientsCareReports,
     ),
     SectionModel(
-      title: 'تقرير العملاء الموصين',
+      title: 'تقارير عملاء التوصية',
       page: RecommendedClientsReportPage(),
       path: AppRoutesPaths.careSubSections.clientsRecommendedReports,
     ),

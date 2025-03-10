@@ -62,7 +62,7 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
 
   void _onControllerChange() {
     if (!_mounted) return;
-
+    _handleDateTime(context);
     if (widget.dateTimeType == DateTimeEnum.date && widget.dateTimeController.text.isNotEmpty) {
       widget.onDateChange?.call(
         HelperFunctions.dateFromString(widget.dateTimeController.text)!,
@@ -85,7 +85,6 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    _handleDateTime(context);
     return widget.style2
         ? AppTextField(
             controller: widget.dateTimeController,
