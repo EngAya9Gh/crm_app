@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/app_colors.dart';
@@ -28,6 +29,14 @@ class CardNotifications extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: AppStatusChip(
+              status: notification.typeNotify,
+              color: AppColors.primaryMain,
+              fontSize: 13,
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

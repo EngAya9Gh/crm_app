@@ -1,4 +1,11 @@
+import 'package:crm_smart/features/clients_care/clients_tickets/domain/use_cases/get_ticket_by_id_usecase.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/ticket_detail_page.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
+import 'package:crm_smart/features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
 import 'package:crm_smart/features/sales/deleted_invoices/presentation/pages/deleted_invoices_page.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
+import 'package:crm_smart/features/sales/public_relations/participates/presentation/pages/participate_list_page.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
@@ -17,29 +24,20 @@ abstract class AppDynamicLinks {
   ) {
     switch (typeNotify) {
       case "ApproveRequest":
-        Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => PendingInvoicesPage()));
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => PendingInvoicesPage()));
         break;
       case "ApproveFRequest":
-        Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => FinancePendingPage()));
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => FinancePendingPage()));
         break;
       case "checkComment":
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => LatestClientsUpdatesPage()));
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => LatestClientsUpdatesPage()));
         break;
       // todo: add task
       case "task":
-        Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => TaskManagementListPage()));
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => TaskManagementListPage()));
         break;
       case "Transfer":
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => ClientsTransferApprovalsPage()));
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => ClientsTransferApprovalsPage()));
         break;
       case "TransferRefuse":
         Navigator.push(
@@ -107,8 +105,7 @@ abstract class AppDynamicLinks {
                     )));
         break;
       case "InvoiceDeleted":
-        Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => DeletedInvoicesPage()));
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => DeletedInvoicesPage()));
         break;
       case "Install":
         Navigator.push(
@@ -218,6 +215,99 @@ abstract class AppDynamicLinks {
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
             tabIndex: 3,
+            idClient: data == null ? dataNotify : data['idclient'],
+          );
+        }));
+        break;
+      case "receiveClient":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return ClientProfile(
+            idClient: data == null ? dataNotify : data['idclient'],
+          );
+        }));
+        break;
+      case "closeSchedule":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return ClientProfile(
+            tabIndex: 7,
+            idClient: data == null ? dataNotify : data['idclient'],
+          );
+        }));
+        break;
+      case "installCanceled":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return ClientProfile(
+            tabIndex: 3,
+            idClient: data == null ? dataNotify : data['idclient'],
+          );
+        }));
+        break;
+      case "reInstall":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return ClientProfile(
+            tabIndex: 3,
+            idClient: data == null ? dataNotify : data['idclient'],
+          );
+        }));
+        break;
+      case "activity":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return CrudActivitiesPage();
+        }));
+        break;
+      case "addTicket":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return TicketsPage();
+        }));
+        break;
+      case "scheduleClient":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return ClientProfile(
+            tabIndex: 3,
+            idClient: data == null ? dataNotify : data['idclient'],
+          );
+        }));
+        break;
+      //todo need model
+      case "closeTicket":
+        context.read<TicketsCubit>().getTicketById(
+              GetTicketByIdParams(id: '1'),
+              (ticket) => Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) {
+                  return TicketDetailsPage(
+                    ticketModel: ticket,
+                  );
+                }),
+              ),
+            );
+        break;
+        //todo:
+      case "agentVisit":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return AgentProfilePage(
+            idAgent: '1',
+            tabIndex: 4,
+          );
+        }));
+        break;
+      case "clientVisit":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return ClientProfile(
+            tabIndex: 7,
+            idClient: data == null ? dataNotify : data['idclient'],
+          );
+        }));
+        break;
+        //todo need model
+      case "participateAdd":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return ParticipateListPage();
+        }));
+        break;
+      case "TransferRefuse":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return  ClientProfile(
             idClient: data == null ? dataNotify : data['idclient'],
           );
         }));

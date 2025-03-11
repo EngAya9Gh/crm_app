@@ -151,11 +151,9 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppText("عدد المتعاونين"),
-                            BlocBuilder<ParticipateListBloc,
-                                ParticipateListState>(
+                            BlocBuilder<ParticipateListBloc, ParticipateListState>(
                               builder: (context, state) {
-                                return AppText(
-                                    "${_participateListBloc.allParticipates.length}/${_participateListBloc.countAllParticipates}");
+                                return AppText("${_participateListBloc.allParticipates.length}/${_participateListBloc.countAllParticipates}");
                               },
                             ),
                           ],
@@ -163,13 +161,10 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                       ),
                       10.verticalSpace,
                       Expanded(
-                        child: BlocBuilder<ParticipateListBloc,
-                            ParticipateListState>(
+                        child: BlocBuilder<ParticipateListBloc, ParticipateListState>(
                           builder: (context, state) {
-                            final _allParticipates =
-                                _participateListBloc.allParticipates;
-                            return BlocBuilder<ParticipateListBloc,
-                                ParticipateListState>(
+                            final _allParticipates = _participateListBloc.allParticipates;
+                            return BlocBuilder<ParticipateListBloc, ParticipateListState>(
                               builder: (context, state) {
                                 return AppPaginatedList(
                                   items: _allParticipates,
@@ -180,16 +175,13 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                                       ),
                                     );
                                   },
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
+                                  itemBuilder: (BuildContext context, int index) {
                                     return ParticipateCard(
                                       participate: _allParticipates[index],
                                     );
                                   },
-                                  isLoading:
-                                      state.getParticipatesState.isLoading(),
-                                  hasReachedEnd:
-                                      _participateListBloc.hasReachedMax,
+                                  isLoading: state.getParticipatesState.isLoading(),
+                                  hasReachedEnd: _participateListBloc.hasReachedMax,
                                 );
                               },
                             );

@@ -43,15 +43,14 @@ class TicketsCubit extends Cubit<TicketsState> {
     pageVariables = TicketsPageVariablesEntity();
     filterEntity = FilterTicketsEntity();
     selectTicketType(TicketTypesEnum.values.first); // Select the first tab by default
-
   }
-
 
   void selectTicketType(TicketTypesEnum type) {
     filterEntity.ticketTypeNotifier.value = type;
     emit(state.copyWith(selectedTicketType: type));
     getTickets();
   }
+
   Future<void> getTickets({
     bool isNewFilter = true,
     bool isDebounced = false,
@@ -82,8 +81,7 @@ class TicketsCubit extends Cubit<TicketsState> {
         result.fold(
           (error) {
             if (AppConstants.shouldReturnEarly(error)) return;
-            emit(state.copyWith(
-                getTicketsStatus: BlocStatus.fail(error: error)));
+            emit(state.copyWith(getTicketsStatus: BlocStatus.fail(error: error)));
           },
           (value) {
             pageVariables.allList.addAll(value.data);
@@ -108,8 +106,7 @@ class TicketsCubit extends Cubit<TicketsState> {
   Future<void> getClientTicket(String clientId) async {
     emit(state.copyWith(getClientsTicketsStatus: BlocStatus.loading()));
     clientTicketsList.clear();
-    final result =
-        await _getClientTicketsUseCase(GetClientTicketParams(clientId));
+    final result = await _getClientTicketsUseCase(GetClientTicketParams(clientId));
     result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
@@ -131,7 +128,7 @@ class TicketsCubit extends Cubit<TicketsState> {
     );
   }
 
-  Future<void> getTicketById(GetTicketByIdParams params) async {
+  Future<void> getTicketById(GetTicketByIdParams params, ValueChanged<TicketModel> onGettingData) async {
     emit(state.copyWith(getTicketByIdStatus: BlocStatus.loading()));
     final result = await _getTicketByIdUseCase(params);
     result.fold(
@@ -141,9 +138,12 @@ class TicketsCubit extends Cubit<TicketsState> {
           getTicketByIdStatus: BlocStatus.fail(error: error),
         ));
       },
-      (ticket) => emit(state.copyWith(
-        getTicketByIdStatus: BlocStatus.success(),
-      )),
+      (ticket) {
+        emit(state.copyWith(
+          getTicketByIdStatus: BlocStatus.success(),
+        ));
+        onGettingData.call(ticket);
+      },
     );
   }
 
@@ -163,8 +163,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       }).toList();
       emit(state.copyWith(categoriesStatus: BlocStatus.success()));
     } catch (e) {
-      emit(state.copyWith(
-          categoriesStatus: BlocStatus.fail(error: e.toString())));
+      emit(state.copyWith(categoriesStatus: BlocStatus.fail(error: e.toString())));
     }
   }
 
@@ -178,22 +177,17 @@ class TicketsCubit extends Cubit<TicketsState> {
       );
       final data = apiDataHandler(response);
 
-      pageVariables.allSubCategoriesList = data
-          .map<TicketSubCategoryModel>((e) => TicketSubCategoryModel.fromMap(e))
-          .toList();
+      pageVariables.allSubCategoriesList = data.map<TicketSubCategoryModel>((e) => TicketSubCategoryModel.fromMap(e)).toList();
 
       filterSubCategories();
     } catch (e) {
-      emit(state.copyWith(
-          subCategoriesStatus: BlocStatus.fail(error: e.toString())));
+      emit(state.copyWith(subCategoriesStatus: BlocStatus.fail(error: e.toString())));
     }
   }
 
   void filterSubCategories() {
-    pageVariables.filteredSubCategoriesByCategories = pageVariables
-        .allSubCategoriesList
-        .where((sub) => pageVariables.selectedCategoriesList
-            .any((category) => sub.classification == category.categoryAr))
+    pageVariables.filteredSubCategoriesByCategories = pageVariables.allSubCategoriesList
+        .where((sub) => pageVariables.selectedCategoriesList.any((category) => sub.classification == category.categoryAr))
         .toList();
 
     emit(state.copyWith(subCategoriesStatus: BlocStatus.success()));
