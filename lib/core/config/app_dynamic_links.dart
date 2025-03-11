@@ -305,13 +305,6 @@ abstract class AppDynamicLinks {
           return ParticipateListPage();
         }));
         break;
-      case "TransferRefuse":
-        Navigator.push(context, CupertinoPageRoute(builder: (context) {
-          return  ClientProfile(
-            idClient: data == null ? dataNotify : data['idclient'],
-          );
-        }));
-        break;
     }
   }
 }
