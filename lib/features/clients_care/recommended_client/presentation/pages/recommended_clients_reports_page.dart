@@ -35,7 +35,7 @@ class _RecommendedClientsReportState extends State<RecommendedClientsReportPage>
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: CustomAppBar(
-        title: 'تقارير عملاء التوصية',
+        title: 'تقرير عملاء التوصية',
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,

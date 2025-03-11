@@ -26,20 +26,23 @@ class ManageWithdrawnInvoicesPage extends StatefulWidget {
   const ManageWithdrawnInvoicesPage({super.key});
 
   @override
-  State<ManageWithdrawnInvoicesPage> createState() => _ManageWithdrawnInvoicesPageState();
+  State<ManageWithdrawnInvoicesPage> createState() =>
+      _ManageWithdrawnInvoicesPageState();
 }
 
-class _ManageWithdrawnInvoicesPageState extends State<ManageWithdrawnInvoicesPage> {
+class _ManageWithdrawnInvoicesPageState
+    extends State<ManageWithdrawnInvoicesPage> {
   late final ManageWithdrawnInvoicesCubit _cubit;
   final ValueNotifier<bool> closeNotApply = ValueNotifier(false);
 
   @override
   void initState() {
     super.initState();
-    _cubit = context.read<ManageWithdrawnInvoicesCubit>()
-      ..init();
+    _cubit = context.read<ManageWithdrawnInvoicesCubit>()..init();
     context.read<InvoicesSectionCubit>().getAllUsers();
-    context.read<BranchesCubit>().getBranchesByIdCountry(fkCountry: AppConstants.currentCountry);
+    context
+        .read<BranchesCubit>()
+        .getBranchesByIdCountry(fkCountry: AppConstants.currentCountry);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<UserProvider>(context, listen: false).getAllUsers();
       await _cubit.getManageWithdrawnInvoices();
@@ -59,14 +62,14 @@ class _ManageWithdrawnInvoicesPageState extends State<ManageWithdrawnInvoicesPag
               children: [
                 ValueListenableBuilder(
                   valueListenable: _cubit.filterEntity.sortAsc,
-                  builder: (context, value, child) =>
-                      CustomSortingIcon(
-                        activeColor: !value,
-                        onTap: () {
-                          _cubit.filterEntity.sortAsc.value = !(_cubit.filterEntity.sortAsc.value);
-                          _cubit.getManageWithdrawnInvoices();
-                        },
-                      ),
+                  builder: (context, value, child) => CustomSortingIcon(
+                    activeColor: !value,
+                    onTap: () {
+                      _cubit.filterEntity.sortAsc.value =
+                          !(_cubit.filterEntity.sortAsc.value);
+                      _cubit.getManageWithdrawnInvoices();
+                    },
+                  ),
                 ),
                 Expanded(
                   child: CustomSearchWidget(
@@ -93,24 +96,24 @@ class _ManageWithdrawnInvoicesPageState extends State<ManageWithdrawnInvoicesPag
                     ),
                     ValueListenableBuilder(
                       valueListenable: closeNotApply,
-                      builder: (context, value, child) =>
-                          ListenableBuilder(
-                            listenable: Listenable.merge(
-                              _cubit.filterEntity.listenables(),
-                            ),
-                            builder: (context, child) {
-                              return _cubit.filterEntity.checkIfFilterIsNotEmpty()
-                                  ? Positioned(
-                                right: -5,
-                                top: -2,
-                                child: CircleAvatar(
-                                  radius: 8,
-                                  backgroundColor: AppColors.statusErrorActive,
-                                ),
-                              )
-                                  : SizedBox.shrink();
-                            },
-                          ),
+                      builder: (context, value, child) => ListenableBuilder(
+                        listenable: Listenable.merge(
+                          _cubit.filterEntity.listenables(),
+                        ),
+                        builder: (context, child) {
+                          return _cubit.filterEntity.checkIfFilterIsNotEmpty()
+                              ? Positioned(
+                                  right: -5,
+                                  top: -2,
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor:
+                                        AppColors.statusErrorActive,
+                                  ),
+                                )
+                              : SizedBox.shrink();
+                        },
+                      ),
                     )
                   ],
                 ),
@@ -120,7 +123,8 @@ class _ManageWithdrawnInvoicesPageState extends State<ManageWithdrawnInvoicesPag
             10.height,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: CountPaginatedList<ManageWithdrawnInvoicesCubit, ManageWithdrawnInvoicesState>(
+              child: CountPaginatedList<ManageWithdrawnInvoicesCubit,
+                  ManageWithdrawnInvoicesState>(
                 label: "عدد الفواتير",
                 countSelector: (state) => _cubit.pageVariables.allList.length,
                 totalCount: (state) => _cubit.pageVariables.totalCount,
@@ -128,18 +132,20 @@ class _ManageWithdrawnInvoicesPageState extends State<ManageWithdrawnInvoicesPag
             ),
             10.height,
             Expanded(
-              child: BlocBuilder<ManageWithdrawnInvoicesCubit, ManageWithdrawnInvoicesState>(
+              child: BlocBuilder<ManageWithdrawnInvoicesCubit,
+                  ManageWithdrawnInvoicesState>(
                 buildWhen: (previous, current) {
-                  return previous.getManageWithdrawnInvoicesStatus != current.getManageWithdrawnInvoicesStatus && _cubit.pageVariables.isNewFilter;
+                  return previous.getManageWithdrawnInvoicesStatus !=
+                          current.getManageWithdrawnInvoicesStatus &&
+                      _cubit.pageVariables.isNewFilter;
                 },
                 builder: (context, state) {
                   return state.getManageWithdrawnInvoicesStatus.when(
                     success: (data) => ManageWithdrawnInvoicesPaginatedList(),
-                    failure: (error, data) =>
-                        AppErrorWidget(
-                          message: error,
-                          onPressed: () => _cubit.getManageWithdrawnInvoices(),
-                        ),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () => _cubit.getManageWithdrawnInvoices(),
+                    ),
                   );
                 },
               ),

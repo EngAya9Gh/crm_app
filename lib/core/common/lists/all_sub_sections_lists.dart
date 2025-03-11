@@ -177,18 +177,6 @@ abstract class AllSubSectionsLists {
       path: AppRoutesPaths.careSubSections.reports,
       subSections: careReports,
     ),
-    SectionModel(
-      title: AppStrings.labelNotUse,
-      page: NotUsingSystemPage(),
-      privilegeId: '105',
-      path: AppRoutesPaths.careSubSections.notUsingSystem,
-    ),
-    SectionModel(
-      title: AppStrings.labelWrongNumber,
-      page: WrongNumbersPage(),
-      privilegeId: '106',
-      path: AppRoutesPaths.careSubSections.wrongNumbers,
-    ),
   ];
 
   /* Management Sub Sections */
@@ -345,7 +333,7 @@ abstract class AllSubSectionsLists {
       path: AppRoutesPaths.careSubSections.clientsCareReports,
     ),
     SectionModel(
-      title: 'تقارير عملاء التوصية',
+      title: 'تقرير عملاء التوصية',
       page: RecommendedClientsReportPage(),
       path: AppRoutesPaths.careSubSections.clientsRecommendedReports,
     ),
@@ -360,6 +348,18 @@ abstract class AllSubSectionsLists {
       page: PeriodicCommunicationReportsPage(),
       privilegeId: '104',
       path: AppRoutesPaths.careSubSections.periodicCommunicationReports,
+    ),
+    SectionModel(
+      title: AppStrings.labelNotUse,
+      page: NotUsingSystemPage(),
+      privilegeId: '105',
+      path: AppRoutesPaths.careSubSections.notUsingSystem,
+    ),
+    SectionModel(
+      title: AppStrings.labelWrongNumber,
+      page: WrongNumbersPage(),
+      privilegeId: '106',
+      path: AppRoutesPaths.careSubSections.wrongNumbers,
     ),
   ];
 //endregion

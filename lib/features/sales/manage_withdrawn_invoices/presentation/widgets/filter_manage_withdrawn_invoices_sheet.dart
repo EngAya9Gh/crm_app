@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/models/location/branch_model.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/common/branches/presentation/pages/branch_searchable_drop_down.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +31,12 @@ class FilterManageWithdrawnInvoicesSheet extends StatefulWidget {
   });
 
   @override
-  State<FilterManageWithdrawnInvoicesSheet> createState() => _FilterManageWithdrawnInvoicesSheetState();
+  State<FilterManageWithdrawnInvoicesSheet> createState() =>
+      _FilterManageWithdrawnInvoicesSheetState();
 }
 
-class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdrawnInvoicesSheet> {
+class _FilterManageWithdrawnInvoicesSheetState
+    extends State<FilterManageWithdrawnInvoicesSheet> {
   late final ManageWithdrawnInvoicesCubit _cubit;
   late final BranchesCubit _branchCubit;
   late final UsersCubit userCubit;
@@ -79,7 +82,8 @@ class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdra
             CustomDropDown<WithdrawalInvoiceStatusEnum>(
               hint: 'الحالة',
               items: WithdrawalInvoiceStatusEnum.values,
-              compareFn: (item, selectedItem) => item.index == selectedItem.index,
+              compareFn: (item, selectedItem) =>
+                  item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.statusNotifier.value,
               onChanged: (status) {
@@ -108,71 +112,136 @@ class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdra
               },
             ),
             10.height,
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: CustomDateTimePicker(
+            //         dateTimeType: DateTimeEnum.date,
+            //         hintText: 'تاريخ بداية القبول',
+            //         isStartFromNow: true,
+            //         formatDate: Intl.DateFormat('yyyy-MM-dd'),
+            //         isRequired: true,
+            //         dateTimeController:
+            //             _cubit.filterEntity.dateApproveFromController,
+            //         style2: true,
+            //         onDateChange: (p0, p1) {
+            //           // _taskCubit.onChangeStartDate(p0);
+            //         },
+            //       ),
+            //     ),
+            //     15.width,
+            //     Expanded(
+            //       child: CustomDateTimePicker(
+            //         dateTimeType: DateTimeEnum.date,
+            //         hintText: 'تاريخ نهاية القبول',
+            //         isStartFromNow: true,
+            //         isRequired: true,
+            //         formatDate: Intl.DateFormat('yyyy-MM-dd'),
+            //         dateTimeController:
+            //             _cubit.filterEntity.dateApproveToController,
+            //         style2: true,
+            //         onDateChange: (p0, p1) {
+            //           // _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(p0);
+            //           // _taskCubit.onChangeDeadLineDate(p0);
+            //         },
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(right: 5, bottom: 2),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: AppText('تاريخ الموافقة'),
+              ),
+            ),
             Row(
               children: [
-                Expanded(
+                Flexible(
                   child: CustomDateTimePicker(
+                    hintText: 'من تاريخ',
                     dateTimeType: DateTimeEnum.date,
-                    hintText: 'تاريخ بداية القبول',
-                    isStartFromNow: true,
-                    formatDate: Intl.DateFormat('yyyy-MM-dd'),
-                    isRequired: true,
-                    dateTimeController: _cubit.filterEntity.dateApproveFromController,
+                    dateTimeController:
+                        _cubit.filterEntity.dateApproveFromController,
                     style2: true,
-                    onDateChange: (p0, p1) {
-                      // _taskCubit.onChangeStartDate(p0);
-                    },
                   ),
                 ),
-                15.width,
-                Expanded(
+                SizedBox(width: 10),
+                Flexible(
                   child: CustomDateTimePicker(
+                    hintText: 'الي تاريخ',
                     dateTimeType: DateTimeEnum.date,
-                    hintText: 'تاريخ نهاية القبول',
-                    isStartFromNow: true,
-                    isRequired: true,
-                    formatDate: Intl.DateFormat('yyyy-MM-dd'),
-                    dateTimeController: _cubit.filterEntity.dateApproveToController,
+                    dateTimeController:
+                        _cubit.filterEntity.dateApproveToController,
                     style2: true,
-                    onDateChange: (p0, p1) {
-                      // _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(p0);
-                      // _taskCubit.onChangeDeadLineDate(p0);
-                    },
                   ),
                 ),
               ],
             ),
             10.height,
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: CustomDateTimePicker(
+            //         dateTimeType: DateTimeEnum.date,
+            //         hintText: 'تاريخ بداية الانسحاب',
+            //         isStartFromNow: true,
+            //         formatDate: Intl.DateFormat('yyyy-MM-dd'),
+            //         isRequired: true,
+            //         dateTimeController:
+            //             _cubit.filterEntity.dateWithdrawnFromController,
+            //         style2: true,
+            //         onDateChange: (p0, p1) {
+            //           // _taskCubit.onChangeStartDate(p0);
+            //         },
+            //       ),
+            //     ),
+            //     15.width,
+            //     Expanded(
+            //       child: CustomDateTimePicker(
+            //         dateTimeType: DateTimeEnum.date,
+            //         hintText: 'تاريخ نهاية الانسحاب',
+            //         isStartFromNow: true,
+            //         isRequired: true,
+            //         formatDate: Intl.DateFormat('yyyy-MM-dd'),
+            //         dateTimeController:
+            //             _cubit.filterEntity.dateWithdrawnToController,
+            //         style2: true,
+            //         onDateChange: (p0, p1) {
+            //           // _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(p0);
+            //           // _taskCubit.onChangeDeadLineDate(p0);
+            //         },
+            //       ),
+            //     ),
+            //   ],
+            // ),
+
+            Padding(
+              padding: const EdgeInsets.only(right: 5, bottom: 2),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: AppText('تاريخ الانسحاب'),
+              ),
+            ),
             Row(
               children: [
-                Expanded(
+                Flexible(
                   child: CustomDateTimePicker(
+                    hintText: 'من تاريخ',
                     dateTimeType: DateTimeEnum.date,
-                    hintText: 'تاريخ بداية الانسحاب',
-                    isStartFromNow: true,
-                    formatDate: Intl.DateFormat('yyyy-MM-dd'),
-                    isRequired: true,
-                    dateTimeController: _cubit.filterEntity.dateWithdrawnFromController,
+                    dateTimeController:
+                        _cubit.filterEntity.dateWithdrawnFromController,
                     style2: true,
-                    onDateChange: (p0, p1) {
-                      // _taskCubit.onChangeStartDate(p0);
-                    },
                   ),
                 ),
-                15.width,
-                Expanded(
+                SizedBox(width: 10),
+                Flexible(
                   child: CustomDateTimePicker(
+                    hintText: 'الي تاريخ',
                     dateTimeType: DateTimeEnum.date,
-                    hintText: 'تاريخ نهاية الانسحاب',
-                    isStartFromNow: true,
-                    isRequired: true,
-                    formatDate: Intl.DateFormat('yyyy-MM-dd'),
-                    dateTimeController: _cubit.filterEntity.dateWithdrawnToController,
+                    dateTimeController:
+                        _cubit.filterEntity.dateWithdrawnToController,
                     style2: true,
-                    onDateChange: (p0, p1) {
-                      // _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(p0);
-                      // _taskCubit.onChangeDeadLineDate(p0);
-                    },
                   ),
                 ),
               ],
@@ -205,7 +274,8 @@ class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdra
                   items: _branchCubit.branchesList,
                   selectedItems: _cubit.filterEntity.branchNotifier.value,
                   itemAsString: (item) => item?.branchName ?? '',
-                  compareFn: (item, selectedItem) => item.branchId == selectedItem.branchId,
+                  compareFn: (item, selectedItem) =>
+                      item.branchId == selectedItem.branchId,
                   onSave: (value) {
                     _cubit.filterEntity.branchNotifier.value = value;
                   },

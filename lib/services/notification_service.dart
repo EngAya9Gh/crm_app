@@ -55,6 +55,7 @@ class NotificationService {
     return fcmToken;
   }
 
+
   static void listen() {
     FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
       if (message != null) {
@@ -78,11 +79,11 @@ class NotificationService {
                 importance: Importance.max,
               ),
             ));
-        String typeNotify = message.data['Typenotify'];
+        // String typeNotify = message.data['type_notify'];
         if(message.data['title']== "مهمة جديدة"){
           AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
         }
-        AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
+        // AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen(
@@ -91,7 +92,7 @@ class NotificationService {
         log(message.data.toString());
         log('${message.notification?.title}');
         {
-          String typeNotify = message.data['Typenotify'];
+          String typeNotify = message.data['type_notify'];
           if(message.data['title']== "مهمة جديدة"){
             AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
           }
