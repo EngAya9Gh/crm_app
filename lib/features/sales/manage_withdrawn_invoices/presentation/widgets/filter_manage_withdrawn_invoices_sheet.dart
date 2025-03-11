@@ -31,12 +31,10 @@ class FilterManageWithdrawnInvoicesSheet extends StatefulWidget {
   });
 
   @override
-  State<FilterManageWithdrawnInvoicesSheet> createState() =>
-      _FilterManageWithdrawnInvoicesSheetState();
+  State<FilterManageWithdrawnInvoicesSheet> createState() => _FilterManageWithdrawnInvoicesSheetState();
 }
 
-class _FilterManageWithdrawnInvoicesSheetState
-    extends State<FilterManageWithdrawnInvoicesSheet> {
+class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdrawnInvoicesSheet> {
   late final ManageWithdrawnInvoicesCubit _cubit;
   late final BranchesCubit _branchCubit;
   late final UsersCubit userCubit;
@@ -82,8 +80,7 @@ class _FilterManageWithdrawnInvoicesSheetState
             CustomDropDown<WithdrawalInvoiceStatusEnum>(
               hint: 'الحالة',
               items: WithdrawalInvoiceStatusEnum.values,
-              compareFn: (item, selectedItem) =>
-                  item.index == selectedItem.index,
+              compareFn: (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.statusNotifier.value,
               onChanged: (status) {
@@ -161,8 +158,7 @@ class _FilterManageWithdrawnInvoicesSheetState
                   child: CustomDateTimePicker(
                     hintText: 'من تاريخ',
                     dateTimeType: DateTimeEnum.date,
-                    dateTimeController:
-                        _cubit.filterEntity.dateApproveFromController,
+                    dateTimeController: _cubit.filterEntity.dateApproveFromController,
                     style2: true,
                   ),
                 ),
@@ -171,8 +167,7 @@ class _FilterManageWithdrawnInvoicesSheetState
                   child: CustomDateTimePicker(
                     hintText: 'الي تاريخ',
                     dateTimeType: DateTimeEnum.date,
-                    dateTimeController:
-                        _cubit.filterEntity.dateApproveToController,
+                    dateTimeController: _cubit.filterEntity.dateApproveToController,
                     style2: true,
                   ),
                 ),
@@ -229,8 +224,7 @@ class _FilterManageWithdrawnInvoicesSheetState
                   child: CustomDateTimePicker(
                     hintText: 'من تاريخ',
                     dateTimeType: DateTimeEnum.date,
-                    dateTimeController:
-                        _cubit.filterEntity.dateWithdrawnFromController,
+                    dateTimeController: _cubit.filterEntity.dateWithdrawnFromController,
                     style2: true,
                   ),
                 ),
@@ -239,8 +233,7 @@ class _FilterManageWithdrawnInvoicesSheetState
                   child: CustomDateTimePicker(
                     hintText: 'الي تاريخ',
                     dateTimeType: DateTimeEnum.date,
-                    dateTimeController:
-                        _cubit.filterEntity.dateWithdrawnToController,
+                    dateTimeController: _cubit.filterEntity.dateWithdrawnToController,
                     style2: true,
                   ),
                 ),
@@ -274,8 +267,7 @@ class _FilterManageWithdrawnInvoicesSheetState
                   items: _branchCubit.branchesList,
                   selectedItems: _cubit.filterEntity.branchNotifier.value,
                   itemAsString: (item) => item?.branchName ?? '',
-                  compareFn: (item, selectedItem) =>
-                      item.branchId == selectedItem.branchId,
+                  compareFn: (item, selectedItem) => item.branchId == selectedItem.branchId,
                   onSave: (value) {
                     _cubit.filterEntity.branchNotifier.value = value;
                   },
