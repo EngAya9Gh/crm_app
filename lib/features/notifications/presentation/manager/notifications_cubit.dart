@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/features/notifications/data/models/notification_types.dart';
+import 'package:crm_smart/features/notifications/domain/use_cases/get_filter_type.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
@@ -17,11 +19,13 @@ class NotificationsCubit extends Cubit<NotificationsState> {
   final GetNotificationsUsecase _getNotificationsUsecase;
   final MarkNotificationsAsReadUsecase _markNotificationsAsReadUsecase;
   final GetUnreadNotificationsCountUsecase _getUnreadNotificationsCountUsecase;
+  final GetNotificationsTypesUsecase _getNotificationsTypesUsecase;
 
   NotificationsCubit(
     this._getNotificationsUsecase,
     this._markNotificationsAsReadUsecase,
     this._getUnreadNotificationsCountUsecase,
+    this._getNotificationsTypesUsecase,
   ) : super(NotificationsState());
 
   NotificationsPageVariablesEntity pageVariables = NotificationsPageVariablesEntity();
@@ -52,7 +56,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
           GetNotificationsParams(
             skip: pageVariables.allList.length,
             query: pageVariables.searchController.text,
-            notificationType: filterEntity.notificationTypeNotifier.value,
+            notificationType: filterEntity.notificationTypeNotifier.value?.key,
             dateFrom: filterEntity.dateFromController.text,
             dateTo: filterEntity.dateToController.text,
           ),
@@ -126,7 +130,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       (r) {
         emit(state.copyWith(
           getUnreadNotificationsCountStatus: const BlocStatus.empty(),
-          markNotificationsAsReadStatus:   const BlocStatus.success(),
+          markNotificationsAsReadStatus: const BlocStatus.success(),
         ));
       },
     );
@@ -139,5 +143,18 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   void returnToPreviousState() {
     filterEntity = filterEntity.returnToPreviousState;
+  }
+
+  Future<void> getNotificationsTypesFilter() async {
+    emit(state.copyWith(filterList: const BlocStatus.loading()));
+    final result = await _getNotificationsTypesUsecase();
+    result.extract(
+      (exception, message) => emit(
+        state.copyWith(filterList: BlocStatus.fail(error: message)),
+      ),
+      (value) => emit(
+        state.copyWith(filterList: BlocStatus.success(data: value.message)),
+      ),
+    );
   }
 }

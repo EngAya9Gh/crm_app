@@ -27,7 +27,7 @@ class GetNotificationsParams {
   final int skip;
   final int limit;
   final String query;
-  final NotificationTypeEnum? notificationType;
+  final String? notificationType;
   final String? dateFrom;
   final String? dateTo;
 
@@ -44,7 +44,7 @@ class GetNotificationsParams {
     final Map<String, dynamic> map = {
       'page': ApiHelper.calculatePage(skip: skip, limit: limit),
       'limit': limit,
-      'type_notify': notificationType?.name,
+      'type_notify': notificationType,
       'from': dateFrom,
       'to': dateTo,
     }..removeWhere((key, value) => value == null || value == '');

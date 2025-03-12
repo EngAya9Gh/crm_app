@@ -509,6 +509,8 @@ import '../../../features/notifications/data/repositories/notifications_repo_imp
     as _i119;
 import '../../../features/notifications/domain/repositories/notifications_repo.dart'
     as _i841;
+import '../../../features/notifications/domain/use_cases/get_filter_type.dart'
+    as _i467;
 import '../../../features/notifications/domain/use_cases/get_notifications_usecase.dart'
     as _i620;
 import '../../../features/notifications/domain/use_cases/get_unread_notifications_count_usecase.dart'
@@ -1435,6 +1437,8 @@ _i174.GetIt $initGetIt(
           gh<_i262.CommissionForCollaboratorsDatasource>()));
   gh.lazySingleton<_i5.GeneralConfigsRepository>(() =>
       _i188.GeneralConfigsRepositoryImpl(gh<_i576.GeneralConfigsDatasource>()));
+  gh.lazySingleton<_i467.GetNotificationsTypesUsecase>(
+      () => _i467.GetNotificationsTypesUsecase(gh<_i841.NotificationsRepo>()));
   gh.lazySingleton<_i620.GetNotificationsUsecase>(
       () => _i620.GetNotificationsUsecase(gh<_i841.NotificationsRepo>()));
   gh.lazySingleton<_i625.GetUnreadNotificationsCountUsecase>(() =>
@@ -1789,6 +1793,12 @@ _i174.GetIt $initGetIt(
           gh<_i297.GetClientsDebtsReportsUsecase>()));
   gh.factory<_i398.DeletedInvoicesCubit>(
       () => _i398.DeletedInvoicesCubit(gh<_i225.GetDeletedInvoicesUsecase>()));
+  gh.factory<_i0.NotificationsCubit>(() => _i0.NotificationsCubit(
+        gh<_i620.GetNotificationsUsecase>(),
+        gh<_i250.MarkNotificationsAsReadUsecase>(),
+        gh<_i625.GetUnreadNotificationsCountUsecase>(),
+        gh<_i467.GetNotificationsTypesUsecase>(),
+      ));
   gh.lazySingleton<_i1037.AddAgentDateUseCase>(() =>
       _i1037.AddAgentDateUseCase(gh<_i834.AgentsDistributorsProfileRepo>()));
   gh.lazySingleton<_i707.GetManageWithdrawnInvoicesUsecase>(() =>
@@ -1804,11 +1814,6 @@ _i174.GetIt $initGetIt(
       _i947.GetSubscribedClientsUseCase(gh<_i592.CrudActivitiesRepository>()));
   gh.factory<_i245.UpdateActivityCrudUseCase>(() =>
       _i245.UpdateActivityCrudUseCase(gh<_i592.CrudActivitiesRepository>()));
-  gh.factory<_i0.NotificationsCubit>(() => _i0.NotificationsCubit(
-        gh<_i620.GetNotificationsUsecase>(),
-        gh<_i250.MarkNotificationsAsReadUsecase>(),
-        gh<_i625.GetUnreadNotificationsCountUsecase>(),
-      ));
   gh.lazySingleton<_i746.WithdrawnInvoicesRepo>(() =>
       _i238.WithdrawnInvoicesRepoImpl(gh<_i235.WithdrawnInvoicesDataSource>()));
   gh.lazySingleton<_i1041.RegionsRepository>(

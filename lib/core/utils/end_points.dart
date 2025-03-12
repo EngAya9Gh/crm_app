@@ -477,6 +477,7 @@ class _Notifications {
   final String getNotifications = 'notifications';
   final String markNotificationsAsRead = 'notifications/mark-read';
   final String getUnreadNotificationsCount = 'notifications/count-unread';
+  final String notificationsTypes = 'notifications/types';
 }
 
 class _Versions {

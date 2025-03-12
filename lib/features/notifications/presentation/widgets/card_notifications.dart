@@ -32,7 +32,7 @@ class CardNotifications extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: AppStatusChip(
-              status: notification.typeNotify ?? '',
+              status: notification.typeNotifyTranslation ?? '',
               color: AppColors.primaryMain,
               fontSize: 13,
             ),
