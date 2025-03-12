@@ -66,12 +66,12 @@ class TicketStatusCard extends StatelessWidget {
             ],
             if (currentTicketType == TicketTypesEnum.rate) ...[
               SizedBox(height: 10),
-              AppRateWidget(
-                title: 'التقييم',
-                initialRating: double.parse(ticketModel.rate ?? '0'),
-                rateValue: double.parse(ticketModel.rate ?? '0'),
-                isReadOnly: true,
-              ),
+              // AppRateWidget(
+                // title: 'التقييم',
+                // initialRating: double.parse(ticketModel.rate ?? '0'),
+                // rateValue: double.parse(ticketModel.rate ?? '0'),
+                // isReadOnly: true,
+              // ),
             ],
           ],
         ),

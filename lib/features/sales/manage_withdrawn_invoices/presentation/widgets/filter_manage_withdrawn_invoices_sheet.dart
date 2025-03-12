@@ -149,7 +149,7 @@ class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdra
               padding: const EdgeInsets.only(right: 5, bottom: 2),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: AppText('تاريخ الموافقة'),
+                child: AppText('تاريخ الاشتراك'),
               ),
             ),
             Row(
@@ -165,7 +165,7 @@ class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdra
                 SizedBox(width: 10),
                 Flexible(
                   child: CustomDateTimePicker(
-                    hintText: 'الي تاريخ',
+                    hintText: 'إلى تاريخ',
                     dateTimeType: DateTimeEnum.date,
                     dateTimeController: _cubit.filterEntity.dateApproveToController,
                     style2: true,
@@ -231,7 +231,7 @@ class _FilterManageWithdrawnInvoicesSheetState extends State<FilterManageWithdra
                 SizedBox(width: 10),
                 Flexible(
                   child: CustomDateTimePicker(
-                    hintText: 'الي تاريخ',
+                    hintText: 'إلى تاريخ',
                     dateTimeType: DateTimeEnum.date,
                     dateTimeController: _cubit.filterEntity.dateWithdrawnToController,
                     style2: true,

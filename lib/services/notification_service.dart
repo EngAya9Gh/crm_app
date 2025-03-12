@@ -59,6 +59,10 @@ class NotificationService {
   static void listen() {
     FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
       if (message != null) {
+          log('///////////////////////////');
+        log('$message.contentAvailable');
+        log(message.data.toString());
+        log('${message.notification?.title}');
         Map<String, dynamic> notification = message.data;
         NotificationService.flutterLocalNotificationsPlugin.show(
             notification.hashCode,

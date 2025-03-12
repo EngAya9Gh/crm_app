@@ -3,10 +3,13 @@ import 'package:crm_smart/features/clients_care/clients_tickets/presentation/man
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/ticket_detail_page.dart';
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
 import 'package:crm_smart/features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
+import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/pages/withdrawn_details_page.dart';
 import 'package:crm_smart/features/sales/deleted_invoices/presentation/pages/deleted_invoices_page.dart';
+import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import 'package:crm_smart/features/sales/public_relations/participates/presentation/pages/participate_list_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/sales/clients/clients_transfer_approvals/presentation/pages/clients_transfer_approvals_page.dart';
 import '../../features/sales/clients/finance_pending/presentation/pages/finance_pending_page.dart';
@@ -44,8 +47,8 @@ abstract class AppDynamicLinks {
             context,
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
-                      idClient: data == null ? dataNotify : data['idclient'],
-                      // idclient:data==null?datanotify: data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
+                      // idclient:data==null?datanotify: data['paramId'],
                     )));
         break;
       case "TransferAccept":
@@ -53,8 +56,8 @@ abstract class AppDynamicLinks {
             context,
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
-                      idClient: data == null ? dataNotify : data['idclient'],
-                      // idclient:data==null?datanotify: data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
+                      // idclient:data==null?datanotify: data['paramId'],
                     )));
         break;
       case "AddPayment":
@@ -63,8 +66,8 @@ abstract class AppDynamicLinks {
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
                       tabIndex: 1,
-                      idClient: data == null ? dataNotify : data['idclient'],
-                      // idclient:data==null?datanotify: data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
+                      // idclient:data==null?datanotify: data['paramId'],
                     )));
         break;
       case "EditInvoice":
@@ -73,8 +76,8 @@ abstract class AppDynamicLinks {
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
                       tabIndex: 1,
-                      idClient: data == null ? dataNotify : data['idclient'],
-                      // idclient:data==null?datanotify: data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
+                      // idclient:data==null?datanotify: data['paramId'],
                     )));
         break;
       case "NotReady":
@@ -83,8 +86,8 @@ abstract class AppDynamicLinks {
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
                       tabIndex: 3,
-                      idClient: data == null ? dataNotify : data['idclient'],
-                      // idclient:data==null?datanotify: data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
+                      // idclient:data==null?datanotify: data['paramId'],
                     )));
         break;
 
@@ -93,7 +96,7 @@ abstract class AppDynamicLinks {
             context,
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "ApproveRefuse":
@@ -101,7 +104,7 @@ abstract class AppDynamicLinks {
             context,
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "InvoiceDeleted":
@@ -113,7 +116,7 @@ abstract class AppDynamicLinks {
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "AddComment":
@@ -123,7 +126,7 @@ abstract class AppDynamicLinks {
                 builder: (context) => ClientProfile(
                       tabIndex: 2,
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "commentMention":
@@ -133,7 +136,7 @@ abstract class AppDynamicLinks {
                 builder: (context) => ClientProfile(
                       tabIndex: 2,
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "Marketing Client":
@@ -143,7 +146,7 @@ abstract class AppDynamicLinks {
                 builder: (context) => ClientProfile(
                       tabIndex: 2,
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "OpenTicket":
@@ -153,7 +156,7 @@ abstract class AppDynamicLinks {
                 builder: (context) => ClientProfile(
                       tabIndex: 5,
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "InvoiceUpdated":
@@ -163,17 +166,20 @@ abstract class AppDynamicLinks {
                 builder: (context) => ClientProfile(
                       tabIndex: 1,
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "InvoiceBack":
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => ClientProfile(
-                      //idinvoice: data==null?datanotify:  data['id_invoice'],
-                      idClient: data == null ? dataNotify : data['idclient'],
-                    )));
+        final ticketsCubit = BlocProvider.of<InvoicesSectionCubit>(context);
+        ticketsCubit.getInvoiceById(
+            data == null ? dataNotify : data['paramId'],
+            (data) => Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => WithdrawnDetailsPage(
+                    invoice: data,
+                  ),
+                )));
         break;
 
       case "InvoiceReplay":
@@ -182,7 +188,7 @@ abstract class AppDynamicLinks {
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
                       tabIndex: 3,
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "TransferTicket":
@@ -191,7 +197,7 @@ abstract class AppDynamicLinks {
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
                       tabIndex: 5,
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "exclude":
@@ -200,14 +206,14 @@ abstract class AppDynamicLinks {
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
                       tabIndex: 0,
-                      idClient: data == null ? dataNotify : data['idclient'],
+                      idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
       case "deviceAdd":
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
             tabIndex: 1,
-            idClient: data == null ? dataNotify : data['idclient'],
+            idClient: data == null ? dataNotify : data['paramId'],
           );
         }));
         break;
@@ -215,14 +221,14 @@ abstract class AppDynamicLinks {
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
             tabIndex: 3,
-            idClient: data == null ? dataNotify : data['idclient'],
+            idClient: data == null ? dataNotify : data['paramId'],
           );
         }));
         break;
       case "receiveClient":
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
-            idClient: data == null ? dataNotify : data['idclient'],
+            idClient: data == null ? dataNotify : data['paramId'],
           );
         }));
         break;
@@ -230,7 +236,7 @@ abstract class AppDynamicLinks {
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
             tabIndex: 7,
-            idClient: data == null ? dataNotify : data['idclient'],
+            idClient: data == null ? dataNotify : data['paramId'],
           );
         }));
         break;
@@ -238,7 +244,7 @@ abstract class AppDynamicLinks {
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
             tabIndex: 3,
-            idClient: data == null ? dataNotify : data['idclient'],
+            idClient: data == null ? dataNotify : data['paramId'],
           );
         }));
         break;
@@ -246,7 +252,7 @@ abstract class AppDynamicLinks {
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
             tabIndex: 3,
-            idClient: data == null ? dataNotify : data['idclient'],
+            idClient: data == null ? dataNotify : data['paramId'],
           );
         }));
         break;
@@ -264,29 +270,30 @@ abstract class AppDynamicLinks {
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
             tabIndex: 3,
-            idClient: data == null ? dataNotify : data['idclient'],
+            idClient: data == null ? dataNotify : data['paramId'],
           );
         }));
         break;
       //todo need model
       case "closeTicket":
-        context.read<TicketsCubit>().getTicketById(
-              GetTicketByIdParams(id: '1'),
-              (ticket) => Navigator.push(
-                context,
-                CupertinoPageRoute(builder: (context) {
-                  return TicketDetailsPage(
-                    ticketModel: ticket,
-                  );
-                }),
-              ),
-            );
+        final ticketsCubit = BlocProvider.of<TicketsCubit>(context);
+        ticketsCubit.getTicketById(
+          GetTicketByIdParams(id: data == null ? dataNotify : data['paramId']),
+          (ticket) => Navigator.push(
+            context,
+            CupertinoPageRoute(builder: (context) {
+              return TicketDetailsPage(
+                ticketModel: ticket,
+              );
+            }),
+          ),
+        );
         break;
-        //todo:
+      //todo:
       case "agentVisit":
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return AgentProfilePage(
-            idAgent: '1',
+            idAgent: data == null ? dataNotify : data['paramId'],
             tabIndex: 4,
           );
         }));
@@ -295,16 +302,31 @@ abstract class AppDynamicLinks {
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
             tabIndex: 7,
-            idClient: data == null ? dataNotify : data['idclient'],
+            idClient: data == null ? dataNotify : data['paramId'],
           );
         }));
         break;
-        //todo need model
+      //todo need model
       case "participateAdd":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return ParticipateListPage(
+            scrollToId: data == null ? dataNotify : data['paramId'],
+          );
+        }));
+        break;
+      // TODO: handle this cases
+      /*
+      case "saleExceeded":
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ParticipateListPage();
         }));
         break;
+      case "checkClient":
+        Navigator.push(context, CupertinoPageRoute(builder: (context) {
+          return ParticipateListPage();
+        }));
+        break;
+        */
     }
   }
 }
