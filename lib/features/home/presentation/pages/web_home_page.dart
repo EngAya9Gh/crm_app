@@ -7,6 +7,7 @@ import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/item_comment_mention.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -164,57 +165,30 @@ class _WebHomePageState extends State<WebHomePage> {
                             ),
                           ),
                           12.horizontal,
-                          GestureDetector(
-                            onTap: () {
-                              // AppNavigator.go(
-                              // NotificationsPage(),
-                              // isNew: false,
-                              // );
-                              // _cubit.markNotificationsAsRead();
-                            },
-                            child: Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.comment,
-                                    size: (25.0).scaleFontSize,
-                                    color: AppColors.black,
-                                  ),
+                          PopupMenuButton(
+                              offset: Offset(0, 10),
+                              constraints: BoxConstraints(
+                                  // Set the width to match screen width
+                                  minWidth: 420.scaleWidth,
+                                  maxWidth: 520.scaleWidth,
+                                  maxHeight: 600.scaleHeight),
+                              position: PopupMenuPosition.under,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Transform.translate(
+                                offset: Offset(0, 2),
+                                child: Icon(
+                                  Icons.comment,
+                                  size: 25.scaleIconsSize,
                                 ),
-                                Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  child: BlocBuilder<NotificationsCubit, NotificationsState>(
-                                    builder: (context, state) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: _containerColor(context, state),
-                                        ),
-                                        width: (22.0).scaleWidth,
-                                        height: (22.0).scaleWidth,
-                                        child: Center(
-                                          child: state.getUnreadNotificationsCountStatus.when(
-                                            loading: () => AppLoader(size: (18.0).scaleFontSize, padding: 0),
-                                            success: (data) {
-                                              return AppText(
-                                                0.toString(),
-                                                color: Colors.white,
-                                                fontSize: (14.0).scaleFontSize,
-                                              );
-                                            },
-                                            empty: () => SizedBox.shrink(),
-                                            failure: (error, data) => SizedBox.shrink(),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                              ),
+                              onSelected: (value) => {},
+                              itemBuilder: (context) => [1, 2, 3]
+                                  .map(
+                                    (e) => PopupMenuItem(enabled: false, child: ItemCommentMentionWidget()),
+                                  )
+                                  .toList()),
                           12.horizontal,
                           InkWell(
                             onTap: () {
