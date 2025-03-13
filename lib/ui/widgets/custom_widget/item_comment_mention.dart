@@ -32,6 +32,7 @@ class ItemCommentMentionWidget extends StatelessWidget {
             child: Column(
               children: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                   .map((e) => Cardcomment(
+                    canReplay: true,
                         commentmodel: CommentModel(
                             content: 'content' * 10,
                             date_comment: DateTime.now().toIso8601String(),
