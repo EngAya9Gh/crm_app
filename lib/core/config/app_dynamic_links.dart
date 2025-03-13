@@ -115,6 +115,7 @@ abstract class AppDynamicLinks {
             context,
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
+                  tabIndex: 3,
                       //idinvoice: data==null?datanotify:  data['id_invoice'],
                       idClient: data == null ? dataNotify : data['paramId'],
                     )));
