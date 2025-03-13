@@ -3,6 +3,7 @@ import 'package:crm_smart/features/clients_care/clients_tickets/presentation/man
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/ticket_detail_page.dart';
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
 import 'package:crm_smart/features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
+import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/pages/withdrawal_actions_page.dart';
 import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/pages/withdrawn_details_page.dart';
 import 'package:crm_smart/features/sales/deleted_invoices/presentation/pages/deleted_invoices_page.dart';
 import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
@@ -177,6 +178,18 @@ abstract class AppDynamicLinks {
                 context,
                 CupertinoPageRoute(
                   builder: (context) => WithdrawnDetailsPage(
+                    invoice: data,
+                  ),
+                )));
+        break;
+      case "ApproveInvoiceBack":
+        final ticketsCubit = BlocProvider.of<InvoicesSectionCubit>(context);
+        ticketsCubit.getInvoiceById(
+            data == null ? dataNotify : data['paramId'],
+            (data) => Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => WithdrawalActionsPage(
                     invoice: data,
                   ),
                 )));

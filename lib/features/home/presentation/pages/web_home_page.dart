@@ -47,7 +47,6 @@ class _WebHomePageState extends State<WebHomePage> {
     context.read<NotificationsCubit>()..init();
     _webHomePageCubit = context.read<WebHomePageCubit>();
 
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
         context.read<NotificationsCubit>().getUnreadNotificationsCount(),
@@ -155,6 +154,58 @@ class _WebHomePageState extends State<WebHomePage> {
                                             failure: (error, data) => AppErrorWidget(
                                               onPressed: () => _notificationsCubit.getUnreadNotificationsCount(),
                                             ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          12.horizontal,
+                          GestureDetector(
+                            onTap: () {
+                              // AppNavigator.go(
+                              // NotificationsPage(),
+                              // isNew: false,
+                              // );
+                              // _cubit.markNotificationsAsRead();
+                            },
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.comment,
+                                    size: (25.0).scaleFontSize,
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: BlocBuilder<NotificationsCubit, NotificationsState>(
+                                    builder: (context, state) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: _containerColor(context, state),
+                                        ),
+                                        width: (22.0).scaleWidth,
+                                        height: (22.0).scaleWidth,
+                                        child: Center(
+                                          child: state.getUnreadNotificationsCountStatus.when(
+                                            loading: () => AppLoader(size: (18.0).scaleFontSize, padding: 0),
+                                            success: (data) {
+                                              return AppText(
+                                                0.toString(),
+                                                color: Colors.white,
+                                                fontSize: (14.0).scaleFontSize,
+                                              );
+                                            },
+                                            empty: () => SizedBox.shrink(),
+                                            failure: (error, data) => SizedBox.shrink(),
                                           ),
                                         ),
                                       );

@@ -1,5 +1,9 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/model/commentmodel.dart';
+import 'package:crm_smart/ui/screen/care/card_comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/config/navigator/app_navigator.dart';
@@ -84,13 +88,61 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                       height: (22.0).scaleWidth,
                       child: Center(
                         child: state.getUnreadNotificationsCountStatus.when(
-                          loading: () =>
-                              AppLoader(size: (18.0).scaleFontSize, padding: 0),
+                          loading: () => AppLoader(size: (18.0).scaleFontSize, padding: 0),
                           success: (data) {
                             return AppText(
-                              _cubit.pageVariables.unReadCount > 99
-                                  ? '99'
-                                  : _cubit.pageVariables.unReadCount.toString(),
+                              _cubit.pageVariables.unReadCount > 99 ? '99' : _cubit.pageVariables.unReadCount.toString(),
+                              color: Colors.white,
+                              fontSize: (14.0).scaleFontSize,
+                            );
+                          },
+                          empty: () => SizedBox.shrink(),
+                          failure: (error, data) => SizedBox.shrink(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+           // AppNavigator.go(
+            // NotificationsPage(),
+            // isNew: false,
+            // );
+            // _cubit.markNotificationsAsRead();
+          },
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.comment,
+                  size: (25.0).scaleFontSize,
+                  color: AppColors.black,
+                ),
+              ),
+              Positioned(
+                right: 0,
+                top: 0,
+                child: BlocBuilder<NotificationsCubit, NotificationsState>(
+                  builder: (context, state) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _containerColor(context, state),
+                      ),
+                      width: (22.0).scaleWidth,
+                      height: (22.0).scaleWidth,
+                      child: Center(
+                        child: state.getUnreadNotificationsCountStatus.when(
+                          loading: () => AppLoader(size: (18.0).scaleFontSize, padding: 0),
+                          success: (data) {
+                            return AppText(
+                              0.toString(),
                               color: Colors.white,
                               fontSize: (14.0).scaleFontSize,
                             );
