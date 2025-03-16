@@ -165,30 +165,49 @@ class _WebHomePageState extends State<WebHomePage> {
                             ),
                           ),
                           12.horizontal,
-                          PopupMenuButton(
-                              offset: Offset(0, 10),
-                              constraints: BoxConstraints(
-                                  // Set the width to match screen width
-                                  minWidth: 420.scaleWidth,
-                                  maxWidth: 520.scaleWidth,
-                                  maxHeight: 600.scaleHeight),
-                              position: PopupMenuPosition.under,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Transform.translate(
-                                offset: Offset(0, 2),
-                                child: Icon(
-                                  Icons.comment,
-                                  size: 25.scaleIconsSize,
+                          Stack(clipBehavior: Clip.none, children: [
+                            PopupMenuButton(
+                                offset: Offset(0, 10),
+                                constraints: BoxConstraints(
+                                    // Set the width to match screen width
+                                    minWidth: 420.scaleWidth,
+                                    maxWidth: 520.scaleWidth,
+                                    maxHeight: 600.scaleHeight),
+                                position: PopupMenuPosition.under,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              ),
-                              onSelected: (value) => {},
-                              itemBuilder: (context) => [1, 2, 3]
-                                  .map(
-                                    (e) => PopupMenuItem(enabled: false, child: ItemCommentMentionWidget()),
-                                  )
-                                  .toList()),
+                                child: Transform.translate(
+                                  offset: Offset(0, 2),
+                                  child: Icon(
+                                    Icons.comment,
+                                    size: (25.0).scaleFontSize,
+                                  ),
+                                ),
+                                onSelected: (value) => {},
+                                itemBuilder: (context) => [1, 2, 3]
+                                    .map(
+                                      (e) => PopupMenuItem(enabled: false, child: ItemCommentMentionWidget()),
+                                    )
+                                    .toList()),
+                            Positioned(
+                                right: -7,
+                                top: -7,
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.red,
+                                    ),
+                                    width: (22.0).scaleWidth,
+                                    height: (22.0).scaleWidth,
+                                    child: Center(
+                                      child: AppText(
+                                        '5',
+                                        color: Colors.white,
+                                        fontSize: (14.0).scaleFontSize,
+                                      ),
+                                    ))),
+                          ]),
                           12.horizontal,
                           InkWell(
                             onTap: () {
