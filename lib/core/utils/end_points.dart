@@ -166,6 +166,7 @@ class _Care {
   final getRecommendedClients = 'care/get_recommand_care.php';
   final getRecommendedClientsFilterClient = 'subscribedClients';
   final String viewComments = "viewComments";
+  final String commentMention = "mentionedComments";
 
   final String getClientsAccept = 'getClientsAccept';
 

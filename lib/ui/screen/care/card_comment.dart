@@ -4,6 +4,7 @@ import 'package:crm_smart/core/common/widgets/app_icon.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/user_entity.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
@@ -14,14 +15,25 @@ import '../../../model/commentmodel.dart';
 import '../../../model/usermodel.dart';
 
 class Cardcomment extends StatelessWidget {
-  Cardcomment({required this.commentmodel, this.userModel, this.idClients, Key? key, this.editCommentModel, this.canReplay = false})
+  Cardcomment(
+      {required this.commentmodel,
+      this.userModel,
+      this.idClients,
+      Key? key,
+      this.editCommentModel,
+      this.canReplay = false,
+      this.fromMenu = false,
+      this.replyOnCommentModel})
       : super(key: key);
   CommentModel commentmodel;
   UserModel? userModel;
   String? idClients;
+  final bool fromMenu;
   final ValueChanged<CommentModel>? editCommentModel;
+  final ValueChanged<CommentModel>? replyOnCommentModel;
   final bool canReplay;
   final ValueNotifier<bool> tapToRplay = ValueNotifier(false);
+  final ValueNotifier<bool> activeRplay = ValueNotifier(false);
   final TextEditingController repalyText = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -35,17 +47,18 @@ class Cardcomment extends StatelessWidget {
                 flex: 1,
                 child: Stack(
                   children: [
-                    Positioned(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AppStatusChip(
-                          status: commentmodel.type_comment,
-                          color: AppColors.primaryMain,
-                          fontSize: 13,
+                    if (!fromMenu)
+                      Positioned(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: AppStatusChip(
+                            status: commentmodel.type_comment,
+                            color: AppColors.primaryMain,
+                            fontSize: 13,
+                          ),
                         ),
+                        left: 0,
                       ),
-                      left: 0,
-                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -87,6 +100,13 @@ class Cardcomment extends StatelessWidget {
                                               commentmodel.date_comment,
                                             )),
                                           ),
+                                          5.height,
+                                          if (fromMenu)
+                                            AppText(
+                                              commentmodel.nameEnterprise,
+                                              color: AppColors.primaryMain,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                         ],
                                       ),
                                     ),
@@ -109,21 +129,22 @@ class Cardcomment extends StatelessWidget {
                                       (commentmodel.mention_users ?? []).map((e) => AppText(' @${e.name} ', color: AppColors.primaryMain)).toList(),
                                 ),
                                 // if (commentmodel.nameUser == userModel?.nameUser)
-                                Align(
-                                  alignment: AlignmentDirectional.bottomEnd,
-                                  child: InkWell(
-                                      onTap: () {
-                                        editCommentModel?.call(commentmodel);
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.all(8),
-                                        child: Icon(Icons.edit, color: AppColors.primaryMain),
-                                      )),
-                                ),
+                                if (!fromMenu)
+                                  Align(
+                                    alignment: AlignmentDirectional.bottomEnd,
+                                    child: InkWell(
+                                        onTap: () {
+                                          editCommentModel?.call(commentmodel);
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsetsDirectional.all(8),
+                                          child: Icon(Icons.edit, color: AppColors.primaryMain),
+                                        )),
+                                  ),
                                 if (canReplay)
-                                  ValueListenableBuilder(
-                                    valueListenable: tapToRplay,
-                                    builder: (context, value, child) => TapRegion(
+                                  ListenableBuilder(
+                                    listenable: Listenable.merge([tapToRplay, activeRplay]),
+                                    builder: (context, child) => TapRegion(
                                       behavior: HitTestBehavior.opaque,
                                       onTapOutside: (event) {
                                         tapToRplay.value = false;
@@ -134,21 +155,30 @@ class Cardcomment extends StatelessWidget {
                                           padding: EdgeInsetsDirectional.only(end: 5),
                                           child: AnimatedSwitcher(
                                               duration: Duration(milliseconds: 200),
-                                              child: value
+                                              child: tapToRplay.value
                                                   ? AppTextField(
-                                                      suffixIcon: Transform.flip(
-                                                        flipX: true,
-                                                        child: Icon(
-                                                          Icons.reply_all,
-                                                          color: AppColors.primaryMain,
-                                                        ),
-                                                      ),
+                                                      suffixIcon: activeRplay.value
+                                                          ? InkWell(
+                                                              onTap: () {
+                                                                replyOnCommentModel?.call(commentmodel.copyWith(content: repalyText.text));
+                                                              },
+                                                              child: Transform.flip(
+                                                                flipX: true,
+                                                                child: Icon(
+                                                                  Icons.reply_all,
+                                                                  color: AppColors.primaryMain,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : null,
                                                       filled: true,
                                                       fillColor: AppColors.white,
                                                       hintText: '',
                                                       controller: repalyText,
                                                       textDirection: TextDirection.rtl,
-                                                      onChange: (val) {},
+                                                      onChange: (val) {
+                                                        activeRplay.value = val?.isNotEmpty ?? false;
+                                                      },
                                                       // validator: ,
                                                     )
                                                   : InkWell(

@@ -19,6 +19,7 @@ import '../model/usermodel.dart';
 class comment_vm extends ChangeNotifier {
   List<CommentModel> _allCommentsList = [];
   List<CommentModel> filteredComments = [];
+  List<CommentModel> commentMention = [];
   CommentTypeEnum filterCommentType = CommentTypeEnum.all;
   bool isloadadd = false;
   bool isLoading = false;
@@ -213,5 +214,35 @@ class comment_vm extends ChangeNotifier {
   addCommentFromAddInvoice(CommentModel comment) {
     filteredComments.insert(0, comment);
     notifyListeners();
+  }
+
+  Future<void> getCommentMentions() async {
+    try {
+      commentMention = [];
+      isLoading = true;
+      notifyListeners();
+
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      var response = await apiServices.get(endPoint: EndPoints.care.commentMention);
+
+      final data = apiDataHandler(response);
+
+      commentMention = List<CommentModel>.from(data.map((e) {
+        return CommentModel.fromJson(e);
+      }).toList());
+
+      isLoading = false;
+      notifyListeners();
+    } on BaseAppException catch (e) {
+      debugPrint(e.message);
+      isLoading = false;
+      notifyListeners();
+      throw e.message;
+    } catch (e) {
+      debugPrint("error in getComments is => $e");
+      isLoading = false;
+      notifyListeners();
+    }
   }
 }

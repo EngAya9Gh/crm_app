@@ -337,6 +337,9 @@ class _CommentViewState extends State<CommentView> {
                                     userModel: currentUser,
                                     commentmodel: value.filteredComments[index],
                                     idClients: widget.client!.idClients!,
+                                    replyOnCommentModel:(value){
+                                      _sendComment(context);
+                                    },
                                     editCommentModel: (value) {
                                       updateItem.value = value;
                                       _selectedCommentType = CommentTypeEnum.values.firstWhere((element) => element.value == value.type_comment);
@@ -362,7 +365,7 @@ class _CommentViewState extends State<CommentView> {
     );
   }
 
-  Future<void> _sendComment(BuildContext context) async {
+  Future<void> _sendComment(BuildContext context,[bool? isReply]) async {
     var listNames=mentionEegExpr.allMatches(key.currentState!.controller!.text).map((e) => e.group(0)?.replaceAll('_', ' ').substring(1)).toList();
     usersMentioned=_suggestions.value?.where((e) {
       return listNames.any((element) => element==e.name);
@@ -410,7 +413,11 @@ class _CommentViewState extends State<CommentView> {
         usersMentioned=[];
         updateItem.value=null;
         _selectedCommentType=null;
-      } else {
+      }
+      else if(isReply??false){
+        
+      }
+       else {
         AppSnackbar.showSnakeBar(
           'من فضلك ادخل التعليق',
           color: ToastColorsEnum.error,

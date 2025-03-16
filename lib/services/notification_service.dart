@@ -54,8 +54,6 @@ class NotificationService {
     }
     return fcmToken;
   }
-
-
   static void listen() {
     FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
       if (message != null) {
@@ -64,7 +62,7 @@ class NotificationService {
         log(message.data.toString());
         log('${message.notification?.title}');
         Map<String, dynamic> notification = message.data;
-        NotificationService.flutterLocalNotificationsPlugin.show(
+        flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             message.notification?.title,
             message.notification?.body,
@@ -75,19 +73,19 @@ class NotificationService {
                 presentSound: true,
               ),
               android: AndroidNotificationDetails(
-                NotificationService.channel.id,
-                NotificationService.channel.name,
-                channelDescription: NotificationService.channel.description,
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
                 playSound: true,
                 icon: '@mipmap/launcher_icon',
                 importance: Importance.max,
               ),
             ));
-        // String typeNotify = message.data['type_notify'];
+        String typeNotify = message.data['type_notify'];
         if(message.data['title']== "مهمة جديدة"){
           AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
         }
-        // AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
+        AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen(

@@ -7,7 +7,11 @@ import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/item_comment_mention.dart';
+import 'package:crm_smart/model/commentmodel.dart';
+import 'package:crm_smart/ui/screen/care/card_comment.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/home_app_bar.dart';
+
+import 'package:crm_smart/view_model/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -55,6 +59,7 @@ class _WebHomePageState extends State<WebHomePage> {
         Provider.of<RegionProvider>(context, listen: false).getRegions(),
         Provider.of<product_vm>(context, listen: false).getproduct_vm(),
         Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket'),
+        Provider.of<comment_vm>(context, listen: false).getCommentMentions(),
       ]);
     });
   }
@@ -165,49 +170,59 @@ class _WebHomePageState extends State<WebHomePage> {
                             ),
                           ),
                           12.horizontal,
-                          Stack(clipBehavior: Clip.none, children: [
-                            PopupMenuButton(
-                                offset: Offset(0, 10),
-                                constraints: BoxConstraints(
-                                    // Set the width to match screen width
-                                    minWidth: 420.scaleWidth,
-                                    maxWidth: 520.scaleWidth,
-                                    maxHeight: 600.scaleHeight),
-                                position: PopupMenuPosition.under,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Transform.translate(
-                                  offset: Offset(0, 2),
-                                  child: Icon(
-                                    Icons.comment,
-                                    size: (25.0).scaleFontSize,
+                          if ((Provider.of<UserProvider>(context, listen: true).currentUser.noOfMentions ?? 0) != 0)
+                            Stack(clipBehavior: Clip.none, children: [
+                              Consumer<comment_vm>(
+                                builder: (context, value, child) => PopupMenuButton(
+                                  offset: Offset(0, 10),
+                                  constraints: BoxConstraints(
+                                      // Set the width to match screen width
+                                      minWidth: 420.scaleWidth,
+                                      maxWidth: 520.scaleWidth,
+                                      maxHeight: 600.scaleHeight),
+                                  position: PopupMenuPosition.under,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                ),
-                                onSelected: (value) => {},
-                                itemBuilder: (context) => [1, 2, 3]
-                                    .map(
-                                      (e) => PopupMenuItem(enabled: false, child: ItemCommentMentionWidget()),
-                                    )
-                                    .toList()),
-                            Positioned(
-                                right: -7,
-                                top: -7,
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.red,
+                                  child: Transform.translate(
+                                    offset: Offset(0, 2),
+                                    child: Icon(
+                                      Icons.comment,
+                                      size: (25.0).scaleFontSize,
                                     ),
-                                    width: (22.0).scaleWidth,
-                                    height: (22.0).scaleWidth,
-                                    child: Center(
-                                      child: AppText(
-                                        '5',
-                                        color: Colors.white,
-                                        fontSize: (14.0).scaleFontSize,
+                                  ),
+                                  onOpened: () => value.getCommentMentions(),
+                                  onSelected: (value) => {},
+                                  itemBuilder: (context) => List.generate(
+                                      value.isLoading ? 3 : value.commentMention.length,
+                                      (index) => PopupMenuItem(
+                                          enabled: false,
+                                          child: Directionality(
+                                            textDirection: TextDirection.rtl,
+                                            child: Cardcomment(
+                                              commentmodel: value.commentMention[index],
+                                            ),
+                                          ))),
+                                ),
+                              ),
+                              Positioned(
+                                  right: -9,
+                                  top: -9,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.red,
                                       ),
-                                    ))),
-                          ]),
+                                      width: (22.0).scaleWidth,
+                                      height: (22.0).scaleWidth,
+                                      child: Center(
+                                        child: AppText(
+                                          "${Provider.of<UserProvider>(context, listen: true).currentUser.noOfMentions}",
+                                          color: Colors.white,
+                                          fontSize: (14.0).scaleFontSize,
+                                        ),
+                                      ))),
+                            ]),
                           12.horizontal,
                           InkWell(
                             onTap: () {

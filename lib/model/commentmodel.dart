@@ -35,10 +35,18 @@ class CommentModel {
       imgImage = EndPoints.baseUrls.urlImage + image;
     }
     idComment = json['id_comment'] != null ? json['id_comment'].toString() : "${json['id'] ?? ''}";
-    fkUser = json['fk_user'] != null ? json['fk_user'].toString() : "";
-    fkClient = json['fk_client'] != null ? json['fk_client'].toString() : "";
+    fkUser = json['fk_user'] != null
+        ? json['fk_user'].toString()
+        : json['user_id'] != null
+            ? json['user_id'].toString()
+            : "";
+    fkClient = json['fk_client'] != null
+        ? json['fk_client'].toString()
+        : json['client_id'] != null
+            ? json['client_id'].toString()
+            : "";
     content = json['content'] ?? '';
-    nameUser = json['nameUser'];
+    nameUser = json['nameUser']??json['user_name'];
     imgImage = image;
     nameEnterprise = json['name_enterprise'] == null ? null : json['name_enterprise'];
     commentedBy = json['commented_by'] == null ? null : UserModel.fromJson(json['commented_by']);
@@ -51,9 +59,12 @@ class CommentModel {
     final _data = <String, dynamic>{};
     _data['id_comment'] = idComment;
     _data['fk_user'] = fkUser;
+    _data['user_id'] = fkUser;
     _data['fk_client'] = fkClient;
+    _data['client_id'] = fkClient;
     _data['content'] = content;
     _data['nameUser'] = nameUser;
+    _data['user_name'] = nameUser;
     _data['img_image'] = imgImage;
     _data['name_enterprise'] = nameEnterprise;
     _data['date_comment'] = date_comment;
