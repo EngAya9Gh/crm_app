@@ -14,11 +14,12 @@ import '../../../core/utils/end_points.dart';
 import '../../../model/commentmodel.dart';
 import '../../../model/usermodel.dart';
 
-class Cardcomment extends StatelessWidget {
+class Cardcomment extends StatefulWidget {
   Cardcomment(
       {required this.commentmodel,
       this.userModel,
       this.idClients,
+      this.color,
       Key? key,
       this.editCommentModel,
       this.canReplay = false,
@@ -28,13 +29,22 @@ class Cardcomment extends StatelessWidget {
   CommentModel commentmodel;
   UserModel? userModel;
   String? idClients;
+  final Color? color;
   final bool fromMenu;
   final ValueChanged<CommentModel>? editCommentModel;
   final ValueChanged<CommentModel>? replyOnCommentModel;
   final bool canReplay;
-  final ValueNotifier<bool> tapToRplay = ValueNotifier(false);
-  final ValueNotifier<bool> activeRplay = ValueNotifier(false);
+
+  @override
+  State<Cardcomment> createState() => _CardcommentState();
+}
+
+class _CardcommentState extends State<Cardcomment> {
   final TextEditingController repalyText = TextEditingController();
+  final ValueNotifier<bool> tapToRplay = ValueNotifier(false);
+
+  final ValueNotifier<bool> activeRplay = ValueNotifier(false);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,12 +57,12 @@ class Cardcomment extends StatelessWidget {
                 flex: 1,
                 child: Stack(
                   children: [
-                    if (!fromMenu)
+                    if (!widget.fromMenu)
                       Positioned(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: AppStatusChip(
-                            status: commentmodel.type_comment,
+                            status: widget.commentmodel.type_comment,
                             color: AppColors.primaryMain,
                             fontSize: 13,
                           ),
@@ -91,19 +101,19 @@ class Cardcomment extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           AppText(
-                                            commentmodel.nameUser,
+                                            widget.commentmodel.nameUser,
                                             fontWeight: FontWeight.bold,
                                           ),
                                           2.height,
                                           AppText(
                                             HelperFunctions.dateTimeToString(DateTime.parse(
-                                              commentmodel.date_comment,
+                                              widget.commentmodel.date_comment,
                                             )),
                                           ),
                                           5.height,
-                                          if (fromMenu)
+                                          if (widget.fromMenu)
                                             AppText(
-                                              commentmodel.nameEnterprise,
+                                              widget.commentmodel.nameEnterprise,
                                               color: AppColors.primaryMain,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -113,35 +123,36 @@ class Cardcomment extends StatelessWidget {
                                   ],
                                 ),
                                 SizedBox(height: 15),
-                                if (commentmodel.content.isNotEmpty)
+                                if (widget.commentmodel.content.isNotEmpty)
                                   GestureDetector(
                                     onLongPress: () async {
-                                      await HelperFunctions.copyToClipboard(commentmodel.content);
+                                      await HelperFunctions.copyToClipboard(widget.commentmodel.content);
                                       AppSnackbar.showSnakeBar('Copied to your clipboard!');
                                     },
                                     child: AppText(
-                                      commentmodel.content,
+                                      widget.commentmodel.content,
                                       fontSize: 18,
                                     ),
                                   ),
                                 Wrap(
-                                  children:
-                                      (commentmodel.mention_users ?? []).map((e) => AppText(' @${e.name} ', color: AppColors.primaryMain)).toList(),
+                                  children: (widget.commentmodel.mention_users ?? [])
+                                      .map((e) => AppText(' @${e.name} ', color: AppColors.primaryMain))
+                                      .toList(),
                                 ),
                                 // if (commentmodel.nameUser == userModel?.nameUser)
-                                if (!fromMenu)
+                                if (!widget.fromMenu)
                                   Align(
                                     alignment: AlignmentDirectional.bottomEnd,
                                     child: InkWell(
                                         onTap: () {
-                                          editCommentModel?.call(commentmodel);
+                                          widget.editCommentModel?.call(widget.commentmodel);
                                         },
                                         child: Padding(
                                           padding: EdgeInsetsDirectional.all(8),
                                           child: Icon(Icons.edit, color: AppColors.primaryMain),
                                         )),
                                   ),
-                                if (canReplay)
+                                if (widget.canReplay)
                                   ListenableBuilder(
                                     listenable: Listenable.merge([tapToRplay, activeRplay]),
                                     builder: (context, child) => TapRegion(
@@ -160,7 +171,8 @@ class Cardcomment extends StatelessWidget {
                                                       suffixIcon: activeRplay.value
                                                           ? InkWell(
                                                               onTap: () {
-                                                                replyOnCommentModel?.call(commentmodel.copyWith(content: repalyText.text));
+                                                                widget.replyOnCommentModel
+                                                                    ?.call(widget.commentmodel.copyWith(content: repalyText.text));
                                                               },
                                                               child: Transform.flip(
                                                                 flipX: true,
@@ -208,8 +220,8 @@ class Cardcomment extends StatelessWidget {
   }
 
   Widget _prepareImage() {
-    final imageUrl = commentmodel.imgImage ?? '';
-    final name = commentmodel.nameUser ?? '';
+    final imageUrl = widget.commentmodel.imgImage ?? '';
+    final name = widget.commentmodel.nameUser ?? '';
     if (imageUrl.isEmpty) {
       if (name.isEmpty) {
         return Icon(

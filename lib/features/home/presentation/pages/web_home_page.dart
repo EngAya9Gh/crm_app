@@ -9,9 +9,11 @@ import 'package:crm_smart/features/mangement/manage_privileges/privileges/presen
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/ui/screen/care/card_comment.dart';
+import 'package:crm_smart/ui/screen/client/client_profile.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/home_app_bar.dart';
 
 import 'package:crm_smart/view_model/comment.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -197,10 +199,23 @@ class _WebHomePageState extends State<WebHomePage> {
                                       value.isLoading ? 3 : value.commentMention.length,
                                       (index) => PopupMenuItem(
                                           enabled: false,
-                                          child: Directionality(
-                                            textDirection: TextDirection.rtl,
-                                            child: Cardcomment(
-                                              commentmodel: value.commentMention[index],
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  CupertinoPageRoute(
+                                                      builder: (context) => ClientProfile(
+                                                            tabIndex: 2,
+                                                            idClient: value.commentMention[index].fkClient,
+                                                            commentId: value.commentMention[index].idComment,
+                                                            // idclient:data==null?datanotify: data['paramId'],
+                                                          )));
+                                            },
+                                            child: Directionality(
+                                              textDirection: TextDirection.rtl,
+                                              child: Cardcomment(
+                                                commentmodel: value.commentMention[index],
+                                              ),
                                             ),
                                           ))),
                                 ),

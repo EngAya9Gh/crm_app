@@ -164,6 +164,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
                                         builder: (context) => ClientProfile(
                                               tabIndex: 2,
                                               idClient: comment.commentMention[index].fkClient,
+                                            commentId: comment.commentMention[index].idComment,
                                               // idclient:data==null?datanotify: data['paramId'],
                                             )));
                               },

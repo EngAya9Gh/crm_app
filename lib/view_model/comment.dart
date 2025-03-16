@@ -188,6 +188,36 @@ class comment_vm extends ChangeNotifier {
     }
   }
 
+  Future<String> replyComment_vm(CommentModel comment,) async {
+    try {
+      isloadadd = true;
+      notifyListeners();
+
+
+      var sentBody = {
+        'content': comment.content,
+        'comment_id': comment.idComment,
+      };
+      var res = await GetIt.I<ApiServices>().post(
+        endPoint: EndPoints.baseUrls.urlLaravel + 'addComment/${comment.fkClient}',
+        data: sentBody,
+      );
+      if (res['result'] == "success") {
+
+        isloadadd = false;
+        notifyListeners();
+      }
+      isloadadd = false;
+      notifyListeners();
+      return "success";
+    } catch (e, s) {
+      print(e.toString() + s.toString());
+      isloadadd = false;
+      notifyListeners();
+      return "error";
+    }
+  }
+
   Future<List<UserEntity>?> getAllUsersComment() async {
     try {
       isloadadd = true;

@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/helpers/input_validator.dart';
+import 'package:crm_smart/core/common/helpers/scroll_to_find_item.dart';
 import 'package:crm_smart/core/common/widgets/app_icon.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
@@ -29,14 +30,18 @@ import '../../../model/usermodel.dart';
 import '../../../view_model/comment.dart';
 import '../../../view_model/user_vm_provider.dart';
 import 'card_comment.dart';
-RegExp mentionEegExpr=RegExp(r'@[\w\u0600-\u06FF\u200C.-]+');
+
+RegExp mentionEegExpr = RegExp(r'@[\w\u0600-\u06FF\u200C.-]+');
+
 class CommentView extends StatefulWidget {
   CommentView({
     required this.client,
+    this.commentId,
     Key? key,
   }) : super(key: key);
 
   ClientModel? client;
+  int? commentId;
 
   @override
   _CommentViewState createState() => _CommentViewState();
@@ -55,26 +60,66 @@ class _CommentViewState extends State<CommentView> {
   List<String>? filterUserName = [];
   ValueNotifier<List<UserEntity>?> _suggestions = ValueNotifier([]);
   final ValueNotifier<CommentModel?> updateItem = ValueNotifier(null);
-
+  final ScrollController _scrollController = ScrollController();
+  late final comment_vm commentVm;
+  // Create a GlobalKey for the target item
+  final GlobalKey _targetKey = GlobalKey();
+  final ValueNotifier<bool> isHighlighted = ValueNotifier(false);
   @override
   void initState() {
+    commentVm = Provider.of<comment_vm>(context, listen: false);
     pro = context.read<UserProvider>()..getCurrentUser();
     currentUser = pro.currentUser;
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        Provider.of<comment_vm>(context, listen: false).getAllUsersComment().then(
+        commentVm.getAllUsersComment().then(
           (value) {
             _suggestions.value = value;
           },
         );
       },
     );
-    super.initState();
+
+    // Check if commentId is provided and scroll to the item
+    if (widget.commentId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        isHighlighted.value = !isHighlighted.value; // Assuming you have a property for highlighting
+        _findAndScrollToItem(widget.commentId!.toString());
+      });
+    }
+  }
+
+  Future<void> _findAndScrollToItem(String targetId) async {
+    // Wait for the widget to be built
+    await Future.delayed(Duration(milliseconds: 100));
+
+    // Check if the scroll controller has clients
+    if (_scrollController.hasClients) {
+      // Find the index of the target comment
+      final index = commentVm.filteredComments.indexWhere((comment) => comment.idComment == targetId);
+
+      // If the comment is found, scroll to its position
+      if (index != -1) {
+        // Calculate the target position to center the item
+        // Scroll to the calculated position
+        await _scrollController.animateTo(
+          (index + 1) * 80,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+
+        // Remove highlight after a delay
+        Future.delayed(Duration(seconds: 2), () {
+          isHighlighted.value = !isHighlighted.value;
+        });
+      }
+    }
   }
 
   @override
   void dispose() {
     _comment.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -89,6 +134,7 @@ class _CommentViewState extends State<CommentView> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: CustomScrollView(
+              controller: _scrollController,
               slivers: [
                 // add task button
                 SliverToBoxAdapter(
@@ -158,7 +204,7 @@ class _CommentViewState extends State<CommentView> {
                                               child: CustomDropDown(
                                                 hint: 'نوع التعليق',
                                                 items: CommentTypeEnum.values,
-                                                compareFn:  (item, selectedItem) => item.index == selectedItem.index,
+                                                compareFn: (item, selectedItem) => item.index == selectedItem.index,
                                                 itemAsString: (value) => value!.value,
                                                 selectedItem: value?.type_comment != null
                                                     ? CommentTypeEnum.values.firstWhere((element) => element.value == value!.type_comment)
@@ -190,7 +236,7 @@ class _CommentViewState extends State<CommentView> {
                                                       try {
                                                         if (_selectedCommentType != null) {
                                                           _previousSelectedCommentType = _selectedCommentType;
-                                                          updateItem.value=updateItem.value?.copyWith(type_comment: _selectedCommentType?.value);
+                                                          updateItem.value = updateItem.value?.copyWith(type_comment: _selectedCommentType?.value);
                                                           setState(() {});
                                                           Navigator.of(context, rootNavigator: true).pop(false);
                                                         }
@@ -258,7 +304,7 @@ class _CommentViewState extends State<CommentView> {
                   child: CustomDropDown(
                     label: 'نوع التعليق',
                     hint: 'نوع التعليق',
-                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
+                    compareFn: (item, selectedItem) => item.index == selectedItem.index,
                     items: CommentTypeEnum.values.where(excludedTypes).toList(),
                     itemAsString: (value) => value!.value,
                     selectedItem: _filterCommentType,
@@ -330,28 +376,37 @@ class _CommentViewState extends State<CommentView> {
                               child: AppErrorWidget(message: 'لا يوجد تعليقات'),
                             );
                           } else {
-                            return SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  return Cardcomment(
-                                    userModel: currentUser,
-                                    commentmodel: value.filteredComments[index],
-                                    idClients: widget.client!.idClients!,
-                                    replyOnCommentModel:(value){
-                                      _sendComment(context);
-                                    },
-                                    editCommentModel: (value) {
-                                      updateItem.value = value;
-                                      _selectedCommentType = CommentTypeEnum.values.firstWhere((element) => element.value == value.type_comment);
-                                      // usersMentioned = [...value.mention_users!];
-                                      key.currentState?.controller?.text = value.content;
-                                      for (UserEntity item in value.mention_users ?? []) {
-                                        key.currentState?.controller?.text = (key.currentState?.controller?.text ?? '') + " @${item.name.replaceAll(' ', '_')} ";
-                                      }
-                                    },
-                                  );
-                                },
-                                childCount: value.filteredComments.length,
+                            if (widget.commentId != null) _findAndScrollToItem(widget.commentId!.toString());
+                            return ValueListenableBuilder(
+                              valueListenable: isHighlighted,
+                              builder: (context, highlighted, child) => SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    return Cardcomment(
+                                      color: (widget.commentId!.toString() == value.filteredComments[index].idComment)
+                                          ? AppColors.primaryAltLight
+                                          : null,
+                                      userModel: currentUser,
+                                      canReplay: true,
+                                      commentmodel: value.filteredComments[index],
+                                      idClients: widget.client!.idClients!,
+                                      replyOnCommentModel: (value) {
+                                        _sendComment(context, true, value);
+                                      },
+                                      editCommentModel: (value) {
+                                        updateItem.value = value;
+                                        _selectedCommentType = CommentTypeEnum.values.firstWhere((element) => element.value == value.type_comment);
+                                        // usersMentioned = [...value.mention_users!];
+                                        key.currentState?.controller?.text = value.content;
+                                        for (UserEntity item in value.mention_users ?? []) {
+                                          key.currentState?.controller?.text =
+                                              (key.currentState?.controller?.text ?? '') + " @${item.name.replaceAll(' ', '_')} ";
+                                        }
+                                      },
+                                    );
+                                  },
+                                  childCount: value.filteredComments.length,
+                                ),
                               ),
                             );
                           }
@@ -365,11 +420,13 @@ class _CommentViewState extends State<CommentView> {
     );
   }
 
-  Future<void> _sendComment(BuildContext context,[bool? isReply]) async {
-    var listNames=mentionEegExpr.allMatches(key.currentState!.controller!.text).map((e) => e.group(0)?.replaceAll('_', ' ').substring(1)).toList();
-    usersMentioned=_suggestions.value?.where((e) {
-      return listNames.any((element) => element==e.name);
-    },).toList();
+  Future<void> _sendComment(BuildContext context, [bool? isReply, CommentModel? commentModel]) async {
+    var listNames = mentionEegExpr.allMatches(key.currentState!.controller!.text).map((e) => e.group(0)?.replaceAll('_', ' ').substring(1)).toList();
+    usersMentioned = _suggestions.value?.where(
+      (e) {
+        return listNames.any((element) => element == e.name);
+      },
+    ).toList();
     print(listNames);
     print(usersMentioned);
     try {
@@ -402,22 +459,30 @@ class _CommentViewState extends State<CommentView> {
         } else if (updateItem.value != null) {
           await Provider.of<comment_vm>(context, listen: false)
               .editComment_vm(key.currentState!.controller!.text.replaceAll(mentionEegExpr, '').trim(),
-                  updateItem.value!.copyWith(type_comment: _selectedCommentType?.value),usersMentioned??[])
+                  updateItem.value!.copyWith(type_comment: _selectedCommentType?.value), usersMentioned ?? [])
               .then(
             (value) {
               Provider.of<comment_vm>(context, listen: false).getComments(widget.client!.idClients.toString());
             },
           );
         }
-        key=GlobalKey<FlutterMentionsState>();
-        usersMentioned=[];
-        updateItem.value=null;
-        _selectedCommentType=null;
-      }
-      else if(isReply??false){
-        
-      }
-       else {
+        key = GlobalKey<FlutterMentionsState>();
+        usersMentioned = [];
+        updateItem.value = null;
+        _selectedCommentType = null;
+      } else if (isReply ?? false) {
+        Provider.of<comment_vm>(context, listen: false)
+            .replyComment_vm(
+          commentModel!,
+        )
+            .then((value) {
+          if (value != "error") {
+            Provider.of<UserProvider>(context, listen: false).getCurrentUser();
+            Provider.of<comment_vm>(context, listen: false).getComments(widget.client!.idClients.toString());
+            _comment.text = '';
+          }
+        });
+      } else {
         AppSnackbar.showSnakeBar(
           'من فضلك ادخل التعليق',
           color: ToastColorsEnum.error,
