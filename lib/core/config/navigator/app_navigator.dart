@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/config/navigator/routes/finance_routes.dart';
 import 'package:crm_smart/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/task_managment_page.dart';
+import 'package:crm_smart/features/versions/presentation/pages/incomming_versions_page.dart';
 import 'package:crm_smart/features/versions/presentation/pages/versions_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -227,7 +228,12 @@ abstract class AppRouter {
             builder: (context, state) => AddVersionPage(
               versionModel: state.extra as VersionModel?,
             ),
-          )
+          ),
+          GoRoute(
+            name: AppRoutesNames.generalRoutes.showIncommingUpdate,
+            path: AppRoutesPaths.incommingUpdate,
+            builder: (context, state) => IncommingVersionsPage()
+          ),
         ]),
       ]),
 

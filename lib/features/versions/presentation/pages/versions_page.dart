@@ -1,4 +1,13 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/core/utils/app_fonts.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.dart';
+import 'package:crm_smart/features/versions/presentation/pages/incomming_versions_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,7 +37,27 @@ class _VersionPageState extends State<VersionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'التحديثات', showBackButton: true),
+      appBar: CustomAppBar(title: 'التحديثات', showBackButton: true, actions: [
+        Directionality(
+          textDirection: TextDirection.rtl,
+          child: AppTextButton(
+            text: "التحديثات\nالقادمة",
+            onPressed: () {
+              AppNavigator.go(
+                IncommingVersionsPage(),
+                name: AppRoutesNames.generalRoutes.showIncommingUpdate,
+              );
+            },
+            textStyle: AppStyles.textStyle.copyWith(
+              fontSize: (16.0).scaleFontSize,
+              fontWeight: FontWeight.w600,
+              fontFamily: AppFonts.fontFamily1,
+              color: AppColors.white,
+            ),
+            appButtonStyle: AppButtonStyle.secondary,
+          ),
+        ),
+      ]),
       body: Directionality(
         textDirection: TextDirection.ltr,
         child: BlocBuilder<VersionsBloc, VersionsState>(
@@ -49,7 +78,7 @@ class _VersionPageState extends State<VersionsPage> {
                     );
                   } else {
                     // باقي العناصر (تحويل الفهرس بسبب العقدة الجديدة)
-                    final adjustedIndex =(context.read<PrivilegesCubit>().checkPrivilege('310') == false)? index:(index - 1); // تعويض الفهرس
+                    final adjustedIndex = (context.read<PrivilegesCubit>().checkPrivilege('310') == false) ? index : (index - 1); // تعويض الفهرس
                     print(adjustedIndex);
                     return CustomTimeLineVersionWidget(
                       index: adjustedIndex,

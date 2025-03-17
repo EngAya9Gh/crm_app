@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/get_incomming_version_info.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/get_versions_usecase.dart';
 import 'package:crm_smart/features/versions/presentation/widgets/new_entry_version_widget.dart';
 import 'package:crm_smart/model/versionModel.dart';
@@ -22,11 +24,13 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
   final GetVersionsUsecase getVersionsUsecase;
   final AddVersionsUsecase addVersionsUsecase;
   final UpdateVersionsUsecase updateVersionsUsecase;
+  final GetIncommingVersionInfoUsecase getIncommingVersionInfoUsecase;
 
   VersionsBloc(
     this.getVersionsUsecase,
     this.addVersionsUsecase,
     this.updateVersionsUsecase,
+    this.getIncommingVersionInfoUsecase,
   ) : super(VersionsState()) {
     on<GetAllVersionsEvent>(_onHandelGetAllVersionsEvent);
     on<ResetListAddedEvent>(_onHandelResetListAddedEvent);
@@ -34,6 +38,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     on<UpdateVersionEvent>(_onHandelUpdateOrVersionEvent);
     on<AddOrUpdateNewVersionItemEvent>(_onHandelAddOrUpdateNewVersionItemEvent);
     on<RemoveItemVersion>(_onHandelRemoveItemVersion);
+    on<GetIncommingUpdateInfoEvent>(_onGetIncommingUpdateInfoEvent);
   }
 
   FutureOr<void> _onHandelGetAllVersionsEvent(GetAllVersionsEvent event, Emitter<VersionsState> emit) async {
@@ -111,6 +116,24 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
   }
 
   FutureOr<void> _onHandelRemoveItemVersion(RemoveItemVersion event, Emitter<VersionsState> emit) {
-    emit(state.copyWith(listAddNew: state.listAddNew..removeWhere((element) => element.index==event.index,)));
+    emit(state.copyWith(
+        listAddNew: state.listAddNew
+          ..removeWhere(
+            (element) => element.index == event.index,
+          )));
+  }
+
+  FutureOr<void> _onGetIncommingUpdateInfoEvent(GetIncommingUpdateInfoEvent event, Emitter<VersionsState> emit) async {
+    emit(state.copyWith(incommingUpdateInfo: BlocStatus.loading()));
+    final result = await getIncommingVersionInfoUsecase();
+    result.fold(
+      (e) {
+        if (AppConstants.shouldReturnEarly(e)) return;
+        emit(state.copyWith(incommingUpdateInfo: BlocStatus.fail(error: e)));
+      },
+      (value) {
+        emit(state.copyWith(incommingUpdateInfo: BlocStatus.success(data: value.message)));
+      },
+    );
   }
 }

@@ -23,6 +23,7 @@ class _GeneralRoutes {
   final String notifications = 'notifications';
   final String versions = 'versions';
   final String addVersions = 'addVersions';
+  final String showIncommingUpdate = 'showIncommingUpdate';
 }
 
 class _ClientProfile {

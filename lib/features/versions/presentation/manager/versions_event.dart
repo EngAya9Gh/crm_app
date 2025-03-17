@@ -39,3 +39,7 @@ class RemoveItemVersion extends VersionsEvent {
 
   RemoveItemVersion({required this.index});
 }
+
+class GetIncommingUpdateInfoEvent extends VersionsEvent{
+  
+}

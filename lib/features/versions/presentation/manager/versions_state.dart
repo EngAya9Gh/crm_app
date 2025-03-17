@@ -4,6 +4,7 @@ part of 'versions_bloc.dart';
 class VersionsState {
   final List<VersionModel> listVersionsState;
   final BlocStatus<List<VersionModel>> getAllVersionsStatus;
+  final BlocStatus<IconmmingUpdateInfo> incommingUpdateInfo;
   final GetVersionsParams getVersionsParams;
   final bool hasReachedEnd;
 final List<OneItemVersionEntity> listAddNew;
@@ -13,6 +14,7 @@ final List<OneItemVersionEntity> listAddNew;
     this.getAllVersionsStatus = const BlocStatus<List<VersionModel>>.initial(),
     this.getVersionsParams = const GetVersionsParams(),
     this.hasReachedEnd = false,
+    this.incommingUpdateInfo=const BlocStatus.initial()
   });
 
   VersionsState copyWith({
@@ -21,6 +23,7 @@ final List<OneItemVersionEntity> listAddNew;
     GetVersionsParams? getVersionsParams,
     bool? hasReachedEnd,
     List<OneItemVersionEntity>? listAddNew,
+  BlocStatus<IconmmingUpdateInfo>? incommingUpdateInfo,
   }) {
     return VersionsState(
       listVersionsState: listVersionsState ?? this.listVersionsState,
@@ -28,6 +31,7 @@ final List<OneItemVersionEntity> listAddNew;
       getVersionsParams: getVersionsParams ?? this.getVersionsParams,
       hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
       listAddNew: listAddNew ?? this.listAddNew,
+      incommingUpdateInfo: incommingUpdateInfo ?? this.incommingUpdateInfo,
     );
   }
 }

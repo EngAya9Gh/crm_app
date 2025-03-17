@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -20,6 +21,7 @@ abstract class NotificationsDatasource {
   Future<bool> addVersion(AddVersionPramas addVersionPramas);
 
   Future<ResponseWrapper<VersionModel>> updateVersion(AddVersionPramas addVersionPramas);
+  Future<ResponseWrapper<IconmmingUpdateInfo>> getIncommingUpdateInfo();
 }
 
 @LazySingleton(as: NotificationsDatasource)
@@ -74,15 +76,28 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
   Future<ResponseWrapper<VersionModel>> updateVersion(AddVersionPramas addVersionPramas) async {
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.post(
-          endPoint: EndPoints.versions.updateVersions(addVersionPramas.id!),
-          data: addVersionPramas.toParamsUpdate());
+      final response = await _api.post(endPoint: EndPoints.versions.updateVersions(addVersionPramas.id!), data: addVersionPramas.toParamsUpdate());
       return ResponseWrapper.fromJson(
         response,
         (json) => VersionModel.fromJson(json),
       );
     } on BaseAppException catch (e) {
       debugPrint("error in getNotifications in datasource => $e");
+      throw e.message;
+    }
+  }
+
+  @override
+  Future<ResponseWrapper<IconmmingUpdateInfo>> getIncommingUpdateInfo() async {
+    try {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(endPoint: EndPoints.versions.getIncommingUpdateInfo);
+      return ResponseWrapper.fromJson(
+        response,
+        (json) => IconmmingUpdateInfo.fromJson(json),
+      );
+    } on BaseAppException catch (e) {
+      debugPrint("error in get Incomming Update Info in datasource => $e");
       throw e.message;
     }
   }

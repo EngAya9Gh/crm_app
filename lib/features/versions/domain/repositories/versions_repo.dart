@@ -1,5 +1,6 @@
 import 'package:crm_smart/features/notifications/domain/use_cases/get_unread_notifications_count_usecase.dart';
 import 'package:crm_smart/features/notifications/domain/use_cases/mark_notifications_as_read_usecase.dart';
+import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
@@ -16,4 +17,5 @@ abstract class versionsRepo {
 
   Future<Either<String, bool>> addVersion(AddVersionPramas params);
   Future<Either<String, ResponseWrapper<VersionModel>>> updateVersion(AddVersionPramas params);
+  Future<Either<String, ResponseWrapper<IconmmingUpdateInfo>>> getIncommingUpdateInfo();
 }

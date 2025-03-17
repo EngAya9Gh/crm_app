@@ -1,15 +1,11 @@
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/features/notifications/domain/use_cases/get_unread_notifications_count_usecase.dart';
-import 'package:crm_smart/features/notifications/domain/use_cases/mark_notifications_as_read_usecase.dart';
+import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
 import 'package:crm_smart/model/versionModel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../core/services/api/api_utils.dart';
-import '../../../../model/notificationModel.dart';
 import '../../domain/repositories/versions_repo.dart';
 import '../../domain/use_cases/add_version_usecase.dart';
 import '../../domain/use_cases/get_versions_usecase.dart';
@@ -58,6 +54,17 @@ class NotificationsRepoImpl implements versionsRepo {
       return Right(data);
     } catch (e) {
       debugPrint("error in getNotifications in repo => $e");
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, ResponseWrapper<IconmmingUpdateInfo>>> getIncommingUpdateInfo() async{
+    try {
+      final data = await _dataSource.getIncommingUpdateInfo();
+      return Right(data);
+    } catch (e) {
+      debugPrint("error in get incomming update info in repo => $e");
       return Left(e.toString());
     }
   }
