@@ -376,14 +376,14 @@ class _CommentViewState extends State<CommentView> {
                               child: AppErrorWidget(message: 'لا يوجد تعليقات'),
                             );
                           } else {
-                            if (widget.commentId != null) _findAndScrollToItem(widget.commentId!.toString());
+                            // if (widget.commentId != null) _findAndScrollToItem(widget.commentId!.toString());
                             return ValueListenableBuilder(
                               valueListenable: isHighlighted,
                               builder: (context, highlighted, child) => SliverList(
                                 delegate: SliverChildBuilderDelegate(
                                   (context, index) {
                                     return Cardcomment(
-                                      color: (widget.commentId!.toString() == value.filteredComments[index].idComment)
+                                      color: (widget.commentId?.toString() == value.filteredComments[index].idComment)
                                           ? AppColors.primaryAltLight
                                           : null,
                                       userModel: currentUser,
@@ -478,7 +478,6 @@ class _CommentViewState extends State<CommentView> {
             .then((value) {
           if (value != "error") {
             Provider.of<UserProvider>(context, listen: false).getCurrentUser();
-            Provider.of<comment_vm>(context, listen: false).getComments(widget.client!.idClients.toString());
             _comment.text = '';
           }
         });

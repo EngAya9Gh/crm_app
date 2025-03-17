@@ -40,7 +40,10 @@ class _HomeAppBarState extends State<HomeAppBar> {
   late final comment_vm comment;
   @override
   void initState() {
-    comment = Provider.of<comment_vm>(context, listen: false)..getCommentMentions();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      comment = await Provider.of<comment_vm>(context, listen: false)
+        ..getCommentMentions();
+    });
 
     super.initState();
   }
@@ -128,7 +131,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
           ),
         ),
         8.width,
-        if ((Provider.of<UserProvider>(context, listen: true).currentUser.noOfMentions ?? 0) != 0)
+        if ((Provider.of<UserProvider>(context, listen: true).currentUser.noOfMentions ?? 0) != 0) ...{
           Stack(clipBehavior: Clip.none, children: [
             PopupMenuButton(
               offset: Offset(0, 10),
@@ -151,31 +154,24 @@ class _HomeAppBarState extends State<HomeAppBar> {
               itemBuilder: (context) => List.generate(
                   comment.commentMention.length,
                   (index) => PopupMenuItem(
-                      enabled: false,
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => ClientProfile(
+                                      tabIndex: 2,
+                                      idClient: comment.commentMention[index].fkClient,
+                                      commentId: comment.commentMention[index].idComment,
+                                      // idclient:data==null?datanotify: data['paramId'],
+                                    )));
+                      },
+                      enabled: true,
                       child: Directionality(
                         textDirection: TextDirection.rtl,
-                        child: PopupMenuItem(
-                            enabled: false,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) => ClientProfile(
-                                              tabIndex: 2,
-                                              idClient: comment.commentMention[index].fkClient,
-                                            commentId: comment.commentMention[index].idComment,
-                                              // idclient:data==null?datanotify: data['paramId'],
-                                            )));
-                              },
-                              child: Directionality(
-                                textDirection: TextDirection.rtl,
-                                child: Cardcomment(
-                                  fromMenu: true,
-                                  commentmodel: comment.commentMention[index],
-                                ),
-                              ),
-                            )),
+                        child: Cardcomment(
+                          fromMenu: true,
+                          commentmodel: comment.commentMention[index],
+                        ),
                       ))),
             ),
             Positioned(
@@ -196,7 +192,8 @@ class _HomeAppBarState extends State<HomeAppBar> {
                       ),
                     ))),
           ]),
-        10.width,
+          10.width,
+        }
       ],
       iconTheme: IconThemeData(size: 10),
       foregroundColor: AppColors.white,

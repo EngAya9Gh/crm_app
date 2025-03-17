@@ -167,6 +167,7 @@ class _Care {
   final getRecommendedClientsFilterClient = 'subscribedClients';
   final String viewComments = "viewComments";
   final String commentMention = "mentionedComments";
+  String getCommentReplies(String idComment) => "viewReplies/$idComment";
 
   final String getClientsAccept = 'getClientsAccept';
 

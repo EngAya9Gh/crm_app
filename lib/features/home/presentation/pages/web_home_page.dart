@@ -198,24 +198,22 @@ class _WebHomePageState extends State<WebHomePage> {
                                   itemBuilder: (context) => List.generate(
                                       value.isLoading ? 3 : value.commentMention.length,
                                       (index) => PopupMenuItem(
-                                          enabled: false,
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  CupertinoPageRoute(
-                                                      builder: (context) => ClientProfile(
-                                                            tabIndex: 2,
-                                                            idClient: value.commentMention[index].fkClient,
-                                                            commentId: value.commentMention[index].idComment,
-                                                            // idclient:data==null?datanotify: data['paramId'],
-                                                          )));
-                                            },
-                                            child: Directionality(
-                                              textDirection: TextDirection.rtl,
-                                              child: Cardcomment(
-                                                commentmodel: value.commentMention[index],
-                                              ),
+                                          enabled: true,
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                    builder: (context) => ClientProfile(
+                                                          tabIndex: 2,
+                                                          idClient: value.commentMention[index].fkClient,
+                                                          commentId: value.commentMention[index].idComment,
+                                                          // idclient:data==null?datanotify: data['paramId'],
+                                                        )));
+                                          },
+                                          child: Directionality(
+                                            textDirection: TextDirection.rtl,
+                                            child: Cardcomment(
+                                              commentmodel: value.commentMention[index],
                                             ),
                                           ))),
                                 ),

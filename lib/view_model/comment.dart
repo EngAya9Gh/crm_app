@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:collection/collection.dart';
 
 import 'package:crm_smart/core/errors/server_exceptions.dart';
@@ -20,9 +21,18 @@ class comment_vm extends ChangeNotifier {
   List<CommentModel> _allCommentsList = [];
   List<CommentModel> filteredComments = [];
   List<CommentModel> commentMention = [];
+  List<CommentModel> replies = [];
+
   CommentTypeEnum filterCommentType = CommentTypeEnum.all;
   bool isloadadd = false;
   bool isLoading = false;
+  bool isLoadingGettingReplies = false;
+  String idCommentUpdated = '';
+
+  void currentCommentAddReplay(CommentModel comment) {
+    idCommentUpdated = comment.idComment;
+    notifyListeners();
+  }
 
   Future<void> getComments(String fk_client) async {
     try {
@@ -188,11 +198,13 @@ class comment_vm extends ChangeNotifier {
     }
   }
 
-  Future<String> replyComment_vm(CommentModel comment,) async {
+  Future<String> replyComment_vm(
+    CommentModel comment,
+  ) async {
     try {
-      isloadadd = true;
+      idCommentUpdated = comment.idComment;
+      isLoadingGettingReplies = true;
       notifyListeners();
-
 
       var sentBody = {
         'content': comment.content,
@@ -203,16 +215,25 @@ class comment_vm extends ChangeNotifier {
         data: sentBody,
       );
       if (res['result'] == "success") {
-
-        isloadadd = false;
+        var newComment = comment.copyWith(hasReplies: true);
+        filteredComments = _allCommentsList = _allCommentsList
+            .map(
+              (element) => element.idComment == comment.idComment
+                  ? element.copyWith(hasReplies: true, replies: List.of(comment.replies ?? [])..add(CommentModel.fromJson(res['message'])))
+                  : element,
+            )
+            .toList();
+        replies = List.of(replies)..add(CommentModel.fromJson(res['message']));
+        filterCommentsByType(filterCommentType.value);
+        isLoadingGettingReplies = false;
         notifyListeners();
       }
-      isloadadd = false;
+      isLoadingGettingReplies = false;
       notifyListeners();
       return "success";
     } catch (e, s) {
       print(e.toString() + s.toString());
-      isloadadd = false;
+      isLoadingGettingReplies = false;
       notifyListeners();
       return "error";
     }
@@ -272,6 +293,40 @@ class comment_vm extends ChangeNotifier {
     } catch (e) {
       debugPrint("error in getComments is => $e");
       isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getAllReply(CommentModel comment) async {
+    try {
+      replies = [];
+      idCommentUpdated = comment.idComment;
+      isLoadingGettingReplies = true;
+      notifyListeners();
+
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      var response = await apiServices.get(endPoint: EndPoints.care.getCommentReplies(comment.idComment));
+
+      final data = apiDataHandler(response);
+      var newComment = comment.copyWith(
+          replies: List.of([])
+            ..addAll(List<CommentModel>.from(data.map((e) {
+              return CommentModel.fromJson(e);
+            }).toList())));
+      _allCommentsList = _allCommentsList.map((e) => e.idComment == comment.idComment ? newComment : e).toList();
+      filterCommentsByType(filterCommentType.value);
+
+      isLoadingGettingReplies = false;
+      notifyListeners();
+    } on BaseAppException catch (e) {
+      debugPrint(e.message);
+      isLoadingGettingReplies = false;
+      notifyListeners();
+      throw e.message;
+    } catch (e) {
+      debugPrint("error in getReply is => $e");
+      isLoadingGettingReplies = false;
       notifyListeners();
     }
   }

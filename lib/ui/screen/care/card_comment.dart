@@ -1,10 +1,14 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/widgets/app_icon.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/core/common/widgets/shimmer_widget.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/view_model/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/user_entity.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
@@ -44,12 +48,15 @@ class _CardcommentState extends State<Cardcomment> {
   final ValueNotifier<bool> tapToRplay = ValueNotifier(false);
 
   final ValueNotifier<bool> activeRplay = ValueNotifier(false);
+  final ValueNotifier<bool> showAll = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.all(2),
-        child: Row(
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(2),
+          child: Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(width: 2),
@@ -168,21 +175,28 @@ class _CardcommentState extends State<Cardcomment> {
                                               duration: Duration(milliseconds: 200),
                                               child: tapToRplay.value
                                                   ? AppTextField(
-                                                      suffixIcon: activeRplay.value
-                                                          ? InkWell(
-                                                              onTap: () {
-                                                                widget.replyOnCommentModel
-                                                                    ?.call(widget.commentmodel.copyWith(content: repalyText.text));
-                                                              },
-                                                              child: Transform.flip(
-                                                                flipX: true,
-                                                                child: Icon(
-                                                                  Icons.reply_all,
-                                                                  color: AppColors.primaryMain,
-                                                                ),
-                                                              ),
+                                                      suffixIcon: context.watch<comment_vm>().isLoadingGettingReplies
+                                                          ? SizedBox(
+                                                              child: AppLoader(),
+                                                              width: 20,
+                                                              height: 20,
                                                             )
-                                                          : null,
+                                                          : activeRplay.value
+                                                              ? InkWell(
+                                                                  onTap: () {
+                                                                    widget.replyOnCommentModel
+                                                                        ?.call(widget.commentmodel.copyWith(content: repalyText.text));
+                                                                    repalyText.clear();
+                                                                  },
+                                                                  child: Transform.flip(
+                                                                    flipX: true,
+                                                                    child: Icon(
+                                                                      Icons.reply_all,
+                                                                      color: AppColors.primaryMain,
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              : null,
                                                       filled: true,
                                                       fillColor: AppColors.white,
                                                       hintText: '',
@@ -196,6 +210,7 @@ class _CardcommentState extends State<Cardcomment> {
                                                   : InkWell(
                                                       onTap: () {
                                                         tapToRplay.value = true;
+                                                        Provider.of<comment_vm>(context, listen: false).currentCommentAddReplay(widget.commentmodel);
                                                       },
                                                       child: AppText('replay'))),
                                         ),
@@ -216,7 +231,55 @@ class _CardcommentState extends State<Cardcomment> {
                   ],
                 ),
               ),
-            ]));
+            ],
+          ),
+        ),
+        if (widget.commentmodel.hasReplies ?? false)
+          ValueListenableBuilder(
+            valueListenable: showAll,
+            builder: (context, show, child) => Consumer<comment_vm>(
+              builder: (context, value, child) => AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                child: show
+                    ? Padding(
+                        padding: EdgeInsetsDirectional.only(start: 16),
+                        child: (value.isLoadingGettingReplies && value.idCommentUpdated == widget.commentmodel.idComment)
+                            ? Column(
+                                children: List.generate(
+                                  (widget.commentmodel.replies?.length ?? 0) + 1,
+                                  (index) => index == ((widget.commentmodel.replies?.length ?? 0))
+                                      ? LoadingCommentWidget()
+                                      : Cardcomment(commentmodel: widget.commentmodel.replies![index]),
+                                ),
+                              )
+                            : Column(
+                                children: List.generate(
+                                  widget.commentmodel.replies?.length ?? 0,
+                                  (index) => Cardcomment(commentmodel: widget.commentmodel.replies![index]),
+                                ),
+                              ),
+                      )
+                    : Transform.translate(
+                        offset: Offset(-10, -5),
+                        child: InkWell(
+                          onTap: () {
+                            showAll.value = true;
+                            value.getAllReply(widget.commentmodel);
+                          },
+                          child: Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: AppText(
+                              'view all reply',
+                              color: AppColors.primaryMain,
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+          )
+      ],
+    );
   }
 
   Widget _prepareImage() {
@@ -250,5 +313,52 @@ class _CardcommentState extends State<Cardcomment> {
       'id': userEntity.id,
       'display': userEntity.name,
     };
+  }
+}
+
+class LoadingCommentWidget extends StatelessWidget {
+  const LoadingCommentWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
+        boxShadow: <BoxShadow>[
+          BoxShadow(offset: Offset(1.0, 1.0), blurRadius: 2.0, color: Colors.white24 //.withOpacity(0.2),
+              ),
+        ],
+        color: Colors.black12,
+      ),
+      padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+      margin: EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShimmerWidget.circular(width: 25, height: 25),
+              SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShimmerWidget.rectangular(height: 30),
+                    2.height,
+                    ShimmerWidget.rectangular(height: 30),
+                    5.height,
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 15),
+          ShimmerWidget.rectangular(height: 65),
+        ],
+      ),
+    );
   }
 }
