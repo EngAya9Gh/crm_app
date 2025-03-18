@@ -33,12 +33,13 @@ class AddVersionPramas {
   final String? versionNo;
   final String? versionDate;
   final List<OneItemVersionEntity>? onItem;
-
+  final int? isCurrent;
   const AddVersionPramas({
     this.id,
     this.versionDate,
     this.versionNo,
     this.onItem,
+    this.isCurrent,
   });
 
   Map<String, dynamic> toParamsUpdate() {
@@ -63,6 +64,7 @@ class AddVersionPramas {
     final Map<String, dynamic> map = {
       'version_date': versionDate,
       'version_no': versionNo,
+      'is_current': isCurrent,
     }..removeWhere((key, value) => value == null || value == '');
 
     return {

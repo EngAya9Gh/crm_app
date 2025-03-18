@@ -42,7 +42,7 @@ class _IncommingVersionsPageState extends State<IncommingVersionsPage> {
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
                       decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadiusDirectional.circular(12)),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -70,7 +70,7 @@ class _IncommingVersionsPageState extends State<IncommingVersionsPage> {
                                   ),
                                   2.height,
                                   AppText(
-                                    data?.management ?? 'الادارة العامة',
+                                    data?.management ?? 'عام',
                                     fontSize: (20.0).scaleFontSize,
                                   ),
                                   2.height,
