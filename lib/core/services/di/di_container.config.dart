@@ -1007,6 +1007,8 @@ import '../../../features/versions/domain/use_cases/add_demand_usecase.dart'
     as _i477;
 import '../../../features/versions/domain/use_cases/add_version_usecase.dart'
     as _i148;
+import '../../../features/versions/domain/use_cases/get_demands_usecase.dart'
+    as _i162;
 import '../../../features/versions/domain/use_cases/get_incomming_version_info.dart'
     as _i748;
 import '../../../features/versions/domain/use_cases/get_versions_usecase.dart'
@@ -1477,6 +1479,8 @@ _i174.GetIt $initGetIt(
       () => _i477.AddDemandUsecase(gh<_i862.versionsRepo>()));
   gh.lazySingleton<_i148.AddVersionsUsecase>(
       () => _i148.AddVersionsUsecase(gh<_i862.versionsRepo>()));
+  gh.lazySingleton<_i162.GetDemandsUsecase>(
+      () => _i162.GetDemandsUsecase(gh<_i862.versionsRepo>()));
   gh.lazySingleton<_i748.GetIncommingVersionInfoUsecase>(
       () => _i748.GetIncommingVersionInfoUsecase(gh<_i862.versionsRepo>()));
   gh.lazySingleton<_i551.GetVersionsUsecase>(
@@ -1782,6 +1786,14 @@ _i174.GetIt $initGetIt(
       _i1065.GetAllClientUseCase(gh<_i129.ClientsAttachmentsRepository>()));
   gh.factory<_i559.GetAttachmentsUseCase>(() =>
       _i559.GetAttachmentsUseCase(gh<_i129.ClientsAttachmentsRepository>()));
+  gh.factory<_i377.VersionsBloc>(() => _i377.VersionsBloc(
+        gh<_i551.GetVersionsUsecase>(),
+        gh<_i148.AddVersionsUsecase>(),
+        gh<_i124.UpdateVersionsUsecase>(),
+        gh<_i748.GetIncommingVersionInfoUsecase>(),
+        gh<_i477.AddDemandUsecase>(),
+        gh<_i162.GetDemandsUsecase>(),
+      ));
   gh.factory<_i456.ClientsStatusReportsCubit>(() =>
       _i456.ClientsStatusReportsCubit(
           gh<_i587.GetClientsStatusReportsUsecase>()));
@@ -1807,13 +1819,6 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i707.GetManageWithdrawnInvoicesUsecase>(() =>
       _i707.GetManageWithdrawnInvoicesUsecase(
           gh<_i264.ManageWithdrawnInvoicesRepo>()));
-  gh.factory<_i377.VersionsBloc>(() => _i377.VersionsBloc(
-        gh<_i551.GetVersionsUsecase>(),
-        gh<_i148.AddVersionsUsecase>(),
-        gh<_i124.UpdateVersionsUsecase>(),
-        gh<_i748.GetIncommingVersionInfoUsecase>(),
-        gh<_i477.AddDemandUsecase>(),
-      ));
   gh.factory<_i865.AddActivityCrudUseCase>(
       () => _i865.AddActivityCrudUseCase(gh<_i592.CrudActivitiesRepository>()));
   gh.factory<_i327.GetActivityTypesUseCase>(() =>

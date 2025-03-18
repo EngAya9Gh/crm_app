@@ -27,6 +27,7 @@ abstract class NotificationsDatasource {
   Future<ResponseWrapper<VersionModel>> updateVersion(AddVersionPramas addVersionPramas);
   Future<ResponseWrapper<IconmmingUpdateInfo>> getIncommingUpdateInfo();
   Future<ResponseWrapper<DemandModel>> addDemand(AddDemandParams params);
+  Future<ResponseWrapper<List<DemandModel>>> getDemands();
 }
 
 @LazySingleton(as: NotificationsDatasource)
@@ -114,6 +115,19 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
       final response = await _api.post(endPoint: EndPoints.versions.addDemand, data: params.toMap());
 
       return ResponseWrapper<DemandModel>.fromJson(response, (json) => DemandModel.fromJson(json));
+    }
+
+    return throwAppException(fun);
+  }
+
+  @override
+  Future<ResponseWrapper<List<DemandModel>>> getDemands() {
+    fun() async {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(endPoint: EndPoints.versions.addDemand);
+
+      return ResponseWrapper<List<DemandModel>>.fromJson(
+          response, (json) => List.from((json as List<dynamic>).map((e) => DemandModel.fromJson(e as Map<String, dynamic>))));
     }
 
     return throwAppException(fun);

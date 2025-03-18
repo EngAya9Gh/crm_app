@@ -5,11 +5,13 @@ import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/get_demands_usecase.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/get_incomming_version_info.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/get_versions_usecase.dart';
 import 'package:crm_smart/features/versions/presentation/widgets/new_entry_version_widget.dart';
 import 'package:crm_smart/model/versionModel.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
@@ -28,6 +30,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
   final UpdateVersionsUsecase updateVersionsUsecase;
   final GetIncommingVersionInfoUsecase getIncommingVersionInfoUsecase;
   final AddDemandUsecase addDemandUsecase;
+  final GetDemandsUsecase getDemandsUsecase;
 
   VersionsBloc(
     this.getVersionsUsecase,
@@ -35,6 +38,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     this.updateVersionsUsecase,
     this.getIncommingVersionInfoUsecase,
     this.addDemandUsecase,
+    this.getDemandsUsecase,
   ) : super(VersionsState()) {
     on<GetAllVersionsEvent>(_onHandelGetAllVersionsEvent);
     on<ResetListAddedEvent>(_onHandelResetListAddedEvent);
@@ -44,6 +48,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     on<RemoveItemVersion>(_onHandelRemoveItemVersion);
     on<GetIncommingUpdateInfoEvent>(_onGetIncommingUpdateInfoEvent);
     on<AddDemandEvent>(_onAddDemandEvent);
+    on<GetDenmadsEvent>(_onGetDenmadsEvent);
   }
 
   FutureOr<void> _onHandelGetAllVersionsEvent(GetAllVersionsEvent event, Emitter<VersionsState> emit) async {
@@ -153,6 +158,20 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
       (value) {
         emit(state.copyWith(addDemandStatus: BlocStatus.success(data: value.message)));
         event.onSuccess?.call();
+      },
+    );
+  }
+
+  FutureOr<void> _onGetDenmadsEvent(GetDenmadsEvent event, Emitter<VersionsState> emit) async {
+    emit(state.copyWith(getDemands: BlocStatus.loading()));
+    final result = await getDemandsUsecase();
+    result.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(getDemands: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        emit(state.copyWith(getDemands: BlocStatus.success(data: value.message)));
       },
     );
   }

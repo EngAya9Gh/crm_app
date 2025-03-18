@@ -141,7 +141,7 @@ class _OrderNewVersionDialogState extends State<OrderNewVersionDialog> {
                               notes: noteController.text,
                             ),
                             onSuccess: () {
-                              context.pop();
+                              context.pop(true);
                             },
                           ));
                         }

@@ -77,4 +77,9 @@ class NotificationsRepoImpl implements versionsRepo {
   Future<Result<ResponseWrapper<DemandModel>>> addDemand(AddDemandParams params) {
     return toApiResult(() => _dataSource.addDemand(params));
   }
+
+  @override
+  Future<Result<ResponseWrapper<List<DemandModel>>>> getDemands() {
+    return toApiResult(() => _dataSource.getDemands());
+  }
 }

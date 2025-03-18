@@ -46,3 +46,5 @@ class AddDemandEvent extends VersionsEvent {
   final VoidCallback? onSuccess;
   AddDemandEvent({required this.params,this.onSuccess});
 }
+
+class GetDenmadsEvent extends VersionsEvent{}

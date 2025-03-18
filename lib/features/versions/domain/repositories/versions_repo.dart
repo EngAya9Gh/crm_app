@@ -19,6 +19,7 @@ abstract class versionsRepo {
 
   Future<Either<String, bool>> addVersion(AddVersionPramas params);
   Future<Result<ResponseWrapper<DemandModel>>> addDemand(AddDemandParams params);
+  Future<Result<ResponseWrapper<List<DemandModel>>>> getDemands();
   Future<Either<String, ResponseWrapper<VersionModel>>> updateVersion(AddVersionPramas params);
   Future<Either<String, ResponseWrapper<IconmmingUpdateInfo>>> getIncommingUpdateInfo();
 }
