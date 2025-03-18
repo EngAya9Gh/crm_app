@@ -68,7 +68,7 @@ class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
             bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(title: val)));
           },
           controller: title,
-          validator: widget.isTitleOpional ? null : InputValidator.requiredFiled,
+          validator:widget.isTitleOpional?null: InputValidator.requiredFiled,
         ),
         10.height,
         AppDropdownButtonFormField(
