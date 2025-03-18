@@ -39,25 +39,26 @@ class _VersionPageState extends State<VersionsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'التحديثات', showBackButton: true, actions: [
-        Directionality(
-          textDirection: TextDirection.rtl,
-          child: AppTextButton(
-            text: "الطلبات",
-            onPressed: () {
-              AppNavigator.go(
-                VersionOrderPage(),
-                name: AppRoutesNames.generalRoutes.versionOrder,
-              );
-            },
-            textStyle: AppStyles.textStyle.copyWith(
-              fontSize: (16.0).scaleFontSize,
-              fontWeight: FontWeight.w600,
-              fontFamily: AppFonts.fontFamily1,
-              color: AppColors.white,
+        if (context.read<PrivilegesCubit>().checkPrivilege("337"))
+          Directionality(
+            textDirection: TextDirection.rtl,
+            child: AppTextButton(
+              text: "الطلبات",
+              onPressed: () {
+                AppNavigator.go(
+                  VersionOrderPage(),
+                  name: AppRoutesNames.generalRoutes.versionOrder,
+                );
+              },
+              textStyle: AppStyles.textStyle.copyWith(
+                fontSize: (16.0).scaleFontSize,
+                fontWeight: FontWeight.w600,
+                fontFamily: AppFonts.fontFamily1,
+                color: AppColors.white,
+              ),
+              appButtonStyle: AppButtonStyle.secondary,
             ),
-            appButtonStyle: AppButtonStyle.secondary,
           ),
-        ),
         Directionality(
           textDirection: TextDirection.rtl,
           child: AppTextButton(

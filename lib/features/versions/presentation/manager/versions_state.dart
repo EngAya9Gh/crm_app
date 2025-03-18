@@ -7,15 +7,17 @@ class VersionsState {
   final BlocStatus<IconmmingUpdateInfo> incommingUpdateInfo;
   final GetVersionsParams getVersionsParams;
   final bool hasReachedEnd;
-final List<OneItemVersionEntity> listAddNew;
-  const VersionsState({
-    this.listVersionsState = const [],
-    this.listAddNew = const [OneItemVersionEntity(index: 0)],
-    this.getAllVersionsStatus = const BlocStatus<List<VersionModel>>.initial(),
-    this.getVersionsParams = const GetVersionsParams(),
-    this.hasReachedEnd = false,
-    this.incommingUpdateInfo=const BlocStatus.initial()
-  });
+  final List<OneItemVersionEntity> listAddNew;
+  final BlocStatus<DemandModel> addDemandStatus;
+  const VersionsState(
+      {this.listVersionsState = const [],
+      this.listAddNew = const [OneItemVersionEntity(index: 0)],
+      this.getAllVersionsStatus = const BlocStatus<List<VersionModel>>.initial(),
+      this.getVersionsParams = const GetVersionsParams(),
+      this.hasReachedEnd = false,
+      this.incommingUpdateInfo = const BlocStatus.initial(),
+      this.addDemandStatus = const BlocStatus.initial(),
+      });
 
   VersionsState copyWith({
     List<VersionModel>? listVersionsState,
@@ -23,7 +25,8 @@ final List<OneItemVersionEntity> listAddNew;
     GetVersionsParams? getVersionsParams,
     bool? hasReachedEnd,
     List<OneItemVersionEntity>? listAddNew,
-  BlocStatus<IconmmingUpdateInfo>? incommingUpdateInfo,
+    BlocStatus<IconmmingUpdateInfo>? incommingUpdateInfo,
+    BlocStatus<DemandModel>? addDemandStatus,
   }) {
     return VersionsState(
       listVersionsState: listVersionsState ?? this.listVersionsState,
@@ -32,6 +35,7 @@ final List<OneItemVersionEntity> listAddNew;
       hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
       listAddNew: listAddNew ?? this.listAddNew,
       incommingUpdateInfo: incommingUpdateInfo ?? this.incommingUpdateInfo,
+      addDemandStatus: addDemandStatus ?? this.addDemandStatus,
     );
   }
 }

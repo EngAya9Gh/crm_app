@@ -1,6 +1,10 @@
 import 'dart:developer';
 
+import 'package:crm_smart/core/services/api/api_utils.dart';
+import 'package:crm_smart/core/services/api/result.dart';
+import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -22,6 +26,7 @@ abstract class NotificationsDatasource {
 
   Future<ResponseWrapper<VersionModel>> updateVersion(AddVersionPramas addVersionPramas);
   Future<ResponseWrapper<IconmmingUpdateInfo>> getIncommingUpdateInfo();
+  Future<ResponseWrapper<DemandModel>> addDemand(AddDemandParams params);
 }
 
 @LazySingleton(as: NotificationsDatasource)
@@ -100,5 +105,17 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
       debugPrint("error in get Incomming Update Info in datasource => $e");
       throw e.message;
     }
+  }
+
+  @override
+  Future<ResponseWrapper<DemandModel>> addDemand(AddDemandParams params) {
+    fun() async {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.post(endPoint: EndPoints.versions.addDemand, data: params.toMap());
+
+      return ResponseWrapper<DemandModel>.fromJson(response, (json) => DemandModel.fromJson(json));
+    }
+
+    return throwAppException(fun);
   }
 }

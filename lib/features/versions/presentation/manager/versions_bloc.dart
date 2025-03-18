@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/get_incomming_version_info.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/get_versions_usecase.dart';
 import 'package:crm_smart/features/versions/presentation/widgets/new_entry_version_widget.dart';
@@ -25,12 +27,14 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
   final AddVersionsUsecase addVersionsUsecase;
   final UpdateVersionsUsecase updateVersionsUsecase;
   final GetIncommingVersionInfoUsecase getIncommingVersionInfoUsecase;
+  final AddDemandUsecase addDemandUsecase;
 
   VersionsBloc(
     this.getVersionsUsecase,
     this.addVersionsUsecase,
     this.updateVersionsUsecase,
     this.getIncommingVersionInfoUsecase,
+    this.addDemandUsecase,
   ) : super(VersionsState()) {
     on<GetAllVersionsEvent>(_onHandelGetAllVersionsEvent);
     on<ResetListAddedEvent>(_onHandelResetListAddedEvent);
@@ -39,6 +43,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     on<AddOrUpdateNewVersionItemEvent>(_onHandelAddOrUpdateNewVersionItemEvent);
     on<RemoveItemVersion>(_onHandelRemoveItemVersion);
     on<GetIncommingUpdateInfoEvent>(_onGetIncommingUpdateInfoEvent);
+    on<AddDemandEvent>(_onAddDemandEvent);
   }
 
   FutureOr<void> _onHandelGetAllVersionsEvent(GetAllVersionsEvent event, Emitter<VersionsState> emit) async {
@@ -133,6 +138,21 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
       },
       (value) {
         emit(state.copyWith(incommingUpdateInfo: BlocStatus.success(data: value.message)));
+      },
+    );
+  }
+
+  FutureOr<void> _onAddDemandEvent(AddDemandEvent event, Emitter<VersionsState> emit) async {
+    emit(state.copyWith(addDemandStatus: BlocStatus.loading()));
+    final result = await addDemandUsecase(event.params);
+    result.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(addDemandStatus: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        emit(state.copyWith(addDemandStatus: BlocStatus.success(data: value.message)));
+        event.onSuccess?.call();
       },
     );
   }

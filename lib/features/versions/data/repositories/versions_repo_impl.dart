@@ -1,5 +1,9 @@
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
+import 'package:crm_smart/core/services/api/api_utils.dart';
+import 'package:crm_smart/core/services/api/result.dart';
+import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
 import 'package:crm_smart/model/versionModel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +52,7 @@ class NotificationsRepoImpl implements versionsRepo {
   }
 
   @override
-  Future<Either<String, ResponseWrapper<VersionModel>>> updateVersion(AddVersionPramas params)async {
+  Future<Either<String, ResponseWrapper<VersionModel>>> updateVersion(AddVersionPramas params) async {
     try {
       final data = await _dataSource.updateVersion(params);
       return Right(data);
@@ -59,7 +63,7 @@ class NotificationsRepoImpl implements versionsRepo {
   }
 
   @override
-  Future<Either<String, ResponseWrapper<IconmmingUpdateInfo>>> getIncommingUpdateInfo() async{
+  Future<Either<String, ResponseWrapper<IconmmingUpdateInfo>>> getIncommingUpdateInfo() async {
     try {
       final data = await _dataSource.getIncommingUpdateInfo();
       return Right(data);
@@ -67,5 +71,10 @@ class NotificationsRepoImpl implements versionsRepo {
       debugPrint("error in get incomming update info in repo => $e");
       return Left(e.toString());
     }
+  }
+
+  @override
+  Future<Result<ResponseWrapper<DemandModel>>> addDemand(AddDemandParams params) {
+    return toApiResult(() => _dataSource.addDemand(params));
   }
 }

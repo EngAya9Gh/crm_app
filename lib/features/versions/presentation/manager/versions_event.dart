@@ -31,8 +31,7 @@ class UpdateVersionEvent extends VersionsEvent {
   UpdateVersionEvent({required this.addVersionPramas, this.onSuccess});
 }
 
-class ResetListAddedEvent extends VersionsEvent {
-}
+class ResetListAddedEvent extends VersionsEvent {}
 
 class RemoveItemVersion extends VersionsEvent {
   final int index;
@@ -40,6 +39,10 @@ class RemoveItemVersion extends VersionsEvent {
   RemoveItemVersion({required this.index});
 }
 
-class GetIncommingUpdateInfoEvent extends VersionsEvent{
-  
+class GetIncommingUpdateInfoEvent extends VersionsEvent {}
+
+class AddDemandEvent extends VersionsEvent {
+  final AddDemandParams params;
+  final VoidCallback? onSuccess;
+  AddDemandEvent({required this.params,this.onSuccess});
 }

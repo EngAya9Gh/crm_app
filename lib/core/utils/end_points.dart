@@ -490,6 +490,7 @@ class _Versions {
 
   String updateVersions(int id) => 'version-features/$id/edit';
   final String getIncommingUpdateInfo = 'version-features/next-update';
+  final String addDemand='demands';
 }
 
 class _Products {

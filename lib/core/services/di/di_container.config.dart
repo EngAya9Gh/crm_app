@@ -1003,6 +1003,8 @@ import '../../../features/versions/data/repositories/versions_repo_impl.dart'
     as _i97;
 import '../../../features/versions/domain/repositories/versions_repo.dart'
     as _i862;
+import '../../../features/versions/domain/use_cases/add_demand_usecase.dart'
+    as _i477;
 import '../../../features/versions/domain/use_cases/add_version_usecase.dart'
     as _i148;
 import '../../../features/versions/domain/use_cases/get_incomming_version_info.dart'
@@ -1471,6 +1473,8 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i834.AgentsDistributorsProfileRepo>(() =>
       _i226.AgentsDistributorsProfileRepoImpl(
           gh<_i378.AgentsDistributorsProfileDataSource>()));
+  gh.lazySingleton<_i477.AddDemandUsecase>(
+      () => _i477.AddDemandUsecase(gh<_i862.versionsRepo>()));
   gh.lazySingleton<_i148.AddVersionsUsecase>(
       () => _i148.AddVersionsUsecase(gh<_i862.versionsRepo>()));
   gh.lazySingleton<_i748.GetIncommingVersionInfoUsecase>(
@@ -1803,6 +1807,13 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i707.GetManageWithdrawnInvoicesUsecase>(() =>
       _i707.GetManageWithdrawnInvoicesUsecase(
           gh<_i264.ManageWithdrawnInvoicesRepo>()));
+  gh.factory<_i377.VersionsBloc>(() => _i377.VersionsBloc(
+        gh<_i551.GetVersionsUsecase>(),
+        gh<_i148.AddVersionsUsecase>(),
+        gh<_i124.UpdateVersionsUsecase>(),
+        gh<_i748.GetIncommingVersionInfoUsecase>(),
+        gh<_i477.AddDemandUsecase>(),
+      ));
   gh.factory<_i865.AddActivityCrudUseCase>(
       () => _i865.AddActivityCrudUseCase(gh<_i592.CrudActivitiesRepository>()));
   gh.factory<_i327.GetActivityTypesUseCase>(() =>
@@ -1845,12 +1856,6 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i325.LoginRepo>(() => _i897.LoginRepoImpl(
         gh<_i525.LoginRemoteDataSource>(),
         gh<_i1.LoginLocalDataSource>(),
-      ));
-  gh.factory<_i377.VersionsBloc>(() => _i377.VersionsBloc(
-        gh<_i551.GetVersionsUsecase>(),
-        gh<_i148.AddVersionsUsecase>(),
-        gh<_i124.UpdateVersionsUsecase>(),
-        gh<_i748.GetIncommingVersionInfoUsecase>(),
       ));
   gh.factory<_i222.SpecialClientsBloc>(
       () => _i222.SpecialClientsBloc(gh<_i70.GetSpecialClientsUsecase>()));
