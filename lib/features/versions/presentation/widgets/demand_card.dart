@@ -7,6 +7,7 @@ import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/change_demand_status_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/get_demands_usecase.dart';
 import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.dart';
 import 'package:crm_smart/features/versions/presentation/widgets/demand_change_status_add_comment_dialog.dart';
 import 'package:crm_smart/features/versions/presentation/widgets/order_new_version_dialog.dart';
@@ -138,7 +139,7 @@ class demandCardWidget extends StatelessWidget {
                       ),
                     ).then(
                       (value) {
-                        if (value) context.read<VersionsBloc>().add(GetDenmadsEvent());
+                        if (value) context.read<VersionsBloc>().add(GetDenmadsEvent(params: GetDemandParams(page: 1)));
                       },
                     );
                   },

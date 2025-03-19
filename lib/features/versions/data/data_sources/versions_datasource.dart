@@ -118,7 +118,8 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
   Future<ResponseWrapper<DemandModel>> addDemand(AddOrUpdateDemandParams params) {
     fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.post(endPoint: EndPoints.versions.addDemand, data: params.toMap());
+      final response = await _api.post(
+          endPoint: params.idDemand != null ? EndPoints.versions.updateDemand(params.idDemand!) : EndPoints.versions.addDemand, data: params.toMap());
 
       return ResponseWrapper<DemandModel>.fromJson(response, (json) => DemandModel.fromJson(json));
     }
@@ -130,7 +131,7 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
   Future<ResponseWrapper<List<DemandModel>>> getDemands(GetDemandParams params) {
     fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.get(endPoint: EndPoints.versions.addDemand,queryParameters: params.toMap());
+      final response = await _api.get(endPoint: EndPoints.versions.addDemand, queryParameters: params.toMap());
 
       return ResponseWrapper<List<DemandModel>>.fromJson(
           response, (json) => List.from((json as List<dynamic>).map((e) => DemandModel.fromJson(e as Map<String, dynamic>))));

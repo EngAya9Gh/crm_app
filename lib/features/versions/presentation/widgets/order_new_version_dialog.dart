@@ -139,11 +139,12 @@ class _OrderNewVersionDialogState extends State<OrderNewVersionDialog> {
                     return AppElevatedButton(
                       width: double.infinity,
                       isLoading: state.addDemandStatus.isLoading(),
-                      text: 'حفظ',
+                      text: widget.demandModel != null ? "تعديل" : 'حفظ',
                       onPressed: () {
                         if (_globalKey.currentState!.validate()) {
                           bloc.add(AddDemandEvent(
                             params: AddOrUpdateDemandParams(
+                              idDemand: widget.demandModel?.id,
                               idManagement: idmanagement.value == 0 ? null : idmanagement.value,
                               title: titleController.text,
                               goal: goalController.text,

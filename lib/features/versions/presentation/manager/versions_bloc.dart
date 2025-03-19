@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
+import 'package:crm_smart/features/versions/domain/entity/filter_demand_entity.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/add_comment_demand_usecase.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/change_demand_status_usecase.dart';
@@ -38,6 +40,10 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
   final ChangeDemandStatusUsecase changeDemandStatusUsecase;
   final AddDemandCommentUsecase addDemandCommentUsecase;
   final GetDemandCommentsUsecase getDemandCommentsUsecase;
+  FilterDemandEntity filterEntity = FilterDemandEntity();
+  void resetFilter() {
+    filterEntity = FilterDemandEntity();
+  }
 
   VersionsBloc(
     this.getVersionsUsecase,
@@ -58,7 +64,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     on<RemoveItemVersion>(_onHandelRemoveItemVersion);
     on<GetIncommingUpdateInfoEvent>(_onGetIncommingUpdateInfoEvent);
     on<AddDemandEvent>(_onAddDemandEvent);
-    on<GetDenmadsEvent>(_onGetDenmadsEvent);
+    on<GetDenmadsEvent>(_onGetDenmadsEvent, transformer: droppable());
     on<ChangeDenmadStatusEvent>(_onChangeDenmadStatusEvent);
     on<AddCommentDemandEvent>(_onAddCommentDemandEvent);
     on<GetDemandCommentsEvent>(_onGetDemandCommentsEvent);
@@ -162,6 +168,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
 
   FutureOr<void> _onAddDemandEvent(AddDemandEvent event, Emitter<VersionsState> emit) async {
     emit(state.copyWith(addDemandStatus: BlocStatus.loading()));
+
     final result = await addDemandUsecase(event.params);
     result.extract(
       (exception, message) {
@@ -176,15 +183,29 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
   }
 
   FutureOr<void> _onGetDenmadsEvent(GetDenmadsEvent event, Emitter<VersionsState> emit) async {
-    emit(state.copyWith(getDemands: BlocStatus.loading()));
+    if (event.params?.page == 1) {
+      emit(state.copyWith(getListDemands: BlocStatus.loading()));
+      filterEntity.currentPage = 1;
+    }
+    emit(state.copyWith(getDemandStatus: BlocStatus.loading()));
     final result = await getDemandsUsecase(event.params ?? state.params);
     result.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(getDemands: BlocStatus.fail(error: message)));
+        emit(state.copyWith(getListDemands: BlocStatus.fail(error: message), getDemandStatus: BlocStatus.fail()));
       },
       (value) {
-        emit(state.copyWith(getDemands: BlocStatus.success(data: value.message)));
+        emit(state.copyWith(params: event.params));
+        filterEntity.currentPage = event.params?.page ?? 1;
+        emit(state.copyWith(
+          hasReachedMax: (value.message?.isEmpty ?? true),
+        ));
+        emit(state.copyWith(
+            getListDemands: ((value.message?.isEmpty ?? true) && event.params?.page == 1)
+                ? BlocStatus.empty()
+                : BlocStatus.success(data: List.of(state.getListDemands.data ?? [])..addAll(value.message!)),
+            getDemandStatus: BlocStatus.success(),
+            totalDataCount: value.count));
       },
     );
   }
@@ -200,8 +221,8 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
       (value) {
         emit(state.copyWith(
             changeDemandStatus: BlocStatus.success(data: value.message),
-            getDemands: BlocStatus.success(
-                data: (state.getDemands.data ?? [])
+            getListDemands: BlocStatus.success(
+                data: (state.getListDemands.data ?? [])
                     .map(
                       (element) => element.id == event.params.idDemand
                           ? element.copyWith(

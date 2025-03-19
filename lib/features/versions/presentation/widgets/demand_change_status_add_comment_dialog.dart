@@ -3,6 +3,8 @@ import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/utils/app_fonts.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/change_demand_status_usecase.dart';
 import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.dart';
@@ -87,13 +89,15 @@ class _DemandChangeStatusAndSHowCommentDialogState extends State<DemandChangeSta
                             child: AppDropdownButtonFormField<DemandVersionStatus, DemandVersionStatus>(
                               borderColor: value.color,
                               iconColor: value.color,
+                              fillColor: value.color,
+                              isFilledColor: true,
                               items: List.of(DemandVersionStatus.values)
                                 ..removeWhere(
                                   (element) =>
                                       element.index <
                                       DemandVersionStatus.values
                                           .firstWhere(
-                                            (e) => e.text == state.getDemands.data?.firstWhere((e) => e.id == widget.demandModel.id).status,
+                                            (e) => e.text == state.getListDemands.data?.firstWhere((e) => e.id == widget.demandModel.id).status,
                                           )
                                           .index,
                                 ),
@@ -115,7 +119,12 @@ class _DemandChangeStatusAndSHowCommentDialogState extends State<DemandChangeSta
                               itemAsValue: (DemandVersionStatus? item) => item,
                               itemBuilder: (item) => AppText(
                                 item?.text ?? '',
-                                color: item?.color,
+                                color: item!.color,
+                                fontSize: 18,
+                              ),
+                              itemBuilderSelected: (item) => AppText(
+                                item?.text ?? '',
+                                color: AppColors.white,
                                 fontSize: 18,
                               ),
                               value: value,

@@ -7,7 +7,7 @@ import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/versions_repo.dart';
 
 @lazySingleton
-class GetDemandsUsecase extends BaseUsecase<Result<ResponseWrapper<List<DemandModel>>>,GetDemandParams> {
+class GetDemandsUsecase extends BaseUsecase<Result<ResponseWrapper<List<DemandModel>>>, GetDemandParams> {
   GetDemandsUsecase(this._repository);
 
   final versionsRepo _repository;
@@ -35,9 +35,30 @@ class GetDemandParams {
     this.filter,
     this.from,
     this.to,
-    this.page=1,
-    this.limit=10,
+    this.page = 1,
+    this.limit = 10,
   });
+
+  GetDemandParams copyWith({
+    String? status,
+    int? user_id,
+    int? management_id,
+    String? filter,
+    String? from,
+    String? to,
+    int? page,
+    int? limit,
+  }) {
+    return GetDemandParams(
+      status: status ?? this.status,
+      user_id: user_id ?? this.user_id,
+      management_id: management_id ?? this.management_id,
+      filter: filter ?? this.filter,
+      from: from ?? this.from,
+      to: to ?? this.to,
+      page: page ?? this.page,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -48,9 +69,7 @@ class GetDemandParams {
       'to': to,
       'page': page,
       'limit': limit,
-      'management_id': management_id,
-    }..removeWhere((key, value) => value == null && key != 'management_id');
+      if (management_id != null) 'management_id': management_id == 0 ? null : management_id,
+    }..removeWhere((key, value) => (value == null || value == '') && key != 'management_id');
   }
-
-
 }
