@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/get_demands_usecase.dart';
 import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.dart';
 import 'package:crm_smart/model/managmodel.dart';
 import 'package:flutter/material.dart';
@@ -59,5 +61,16 @@ class FilterDemandEntity {
         selectedManagment.value != null ||
         fromController.text.isNotEmpty ||
         toController.text.isNotEmpty;
+  }
+
+  FilterDemandEntity fromParams(GetDemandParams params) {
+    return FilterDemandEntity()
+      ..selectedStatus.value = DemandVersionStatus.values.firstWhereOrNull(
+        (status) => status.text == params.status,
+      )
+      ..selectedUsers.value = null // Assuming you will set this based on your logic
+      ..selectedManagment.value = null // Assuming you will set this based on your logic
+      ..fromController.text = params.from ?? ''
+      ..toController.text = params.to ?? '';
   }
 }

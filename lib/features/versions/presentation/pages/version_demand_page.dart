@@ -10,6 +10,7 @@ import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import 'package:crm_smart/features/versions/domain/entity/filter_demand_entity.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/get_demands_usecase.dart';
 import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.dart';
 import 'package:crm_smart/features/versions/presentation/widgets/demand_card.dart';
@@ -101,7 +102,7 @@ class _VersionOrderPageState extends State<VersionOrderPage> {
                             ).then(
                               (value) {
                                 if (!(value ?? false)) {
-                                  _bloc.filterEntity = state.filterEntity.returnToPreviousState;
+                                  _bloc.filterEntity = _bloc.filterEntity.fromParams(state.params);
                                   pressbackNotFilter.value = !pressbackNotFilter.value;
                                 }
                               },
