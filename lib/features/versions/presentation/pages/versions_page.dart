@@ -8,7 +8,7 @@ import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.dart';
 import 'package:crm_smart/features/versions/presentation/pages/incomming_versions_page.dart';
-import 'package:crm_smart/features/versions/presentation/pages/version_order_page.dart';
+import 'package:crm_smart/features/versions/presentation/pages/version_demand_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +39,6 @@ class _VersionPageState extends State<VersionsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'التحديثات', showBackButton: true, actions: [
-        if (context.read<PrivilegesCubit>().checkPrivilege("337"))
           Directionality(
             textDirection: TextDirection.rtl,
             child: AppTextButton(

@@ -146,7 +146,7 @@ class _CardcommentState extends State<Cardcomment> {
                                       .map((e) => AppText(' @${e.name} ', color: AppColors.primaryMain))
                                       .toList(),
                                 ),
-                                // if (commentmodel.nameUser == userModel?.nameUser)
+                                if (widget.commentmodel.nameUser == widget.userModel?.nameUser)
                                 if (!widget.fromMenu)
                                   Align(
                                     alignment: AlignmentDirectional.bottomEnd,

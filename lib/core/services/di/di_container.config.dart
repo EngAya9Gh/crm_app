@@ -1003,10 +1003,16 @@ import '../../../features/versions/data/repositories/versions_repo_impl.dart'
     as _i97;
 import '../../../features/versions/domain/repositories/versions_repo.dart'
     as _i862;
+import '../../../features/versions/domain/use_cases/add_comment_demand_usecase.dart'
+    as _i921;
 import '../../../features/versions/domain/use_cases/add_demand_usecase.dart'
     as _i477;
 import '../../../features/versions/domain/use_cases/add_version_usecase.dart'
     as _i148;
+import '../../../features/versions/domain/use_cases/change_demand_status_usecase.dart'
+    as _i78;
+import '../../../features/versions/domain/use_cases/get_comments_demand_usecase.dart'
+    as _i182;
 import '../../../features/versions/domain/use_cases/get_demands_usecase.dart'
     as _i162;
 import '../../../features/versions/domain/use_cases/get_incomming_version_info.dart'
@@ -1475,10 +1481,16 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i834.AgentsDistributorsProfileRepo>(() =>
       _i226.AgentsDistributorsProfileRepoImpl(
           gh<_i378.AgentsDistributorsProfileDataSource>()));
+  gh.lazySingleton<_i921.AddDemandCommentUsecase>(
+      () => _i921.AddDemandCommentUsecase(gh<_i862.versionsRepo>()));
   gh.lazySingleton<_i477.AddDemandUsecase>(
       () => _i477.AddDemandUsecase(gh<_i862.versionsRepo>()));
   gh.lazySingleton<_i148.AddVersionsUsecase>(
       () => _i148.AddVersionsUsecase(gh<_i862.versionsRepo>()));
+  gh.lazySingleton<_i78.ChangeDemandStatusUsecase>(
+      () => _i78.ChangeDemandStatusUsecase(gh<_i862.versionsRepo>()));
+  gh.lazySingleton<_i182.GetDemandCommentsUsecase>(
+      () => _i182.GetDemandCommentsUsecase(gh<_i862.versionsRepo>()));
   gh.lazySingleton<_i162.GetDemandsUsecase>(
       () => _i162.GetDemandsUsecase(gh<_i862.versionsRepo>()));
   gh.lazySingleton<_i748.GetIncommingVersionInfoUsecase>(
@@ -1520,6 +1532,17 @@ _i174.GetIt $initGetIt(
       () => _i654.ImportantLinksRepoImpl(gh<_i674.ImportantLinksDatasource>()));
   gh.factory<_i552.CareActivitiesRepository>(
       () => _i566.CareListRepositoryImpl(gh<_i809.CareActivitiesDatasource>()));
+  gh.factory<_i377.VersionsBloc>(() => _i377.VersionsBloc(
+        gh<_i551.GetVersionsUsecase>(),
+        gh<_i148.AddVersionsUsecase>(),
+        gh<_i124.UpdateVersionsUsecase>(),
+        gh<_i748.GetIncommingVersionInfoUsecase>(),
+        gh<_i477.AddDemandUsecase>(),
+        gh<_i162.GetDemandsUsecase>(),
+        gh<_i78.ChangeDemandStatusUsecase>(),
+        gh<_i921.AddDemandCommentUsecase>(),
+        gh<_i182.GetDemandCommentsUsecase>(),
+      ));
   gh.factory<_i944.ExportClientsToExcelUseCase>(() =>
       _i944.ExportClientsToExcelUseCase(gh<_i186.ClientsListDatasource>()));
   gh.factory<_i97.UpdateViolationUseCase>(
@@ -1786,14 +1809,6 @@ _i174.GetIt $initGetIt(
       _i1065.GetAllClientUseCase(gh<_i129.ClientsAttachmentsRepository>()));
   gh.factory<_i559.GetAttachmentsUseCase>(() =>
       _i559.GetAttachmentsUseCase(gh<_i129.ClientsAttachmentsRepository>()));
-  gh.factory<_i377.VersionsBloc>(() => _i377.VersionsBloc(
-        gh<_i551.GetVersionsUsecase>(),
-        gh<_i148.AddVersionsUsecase>(),
-        gh<_i124.UpdateVersionsUsecase>(),
-        gh<_i748.GetIncommingVersionInfoUsecase>(),
-        gh<_i477.AddDemandUsecase>(),
-        gh<_i162.GetDemandsUsecase>(),
-      ));
   gh.factory<_i456.ClientsStatusReportsCubit>(() =>
       _i456.ClientsStatusReportsCubit(
           gh<_i587.GetClientsStatusReportsUsecase>()));

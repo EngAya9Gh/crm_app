@@ -3,6 +3,9 @@ import 'package:crm_smart/features/notifications/domain/use_cases/mark_notificat
 import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/change_demand_status_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/get_demands_usecase.dart';
+import 'package:crm_smart/model/commentmodel.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
@@ -18,8 +21,11 @@ abstract class versionsRepo {
   );
 
   Future<Either<String, bool>> addVersion(AddVersionPramas params);
-  Future<Result<ResponseWrapper<DemandModel>>> addDemand(AddDemandParams params);
-  Future<Result<ResponseWrapper<List<DemandModel>>>> getDemands();
+  Future<Result<ResponseWrapper<DemandModel>>> addDemand(AddOrUpdateDemandParams params);
+  Future<Result<ResponseWrapper<List<DemandModel>>>> getDemands(GetDemandParams params);
   Future<Either<String, ResponseWrapper<VersionModel>>> updateVersion(AddVersionPramas params);
   Future<Either<String, ResponseWrapper<IconmmingUpdateInfo>>> getIncommingUpdateInfo();
+  Future<Result<ResponseWrapper<DemandModel>>> changeDemandStatus(DemandChangeStatusOrCommentParams params);
+  Future<Result<ResponseWrapper<CommentModel>>> addDemandComment(DemandChangeStatusOrCommentParams params);
+  Future<Result<ResponseWrapper<List<CommentModel>>>> getDemandComments(DemandChangeStatusOrCommentParams params);
 }

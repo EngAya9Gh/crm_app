@@ -1,7 +1,7 @@
 import 'package:crm_smart/core/config/navigator/routes/finance_routes.dart';
 import 'package:crm_smart/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:crm_smart/features/versions/presentation/pages/incomming_versions_page.dart';
-import 'package:crm_smart/features/versions/presentation/pages/version_order_page.dart';
+import 'package:crm_smart/features/versions/presentation/pages/version_demand_page.dart';
 import 'package:crm_smart/features/versions/presentation/pages/versions_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';

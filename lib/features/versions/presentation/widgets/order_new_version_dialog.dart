@@ -10,6 +10,7 @@ import 'package:crm_smart/features/app/presentation/widgets/app_drop_down.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/clients_care/violations_clienta_care/data/models/management_model.dart';
 import 'package:crm_smart/features/clients_care/violations_clienta_care/presentation/manager/violations_cubit.dart';
+import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
 import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,9 @@ import 'package:go_router/go_router.dart';
 class OrderNewVersionDialog extends StatefulWidget {
   const OrderNewVersionDialog({
     super.key,
+    this.demandModel,
   });
-
+  final DemandModel? demandModel;
   @override
   State<OrderNewVersionDialog> createState() => _OrderNewVersionDialogState();
 }
@@ -37,6 +39,14 @@ class _OrderNewVersionDialogState extends State<OrderNewVersionDialog> {
 
   @override
   void initState() {
+    if (widget.demandModel != null) {
+      titleController.text = widget.demandModel?.title ?? '';
+      goalController.text = widget.demandModel?.goal ?? '';
+      desciptionController.text = widget.demandModel?.description ?? '';
+      noteController.text = widget.demandModel?.notes ?? '';
+      idmanagement.value = widget.demandModel?.managementId ?? 0;
+    }
+
     bloc = context.read<VersionsBloc>();
 
     violationsCubit = context.read<ViolationsCubit>();
@@ -133,8 +143,8 @@ class _OrderNewVersionDialogState extends State<OrderNewVersionDialog> {
                       onPressed: () {
                         if (_globalKey.currentState!.validate()) {
                           bloc.add(AddDemandEvent(
-                            params: AddDemandParams(
-                              idManagement: idmanagement.value,
+                            params: AddOrUpdateDemandParams(
+                              idManagement: idmanagement.value == 0 ? null : idmanagement.value,
                               title: titleController.text,
                               goal: goalController.text,
                               description: desciptionController.text,

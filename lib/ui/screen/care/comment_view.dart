@@ -90,30 +90,19 @@ class _CommentViewState extends State<CommentView> {
   }
 
   Future<void> _findAndScrollToItem(String targetId) async {
-    // Wait for the widget to be built
-    await Future.delayed(Duration(milliseconds: 100));
-
-    // Check if the scroll controller has clients
-    if (_scrollController.hasClients) {
-      // Find the index of the target comment
-      final index = commentVm.filteredComments.indexWhere((comment) => comment.idComment == targetId);
-
-      // If the comment is found, scroll to its position
-      if (index != -1) {
-        // Calculate the target position to center the item
-        // Scroll to the calculated position
-        await _scrollController.animateTo(
-          (index + 1) * 80,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-
-        // Remove highlight after a delay
-        Future.delayed(Duration(seconds: 2), () {
-          isHighlighted.value = !isHighlighted.value;
-        });
-      }
-    }
+    await ScrollHelper.scrollToItem(
+      scrollController: _scrollController,
+      targetId: targetId,
+      itemHeight: 73.0, // Your item height
+      items: commentVm.filteredComments,
+      hasReachedMax: false,
+      loadNextPage: () async {
+        // _participateListBloc.add(GetParticipateListEvent(isNewFetch: false));
+        // Wait for load to complete
+        await Future.delayed(Duration(milliseconds: 500));
+      },
+      findItem: (comment) => comment.idComment == targetId,
+    );
   }
 
   @override
@@ -376,7 +365,7 @@ class _CommentViewState extends State<CommentView> {
                               child: AppErrorWidget(message: 'لا يوجد تعليقات'),
                             );
                           } else {
-                            // if (widget.commentId != null) _findAndScrollToItem(widget.commentId!.toString());
+                            if (widget.commentId != null) _findAndScrollToItem(widget.commentId!.toString());
                             return ValueListenableBuilder(
                               valueListenable: isHighlighted,
                               builder: (context, highlighted, child) => SliverList(

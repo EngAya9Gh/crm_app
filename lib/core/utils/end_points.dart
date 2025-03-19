@@ -491,6 +491,9 @@ class _Versions {
   String updateVersions(int id) => 'version-features/$id/edit';
   final String getIncommingUpdateInfo = 'version-features/next-update';
   final String addDemand='demands';
+  String changeDemandStatus(int idDemand)=>'demands/$idDemand/change-status';
+  String addDemandComments(int idDemand)=>'demands/1/add-comment';
+  String getDemandComments(int idDemand)=>'demands/1/comments';
 }
 
 class _Products {

@@ -5,6 +5,9 @@ import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/change_demand_status_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/get_demands_usecase.dart';
+import 'package:crm_smart/model/commentmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -26,8 +29,11 @@ abstract class NotificationsDatasource {
 
   Future<ResponseWrapper<VersionModel>> updateVersion(AddVersionPramas addVersionPramas);
   Future<ResponseWrapper<IconmmingUpdateInfo>> getIncommingUpdateInfo();
-  Future<ResponseWrapper<DemandModel>> addDemand(AddDemandParams params);
-  Future<ResponseWrapper<List<DemandModel>>> getDemands();
+  Future<ResponseWrapper<DemandModel>> addDemand(AddOrUpdateDemandParams params);
+  Future<ResponseWrapper<List<DemandModel>>> getDemands(GetDemandParams params);
+  Future<ResponseWrapper<DemandModel>> changeDemandStatus(DemandChangeStatusOrCommentParams params);
+  Future<ResponseWrapper<CommentModel>> addDemandComment(DemandChangeStatusOrCommentParams params);
+  Future<ResponseWrapper<List<CommentModel>>> getDemandComments(DemandChangeStatusOrCommentParams params);
 }
 
 @LazySingleton(as: NotificationsDatasource)
@@ -109,7 +115,7 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
   }
 
   @override
-  Future<ResponseWrapper<DemandModel>> addDemand(AddDemandParams params) {
+  Future<ResponseWrapper<DemandModel>> addDemand(AddOrUpdateDemandParams params) {
     fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(endPoint: EndPoints.versions.addDemand, data: params.toMap());
@@ -121,13 +127,50 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
   }
 
   @override
-  Future<ResponseWrapper<List<DemandModel>>> getDemands() {
+  Future<ResponseWrapper<List<DemandModel>>> getDemands(GetDemandParams params) {
     fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.get(endPoint: EndPoints.versions.addDemand);
+      final response = await _api.get(endPoint: EndPoints.versions.addDemand,queryParameters: params.toMap());
 
       return ResponseWrapper<List<DemandModel>>.fromJson(
           response, (json) => List.from((json as List<dynamic>).map((e) => DemandModel.fromJson(e as Map<String, dynamic>))));
+    }
+
+    return throwAppException(fun);
+  }
+
+  @override
+  Future<ResponseWrapper<DemandModel>> changeDemandStatus(DemandChangeStatusOrCommentParams params) {
+    fun() async {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.post(endPoint: EndPoints.versions.changeDemandStatus(params.idDemand), data: params.toMapChangeStatus());
+
+      return ResponseWrapper<DemandModel>.fromJson(response, (json) => DemandModel.fromJson(json));
+    }
+
+    return throwAppException(fun);
+  }
+
+  @override
+  Future<ResponseWrapper<CommentModel>> addDemandComment(DemandChangeStatusOrCommentParams params) {
+    fun() async {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.post(endPoint: EndPoints.versions.addDemandComments(params.idDemand), data: params.toMapAddComment());
+
+      return ResponseWrapper<CommentModel>.fromJson(response, (json) => CommentModel.fromJson(json));
+    }
+
+    return throwAppException(fun);
+  }
+
+  @override
+  Future<ResponseWrapper<List<CommentModel>>> getDemandComments(DemandChangeStatusOrCommentParams params) {
+    fun() async {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(endPoint: EndPoints.versions.getDemandComments(params.idDemand));
+
+      return ResponseWrapper<List<CommentModel>>.fromJson(
+          response, (json) => List.from((json as List<dynamic>).map((e) => CommentModel.fromJson(e as Map<String, dynamic>))));
     }
 
     return throwAppException(fun);

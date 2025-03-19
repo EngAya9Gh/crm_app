@@ -4,11 +4,15 @@ import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/add_comment_demand_usecase.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/change_demand_status_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/get_comments_demand_usecase.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/get_demands_usecase.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/get_incomming_version_info.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/get_versions_usecase.dart';
 import 'package:crm_smart/features/versions/presentation/widgets/new_entry_version_widget.dart';
+import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/model/versionModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +35,9 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
   final GetIncommingVersionInfoUsecase getIncommingVersionInfoUsecase;
   final AddDemandUsecase addDemandUsecase;
   final GetDemandsUsecase getDemandsUsecase;
+  final ChangeDemandStatusUsecase changeDemandStatusUsecase;
+  final AddDemandCommentUsecase addDemandCommentUsecase;
+  final GetDemandCommentsUsecase getDemandCommentsUsecase;
 
   VersionsBloc(
     this.getVersionsUsecase,
@@ -39,6 +46,9 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     this.getIncommingVersionInfoUsecase,
     this.addDemandUsecase,
     this.getDemandsUsecase,
+    this.changeDemandStatusUsecase,
+    this.addDemandCommentUsecase,
+    this.getDemandCommentsUsecase,
   ) : super(VersionsState()) {
     on<GetAllVersionsEvent>(_onHandelGetAllVersionsEvent);
     on<ResetListAddedEvent>(_onHandelResetListAddedEvent);
@@ -49,6 +59,9 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     on<GetIncommingUpdateInfoEvent>(_onGetIncommingUpdateInfoEvent);
     on<AddDemandEvent>(_onAddDemandEvent);
     on<GetDenmadsEvent>(_onGetDenmadsEvent);
+    on<ChangeDenmadStatusEvent>(_onChangeDenmadStatusEvent);
+    on<AddCommentDemandEvent>(_onAddCommentDemandEvent);
+    on<GetDemandCommentsEvent>(_onGetDemandCommentsEvent);
   }
 
   FutureOr<void> _onHandelGetAllVersionsEvent(GetAllVersionsEvent event, Emitter<VersionsState> emit) async {
@@ -164,7 +177,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
 
   FutureOr<void> _onGetDenmadsEvent(GetDenmadsEvent event, Emitter<VersionsState> emit) async {
     emit(state.copyWith(getDemands: BlocStatus.loading()));
-    final result = await getDemandsUsecase();
+    final result = await getDemandsUsecase(event.params ?? state.params);
     result.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
@@ -172,6 +185,62 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
       },
       (value) {
         emit(state.copyWith(getDemands: BlocStatus.success(data: value.message)));
+      },
+    );
+  }
+
+  FutureOr<void> _onChangeDenmadStatusEvent(ChangeDenmadStatusEvent event, Emitter<VersionsState> emit) async {
+    emit(state.copyWith(changeDemandStatus: BlocStatus.loading()));
+    final result = await changeDemandStatusUsecase(event.params);
+    result.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(changeDemandStatus: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        emit(state.copyWith(
+            changeDemandStatus: BlocStatus.success(data: value.message),
+            getDemands: BlocStatus.success(
+                data: (state.getDemands.data ?? [])
+                    .map(
+                      (element) => element.id == event.params.idDemand
+                          ? element.copyWith(
+                              status: DemandVersionStatus.values.firstWhere((element) => element.text == event.params.status!).text,
+                            )
+                          : element,
+                    )
+                    .toList())));
+      },
+    );
+  }
+
+  FutureOr<void> _onAddCommentDemandEvent(AddCommentDemandEvent event, Emitter<VersionsState> emit) async {
+    emit(state.copyWith(addCommentDemand: BlocStatus.loading()));
+    final result = await addDemandCommentUsecase(event.params);
+    result.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(addCommentDemand: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        emit(state.copyWith(
+            addCommentDemand: BlocStatus.success(data: value.message),
+            getCommentsDemand: BlocStatus.success(data: List.of(state.getCommentsDemand.data ?? [])..add(value.message!))));
+        event.onSuccess?.call();
+      },
+    );
+  }
+
+  FutureOr<void> _onGetDemandCommentsEvent(GetDemandCommentsEvent event, Emitter<VersionsState> emit) async {
+    emit(state.copyWith(getCommentsDemand: BlocStatus.loading()));
+    final result = await getDemandCommentsUsecase(event.params);
+    result.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(getCommentsDemand: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        emit(state.copyWith(getCommentsDemand: BlocStatus.success(data: value.message)));
       },
     );
   }

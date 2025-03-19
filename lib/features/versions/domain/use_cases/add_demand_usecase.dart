@@ -8,25 +8,27 @@ import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/versions_repo.dart';
 
 @lazySingleton
-class AddDemandUsecase extends BaseUsecase<Result<ResponseWrapper<DemandModel>>, AddDemandParams> {
+class AddDemandUsecase extends BaseUsecase<Result<ResponseWrapper<DemandModel>>, AddOrUpdateDemandParams> {
   AddDemandUsecase(this._repository);
 
   final versionsRepo _repository;
 
   @override
-  Future<Result<ResponseWrapper<DemandModel>>> call(AddDemandParams params) async {
+  Future<Result<ResponseWrapper<DemandModel>>> call(AddOrUpdateDemandParams params) async {
     return await _repository.addDemand(params);
   }
 }
 
-class AddDemandParams {
-  final int idManagement;
+class AddOrUpdateDemandParams {
+  final int? idDemand;
+  final int? idManagement;
   final String title;
   final String goal;
   final String description;
   final String? notes;
-  const AddDemandParams({
-    required this.idManagement,
+  const AddOrUpdateDemandParams({
+    this.idDemand,
+    this.idManagement,
     required this.goal,
     required this.title,
     required this.description,

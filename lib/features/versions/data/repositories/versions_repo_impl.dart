@@ -4,6 +4,9 @@ import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
 import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/change_demand_status_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/get_demands_usecase.dart';
+import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/model/versionModel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -74,12 +77,27 @@ class NotificationsRepoImpl implements versionsRepo {
   }
 
   @override
-  Future<Result<ResponseWrapper<DemandModel>>> addDemand(AddDemandParams params) {
+  Future<Result<ResponseWrapper<DemandModel>>> addDemand(AddOrUpdateDemandParams params) {
     return toApiResult(() => _dataSource.addDemand(params));
   }
 
   @override
-  Future<Result<ResponseWrapper<List<DemandModel>>>> getDemands() {
-    return toApiResult(() => _dataSource.getDemands());
+  Future<Result<ResponseWrapper<List<DemandModel>>>> getDemands(GetDemandParams params) {
+    return toApiResult(() => _dataSource.getDemands(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<CommentModel>>> addDemandComment(DemandChangeStatusOrCommentParams params) {
+    return toApiResult(() => _dataSource.addDemandComment(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<DemandModel>>> changeDemandStatus(DemandChangeStatusOrCommentParams params) {
+    return toApiResult(() => _dataSource.changeDemandStatus(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<CommentModel>>>> getDemandComments(DemandChangeStatusOrCommentParams params) {
+    return toApiResult(() => _dataSource.getDemandComments(params));
   }
 }

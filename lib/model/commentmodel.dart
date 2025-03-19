@@ -17,6 +17,7 @@ class CommentModel {
     this.mention_users,
     this.hasReplies,
     this.replies,
+    this.idDemand,
   });
 
   late final String idComment;
@@ -32,6 +33,7 @@ class CommentModel {
   UserModel? commentedBy;
   bool? hasReplies;
   List<CommentModel>? replies;
+  int? idDemand;
 
   CommentModel.fromJson(Map<String, dynamic> json) {
     final image = json['img_image'];
@@ -49,15 +51,16 @@ class CommentModel {
         : json['client_id'] != null
             ? json['client_id'].toString()
             : "";
-    content = json['content'] ?? '';
+    content = json['content'] ?? json['comment'] ?? '';
     nameUser = json['nameUser'] ?? json['user_name'];
     imgImage = image;
     nameEnterprise = json['name_enterprise'] == null ? null : json['name_enterprise'];
     commentedBy = json['commented_by'] == null ? null : UserModel.fromJson(json['commented_by']);
-    date_comment = json['date_comment'] ?? json['comment_date'] ?? json['date_reply'];
+    date_comment = json['date_comment'] ?? json['comment_date'] ?? json['date_reply'] ?? json['created_at'];
     type_comment = json['type_comment'] ?? CommentTypeEnum.all.value;
     mention_users = json['mention_users'] == null ? [] : List.of(json['mention_users']).map((e) => UserModel.fromJson(e)).toList();
     hasReplies = json['has_replies'];
+    idDemand = json['demand_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +79,7 @@ class CommentModel {
     _data['id_reply'] = idComment;
     _data['date_reply'] = date_comment;
     _data['has_replies'] = hasReplies;
+    _data['demand_id'] = idDemand;
     _data['mention_users'] = mention_users?.map(
       (e) => e.toJson(),
     );
