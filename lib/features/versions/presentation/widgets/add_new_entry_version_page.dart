@@ -97,13 +97,13 @@ class _AddVersionPageState extends State<AddVersionPage> {
                     hintText: "رقم التحديث",
                     controller: versionNo,
                     enabled: widget.versionModel == null,
-                    validator: typeVersion == 0 ? null : InputValidator.requiredFiled,
+                    validator: typeVersion == 1 ? null : InputValidator.requiredFiled,
                   ),
                   10.height,
                   AppTextField(
                     hintText: "التاريخ",
                     controller: date,
-                    validator: typeVersion == 0 ? null : InputValidator.requiredFiled,
+                    validator: typeVersion == 1 ? null : InputValidator.requiredFiled,
                     onTap: () {
                       showDatePicker(
                         context: context,
@@ -136,7 +136,7 @@ class _AddVersionPageState extends State<AddVersionPage> {
                             child: ValueListenableBuilder(
                               valueListenable: listManagement,
                               builder: (context, value, child) => AddNewEntryVersion(
-                                isTitleOpional: typeVersion == 0,
+                                isTitleOpional: typeVersion == 1,
                                 shouldShowClose: e.index != 0 && widget.versionModel == null,
                                 listManagement: value,
                                 oneItemVersionEntity: e,
