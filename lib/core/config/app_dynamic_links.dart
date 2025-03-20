@@ -9,6 +9,7 @@ import 'package:crm_smart/features/sales/deleted_invoices/presentation/pages/del
 import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import 'package:crm_smart/features/sales/public_relations/participates/presentation/pages/participate_list_page.dart';
+import 'package:crm_smart/features/versions/presentation/pages/version_demand_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -148,6 +149,12 @@ abstract class AppDynamicLinks {
                       tabIndex: 2,
                       idClient: data == null ? dataNotify : data['paramId'],
                     )));
+        break;
+      case "AddDemand":
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => VersionOrderPage()));
         break;
       case "Marketing Client":
         Navigator.push(
