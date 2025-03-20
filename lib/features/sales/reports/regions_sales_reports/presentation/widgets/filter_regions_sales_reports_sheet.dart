@@ -77,6 +77,7 @@ class _FilterRegionsSalesReportsSheetState
             CustomDropDown<PeriodTypeEnum>(
               hint: 'الفترة',
               items: PeriodTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.periodTypeNotifier.value,
               onChanged: (value) {
@@ -131,6 +132,7 @@ class _FilterRegionsSalesReportsSheetState
                 filterFn: (item, query) {
                   return item.branchName.contains(query);
                 },
+                compareFn:  (item, selectedItem) => item.branchId == selectedItem.branchId,
                 onChanged: (region) {
                   _cubit.filterEntity.setRegionNotifierValue = region;
                 },
@@ -140,6 +142,7 @@ class _FilterRegionsSalesReportsSheetState
             CustomDropDown<ProductTypeEnum>(
               hint: 'نوع المنتج',
               items: ProductTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.productTypeNotifier.value,
               onChanged: (value) {
@@ -151,6 +154,7 @@ class _FilterRegionsSalesReportsSheetState
             CustomDropDown<InvoiceTypeEnum>(
               hint: 'نوع الفاتورة',
               items: InvoiceTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.invoiceTypeNotifier.value,
               onChanged: (value) {

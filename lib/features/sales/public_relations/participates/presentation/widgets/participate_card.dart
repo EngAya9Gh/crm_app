@@ -21,18 +21,48 @@ class ParticipateCard extends StatefulWidget {
   const ParticipateCard({
     super.key,
     required this.participate,
+    this.itemKey, // Add GlobalKey parameter
+    this.shouldHighlight = false,
   });
 
   final ParticipateModel participate;
-
+  final GlobalKey? itemKey;
+  final bool shouldHighlight;
   @override
   State<ParticipateCard> createState() => _ParticipateCardState();
 }
 
 class _ParticipateCardState extends State<ParticipateCard> {
+  bool _isHighlighted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.shouldHighlight) {
+      _triggerHighlight();
+    }
+  }
+
+  @override
+  void didUpdateWidget(ParticipateCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.shouldHighlight && !oldWidget.shouldHighlight) {
+      _triggerHighlight();
+    }
+  }
+
+  void _triggerHighlight() async {
+    setState(() => _isHighlighted = true);
+    await Future.delayed(Duration(milliseconds: 1000));
+    if (mounted) {
+      setState(() => _isHighlighted = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Slidable(
+      key: widget.itemKey,
       enabled: context.read<PrivilegesCubit>().checkPrivilege('202'),
       endActionPane: ActionPane(
         motion: ScrollMotion(),
@@ -52,17 +82,14 @@ class _ParticipateCardState extends State<ParticipateCard> {
         ],
       ),
       child: AppCardContainer(
+        color: _isHighlighted ? AppColors.primaryAltLight : null,
         onTap: () {
-          context
-              .read<ParticipateListBloc>()
-              .add(ChanageCurrentParticipate(widget.participate));
+          context.read<ParticipateListBloc>().add(ChanageCurrentParticipate(widget.participate));
           AppNavigator.go(
             ParticipateProfilePage(
               participateId: widget.participate.id_participate,
             ),
-            pathParameters: {
-              'participateId': widget.participate.id_participate
-            },
+            pathParameters: {'participateId': widget.participate.id_participate},
             name: AppRoutesNames.participateProfile.inParticipateList,
             isNew: false,
           );
@@ -101,8 +128,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
   String _getDate() {
     return widget.participate.addDate != null
         ? DateTime.tryParse(widget.participate.addDate.toString()) != null
-            ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
-                .format(DateTime.parse(widget.participate.addDate!))
+            ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(widget.participate.addDate!))
             : widget.participate.addDate.toString()
         : '';
   }

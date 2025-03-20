@@ -71,6 +71,7 @@ class _ClientsDebtsSheetState extends State<ClientsDebtsSheet> {
               hint: "الحالة",
               items: InvoiceStatusEnum.values,
               itemAsString: (item) => item!.value,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               selectedItem: _cubit.filterEntity.invoiceStateNotifier.value,
               onChanged: (value) {
                 _cubit.filterEntity.invoiceStateNotifier.value = value;

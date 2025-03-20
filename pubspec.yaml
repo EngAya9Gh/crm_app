@@ -1,7 +1,7 @@
 name: crm_smart
 description: A new Flutter project.
 publish_to: 'none'
-version: 2.25.3+74
+version: 2.26.0+75
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -103,6 +103,7 @@ dependencies:
   open_filex: ^4.5.0
   easy_sidemenu: ^0.6.0
   flutter_expanded_tile: ^0.4.0
+  mocktail: ^1.0.4
 
 dependency_overrides:
   web: ^1.1.0

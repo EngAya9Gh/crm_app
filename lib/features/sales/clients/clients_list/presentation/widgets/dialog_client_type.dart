@@ -92,6 +92,7 @@ class _DialogClientTypeState extends State<DialogClientType> {
                     CustomDropDown<PeriodicCommunicationClientTypeEnum>(
                       hint: "نوع العميل",
                       items: PeriodicCommunicationClientTypeEnum.values,
+                      compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                       itemAsString: (item) => item!.value,
                       selectedItem: clientTypeNotifier.value,
                       onChanged: (value) => clientTypeNotifier.value = value,

@@ -65,7 +65,7 @@ class _FilterPrivilegeSheetState extends State<FilterPrivilegeSheet> {
                     .trim()
                     .contains(query.toLowerCase());
               },
-              compareFn: (item, selectedItem) => item == selectedItem,
+              compareFn: (item, selectedItem) => item.index == selectedItem.index,
               selectedItem: _cubit.filterEntity.privilegeType.value,
               onChanged: (value) {
                 _cubit.filterEntity.privilegeType.value = value;

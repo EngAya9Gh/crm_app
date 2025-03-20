@@ -41,6 +41,7 @@ class _QuarterlyEmployeePageState extends State<QuarterlyEmployeePage> {
                 textDirection: TextDirection.rtl,
                 child: CustomDropDown(
                   hint: 'حدد السنة',
+                  compareFn:  (item, selectedItem) => item == selectedItem,
                   items: getYearList(),
                   itemAsString: (item) => item!,
                   selectedItem: selectedQuarterYear.toString(),
@@ -59,6 +60,7 @@ class _QuarterlyEmployeePageState extends State<QuarterlyEmployeePage> {
                 child: CustomDropDown(
                   hint: 'حدد الربع',
                   items: quarterList,
+                  compareFn:  (item, selectedItem) => item == selectedItem,
                   itemAsString: (item) => item!,
                   selectedItem: getQuarterName(selectedQuarter!),
                   onChanged: (value) {

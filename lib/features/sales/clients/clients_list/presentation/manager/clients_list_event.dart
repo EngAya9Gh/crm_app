@@ -62,6 +62,15 @@ class GetRecommendedClientsEvent extends ClientsListEvent {
   List<Object?> get props => [];
 }
 
+class GetRecommendedClientsFilterEvent extends ClientsListEvent {
+  final ValueChanged<List<SubscribedClientsModel>>? onSuccess;
+
+  GetRecommendedClientsFilterEvent({this.onSuccess});
+
+  @override
+  List<Object?> get props => [];
+}
+
 class AddClientEvent extends ClientsListEvent {
   final AddClientParams addClientParams;
 

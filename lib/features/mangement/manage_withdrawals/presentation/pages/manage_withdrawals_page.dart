@@ -141,6 +141,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                               itemAsString: (u) => u!.name!,
                               selectedItem:
                                   state.handleUsersSeries.keys.toList()[index],
+                              compareFn:  (item, selectedItem) => item.idUser == selectedItem.idUser,
                               filterFn: (user, filter) {
                                 return user.name!
                                     .toLowerCase()

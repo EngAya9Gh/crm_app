@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 
 import '../common/enums/enums.dart';
@@ -164,7 +165,10 @@ class _Care {
 
   final communicationRepeat = 'care/getcommuncation_repeat_star.php';
   final getRecommendedClients = 'care/get_recommand_care.php';
+  final getRecommendedClientsFilterClient = 'subscribedClients';
   final String viewComments = "viewComments";
+  final String commentMention = "mentionedComments";
+  String getCommentReplies(String idComment) => "viewReplies/$idComment";
 
   final String getClientsAccept = 'getClientsAccept';
 
@@ -467,6 +471,7 @@ class _Reports {
   final String getClientsCareReports = 'reports/care_report.php';
   final String getEvaluationLevelReport = 'reports/report_care_rate.php';
   final String getPeriodicCommunicationReports = "reports/care_communication_report.php";
+  final String getRecommendedClientReports = "recommendClients";
 }
 
 class _Notifications {
@@ -475,6 +480,7 @@ class _Notifications {
   final String getNotifications = 'notifications';
   final String markNotificationsAsRead = 'notifications/mark-read';
   final String getUnreadNotificationsCount = 'notifications/count-unread';
+  final String notificationsTypes = 'notifications/types';
 }
 
 class _Versions {
@@ -484,6 +490,12 @@ class _Versions {
   final String addVersions = 'version-features';
 
   String updateVersions(int id) => 'version-features/$id/edit';
+  final String getIncommingUpdateInfo = 'version-features/next-update';
+  final String addDemand='demands';
+  String updateDemand(int idDemand)=>'demands/$idDemand/edit';
+  String changeDemandStatus(int idDemand)=>'demands/$idDemand/change-status';
+  String addDemandComments(int idDemand)=>'demands/1/add-comment';
+  String getDemandComments(int idDemand)=>'demands/1/comments';
 }
 
 class _Products {

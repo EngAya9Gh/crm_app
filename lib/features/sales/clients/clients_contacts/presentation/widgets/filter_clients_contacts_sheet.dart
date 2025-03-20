@@ -60,6 +60,7 @@ class _FilterClientsContactsSheetState extends State<FilterClientsContactsSheet>
                     hint: "نوع جهة الاتصال*",
                     items: ContactTypeRoleEnum.values,
                     itemAsString: (item) => item!.name,
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     selectedItem: state.selectedRole,
                     onChanged: (value) {
                       if (value == null) return;

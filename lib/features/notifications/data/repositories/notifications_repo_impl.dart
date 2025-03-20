@@ -1,3 +1,7 @@
+import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
+import 'package:crm_smart/core/services/api/api_utils.dart';
+import 'package:crm_smart/core/services/api/result.dart';
+import 'package:crm_smart/features/notifications/data/models/notification_types.dart';
 import 'package:crm_smart/features/notifications/domain/use_cases/get_unread_notifications_count_usecase.dart';
 import 'package:crm_smart/features/notifications/domain/use_cases/mark_notifications_as_read_usecase.dart';
 import 'package:dartz/dartz.dart';
@@ -58,4 +62,9 @@ class NotificationsRepoImpl implements NotificationsRepo {
       return Left(e.toString());
     }
   }
+
+  @override
+  Future<Result<ResponseWrapper<NotificationTypes>>> getNotificationTypes() async{
+       return toApiResult(() => _dataSource.getNotificationTypes());
+ }
 }

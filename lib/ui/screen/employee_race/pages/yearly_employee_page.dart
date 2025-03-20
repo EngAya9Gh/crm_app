@@ -47,6 +47,7 @@ class _YearlyEmployeePageState extends State<YearlyEmployeePage> {
                 child: CustomDropDown<String>(
                   hint: 'حدد السنة',
                   items: getYearList(),
+                  compareFn:  (item, selectedItem) => item == selectedItem,
                   itemAsString: (item) => item!,
                   selectedItem: selectedYear.toString(),
                   onChanged: (value) {

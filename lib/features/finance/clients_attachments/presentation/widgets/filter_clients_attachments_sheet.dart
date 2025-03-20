@@ -72,6 +72,8 @@ class FilterClientAttachmentSheet extends StatelessWidget {
                         if (value == null) return;
                         bloc.add(ChangeFilterClientEvent(getAttachmentsParams: state.getAttachmentsParams.copyWith(client_id: () => value.id)));
                       },
+                      compareFn:  (item, selectedItem) => item.id == selectedItem.id,
+
                       validator: InputValidator.requiredFiled,
                       filterFn: (subscribedClientsModel, string) {
                         return subscribedClientsModel.nameEnterprise!.toLowerCase().contains(string.toLowerCase());
@@ -79,6 +81,7 @@ class FilterClientAttachmentSheet extends StatelessWidget {
                   10.height,
                   CustomDropDown<TypeSubClientEnum>(
                     hint: "الحالة",
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     items: List.of(TypeSubClientEnum.values)..removeWhere((element) => element.text==TypeSubClientEnum.all.text,),
                     itemAsString: (item) => item?.text ?? '',
                     selectedItem: ((state.getAttachmentsParams.type != null)&&(state.getAttachmentsParams.type != 'all'))

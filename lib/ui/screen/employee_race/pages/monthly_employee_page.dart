@@ -40,6 +40,7 @@ class _MonthlyEmployeePageState extends State<MonthlyEmployeePage> {
                 child: CustomDropDown(
                   hint: 'حدد السنة',
                   items: getYearList(),
+                  compareFn:  (item, selectedItem) => item == selectedItem,
                   itemAsString: (item) => item!,
                   selectedItem: selectedMonthYear.toString(),
                   onChanged: (value) {
@@ -57,6 +58,7 @@ class _MonthlyEmployeePageState extends State<MonthlyEmployeePage> {
                 child: CustomDropDown(
                   hint: 'حدد الشهر',
                   items: monthList,
+                  compareFn:  (item, selectedItem) => item == selectedItem,
                   itemAsString: (item) => item!,
                   selectedItem: getMonthName(selectedMonth!),
                   onChanged: (value) {

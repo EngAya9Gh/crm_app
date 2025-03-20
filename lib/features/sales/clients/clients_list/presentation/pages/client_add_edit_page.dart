@@ -31,6 +31,7 @@ import '../../../../../../view_model/maincity_vm.dart';
 import '../../../../../../view_model/typeclient.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
 import '../../../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
+import '../../../../../finance/clients_attachments/data/models/subscribed_clients_model.dart';
 import '../../../../../mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../../../mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../data/models/recommended_client.dart';
@@ -91,7 +92,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
   void initState() {
     privilegeCubit = context.read<PrivilegesCubit>();
     companyProvider = context.read<CompanyProvider>();
-    _bloc = context.read<ClientsListBloc>()..add(GetRecommendedClientsEvent());
+    _bloc = context.read<ClientsListBloc>()..add(GetRecommendedClientsFilterEvent());
     _manageWithdrawalsCubit = context.read<ManageWithdrawalsCubit>()..getReasonReject();
     _mainCityProvider = context.read<MainCityProvider>();
     _clientTypeProvider = context.read<ClientTypeProvider>();
@@ -287,6 +288,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             Expanded(
                               child: CustomDropDown<ActivitySizeTypeEnum>(
                                 hint: "حجم النشاط*",
+                                compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                                 height: 100.h,
                                 items: ActivitySizeTypeEnum.values,
                                 itemAsString: (item) => item!.value,
@@ -294,6 +296,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 onChanged: (value) {
                                   _selectedActivitySizeType = value;
                                 },
+
                                 validator: (value) {
                                   if (_selectedClientRegistrationTye == 'خاطئ') return null;
                                   return InputValidator.requiredFiled(value);
@@ -323,6 +326,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                   return CustomSearchableDropDown<CityModel>(
                                     hint: "المدينة*",
                                     items: cart.listcity,
+                                    compareFn:  (item, selectedItem) => item.cityId == selectedItem.cityId,
                                     itemAsString: (city) => city!.cityName,
                                     selectedItem: cart.listcity.firstWhereOrNull((element) => element.cityId == selectedCity),
                                     onChanged: (data) {
@@ -396,9 +400,9 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 if ((userProvider.selectedSourceClient == ClientSourceEnum.recommendedClient)) ...{
                                   BlocBuilder<ClientsListBloc, ClientsListState>(
                                     builder: (context, state) {
-                                      final recommendedList = state.recommendedClientsState.getDataWhenSuccess ?? [];
+                                      final recommendedList = state.recommendedClientsForFilterState.getDataWhenSuccess ?? [];
 
-                                      return CustomSearchableDropDown<RecommendedClient>(
+                                      return CustomSearchableDropDown<SubscribedClientsModel>(
                                         hint: 'العملاء*',
                                         items: recommendedList,
                                         itemAsString: (item) => item!.nameEnterprise!,
@@ -409,12 +413,12 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                         compareFn: (item, query) {
                                           return item.nameEnterprise!.toLowerCase() == query.nameEnterprise!.toLowerCase();
                                         },
-                                        selectedItem: recommendedList.firstWhereOrNull((element) => element.fkClient == _selectedARecommendedClient),
+                                        selectedItem: recommendedList.firstWhereOrNull((element) => element.id.toString() == _selectedARecommendedClient),
                                         onChanged: (value) {
                                           if (value == null) {
                                             return;
                                           }
-                                          _selectedARecommendedClient = value.fkClient;
+                                          _selectedARecommendedClient = value.id.toString();
                                           setState(() {});
                                         },
                                       );
@@ -433,6 +437,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                 if (_isNotFieldOrRecommended()) ...[
                                   CustomDropDown<ClientRegistrationType>(
                                     hint: "نوع التسجيل*",
+                                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                                     items: ClientRegistrationType.values,
                                     itemAsString: (item) => item!.value,
                                     selectedItem: ClientRegistrationType.fromString(_selectedClientRegistrationTye),
@@ -450,6 +455,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                                   if (_showClassificationType(userProv.selectedClientRegistrationType)) ...[
                                     CustomDropDown<ClientsClassification>(
                                       hint: "نوع التصنيف*",
+                                      compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                                       items: ClientsClassification.values,
                                       itemAsString: (item) => item!.value,
                                       selectedItem: ClientsClassification.fromString(_selectedClientsClassification),
@@ -506,6 +512,7 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
                             return CustomDropDown<CompanyModel>(
                               hint: "نظام سابق",
                               items: company.list_company,
+                              compareFn:  (item, selectedItem) => item.id_Company == selectedItem.id_Company,
                               itemAsString: (item) => item!.name_company!,
                               selectedItem: company.list_company.firstWhereOrNull((element) => element.id_Company == company.selectedValueOut),
                               onChanged: (value) {

@@ -1,48 +1,56 @@
-import 'package:crm_smart/core/services/cache_services/cache_services.dart';
-import 'package:crm_smart/core/services/cache_services/secure_storage_consumer.dart';
-import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
-import 'package:crm_smart/core/utils/app_strings.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_model.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/change_state_agent_usecase.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
-// Mock class for FlutterSecureStorage
+class FakeGetAgentsAndDistributorsParams extends Fake implements GetAgentsAndDistributorsParams {}
+
+class GetAgentsAndDistributorsUseCaseMock extends Mock implements GetAgentsAndDistributorsUseCase {}
+
+class ChangeStateAgentUseCaseMock extends Mock implements ChangeStateAgentUseCase {}
 
 void main() {
+  late GetAgentsAndDistributorsUseCaseMock getAgentsAndDistributorsUseCaseMock;
+  late ChangeStateAgentUseCaseMock changeStateAgentUseCaseMock;
+  late AgentsDistributorsCubit agentsDistributorsCubit;
+  setUp(
+    () async {},
+  );
   setUpAll(() async {
+    registerFallbackValue(FakeGetAgentsAndDistributorsParams());
     WidgetsFlutterBinding.ensureInitialized();
-    await configureDependencies();
-    await getIt.allReady();
-
-    final secureStorage = getIt<CacheServices>(
-      instanceName: SecureStorageConsumer.name,
-    );
-    await secureStorage.saveData(
-      key: AppStrings.secureStorage.token,
-      value: '516|hWs97ZndCO2iCLlmk0KcnxTmTJW1wVVswk4eqNM12128e08d',
-    );
+    getAgentsAndDistributorsUseCaseMock = GetAgentsAndDistributorsUseCaseMock();
+    changeStateAgentUseCaseMock = ChangeStateAgentUseCaseMock();
+    agentsDistributorsCubit = AgentsDistributorsCubit(getAgentsAndDistributorsUseCaseMock, changeStateAgentUseCaseMock);
   });
 
   group("Agents and Distributors", () {
-    test("getAgentsAndDistributors", () async {
-      // Arrange
-
+    var listReturnedDate = [
+      AgentDistributorModel(idAgent: '', nameAgent: '', typeAgent: '', emailAgent: '', mobileAgent: '', description: '', imageAgent: '')
+    ];
+    test("Success get agent distribution then expect to fill state with list of returned agent list", () async {
       // act
-      final result = await getIt<GetAgentsAndDistributorsUseCase>()
-          .call(GetAgentsAndDistributorsParams());
+      when(() => getAgentsAndDistributorsUseCaseMock(any())).thenAnswer((invocation) async => Right(listReturnedDate));
+      agentsDistributorsCubit.getAgentsAndDistributors();
 
+      await Future.delayed(Duration.zero);
       // Assert
-      expect(result, isA<Either<String, List<AgentDistributorModel>>>());
-      result.fold(
-        (error) {
-          if (AppConstants.shouldReturnEarly(error)) return;
-          fail('Expected a successful fetch, but got an error: $error');
-        },
-        (data) => expect(data, isNotEmpty),
-      );
+      expect(agentsDistributorsCubit.state, AgentsDistributorsState(status: StateStatus.success, agentsAndDistributorsList: listReturnedDate));
+    });
+    test("Failed get agent distribution then expect keep data filed in the state but change status to failed and catch error ", () async {
+      // act
+      when(() => getAgentsAndDistributorsUseCaseMock(any())).thenAnswer((invocation) async => Left('exception'));
+      agentsDistributorsCubit.getAgentsAndDistributors();
+
+      await Future.delayed(Duration.zero);
+      // Assert
+      expect(agentsDistributorsCubit.state,
+          AgentsDistributorsState(agentsAndDistributorsList: listReturnedDate, status: StateStatus.failure, error: 'exception'));
     });
   });
 }

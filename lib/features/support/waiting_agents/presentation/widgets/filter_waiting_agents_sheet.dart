@@ -52,6 +52,7 @@ class FilterWaitingAgentSheet extends StatelessWidget {
                     ),
                   10.height,
                   CustomDropDown<AgentSourceEnum>(
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     hint: "المصدر",
                     items: AgentSourceEnum.values.toList(),
                     itemAsString: (item) => item?.value ?? '',

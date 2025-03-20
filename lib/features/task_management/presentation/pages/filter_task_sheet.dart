@@ -276,6 +276,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                     onChanged: (data) {
                                       _taskCubit.onChangeFilterAssignFrom(data);
                                     },
+                                    compareFn:  (item, selectedItem) => item.id == selectedItem.id,
                                     selectedItem: state.filterAssignFrom,
                                     filterFn: (user, filter) => user.nameUser!.contains(filter),
                                   );

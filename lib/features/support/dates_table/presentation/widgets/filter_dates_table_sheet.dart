@@ -64,6 +64,7 @@ class _FilterDatesTableSheetState extends State<FilterDatesTableSheet> {
           builder:(context, value, child) =>  CustomDropDown<SellerTypeEnum>(
             hint: 'عميل او وكيل',
             items: [SellerTypeEnum.agent],
+            compareFn:  (item, selectedItem) => item.index == selectedItem.index,
             itemAsString: (item) => item!.value,
             selectedItem: value,
             onChanged: (p0) {

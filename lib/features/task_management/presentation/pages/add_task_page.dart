@@ -400,6 +400,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 child: CustomDropDown<RecurringType>(
                                   hint: 'نوع التكرار',
                                   items: RecurringType.values,
+                                  compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                                   itemAsString: (item) => item!.text,
                                   selectedItem: taskState.selectedRecurringType,
                                   onChanged: _taskCubit.onChangeRecurringType,
@@ -525,6 +526,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             itemAsString: (u) => u!.nameUser!,
             onChanged: _taskCubit.onChangeAssignTo,
             selectedItem: taskState.selectedAssignTo,
+            compareFn:  (item, selectedItem) => item.id == selectedItem.id,
             filterFn: (user, filter) => user.nameUser!.contains(filter),
             validator: (value) {
               if (taskState.selectedAssignedToType != AssignedTypeNew.users) {
@@ -555,6 +557,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           return CustomDropDown<ManageModel>(
             hint: 'القسم',
             items: list,
+            compareFn:  (item, selectedItem) => item.idMange == selectedItem.idMange,
             itemAsString: (item) => item!.name_mange,
             selectedItem: list.firstWhereOrNull(
               (element) => element.idMange == departmentId,
@@ -590,6 +593,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           return CustomDropDown<BranchModel>(
             hint: 'الفرع',
             items: list,
+            compareFn:  (item, selectedItem) => item.branchId == selectedItem.branchId,
             itemAsString: (branch) => branch!.branchName,
             selectedItem: list.firstWhereOrNull(
               (element) => element.branchId == regionId,

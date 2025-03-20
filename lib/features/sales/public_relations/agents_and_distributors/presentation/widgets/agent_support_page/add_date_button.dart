@@ -150,6 +150,7 @@ class _AddDateButtonState extends State<AddDateButton> {
                     CustomDropDown<String>(
                       hint: 'نوع التركيب',
                       items: _items,
+                      compareFn:  (item, selectedItem) => item == selectedItem,
                       itemAsString: (item) => item!,
                       selectedItem: selectedInstallationType,
                       onChanged: (value) {

@@ -28,7 +28,7 @@ class _NotificationsState extends State<NotificationsPage> {
     _cubit = context.read<NotificationsCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit.getNotifications();
+      await _cubit..getNotifications()..getNotificationsTypesFilter();
     });
 
     super.initState();

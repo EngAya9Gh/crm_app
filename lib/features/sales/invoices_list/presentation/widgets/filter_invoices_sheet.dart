@@ -99,6 +99,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
             CustomDropDown<StatusOfInvoice>(
               hint: 'حالات الفاتورة',
               items: StatusOfInvoice.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.text,
               selectedItem: _invoicesSectionCubit.filtersEntity.filterInvoiceStatus.value,
               onChanged: (value) async {
@@ -110,6 +111,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
             CustomDropDown<SellerTypeEnum>(
               hint: "النوع",
               items: SellerTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               height: 160.h,
               selectedItem: _invoicesSectionCubit.filtersEntity.filterInvoicesSellerType.value,
@@ -141,6 +143,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                       return state.listParticipate.when(
                         success: (data) =>
                             CustomDropDown<ParticipateModel>(
+                              compareFn:  (item, selectedItem) => item.id_participate == selectedItem.id_participate,
                               hint: "المتعاونين",
                               items: data ?? [],
                               itemAsString: (item) => item!.name,
@@ -198,6 +201,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                 if (_privilegeCubit.checkPrivilege('156')) ...[
                   Expanded(
                     child: CustomDropDown<ClientStatusEnum>(
+                      compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                       hint: 'حالة الفاتورة',
                       items: ClientStatusEnum.values,
                       itemAsString: (item) => item!.value,
@@ -215,6 +219,7 @@ class _FilterInvoicesSheetState extends State<FilterInvoicesSheet> {
                     child: CustomDropDown<DevicesStateFilterEnum>(
                       hint: 'الأجهزة',
                       items: DevicesStateFilterEnum.values,
+                      compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                       itemAsString: (item) => item!.value,
                       selectedItem: _invoicesSectionCubit.filtersEntity.filterDeviceState.value,
                       onChanged: (value) async {

@@ -87,6 +87,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
                         if (val == null) return 'من فضلك حدد اسم موظف';
                         return null;
                       },
+                      compareFn: (item, selectedItem) => item.id == selectedItem.id,
                     );
                   },
                 ),
@@ -108,9 +109,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
                         onPressed: () async {
                           if (_globalKey.currentState!.validate()) {
                             _globalKey.currentState!.save();
-                            context
-                                .read<EditTicketCubit>()
-                                .transferTicket(TransferTicketParams(
+                            context.read<EditTicketCubit>().transferTicket(TransferTicketParams(
                                   idTicket: widget.idTicket!,
                                   fkUserTo: idUser!,
                                   reasonTransfer: _textReason.text,
@@ -123,9 +122,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
                   ),
                 ] else ...[
                   BlocConsumer<ClientsListBloc, ClientsListState>(
-                    listenWhen: (previous, current) =>
-                        current.transferClientStatus !=
-                        previous.transferClientStatus,
+                    listenWhen: (previous, current) => current.transferClientStatus != previous.transferClientStatus,
                     listener: (context, state) {
                       if (state.transferClientStatus.isFailed()) {
                         AppSnackbar.showSnakeBar(
@@ -146,15 +143,10 @@ class _TransferClientPageState extends State<TransferClientPage> {
                         onPressed: () async {
                           if (_globalKey.currentState!.validate()) {
                             _globalKey.currentState!.save();
-                            context
-                                .read<ClientsListBloc>()
-                                .add(TransferClientEvent(
-                                  TransferClientParams(
-                                      idClient: widget.idClient,
-                                      fkUserTo: idUser!),
+                            context.read<ClientsListBloc>().add(TransferClientEvent(
+                                  TransferClientParams(idClient: widget.idClient, fkUserTo: idUser!),
                                   onSuccess: (value) async {
-                                    await clientProvider
-                                        .getClientById(widget.idClient);
+                                    await clientProvider.getClientById(widget.idClient);
                                     AppNavigator.pop(result: value);
                                   },
                                 ));

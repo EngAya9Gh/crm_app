@@ -42,6 +42,7 @@ class LevelsSearchableDropdown extends StatelessWidget {
           itemAsString: (item) => item!.nameLevel!,
           selectedItem: level,
           onChanged: onChanged,
+          compareFn:  (item, selectedItem) => item.idLevel == selectedItem.idLevel,
           filterFn: (item, str) {
             return item.nameLevel
                 .toString()

@@ -271,7 +271,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
     return value.where((element) => element.isActive == '1' && element.typeAdministration == UserTypeEnum.SalesManagement.type.toString()).toList();
   }
 
-  Future<void> getInvoiceById(String id) async {
+  Future<void> getInvoiceById(String id, [ValueChanged<InvoiceModel>? onGettingData]) async {
     emit(state.copyWith(getInvoiceByIdStatus: const BlocStatus.loading()));
 
     final result = await _getInvoiceByIdUsecase(GetInvoiceByIdParams(id: id));
@@ -289,6 +289,7 @@ class InvoicesSectionCubit extends Cubit<InvoicesSectionState> {
         emit(state.copyWith(
           getInvoiceByIdStatus: BlocStatus.success(data: value),
         ));
+        onGettingData?.call(currentInvoice!);
       },
     );
   }

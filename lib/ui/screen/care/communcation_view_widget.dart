@@ -308,6 +308,7 @@ class _CommunicationExpandedWidgetState extends State<CommunicationExpandedWidge
                         if (widget.communicationModel.typeCommuncation == 'دوري') ...[
                           CustomDropDown<PeriodicCommunicationClientTypeEnum>(
                             hint: "نوع العميل",
+                            compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                             items: PeriodicCommunicationClientTypeEnum.values,
                             itemAsString: (item) => item!.value,
                             selectedItem: clientTypeNotifier.value,

@@ -89,6 +89,7 @@ class _AddTargetPageState extends State<AddTargetPage>
                     return CustomDropDown(
                       hint: 'حدد السنة',
                       items: getYearList(),
+                      compareFn:  (item, selectedItem) => item == selectedItem,
                       itemAsString: (item) => item!,
                       selectedItem: selectedYearAddTarget,
                       onChanged: (value) {
@@ -128,6 +129,7 @@ class _AddTargetPageState extends State<AddTargetPage>
                       items: listRegion.map((BranchModel region) {
                         return region.branchId;
                       }).toList(),
+                      compareFn:  (item, selectedItem) => item == selectedItem,
                       itemAsString: (item) => listRegion
                           .firstWhere((region) => region.branchId == item)
                           .branchName,
@@ -170,6 +172,7 @@ class _AddTargetPageState extends State<AddTargetPage>
         CustomDropDown(
           hint: 'حدد الشهر',
           items: monthList,
+          compareFn:  (item, selectedItem) => item == selectedItem,
           itemAsString: (item) => item!,
           selectedItem: viewmodel.selectedMonthAddTarget,
           onChanged: (value) {
@@ -190,6 +193,7 @@ class _AddTargetPageState extends State<AddTargetPage>
         CustomDropDown(
           hint: 'حدد الربع',
           items: quarterList,
+          compareFn:  (item, selectedItem) => item == selectedItem,
           itemAsString: (item) => item!,
           selectedItem: viewmodel.selectedQuarterAddTarget,
           onChanged: (value) {

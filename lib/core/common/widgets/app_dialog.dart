@@ -5,25 +5,32 @@ class AppDialog extends StatelessWidget {
   const AppDialog({
     super.key,
     this.title,
+    this.headerWidget,
+    this.insetPadding,
+    this.contentPadding,
     required this.children,
   });
 
   final String? title;
+  final Widget? headerWidget;
   final List<Widget> children;
-
+  final EdgeInsets? insetPadding;
+  final EdgeInsets? contentPadding;
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-      title: title?.isNotEmpty == true
-          ? Center(
-              child: AppText(
-                title ?? '',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            )
-          : null,
+      insetPadding: insetPadding,
+      contentPadding:contentPadding?? const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+      title: headerWidget ??
+          (title?.isNotEmpty == true
+              ? Center(
+                  child: AppText(
+                    title ?? '',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              : null),
       children: children,
     );
   }

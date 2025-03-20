@@ -95,6 +95,7 @@ class _AddClientContactPageState extends State<AddClientContactPage> {
                   CustomDropDown<ContactTypeEnum>(
                     hint: "نوع الاتصال*",
                     items: ContactTypeEnum.values,
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     itemAsString: (item) => item!.displayNameAr,
                     selectedItem: _selectedContactType,
                     onChanged: (value) {
@@ -121,6 +122,7 @@ class _AddClientContactPageState extends State<AddClientContactPage> {
                     hint: "نوع جهة الاتصال*",
                     items: ContactTypeRoleEnum.values,
                     itemAsString: (item) => item!.name,
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     selectedItem: state.selectedRole,
                     onChanged: (value) {
                       if (value == null) return;

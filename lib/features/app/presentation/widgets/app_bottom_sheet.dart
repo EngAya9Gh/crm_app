@@ -10,10 +10,12 @@ class AppBottomSheet<T> extends StatelessWidget {
     Key? key,
     required this.child,
     required this.showCloseIcon,
+    this.onCancelFilter,
   }) : super(key: key);
 
   final Widget child;
   final bool showCloseIcon;
+  final VoidCallback? onCancelFilter;
 
   static Future<T?> show<T>({
     required BuildContext context,
@@ -24,6 +26,7 @@ class AppBottomSheet<T> extends StatelessWidget {
     final Color? backgroundColor,
     final Color? barrierColor,
     final bool showCloseIcon = true,
+    final VoidCallback? onCancelFilter,
     final VoidCallback? onDismissed,
   }) {
     return showModalBottomSheet<T>(
@@ -45,8 +48,11 @@ class AppBottomSheet<T> extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
-      builder: (_) =>
-          AppBottomSheet._(showCloseIcon: showCloseIcon, child: child),
+      builder: (_) => AppBottomSheet._(
+        showCloseIcon: showCloseIcon,
+        child: child,
+        onCancelFilter: onCancelFilter,
+      ),
     )..whenComplete(onDismissed ?? () {});
   }
 
@@ -64,14 +70,15 @@ class AppBottomSheet<T> extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
-                mainAxisAlignment: showCloseIcon
-                    ? MainAxisAlignment.spaceBetween
-                    : MainAxisAlignment.center,
+                mainAxisAlignment: showCloseIcon ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
                 textDirection: TextDirection.rtl,
                 children: [
                   if (showCloseIcon)
                     InkWell(
-                      onTap: () => AppNavigator.pop(),
+                      onTap: () {
+                        onCancelFilter?.call();
+                        AppNavigator.pop();
+                      },
                       child: AppIcon(Icons.close, color: Colors.grey),
                     ),
                   Container(

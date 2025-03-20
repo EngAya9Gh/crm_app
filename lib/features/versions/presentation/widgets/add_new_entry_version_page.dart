@@ -1,8 +1,10 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/app_group_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 
 import '../../../../core/common/helpers/input_validator.dart';
@@ -28,6 +30,7 @@ class AddVersionPage extends StatefulWidget {
 class _AddVersionPageState extends State<AddVersionPage> {
   late final ViolationsCubit violationsCubit;
   final ValueNotifier<List<ManagementModel>> listManagement = ValueNotifier([]);
+  final ValueNotifier<int?> versionDateIndex = ValueNotifier(0);
   final TextEditingController date = TextEditingController();
   final TextEditingController versionNo = TextEditingController();
   final _globalKey = GlobalKey<FormState>();
@@ -63,116 +66,145 @@ class _AddVersionPageState extends State<AddVersionPage> {
           padding: EdgeInsets.all(16.0),
           child: Form(
             key: _globalKey,
-            child: Column(
-              children: [
-                AppTextField(
-                  hintText: "رقم التحديث",
-                  controller: versionNo,
-                  isRequired: true,
-                  enabled: widget.versionModel == null,
-                  validator: InputValidator.requiredFiled,
-                ),
-                10.height,
-                AppTextField(
-                  hintText: "التاريخ",
-                  controller: date,
-                  validator: InputValidator.requiredFiled,
-                  onTap: () {
-                    showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2101),
-                    ).then((selectedDate) {
-                      // Handle the selected date and time here.
-                      if (selectedDate != null) {
-                        DateTime selectedDateTime = DateTime(
-                          selectedDate.year,
-                          selectedDate.month,
-                          selectedDate.day,
-                        );
-                        print(selectedDateTime); // You can use the selectedDateTime as needed.
-                        date.text = DateFormat('yyyy-MM-dd').format(selectedDateTime);
-                      }
-                    });
-                  },
-                  readOnly: true,
-                  isRequired: true,
-                ),
-                40.height,
-                BlocBuilder<VersionsBloc, VersionsState>(
-                  builder: (context, state) {
-                    return Column(
-                      children: state.listAddNew.map((e) {
-                        print(e.toString());
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 45),
-                          child: ValueListenableBuilder(
-                            valueListenable: listManagement,
-                            builder: (context, value, child) => AddNewEntryVersion(
-                              shouldShowClose: e.index!=0&&widget.versionModel==null,
-                              listManagement: value,
-                              oneItemVersionEntity: e,
+            child: ValueListenableBuilder(
+              valueListenable: versionDateIndex,
+              builder: (context, typeVersion, child) => Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 2, right: 2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 8.0,
+                          color: Colors.black87.withOpacity(0.2),
+                        ),
+                      ],
+                      color: Colors.white,
+                    ),
+                    child: AppGroupButton(
+                      width: (MediaQuery.of(context).size.width / 2) - 50,
+                      groupButtonController: GroupButtonController(selectedIndex: typeVersion),
+                      buttons: ['تحديث جديد', 'تحديث قادم'],
+                      onSelected: (value, index, isSelected) {
+                        versionDateIndex.value = index;
+                      },
+                    ),
+                  ),
+                  10.height,
+                  AppTextField(
+                    hintText: "رقم التحديث",
+                    controller: versionNo,
+                    enabled: widget.versionModel == null,
+                    validator: typeVersion == 1 ? null : InputValidator.requiredFiled,
+                  ),
+                  10.height,
+                  AppTextField(
+                    hintText: "التاريخ",
+                    controller: date,
+                    validator: typeVersion == 1 ? null : InputValidator.requiredFiled,
+                    onTap: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2101),
+                      ).then((selectedDate) {
+                        // Handle the selected date and time here.
+                        if (selectedDate != null) {
+                          DateTime selectedDateTime = DateTime(
+                            selectedDate.year,
+                            selectedDate.month,
+                            selectedDate.day,
+                          );
+                          print(selectedDateTime); // You can use the selectedDateTime as needed.
+                          date.text = DateFormat('yyyy-MM-dd').format(selectedDateTime);
+                        }
+                      });
+                    },
+                    readOnly: true,
+                  ),
+                  40.height,
+                  BlocBuilder<VersionsBloc, VersionsState>(
+                    builder: (context, state) {
+                      return Column(
+                        children: state.listAddNew.map((e) {
+                          print(e.toString());
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 45),
+                            child: ValueListenableBuilder(
+                              valueListenable: listManagement,
+                              builder: (context, value, child) => AddNewEntryVersion(
+                                isTitleOpional: typeVersion == 1,
+                                shouldShowClose: e.index != 0 && widget.versionModel == null,
+                                listManagement: value,
+                                oneItemVersionEntity: e,
+                              ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                    );
-                  },
-                ),
-                if (widget.versionModel == null)
-                  AppTextButton(
-                    text: 'add new',
-                    onPressed: () {
-                      bloc.add(AddOrUpdateNewVersionItemEvent(
-                          oneItemVersionEntity: OneItemVersionEntity(index: (bloc.state.listAddNew.lastOrNull?.index ?? -1) + 1)));
+                          );
+                        }).toList(),
+                      );
                     },
                   ),
-                40.height,
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 2,
-                        child: AppElevatedButton(
-                          text: widget.versionModel != null ? "update" : 'add',
-                          onPressed: () {
-                            if (_globalKey.currentState!.validate()) {
-                              if (widget.versionModel != null) {
-                                bloc.add(UpdateVersionEvent(
-                                    onSuccess: () {
-                                      context.pop();
-                                      bloc.add(GetAllVersionsEvent());
-                                    },
-                                    addVersionPramas: AddVersionPramas(
-                                        id: widget.versionModel!.id,
+                  if (widget.versionModel == null)
+                    AppTextButton(
+                      text: 'add new',
+                      onPressed: () {
+                        bloc.add(AddOrUpdateNewVersionItemEvent(
+                            oneItemVersionEntity: OneItemVersionEntity(index: (bloc.state.listAddNew.lastOrNull?.index ?? -1) + 1)));
+                      },
+                    ),
+                  40.height,
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 2,
+                          child: AppElevatedButton(
+                            text: widget.versionModel != null ? "update" : 'add',
+                            onPressed: () {
+                              if (_globalKey.currentState!.validate()) {
+                                if (widget.versionModel != null) {
+                                  bloc.add(UpdateVersionEvent(
+                                      onSuccess: () {
+                                        context.pop();
+                                        bloc.add(GetAllVersionsEvent());
+                                      },
+                                      addVersionPramas: AddVersionPramas(
+                                          id: widget.versionModel!.id,
+                                          versionNo: versionNo.text,
+                                          versionDate: date.text,
+                                          onItem: bloc.state.listAddNew)));
+                                } else {
+                                  bloc.add(AddOrVersionEvent(
+                                      onSuccess: () {
+                                        context.pop();
+                                        bloc.add(GetAllVersionsEvent());
+                                      },
+                                      addVersionPramas: AddVersionPramas(
                                         versionNo: versionNo.text,
                                         versionDate: date.text,
-                                        onItem: bloc.state.listAddNew)));
-                              } else {
-                                bloc.add(AddOrVersionEvent(
-                                    onSuccess: () {
-                                      context.pop();
-                                      bloc.add(GetAllVersionsEvent());
-                                    },
-                                    addVersionPramas:
-                                        AddVersionPramas(versionNo: versionNo.text, versionDate: date.text, onItem: bloc.state.listAddNew)));
+                                        onItem: bloc.state.listAddNew,
+                                        isCurrent: typeVersion == 0 ? 1 : null,
+                                      )));
+                                }
                               }
-                            }
-                          },
-                        )),
-                    Spacer(),
-                    Expanded(
-                        flex: 2,
-                        child: AppElevatedButton(
-                          onPressed: () {
-                            context.pop();
-                          },
-                          text: 'cancel',
-                        )),
-                  ],
-                ),
-                15.height,
-              ],
+                            },
+                          )),
+                      Spacer(),
+                      Expanded(
+                          flex: 2,
+                          child: AppElevatedButton(
+                            onPressed: () {
+                              context.pop();
+                            },
+                            text: 'cancel',
+                          )),
+                    ],
+                  ),
+                  15.height,
+                ],
+              ),
             ),
           ),
         ),

@@ -78,6 +78,7 @@ class _FilterClientsStatusReportsSheetState extends State<FilterClientsStatusRep
             CustomDropDown<PeriodTypeEnum>(
               hint: 'الفترة',
               items: PeriodTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.periodTypeNotifier.value,
               onChanged: (value) {
@@ -146,6 +147,7 @@ class _FilterClientsStatusReportsSheetState extends State<FilterClientsStatusRep
                       if (data == null) return;
                       _cubit.filterEntity.userNotifier.value = data;
                     },
+                    compareFn:  (item, selectedItem) => item.id == selectedItem.id,
                     selectedItem: _cubit.filterEntity.userNotifier.value,
                     filterFn: (user, filter) => user.getfilteruser(filter),
                   );

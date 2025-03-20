@@ -36,6 +36,8 @@ class assignClientsToEmployeeDialog extends StatelessWidget {
                     itemAsString: (u) => u!.userAsString(),
                     selectedItem: userSelected,
                     onChanged: (data) => selectedUser.value = data!,
+                    compareFn:  (item, selectedItem) => item.idUser == selectedItem.idUser,
+
                     filterFn: (user, filter) => user.getfilteruser(filter),
                     validator: (val) {
                       if (val == null) return 'من فضلك حدد اسم موظف';

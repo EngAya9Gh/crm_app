@@ -10,6 +10,7 @@ class NotificationModel {
     required this.fromNameuser,
     required this.data,
     required this.dateNotify,
+    this.typeNotifyTranslation,
   });
 
   late final String idNotify;
@@ -22,6 +23,7 @@ class NotificationModel {
   String? fromNameuser;
   late final String data;
   late String dateNotify;
+  String? typeNotifyTranslation;
 
   NotificationModel.fromJson(Map<String, dynamic> json) {
     idNotify = json['id_notify'];
@@ -34,6 +36,7 @@ class NotificationModel {
     fromNameuser = json['fromNameuser'];
     data = json['data'].toString();
     dateNotify = json['dateNotify'];
+    typeNotifyTranslation = json['type_notify_translation'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +51,7 @@ class NotificationModel {
     _data['fromNameuser'] = fromNameuser;
     _data['data'] = data;
     _data['dateNotify'] = dateNotify;
+    _data['type_notify_translation'] = typeNotifyTranslation;
     return _data;
   }
 }

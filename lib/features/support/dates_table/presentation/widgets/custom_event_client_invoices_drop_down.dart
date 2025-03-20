@@ -25,27 +25,23 @@ class CustomEventClientInvoicesDropDown extends StatelessWidget {
             message: state.getInvoicesByClientForDateStatus.error,
             onPressed: () async {
               await _datesTableCubit.getInvoicesByClientForDate(
-                GetInvoicesByClientForDateParams(
-                    idClient: _datesTableCubit
-                        .addEventFormVariables.selectedClient.value!.id),
+                GetInvoicesByClientForDateParams(idClient: _datesTableCubit.addEventFormVariables.selectedClient.value!.id),
               );
             },
           );
-        } else if (state.getInvoicesByClientForDateStatus.data?.isEmpty ??
-            true) {
+        } else if (state.getInvoicesByClientForDateStatus.data?.isEmpty ?? true) {
           return SizedBox.shrink();
         }
         return BlocBuilder<DatesTableCubit, DatesTableState>(
           builder: (context, state) {
             return CustomSearchableDropDown<DateInvoiceModel>(
+              compareFn: (item, selectedItem) => item.idInvoice == selectedItem.idInvoice,
               hint: 'الفاتورة',
               items: state.getInvoicesByClientForDateStatus.data ?? [],
               itemAsString: (item) => item!.value,
-              selectedItem:
-                  _datesTableCubit.addEventFormVariables.selectedInvoice.value,
+              selectedItem: _datesTableCubit.addEventFormVariables.selectedInvoice.value,
               onChanged: (value) async {
-                _datesTableCubit.addEventFormVariables.selectedInvoice.value =
-                    value;
+                _datesTableCubit.addEventFormVariables.selectedInvoice.value = value;
               },
               validator: (value) {
                 return InputValidator.requiredFiled(value);
@@ -53,7 +49,7 @@ class CustomEventClientInvoicesDropDown extends StatelessWidget {
               filterFn: (item, filter) {
                 return item.value.toLowerCase().contains(filter.toLowerCase());
               },
-              itemBuilder: (context, item, isDisabled, isSelected)  {
+              itemBuilder: (context, item, isDisabled, isSelected) {
                 return Directionality(
                   textDirection: TextDirection.rtl,
                   child: Card(

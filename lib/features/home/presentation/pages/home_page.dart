@@ -1,14 +1,8 @@
 import 'package:crm_smart/core/common/widgets/app_adaptive_builder.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/config/app_dynamic_links.dart';
-import '../../../../view_model/product_vm.dart';
-import '../../../../view_model/regoin_vm.dart';
-import '../../../../view_model/typeclient.dart';
-import '../../../../view_model/user_vm_provider.dart';
 import 'mob_home_page.dart';
 import 'web_home_page.dart';
 

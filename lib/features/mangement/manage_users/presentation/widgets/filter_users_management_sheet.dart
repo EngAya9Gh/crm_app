@@ -85,6 +85,7 @@ class _FilterUsersManagementSheetState
               itemAsString: (item) => item!.value,
               selectedItem:
                   _usersCubit.filterUsersEntity.isActiveNotifier.value,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               onChanged: (value) {
                 _usersCubit.filterUsersEntity.isActiveNotifier.value = value;
               },

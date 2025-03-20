@@ -82,6 +82,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                 children: [
                   CustomDropDown(
                     hint: "نوع التركيب",
+                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                     items: InstallationTypeEnum.values,
                     itemAsString: (item) => item!.value,
                     selectedItem: _installationType,

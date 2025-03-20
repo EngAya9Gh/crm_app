@@ -16,11 +16,13 @@ class AddNewEntryVersion extends StatefulWidget {
     required this.oneItemVersionEntity,
     required this.listManagement,
     this.shouldShowClose = false,
+    this.isTitleOpional = false,
   });
 
   final bool shouldShowClose;
   final OneItemVersionEntity oneItemVersionEntity;
   final List<ManagementModel> listManagement;
+  final bool isTitleOpional;
 
   @override
   State<AddNewEntryVersion> createState() => _AddNewEntryVersionState();
@@ -66,8 +68,7 @@ class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
             bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(title: val)));
           },
           controller: title,
-          validator: InputValidator.requiredFiled,
-          isRequired: true,
+          validator:widget.isTitleOpional?null: InputValidator.requiredFiled,
         ),
         10.height,
         AppDropdownButtonFormField(

@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
+import 'package:crm_smart/features/notifications/data/models/notification_types.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -21,6 +23,7 @@ abstract class NotificationsDatasource {
   Future<PaginationResponseWrapper> getUnreadNotificationsCount(
     GetUnreadNotificationsCountParams params,
   );
+  Future<ResponseWrapper<NotificationTypes>> getNotificationTypes();
 }
 
 @LazySingleton(as: NotificationsDatasource)
@@ -75,6 +78,21 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
       );
 
       return PaginationResponseWrapper.fromJson(response);
+    } on BaseAppException catch (e) {
+      debugPrint("error in getUnreadNotificationsCount in datasource => $e");
+      throw e.message;
+    }
+  }
+
+  @override
+  Future<ResponseWrapper<NotificationTypes>> getNotificationTypes() async {
+    try {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(
+        endPoint: EndPoints.notifications.notificationsTypes,
+      );
+
+      return ResponseWrapper<NotificationTypes>.fromJson(response,(json) => NotificationTypes.fromJson(json));
     } on BaseAppException catch (e) {
       debugPrint("error in getUnreadNotificationsCount in datasource => $e");
       throw e.message;

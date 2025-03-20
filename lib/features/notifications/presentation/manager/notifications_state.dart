@@ -5,12 +5,14 @@ class NotificationsState extends Equatable {
   final BlocStatus getNotificationsStatus;
   final BlocStatus markNotificationsAsReadStatus;
   final BlocStatus getUnreadNotificationsCountStatus;
+  final BlocStatus<NotificationTypes> filterList;
 
   NotificationsState({
     this.refreshUi = 0,
     this.getNotificationsStatus = const BlocStatus.initial(),
     this.markNotificationsAsReadStatus = const BlocStatus.initial(),
     this.getUnreadNotificationsCountStatus = const BlocStatus.initial(),
+    this.filterList = const BlocStatus.initial(),
   });
 
   NotificationsState copyWith({
@@ -18,6 +20,7 @@ class NotificationsState extends Equatable {
     BlocStatus? getNotificationsStatus,
     BlocStatus? markNotificationsAsReadStatus,
     BlocStatus? getUnreadNotificationsCountStatus,
+    BlocStatus<NotificationTypes>? filterList,
   }) {
     return NotificationsState(
       refreshUi: (refreshUi ?? this.refreshUi) % 99999,
@@ -27,6 +30,7 @@ class NotificationsState extends Equatable {
           markNotificationsAsReadStatus ?? this.markNotificationsAsReadStatus,
       getUnreadNotificationsCountStatus: getUnreadNotificationsCountStatus ??
           this.getUnreadNotificationsCountStatus,
+      filterList:filterList??this.filterList
     );
   }
 
@@ -37,6 +41,7 @@ class NotificationsState extends Equatable {
       getNotificationsStatus,
       markNotificationsAsReadStatus,
       getUnreadNotificationsCountStatus,
+      filterList,
     ];
   }
 }

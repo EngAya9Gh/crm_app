@@ -133,6 +133,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                         ),
                         25.height,
                         CustomDropDown<PublicType>(
+                          compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                           hint: "نوع المهمة*",
                           items: widget.list,
                           itemAsString: (item) => item!.text,
@@ -331,6 +332,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
         builder: (context, state) {
           return CustomSearchableDropDown<UserModel>(
             hint: "الموظف",
+            compareFn:  (item, selectedItem) => item.id == selectedItem.id,
             items: state.getUserSelected.data ?? [],
             itemAsString: (u) => u!.nameUser.toString(),
             onChanged: (data) {

@@ -42,6 +42,7 @@ class _MonthlyPageState extends State<MonthlyPage> {
                 return CustomDropDown(
                   hint: 'حدد السنة',
                   items: getYears(),
+                  compareFn:  (item, selectedItem) => item == selectedItem,
                   itemAsString: (item) => item!,
                   selectedItem: selectedMonthYearFilter,
                   onChanged: (value) {
@@ -64,6 +65,7 @@ class _MonthlyPageState extends State<MonthlyPage> {
                   return CustomDropDown(
                     hint: 'حدد الشهر',
                     items: months,
+                    compareFn:  (item, selectedItem) => item == selectedItem,
                     itemAsString: (item) => item!,
                     selectedItem: selectedMonth,
                     onChanged: (value) {

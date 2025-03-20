@@ -58,6 +58,7 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
             type: filterEntity.type.value?.name.toString(),
             dateTo: filterEntity.dateToController.text,
             rate: filterEntity.rateNotifier.value,
+            showAllRates: filterEntity.showAllRates.value,
              clientWhoNotRate: filterEntity.isClientWhoNotRate.value?1:0
           ),
         );
