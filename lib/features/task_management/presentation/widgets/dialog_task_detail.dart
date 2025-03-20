@@ -86,47 +86,63 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                       builder: (context, value, child) => Column(
                         children: [
                           if (!widget.canDrag)
-                            AppDropdownButtonFormField<TaskStatusType, TaskStatusType>(
-                              borderColor: value.color,
-                              iconColor: value.color,
-                              items: List.of(TaskStatusType.values)
-                                ..removeWhere(
-                                  (element) => element.index < widget.status.index,
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 200.scaleWidth,
+                                  child: AppDropdownButtonFormField<TaskStatusType, TaskStatusType>(
+                                    borderColor: value.color,
+                                    iconColor: value.color,
+                                    fillColor: value.color,
+                                    isFilledColor: true,
+                                    items: List.of(TaskStatusType.values)
+                                      ..removeWhere(
+                                        (element) => element.index < widget.status.index,
+                                      ),
+                                    onChange: (value) {
+                                      selectedType.value = value!;
+                                      if (widget.status == selectedType.value || state.changeTaskStatus.isLoading() || (value.id == 11)) {
+                                        return;
+                                      }
+                                      AppConstants.debounceFunction(
+                                        () {
+                                          return widget.cubit.onChangeTaskStatusStage(
+                                            widget.task,
+                                            selectedType.value,
+                                            () {},
+                                            // Navigator.of(context).pop,
+                                            context.read<UserProvider>().currentUser.idUser!, false,
+                                            rate,
+                                          );
+                                        },
+                                        tag: "change-status",
+                                        isDebounced: true,
+                                      );
+                                    },
+                                    hint: "القسم",
+                                    itemAsValue: (TaskStatusType? item) => item,
+                                    itemBuilder: (item) => AppText(
+                                      item?.text ?? '',
+                                      color: item!.color,
+                                      fontSize: 18,
+                                    ),
+                                    itemBuilderSelected: (item) => AppText(
+                                      item?.text ?? '',
+                                      color: AppColors.white,
+                                      fontSize: 18,
+                                    ),
+                                    value: value,
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return 'هذا الحقل مطلوب.';
+                                      }
+                                      return null;
+                                    },
+                                  ),
                                 ),
-                              onChange: (value) {
-                                selectedType.value = value!;
-                                if (widget.status == selectedType.value || state.changeTaskStatus.isLoading() || (value.id == 11)) {
-                                  return;
-                                }
-                                AppConstants.debounceFunction(
-                                  () {
-                                    return widget.cubit.onChangeTaskStatusStage(
-                                      widget.task,
-                                      selectedType.value,
-                                      () {},
-                                      // Navigator.of(context).pop,
-                                      context.read<UserProvider>().currentUser.idUser!, false,
-                                      rate,
-                                    );
-                                  },
-                                  tag: "change-status",
-                                  isDebounced: true,
-                                );
-                              },
-                              hint: "القسم",
-                              itemAsValue: (TaskStatusType? item) => item,
-                              itemBuilder: (item) => AppText(
-                                item?.text ?? '',
-                                color: item?.color,
-                                fontSize: 18,
-                              ),
-                              value: value,
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'هذا الحقل مطلوب.';
-                                }
-                                return null;
-                              },
+                                5.width,
+                                (state.changeTaskStatus.isLoading()) ? Center(child: AppLoader()) : SizedBox.shrink(),
+                              ],
                             ),
                           if (value.id == 11) ...{
                             10.height,
@@ -168,7 +184,6 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                               ],
                             ),
                           },
-                          (state.changeTaskStatus.isLoading()) ? Center(child: AppLoader()) : SizedBox.shrink(),
                         ],
                       ),
                     );

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:crm_smart/core/common/enums/toast_colors_enum.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/features/versions/data/models/demand_model.dart';
 import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
@@ -172,6 +174,7 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     final result = await addDemandUsecase(event.params);
     result.extract(
       (exception, message) {
+        AppSnackbar.showSnakeBar('غير مسموح التعديل ', color: ToastColorsEnum.warning);
         if (AppConstants.shouldReturnEarly(message)) return;
         emit(state.copyWith(addDemandStatus: BlocStatus.fail(error: message)));
       },

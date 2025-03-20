@@ -30,7 +30,7 @@ class AddVersionPage extends StatefulWidget {
 class _AddVersionPageState extends State<AddVersionPage> {
   late final ViolationsCubit violationsCubit;
   final ValueNotifier<List<ManagementModel>> listManagement = ValueNotifier([]);
-  final ValueNotifier<int?> versionDateIndex = ValueNotifier(null);
+  final ValueNotifier<int?> versionDateIndex = ValueNotifier(0);
   final TextEditingController date = TextEditingController();
   final TextEditingController versionNo = TextEditingController();
   final _globalKey = GlobalKey<FormState>();

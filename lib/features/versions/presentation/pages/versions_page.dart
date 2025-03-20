@@ -38,7 +38,7 @@ class _VersionPageState extends State<VersionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'التحديثات', showBackButton: true, actions: [
+      appBar: CustomAppBar(title: '', showBackButton: true, actions: [
           Directionality(
             textDirection: TextDirection.rtl,
             child: AppTextButton(
