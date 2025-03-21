@@ -29,6 +29,7 @@ class YearlyPage extends StatelessWidget {
             return CustomDropDown(
               hint: 'حدد السنة',
               items: years,
+              compareFn:  (item, selectedItem) => item == selectedItem,
               itemAsString: (item) => item!,
               selectedItem: selectedYear,
               onChanged: (value) {

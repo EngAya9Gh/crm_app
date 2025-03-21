@@ -36,6 +36,7 @@ import '../../../core/common/widgets/files/file_viewer_widget.dart';
 import '../../../core/config/navigator/app_navigator.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../features/finance/clients_attachments/data/models/subscribed_clients_model.dart';
 import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../features/sales/clients/clients_list/data/models/recommended_client.dart';
 import '../../../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
@@ -145,7 +146,7 @@ class _AddInvoiceState extends State<AddInvoice> {
 
   @override
   void initState() {
-    _bloc = context.read<ClientsListBloc>()..add(GetRecommendedClientsEvent());
+    _bloc = context.read<ClientsListBloc>()..add(GetRecommendedClientsFilterEvent());
     invoiceVm = context.read<InvoiceVm>();
     if (_invoice == null) _invoice = InvoiceModel(products: []);
     amount_paidController = TextEditingController();
@@ -409,6 +410,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     5.height,
                     CustomDropDown(
                       hint: "${AppStrings.labelInvoiceSource}*",
+                      compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                       items: ClientSourceEnum.values,
                       itemAsString: (item) => item!.value,
                       onChanged: (value) {
@@ -424,14 +426,14 @@ class _AddInvoiceState extends State<AddInvoice> {
                     if ((selectedInvoiceSource == ClientSourceEnum.recommendedClient.value)) ...[
                       BlocBuilder<ClientsListBloc, ClientsListState>(
                         builder: (context, state) {
-                          final recommendedList = state.recommendedClientsState.getDataWhenSuccess ?? [];
+                          final recommendedList = state.recommendedClientsForFilterState.getDataWhenSuccess ?? [];
 
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               AppText('العملاء*'),
                               5.height,
-                              CustomSearchableDropDown<RecommendedClient>(
+                              CustomSearchableDropDown<SubscribedClientsModel>(
                                 hint: 'العملاء*',
                                 items: recommendedList,
                                 itemAsString: (item) => item!.nameEnterprise!,
@@ -442,12 +444,12 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 compareFn: (item, query) {
                                   return item.nameEnterprise!.toLowerCase() == query.nameEnterprise!.toLowerCase();
                                 },
-                                selectedItem: recommendedList.firstWhereOrNull((element) => element.fkClient == _selectedARecommendedClient),
+                                selectedItem: recommendedList.firstWhereOrNull((element) => element.id.toString() == _selectedARecommendedClient),
                                 onChanged: (value) {
                                   if (value == null) {
                                     return;
                                   }
-                                  _selectedARecommendedClient = value.fkClient;
+                                  _selectedARecommendedClient = value.id.toString();
                                   setState(() {});
                                 },
                               ),

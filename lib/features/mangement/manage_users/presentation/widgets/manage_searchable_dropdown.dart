@@ -42,6 +42,7 @@ class ManageSearchableDropdown extends StatelessWidget {
           itemAsString: (item) => item!.name_mange,
           selectedItem: manage,
           onChanged: onChanged,
+          compareFn:  (item, selectedItem) => item.idMange == selectedItem.idMange,
           filterFn: (item, str) {
             return item.name_mange
                 .toString()

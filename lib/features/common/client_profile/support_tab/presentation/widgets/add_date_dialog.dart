@@ -140,6 +140,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
                             itemAsString: (item) => item!.value,
                             selectedItem: _supportTabCubit
                                 .addDateFormVariablesEntity.selectInstallationType.value,
+                            compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                             onChanged: (value) {
                               _supportTabCubit.addDateFormVariablesEntity
                                   .selectInstallationType.value = value!;

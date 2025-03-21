@@ -53,8 +53,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
   void initState() {
     super.initState();
     _privilegesCubit = context.read<PrivilegesCubit>();
-    _taskCubit = getIt<TaskCubit>()
-      ..init();
+    _taskCubit = getIt<TaskCubit>()..init();
     // final currentUser = AppConstants.currentUser;
     // departmentId = _privilegesCubit.checkPrivilege('161')
     //     ? '2'
@@ -71,7 +70,11 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
 
     // userId = _privilegesCubit.checkPrivilege('163') ? currentUser.idUser : null;
     context.read<UsersCubit>().onGetUserSelected();
-    context.read<manage_provider>().getManagesTask();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        context.read<manage_provider>().getManagesTask();
+      },
+    );
     scheduleMicrotask(() {
       // _taskCubit
       //   ..onChangeMyDepartment(departmentId)
@@ -123,7 +126,11 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
               },
             ),
             AppTextButton(
-              child: AppText("تقارير\nالموظفين",textAlign: TextAlign.center,color: AppColors.white,),
+              child: AppText(
+                "تقارير\nالموظفين",
+                textAlign: TextAlign.center,
+                color: AppColors.white,
+              ),
               onPressed: () async {
                 final result = await AppNavigator.go(
                   TaskUsersReportsPage(),
@@ -192,11 +199,10 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                         child: AppPaginatedList(
                           scrollDirection: Axis.horizontal,
                           items: TaskStatusType.values,
-                          itemBuilder: (context, index) =>
-                              stageChip(
-                                TaskStatusType.values[index],
-                                state.selectedStatus == TaskStatusType.values[index],
-                              ),
+                          itemBuilder: (context, index) => stageChip(
+                            TaskStatusType.values[index],
+                            state.selectedStatus == TaskStatusType.values[index],
+                          ),
                           separatorBuilder: (context, index) => 10.width,
                         ),
                       ),
@@ -222,11 +228,10 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                         child: TasksPaginatedList(),
                       );
                     },
-                    failure: (error, data) =>
-                        AppErrorWidget(
-                          message: error,
-                          onPressed: _taskCubit.getTasks,
-                        ),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: _taskCubit.getTasks,
+                    ),
                   );
                 },
               ),
@@ -237,8 +242,10 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
     );
   }
 
-  stageChip(TaskStatusType status,
-      bool isActive,) {
+  stageChip(
+    TaskStatusType status,
+    bool isActive,
+  ) {
     return InkWell(
       onTap: () {
         _taskCubit.onChangeStatus(status);

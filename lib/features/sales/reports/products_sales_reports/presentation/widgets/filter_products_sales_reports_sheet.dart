@@ -80,6 +80,7 @@ class _FilterProductsSalesReportsSheetState extends State<FilterProductsSalesRep
             CustomDropDown<PeriodTypeEnum>(
               hint: 'الفترة',
               items: PeriodTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.periodTypeNotifier.value,
               onChanged: (value) {
@@ -128,6 +129,7 @@ class _FilterProductsSalesReportsSheetState extends State<FilterProductsSalesRep
             CustomDropDown<ProductTypeEnum>(
               hint: 'نوع المنتج',
               items: ProductTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.productTypeNotifier.value,
               onChanged: (value) {
@@ -159,6 +161,7 @@ class _FilterProductsSalesReportsSheetState extends State<FilterProductsSalesRep
                       if (data == null) return;
                       _cubit.filterEntity.userNotifier.value = data;
                     },
+                    compareFn:  (item, selectedItem) => item.id == selectedItem.id,
                     selectedItem: _cubit.filterEntity.userNotifier.value,
                     filterFn: (user, filter) => user.getfilteruser(filter),
                   );
@@ -169,6 +172,7 @@ class _FilterProductsSalesReportsSheetState extends State<FilterProductsSalesRep
             CustomDropDown<InvoiceTypeEnum>(
               hint: 'نوع الفاتورة',
               items: InvoiceTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.invoiceTypeNotifier.value,
               onChanged: (value) {

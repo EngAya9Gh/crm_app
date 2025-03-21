@@ -9,6 +9,8 @@ class ClientsListState extends Equatable {
   final StoreClientCommunicationParam? storeClientCommunicationParams;
   final ChangeClientCommunicationParam? changeClientCommunicationParams;
   final PageState<List<RecommendedClient>> recommendedClientsState;
+  final PageState<List<SubscribedClientsModel>> recommendedClientsForFilterState;
+
   final BlocStatus actionClientBlocStatus;
   final BlocStatus assignClientsToEmployeeStatus;
   final BlocStatus<List<SimilarClient>> similarClientsState;
@@ -38,6 +40,7 @@ class ClientsListState extends Equatable {
     this.storeClientCommunicationParams,
     this.changeClientCommunicationParams,
     this.recommendedClientsState = const PageState.init(),
+    this.recommendedClientsForFilterState = const PageState.init(),
     this.similarClientsState = const BlocStatus.initial(),
     this.actionClientBlocStatus = const BlocStatus.initial(),
     this.assignClientsToEmployeeStatus = const BlocStatus.initial(),
@@ -67,6 +70,7 @@ class ClientsListState extends Equatable {
     ChangeClientCommunicationParam? changeClientCommunicationParams,
     StoreClientCommunicationParam? storeClientCommunicationParams,
     PageState<List<RecommendedClient>>? recommendedClientsState,
+    PageState<List<SubscribedClientsModel>>? recommendedClientsAddEditState,
     BlocStatus<List<SimilarClient>>? similarClientsState,
     final BlocStatus? actionClientBlocStatus,
     BlocStatus? assignClientsToEmployeeStatus,
@@ -100,6 +104,7 @@ class ClientsListState extends Equatable {
           changeTypeClientParams ?? this.changeTypeClientParams,
       recommendedClientsState:
           recommendedClientsState ?? this.recommendedClientsState,
+      recommendedClientsForFilterState:recommendedClientsAddEditState??this.recommendedClientsForFilterState,
       similarClientsState: similarClientsState ?? this.similarClientsState,
       actionClientBlocStatus:
           actionClientBlocStatus ?? this.actionClientBlocStatus,
@@ -137,6 +142,7 @@ class ClientsListState extends Equatable {
       refreshUi,
       getAllClientsStatus,
       recommendedClientsState,
+      recommendedClientsForFilterState,
       similarClientsState,
       actionClientBlocStatus,
       myclient_parm,

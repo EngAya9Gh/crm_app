@@ -103,6 +103,7 @@ class _FilterInstallQualitySheetState extends State<FilterInstallQualitySheet> {
                 hint: "الحالة",
                 items: QualityTypeEnum.values,
                 itemAsString: (item) => item!.value,
+                compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                 selectedItem: _cubit.filterEntity.statusNotifier.value,
                 onChanged: (value) {
                   _cubit.filterEntity.statusNotifier.value = value;

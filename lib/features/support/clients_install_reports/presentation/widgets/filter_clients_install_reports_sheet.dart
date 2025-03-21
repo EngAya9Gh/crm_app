@@ -71,6 +71,7 @@ class _FilterClientsInstallReportsSheetState
             CustomDropDown<PeriodTypeEnum>(
               hint: 'الفترة',
               items: PeriodTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.periodTypeNotifier.value,
               onChanged: (value) {

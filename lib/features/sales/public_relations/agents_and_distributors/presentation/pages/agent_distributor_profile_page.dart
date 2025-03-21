@@ -44,24 +44,25 @@ class _AgentProfilePageState extends State<AgentProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AgentsDistributorsProfileBloc,
-        AgentsDistributorsProfileState>(
-      buildWhen: (previous, current) {
-        return current.getAgentByIdStatus != previous.getAgentByIdStatus;
-      },
-      builder: (context, state) {
-        return state.getAgentByIdStatus.when(
-          failure: (error, data) {
-            return AppErrorWidget(message: error);
-          },
-          success: (data) {
-            return AgentProfilePageBody(
-              agent: state.getAgentByIdStatus.data,
-              index: widget.tabIndex,
-            );
-          },
-        );
-      },
+    return Scaffold(
+      body: BlocBuilder<AgentsDistributorsProfileBloc, AgentsDistributorsProfileState>(
+        buildWhen: (previous, current) {
+          return current.getAgentByIdStatus != previous.getAgentByIdStatus;
+        },
+        builder: (context, state) {
+          return state.getAgentByIdStatus.when(
+            failure: (error, data) {
+              return AppErrorWidget(message: error);
+            },
+            success: (data) {
+              return AgentProfilePageBody(
+                agent: state.getAgentByIdStatus.data,
+                index: widget.tabIndex,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

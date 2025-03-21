@@ -7,6 +7,7 @@ import '../../../../../../core/common/models/response_wrapper/response_wrapper.d
 import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/services/api/result.dart';
 import '../../../../../../model/similar_client.dart';
+import '../../../../../finance/clients_attachments/data/models/subscribed_clients_model.dart';
 import '../../data/models/client_marketing_meport_model.dart';
 import '../../data/models/client_support_file_model.dart';
 import '../../data/models/recommended_client.dart';
@@ -51,6 +52,7 @@ abstract class ClientsListRepository {
 
   Future<Result<ResponseWrapper<List<RecommendedClient>>>>
       getRecommendedClients();
+  Future<Result<ResponseWrapper<List<SubscribedClientsModel>>>>getRecommendedClientsFilterClient();
 
   Future<Result<ResponseWrapper<List<SimilarClient>>>> getSimilarClients(
       Map<String, dynamic> body);

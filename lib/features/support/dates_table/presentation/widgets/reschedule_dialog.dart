@@ -107,6 +107,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                 CustomDropDown<InstallationTypeEnum>(
                   hint: "نوع التركيب",
                   items: InstallationTypeEnum.values,
+                  compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                   itemAsString: (item) => item!.value,
                   selectedItem: _datesTableCubit
                       .addEventFormVariables.selectInstallationType.value,

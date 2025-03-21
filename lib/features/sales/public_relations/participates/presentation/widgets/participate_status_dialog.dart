@@ -60,6 +60,7 @@ class _ParticipateStatusDialogState extends State<ParticipateStatusDialog> {
               CustomDropDown<StateParticipateEnum>(
                 hint: 'حالة المتعاون',
                 items: StateParticipateEnum.values,
+                compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                 itemAsString: (item) => item!.value,
                 selectedItem: _selectedParticipateState,
                 onChanged: (state) {

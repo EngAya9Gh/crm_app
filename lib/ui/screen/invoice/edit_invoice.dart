@@ -141,6 +141,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                               iduser = data!.idUser;
                               cart.changeValUserID(data.idUser);
                             },
+                            compareFn:  (item, selectedItem) => item.id == selectedItem.id,
                             selectedItem: cart.selectedUser,
                             filterFn: (user, filter) => user.getfilteruser(filter),
                           );
@@ -156,6 +157,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                       return CustomDropDown<BranchModel>(
                         hint: 'الفرع',
                         items: cart.listRegionFilter,
+                        compareFn:  (item, selectedItem) => item.branchId == selectedItem.branchId,
                         itemAsString: (branch) => branch!.branchName,
                         selectedItem: cart.listRegionFilter.firstWhereOrNull(
                               (element) => element.branchId == regoininvoice,

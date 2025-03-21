@@ -19,6 +19,7 @@ import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../core/utils/end_points.dart';
 import '../../../../../../model/similar_client.dart';
 import '../../../../../../model/usermodel.dart';
+import '../../../../../finance/clients_attachments/data/models/subscribed_clients_model.dart';
 import '../../domain/use_cases/assign_client_to_employee_usecase.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_client_marketing_report_usecase.dart';
@@ -147,6 +148,21 @@ class ClientsListDatasource {
       return ResponseWrapper<List<RecommendedClient>>.fromJson(
         (response is String) ? jsonDecode(response) : response,
         (json) => List.from((json as List<dynamic>).map((e) => RecommendedClient.fromJson(e as Map<String, dynamic>))),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+  Future<ResponseWrapper<List<SubscribedClientsModel>>> getRecommendedClientsFilterClient() async {
+    fun() async {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.get(
+        endPoint: EndPoints.care.getRecommendedClientsFilterClient,
+      );
+
+      return ResponseWrapper<List<SubscribedClientsModel>>.fromJson(
+        (response is String) ? jsonDecode(response) : response,
+        (json) => List.from((json as List<dynamic>).map((e) => SubscribedClientsModel.fromJson(e as Map<String, dynamic>))),
       );
     }
 

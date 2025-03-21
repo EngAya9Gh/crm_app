@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/services/api/api_services.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
@@ -21,9 +23,9 @@ class usertest_vm extends ChangeNotifier {
     listProduct = [];
     isloading = true;
     notifyListeners();
-    var data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'users/getusertest.php?fk_country=${usercurrent!.fkCountry.toString()}');
+    var response =
+        await getIt<ApiServices>().get(endPoint: EndPoints.baseUrls.url + 'users/getusertest.php?fk_country=${usercurrent!.fkCountry.toString()}');
+    var data = response['message'];
     for (int i = 0; i < data.length; i++) {
       listProduct.insert(0, UserTestModel.fromJson(data[i]));
       isloading = false;
@@ -35,8 +37,7 @@ class usertest_vm extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'users/add_usretest.php', //users/addmangemt.php
+        url: EndPoints.baseUrls.url + 'users/add_usretest.php', //users/addmangemt.php
         body: body);
 
     body.addAll({
@@ -50,18 +51,15 @@ class usertest_vm extends ChangeNotifier {
     return "done";
   }
 
-  Future<bool> updateusertest_vm(
-      Map<String, dynamic> body, String id_usertest) async {
+  Future<bool> updateusertest_vm(Map<String, dynamic> body, String id_usertest) async {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'users/update_usertest.php?id_usertest=${id_usertest}',
+        url: EndPoints.baseUrls.url + 'users/update_usertest.php?id_usertest=${id_usertest}',
         //users/addmangemt.php
         body: body);
 
-    final index =
-        listProduct.indexWhere((element) => element.id_usertest == id_usertest);
+    final index = listProduct.indexWhere((element) => element.id_usertest == id_usertest);
     listProduct[index] = UserTestModel.fromJson(body);
     isloading = false;
     notifyListeners();

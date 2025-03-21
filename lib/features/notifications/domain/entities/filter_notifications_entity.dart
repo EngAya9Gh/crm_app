@@ -12,8 +12,8 @@ class FilterNotificationsEntity {
     });
   }
 
-  ValueNotifier<NotificationTypeEnum?> notificationTypeNotifier =
-      ValueNotifier<NotificationTypeEnum?>(null);
+  ValueNotifier<MapEntry<String, dynamic>?> notificationTypeNotifier =
+      ValueNotifier<MapEntry<String, dynamic>?>(null);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
   ValueNotifier<String> dateFromNotifier = ValueNotifier<String>('');

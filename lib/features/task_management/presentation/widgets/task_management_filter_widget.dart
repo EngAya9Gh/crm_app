@@ -118,6 +118,7 @@ class TaskManagementFilterWidget extends StatelessWidget {
                 value: context.read<TaskCubit>().pageVariables.atTime.value??false,
                 onChanged: (value) {
                   context.read<TaskCubit>().pageVariables.atTime.value = value;
+                  context.read<TaskCubit>().pageVariables.afterTime.value = false;
                 },
                 title: AppText("تم تنفيذ المهمة قبل انتهاء الوقت المخصص لها"),
               ),
@@ -126,6 +127,7 @@ class TaskManagementFilterWidget extends StatelessWidget {
                 value: context.read<TaskCubit>().pageVariables.afterTime.value??false,
                 onChanged: (value) {
                   context.read<TaskCubit>().pageVariables.afterTime.value = value;
+                  context.read<TaskCubit>().pageVariables.atTime.value = false;
                 },
                 title: AppText("تم تنفيذ المهمة بعد انتهاء الوقت المخصص لها"),
               ),

@@ -73,6 +73,7 @@ class _FilterEmployeesSalesReportsSheetState
             CustomDropDown<PeriodTypeEnum>(
               hint: 'الفترة',
               items: PeriodTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.periodTypeNotifier.value,
               onChanged: (value) {
@@ -120,6 +121,7 @@ class _FilterEmployeesSalesReportsSheetState
             CustomDropDown<ProductTypeEnum>(
               hint: 'نوع المنتج',
               items: ProductTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.productTypeNotifier.value,
               onChanged: (value) {
@@ -130,6 +132,7 @@ class _FilterEmployeesSalesReportsSheetState
             CustomDropDown<InvoiceTypeEnum>(
               hint: 'نوع الفاتورة',
               items: InvoiceTypeEnum.values,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               selectedItem: _cubit.filterEntity.invoiceTypeNotifier.value,
               onChanged: (value) {

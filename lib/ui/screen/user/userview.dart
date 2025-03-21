@@ -259,6 +259,8 @@ class _UserScreenState extends State<UserScreen> {
                                         InkWell(
                                           onTap: () async {
                                             // await FlutterPhoneDirectCaller.callNumber(userVm.currentUser.mobile.toString());
+                                            await HelperFunctions.urlLauncherPhone(userVm.currentUser.mobile.toString());
+
                                           },
                                           child: AppText(
                                             userVm.currentUser.mobile,

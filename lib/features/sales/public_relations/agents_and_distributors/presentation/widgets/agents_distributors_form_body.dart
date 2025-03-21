@@ -77,6 +77,7 @@ class _AgentsDistributorsFormBodyState
           hint: 'مصدر الوكيل',
           items: AgentSourceEnum.values,
           itemAsString: (item) => item!.value,
+          compareFn:  (item, selectedItem) => item.index == selectedItem.index,
           selectedItem:
               _cubit.agentFormEntity.selectedAgentSourceNotifier.value,
           onChanged: (value) {

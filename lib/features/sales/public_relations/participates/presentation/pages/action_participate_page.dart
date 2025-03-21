@@ -124,6 +124,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                       CustomDropDown<StateParticipateEnum>(
                         hint: 'حالة المتعاون',
                         items: StateParticipateEnum.values,
+                        compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                         itemAsString: (item) => item!.value,
                         selectedItem: stateParticipate,
                         onChanged: (state) {

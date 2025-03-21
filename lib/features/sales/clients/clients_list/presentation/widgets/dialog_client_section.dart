@@ -89,6 +89,7 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                         hint: "حالة العميل",
                         items: clientTypeProvider.type_of_client,
                         itemAsString: (item) => item!,
+                        compareFn:  (item, selectedItem) => item== selectedItem,
                         selectedItem: clientTypeProvider.selectedValuemanag,
                         onChanged: (value) {
                           clientTypeProvider.changevalue(value);
@@ -140,6 +141,7 @@ class _DialogClientSectionState extends State<DialogClientSection> {
                                   items: state.rejectReasonsStat
                                           .getDataWhenSuccess ??
                                       [],
+                                  compareFn:  (item, selectedItem) => item.idRejectClient == selectedItem.idRejectClient,
                                   itemAsString: (item) =>
                                       item!.nameReasonReject!,
                                   selectedItem: state

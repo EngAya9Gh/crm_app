@@ -62,6 +62,7 @@ class _AgentStatusDialogState extends State<AgentStatusDialog> {
               hint: 'حالة الوكيل',
               items: AgentStateEnum.values,
               selectedItem: selectedAgentState,
+              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
               itemAsString: (item) => item!.value,
               height: 135.scaleHeight,
               onChanged: (value) {

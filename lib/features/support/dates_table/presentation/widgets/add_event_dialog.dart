@@ -129,6 +129,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                       CustomDropDown<InstallationTypeEnum>(
                         hint: "نوع التركيب",
                         items: InstallationTypeEnum.values,
+                        compareFn:  (item, selectedItem) => item.index == selectedItem.index,
                         itemAsString: (item) => item!.value,
                         selectedItem: _datesTableCubit.addEventFormVariables.selectInstallationType.value,
                         onChanged: (value) {
@@ -154,6 +155,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                               GetInvoicesByClientForDateParams(idClient: "${value!.id}"),
                             );
                           },
+                          compareFn:  (item, selectedItem) => item.id == selectedItem.id,
                           validator: (value) {
                             return InputValidator.requiredFiled(value);
                           },

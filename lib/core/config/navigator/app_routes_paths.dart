@@ -32,6 +32,8 @@ abstract class AppRoutesPaths {
   static const String notifications = 'notifications';
   static const String versions = 'versions';
   static const String addVersions = 'addVersions';
+  static const String incommingUpdate = 'incommingUpdate';
+  static const String versionOrder = 'versionOrder';
 }
 
 class _AppInit {
@@ -85,12 +87,14 @@ class _CareSubSections {
   final String previousRatings = 'previous-ratings';
   final String tickets = 'tickets';
   final String clientsCareReports = 'clients-care-reports';
+  final String clientsRecommendedReports = 'clients_recommended-reports';
   final String evaluationLevelReport = 'evaluation-level-report';
   final String periodicCommunicationReports = 'periodic-communication-reports';
   final String notUsingSystem = 'not-using-system';
   final String wrongNumbers = 'wrong-numbers';
   final String clientsActivities = 'clients-activities';
   final String crudActivities = 'care-crud-activities';
+  final String reports = '/care-reports';
 }
 
 class _ManagementSubSections {

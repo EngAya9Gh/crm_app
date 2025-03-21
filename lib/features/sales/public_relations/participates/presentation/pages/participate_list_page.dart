@@ -1,9 +1,11 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/scroll_to_find_item.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -29,7 +31,8 @@ import '../widgets/participates_filter_sheet.dart';
 import 'action_participate_page.dart';
 
 class ParticipateListPage extends StatefulWidget {
-  const ParticipateListPage({super.key});
+  const ParticipateListPage({super.key, this.scrollToId});
+  final String? scrollToId;
 
   @override
   State<ParticipateListPage> createState() => _ParticipateListPageState();
@@ -37,6 +40,10 @@ class ParticipateListPage extends StatefulWidget {
 
 class _ParticipateListPageState extends State<ParticipateListPage> {
   late ParticipateListBloc _participateListBloc;
+  final ScrollController _scrollController = ScrollController();
+
+  // Create a GlobalKey for the target item
+  final GlobalKey _targetKey = GlobalKey();
 
   @override
   void initState() {
@@ -47,8 +54,37 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _participateListBloc.add(GetParticipateListEvent(isNewFetch: true));
     });
-
+    _scrollController.addListener(() {
+      // Optional: Add scroll listener for debugging
+      // print('Scroll position: ${_scrollController.position.pixels}');
+    });
     super.initState();
+    if (widget.scrollToId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _findAndScrollToItem(widget.scrollToId!);
+      });
+    }
+  }
+
+  Future<void> _findAndScrollToItem(String targetId) async {
+    await ScrollHelper.scrollToItem(
+      scrollController: _scrollController,
+      targetId: targetId,
+      itemHeight: 73.0, // Your item height
+      items: _participateListBloc.allParticipates,
+      hasReachedMax: _participateListBloc.hasReachedMax,
+      loadNextPage: () async {
+        _participateListBloc.add(GetParticipateListEvent(isNewFetch: false));
+        // Wait for load to complete
+        await Future.delayed(Duration(milliseconds: 500));
+      },
+      findItem: (participate) => participate.id_participate == targetId,
+    );
+  }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -151,11 +187,9 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppText("عدد المتعاونين"),
-                            BlocBuilder<ParticipateListBloc,
-                                ParticipateListState>(
+                            BlocBuilder<ParticipateListBloc, ParticipateListState>(
                               builder: (context, state) {
-                                return AppText(
-                                    "${_participateListBloc.allParticipates.length}/${_participateListBloc.countAllParticipates}");
+                                return AppText("${_participateListBloc.allParticipates.length}/${_participateListBloc.countAllParticipates}");
                               },
                             ),
                           ],
@@ -163,15 +197,13 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                       ),
                       10.verticalSpace,
                       Expanded(
-                        child: BlocBuilder<ParticipateListBloc,
-                            ParticipateListState>(
+                        child: BlocBuilder<ParticipateListBloc, ParticipateListState>(
                           builder: (context, state) {
-                            final _allParticipates =
-                                _participateListBloc.allParticipates;
-                            return BlocBuilder<ParticipateListBloc,
-                                ParticipateListState>(
+                            final _allParticipates = _participateListBloc.allParticipates;
+                            return BlocBuilder<ParticipateListBloc, ParticipateListState>(
                               builder: (context, state) {
                                 return AppPaginatedList(
+                                  scrollController: _scrollController,
                                   items: _allParticipates,
                                   onLoadMore: () {
                                     _participateListBloc.add(
@@ -180,16 +212,15 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                                       ),
                                     );
                                   },
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
+                                  itemBuilder: (BuildContext context, int index) {
                                     return ParticipateCard(
+                                      itemKey: _allParticipates[index].id_participate == widget.scrollToId ? _targetKey : null,
+                                      shouldHighlight: widget.scrollToId == _allParticipates[index].id_participate,
                                       participate: _allParticipates[index],
                                     );
                                   },
-                                  isLoading:
-                                      state.getParticipatesState.isLoading(),
-                                  hasReachedEnd:
-                                      _participateListBloc.hasReachedMax,
+                                  isLoading: state.getParticipatesState.isLoading(),
+                                  hasReachedEnd: _participateListBloc.hasReachedMax,
                                 );
                               },
                             );

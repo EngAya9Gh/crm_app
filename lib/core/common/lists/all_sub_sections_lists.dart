@@ -14,6 +14,7 @@ import '../../../features/clients_care/install_quality/presentation/pages/instal
 import '../../../features/clients_care/periodic_communication/presentation/pages/periodic_communication_page.dart';
 import '../../../features/clients_care/periodic_communication_reports/presentation/pages/periodic_communication_reports_page.dart';
 import '../../../features/clients_care/previous_ratings/presentation/pages/previous_ratings_page.dart';
+import '../../../features/clients_care/recommended_client/presentation/pages/recommended_clients_reports_page.dart';
 import '../../../features/clients_care/special_clients/presentation/pages/special_clients_page.dart';
 import '../../../features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
 import '../../../features/finance/client_dept/presentation/pages/client_dept_page.dart';
@@ -48,6 +49,7 @@ import '../../config/navigator/app_routes_paths.dart';
 import '../../utils/app_strings.dart';
 import '../models/sections/section_model.dart';
 import '../widgets/app_adaptive_builder.dart';
+import '../widgets/sections_and_subsections/sub_sections_list_view.dart';
 
 abstract class AllSubSectionsLists {
   /* Support Sub Sections */
@@ -161,46 +163,19 @@ abstract class AllSubSectionsLists {
       path: AppRoutesPaths.careSubSections.violations,
     ),
     SectionModel(
-      title: 'تقرير إعادة التقييم',
-      page: PreviousRatingsPage(),
-      privilegeId: '30',
-      path: AppRoutesPaths.careSubSections.previousRatings,
-    ),
-    SectionModel(
       title: 'تذاكر العملاء',
       page: TicketsPage(),
       privilegeId: '33',
       path: AppRoutesPaths.careSubSections.tickets,
     ),
     SectionModel(
-      title: 'تقرير العناية بالعملاء',
-      page: ClientsCareReportsPage(),
-      privilegeId: '102',
-      path: AppRoutesPaths.careSubSections.clientsCareReports,
-    ),
-    SectionModel(
-      title: 'تقرير مستوى التقييم',
-      page: EvaluationLevelReportPage(),
-      privilegeId: '103',
-      path: AppRoutesPaths.careSubSections.evaluationLevelReport,
-    ),
-    SectionModel(
-      title: AppStrings.periodicCommunicaitonReportsLabel,
-      page: PeriodicCommunicationReportsPage(),
-      privilegeId: '104',
-      path: AppRoutesPaths.careSubSections.periodicCommunicationReports,
-    ),
-    SectionModel(
-      title: AppStrings.labelNotUse,
-      page: NotUsingSystemPage(),
-      privilegeId: '105',
-      path: AppRoutesPaths.careSubSections.notUsingSystem,
-    ),
-    SectionModel(
-      title: AppStrings.labelWrongNumber,
-      page: WrongNumbersPage(),
-      privilegeId: '106',
-      path: AppRoutesPaths.careSubSections.wrongNumbers,
+      page: SubSectionsListView(
+        title: 'التقارير',
+        subSections: careReports
+      ),
+      title: ' التقارير',
+      path: AppRoutesPaths.careSubSections.reports,
+      subSections: careReports,
     ),
   ];
 
@@ -339,6 +314,52 @@ abstract class AllSubSectionsLists {
       title: 'عمولة المتعاونين',
       path: AppRoutesPaths.financeSections.commissionCollaborators,
       subSections: [],
+    ),
+  ];
+//endregion
+
+//region care-reports
+  static final List<SectionModel> careReports = [
+    SectionModel(
+      title: 'تقرير إعادة التقييم',
+      page: PreviousRatingsPage(),
+      privilegeId: '30',
+      path: AppRoutesPaths.careSubSections.previousRatings,
+    ),
+    SectionModel(
+      title: 'تقرير العناية بالعملاء',
+      page: ClientsCareReportsPage(),
+      privilegeId: '102',
+      path: AppRoutesPaths.careSubSections.clientsCareReports,
+    ),
+    SectionModel(
+      title: 'تقرير عملاء التوصية',
+      page: RecommendedClientsReportPage(),
+      path: AppRoutesPaths.careSubSections.clientsRecommendedReports,
+    ),
+    SectionModel(
+      title: 'تقرير مستوى التقييم',
+      page: EvaluationLevelReportPage(),
+      privilegeId: '103',
+      path: AppRoutesPaths.careSubSections.evaluationLevelReport,
+    ),
+    SectionModel(
+      title: AppStrings.periodicCommunicaitonReportsLabel,
+      page: PeriodicCommunicationReportsPage(),
+      privilegeId: '104',
+      path: AppRoutesPaths.careSubSections.periodicCommunicationReports,
+    ),
+    SectionModel(
+      title: AppStrings.labelNotUse,
+      page: NotUsingSystemPage(),
+      privilegeId: '105',
+      path: AppRoutesPaths.careSubSections.notUsingSystem,
+    ),
+    SectionModel(
+      title: AppStrings.labelWrongNumber,
+      page: WrongNumbersPage(),
+      privilegeId: '106',
+      path: AppRoutesPaths.careSubSections.wrongNumbers,
     ),
   ];
 //endregion

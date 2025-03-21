@@ -25,8 +25,12 @@ mixin _$RecommendedClient {
   @JsonKey(name: "name_enterprise")
   String? get nameEnterprise => throw _privateConstructorUsedError;
 
+  /// Serializes this RecommendedClient to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of RecommendedClient
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RecommendedClientCopyWith<RecommendedClient> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -52,6 +56,8 @@ class _$RecommendedClientCopyWithImpl<$Res, $Val extends RecommendedClient>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of RecommendedClient
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$RecommendedClientImplCopyWithImpl<$Res>
       $Res Function(_$RecommendedClientImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of RecommendedClient
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -144,11 +152,13 @@ class _$RecommendedClientImpl implements _RecommendedClient {
                 other.nameEnterprise == nameEnterprise));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, fkClient, nameEnterprise);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RecommendedClient
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RecommendedClientImplCopyWith<_$RecommendedClientImpl> get copyWith =>
@@ -178,8 +188,11 @@ abstract class _RecommendedClient implements RecommendedClient {
   @override
   @JsonKey(name: "name_enterprise")
   String? get nameEnterprise;
+
+  /// Create a copy of RecommendedClient
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RecommendedClientImplCopyWith<_$RecommendedClientImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

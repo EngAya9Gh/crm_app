@@ -1,6 +1,8 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
+import 'package:crm_smart/features/notifications/data/models/notification_types.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/common/enums/enums.dart';
@@ -15,8 +17,7 @@ class FilterNotificationsSheet extends StatefulWidget {
   const FilterNotificationsSheet({super.key});
 
   @override
-  State<FilterNotificationsSheet> createState() =>
-      _FilterNotificationsSheetState();
+  State<FilterNotificationsSheet> createState() => _FilterNotificationsSheetState();
 }
 
 class _FilterNotificationsSheetState extends State<FilterNotificationsSheet> {
@@ -58,16 +59,21 @@ class _FilterNotificationsSheetState extends State<FilterNotificationsSheet> {
               ),
             ),
             10.height,
-            CustomSearchableDropDown<NotificationTypeEnum>(
-              hint: 'نوع الإشعار',
-              items: NotificationTypeEnum.values,
-              itemAsString: (item) => item!.value,
-              onChanged: (value) {
-                _cubit.filterEntity.notificationTypeNotifier.value = value;
-              },
-              selectedItem: _cubit.filterEntity.notificationTypeNotifier.value,
-              filterFn: (NotificationTypeEnum, String) {
-                return NotificationTypeEnum.value.contains(String);
+            BlocBuilder<NotificationsCubit, NotificationsState>(
+              builder: (context, state) {
+                return CustomSearchableDropDown<MapEntry<String, dynamic>>(
+                  hint: 'نوع الإشعار',
+                  items: (state.filterList.data?.toJson()??{}).entries.toList(),
+                  itemAsString: (item) => item!.value,
+                  onChanged: (value) {
+                    _cubit.filterEntity.notificationTypeNotifier.value = value;
+                  },
+                  selectedItem: _cubit.filterEntity.notificationTypeNotifier.value,
+                  compareFn: (item, selectedItem) => item.key == selectedItem.key,
+                  filterFn: (NotificationTypeEnum, String) {
+                    return NotificationTypeEnum.value.contains(String);
+                  },
+                );
               },
             ),
             10.height,

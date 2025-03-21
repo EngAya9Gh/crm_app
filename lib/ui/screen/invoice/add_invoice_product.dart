@@ -295,6 +295,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                       filterFn: (item, filter) {
                                         return item.name!.toLowerCase().contains(filter.toLowerCase());
                                       },
+                                      compareFn: (item, selectedItem) => item.id == selectedItem.id,
                                     ),
                                   ),
                                   if (value != null)
@@ -329,6 +330,7 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                                 filterFn: (item, filter) {
                                   return item.nameProduct?.toLowerCase().contains(filter.toLowerCase()) ?? false;
                                 },
+                                compareFn:  (item, selectedItem) => item.idProduct == selectedItem.idProduct,
                                 selectedItem: selectedProduct,
                                 onChanged: (value) {
                                   setState(() {

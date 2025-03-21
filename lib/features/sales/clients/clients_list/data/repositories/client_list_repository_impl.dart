@@ -12,6 +12,7 @@ import '../../../../../../core/common/models/user_entity.dart';
 import '../../../../../../core/services/api/api_utils.dart';
 import '../../../../../../core/services/api/result.dart';
 import '../../../../../../model/similar_client.dart';
+import '../../../../../finance/clients_attachments/data/models/subscribed_clients_model.dart';
 import '../../domain/repositories/clients_list_repository.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/fetch_paginated_clients_usecase.dart';
@@ -61,6 +62,10 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   @override
   Future<Result<ResponseWrapper<List<RecommendedClient>>>> getRecommendedClients() {
     return toApiResult(datasource.getRecommendedClients);
+  }
+  @override
+  Future<Result<ResponseWrapper<List<SubscribedClientsModel>>>> getRecommendedClientsFilterClient() {
+    return toApiResult(datasource.getRecommendedClientsFilterClient);
   }
 
   @override

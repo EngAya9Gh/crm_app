@@ -2,27 +2,21 @@ abstract class AppStrings {
   // local storage
   static const _SecureStorage secureStorage = _SecureStorage();
   static const _Prefs prefs = _Prefs();
-  static const _EmployeesSalesReportsHydratedCubitKeys
-      employeesSalesReportsCubit = _EmployeesSalesReportsHydratedCubitKeys();
+  static const _EmployeesSalesReportsHydratedCubitKeys employeesSalesReportsCubit = _EmployeesSalesReportsHydratedCubitKeys();
 
-  static const _RegionsSalesReportsHydratedCubitKeys regionsSalesReportsCubit =
-      _RegionsSalesReportsHydratedCubitKeys();
+  static const _RegionsSalesReportsHydratedCubitKeys regionsSalesReportsCubit = _RegionsSalesReportsHydratedCubitKeys();
 
-  static const _ProductsSalesReportsHydratedCubitKeys
-      productsSalesReportsCubit = _ProductsSalesReportsHydratedCubitKeys();
+  static const _ProductsSalesReportsHydratedCubitKeys productsSalesReportsCubit = _ProductsSalesReportsHydratedCubitKeys();
 
-  static const _ClientsDebtsReportsHydratedCubitKeys clientsDebtsReportsCubit =
-      _ClientsDebtsReportsHydratedCubitKeys();
+  static const _ClientsDebtsReportsHydratedCubitKeys clientsDebtsReportsCubit = _ClientsDebtsReportsHydratedCubitKeys();
 
-  static const _ClientsStatusReportsHydratedCubitKeys
-      clientsStatusReportsCubit = _ClientsStatusReportsHydratedCubitKeys();
+  static const _ClientsStatusReportsHydratedCubitKeys clientsStatusReportsCubit = _ClientsStatusReportsHydratedCubitKeys();
 
-  static const _ClientsCareReportsHydratedCubitKeys clientsCareReportsCubit =
-      _ClientsCareReportsHydratedCubitKeys();
+  static const _ClientsCareReportsHydratedCubitKeys clientsCareReportsCubit = _ClientsCareReportsHydratedCubitKeys();
 
-  static const _PeriodicCommunicationReportsHydratedCubitKeys
-      periodicCommunicationReportsCubit =
-      _PeriodicCommunicationReportsHydratedCubitKeys();
+  static const _PeriodicCommunicationReportsHydratedCubitKeys periodicCommunicationReportsCubit = _PeriodicCommunicationReportsHydratedCubitKeys();
+
+  static const _ManageWithdrawnInvoice manageWithdrawnInvoice = _ManageWithdrawnInvoice();
 
   static const _Global global = _Global();
 
@@ -30,8 +24,7 @@ abstract class AppStrings {
   static const String messageEmpty = 'الحقل فارغ';
   static const String hintEmailText = "Enter your Email";
   static const String hintCodeText = "Enter your code";
-  static const String codeVerifyError =
-      "The Pin Code is incorrect or your account is unActive";
+  static const String codeVerifyError = "The Pin Code is incorrect or your account is unActive";
   static const String emailError = "This Email is not exist";
   static const String textButtonCode = "Send Code";
   static const String textButtonCode2 = "Verfiy Code";
@@ -91,8 +84,7 @@ abstract class AppStrings {
   static const String labelAddInvoice = 'حفظ';
 
   static const String labelNotUse = ' عملاء لا يستخدمون النظام ';
-  static const String periodicCommunicaitonReportsLabel =
-      'تقرير الاتصال الدوري ';
+  static const String periodicCommunicaitonReportsLabel = 'تقرير الاتصال الدوري ';
   static const String labelWrongNumber = ' عملاء أرقامهم خاطئة ';
 
   // agents and distributors
@@ -188,6 +180,20 @@ class _PeriodicCommunicationReportsHydratedCubitKeys {
 
   final String dateFromController = 'dateFromController';
   final String dateToController = 'dateToController';
+}
+
+class _ManageWithdrawnInvoice {
+  const _ManageWithdrawnInvoice();
+
+  final String statusNotifier = 'statusNotifier';
+  final String branchNotifier = 'branchNotifier';
+  final String selectedUserSales = 'selectedUserSales';
+  final String withDrawnUser = 'withDrawnUser';
+  final String sortType = 'sortType';
+  final String fromDate = 'fromDate';
+  final String toDate = 'toDate';
+  final String drawnFrom = 'DrawnFrom';
+  final String drawnTo = 'DrawnTo';
 }
 
 class _Global {

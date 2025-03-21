@@ -58,6 +58,7 @@ class _CommunicationWithdrawalReasonsDropDownState
     return Consumer<CommunicationVm>(
       builder: (context, value, child) {
         return CustomDropDown<CommunicationWithdrawalReasonModel>(
+          compareFn:  (item, selectedItem) => item.idReason == selectedItem.idReason,
           hint: 'سبب الانسحاب',
           items: value.withdrawalReasons,
           itemAsString: (item) => item!.nameReason,

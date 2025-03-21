@@ -8,11 +8,11 @@ import 'package:crm_smart/features/task_management/domain/use_cases/add_comment_
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+// ignore: unused_import
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' as Intl;
 
-import '../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../core/common/widgets/app_icon.dart';
 import '../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../core/common/widgets/custom_error_widget.dart';
@@ -73,7 +73,7 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
         ),
         content: SizedBox(
           width: 500.scaleWidth,
-          height:500.scaleHeight,
+          height: 500.scaleHeight,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,49 +86,65 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                       builder: (context, value, child) => Column(
                         children: [
                           if (!widget.canDrag)
-                            AppDropdownButtonFormField<TaskStatusType, TaskStatusType>(
-                              borderColor: value.color,
-                              iconColor: value.color,
-                              items: List.of(TaskStatusType.values)
-                                ..removeWhere(
-                                  (element) => element.index < widget.status.index,
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 200.scaleWidth,
+                                  child: AppDropdownButtonFormField<TaskStatusType, TaskStatusType>(
+                                    borderColor: value.color,
+                                    iconColor: value.color,
+                                    fillColor: value.color,
+                                    isFilledColor: true,
+                                    items: List.of(TaskStatusType.values)
+                                      ..removeWhere(
+                                        (element) => element.index < widget.status.index,
+                                      ),
+                                    onChange: (value) {
+                                      selectedType.value = value!;
+                                      if (widget.status == selectedType.value || state.changeTaskStatus.isLoading() || (value.id == 11)) {
+                                        return;
+                                      }
+                                      AppConstants.debounceFunction(
+                                        () {
+                                          return widget.cubit.onChangeTaskStatusStage(
+                                            widget.task,
+                                            selectedType.value,
+                                            () {},
+                                            // Navigator.of(context).pop,
+                                            context.read<UserProvider>().currentUser.idUser!, false,
+                                            rate,
+                                          );
+                                        },
+                                        tag: "change-status",
+                                        isDebounced: true,
+                                      );
+                                    },
+                                    hint: "القسم",
+                                    itemAsValue: (TaskStatusType? item) => item,
+                                    itemBuilder: (item) => AppText(
+                                      item?.text ?? '',
+                                      color: item!.color,
+                                      fontSize: 18,
+                                    ),
+                                    itemBuilderSelected: (item) => AppText(
+                                      item?.text ?? '',
+                                      color: AppColors.white,
+                                      fontSize: 18,
+                                    ),
+                                    value: value,
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return 'هذا الحقل مطلوب.';
+                                      }
+                                      return null;
+                                    },
+                                  ),
                                 ),
-                              onChange: (value) {
-                                selectedType.value = value!;
-                                if (widget.status == selectedType.value || state.changeTaskStatus.isLoading()||(value.id==11)) {
-                                  return;
-                                }
-                                AppConstants.debounceFunction(
-                                  () {
-                                    return widget.cubit.onChangeTaskStatusStage(
-                                      widget.task,
-                                      selectedType.value,
-                                      () {},
-                                      // Navigator.of(context).pop,
-                                      context.read<UserProvider>().currentUser.idUser!, false,
-                                      rate,
-                                    );
-                                  },
-                                  tag: "change-status",
-                                  isDebounced: true,
-                                );
-                              },
-                              hint: "القسم",
-                              itemAsValue: (TaskStatusType? item) => item,
-                              itemBuilder: (item) => AppText(
-                                item?.text ?? '',
-                                color: item?.color,
-                                fontSize: 18,
-                              ),
-                              value: value,
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'هذا الحقل مطلوب.';
-                                }
-                                return null;
-                              },
+                                5.width,
+                                (state.changeTaskStatus.isLoading()) ? Center(child: AppLoader()) : SizedBox.shrink(),
+                              ],
                             ),
-                          if ( value.id == 11) ...{
+                          if (value.id == 11) ...{
                             10.height,
                             Row(
                               children: [
@@ -145,7 +161,6 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                                     color: Colors.amber,
                                   ),
                                   onRatingUpdate: (rating) {
-
                                     if (widget.status == selectedType.value) {
                                       return;
                                     }
@@ -154,7 +169,7 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                                         return widget.cubit.onChangeTaskStatusStage(
                                           widget.task,
                                           selectedType.value,
-                                              () {},
+                                          () {},
                                           // Navigator.of(context).pop,
                                           context.read<UserProvider>().currentUser.idUser!,
                                           false,
@@ -169,7 +184,6 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                               ],
                             ),
                           },
-                          (state.changeTaskStatus.isLoading()) ? Center(child: AppLoader()) : SizedBox.shrink(),
                         ],
                       ),
                     );
@@ -189,12 +203,12 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                   child: InkWell(
                     onTap: () => AppFileViewer(
                       imageSource: ImageSourceViewer.network,
-                      urls: [EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?.firstOrNull?.filePath??'')],
+                      urls: [EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?.firstOrNull?.filePath ?? '')],
                     ).show(context),
                     child: FancyImageShimmerViewer(
                       width: 500.scaleWidth,
                       height: 150.scaleHeight,
-                      imageUrl: EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?.firstOrNull?.filePath??''),
+                      imageUrl: EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?.firstOrNull?.filePath ?? ''),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -312,7 +326,8 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                                       AppText(data?[index].content),
                                       5.height,
                                       AppText(
-                                        Intl.DateFormat('dd MMM hh:mm a').format(DateTime.tryParse(data?[index].date_comment ?? '') ?? DateTime.now()),
+                                        Intl.DateFormat('dd MMM hh:mm a')
+                                            .format(DateTime.tryParse(data?[index].date_comment ?? '') ?? DateTime.now()),
                                         color: context.colorScheme.grey600,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
