@@ -155,9 +155,6 @@ class _VersionOrderPageState extends State<VersionOrderPage> {
                       onLoadMore: () {
                         if (!state.hasReachedMax) {
                           _bloc.filterEntity.currentPage = _bloc.filterEntity.currentPage + 1;
-                          print('///////////' * 20);
-                          print(_bloc.filterEntity.currentPage);
-                          print('///////////' * 20);
                           _bloc.add(GetDenmadsEvent(params: state.params.copyWith(page: _bloc.filterEntity.currentPage)));
                         }
                       },

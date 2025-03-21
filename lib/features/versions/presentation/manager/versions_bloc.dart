@@ -174,7 +174,9 @@ class VersionsBloc extends Bloc<VersionsEvent, VersionsState> {
     final result = await addDemandUsecase(event.params);
     result.extract(
       (exception, message) {
-        AppSnackbar.showSnakeBar('غير مسموح التعديل ', color: ToastColorsEnum.warning);
+        if (event.params.idDemand != null) {
+          AppSnackbar.showSnakeBar('العملية غير مسموح بها', color: ToastColorsEnum.warning);
+        }
         if (AppConstants.shouldReturnEarly(message)) return;
         emit(state.copyWith(addDemandStatus: BlocStatus.fail(error: message)));
       },

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -15,19 +17,26 @@ class CompanyProvider extends ChangeNotifier {
     isloading = true;
     notifyListeners();
 
-    //  if(list_activity.isEmpty)
-    var data =
-        await Api().get(url: EndPoints.baseUrls.url + 'config/get_company.php');
-    List<CompanyModel> prodlist = [];
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(CompanyModel.fromJson(data[i]));
+    try {
+      var response = await getIt<ApiServices>().get(endPoint: EndPoints.baseUrls.url + 'config/get_company.php');
+      var res = jsonDecode(response);
+      var data = res['message'];
+      List<CompanyModel> prodlist = [];
+      for (int i = 0; i < data.length; i++) {
+        prodlist.add(CompanyModel.fromJson(data[i]));
+      }
+      list_company = prodlist;
+
+      isloading = false;
+      onSuccess?.call();
+
+      notifyListeners();
+    } on Exception catch (e) {
+      isloading = false;
+      notifyListeners();
+      print(e);
+      throw e;
     }
-    list_company = prodlist;
-
-    isloading = false;
-    onSuccess?.call();
-
-    notifyListeners();
   }
 
   String? selectedValueOut;
@@ -83,8 +92,7 @@ class CompanyProvider extends ChangeNotifier {
 
     final data = apiDataHandler(response);
 
-    final index =
-        list_company.indexWhere((element) => element.id_Company == idcompany);
+    final index = list_company.indexWhere((element) => element.id_Company == idcompany);
     list_company[index] = CompanyModel.fromJson(data);
     isloading = false;
     notifyListeners();

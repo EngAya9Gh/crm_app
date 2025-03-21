@@ -121,10 +121,8 @@ class NotificationsDatasourceImpl implements NotificationsDatasource {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(
           endPoint: params.idDemand != null ? EndPoints.versions.updateDemand(params.idDemand!) : EndPoints.versions.addDemand, data: params.toMap());
-
       return ResponseWrapper<DemandModel>.fromJson(response, (json) => DemandModel.fromJson(json));
     }
-
     return throwAppException(fun);
   }
 

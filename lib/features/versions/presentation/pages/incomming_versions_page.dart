@@ -44,48 +44,50 @@ class _IncommingVersionsPageState extends State<IncommingVersionsPage> {
                     Container(
                       padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 20),
                       decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadiusDirectional.circular(12)),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadiusDirectional.circular(5)),
-                                child: AppAssetImage(
-                                  imagePath: Assets.imagesLogoCrmLong,
-                                  // height: 30.37,
-                                  // width: 137.59,
-                                ),
-                              ),
-                              10.width,
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadiusDirectional.circular(5)),
+                            child: AppAssetImage(
+                              imagePath: Assets.imagesLogoCrmLong,
+                              // height: 30.37,
+                              // width: 137.59,
+                            ),
+                          ),
+                          10.width,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (data?.title != null)
                                   AppText(
                                     data?.title ?? '',
                                     fontSize: (25.0).scaleFontSize,
                                     fontWeight: FontWeight.w600,
                                   ),
-                                  2.height,
-                                  AppText(
-                                    data?.management ?? 'عام',
-                                    fontSize: (20.0).scaleFontSize,
-                                  ),
-                                  2.height,
+                                2.height,
+                                AppText(
+                                  data?.management ?? 'عام',
+                                  fontSize: (20.0).scaleFontSize,
+                                ),
+                                2.height,
+                                if (data?.versionNo != null)
                                   AppText(
                                     data?.versionNo ?? '',
                                     fontSize: (18.0).scaleFontSize,
                                   ),
-                                ],
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: AppText(data?.description ?? ''),
-                          ),
+                                8.height,
+                                AppText(
+                                  (data?.description ?? ''),
+                                  maxLines: 4,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
