@@ -365,7 +365,6 @@ class _CommentViewState extends State<CommentView> {
                               child: AppErrorWidget(message: 'لا يوجد تعليقات'),
                             );
                           } else {
-                            if (widget.commentId != null) _findAndScrollToItem(widget.commentId!.toString());
                             return ValueListenableBuilder(
                               valueListenable: isHighlighted,
                               builder: (context, highlighted, child) => SliverList(

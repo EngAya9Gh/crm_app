@@ -30,7 +30,7 @@ class demandCardWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 150.scaleIconsSize,
+          height: 175.scaleIconsSize,
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: AppColors.white,
@@ -86,11 +86,15 @@ class demandCardWidget extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            AppText(
-                              item.goal ?? '',
-                              color: AppColors.primaryMain,
-                              fontSize: 20.scaleFontSize,
-                              fontWeight: FontWeight.w600,
+                            Expanded(
+                              child: AppText(
+                                (item.goal ?? ''),
+                                color: AppColors.primaryMain,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 20.scaleFontSize,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             AppStatusChip(
                               status: status.text,
