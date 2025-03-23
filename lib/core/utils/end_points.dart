@@ -279,6 +279,8 @@ class _Task {
   const _Task();
 
   final addTask = 'tasks';
+  String updateTask(int idTask) => 'tasks/$idTask/edit';
+  String changeTaskAssign(int idTask) => 'tasks/$idTask/change-assignee';
   final filterTasksByAll = 'tasks';
 
   String changeStatusTask(String id) => 'tasks/$id/change-status';

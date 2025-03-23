@@ -12,19 +12,19 @@ import '../../data/models/user_region_department.dart';
 import '../repositories/task_repository.dart';
 
 @injectable
-class AddTaskUsecase
-    extends BaseUsecase<Result<ResponseWrapper<bool>>, AddTaskParams> {
+class AddTaskUsecase extends BaseUsecase<Result<ResponseWrapper<bool>>, AddOrUpdateTaskParams> {
   AddTaskUsecase(this.repository);
 
   final TaskRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<bool>>> call(AddTaskParams params) {
+  Future<Result<ResponseWrapper<bool>>> call(AddOrUpdateTaskParams params) {
     return repository.addTask(params.toMap);
   }
 }
 
-class AddTaskParams {
+class AddOrUpdateTaskParams {
+  final int? taskId;
   final String? title;
   final List<UserModel> participants;
   final String? assignTo;
@@ -47,7 +47,8 @@ class AddTaskParams {
   final String? mainTypeTask;
   final String? publicType;
 
-  AddTaskParams({
+  AddOrUpdateTaskParams({
+    this.taskId,
     required this.title,
     required this.description,
     required this.userId,
@@ -83,8 +84,8 @@ class AddTaskParams {
       "assign_to": assignTo,
       "assign_from": assignFrom,
       "assign_from_id": assignFromId,
-      'start_date':startDate!=null? DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate!):null,
-      'deadline':deadLineDate!=null? DateFormat('yyyy-MM-dd HH:mm:ss').format(deadLineDate!):null,
+      'start_date': startDate != null ? DateFormat('yyyy-MM-dd HH:mm:ss').format(startDate!) : null,
+      'deadline': deadLineDate != null ? DateFormat('yyyy-MM-dd HH:mm:ss').format(deadLineDate!) : null,
       ...map,
       "invoice_id": invoiceId,
       "group_id": groupId,
@@ -106,10 +107,5 @@ class AddTaskParams {
     }..removeWhere((key, value) => value == null || value == '');
   }
 
-  String dateToString(DateTime dateTime) =>
-      dateTime.year.toString() +
-      '-' +
-      dateTime.month.toString() +
-      '-' +
-      dateTime.day.toString();
+  String dateToString(DateTime dateTime) => dateTime.year.toString() + '-' + dateTime.month.toString() + '-' + dateTime.day.toString();
 }

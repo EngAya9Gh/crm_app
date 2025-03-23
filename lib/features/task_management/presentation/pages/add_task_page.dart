@@ -11,6 +11,7 @@ import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
+import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -111,8 +112,8 @@ extension RecurringTypeExt on RecurringType {
 }
 
 class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({super.key});
-
+  const AddTaskPage({super.key, this.task});
+  final TaskModel? task;
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
 }
@@ -133,7 +134,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late UserModel currentUser;
 
   @override
+  void deactivate() {
+    _taskCubit.resetAddUpdate();
+    super.deactivate();
+  }
+
+  @override
   void initState() {
+    _taskCubit = getIt<TaskCubit>();
     privilegeBloc = getIt<PrivilegesCubit>();
     currentUser = context.read<UserProvider>().currentUser;
     // departmentId = privilegeBloc.checkPrivilege('174')
@@ -148,7 +156,18 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _usersCubit = context.read<UsersCubit>()
       ..storeCurrentUser(currentUser)
       ..getUsersAll()
-      ..onGetUserSelected('active');
+      ..onGetUserSelected(
+        'active',
+        (value) {
+          if (widget.task != null) {
+            _taskCubit.onChangeAssignTo(value.firstWhereOrNull(
+              (element) => element.id == widget.task?.assignTo?.idUser.toString(),
+            ));
+            _taskCubit.onChangeSelectedAssignedToType(
+                AssignedTypeNew.values.firstWhereOrNull((element) => element.name.toLowerCase() == widget.task?.assignToModel?.toLowerCase()));
+          }
+        },
+      );
 
     _taskNameController = TextEditingController();
     _startDateController = TextEditingController();
@@ -156,14 +175,23 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _numberOfRecurringController = TextEditingController();
     _taskDescriptionController = TextEditingController();
     _formKey = GlobalKey<FormState>();
-    _taskCubit = getIt<TaskCubit>();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget.task != null) {
+        _taskNameController.text = widget.task?.title ?? '';
+        _taskDescriptionController.text = widget.task?.description ?? '';
+        // _startDateController.text = Intl.DateFormat().format(widget.task!.startDate!);
+        // _deadLineDateController.text = Intl.DateFormat().format(widget.task!.deadline!);
+        _taskCubit.onChangeParticipants(widget.task!.collaborators!);
+        selectedClientList.value = widget.task?.client == null ? [] : [widget.task!.client!];
+        departmentId = widget.task?.assignTo?.idMange?.toString();
+        regionId = widget.task?.assignTo?.idRegion?.toString();
+      }
       _taskCubit.getListClient();
       context.read<RegionProvider>()
-        ..changeValuser(null, true)
+        ..changeValuser(regionId ?? null, true)
         ..getRegionsTasks();
       context.read<manage_provider>()
-        ..changevalue(null)
+        ..changevalue(departmentId ?? null)
         ..getManagesTask();
     });
     super.initState();
@@ -217,35 +245,36 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           : state.selectedAssignedToType == AssignedTypeNew.managements
                               ? selectedValueManage
                               : selectedRegionId;
-                      _taskCubit.addTaskAction(
+                      var params = AddOrUpdateTaskParams(
+                          taskId: widget.task?.id,
+                          title: _taskNameController.text,
+                          description: _taskDescriptionController.text,
+                          assignFrom: AssignedTypeNew.users.name.toString(),
+                          assignFromId: currentUser.idUser!,
+                          assignTo: state.selectedAssignedToType?.name,
+                          assignToId: assignToId,
+                          userId: currentUser.idUser!,
+                          startDate: state.startDate,
+                          file: state.attachmentFile,
+                          deadLineDate: state.deadLineDate,
+                          publicType: PublicType.addTask.name.toString(),
+                          participants: state.selectedParticipant ?? [],
+                          clientId: selectedClientList.value.firstOrNull?.idClients);
+                      if (widget.task == null) {
+                        _taskCubit.addTaskAction(
                           onSuccess: () {
                             AppNavigator.pop(result: true);
                           },
-                          addTaskParams: AddTaskParams(
-                              title: _taskNameController.text,
-                              description: _taskDescriptionController.text,
-                              assignFrom: AssignedTypeNew.users.name.toString(),
-                              assignFromId: currentUser.idUser!,
-                              assignTo: state.selectedAssignedToType?.name,
-                              assignToId: assignToId,
-                              userId: currentUser.idUser!,
-                              startDate: state.startDate,
-                              file: state.attachmentFile,
-                              deadLineDate: state.deadLineDate,
-                              publicType: PublicType.addTask.name.toString(),
-                              participants: state.selectedParticipant ?? [] 
-                              ,
-                              clientId: selectedClientList.value.firstOrNull?.idClients),
-/*
-                        taskName: _taskNameController.text,
-                        numberOfRecurring: _numberOfRecurringController.text,
-                        onSuccess: () => AppNavigator.pop(result: true),
-                        regionId: selectedRegionId,
-                        departmentId: selectedValueManage,
-                        userId: currentUser.idUser!,
-                        description: _taskDescriptionController.text,
-*/
-                          );
+                          addTaskParams: params,
+                        );
+                      } else {
+                        _taskCubit.updateTask(
+                          onSuccess: () {
+                            AppNavigator.pop(result: true);
+                          },
+                          addTaskParams: params,
+                        );
+                      }
                     },
                     appButtonStyle: AppButtonStyle.secondary,
                     textStyle: AppStyles.textStyle.copyWith(

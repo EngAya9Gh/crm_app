@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/features/task_management/data/models/task_model.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -127,6 +130,7 @@ class TaskDatasource {
 
     return throwAppException(fun);
   }
+
   Future<ResponseWrapper<List<ClientModel>>> getListClients() async {
     fun() async {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
@@ -134,6 +138,32 @@ class TaskDatasource {
       return ResponseWrapper<List<ClientModel>>(
         data: [],
         message: List.from((response['message']).map((e) => ClientModel.fromJson(e as Map<String, dynamic>))),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<TaskModel>> updateTask(AddOrUpdateTaskParams params) async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(endPoint: EndPoints.task.updateTask(params.taskId!), data: params.toMap);
+      return ResponseWrapper<TaskModel>(
+        data: TaskModel(),
+        message: TaskModel.fromJson(response['message'] as Map<String, dynamic>),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<TaskModel>> changeTaskAssign(ChangeTaskAssignParams params) async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(endPoint: EndPoints.task.changeTaskAssign(params.taskId), data: params.toMap);
+      return ResponseWrapper<TaskModel>(
+        data: TaskModel(),
+        message: TaskModel.fromJson(response['message'] as Map<String, dynamic>),
       );
     }
 
