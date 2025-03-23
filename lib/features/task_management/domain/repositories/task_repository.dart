@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:dartz/dartz.dart';
 
@@ -26,4 +27,5 @@ abstract class TaskRepository {
 
   Future<Result<ResponseWrapper<bool>>> addTaskComments(AddTaskCommentParams params);
   Future<Result<ResponseWrapper<List<UserReportModel>>>> getUsersReports(GetUsersReportsParams params);
+  Future<Result<ResponseWrapper<List<ClientModel>>>> getListClients();
 }

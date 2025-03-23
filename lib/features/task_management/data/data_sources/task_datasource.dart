@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:dio/dio.dart';
@@ -113,6 +114,7 @@ class TaskDatasource {
 
     return throwAppException(fun);
   }
+
   Future<ResponseWrapper<List<UserReportModel>>> getUsersReports(GetUsersReportsParams params) async {
     fun() async {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
@@ -120,6 +122,18 @@ class TaskDatasource {
       return ResponseWrapper<List<UserReportModel>>(
         data: [],
         message: List.from((response['message']).map((e) => UserReportModel.fromJson(e as Map<String, dynamic>))),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+  Future<ResponseWrapper<List<ClientModel>>> getListClients() async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(endPoint: EndPoints.client.selectedClient);
+      return ResponseWrapper<List<ClientModel>>(
+        data: [],
+        message: List.from((response['message']).map((e) => ClientModel.fromJson(e as Map<String, dynamic>))),
       );
     }
 

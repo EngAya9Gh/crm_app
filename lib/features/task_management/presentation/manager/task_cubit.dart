@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/models/client_model.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_list_clients_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -37,6 +39,7 @@ class TaskCubit extends Cubit<TaskState> {
   final AddCommentTaskUsecase _addCommentTaskUsecase;
   final GetCommentsTaskUsecase _getCommentsTaskUsecase;
   final GetUsersReportsTaskUsecase _getUsersReportsTaskUsecase;
+  final GetListClientsUsecase _getListClientUsecase;
 
   Map<TaskStatusType, TaskStatusInfo> taskStatusInfo = {
     TaskStatusType.Open: TaskStatusInfo(),
@@ -52,6 +55,7 @@ class TaskCubit extends Cubit<TaskState> {
     this._addCommentTaskUsecase,
     this._getCommentsTaskUsecase,
     this._getUsersReportsTaskUsecase,
+    this._getListClientUsecase,
   ) : super(TaskState());
 
   TasksPageVariablesEntity pageVariables = TasksPageVariablesEntity();
@@ -389,8 +393,8 @@ class TaskCubit extends Cubit<TaskState> {
     );
   }
 
-  getUserTaskReports(GetUsersReportsParams params,[VoidCallback? onSuccess]) async {
-    if(state.getUsersTaskReportsStatus.isLoading()){
+  getUserTaskReports(GetUsersReportsParams params, [VoidCallback? onSuccess]) async {
+    if (state.getUsersTaskReportsStatus.isLoading()) {
       return;
     }
     emit(state.copyWith(getUsersTaskReportsStatus: BlocStatus.loading()));
@@ -420,6 +424,19 @@ class TaskCubit extends Cubit<TaskState> {
               getUsersTaskReports: BlocStatus.success(data: value.message ?? []),
               getUsersTaskReportsStatus: BlocStatus.success()),
         );
+      },
+    );
+  }
+
+  getListClient() async {
+    emit(state.copyWith(getListClients: BlocStatus.loading()));
+    final result = await _getListClientUsecase();
+    result.extract(
+      (exception, message) => emit(
+        state.copyWith(getListClients: BlocStatus.fail(error: message)),
+      ),
+      (value) {
+        emit(state.copyWith(getListClients: BlocStatus.success(data: value.message ?? [])));
       },
     );
   }

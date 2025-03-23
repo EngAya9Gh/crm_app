@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
+import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/core/common/widgets/app_group_button.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
 import 'package:file_picker/file_picker.dart';
@@ -121,6 +124,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late TextEditingController _startDateController;
   late TextEditingController _deadLineDateController;
   late TextEditingController _numberOfRecurringController;
+  final ValueNotifier<List<ClientModel>> selectedClientList = ValueNotifier([]);
   late GlobalKey<FormState> _formKey;
   late TaskCubit _taskCubit;
   late PrivilegesCubit privilegeBloc;
@@ -154,6 +158,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _formKey = GlobalKey<FormState>();
     _taskCubit = getIt<TaskCubit>();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _taskCubit.getListClient();
       context.read<RegionProvider>()
         ..changeValuser(null, true)
         ..getRegionsTasks();
@@ -228,7 +233,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               file: state.attachmentFile,
                               deadLineDate: state.deadLineDate,
                               publicType: PublicType.addTask.name.toString(),
-                              participants: state.selectedParticipant ?? [])
+                              participants: state.selectedParticipant ?? [] 
+                              ,
+                              clientId: selectedClientList.value.firstOrNull?.idClients),
 /*
                         taskName: _taskNameController.text,
                         numberOfRecurring: _numberOfRecurringController.text,
@@ -296,6 +303,26 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       },
                     ),
                     10.height,
+                    taskState.getListClients.when(
+                      success: (data) => ValueListenableBuilder(
+                        valueListenable: selectedClientList,
+                        builder: (context, value, child) => CustomMultiSelectionDropdown<ClientModel>(
+                          hint: 'العملاء',
+                          items: data ?? [],
+                          selectedItems: value,
+                          onSave: (value) {
+                            selectedClientList.value = value;
+                          },
+                          itemAsString: (u) => u!.nameEnterprise!,
+                          filterFn: (client, filter) => client.nameEnterprise!.contains(filter),
+                          compareFn: (item, selectedItem) => item.idClients == selectedItem.idClients,
+                        ),
+                      ),
+                      failure: (error, data) {
+                        return AppErrorWidget(message: error);
+                      },
+                    ),
+                    10.height,
                     Theme(
                       data: context.theme.copyWith(
                           timePickerTheme: TimePickerThemeData(
@@ -337,47 +364,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   // _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(p0);
                                   _taskCubit.onChangeDeadLineDate(p0);
                                 },
-                              ) /*InkWell(
-                                onTap: () async {
-                                  final selectedTime = TimeOfDay.fromDateTime(taskState.deadLineDate ?? DateTime.now());
-
-                                  DateTime? date = await showDatePicker(
-                                    context: context,
-                                    initialDate: taskState.deadLineDate ?? DateTime.now(),
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime.now().add(Duration(days: 365)),
-                                  );
-
-                                  if (date == null) return;
-
-                                  final time = await showTimePicker(
-                                    context: context,
-                                    initialTime: selectedTime,
-                                  );
-                                  if (time != null) {
-                                    date = date.copyWith(
-                                      hour: time.hour,
-                                      minute: time.minute,
-                                    );
-                                  }
-
-                                  _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(date);
-                                  _taskCubit.onChangeDeadLineDate(date);
-                                },
-                                child: IgnorePointer(
-                                  ignoring: true,
-                                  child: AppTextField(
-                                    labelText: "تاريخ التسليم*",
-                                    maxLines: 1,
-                                    validator: InputValidator.requiredFiled,
-                                    readOnly: true,
-                                    controller: _deadLineDateController,
-                                    textDirection: TextDirection.ltr,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              )*/
-                              ,
+                              ),
                             ),
                           },
                         ],
@@ -400,7 +387,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 child: CustomDropDown<RecurringType>(
                                   hint: 'نوع التكرار',
                                   items: RecurringType.values,
-                                  compareFn:  (item, selectedItem) => item.index == selectedItem.index,
+                                  compareFn: (item, selectedItem) => item.index == selectedItem.index,
                                   itemAsString: (item) => item!.text,
                                   selectedItem: taskState.selectedRecurringType,
                                   onChanged: _taskCubit.onChangeRecurringType,
@@ -470,19 +457,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             opacity: animation,
                             child: widget,
                           ),
-                          child: state.attachmentFile==null
+                          child: state.attachmentFile == null
                               ? SizedBox.shrink()
                               : InkWell(
-                            onTap: () => AppFileViewer(
-                              imageSource: ImageSourceViewer.file,
-                              files: [XFile(state.attachmentFile!.path)],
-                            ).show(context),
-                            child: AppPlatformImage(
-                              fileModel: FileModel(file: XFile(state.attachmentFile!.path)),
-                              fit: BoxFit.cover,
-                              width: 110.scaleIconsSize,
-                            ),
-                          ),
+                                  onTap: () => AppFileViewer(
+                                    imageSource: ImageSourceViewer.file,
+                                    files: [XFile(state.attachmentFile!.path)],
+                                  ).show(context),
+                                  child: AppPlatformImage(
+                                    fileModel: FileModel(file: XFile(state.attachmentFile!.path)),
+                                    fit: BoxFit.cover,
+                                    width: 110.scaleIconsSize,
+                                  ),
+                                ),
                         );
                       },
                     ),
@@ -526,7 +513,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             itemAsString: (u) => u!.nameUser!,
             onChanged: _taskCubit.onChangeAssignTo,
             selectedItem: taskState.selectedAssignTo,
-            compareFn:  (item, selectedItem) => item.id == selectedItem.id,
+            compareFn: (item, selectedItem) => item.id == selectedItem.id,
             filterFn: (user, filter) => user.nameUser!.contains(filter),
             validator: (value) {
               if (taskState.selectedAssignedToType != AssignedTypeNew.users) {
@@ -557,7 +544,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           return CustomDropDown<ManageModel>(
             hint: 'القسم',
             items: list,
-            compareFn:  (item, selectedItem) => item.idMange == selectedItem.idMange,
+            compareFn: (item, selectedItem) => item.idMange == selectedItem.idMange,
             itemAsString: (item) => item!.name_mange,
             selectedItem: list.firstWhereOrNull(
               (element) => element.idMange == departmentId,
@@ -593,7 +580,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           return CustomDropDown<BranchModel>(
             hint: 'الفرع',
             items: list,
-            compareFn:  (item, selectedItem) => item.branchId == selectedItem.branchId,
+            compareFn: (item, selectedItem) => item.branchId == selectedItem.branchId,
             itemAsString: (branch) => branch!.branchName,
             selectedItem: list.firstWhereOrNull(
               (element) => element.branchId == regionId,

@@ -991,6 +991,8 @@ import '../../../features/task_management/domain/use_cases/change_status_usecase
     as _i831;
 import '../../../features/task_management/domain/use_cases/get_comments_task_usecase.dart'
     as _i755;
+import '../../../features/task_management/domain/use_cases/get_list_clients_usecase.dart'
+    as _i927;
 import '../../../features/task_management/domain/use_cases/get_tasks_usecase.dart'
     as _i439;
 import '../../../features/task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart'
@@ -2103,6 +2105,8 @@ _i174.GetIt $initGetIt(
       () => _i831.ChangeStatusTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i755.GetCommentsTaskUsecase>(
       () => _i755.GetCommentsTaskUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i927.GetListClientsUsecase>(
+      () => _i927.GetListClientsUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i439.GetTasksUsecase>(
       () => _i439.GetTasksUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i526.GetUsersByDepartmentAndRegionUsecase>(() =>
@@ -2113,6 +2117,15 @@ _i174.GetIt $initGetIt(
         gh<_i865.AddActivityCrudUseCase>(),
         gh<_i327.GetActivityTypesUseCase>(),
         gh<_i947.GetSubscribedClientsUseCase>(),
+      ));
+  gh.lazySingleton<_i855.TaskCubit>(() => _i855.TaskCubit(
+        gh<_i111.AddTaskUsecase>(),
+        gh<_i439.GetTasksUsecase>(),
+        gh<_i831.ChangeStatusTaskUsecase>(),
+        gh<_i356.AddCommentTaskUsecase>(),
+        gh<_i755.GetCommentsTaskUsecase>(),
+        gh<_i668.GetUsersReportsTaskUsecase>(),
+        gh<_i927.GetListClientsUsecase>(),
       ));
   gh.factory<_i815.CompanyCubit>(() => _i815.CompanyCubit(
         gh<_i521.GetCommentUsecase>(),
@@ -2182,14 +2195,6 @@ _i174.GetIt $initGetIt(
         gh<_i62.GetBranchesForUserUsecase>(),
         gh<_i424.GetUserSelectUsecase>(),
         gh<_i985.GetUsersAllUsecase>(),
-      ));
-  gh.lazySingleton<_i855.TaskCubit>(() => _i855.TaskCubit(
-        gh<_i111.AddTaskUsecase>(),
-        gh<_i439.GetTasksUsecase>(),
-        gh<_i831.ChangeStatusTaskUsecase>(),
-        gh<_i356.AddCommentTaskUsecase>(),
-        gh<_i755.GetCommentsTaskUsecase>(),
-        gh<_i668.GetUsersReportsTaskUsecase>(),
       ));
   return getIt;
 }

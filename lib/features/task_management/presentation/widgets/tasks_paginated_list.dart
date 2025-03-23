@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/ui/screen/client/client_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' as Intl;
@@ -187,44 +190,6 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                               ),
                             ],
                           ),
-                          // Wrap(
-                          //   children: [
-                          //     ((task.assignFrom?.nameRegion == null && task.assignFrom?.nameMange == null && task.assignFrom?.nameUser == null))
-                          //         ? SizedBox.shrink()
-                          //         : Row(
-                          //       children: [
-                          //         AppText(
-                          //           (task.assignFromModel == 'region')
-                          //               ? 'من فرع : '
-                          //               : (task.assignFromModel == 'managements')
-                          //               ? "من قسم : "
-                          //               : "من مستخدم : ",
-                          //           color: context.colorScheme.grey500,
-                          //         ),
-                          //         AppText(
-                          //           '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
-                          //           color: context.colorScheme.grey800,
-                          //         ),
-                          //       ],
-                          //     ),
-                          //     Row(
-                          //       children: [
-                          //         AppText(
-                          //           (task.assignToModel == 'region')
-                          //               ? 'إلى فرع : '
-                          //               : (task.assignToModel == 'managements')
-                          //               ? "إلى قسم : "
-                          //               : "إلى الموظف : ",
-                          //           color: context.colorScheme.grey500,
-                          //         ),
-                          //         AppText(
-                          //           '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser}',
-                          //           color: context.colorScheme.grey800,
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ],
-                          // ),
                           Row(
                             children: [
                               AppText(
@@ -255,13 +220,21 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                               ],
                             ),
                           if (task.client != null) ...{
-                            AppText(
-                              task.client?.nameEnterprise ?? '',
-                              color: AppColors.primaryMain,
+                            InkWell(
+                              onTap: () {
+                                AppNavigator.go(
+                                  ClientProfile(idClient: task.client!.idClients),
+                                  name: AppRoutesNames.clientProfile.inClientsList,
+                                  pathParameters: {'idClient': task.client!.idClients.toString()},
+                                );
+                              },
+                              child: AppText(
+                                task.client?.nameEnterprise ?? '',
+                                color: AppColors.primaryMain,
+                              ),
                             ),
                             10.height,
                           },
-
                           if (task.description?.isNotEmpty ?? false) ...{
                             Expanded(
                               child: AppText(

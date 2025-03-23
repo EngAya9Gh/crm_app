@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/features/task_management/data/models/users_report_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_comment_task_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_users_report_usecase.dart';
@@ -66,5 +67,10 @@ class TaskRepositoryImpl extends TaskRepository {
   @override
   Future<Result<ResponseWrapper<List<UserReportModel>>>> getUsersReports(GetUsersReportsParams params) {
     return toApiResult(() => datasource.getUsersReports(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<ClientModel>>>> getListClients() {
+        return toApiResult(() => datasource.getListClients());
   }
 }
