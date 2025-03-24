@@ -29,25 +29,32 @@ class TaskCard {
       child: InkWell(
         onTap: status != null && context.read<PrivilegesCubit>().checkPrivilege('165')
             ? () {
-                _cubit.onGetTaskComments(task.id!);
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  barrierLabel: task.id.toString(),
-                  builder: (context) => DialogTaskDetail(
-                    task: task,
-                    status: status,
-                    cubit: _cubit,
-                    canDrag: true,
-                  ), // builder: (context) => BlocProvider.value(
-                  //   value: _cubit,
-                  //   child: ChangeStatusTaskDialog(
-                  //     status: status,
-                  //     taskModel: task,
-                  //     tasksCubit: _cubit,
-                  //   ),
-                  // ),
-                );
+                Dialogs.showLoadingDialog(context);
+                _cubit
+                  ..onGetTaskComments(task.id!)
+                  ..getTaskById(
+                      params: GetTaskByIdParams(idTask: task.id!),
+                      onFaild: () {
+                        Navigator.pop(context);
+                      },
+                      onSuccess: (value) => showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            barrierLabel: task.id.toString(),
+                            builder: (context) => DialogTaskDetail(
+                              task: task,
+                              status: status,
+                              cubit: _cubit,
+                              canDrag: true,
+                            ), // builder: (context) => BlocProvider.value(
+                            //   value: _cubit,
+                            //   child: ChangeStatusTaskDialog(
+                            //     status: status,
+                            //     taskModel: task,
+                            //     tasksCubit: _cubit,
+                            //   ),
+                            // ),
+                          ));
               }
             : null,
         child: Card(
@@ -143,9 +150,9 @@ class TaskCard {
                                     onPressed: () {
                                       Dialogs.showLoadingDialog(context);
                                       context.read<TaskCubit>().getTaskById(
-                                        onFaild: () {
-                        Navigator.pop(context);
-                      },
+                                          onFaild: () {
+                                            Navigator.pop(context);
+                                          },
                                           onSuccess: (value) {
                                             Navigator.pop(context);
                                             Navigator.of(context).push(
