@@ -125,7 +125,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late TextEditingController _startDateController;
   late TextEditingController _deadLineDateController;
   late TextEditingController _numberOfRecurringController;
-  final ValueNotifier<List<ClientModel>> selectedClientList = ValueNotifier([]);
+  final ValueNotifier<ClientModel?> selectedClientList = ValueNotifier(null);
   late GlobalKey<FormState> _formKey;
   late TaskCubit _taskCubit;
   late PrivilegesCubit privilegeBloc;
@@ -179,10 +179,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
       if (widget.task != null) {
         _taskNameController.text = widget.task?.title ?? '';
         _taskDescriptionController.text = widget.task?.description ?? '';
-        // _startDateController.text = Intl.DateFormat().format(widget.task!.startDate!);
-        // _deadLineDateController.text = Intl.DateFormat().format(widget.task!.deadline!);
+        _startDateController.text = Intl.DateFormat('dd MM yyyy HH:mm:ss').format(widget.task!.startDate!);
+        _deadLineDateController.text = Intl.DateFormat('dd MM yyyy HH:mm:ss').format(widget.task!.deadline!);
         _taskCubit.onChangeParticipants(widget.task!.collaborators!);
-        selectedClientList.value = widget.task?.client == null ? [] : [widget.task!.client!];
+        selectedClientList.value = widget.task?.client == null ? null : widget.task!.client!;
         departmentId = widget.task?.assignTo?.idMange?.toString();
         regionId = widget.task?.assignTo?.idRegion?.toString();
       }
@@ -259,7 +259,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           deadLineDate: state.deadLineDate,
                           publicType: PublicType.addTask.name.toString(),
                           participants: state.selectedParticipant ?? [],
-                          clientId: selectedClientList.value.firstOrNull?.idClients);
+                          clientId: selectedClientList.value?.idClients);
                       if (widget.task == null) {
                         _taskCubit.addTaskAction(
                           onSuccess: () {
@@ -335,11 +335,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     taskState.getListClients.when(
                       success: (data) => ValueListenableBuilder(
                         valueListenable: selectedClientList,
-                        builder: (context, value, child) => CustomMultiSelectionDropdown<ClientModel>(
+                        builder: (context, value, child) => CustomSearchableDropDown<ClientModel>(
                           hint: 'العملاء',
                           items: data ?? [],
-                          selectedItems: value,
-                          onSave: (value) {
+                          selectedItem: value,
+                          onChanged: (value) {
                             selectedClientList.value = value;
                           },
                           itemAsString: (u) => u!.nameEnterprise!,

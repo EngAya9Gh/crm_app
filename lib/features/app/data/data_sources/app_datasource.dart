@@ -15,14 +15,14 @@ class AppDatasource {
   Future<ResponseWrapper<List<UpdateConfig>>> getVersion() async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.url);
-      // final response = await api.get(endPoint: EndPoints.app.getVersion);
+      final response = await api.get(endPoint: EndPoints.app.getVersion);
 
-      // return ResponseWrapper<List<UpdateConfig>>.fromJson(
-          // response,
-          // (json) => List.from((json as List<dynamic>)
-              // .map((e) => UpdateConfig.fromJson(e as Map<String, dynamic>))));
-      //TODO: uncommit this edit comminted code
-      return ResponseWrapper<List<UpdateConfig>>(data: [], message: [UpdateConfig()]);
+      return ResponseWrapper<List<UpdateConfig>>.fromJson(
+          response,
+          (json) => List.from((json as List<dynamic>)
+              .map((e) => UpdateConfig.fromJson(e as Map<String, dynamic>))));
+      // TODO: uncommit this edit comminted code
+      // return ResponseWrapper<List<UpdateConfig>>(data: [], message: [UpdateConfig()]);
               
     }
 

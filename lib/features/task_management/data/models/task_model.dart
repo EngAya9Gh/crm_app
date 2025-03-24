@@ -145,7 +145,7 @@ class TaskModel {
         group: json["group"],
         code: json["code"],
         startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
-        deadline: json["deadline"],
+        deadline: json["deadline"] == null ? null : DateTime.parse(json["deadline"]),
         type: json["type"],
         completionPercentage: json["completion_percentage"],
         recurringType: json["recurring_type"],

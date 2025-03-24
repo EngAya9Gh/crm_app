@@ -15,6 +15,7 @@ import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/features/mangement/manage_users/presentation/manager/users_cubit.dart';
+import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/add_task_page.dart';
 import 'package:crm_smart/model/managmodel.dart';
@@ -171,72 +172,10 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                   PopupMenuItem(
                                       enabled: false,
                                       padding: EdgeInsets.all(10),
-                                      child: Directionality(
-                                        textDirection: TextDirection.rtl,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            AppText('اسناد إلى'),
-                                            5.height,
-                                            ValueListenableBuilder(
-                                              valueListenable: selectedTypeAssign,
-                                              builder: (context, typeAssinged, child) => Form(
-                                                key: _formKey,
-                                                child: Column(
-                                                  children: [
-                                                    CustomDropDown<AssignedTypeNew>(
-                                                      hint: 'موظف / قسم/ فرع',
-                                                      items: AssignedTypeNew.values,
-                                                      itemAsString: (item) => item!.text,
-                                                      selectedItem: typeAssinged,
-                                                      compareFn: (item, selectedItem) => item.index == selectedItem.index,
-                                                      onChanged: (value) {
-                                                        assign.value = null;
-                                                        selectedTypeAssign.value = value;
-                                                      },
-                                                      height: (135.0).scaleHeight,
-                                                    ),
-                                                    10.height,
-                                                    assignToEmployeeWidget(typeAssinged, assign),
-                                                    assignToRegionWidget(typeAssinged, assign),
-                                                    assignToDepartmentWidget(typeAssinged, assign),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            40.height,
-                                            SizedBox(
-                                                width: double.infinity,
-                                                child: BlocBuilder<TaskCubit, TaskState>(
-                                                  builder: (context, state) {
-                                                    return AppElevatedButton(
-                                                      isLoading: state.changeTaskAssignStatus.isLoading(),
-                                                      text: 'تاكيد العملية',
-                                                      onPressed: () {
-                                                        if (_formKey.currentState!.validate()) {
-                                                          var id = selectedTypeAssign.value == AssignedTypeNew.users
-                                                              ? ((assign.value as UserModel).id)
-                                                              : selectedTypeAssign.value == AssignedTypeNew.managements
-                                                                  ? ((assign.value as ManageModel).idMange)
-                                                                  : ((assign.value as BranchModel).branchId);
-                                                          _cubit.changeTaskAssign(
-                                                              onSuccess: () {
-                                                                Navigator.pop(context);
-                                                              },
-                                                              changeTaskAssignParams: ChangeTaskAssignParams(
-                                                                taskId: task.id!,
-                                                                assignTo: selectedTypeAssign.value!.name.toString(),
-                                                                assignToId: id,
-                                                              ));
-                                                        }
-                                                      },
-                                                    );
-                                                  },
-                                                )),
-                                          ],
-                                        ),
-                                      ))
+                                      child: AssignTOAnotherWidget(
+                                        task: task,
+                                        taskCubit: _cubit,
+                                      )),
                                 ],
                                 child: Container(
                                   decoration: (status?.color != null)
@@ -516,4 +455,80 @@ Widget assignToRegionWidget(AssignedTypeNew? type, ValueNotifier assigned) {
       },
     );
   return SizedBox.shrink();
+}
+
+Widget AssignTOAnotherWidget(
+    {
+    required TaskModel task,
+    required TaskCubit taskCubit}) {
+    ValueNotifier<AssignedTypeNew?> selectedTypeAssign = ValueNotifier(null);
+    ValueNotifier assign = ValueNotifier(null);
+    GlobalKey<FormState> _formKey = GlobalKey();
+
+  return Directionality(
+    textDirection: TextDirection.rtl,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AppText('اسناد إلى'),
+        5.height,
+        ValueListenableBuilder(
+          valueListenable: selectedTypeAssign,
+          builder: (context, typeAssinged, child) => Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                CustomDropDown<AssignedTypeNew>(
+                  hint: 'موظف / قسم/ فرع',
+                  items: AssignedTypeNew.values,
+                  itemAsString: (item) => item!.text,
+                  selectedItem: typeAssinged,
+                  compareFn: (item, selectedItem) => item.index == selectedItem.index,
+                  onChanged: (value) {
+                    assign.value = null;
+                    selectedTypeAssign.value = value;
+                  },
+                  height: (135.0).scaleHeight,
+                ),
+                10.height,
+                assignToEmployeeWidget(typeAssinged, assign),
+                assignToRegionWidget(typeAssinged, assign),
+                assignToDepartmentWidget(typeAssinged, assign),
+              ],
+            ),
+          ),
+        ),
+        40.height,
+        SizedBox(
+            width: double.infinity,
+            child: BlocBuilder<TaskCubit, TaskState>(
+              builder: (context, state) {
+                return AppElevatedButton(
+                  isLoading: state.changeTaskAssignStatus.isLoading(),
+                  text: 'تاكيد العملية',
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      var id = selectedTypeAssign.value == AssignedTypeNew.users
+                          ? ((assign.value as UserModel).id)
+                          : selectedTypeAssign.value == AssignedTypeNew.managements
+                              ? ((assign.value as ManageModel).idMange)
+                              : ((assign.value as BranchModel).branchId);
+                      taskCubit.changeTaskAssign(
+                          onSuccess: () {
+                            Navigator.pop(context);
+                          },
+                          changeTaskAssignParams: ChangeTaskAssignParams(
+                            taskId: task.id!,
+                            assignTo: selectedTypeAssign.value!.name.toString(),
+                            assignToId: id,
+                          ));
+                    }
+                  },
+                );
+              },
+            )),
+      ],
+    ),
+  );
 }

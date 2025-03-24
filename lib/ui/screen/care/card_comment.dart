@@ -147,18 +147,18 @@ class _CardcommentState extends State<Cardcomment> {
                                       .toList(),
                                 ),
                                 if (widget.commentmodel.nameUser == widget.userModel?.nameUser)
-                                if (!widget.fromMenu)
-                                  Align(
-                                    alignment: AlignmentDirectional.bottomEnd,
-                                    child: InkWell(
-                                        onTap: () {
-                                          widget.editCommentModel?.call(widget.commentmodel);
-                                        },
-                                        child: Padding(
-                                          padding: EdgeInsetsDirectional.all(8),
-                                          child: Icon(Icons.edit, color: AppColors.primaryMain),
-                                        )),
-                                  ),
+                                  if (!widget.fromMenu)
+                                    Align(
+                                      alignment: AlignmentDirectional.bottomEnd,
+                                      child: InkWell(
+                                          onTap: () {
+                                            widget.editCommentModel?.call(widget.commentmodel);
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsetsDirectional.all(8),
+                                            child: Icon(Icons.edit, color: AppColors.primaryMain),
+                                          )),
+                                    ),
                                 if (widget.canReplay)
                                   ListenableBuilder(
                                     listenable: Listenable.merge([tapToRplay, activeRplay]),
@@ -303,7 +303,7 @@ class _CardcommentState extends State<Cardcomment> {
         width: 1000,
         height: 1000,
         fit: BoxFit.fill,
-        imageUrl: "${EndPoints.baseUrls.urlImage}$imageUrl",
+        imageUrl: "$imageUrl",
       ),
     );
   }
