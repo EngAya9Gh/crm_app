@@ -199,20 +199,27 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                 },
                 10.height,
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: InkWell(
-                    onTap: () => AppFileViewer(
-                      imageSource: ImageSourceViewer.network,
-                      urls: [EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?.firstOrNull?.filePath ?? '')],
-                    ).show(context),
-                    child: FancyImageShimmerViewer(
-                      width: 500.scaleWidth,
+                    borderRadius: BorderRadius.circular(15),
+                    child: SizedBox(
                       height: 150.scaleHeight,
-                      imageUrl: EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?.firstOrNull?.filePath ?? ''),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => 10.width,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.task.attachments?.length ?? 0,
+                        itemBuilder: (context, index) => InkWell(
+                          onTap: () => AppFileViewer(
+                            imageSource: ImageSourceViewer.network,
+                            urls: [EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?[index].filePath ?? '')],
+                          ).show(context),
+                          child: FancyImageShimmerViewer(
+                            width: 200.scaleWidth,
+                            height: 150.scaleHeight,
+                            imageUrl: EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?[index].filePath ?? ''),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    )),
                 10.height,
                 Wrap(
                     spacing: 5,
@@ -392,6 +399,25 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
         //   )
         // ],
       ),
+    );
+  }
+}
+
+class Dialogs {
+  static Future<void> showLoadingDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing by tapping outside
+      builder: (BuildContext context) {
+        return Container(
+          color: AppColors.background.withOpacity(.1), // Black transparent background
+          child: Center(
+            child: AppLoader(
+              color: AppColors.white,
+            ),
+          ),
+        );
+      },
     );
   }
 }

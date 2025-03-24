@@ -1,7 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/add_task_page.dart';
 import 'package:crm_smart/features/task_management/presentation/widgets/tasks_paginated_list.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -134,20 +136,32 @@ class TaskCard {
                                   ],
                                 ),
                               ),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => AddTaskPage(
-                                          task: task,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  icon: Icon(
-                                    Icons.edit_square,
-                                    color: AppColors.primaryMain,
-                                  ))
+                              if (context.read<PrivilegesCubit>().checkPrivilege('339') &&
+                                  ([task.assignFrom?.idUser.toString(), task.assignFrom?.idRegion.toString(), task.assignFrom?.idMange.toString()]
+                                      .contains(context.read<UserProvider>().currentUser.idUser)))
+                                IconButton(
+                                    onPressed: () {
+                                      Dialogs.showLoadingDialog(context);
+                                      context.read<TaskCubit>().getTaskById(
+                                        onFaild: () {
+                        Navigator.pop(context);
+                      },
+                                          onSuccess: (value) {
+                                            Navigator.pop(context);
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) => AddTaskPage(
+                                                  task: value,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          params: GetTaskByIdParams(idTask: task.id!));
+                                    },
+                                    icon: Icon(
+                                      Icons.edit_square,
+                                      color: AppColors.primaryMain,
+                                    )),
                             ],
                           ),
                           if (task.client != null) ...{

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/models/location/branch_model.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:crm_smart/core/common/widgets/app_group_button.dart';
@@ -108,21 +109,31 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
       child: InkWell(
         onTap: status != null && context.read<PrivilegesCubit>().checkPrivilege('165')
             ? () {
-                _cubit.onGetTaskComments(task.id!);
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  barrierLabel: task.id.toString(),
-                  builder: (context) => DialogTaskDetail(task: task, status: status, cubit: _cubit),
-                  // builder: (context) => BlocProvider.value(
-                  // value: _cubit,
-                  // child: ChangeStatusTaskDialog(
-                  // status: status,
-                  // taskModel: task,
-                  // tasksCubit: _cubit,
-                  // ),
-                  // ),
-                );
+                Dialogs.showLoadingDialog(context);
+                _cubit
+                  ..onGetTaskComments(task.id!)
+                  ..getTaskById(
+                      onFaild: () {
+                        Navigator.pop(context);
+                      },
+                      onSuccess: (value) {
+                        Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          barrierLabel: task.id.toString(),
+                          builder: (context) => DialogTaskDetail(task: value, status: status, cubit: _cubit),
+                          // builder: (context) => BlocProvider.value(
+                          // value: _cubit,
+                          // child: ChangeStatusTaskDialog(
+                          // status: status,
+                          // taskModel: task,
+                          // tasksCubit: _cubit,
+                          // ),
+                          // ),
+                        );
+                      },
+                      params: GetTaskByIdParams(idTask: task.id!));
               }
             : null,
         child: IntrinsicHeight(
@@ -203,8 +214,13 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                       .contains(context.read<UserProvider>().currentUser.idUser)))
                                 IconButton(
                                     onPressed: () {
+                                      Dialogs.showLoadingDialog(context);
                                       context.read<TaskCubit>().getTaskById(
+                                          onFaild: () {
+                                            Navigator.pop(context);
+                                          },
                                           onSuccess: (value) {
+                                            Navigator.pop(context);
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (context) => AddTaskPage(
@@ -218,7 +234,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                     icon: Icon(
                                       Icons.edit_square,
                                       color: AppColors.primaryMain,
-                                    ))
+                                    )),
                             ],
                           ),
                           10.width,

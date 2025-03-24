@@ -228,6 +228,7 @@ class TaskCubit extends Cubit<TaskState> {
 
   getTaskById({
     required ValueChanged<TaskModel> onSuccess,
+    required VoidCallback onFaild,
     required GetTaskByIdParams params,
   }) async {
     emit(state.copyWith(getCurrentTask: const BlocStatus.loading()));
@@ -236,6 +237,7 @@ class TaskCubit extends Cubit<TaskState> {
 
     result.extract(
       (exception, message) {
+        onFaild();
         if (AppConstants.shouldReturnEarly(message)) return;
         emit(state.copyWith(getCurrentTask: BlocStatus.fail(error: message)));
       },
