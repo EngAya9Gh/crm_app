@@ -106,9 +106,9 @@ class NotificationService {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
         String? typeNotify = message.data['type_notify'];
-        if (message.data['title'] == "مهمة جديدة" || typeNotify == 'commentMention') {
           AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
-        }
+        // if (message.data['title'] == "مهمة جديدة" || typeNotify == 'commentMention') {
+        // }
         log('///////////////////////////');
         log('$message.contentAvailable');
         log(message.data.toString());

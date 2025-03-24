@@ -100,28 +100,30 @@ class _HomeAppBarState extends State<HomeAppBar> {
               Positioned(
                 right: 0,
                 top: 0,
-                child: BlocBuilder<NotificationsCubit, NotificationsState>(
-                  builder: (context, state) {
+                child: Consumer<UserProvider>(
+                  builder: (context, value, child)  {
                     return Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: _containerColor(context, state),
+                        color: AppColors.statusErrorActive,
                       ),
                       width: (22.0).scaleWidth,
                       height: (22.0).scaleWidth,
                       child: Center(
-                        child: state.getUnreadNotificationsCountStatus.when(
-                          loading: () => AppLoader(size: (18.0).scaleFontSize, padding: 0),
-                          success: (data) {
-                            return AppText(
-                              _cubit.pageVariables.unReadCount > 99 ? '99' : _cubit.pageVariables.unReadCount.toString(),
+                        // child: state.getUnreadNotificationsCountStatus.when(
+                          // loading: () => 
+                          // AppLoader(size: (18.0).scaleFontSize, padding: 0),
+                          // success: (data) {
+                            // return 
+                            child:AppText(
+                              (value.currentUser.notificationNotRead??0) > 99 ? '99' : (value.currentUser.notificationNotRead??0).toString(),
                               color: Colors.white,
                               fontSize: (14.0).scaleFontSize,
-                            );
-                          },
-                          empty: () => SizedBox.shrink(),
-                          failure: (error, data) => SizedBox.shrink(),
-                        ),
+                            )
+                          // },
+                          // empty: () => SizedBox.shrink(),
+                          // failure: (error, data) => SizedBox.shrink(),
+                        // ),
                       ),
                     );
                   },

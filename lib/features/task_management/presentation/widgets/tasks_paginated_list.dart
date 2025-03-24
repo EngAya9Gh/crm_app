@@ -359,7 +359,24 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                               ),
                             ],
                           ),
-                          10.height,
+                          15.height,
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              CircularProgressIndicator(
+                                strokeAlign: 1.5,
+                                value: (task.completionPercentage ?? 0) / 100,
+                                backgroundColor: Colors.grey[300],
+                                valueColor: AlwaysStoppedAnimation<Color>(AppColors.green),
+                                strokeWidth: 5,
+                              ),
+                              AppText(
+                                '${(task.completionPercentage ?? 0).toInt()}%',
+                                color: AppColors.green,
+                              ),
+                            ],
+                          ),
+                          15.height,
                         ],
                       ),
                     ),

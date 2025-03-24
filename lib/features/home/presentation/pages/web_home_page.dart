@@ -56,7 +56,7 @@ class _WebHomePageState extends State<WebHomePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
-        context.read<NotificationsCubit>().getUnreadNotificationsCount(),
+        // context.read<NotificationsCubit>().getUnreadNotificationsCount(),
         Provider.of<UserProvider>(context, listen: false).getAllUsers(),
         Provider.of<RegionProvider>(context, listen: false).getRegions(),
         Provider.of<product_vm>(context, listen: false).getproduct_vm(),
@@ -137,33 +137,33 @@ class _WebHomePageState extends State<WebHomePage> {
                                 Positioned(
                                   right: 0,
                                   top: 0,
-                                  child: BlocBuilder<NotificationsCubit, NotificationsState>(
-                                    builder: (context, state) {
+                                  child: Consumer<UserProvider>(
+                                    builder: (context, value, child) {
                                       return Container(
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: _containerColor(context, state),
+                                          color: AppColors.statusErrorActive,
                                         ),
                                         width: (22.0).scaleWidth,
                                         height: (22.0).scaleWidth,
                                         child: Center(
-                                          child: state.getUnreadNotificationsCountStatus.when(
-                                            loading: () => AppLoader(size: (18.0).scaleFontSize, padding: 0),
-                                            success: (data) {
-                                              return AppText(
-                                                _notificationsCubit.pageVariables.unReadCount > 99
-                                                    ? '99'
-                                                    : _notificationsCubit.pageVariables.unReadCount.toString(),
-                                                color: Colors.white,
-                                                fontSize: (14.0).scaleFontSize,
-                                              );
-                                            },
-                                            empty: () => SizedBox.shrink(),
-                                            failure: (error, data) => AppErrorWidget(
-                                              onPressed: () => _notificationsCubit.getUnreadNotificationsCount(),
+                                            // child: state.getUnreadNotificationsCountStatus.when(
+                                            // loading: () =>
+                                            // AppLoader(size: (18.0).scaleFontSize, padding: 0),
+                                            // success: (data) {
+                                            // return
+                                            child: AppText(
+                                          (value.currentUser.notificationNotRead ?? 0) > 99
+                                              ? '99'
+                                              : (value.currentUser.notificationNotRead ?? 0).toString(),
+                                          color: Colors.white,
+                                          fontSize: (14.0).scaleFontSize,
+                                        )
+                                            // },
+                                            // empty: () => SizedBox.shrink(),
+                                            // failure: (error, data) => SizedBox.shrink(),
+                                            // ),
                                             ),
-                                          ),
-                                        ),
                                       );
                                     },
                                   ),

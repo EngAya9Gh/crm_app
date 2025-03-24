@@ -29,7 +29,7 @@ class TaskModel {
   final DateTime? startDate;
   final dynamic deadline;
   final String? type;
-  final dynamic completionPercentage;
+  final num? completionPercentage;
   final dynamic recurringType;
   final dynamic recurringNumber;
   final AssignFromOrToModel? createdBy;
@@ -88,7 +88,7 @@ class TaskModel {
     DateTime? startDate,
     dynamic deadline,
     String? type,
-    dynamic completionPercentage,
+    num? completionPercentage,
     dynamic recurringType,
     dynamic recurringNumber,
     AssignFromOrToModel? createdBy,
