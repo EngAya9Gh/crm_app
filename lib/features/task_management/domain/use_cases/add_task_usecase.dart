@@ -33,7 +33,7 @@ class AddOrUpdateTaskParams {
   final String? assignFromId;
   final DateTime? startDate;
   final DateTime? deadLineDate;
-  final File? file;
+  final List<File>? files;
   final String? regionId;
   final String? departmentId;
   final bool? isRecurring;
@@ -59,7 +59,7 @@ class AddOrUpdateTaskParams {
     this.assignFromId,
     this.startDate,
     this.deadLineDate,
-    this.file,
+    this.files,
     this.regionId,
     this.departmentId,
     this.isRecurring,
@@ -79,7 +79,7 @@ class AddOrUpdateTaskParams {
     });
     return {
       'title': title,
-      'file_path': file,
+      'file_path': files,
       "assign_to_id": assignToId,
       "assign_to": assignTo,
       "assign_from": assignFrom,

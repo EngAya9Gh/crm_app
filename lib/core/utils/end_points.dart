@@ -289,6 +289,7 @@ class _Task {
   final getUsersTasksReports = 'tasks/report';
   String addTaskComment(int idTask) => 'tasks/$idTask/add-comment';
   String getTaskComments(int idTask) => 'tasks/$idTask/comments';
+  String getTaskById(int idTask) => 'tasks/$idTask';
 }
 
 class _Participate {

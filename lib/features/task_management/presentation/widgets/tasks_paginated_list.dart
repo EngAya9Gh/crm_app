@@ -17,6 +17,7 @@ import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/features/mangement/manage_users/presentation/manager/users_cubit.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/add_task_page.dart';
 import 'package:crm_smart/model/managmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -197,20 +198,27 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                   ),
                                 ),
                               ),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => AddTaskPage(
-                                          task: task,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  icon: Icon(
-                                    Icons.edit_square,
-                                    color: AppColors.primaryMain,
-                                  ))
+                              if (context.read<PrivilegesCubit>().checkPrivilege('339') &&
+                                  ([task.assignFrom?.idUser.toString(), task.assignFrom?.idRegion.toString(), task.assignFrom?.idMange.toString()]
+                                      .contains(context.read<UserProvider>().currentUser.idUser)))
+                                IconButton(
+                                    onPressed: () {
+                                      context.read<TaskCubit>().getTaskById(
+                                          onSuccess: (value) {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) => AddTaskPage(
+                                                  task: value,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          params: GetTaskByIdParams(idTask: task.id!));
+                                    },
+                                    icon: Icon(
+                                      Icons.edit_square,
+                                      color: AppColors.primaryMain,
+                                    ))
                             ],
                           ),
                           10.width,
@@ -457,13 +465,10 @@ Widget assignToRegionWidget(AssignedTypeNew? type, ValueNotifier assigned) {
   return SizedBox.shrink();
 }
 
-Widget AssignTOAnotherWidget(
-    {
-    required TaskModel task,
-    required TaskCubit taskCubit}) {
-    ValueNotifier<AssignedTypeNew?> selectedTypeAssign = ValueNotifier(null);
-    ValueNotifier assign = ValueNotifier(null);
-    GlobalKey<FormState> _formKey = GlobalKey();
+Widget AssignTOAnotherWidget({required TaskModel task, required TaskCubit taskCubit}) {
+  ValueNotifier<AssignedTypeNew?> selectedTypeAssign = ValueNotifier(null);
+  ValueNotifier assign = ValueNotifier(null);
+  GlobalKey<FormState> _formKey = GlobalKey();
 
   return Directionality(
     textDirection: TextDirection.rtl,

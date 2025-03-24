@@ -4,6 +4,7 @@ import 'package:crm_smart/features/task_management/domain/use_cases/add_comment_
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_users_report_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:dartz/dartz.dart';
@@ -84,5 +85,10 @@ class TaskRepositoryImpl extends TaskRepository {
   @override
   Future<Result<ResponseWrapper<TaskModel>>> updateTask(AddOrUpdateTaskParams params) {
             return toApiResult(() => datasource.updateTask(params));
+}
+
+  @override
+  Future<Result<ResponseWrapper<TaskModel>>> getTaskById(GetTaskByIdParams params) {
+              return toApiResult(() => datasource.getTaskById(params));
 }
 }

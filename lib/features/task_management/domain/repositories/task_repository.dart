@@ -2,6 +2,7 @@ import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:dartz/dartz.dart';
 
@@ -18,9 +19,8 @@ import '../use_cases/get_tasks_usecase.dart';
 abstract class TaskRepository {
   Future<Result<ResponseWrapper<bool>>> addTask(Map<String, dynamic> params);
 
-  Future<Either<String, PaginationResponseWrapper>> getTasks(
-    GetTaskParams params,
-  );
+  Future<Either<String, PaginationResponseWrapper>> getTasks(GetTaskParams params);
+  Future<Result<ResponseWrapper<TaskModel>>> getTaskById(GetTaskByIdParams params);
 
   Future<Result<ResponseWrapper<void>>> changeStatusTask(String taskId, Map<String, dynamic> body);
 

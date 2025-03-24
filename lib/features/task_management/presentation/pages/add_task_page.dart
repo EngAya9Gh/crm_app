@@ -11,8 +11,10 @@ import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
+import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
+import 'package:crm_smart/ui/widgets/fancy_image_shimmer_viewer.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -126,6 +128,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late TextEditingController _deadLineDateController;
   late TextEditingController _numberOfRecurringController;
   final ValueNotifier<ClientModel?> selectedClientList = ValueNotifier(null);
+  final ValueNotifier<List<FileAttachmentTaskModel>?> filesNotifier = ValueNotifier([]);
   late GlobalKey<FormState> _formKey;
   late TaskCubit _taskCubit;
   late PrivilegesCubit privilegeBloc;
@@ -185,6 +188,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         selectedClientList.value = widget.task?.client == null ? null : widget.task!.client!;
         departmentId = widget.task?.assignTo?.idMange?.toString();
         regionId = widget.task?.assignTo?.idRegion?.toString();
+        filesNotifier.value = (widget.task?.attachments ?? []).map((e) => e).toList();
       }
       _taskCubit.getListClient();
       context.read<RegionProvider>()
@@ -225,7 +229,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 return Builder(builder: (context) {
                   return AppTextButton(
                     text: "حفظ",
-                    isLoading: state.addTaskStatus.isLoading(),
+                    isLoading: state.addTaskStatus.isLoading() || state.updateTask.isLoading(),
                     onPressed: () {
                       final isValid = _formKey.currentState!.validate();
                       if (!isValid) return;
@@ -255,7 +259,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           assignToId: assignToId,
                           userId: currentUser.idUser!,
                           startDate: state.startDate,
-                          file: state.attachmentFile,
+                          files: state.attachmentFile,
                           deadLineDate: state.deadLineDate,
                           publicType: PublicType.addTask.name.toString(),
                           participants: state.selectedParticipant ?? [],
@@ -469,38 +473,62 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     AppElevatedButton(
                       text: 'إضافة مرفق',
                       onPressed: () async {
-                        final file = await FilePicker.platform.pickFiles(allowMultiple: false);
+                        final files = await FilePicker.platform.pickFiles(allowMultiple: true);
 
-                        if (file == null) return;
+                        if (files == null) return;
 
-                        _taskCubit.onChangeAttachmentFile(File(file.files.first.path!));
+                        _taskCubit.onChangeAttachmentFile(files.files.map((e) => File(e.path!)).toList());
                       },
                       icon: Icons.attach_file_rounded,
                     ),
                     10.height,
-                    BlocBuilder<TaskCubit, TaskState>(
-                      builder: (context, state) {
-                        return AnimatedSwitcher(
-                          duration: Duration(milliseconds: 500),
-                          transitionBuilder: (widget, animation) => FadeTransition(
-                            opacity: animation,
-                            child: widget,
-                          ),
-                          child: state.attachmentFile == null
-                              ? SizedBox.shrink()
-                              : InkWell(
-                                  onTap: () => AppFileViewer(
-                                    imageSource: ImageSourceViewer.file,
-                                    files: [XFile(state.attachmentFile!.path)],
-                                  ).show(context),
-                                  child: AppPlatformImage(
-                                    fileModel: FileModel(file: XFile(state.attachmentFile!.path)),
-                                    fit: BoxFit.cover,
-                                    width: 110.scaleIconsSize,
+                    ValueListenableBuilder(
+                      valueListenable: filesNotifier,
+                      builder: (context, value, child) => BlocBuilder<TaskCubit, TaskState>(
+                        builder: (context, state) {
+                          return AnimatedSwitcher(
+                            duration: Duration(milliseconds: 500),
+                            transitionBuilder: (widget, animation) => FadeTransition(
+                              opacity: animation,
+                              child: widget,
+                            ),
+                            child: (state.attachmentFile == null && (value?.isEmpty ?? true))
+                                ? SizedBox.shrink()
+                                : SizedBox(
+                                    height: 100.scaleHeight,
+                                    child: ListView(scrollDirection: Axis.horizontal, children: [
+                                      ...(value ?? [])
+                                          .map((e) => InkWell(
+                                                onTap: () => AppFileViewer(
+                                                  imageSource: ImageSourceViewer.network,
+                                                  urls: [EndPoints.baseUrls.laravelFilesUrl + e.filePath!],
+                                                ).show(context),
+                                                child: FancyImageShimmerViewer(
+                                                  imageUrl: EndPoints.baseUrls.laravelFilesUrl + e.filePath!,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ))
+                                          .toList(),
+                                      ...(state.attachmentFile ?? [])
+                                          .map(
+                                            (e) => InkWell(
+                                              onTap: () => AppFileViewer(
+                                                imageSource: ImageSourceViewer.file,
+                                                files: [XFile(e.path)],
+                                              ).show(context),
+                                              child: AppPlatformImage(
+                                                fileModel: FileModel(file: XFile(e.path)),
+                                                fit: BoxFit.cover,
+                                                width: 110.scaleIconsSize,
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ]),
                                   ),
-                                ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                     10.height,
                     AppText('اسناد إلى'),

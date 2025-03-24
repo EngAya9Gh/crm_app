@@ -995,6 +995,8 @@ import '../../../features/task_management/domain/use_cases/get_comments_task_use
     as _i755;
 import '../../../features/task_management/domain/use_cases/get_list_clients_usecase.dart'
     as _i927;
+import '../../../features/task_management/domain/use_cases/get_task_by_id_usecase.dart'
+    as _i625;
 import '../../../features/task_management/domain/use_cases/get_tasks_usecase.dart'
     as _i439;
 import '../../../features/task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart'
@@ -2115,6 +2117,8 @@ _i174.GetIt $initGetIt(
       () => _i927.GetListClientsUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i439.GetTasksUsecase>(
       () => _i439.GetTasksUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i625.GetTaskByIdUsecase>(
+      () => _i625.GetTaskByIdUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i526.GetUsersByDepartmentAndRegionUsecase>(() =>
       _i526.GetUsersByDepartmentAndRegionUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i161.UpdateTaskUsecase>(
@@ -2125,6 +2129,18 @@ _i174.GetIt $initGetIt(
         gh<_i865.AddActivityCrudUseCase>(),
         gh<_i327.GetActivityTypesUseCase>(),
         gh<_i947.GetSubscribedClientsUseCase>(),
+      ));
+  gh.lazySingleton<_i855.TaskCubit>(() => _i855.TaskCubit(
+        gh<_i111.AddTaskUsecase>(),
+        gh<_i439.GetTasksUsecase>(),
+        gh<_i831.ChangeStatusTaskUsecase>(),
+        gh<_i356.AddCommentTaskUsecase>(),
+        gh<_i755.GetCommentsTaskUsecase>(),
+        gh<_i668.GetUsersReportsTaskUsecase>(),
+        gh<_i927.GetListClientsUsecase>(),
+        gh<_i26.ChangeTaskAssignUsecase>(),
+        gh<_i161.UpdateTaskUsecase>(),
+        gh<_i625.GetTaskByIdUsecase>(),
       ));
   gh.factory<_i815.CompanyCubit>(() => _i815.CompanyCubit(
         gh<_i521.GetCommentUsecase>(),
@@ -2194,17 +2210,6 @@ _i174.GetIt $initGetIt(
         gh<_i62.GetBranchesForUserUsecase>(),
         gh<_i424.GetUserSelectUsecase>(),
         gh<_i985.GetUsersAllUsecase>(),
-      ));
-  gh.lazySingleton<_i855.TaskCubit>(() => _i855.TaskCubit(
-        gh<_i111.AddTaskUsecase>(),
-        gh<_i439.GetTasksUsecase>(),
-        gh<_i831.ChangeStatusTaskUsecase>(),
-        gh<_i356.AddCommentTaskUsecase>(),
-        gh<_i755.GetCommentsTaskUsecase>(),
-        gh<_i668.GetUsersReportsTaskUsecase>(),
-        gh<_i927.GetListClientsUsecase>(),
-        gh<_i26.ChangeTaskAssignUsecase>(),
-        gh<_i161.UpdateTaskUsecase>(),
       ));
   return getIt;
 }

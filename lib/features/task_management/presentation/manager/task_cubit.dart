@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_list_clients_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/update_task_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -44,6 +45,7 @@ class TaskCubit extends Cubit<TaskState> {
   final GetListClientsUsecase _getListClientUsecase;
   final ChangeTaskAssignUsecase _changeTaskAssignUsecase;
   final UpdateTaskUsecase _updateTaskUsecase;
+  final GetTaskByIdUsecase _getTaskByIdUsecase;
 
   Map<TaskStatusType, TaskStatusInfo> taskStatusInfo = {
     TaskStatusType.Open: TaskStatusInfo(),
@@ -62,6 +64,7 @@ class TaskCubit extends Cubit<TaskState> {
     this._getListClientUsecase,
     this._changeTaskAssignUsecase,
     this._updateTaskUsecase,
+    this._getTaskByIdUsecase,
   ) : super(TaskState());
 
   TasksPageVariablesEntity pageVariables = TasksPageVariablesEntity();
@@ -96,8 +99,8 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(selectedRecurringType: type));
   }
 
-  onChangeAttachmentFile(File file) {
-    emit(state.copyWith(attachmentFile: file));
+  onChangeAttachmentFile(List<File> file) {
+    emit(state.copyWith(attachmentFile: List.of(state.attachmentFile ?? [])..addAll(file)));
   }
 
   onChangeStatus(TaskStatusType? status) {
@@ -206,19 +209,39 @@ class TaskCubit extends Cubit<TaskState> {
     required VoidCallback onSuccess,
     required AddOrUpdateTaskParams addTaskParams,
   }) async {
-    emit(state.copyWith(addTaskStatus: const BlocStatus.loading()));
+    emit(state.copyWith(updateTask: const BlocStatus.loading()));
 
     final result = await _updateTaskUsecase(addTaskParams);
 
     result.extract(
       (exception, message) {
         if (AppConstants.shouldReturnEarly(message)) return;
-        emit(state.copyWith(addTaskStatus: BlocStatus.fail(error: message)));
+        emit(state.copyWith(updateTask: BlocStatus.fail(error: message)));
       },
       (value) {
         onSuccess();
-        emit(state.copyWith(addTaskStatus: const BlocStatus.success(), isResetAddTask: true));
+        emit(state.copyWith(updateTask: const BlocStatus.success(), isResetAddTask: true));
         pageVariables.allList = pageVariables.allList.map((e) => e.id == addTaskParams.taskId ? value.message! : e).toList();
+      },
+    );
+  }
+
+  getTaskById({
+    required ValueChanged<TaskModel> onSuccess,
+    required GetTaskByIdParams params,
+  }) async {
+    emit(state.copyWith(getCurrentTask: const BlocStatus.loading()));
+
+    final result = await _getTaskByIdUsecase(params);
+
+    result.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(getCurrentTask: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        onSuccess(value.message!);
+        emit(state.copyWith(getCurrentTask: const BlocStatus.success()));
       },
     );
   }

@@ -22,8 +22,10 @@ class TaskState {
     this.changeTaskAssignStatus = const BlocStatus.initial(),
     this.getTasksStatus = const BlocStatus.initial(),
     this.addTaskStatus = const BlocStatus.initial(),
+    this.getCurrentTask = const BlocStatus.initial(),
     this.changeTaskStatus = const BlocStatus.initial(),
     this.addComment = const BlocStatus.initial(),
+    this.updateTask = const BlocStatus.initial(),
     this.getTaskComment = const BlocStatus.initial(),
     this.getUsersTaskReports = const BlocStatus.initial(),
     this.getUsersTaskReportsStatus = const BlocStatus.initial(),
@@ -32,8 +34,8 @@ class TaskState {
     this.myBranch,
     this.myDepartment,
     this.myTasks,
-    this.hasGetAllReports=false,
-    this.totalUserReportCount=0,
+    this.hasGetAllReports = false,
+    this.totalUserReportCount = 0,
   });
 
   final BlocStatus getTasksStatus;
@@ -42,10 +44,11 @@ class TaskState {
   final List<UserModel>? selectedParticipant;
   final DateTime? startDate;
   final DateTime? deadLineDate;
-  final File? attachmentFile;
+  final List<File>? attachmentFile;
   final RecurringType? selectedRecurringType;
   final bool? isRecurring;
   final BlocStatus addTaskStatus;
+  final BlocStatus updateTask;
   final TaskStatusType? selectedStatus;
   final UserModel? filterAssignFrom;
   final UserRegionDepartment? filterAssignTo;
@@ -64,6 +67,7 @@ class TaskState {
   final BlocStatus<List<CommentModel>> getTaskComment;
   final BlocStatus<List<ClientModel>> getListClients;
   final BlocStatus<List<UserReportModel>> getUsersTaskReports;
+  final BlocStatus<TaskModel> getCurrentTask;
   final BlocStatus getUsersTaskReportsStatus;
   final bool hasGetAllReports;
   final int totalUserReportCount;
@@ -74,10 +78,11 @@ class TaskState {
     List<UserModel>? selectedParticipant,
     DateTime? startDate,
     DateTime? deadLineDate,
-    File? attachmentFile,
+    List<File>? attachmentFile,
     RecurringType? selectedRecurringType,
     bool? isRecurring,
     BlocStatus? addTaskStatus,
+    BlocStatus? updateTask,
     BlocStatus? changeTaskAssignStatus,
     BlocStatus? changeTaskStatus,
     BlocStatus<List<CommentModel>>? getTaskComment,
@@ -101,9 +106,11 @@ class TaskState {
     bool isResetTasksState = false,
     bool? hasGetAllReports,
     int? totalUserReportCount,
-  BlocStatus<List<ClientModel>>? getListClients,
+    BlocStatus<List<ClientModel>>? getListClients,
+    BlocStatus<TaskModel>? getCurrentTask,
   }) {
     return TaskState(
+      getCurrentTask: getCurrentTask ?? this.getCurrentTask,
       selectedAssignTo: isResetAddTask ? null : selectedAssignTo ?? this.selectedAssignTo,
       selectedParticipant: isResetAddTask ? null : selectedParticipant ?? this.selectedParticipant,
       selectedAssignedToType: isResetAddTask
@@ -120,6 +127,7 @@ class TaskState {
       getTasksStatus: getTasksStatus ?? this.getTasksStatus,
       totalUserReportCount: totalUserReportCount ?? this.totalUserReportCount,
       changeTaskStatus: changeTaskStatus ?? this.changeTaskStatus,
+      updateTask: updateTask ?? this.updateTask,
       addComment: addComment ?? this.addComment,
       changeTaskAssignStatus: changeTaskAssignStatus ?? this.changeTaskAssignStatus,
       getListClients: getListClients ?? this.getListClients,

@@ -267,7 +267,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                                             clientId: widget.clientId,
                                             invoiceId: widget.invoiceId,
                                             startDate: state.startDate,
-                                            file: state.attachmentFile,
+                                            files: state.attachmentFile,
                                             deadLineDate: state.deadLineDate,
                                             publicType: PublicType.addTask.name.toString(),
                                             participants: state.selectedParticipant ?? [])
