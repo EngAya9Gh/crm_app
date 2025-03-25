@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
 import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/features/task_management/data/models/task_log_model.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
@@ -194,6 +195,20 @@ class TaskDatasource {
       return ResponseWrapper<TaskModel>(
         data: TaskModel(),
         message: TaskModel.fromJson(response['message'] as Map<String, dynamic>),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<List<TaskLogModel>>> getTaskLog(GetTaskByIdParams params) async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(endPoint: EndPoints.task.tasksLog(params.idTask));
+      return ResponseWrapper<List<TaskLogModel>>(
+        data: [],
+               message: List.from((response['message']).map((e) => TaskLogModel.fromJson(e as Map<String, dynamic>))),
+
       );
     }
 

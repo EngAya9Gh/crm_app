@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/models/client_model.dart';
+import 'package:crm_smart/features/task_management/data/models/task_log_model.dart';
 import 'package:crm_smart/features/task_management/data/models/users_report_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_comment_task_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
@@ -74,21 +75,26 @@ class TaskRepositoryImpl extends TaskRepository {
 
   @override
   Future<Result<ResponseWrapper<List<ClientModel>>>> getListClients() {
-        return toApiResult(() => datasource.getListClients());
+    return toApiResult(() => datasource.getListClients());
   }
 
   @override
   Future<Result<ResponseWrapper<TaskModel>>> changeTaskAssign(ChangeTaskAssignParams params) {
-           return toApiResult(() => datasource.changeTaskAssign(params));
-}
+    return toApiResult(() => datasource.changeTaskAssign(params));
+  }
 
   @override
   Future<Result<ResponseWrapper<TaskModel>>> updateTask(AddOrUpdateTaskParams params) {
-            return toApiResult(() => datasource.updateTask(params));
-}
+    return toApiResult(() => datasource.updateTask(params));
+  }
 
   @override
   Future<Result<ResponseWrapper<TaskModel>>> getTaskById(GetTaskByIdParams params) {
-              return toApiResult(() => datasource.getTaskById(params));
-}
+    return toApiResult(() => datasource.getTaskById(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<TaskLogModel>>>> getTaskLog(GetTaskByIdParams params) {
+    return toApiResult(() => datasource.getTaskLog(params));
+  }
 }

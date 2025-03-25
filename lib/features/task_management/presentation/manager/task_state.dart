@@ -30,6 +30,7 @@ class TaskState {
     this.getUsersTaskReports = const BlocStatus.initial(),
     this.getUsersTaskReportsStatus = const BlocStatus.initial(),
     this.getListClients = const BlocStatus.initial(),
+    this.getTaskLog = const BlocStatus.initial(),
     this.selectedAssignedToType,
     this.myBranch,
     this.myDepartment,
@@ -67,10 +68,12 @@ class TaskState {
   final BlocStatus<List<CommentModel>> getTaskComment;
   final BlocStatus<List<ClientModel>> getListClients;
   final BlocStatus<List<UserReportModel>> getUsersTaskReports;
+  final BlocStatus<List<TaskLogModel>> getTaskLog;
   final BlocStatus<TaskModel> getCurrentTask;
   final BlocStatus getUsersTaskReportsStatus;
   final bool hasGetAllReports;
   final int totalUserReportCount;
+
 
   TaskState copyWith({
     BlocStatus? getTasksStatus,
@@ -108,6 +111,7 @@ class TaskState {
     int? totalUserReportCount,
     BlocStatus<List<ClientModel>>? getListClients,
     BlocStatus<TaskModel>? getCurrentTask,
+    BlocStatus<List<TaskLogModel>>? getTaskLog,
   }) {
     return TaskState(
       getCurrentTask: getCurrentTask ?? this.getCurrentTask,
@@ -128,6 +132,7 @@ class TaskState {
       totalUserReportCount: totalUserReportCount ?? this.totalUserReportCount,
       changeTaskStatus: changeTaskStatus ?? this.changeTaskStatus,
       updateTask: updateTask ?? this.updateTask,
+      getTaskLog: getTaskLog ?? this.getTaskLog,
       addComment: addComment ?? this.addComment,
       changeTaskAssignStatus: changeTaskAssignStatus ?? this.changeTaskAssignStatus,
       getListClients: getListClients ?? this.getListClients,

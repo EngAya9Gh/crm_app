@@ -997,6 +997,8 @@ import '../../../features/task_management/domain/use_cases/get_list_clients_usec
     as _i927;
 import '../../../features/task_management/domain/use_cases/get_task_by_id_usecase.dart'
     as _i625;
+import '../../../features/task_management/domain/use_cases/get_task_log_usecase.dart'
+    as _i305;
 import '../../../features/task_management/domain/use_cases/get_tasks_usecase.dart'
     as _i439;
 import '../../../features/task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart'
@@ -2119,6 +2121,8 @@ _i174.GetIt $initGetIt(
       () => _i439.GetTasksUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i625.GetTaskByIdUsecase>(
       () => _i625.GetTaskByIdUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i305.GetTaskLogUsecase>(
+      () => _i305.GetTaskLogUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i526.GetUsersByDepartmentAndRegionUsecase>(() =>
       _i526.GetUsersByDepartmentAndRegionUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i161.UpdateTaskUsecase>(
@@ -2141,6 +2145,7 @@ _i174.GetIt $initGetIt(
         gh<_i26.ChangeTaskAssignUsecase>(),
         gh<_i161.UpdateTaskUsecase>(),
         gh<_i625.GetTaskByIdUsecase>(),
+        gh<_i305.GetTaskLogUsecase>(),
       ));
   gh.factory<_i815.CompanyCubit>(() => _i815.CompanyCubit(
         gh<_i521.GetCommentUsecase>(),

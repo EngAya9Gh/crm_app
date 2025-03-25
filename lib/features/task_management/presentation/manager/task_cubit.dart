@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/client_model.dart';
+import 'package:crm_smart/features/task_management/data/models/task_log_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_list_clients_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_log_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/update_task_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -46,6 +48,7 @@ class TaskCubit extends Cubit<TaskState> {
   final ChangeTaskAssignUsecase _changeTaskAssignUsecase;
   final UpdateTaskUsecase _updateTaskUsecase;
   final GetTaskByIdUsecase _getTaskByIdUsecase;
+  final GetTaskLogUsecase _getTakslogUsecase;
 
   Map<TaskStatusType, TaskStatusInfo> taskStatusInfo = {
     TaskStatusType.Open: TaskStatusInfo(),
@@ -65,6 +68,7 @@ class TaskCubit extends Cubit<TaskState> {
     this._changeTaskAssignUsecase,
     this._updateTaskUsecase,
     this._getTaskByIdUsecase,
+    this._getTakslogUsecase,
   ) : super(TaskState());
 
   TasksPageVariablesEntity pageVariables = TasksPageVariablesEntity();
@@ -244,6 +248,24 @@ class TaskCubit extends Cubit<TaskState> {
       (value) {
         onSuccess(value.message!);
         emit(state.copyWith(getCurrentTask: const BlocStatus.success()));
+      },
+    );
+  }
+
+  getTaskLog({
+    required GetTaskByIdParams params,
+  }) async {
+    emit(state.copyWith(getTaskLog: const BlocStatus.loading()));
+
+    final result = await _getTakslogUsecase(params);
+
+    result.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(getTaskLog: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        emit(state.copyWith(getTaskLog: BlocStatus.success(data: value.message)));
       },
     );
   }
