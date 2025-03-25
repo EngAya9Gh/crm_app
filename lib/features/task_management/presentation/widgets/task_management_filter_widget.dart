@@ -203,19 +203,19 @@ class _TaskManagementFilterWidgetState extends State<TaskManagementFilterWidget>
                     taskCubit.pageVariables.selectedQuickDateFilter.value = value;
                   },
                   children: const {
-                    0: Padding(
+                    1: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: AppText('يومي', color: AppColors.black),
                     ),
-                    1: Padding(
+                    2: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: AppText('اسبوعي', color: AppColors.black),
                     ),
-                    2: Padding(
+                    3: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: AppText('شهري', color: AppColors.black),
                     ),
-                    3: Padding(
+                    4: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: AppText('سنوي', color: AppColors.black),
                     ),

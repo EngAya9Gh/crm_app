@@ -326,6 +326,7 @@ class TaskCubit extends Cubit<TaskState> {
             managerId: pageVariables.selectedManagerModel.value?.idMange,
             atTime: pageVariables.atTime.value,
             afterTime: pageVariables.afterTime.value,
+            quickDateChose: pageVariables.selectedQuickDateFilter.value,
           ),
         );
         result.fold(

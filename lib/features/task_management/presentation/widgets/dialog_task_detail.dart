@@ -341,7 +341,7 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                                                     child: AppText(
                                                       maxLines: 2,
                                                       overflow: TextOverflow.ellipsis,
-                                                      (data?[index].logType ?? '') * 2,
+                                                      (data?[index].logType ?? ''),
                                                       color: AppColors.primaryMain,
                                                       fontWeight: FontWeight.bold,
                                                     ),
