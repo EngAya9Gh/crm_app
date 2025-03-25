@@ -6,6 +6,7 @@ import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/core/common/widgets/app_group_button.dart';
+import 'package:crm_smart/core/common/widgets/app_icon.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
@@ -14,7 +15,9 @@ import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
+import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/widgets/fancy_image_shimmer_viewer.dart';
+import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +26,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as Intl;
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/enums/enums.dart';
@@ -216,348 +220,419 @@ class _AddTaskPageState extends State<AddTaskPage> {
     return list;
   }
 
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _usersCubit,
-      child: AppScaffold(
-        appBar: CustomAppBar(
-          title: 'إضافة مهمة',
-          actions: [
-            BlocBuilder<TaskCubit, TaskState>(
-              builder: (context, state) {
-                return Builder(builder: (context) {
-                  return AppTextButton(
-                    text: "حفظ",
-                    isLoading: state.addTaskStatus.isLoading() || state.updateTask.isLoading(),
-                    onPressed: () {
-                      final isValid = _formKey.currentState!.validate();
-                      if (!isValid) return;
-                      if (state.selectedAssignedToType == null) {
-                        AppSnackbar.showSnakeBar(
-                          "من فضلك قم باختيار اسناد إلى",
-                          color: ToastColorsEnum.warning,
-                        );
+      child: ModalProgressHUD(
+        inAsyncCall: context.watch<TaskCubit>().state.addTaskStatus.isLoading() || context.watch<TaskCubit>().state.updateTask.isLoading(),
+        progressIndicator: AppLoader(),
+        child: AppScaffold(
+          appBar: CustomAppBar(
+            title: 'إضافة مهمة',
+            actions: [
+              BlocBuilder<TaskCubit, TaskState>(
+                builder: (context, state) {
+                  return Builder(builder: (context) {
+                    return AppTextButton(
+                      text: "حفظ",
+                      // isLoading: state.addTaskStatus.isLoading() || state.updateTask.isLoading(),
+                      onPressed: () {
+                        final isValid = _formKey.currentState!.validate();
+                        if (!isValid) return;
+                        if (state.selectedAssignedToType == null) {
+                          AppSnackbar.showSnakeBar(
+                            "من فضلك قم باختيار اسناد إلى",
+                            color: ToastColorsEnum.warning,
+                          );
 
-                        return;
-                      }
+                          return;
+                        }
 
-                      final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
-                      final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
-                      var assignToId = state.selectedAssignedToType == AssignedTypeNew.users
-                          ? state.selectedAssignTo?.idUser.toString()
-                          : state.selectedAssignedToType == AssignedTypeNew.managements
-                              ? selectedValueManage
-                              : selectedRegionId;
-                      var params = AddOrUpdateTaskParams(
-                          taskId: widget.task?.id,
-                          title: _taskNameController.text,
-                          description: _taskDescriptionController.text,
-                          assignFrom: AssignedTypeNew.users.name.toString(),
-                          assignFromId: currentUser.idUser!,
-                          assignTo: state.selectedAssignedToType?.name,
-                          assignToId: assignToId,
-                          userId: currentUser.idUser!,
-                          startDate: state.startDate,
-                          files: state.attachmentFile,
-                          deadLineDate: state.deadLineDate,
-                          publicType: PublicType.addTask.name.toString(),
-                          participants: state.selectedParticipant ?? [],
-                          clientId: selectedClientList.value?.idClients);
-                      if (widget.task == null) {
-                        _taskCubit.addTaskAction(
-                          onSuccess: () {
-                            AppNavigator.pop(result: true);
-                          },
-                          addTaskParams: params,
-                        );
-                      } else {
-                        _taskCubit.updateTask(
-                          onSuccess: () {
-                            AppNavigator.pop(result: true);
-                          },
-                          addTaskParams: params,
-                        );
-                      }
-                    },
-                    appButtonStyle: AppButtonStyle.secondary,
-                    textStyle: AppStyles.textStyle.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.white,
-                    ),
-                  );
-                });
-              },
-            ),
-          ],
-        ),
-        body: Form(
-          key: _formKey,
-          child: BlocBuilder<TaskCubit, TaskState>(
-            builder: (context, taskState) {
-              return Directionality(
-                textDirection: TextDirection.rtl,
-                child: ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  children: [
-                    10.height,
-                    AppTextField(
-                      labelText: "المهمة*",
-                      maxLines: 1,
-                      validator: InputValidator.requiredFiled,
-                      controller: _taskNameController,
-                    ),
-                    10.height,
-                    AppTextField(
-                      labelText: "وصف المهمة*",
-                      validator: InputValidator.requiredFiled,
-                      controller: _taskDescriptionController,
-                      minLines: 5,
-                      contentPadding: HWEdgeInsets.all(15),
-                    ),
-                    10.height,
-                    BlocBuilder<UsersCubit, UsersState>(
-                      builder: (context, state) {
-                        return CustomMultiSelectionDropdown<UserModel>(
-                          hint: 'المشاركين*',
-                          items: _usersCubit.pageVariables.usersAllList,
-                          selectedItems: taskState.selectedParticipant ?? [],
-                          onSave: _taskCubit.onChangeParticipants,
-                          itemAsString: (u) => u!.userAsString(),
-                          filterFn: (user, filter) => user.nameUser!.contains(filter),
-                          compareFn: (item, selectedItem) => item.idUser == selectedItem.idUser,
-                          validator: (value) {
-                            if (value?.isEmpty ?? true) {
-                              return 'هذا الحقل مطلوب.';
-                            }
-                            return null;
-                          },
-                        );
+                        final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
+                        final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
+                        var assignToId = state.selectedAssignedToType == AssignedTypeNew.users
+                            ? state.selectedAssignTo?.idUser.toString()
+                            : state.selectedAssignedToType == AssignedTypeNew.managements
+                                ? selectedValueManage
+                                : selectedRegionId;
+                        var params = AddOrUpdateTaskParams(
+                            taskId: widget.task?.id,
+                            title: _taskNameController.text,
+                            description: _taskDescriptionController.text,
+                            assignFrom: AssignedTypeNew.users.name.toString(),
+                            assignFromId: currentUser.idUser!,
+                            assignTo: state.selectedAssignedToType?.name,
+                            assignToId: assignToId,
+                            userId: currentUser.idUser!,
+                            startDate: state.startDate,
+                            files: state.attachmentFile,
+                            deadLineDate: state.deadLineDate,
+                            publicType: PublicType.addTask.name.toString(),
+                            participants: state.selectedParticipant ?? [],
+                            clientId: selectedClientList.value?.idClients);
+                        if (widget.task == null) {
+                          _taskCubit.addTaskAction(
+                            onSuccess: () {
+                              AppNavigator.pop(result: true);
+                            },
+                            addTaskParams: params,
+                          );
+                        } else {
+                          _taskCubit.updateTask(
+                            onSuccess: () {
+                              AppNavigator.pop(result: true);
+                            },
+                            addTaskParams: params,
+                          );
+                        }
                       },
-                    ),
-                    10.height,
-                    taskState.getListClients.when(
-                      success: (data) => ValueListenableBuilder(
-                        valueListenable: selectedClientList,
-                        builder: (context, value, child) => CustomSearchableDropDown<ClientModel>(
-                          hint: 'العملاء',
-                          items: data ?? [],
-                          selectedItem: value,
-                          onChanged: (value) {
-                            selectedClientList.value = value;
-                          },
-                          itemAsString: (u) => u!.nameEnterprise!,
-                          filterFn: (client, filter) => client.nameEnterprise!.contains(filter),
-                          compareFn: (item, selectedItem) => item.idClients == selectedItem.idClients,
-                        ),
+                      appButtonStyle: AppButtonStyle.secondary,
+                      textStyle: AppStyles.textStyle.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.white,
                       ),
-                      failure: (error, data) {
-                        return AppErrorWidget(message: error);
-                      },
-                    ),
-                    10.height,
-                    Theme(
-                      data: context.theme.copyWith(
-                          timePickerTheme: TimePickerThemeData(
-                        cancelButtonStyle: ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
-                        confirmButtonStyle: ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
-                        dayPeriodTextStyle: TextStyle(fontSize: 12),
-                        dialTextStyle: TextStyle(fontSize: 12),
-                        helpTextStyle: TextStyle(fontSize: 12),
-                        hourMinuteTextStyle: TextStyle(fontSize: 12),
-                      )),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: CustomDateTimePicker(
-                              dateTimeType: DateTimeEnum.both,
-                              hintText: 'تاريخ البداية',
-                              isStartFromNow: true,
-                              formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
-                              isRequired: true,
-                              dateTimeController: _startDateController,
-                              style2: true,
-                              onDateChange: (p0, p1) {
-                                _taskCubit.onChangeStartDate(p0);
-                              },
-                            ),
-                          ),
-                          if (privilegeBloc.checkPrivilege('171')) ...{
-                            15.width,
-                            Expanded(
-                              child: CustomDateTimePicker(
-                                dateTimeType: DateTimeEnum.both,
-                                hintText: 'تاريخ النهاية',
-                                isStartFromNow: true,
-                                isRequired: true,
-                                formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
-                                dateTimeController: _deadLineDateController,
-                                style2: true,
-                                onDateChange: (p0, p1) {
-                                  // _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(p0);
-                                  _taskCubit.onChangeDeadLineDate(p0);
-                                },
-                              ),
-                            ),
-                          },
-                        ],
+                    );
+                  });
+                },
+              ),
+            ],
+          ),
+          body: Form(
+            key: _formKey,
+            child: BlocBuilder<TaskCubit, TaskState>(
+              builder: (context, taskState) {
+                return Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    children: [
+                      10.height,
+                      AppTextField(
+                        labelText: "المهمة*",
+                        maxLines: 1,
+                        validator: InputValidator.requiredFiled,
+                        controller: _taskNameController,
                       ),
-                    ),
-                    Visibility(
-                      visible: false,
-                      child: Column(
-                        children: [
-                          10.height,
-                          SwitchListTile(
-                            value: taskState.isRecurring ?? false,
-                            onChanged: _taskCubit.onChangeIsRecurring,
-                            title: AppText("تكرار"),
-                          ),
-                          10.height,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CustomDropDown<RecurringType>(
-                                  hint: 'نوع التكرار',
-                                  items: RecurringType.values,
-                                  compareFn: (item, selectedItem) => item.index == selectedItem.index,
-                                  itemAsString: (item) => item!.text,
-                                  selectedItem: taskState.selectedRecurringType,
-                                  onChanged: _taskCubit.onChangeRecurringType,
-                                  validator: InputValidator.requiredFiled,
-                                  height: 135.scaleHeight,
-                                ),
-                              ),
-                              10.width,
-                              Expanded(
-                                child: AppTextField(
-                                  labelText: "عدد التكرارات",
-                                  maxLines: 1,
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                  inputType: TextInputType.number,
-                                  controller: _numberOfRecurringController,
-                                ),
-                              ),
-                            ],
-                          ),
-                          10.height,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CustomSearchableDropDown<String>(
-                                  hint: 'الفاتورة',
-                                  items: [],
-                                  itemAsString: (u) => u!,
-                                  onChanged: (data) {},
-                                  selectedItem: null,
-                                  filterFn: (user, filter) => user.contains(filter),
-                                ),
-                              ),
-                              10.width,
-                              Expanded(
-                                child: CustomSearchableDropDown<String>(
-                                  hint: 'المجموعة',
-                                  items: [],
-                                  itemAsString: (u) => u!,
-                                  onChanged: (data) {},
-                                  selectedItem: null,
-                                  filterFn: (user, filter) => user.contains(filter),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                      10.height,
+                      AppTextField(
+                        labelText: "وصف المهمة*",
+                        validator: InputValidator.requiredFiled,
+                        controller: _taskDescriptionController,
+                        minLines: 5,
+                        contentPadding: HWEdgeInsets.all(15),
                       ),
-                    ),
-                    10.height,
-                    AppElevatedButton(
-                      text: 'إضافة مرفق',
-                      onPressed: () async {
-                        final files = await FilePicker.platform.pickFiles(allowMultiple: true);
-
-                        if (files == null) return;
-
-                        _taskCubit.onChangeAttachmentFile(files.files.map((e) => File(e.path!)).toList());
-                      },
-                      icon: Icons.attach_file_rounded,
-                    ),
-                    10.height,
-                    ValueListenableBuilder(
-                      valueListenable: filesNotifier,
-                      builder: (context, value, child) => BlocBuilder<TaskCubit, TaskState>(
+                      10.height,
+                      BlocBuilder<UsersCubit, UsersState>(
                         builder: (context, state) {
-                          return AnimatedSwitcher(
-                            duration: Duration(milliseconds: 500),
-                            transitionBuilder: (widget, animation) => FadeTransition(
-                              opacity: animation,
-                              child: widget,
-                            ),
-                            child: (state.attachmentFile == null && (value?.isEmpty ?? true))
-                                ? SizedBox.shrink()
-                                : SizedBox(
-                                    height: 100.scaleHeight,
-                                    child: ListView(scrollDirection: Axis.horizontal, children: [
-                                      ...(value ?? [])
-                                          .map((e) => InkWell(
-                                                onTap: () => AppFileViewer(
-                                                  imageSource: ImageSourceViewer.network,
-                                                  urls: [EndPoints.baseUrls.laravelFilesUrl + e.filePath!],
-                                                ).show(context),
-                                                child: FancyImageShimmerViewer(
-                                                  imageUrl: EndPoints.baseUrls.laravelFilesUrl + e.filePath!,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ))
-                                          .toList(),
-                                      ...(state.attachmentFile ?? [])
-                                          .map(
-                                            (e) => InkWell(
-                                              onTap: () => AppFileViewer(
-                                                imageSource: ImageSourceViewer.file,
-                                                files: [XFile(e.path)],
-                                              ).show(context),
-                                              child: AppPlatformImage(
-                                                fileModel: FileModel(file: XFile(e.path)),
-                                                fit: BoxFit.cover,
-                                                width: 110.scaleIconsSize,
-                                              ),
-                                            ),
-                                          )
-                                          .toList(),
-                                    ]),
-                                  ),
+                          return CustomMultiSelectionDropdown<UserModel>(
+                            hint: 'المشاركين*',
+                            items: _usersCubit.pageVariables.usersAllList,
+                            selectedItems: taskState.selectedParticipant ?? [],
+                            onSave: _taskCubit.onChangeParticipants,
+                            itemAsString: (u) => u!.userAsString(),
+                            filterFn: (user, filter) => user.nameUser!.contains(filter),
+                            compareFn: (item, selectedItem) => item.idUser == selectedItem.idUser,
+                            // validator: (value) {
+                            //   if (value?.isEmpty ?? true) {
+                            //     return 'هذا الحقل مطلوب.';
+                            //   }
+                            //   return null;
+                            // },
                           );
                         },
                       ),
-                    ),
-                    10.height,
-                    AppText('اسناد إلى'),
-                    5.height,
-                    AppCardContainer(
-                      child: AppGroupButton(
-                        width: AppDimensions.currentWidth() / (assignedToList.length + 1),
-                        groupButtonController: GroupButtonController(
-                          selectedIndex: taskState.selectedAssignedToType?.index,
+                      10.height,
+                      taskState.getListClients.when(
+                        success: (data) => ValueListenableBuilder(
+                          valueListenable: selectedClientList,
+                          builder: (context, value, child) => CustomSearchableDropDown<ClientModel>(
+                            hint: 'العملاء',
+                            items: data ?? [],
+                            selectedItem: value,
+                            onChanged: (value) {
+                              selectedClientList.value = value;
+                            },
+                            itemAsString: (u) => u!.nameEnterprise!,
+                            filterFn: (client, filter) => client.nameEnterprise!.contains(filter),
+                            compareFn: (item, selectedItem) => item.idClients == selectedItem.idClients,
+                          ),
                         ),
-                        buttons: assignedToList.map((e) => e.text).toList(),
-                        onSelected: (_, index, isSelected) {
-                          _taskCubit.onChangeSelectedAssignedToType(assignedToList[index]);
+                        failure: (error, data) {
+                          return AppErrorWidget(message: error);
                         },
                       ),
-                    ),
-                    10.height,
-                    assignToEmployeeWidget(taskState),
-                    assignToRegionWidget(taskState),
-                    assignToDepartmentWidget(taskState),
-                    40.height,
-                  ],
-                ),
-              );
-            },
+                      10.height,
+                      Theme(
+                        data: context.theme.copyWith(
+                            timePickerTheme: TimePickerThemeData(
+                          cancelButtonStyle: ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
+                          confirmButtonStyle: ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
+                          dayPeriodTextStyle: TextStyle(fontSize: 12),
+                          dialTextStyle: TextStyle(fontSize: 12),
+                          helpTextStyle: TextStyle(fontSize: 12),
+                          hourMinuteTextStyle: TextStyle(fontSize: 12),
+                        )),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: CustomDateTimePicker(
+                                dateTimeType: DateTimeEnum.both,
+                                hintText: 'تاريخ البداية',
+                                isStartFromNow: true,
+                                formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
+                                isRequired: true,
+                                dateTimeController: _startDateController,
+                                style2: true,
+                                onDateChange: (p0, p1) {
+                                  _taskCubit.onChangeStartDate(p0);
+                                },
+                              ),
+                            ),
+                            if (privilegeBloc.checkPrivilege('171')) ...{
+                              15.width,
+                              Expanded(
+                                child: CustomDateTimePicker(
+                                  dateTimeType: DateTimeEnum.both,
+                                  hintText: 'تاريخ النهاية',
+                                  isStartFromNow: true,
+                                  isRequired: true,
+                                  formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
+                                  dateTimeController: _deadLineDateController,
+                                  style2: true,
+                                  onDateChange: (p0, p1) {
+                                    // _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(p0);
+                                    _taskCubit.onChangeDeadLineDate(p0);
+                                  },
+                                ),
+                              ),
+                            },
+                          ],
+                        ),
+                      ),
+                      Visibility(
+                        visible: false,
+                        child: Column(
+                          children: [
+                            10.height,
+                            SwitchListTile(
+                              value: taskState.isRecurring ?? false,
+                              onChanged: _taskCubit.onChangeIsRecurring,
+                              title: AppText("تكرار"),
+                            ),
+                            10.height,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomDropDown<RecurringType>(
+                                    hint: 'نوع التكرار',
+                                    items: RecurringType.values,
+                                    compareFn: (item, selectedItem) => item.index == selectedItem.index,
+                                    itemAsString: (item) => item!.text,
+                                    selectedItem: taskState.selectedRecurringType,
+                                    onChanged: _taskCubit.onChangeRecurringType,
+                                    validator: InputValidator.requiredFiled,
+                                    height: 135.scaleHeight,
+                                  ),
+                                ),
+                                10.width,
+                                Expanded(
+                                  child: AppTextField(
+                                    labelText: "عدد التكرارات",
+                                    maxLines: 1,
+                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                    inputType: TextInputType.number,
+                                    controller: _numberOfRecurringController,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            10.height,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomSearchableDropDown<String>(
+                                    hint: 'الفاتورة',
+                                    items: [],
+                                    itemAsString: (u) => u!,
+                                    onChanged: (data) {},
+                                    selectedItem: null,
+                                    filterFn: (user, filter) => user.contains(filter),
+                                  ),
+                                ),
+                                10.width,
+                                Expanded(
+                                  child: CustomSearchableDropDown<String>(
+                                    hint: 'المجموعة',
+                                    items: [],
+                                    itemAsString: (u) => u!,
+                                    onChanged: (data) {},
+                                    selectedItem: null,
+                                    filterFn: (user, filter) => user.contains(filter),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      10.height,
+                      AppElevatedButton(
+                        text: 'إضافة مرفق',
+                        onPressed: () async {
+                          final files = await FilePicker.platform.pickFiles(allowMultiple: true);
+
+                          if (files == null) return;
+
+                          _taskCubit.onChangeAttachmentFile(files.files.map((e) => File(e.path!)).toList());
+                        },
+                        icon: Icons.attach_file_rounded,
+                      ),
+                      10.height,
+                      ValueListenableBuilder(
+                        valueListenable: filesNotifier,
+                        builder: (context, value, child) => BlocBuilder<TaskCubit, TaskState>(
+                          builder: (context, state) {
+                            return AnimatedSwitcher(
+                              duration: Duration(milliseconds: 500),
+                              transitionBuilder: (widget, animation) => FadeTransition(
+                                opacity: animation,
+                                child: widget,
+                              ),
+                              child: (state.attachmentFile == null && (value?.isEmpty ?? true))
+                                  ? SizedBox.shrink()
+                                  : SizedBox(
+                                      height: 100.scaleHeight,
+                                      child: ListView(scrollDirection: Axis.horizontal, children: [
+                                        ...(value ?? []).map((e) {
+                                          return showImageOrFileFromRemote(e);
+                                        }).toList(),
+                                        ...(state.attachmentFile ?? []).map(
+                                          (e) {
+                                            return showImageOrFileFromLocale(e);
+                                          },
+                                        ).toList(),
+                                      ]),
+                                    ),
+                            );
+                          },
+                        ),
+                      ),
+                      10.height,
+                      AppText('اسناد إلى'),
+                      5.height,
+                      AppCardContainer(
+                        child: AppGroupButton(
+                          width: AppDimensions.currentWidth() / (assignedToList.length + 1),
+                          groupButtonController: GroupButtonController(
+                            selectedIndex: taskState.selectedAssignedToType?.index,
+                          ),
+                          buttons: assignedToList.map((e) => e.text).toList(),
+                          onSelected: (_, index, isSelected) {
+                            _taskCubit.onChangeSelectedAssignedToType(assignedToList[index]);
+                          },
+                        ),
+                      ),
+                      10.height,
+                      assignToEmployeeWidget(taskState),
+                      assignToRegionWidget(taskState),
+                      assignToDepartmentWidget(taskState),
+                      40.height,
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
     );
+  }
+
+  Widget showImageOrFileFromLocale(File e) {
+    return (e.path.endsWith('.pdf') || e.path.endsWith('.PDF'))
+        ? StatefulBuilder(
+            builder: (context, refresh) {
+              return InkWell(
+                onTap: () async {
+                  isLoading = true;
+                  refresh(() {});
+                  await InvoiceVm().openFile(
+                    attachFile: FileAttach(file: XFile(e.path)),
+                    baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                    context: context,
+                  );
+                  isLoading = false;
+                  refresh(() {});
+                },
+                child: Container(
+                    width: 200.scaleWidth,
+                    height: 150.scaleHeight,
+                    margin: EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                    child: isLoading
+                        ? AppLoader(padding: 12)
+                        : AppIcon(
+                            Icons.picture_as_pdf_rounded,
+                            color: Colors.grey,
+                          )),
+              );
+            },
+          )
+        : InkWell(
+            onTap: () => AppFileViewer(
+              imageSource: ImageSourceViewer.file,
+              files: [XFile(e.path)],
+            ).show(context),
+            child: AppPlatformImage(
+              fileModel: FileModel(file: XFile(e.path)),
+              fit: BoxFit.cover,
+              width: 110.scaleIconsSize,
+            ),
+          );
+  }
+
+  Widget showImageOrFileFromRemote(FileAttachmentTaskModel e) {
+    return (e.filePath!.endsWith('.pdf') || e.filePath!.endsWith('.PDF'))
+        ? StatefulBuilder(
+            builder: (context, refresh) {
+              return InkWell(
+                onTap: () async {
+                  isLoading = true;
+                  refresh(() {});
+                  await InvoiceVm().openFile(
+                    attachFile: FileAttach(fileAttach: e.filePath),
+                    baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                    context: context,
+                  );
+                  isLoading = false;
+                  refresh(() {});
+                },
+                child: Container(
+                    width: 200.scaleWidth,
+                    height: 150.scaleHeight,
+                    margin: EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                    child: isLoading
+                        ? AppLoader(padding: 12)
+                        : AppIcon(
+                            Icons.picture_as_pdf_rounded,
+                            color: Colors.grey,
+                          )),
+              );
+            },
+          )
+        : InkWell(
+            onTap: () => AppFileViewer(
+              imageSource: ImageSourceViewer.network,
+              urls: [EndPoints.baseUrls.laravelFilesUrl + e.filePath!],
+            ).show(context),
+            child: FancyImageShimmerViewer(
+              imageUrl: EndPoints.baseUrls.laravelFilesUrl + e.filePath!,
+              fit: BoxFit.cover,
+            ),
+          );
   }
 
   Widget assignToEmployeeWidget(TaskState taskState) {

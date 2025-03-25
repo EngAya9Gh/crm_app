@@ -30,7 +30,7 @@ Future<T> throwAppException<T>(FutureOr<T> Function() call) async {
 
     throw ServerException.unknown(exception: e, message: e.toString());
   } catch (e, s) {
-    showMessage(e.toString());
+    showMessage("Unknown Error!");
 
     log(e.toString(), stackTrace: s);
     throw ServerException.unknown(exception: e, message: e.toString());

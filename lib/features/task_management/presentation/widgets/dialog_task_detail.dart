@@ -5,6 +5,8 @@ import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_comment_task_usecase.dart';
+import 'package:crm_smart/model/invoiceModel.dart';
+import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -41,7 +43,7 @@ class DialogTaskDetail extends StatefulWidget {
 class _DialogTaskDetailState extends State<DialogTaskDetail> {
   late ValueNotifier<TaskStatusType> selectedType;
   TextEditingController textController = TextEditingController();
-
+  bool isLoading = false;
   double? rate;
 
   @override
@@ -206,18 +208,50 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                         separatorBuilder: (context, index) => 10.width,
                         scrollDirection: Axis.horizontal,
                         itemCount: widget.task.attachments?.length ?? 0,
-                        itemBuilder: (context, index) => InkWell(
-                          onTap: () => AppFileViewer(
-                            imageSource: ImageSourceViewer.network,
-                            urls: [EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?[index].filePath ?? '')],
-                          ).show(context),
-                          child: FancyImageShimmerViewer(
-                            width: 200.scaleWidth,
-                            height: 150.scaleHeight,
-                            imageUrl: EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?[index].filePath ?? ''),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        itemBuilder: (context, index) {
+                          if (widget.task.attachments![index].filePath!.endsWith('.pdf') ||
+                              widget.task.attachments![index].filePath!.endsWith('.PDF')) {
+                            return StatefulBuilder(
+                              builder: (context, refresh) {
+                                return InkWell(
+                                  onTap: () async {
+                                    isLoading = true;
+                                    refresh(() {});
+                                    await InvoiceVm().openFile(
+                                      attachFile: FileAttach(fileAttach: widget.task.attachments?[index].filePath),
+                                      baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                                      context: context,
+                                    );
+                                    isLoading = false;
+                                    refresh(() {});
+                                  },
+                                  child: Container(
+                                      width: 200.scaleWidth,
+                                      height: 150.scaleHeight,
+                                      decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                                      child: isLoading
+                                          ? AppLoader(padding: 12)
+                                          : AppIcon(
+                                              Icons.picture_as_pdf_rounded,
+                                              color: Colors.grey,
+                                            )),
+                                );
+                              },
+                            );
+                          }
+                          return InkWell(
+                            onTap: () => AppFileViewer(
+                              imageSource: ImageSourceViewer.network,
+                              urls: [EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?[index].filePath ?? '')],
+                            ).show(context),
+                            child: FancyImageShimmerViewer(
+                              width: 200.scaleWidth,
+                              height: 150.scaleHeight,
+                              imageUrl: EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?[index].filePath ?? ''),
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
                       ),
                     )),
                 10.height,
