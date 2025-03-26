@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:provider/provider.dart';
@@ -59,26 +61,38 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> verifyOtp(BuildContext context) async {
     emit(state.copyWith(verifyOtpStatus: const BlocStatus.loading()));
-
+    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    String deviceDetails;
     final fcm = await _getFcm();
+    if (kIsWeb) {
+      WebBrowserInfo webInfo = await deviceInfoPlugin.webBrowserInfo;
+      deviceDetails = "web ${webInfo.userAgent}";
+    } else if (Theme.of(context).platform == TargetPlatform.android) {
+      AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
+      deviceDetails = 'Android ${androidInfo.version.release} - ${androidInfo.model}';
+    } else if (Theme.of(context).platform == TargetPlatform.iOS) {
+      IosDeviceInfo iosInfo = await deviceInfoPlugin.iosInfo;
+      deviceDetails = 'iOS ${iosInfo.utsname.release} - ${iosInfo.utsname.machine}';
+    } else {
+      deviceDetails = 'Unsupported platform';
+    }
 
     final result = await _verifyOtpUsecase(
       VerifyOtpParams(
         otp: otpCodeController.text,
         email: emailController.text,
         token: fcm,
+        userAgent: deviceDetails,
       ),
     );
     result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
-        emit(state.copyWith(
-            verifyOtpStatus: BlocStatus.fail(error: "Wrong OTP")));
+        emit(state.copyWith(verifyOtpStatus: BlocStatus.fail(error: "Wrong OTP")));
       },
       (token) async {
         await cacheToken(token);
-        await Provider.of<UserProvider>(context, listen: false)
-            .getCurrentUser();
+        await Provider.of<UserProvider>(context, listen: false).getCurrentUser();
         AppNavigator.go(HomePage(), name: AppRoutesNames.generalRoutes.home);
         emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));
         _clearControllers();
@@ -88,7 +102,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<String?> _getFcm() async {
     try {
-        var token=await FirebaseMessaging.instance.getToken();
+      var token = await FirebaseMessaging.instance.getToken();
       log('34567890${token}');
       return token;
     } catch (e) {
@@ -135,8 +149,7 @@ class LoginCubit extends Cubit<LoginState> {
     return result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
-        emit(
-            state.copyWith(validateTokenStatus: BlocStatus.fail(error: error)));
+        emit(state.copyWith(validateTokenStatus: BlocStatus.fail(error: error)));
         return null;
       },
       (data) {
