@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
+import 'package:crm_smart/view_model/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,10 +29,10 @@ class _MobHomePageState extends State<MobHomePage> {
   @override
   void initState() {
     super.initState();
-     context.read<NotificationsCubit>()..init();
+    context.read<NotificationsCubit>()..init();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
-        context.read<NotificationsCubit>().getUnreadNotificationsCount(),
+        // context.read<NotificationsCubit>().getUnreadNotificationsCount(),
         Provider.of<UserProvider>(context, listen: false).getAllUsers(),
         Provider.of<RegionProvider>(context, listen: false).getRegions(),
         Provider.of<product_vm>(context, listen: false).getproduct_vm(),

@@ -29,7 +29,7 @@ class TaskModel {
   final DateTime? startDate;
   final dynamic deadline;
   final String? type;
-  final dynamic completionPercentage;
+  final num? completionPercentage;
   final dynamic recurringType;
   final dynamic recurringNumber;
   final AssignFromOrToModel? createdBy;
@@ -88,7 +88,7 @@ class TaskModel {
     DateTime? startDate,
     dynamic deadline,
     String? type,
-    dynamic completionPercentage,
+    num? completionPercentage,
     dynamic recurringType,
     dynamic recurringNumber,
     AssignFromOrToModel? createdBy,
@@ -145,7 +145,7 @@ class TaskModel {
         group: json["group"],
         code: json["code"],
         startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
-        deadline: json["deadline"],
+        deadline: json["deadline"] == null ? null : DateTime.parse(json["deadline"]),
         type: json["type"],
         completionPercentage: json["completion_percentage"],
         recurringType: json["recurring_type"],

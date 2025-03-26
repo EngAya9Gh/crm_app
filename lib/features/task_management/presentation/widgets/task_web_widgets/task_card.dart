@@ -1,5 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
+import 'package:crm_smart/features/task_management/presentation/pages/add_task_page.dart';
+import 'package:crm_smart/features/task_management/presentation/widgets/tasks_paginated_list.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +19,8 @@ import '../dialog_task_detail.dart';
 
 class TaskCard {
   static DragAndDropItem build(TaskModel task, BuildContext context) {
+    var _cubit = context.read<TaskCubit>();
+
     final assignToUserName = task.assignTo!.nameUser;
     final initials = getInitials(assignToUserName);
 
@@ -23,21 +29,32 @@ class TaskCard {
       child: InkWell(
         onTap: status != null && context.read<PrivilegesCubit>().checkPrivilege('165')
             ? () {
-                var _cubit = context.read<TaskCubit>();
-                _cubit.onGetTaskComments(task.id!);
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  barrierLabel: task.id.toString(),
-                  builder: (context) => DialogTaskDetail(task: task, status: status, cubit: _cubit,canDrag: true,), // builder: (context) => BlocProvider.value(
-                  //   value: _cubit,
-                  //   child: ChangeStatusTaskDialog(
-                  //     status: status,
-                  //     taskModel: task,
-                  //     tasksCubit: _cubit,
-                  //   ),
-                  // ),
-                );
+                Dialogs.showLoadingDialog(context);
+                _cubit
+                  ..onGetTaskComments(task.id!)
+                  ..getTaskById(
+                      params: GetTaskByIdParams(idTask: task.id!),
+                      onFaild: () {
+                        Navigator.pop(context);
+                      },
+                      onSuccess: (value) => showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            barrierLabel: task.id.toString(),
+                            builder: (context) => DialogTaskDetail(
+                              task: task,
+                              status: status,
+                              cubit: _cubit,
+                              canDrag: true,
+                            ), // builder: (context) => BlocProvider.value(
+                            //   value: _cubit,
+                            //   child: ChangeStatusTaskDialog(
+                            //     status: status,
+                            //     taskModel: task,
+                            //     tasksCubit: _cubit,
+                            //   ),
+                            // ),
+                          ));
               }
             : null,
         child: Card(
@@ -66,18 +83,40 @@ class TaskCard {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle, border: Border.all(width: 2, color: getColorForStatus(name: task.status?.name ?? ''))),
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      task.assignTo?.image != null ? NetworkImage(EndPoints.baseUrls.laravelFilesUrl + task.assignTo!.image!) : null,
-                                  child: task.assignTo?.image == null
-                                      ? Center(
-                                          child: AppText(initials, color: Colors.white, fontSize: 12),
-                                        )
-                                      : null,
-                                  radius: 14.scaleWidth,
+                              PopupMenuButton(
+                                offset: Offset(0, 10),
+                                constraints: BoxConstraints(
+                                    // Set the width to match screen width
+                                    minWidth: 420.scaleWidth,
+                                    maxWidth: 520.scaleWidth,
+                                    maxHeight: 600.scaleHeight),
+                                position: PopupMenuPosition.under,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                      enabled: false,
+                                      padding: EdgeInsets.all(10),
+                                      child: AssignTOAnotherWidget(
+                                        task: task,
+                                        taskCubit: _cubit,
+                                      )),
+                                ],
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle, border: Border.all(width: 2, color: getColorForStatus(name: task.status?.name ?? ''))),
+                                  child: CircleAvatar(
+                                    backgroundImage: task.assignTo?.image != null
+                                        ? NetworkImage(EndPoints.baseUrls.laravelFilesUrl + task.assignTo!.image!)
+                                        : null,
+                                    child: task.assignTo?.image == null
+                                        ? Center(
+                                            child: AppText(initials, color: Colors.white, fontSize: 12),
+                                          )
+                                        : null,
+                                    radius: 14.scaleWidth,
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 8),
@@ -104,6 +143,32 @@ class TaskCard {
                                   ],
                                 ),
                               ),
+                              if (context.read<PrivilegesCubit>().checkPrivilege('339') &&
+                                  ([task.assignFrom?.idUser.toString(), task.assignFrom?.idRegion.toString(), task.assignFrom?.idMange.toString()]
+                                      .contains(context.read<UserProvider>().currentUser.idUser)))
+                                IconButton(
+                                    onPressed: () {
+                                      Dialogs.showLoadingDialog(context);
+                                      context.read<TaskCubit>().getTaskById(
+                                          onFaild: () {
+                                            Navigator.pop(context);
+                                          },
+                                          onSuccess: (value) {
+                                            Navigator.pop(context);
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) => AddTaskPage(
+                                                  task: value,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          params: GetTaskByIdParams(idTask: task.id!));
+                                    },
+                                    icon: Icon(
+                                      Icons.edit_square,
+                                      color: AppColors.primaryMain,
+                                    )),
                             ],
                           ),
                           if (task.client != null) ...{

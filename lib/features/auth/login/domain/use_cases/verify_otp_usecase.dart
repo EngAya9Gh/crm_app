@@ -21,11 +21,13 @@ class VerifyOtpParams {
   final String otp;
   final String email;
   final String? token;
+  final String userAgent;
 
   VerifyOtpParams({
     required this.otp,
     required this.email,
     this.token,
+    required this.userAgent,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,6 +35,7 @@ class VerifyOtpParams {
       'otp': otp,
       'email': email,
       'token': token,
+      'user_agent': userAgent,
     };
   }
 }

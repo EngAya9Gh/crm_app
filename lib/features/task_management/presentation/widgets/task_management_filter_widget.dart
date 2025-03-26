@@ -1,8 +1,12 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/input_validator.dart';
@@ -18,10 +22,24 @@ import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../manager/task_cubit.dart';
 
-class TaskManagementFilterWidget extends StatelessWidget {
+class TaskManagementFilterWidget extends StatefulWidget {
   TaskManagementFilterWidget({
     super.key,
   });
+
+  @override
+  State<TaskManagementFilterWidget> createState() => _TaskManagementFilterWidgetState();
+}
+
+class _TaskManagementFilterWidgetState extends State<TaskManagementFilterWidget> {
+  late final TaskCubit taskCubit;
+
+  @override
+  void initState() {
+    taskCubit = context.read<TaskCubit>();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +49,7 @@ class TaskManagementFilterWidget extends StatelessWidget {
         textDirection: TextDirection.rtl,
         child: ListenableBuilder(
           listenable: Listenable.merge(
-            context.read<TaskCubit>().pageVariables.listenables(),
+            taskCubit.pageVariables.listenables(),
           ),
           builder: (context, child) => Column(
             children: [
@@ -39,11 +57,10 @@ class TaskManagementFilterWidget extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: AppTextButton(
                   text: "إعادة الافتراضي",
-                  onPressed: context.read<TaskCubit>().pageVariables.checkIfFilterIsNotEmpty()
+                  onPressed: taskCubit.pageVariables.checkIfFilterIsNotEmpty()
                       ? () {
-
-                          context.read<TaskCubit>().pageVariables.clearFilters();
-                          context.read<TaskCubit>().getTasks();
+                          taskCubit.pageVariables.clearFilters();
+                          taskCubit.getTasks();
                           context.pop();
                         }
                       : null,
@@ -54,13 +71,13 @@ class TaskManagementFilterWidget extends StatelessWidget {
                 builder: (context, value, child) => CustomSearchableDropDown<BranchModel>(
                   hint: "الفرع",
                   items: value.listRegionTaskFilter,
-                  selectedItem: context.read<TaskCubit>().pageVariables.selectedBranchModel.value,
+                  selectedItem: taskCubit.pageVariables.selectedBranchModel.value,
                   itemAsString: (Branch) => Branch!.branchName,
                   onChanged: (city) {
                     if (city == null) {
                       return;
                     }
-                    context.read<TaskCubit>().pageVariables.selectedBranchModel.value = city;
+                    taskCubit.pageVariables.selectedBranchModel.value = city;
                     // widget.onSelected?.call(city);
                   },
                   filterFn: (Branch, term) {
@@ -75,13 +92,13 @@ class TaskManagementFilterWidget extends StatelessWidget {
                 builder: (context, value, child) => CustomSearchableDropDown<ManageModel>(
                   hint: "الادارة",
                   items: value.listMangTask,
-                  selectedItem: context.read<TaskCubit>().pageVariables.selectedManagerModel.value,
-                  itemAsString: (manager) => manager?.name_mange??'',
+                  selectedItem: taskCubit.pageVariables.selectedManagerModel.value,
+                  itemAsString: (manager) => manager?.name_mange ?? '',
                   onChanged: (manager) {
                     if (manager == null) {
                       return;
                     }
-                    context.read<TaskCubit>().pageVariables.selectedManagerModel.value = manager;
+                    taskCubit.pageVariables.selectedManagerModel.value = manager;
                     // widget.onSelected?.call(city);
                   },
                   filterFn: (manager, term) {
@@ -92,18 +109,18 @@ class TaskManagementFilterWidget extends StatelessWidget {
                 ),
               ),
               20.height,
-              BlocSelector<UsersCubit,UsersState,BlocStatus<List<UserModel>>>(
+              BlocSelector<UsersCubit, UsersState, BlocStatus<List<UserModel>>>(
                 selector: (state) => state.getUserSelected,
                 builder: (context, state) => CustomSearchableDropDown<UserModel>(
                   hint: "الموظف المسند له",
-                  items: state.data??[],
-                  selectedItem: context.read<TaskCubit>().pageVariables.selectedUserModel.value,
-                  itemAsString: (user) => user?.nameUser??'',
+                  items: state.data ?? [],
+                  selectedItem: taskCubit.pageVariables.selectedUserModel.value,
+                  itemAsString: (user) => user?.nameUser ?? '',
                   onChanged: (user) {
                     if (user == null) {
                       return;
                     }
-                    context.read<TaskCubit>().pageVariables.selectedUserModel.value = user;
+                    taskCubit.pageVariables.selectedUserModel.value = user;
                     // widget.onSelected?.call(city);
                   },
                   filterFn: (user, term) {
@@ -114,20 +131,112 @@ class TaskManagementFilterWidget extends StatelessWidget {
                 ),
               ),
               20.height,
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () async {
+                        DateTime? date = await showDatePicker(
+                          context: context,
+                          initialDate: taskCubit.state.filterFromDate ?? DateTime.now(),
+                          firstDate: DateTime.now().subtract(Duration(days: 365 * 2)),
+                          lastDate: DateTime.now().add(Duration(days: 365)),
+                        );
+                        if (date == null) return;
+
+                        taskCubit.pageVariables.fromDateController.text = Intl.DateFormat('dd MM yyyy').format(date);
+                        taskCubit.onChangeFilterFromDate(date);
+                      },
+                      child: IgnorePointer(
+                        ignoring: true,
+                        child: AppTextField(
+                          labelText: "من تاريخ",
+                          maxLines: 1,
+                          validator: InputValidator.requiredFiled,
+                          readOnly: true,
+                          controller: taskCubit.pageVariables.fromDateController,
+                          textDirection: TextDirection.ltr,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  20.width,
+                  Expanded(
+                    child: InkWell(
+                      onTap: () async {
+                        DateTime? date = await showDatePicker(
+                          context: context,
+                          initialDate: taskCubit.state.filterToDate ?? DateTime.now(),
+                          firstDate: DateTime.now().subtract(Duration(days: 365 * 2)),
+                          lastDate: DateTime.now().add(Duration(days: 365)),
+                        );
+
+                        if (date == null) return;
+
+                        taskCubit.pageVariables.toDateController.text = Intl.DateFormat('dd MM yyyy').format(date);
+                        taskCubit.onChangeToDate(date);
+                      },
+                      child: IgnorePointer(
+                        ignoring: true,
+                        child: AppTextField(
+                          labelText: "إلى تاريخ",
+                          maxLines: 1,
+                          validator: InputValidator.requiredFiled,
+                          readOnly: true,
+                          controller: taskCubit.pageVariables.toDateController,
+                          textDirection: TextDirection.ltr,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              20.height,
+              ValueListenableBuilder(
+                valueListenable: taskCubit.pageVariables.selectedQuickDateFilter,
+                builder: (context, value, child) => CupertinoSlidingSegmentedControl(
+                  backgroundColor: AppColors.background,
+                  groupValue: value,
+                  onValueChanged: (value) {
+                    taskCubit.pageVariables.selectedQuickDateFilter.value = value;
+                  },
+                  children: const {
+                    1: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: AppText('يومي', color: AppColors.black),
+                    ),
+                    2: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: AppText('اسبوعي', color: AppColors.black),
+                    ),
+                    3: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: AppText('شهري', color: AppColors.black),
+                    ),
+                    4: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: AppText('سنوي', color: AppColors.black),
+                    ),
+                  },
+                ),
+              ),
+              20.height,
               SwitchListTile(
-                value: context.read<TaskCubit>().pageVariables.atTime.value??false,
+                value: taskCubit.pageVariables.atTime.value ?? false,
                 onChanged: (value) {
-                  context.read<TaskCubit>().pageVariables.atTime.value = value;
-                  context.read<TaskCubit>().pageVariables.afterTime.value = false;
+                  taskCubit.pageVariables.atTime.value = value;
+                  taskCubit.pageVariables.afterTime.value = false;
                 },
                 title: AppText("تم تنفيذ المهمة قبل انتهاء الوقت المخصص لها"),
               ),
               20.height,
               SwitchListTile(
-                value: context.read<TaskCubit>().pageVariables.afterTime.value??false,
+                value: taskCubit.pageVariables.afterTime.value ?? false,
                 onChanged: (value) {
-                  context.read<TaskCubit>().pageVariables.afterTime.value = value;
-                  context.read<TaskCubit>().pageVariables.atTime.value = false;
+                  taskCubit.pageVariables.afterTime.value = value;
+                  taskCubit.pageVariables.atTime.value = false;
                 },
                 title: AppText("تم تنفيذ المهمة بعد انتهاء الوقت المخصص لها"),
               ),
@@ -135,7 +244,7 @@ class TaskManagementFilterWidget extends StatelessWidget {
               AppElevatedButton(
                 text: "فلترة",
                 onPressed: () {
-                  context.read<TaskCubit>().getTasks();
+                  taskCubit.getTasks();
                   context.pop();
                 },
               ),

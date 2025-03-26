@@ -37,6 +37,7 @@ class ClientProfile extends StatefulWidget {
     this.clientTransfer,
     this.invoiceModel,
     this.tabIndex,
+    this.commentId,
     this.tabCareIndex = 0,
     required this.idClient,
     this.client,
@@ -46,6 +47,7 @@ class ClientProfile extends StatefulWidget {
 
   final String? idClient;
   final int? tabIndex;
+  final String? commentId;
   final int tabCareIndex;
   final InvoiceModel? invoiceModel;
   final String? clientTransfer;
@@ -57,8 +59,7 @@ class ClientProfile extends StatefulWidget {
   State<ClientProfile> createState() => _ClientProfileState();
 }
 
-class _ClientProfileState extends State<ClientProfile>
-    with TickerProviderStateMixin {
+class _ClientProfileState extends State<ClientProfile> with TickerProviderStateMixin {
   late final TicketsCubit ticketsCubit;
   late final SupportTabCubit supportTabCubit;
   late final InvoiceVm invoiceVm;
@@ -79,14 +80,12 @@ class _ClientProfileState extends State<ClientProfile>
       await _initializeData();
     });
 
-    _tabController = TabController(
-        length: _tabs().length, vsync: this, initialIndex: indexTab);
+    _tabController = TabController(length: _tabs().length, vsync: this, initialIndex: indexTab);
     _tabController.addListener(onChangeTab);
   }
 
   Future<void> _initializeData() async {
-    await Provider.of<ClientProvider>(context, listen: false)
-        .getClientById(widget.idClient.toString());
+    await Provider.of<ClientProvider>(context, listen: false).getClientById(widget.idClient.toString());
 
     supportTabCubit.getClientInvoice(
       getInvoiceByClientParams: GetInvoiceByClientParams(
@@ -97,13 +96,11 @@ class _ClientProfileState extends State<ClientProfile>
 
     invoiceVm.getInvoiceByClient(widget.idClient);
 
-    Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(
-        widget.idClient.toString(), widget.idCommunication);
+    Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(widget.idClient.toString(), widget.idCommunication);
 
     await ticketsCubit.getClientTicket(widget.idClient!);
 
-    Provider.of<comment_vm>(context, listen: false)
-        .getComments(widget.idClient.toString());
+    Provider.of<comment_vm>(context, listen: false).getComments(widget.idClient.toString());
   }
 
   @override
@@ -124,8 +121,7 @@ class _ClientProfileState extends State<ClientProfile>
   Widget build(BuildContext context) {
     return Consumer<ClientProvider>(
       builder: (context, state, _) {
-        if (state.currentClientModel.isLoading ||
-            state.currentClientModel.isInit) {
+        if (state.currentClientModel.isLoading || state.currentClientModel.isInit) {
           return _buildLoading();
         } else if (state.currentClientModel.isFailure) {
           return _buildFailure();
@@ -147,9 +143,7 @@ class _ClientProfileState extends State<ClientProfile>
     return AppScaffold(
       body: Center(
         child: IconButton(
-          onPressed: () => context
-              .read<ClientProvider>()
-              .getClientById(widget.idClient.toString()),
+          onPressed: () => context.read<ClientProvider>().getClientById(widget.idClient.toString()),
           icon: AppIcon(Icons.refresh),
         ),
       ),
@@ -159,7 +153,8 @@ class _ClientProfileState extends State<ClientProfile>
   Widget _buildClientProfile(ClientModel? client) {
     return AppScaffold(
       appBar: CustomAppBar(
-        title: client!.nameEnterprise,showBackButton: true,
+        title: client!.nameEnterprise,
+        showBackButton: true,
         bottom: _buildTabBar(),
       ),
       body: ValueListenableBuilder<int>(
@@ -209,10 +204,7 @@ class _ClientProfileState extends State<ClientProfile>
       indicatorColor: AppColors.white,
       indicatorWeight: 6,
       isScrollable: true,
-      unselectedLabelStyle: TextStyle(
-          fontFamily: AppFonts.fontFamily1,
-          fontSize: 15,
-          fontWeight: FontWeight.w600),
+      unselectedLabelStyle: TextStyle(fontFamily: AppFonts.fontFamily1, fontSize: 15, fontWeight: FontWeight.w600),
       unselectedLabelColor: AppColors.white,
       onTap: (value) => _currentTabIndex.value = value,
       tabAlignment: TabAlignment.center,
@@ -230,9 +222,8 @@ class _ClientProfileState extends State<ClientProfile>
       Text('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       Text('الانشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       Text('المواعيد', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      if (context.read<PrivilegesCubit>().checkPrivilege('282'))
-        Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-        Text('المهام', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      if (context.read<PrivilegesCubit>().checkPrivilege('282')) Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      Text('المهام', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
     ];
   }
 
@@ -245,7 +236,10 @@ class _ClientProfileState extends State<ClientProfile>
         invoice: null,
       ),
       InvoicesTabPage(client: client),
-      CommentView(client: client),
+      CommentView(
+        client: client,
+        commentId: widget.commentId != null ? int.tryParse(widget.commentId!) : null,
+      ),
       SupportViewInvoices(itemClient: client),
       CareClientView(
         fk_client: client.idClients.toString(),

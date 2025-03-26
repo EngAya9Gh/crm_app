@@ -133,7 +133,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                         ),
                         25.height,
                         CustomDropDown<PublicType>(
-                          compareFn:  (item, selectedItem) => item.index == selectedItem.index,
+                          compareFn: (item, selectedItem) => item.index == selectedItem.index,
                           hint: "نوع المهمة*",
                           items: widget.list,
                           itemAsString: (item) => item!.text,
@@ -247,16 +247,16 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
 
                                     final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
                                     final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
-                                 var assignToId=   state.selectedAssignedToType == AssignedTypeNew.users
+                                    var assignToId = state.selectedAssignedToType == AssignedTypeNew.users
                                         ? state.selectedAssignTo?.idUser.toString()
                                         : state.selectedAssignedToType == AssignedTypeNew.managements
-                                        ? selectedValueManage
-                                        : selectedRegionId;
+                                            ? selectedValueManage
+                                            : selectedRegionId;
                                     _taskCubit.addTaskAction(
                                         onSuccess: () {
                                           Navigator.pop(context, selectedPublicType == PublicType.linkComment);
                                         },
-                                        addTaskParams: AddTaskParams(
+                                        addTaskParams: AddOrUpdateTaskParams(
                                             title: selectedPublicType == PublicType.other ? _taskNameController.text : selectedPublicType?.text,
                                             description: _taskDescriptionController.text,
                                             assignFrom: AssignedTypeNew.users.name.toString(),
@@ -264,10 +264,10 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                                             assignTo: state.selectedAssignedToType?.name,
                                             assignToId: assignToId,
                                             userId: currentUser.idUser!,
-                                             clientId: widget.clientId,
-                                             invoiceId: widget.invoiceId,
+                                            clientId: widget.clientId,
+                                            invoiceId: widget.invoiceId,
                                             startDate: state.startDate,
-                                            file: state.attachmentFile,
+                                            files: state.attachmentFile,
                                             deadLineDate: state.deadLineDate,
                                             publicType: PublicType.addTask.name.toString(),
                                             participants: state.selectedParticipant ?? [])
@@ -332,7 +332,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
         builder: (context, state) {
           return CustomSearchableDropDown<UserModel>(
             hint: "الموظف",
-            compareFn:  (item, selectedItem) => item.id == selectedItem.id,
+            compareFn: (item, selectedItem) => item.id == selectedItem.id,
             items: state.getUserSelected.data ?? [],
             itemAsString: (u) => u!.nameUser.toString(),
             onChanged: (data) {

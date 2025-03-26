@@ -59,34 +59,31 @@ class _RejectDialogState extends State<RejectDialog> {
   ValueNotifier<String?> selectedRateProductRadio = ValueNotifier(null);
   ValueNotifier<String?> selectedRateSalesRadio = ValueNotifier(null);
   ValueNotifier<String?> selectedRateSupportRadio = ValueNotifier(null);
-
+  late DateTime _currentDate;
+  final TextEditingController withdrawnDate = TextEditingController();
   @override
   void initState() {
+    _currentDate = DateTime.now();
     _invoice = widget.invoice;
-    if (_invoice.desc_reason_back?.isNotEmpty ?? false)
-      descresaonController.text = _invoice.desc_reason_back.toString();
-    if (_invoice.value_back?.isNotEmpty ?? false)
-      valueBackController.text = _invoice.value_back.toString();
+    if (_invoice.desc_reason_back?.isNotEmpty ?? false) descresaonController.text = _invoice.desc_reason_back.toString();
+    if (_invoice.value_back?.isNotEmpty ?? false) valueBackController.text = _invoice.value_back.toString();
 
     selectedRateProductRadio.value = _invoice.rateProduct;
     selectedRateSalesRadio.value = _invoice.rateSales;
     selectedRateSupportRadio.value = _invoice.rateSupport;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      typeclient_provider =
-          Provider.of<ClientTypeProvider>(context, listen: false);
+      typeclient_provider = Provider.of<ClientTypeProvider>(context, listen: false);
       typeclient_provider.getreasons('client');
 
-      typeclient_provider.selectedValueOut =
-          _invoice.reason_back == null ? null : _invoice.reason_back.toString();
+      typeclient_provider.selectedValueOut = _invoice.reason_back == null ? null : _invoice.reason_back.toString();
       // typeclient_provider.changevalueOut(typeclient_provider.selectedValueOut.toString());
-      String val = (_invoice.date_change_back?.isNotEmpty ?? false)
-          ? _invoice.date_change_back.toString()
-          : formatter.format(DateTime.now());
+      String val = (_invoice.date_change_back?.isNotEmpty ?? false) ? _invoice.date_change_back.toString() : formatter.format(DateTime.now());
       _currentDate = DateTime.parse(val);
-      Provider.of<datetime_vm>(context, listen: false)
-          .setdatetimevalue1(_currentDate);
+      withdrawnDate.text = _currentDate.toString().split(' ')[0];
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDate);
     });
+
     super.initState();
   }
 
@@ -102,7 +99,6 @@ class _RejectDialogState extends State<RejectDialog> {
     valueBackController.text = '';
   }
 
-  DateTime _currentDate = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   Future<void> _selectDate(BuildContext context, DateTime? pickedDate) async {
@@ -110,8 +106,7 @@ class _RejectDialogState extends State<RejectDialog> {
       setState(() {
         _currentDate = pickedDate;
       });
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue1(_currentDate);
+    Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDate, isInit: true);
   }
 
   final _globalKey = GlobalKey<FormState>();
@@ -120,8 +115,7 @@ class _RejectDialogState extends State<RejectDialog> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
       builder: (context) => PickImageBottomSheet(
         onPickFile: (context, file) {
           selectedFile = file;
@@ -144,8 +138,7 @@ class _RejectDialogState extends State<RejectDialog> {
         Directionality(
           textDirection: myui.TextDirection.rtl,
           child: StatefulBuilder(
-            builder: (BuildContext context,
-                void Function(void Function()) setState) {
+            builder: (BuildContext context, void Function(void Function()) setState) {
               return Form(
                 key: _globalKey,
                 child: Column(
@@ -158,12 +151,10 @@ class _RejectDialogState extends State<RejectDialog> {
                         return CustomDropDown<ReasonModel>(
                           hint: "",
                           items: cart.type_of_out,
-                          compareFn:  (item, selectedItem) => item.idReason == selectedItem.idReason,
+                          compareFn: (item, selectedItem) => item.idReason == selectedItem.idReason,
                           itemAsString: (item) => item!.nameReason,
                           selectedItem: cart.type_of_out.firstWhereOrNull(
-                            (element) =>
-                                element.idReason ==
-                                (cart.selectedValueOut ?? 0),
+                            (element) => element.idReason == (cart.selectedValueOut ?? 0),
                           ),
                           onChanged: (value) {
                             cart.changevalueOut(value!.idReason.toString());
@@ -189,13 +180,9 @@ class _RejectDialogState extends State<RejectDialog> {
                     AppText("تاريخ الإنسحاب*"),
                     5.height,
                     CustomDateTimePicker(
-                      hintText: Provider.of<datetime_vm>(context, listen: true)
-                          .valuedateTime
-                          .toString(),
+                      hintText: Provider.of<datetime_vm>(context, listen: true).valuedateTime.toString(),
                       dateTimeType: DateTimeEnum.date,
-                      dateTimeController: TextEditingController(
-                        text: _currentDate.toString().split(' ')[0],
-                      ),
+                      dateTimeController: withdrawnDate,
                       onDateChange: (dateTime, formattedDate) {
                         _selectDate(context, dateTime);
                       },
@@ -225,29 +212,23 @@ class _RejectDialogState extends State<RejectDialog> {
                                   child: Align(
                                     alignment: Alignment.topRight,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
                                             InkWell(
                                               onTap: () => pickImage(),
-                                              borderRadius:
-                                                  BorderRadius.circular(90),
+                                              borderRadius: BorderRadius.circular(90),
                                               child: Container(
                                                 height: 40,
                                                 width: 40,
-                                                margin: EdgeInsets.only(
-                                                    top: 10, right: 15),
+                                                margin: EdgeInsets.only(top: 10, right: 15),
                                                 decoration: BoxDecoration(
                                                   color: Colors.grey.shade50,
                                                   shape: BoxShape.circle,
                                                 ),
                                                 alignment: Alignment.center,
-                                                child: AppIcon(
-                                                    Icons.attachment_rounded,
-                                                    color: Colors.grey.shade700,
-                                                    size: 20),
+                                                child: AppIcon(Icons.attachment_rounded, color: Colors.grey.shade700, size: 20),
                                               ),
                                             ),
                                           ],
@@ -256,13 +237,11 @@ class _RejectDialogState extends State<RejectDialog> {
                                           onTap: () {
                                             deleteFile();
                                           },
-                                          borderRadius:
-                                              BorderRadius.circular(90),
+                                          borderRadius: BorderRadius.circular(90),
                                           child: Container(
                                             height: 40,
                                             width: 40,
-                                            margin: EdgeInsets.only(
-                                                top: 10, left: 15),
+                                            margin: EdgeInsets.only(top: 10, left: 15),
                                             decoration: BoxDecoration(
                                               color: Colors.grey.shade50,
                                               shape: BoxShape.circle,
@@ -287,39 +266,23 @@ class _RejectDialogState extends State<RejectDialog> {
                                   child: Stack(
                                     children: [
                                       Positioned.fill(
-                                        child: _invoice.file_reject!.mimeType
-                                                    ?.contains("image") ==
-                                                true
+                                        child: _invoice.file_reject!.mimeType?.contains("image") == true
                                             ? InkWell(
                                                 onTap: () => AppFileViewer(
-                                                  imageSource:
-                                                      ImageSourceViewer.network,
-                                                  urls: [
-                                                    EndPoints.baseUrls.urlFile +
-                                                        _invoice.file_reject!
-                                                  ],
+                                                  imageSource: ImageSourceViewer.network,
+                                                  urls: [EndPoints.baseUrls.urlFile + _invoice.file_reject!],
                                                 ).show(context),
                                                 child: FancyImageShimmerViewer(
-                                                  imageUrl: EndPoints
-                                                          .baseUrls.urlFile +
-                                                      _invoice.file_reject!,
+                                                  imageUrl: EndPoints.baseUrls.urlFile + _invoice.file_reject!,
                                                   fit: BoxFit.cover,
                                                 ),
                                               )
                                             : InkWell(
-                                                onTap: () => openFile(
-                                                    _invoice.file_reject!),
+                                                onTap: () => openFile(_invoice.file_reject!),
                                                 child: Container(
                                                     width: double.infinity,
-                                                    decoration: BoxDecoration(
-                                                        color: AppColors
-                                                            .primaryMain
-                                                            .withOpacity(0.1)),
-                                                    child: Icon(
-                                                        Icons
-                                                            .picture_as_pdf_rounded,
-                                                        color: Colors.grey,
-                                                        size: 30)),
+                                                    decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                                                    child: Icon(Icons.picture_as_pdf_rounded, color: Colors.grey, size: 30)),
                                               ),
                                       ),
                                       Positioned.fill(
@@ -329,13 +292,11 @@ class _RejectDialogState extends State<RejectDialog> {
                                             children: [
                                               InkWell(
                                                 onTap: () => pickImage(),
-                                                borderRadius:
-                                                    BorderRadius.circular(90),
+                                                borderRadius: BorderRadius.circular(90),
                                                 child: Container(
                                                   height: 40.scaleIconsSize,
                                                   width: 40.scaleIconsSize,
-                                                  margin: EdgeInsets.only(
-                                                      top: 10, right: 15),
+                                                  margin: EdgeInsets.only(top: 10, right: 15),
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey.shade50,
                                                     shape: BoxShape.circle,
@@ -352,13 +313,11 @@ class _RejectDialogState extends State<RejectDialog> {
                                                 onTap: () {
                                                   deleteImageReject();
                                                 },
-                                                borderRadius:
-                                                    BorderRadius.circular(90),
+                                                borderRadius: BorderRadius.circular(90),
                                                 child: Container(
                                                   height: 40.scaleIconsSize,
                                                   width: 40.scaleIconsSize,
-                                                  margin: EdgeInsets.only(
-                                                      top: 10, right: 15),
+                                                  margin: EdgeInsets.only(top: 10, right: 15),
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey.shade50,
                                                     shape: BoxShape.circle,
@@ -384,9 +343,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      AppIcon(Icons.attachment_rounded,
-                                          color: Colors.grey.shade700,
-                                          size: 35),
+                                      AppIcon(Icons.attachment_rounded, color: Colors.grey.shade700, size: 35),
                                       SizedBox(height: 0),
                                       AppText(
                                         'Attach file',
@@ -412,8 +369,7 @@ class _RejectDialogState extends State<RejectDialog> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             ..._buildRadioListTile(
-                              items:
-                                  RateEnum.values.map((e) => e.value).toList(),
+                              items: RateEnum.values.map((e) => e.value).toList(),
                               selectedValue: selectedRateProductRadio,
                             ),
                           ],
@@ -423,8 +379,7 @@ class _RejectDialogState extends State<RejectDialog> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             ..._buildRadioListTile(
-                              items:
-                                  RateEnum.values.map((e) => e.value).toList(),
+                              items: RateEnum.values.map((e) => e.value).toList(),
                               selectedValue: selectedRateSalesRadio,
                             ),
                           ],
@@ -434,8 +389,7 @@ class _RejectDialogState extends State<RejectDialog> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             ..._buildRadioListTile(
-                              items:
-                                  RateEnum.values.map((e) => e.value).toList(),
+                              items: RateEnum.values.map((e) => e.value).toList(),
                               selectedValue: selectedRateSupportRadio,
                             ),
                           ],
@@ -448,8 +402,7 @@ class _RejectDialogState extends State<RejectDialog> {
                         if (value.isloading) {
                           return Center(child: CircularProgressIndicator());
                         }
-                        if (_invoice.approveBackDone==null || _invoice.approveBackDone=='2'
-                            ||_invoice.approveBackDone=='3')
+                        if (_invoice.approveBackDone == null || _invoice.approveBackDone == '2' || _invoice.approveBackDone == '3')
                           return Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -458,11 +411,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                   child: AppElevatedButton(
                                     text: 'انسحاب',
                                     onPressed: () async {
-                                      if ((selectedFile == null &&
-                                          (_invoice.file_reject?.isEmpty ??
-                                              true)) ||
-                                          typeclient_provider.selectedValueOut ==
-                                              null) {
+                                      if ((selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) ||
+                                          typeclient_provider.selectedValueOut == null) {
                                         AppSnackbar.showSnakeBar(
                                           "من فضلك قم بملىء الخيارات",
                                           color: ToastColorsEnum.warning,
@@ -472,33 +422,21 @@ class _RejectDialogState extends State<RejectDialog> {
                                       if (_globalKey.currentState!.validate()) {
                                         _globalKey.currentState!.save();
 
-                                        await Provider.of<InvoiceVm>(context,
-                                            listen: false)
-                                            .set_state_back(
+                                        await Provider.of<InvoiceVm>(context, listen: false).set_state_back(
                                           {
                                             'type_back': 'back',
-                                            "reason_back": typeclient_provider
-                                                .selectedValueOut
-                                                .toString(),
-                                            "desc_reason_back":
-                                            descresaonController.text
-                                                .toString(),
-                                            "date_change_back":
-                                            _currentDate.toString(),
-                                            "value_back": valueBackController.text
-                                                .toString(),
-                                            "rate_product":
-                                            selectedRateProductRadio.value,
-                                            "rate_sales":
-                                            selectedRateSalesRadio.value,
-                                            "rate_support":
-                                            selectedRateSupportRadio.value,
+                                            "reason_back": typeclient_provider.selectedValueOut.toString(),
+                                            "desc_reason_back": descresaonController.text.toString(),
+                                            "date_change_back": _currentDate.toString(),
+                                            "value_back": valueBackController.text.toString(),
+                                            "rate_product": selectedRateProductRadio.value,
+                                            "rate_sales": selectedRateSalesRadio.value,
+                                            "rate_support": selectedRateSupportRadio.value,
                                           },
                                           _invoice.idInvoice.toString(),
                                           selectedFile,
                                         );
-                                        Navigator.of(context, rootNavigator: true)
-                                            .pop(false);
+                                        Navigator.of(context, rootNavigator: true).pop(false);
                                       }
                                     },
                                   ),
@@ -508,11 +446,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                   child: AppElevatedButton(
                                     text: 'ارجاع',
                                     onPressed: () async {
-                                      if ((selectedFile == null &&
-                                          (_invoice.file_reject?.isEmpty ??
-                                              true)) ||
-                                          typeclient_provider.selectedValueOut ==
-                                              null) {
+                                      if ((selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) ||
+                                          typeclient_provider.selectedValueOut == null) {
                                         AppSnackbar.showSnakeBar(
                                           "من فضلك قم بملىء الخيارات",
                                           color: ToastColorsEnum.warning,
@@ -522,30 +457,17 @@ class _RejectDialogState extends State<RejectDialog> {
                                       if (_globalKey.currentState!.validate()) {
                                         _globalKey.currentState!.save();
 
-                                        await Provider.of<InvoiceVm>(context,
-                                            listen: false)
-                                            .set_state_back({
+                                        await Provider.of<InvoiceVm>(context, listen: false).set_state_back({
                                           'type_back': 'return',
-                                          "reason_back": typeclient_provider
-                                              .selectedValueOut
-                                              .toString(),
-                                          "desc_reason_back": descresaonController
-                                              .text
-                                              .toString(),
-                                          "date_change_back":
-                                          _currentDate.toString(),
-                                          "value_back":
-                                          valueBackController.text.toString(),
-                                          "rate_product":
-                                          selectedRateProductRadio.value,
-                                          "rate_sales":
-                                          selectedRateSalesRadio.value,
-                                          "rate_support":
-                                          selectedRateSupportRadio.value,
-                                        }, _invoice.idInvoice.toString(),
-                                            selectedFile);
-                                        Navigator.of(context, rootNavigator: true)
-                                            .pop(false);
+                                          "reason_back": typeclient_provider.selectedValueOut.toString(),
+                                          "desc_reason_back": descresaonController.text.toString(),
+                                          "date_change_back": _currentDate.toString(),
+                                          "value_back": valueBackController.text.toString(),
+                                          "rate_product": selectedRateProductRadio.value,
+                                          "rate_sales": selectedRateSalesRadio.value,
+                                          "rate_support": selectedRateSupportRadio.value,
+                                        }, _invoice.idInvoice.toString(), selectedFile);
+                                        Navigator.of(context, rootNavigator: true).pop(false);
                                       }
                                     },
                                   ),
@@ -555,7 +477,6 @@ class _RejectDialogState extends State<RejectDialog> {
                           );
 
                         return SizedBox.shrink();
-
                       },
                     ),
                   ],
@@ -617,8 +538,7 @@ class _RejectDialogState extends State<RejectDialog> {
       }
 
       File file;
-      file = await Api().downloadFile(
-          EndPoints.baseUrls.urlFile + attachFile, pp.basename(attachFile));
+      file = await Api().downloadFile(EndPoints.baseUrls.urlFile + attachFile, pp.basename(attachFile));
       if (file.existsSync()) {
         return;
       }

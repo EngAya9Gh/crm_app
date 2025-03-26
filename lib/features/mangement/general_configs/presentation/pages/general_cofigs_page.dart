@@ -39,8 +39,7 @@ class _GeneralCofigsPageState extends State<GeneralCofigsPage> {
       ),
       body: BlocBuilder<GeneralCofigsCubit, GeneralCofigsState>(
         buildWhen: (previous, current) {
-          return previous.getGeneralConfigsStatus !=
-              current.getGeneralConfigsStatus;
+          return previous.getGeneralConfigsStatus != current.getGeneralConfigsStatus;
         },
         builder: (context, state) {
           if (state.getGeneralConfigsStatus.isLoading()) {
@@ -57,7 +56,7 @@ class _GeneralCofigsPageState extends State<GeneralCofigsPage> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: AppGroupedList<ConfigModel, String>(
                 elements: generalCofigsCubit.configs,
-                groupBy: (element) => element.management ?? '',
+                groupBy: (element) => element.management ?? 'عام',
                 groupComparator: (value1, value2) => value2.compareTo(value1),
                 itemComparator: (item1, item2) {
                   return item1.idConfig.compareTo(item2.idConfig);

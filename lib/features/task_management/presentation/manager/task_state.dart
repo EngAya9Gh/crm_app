@@ -19,30 +19,37 @@ class TaskState {
     this.departmentTo,
     this.regionFrom,
     this.regionTo,
+    this.changeTaskAssignStatus = const BlocStatus.initial(),
     this.getTasksStatus = const BlocStatus.initial(),
     this.addTaskStatus = const BlocStatus.initial(),
+    this.getCurrentTask = const BlocStatus.initial(),
     this.changeTaskStatus = const BlocStatus.initial(),
     this.addComment = const BlocStatus.initial(),
+    this.updateTask = const BlocStatus.initial(),
     this.getTaskComment = const BlocStatus.initial(),
     this.getUsersTaskReports = const BlocStatus.initial(),
     this.getUsersTaskReportsStatus = const BlocStatus.initial(),
+    this.getListClients = const BlocStatus.initial(),
+    this.getTaskLog = const BlocStatus.initial(),
     this.selectedAssignedToType,
     this.myBranch,
     this.myDepartment,
     this.myTasks,
-    this.hasGetAllReports=false,
-    this.totalUserReportCount=0,
+    this.hasGetAllReports = false,
+    this.totalUserReportCount = 0,
   });
 
   final BlocStatus getTasksStatus;
+  final BlocStatus changeTaskAssignStatus;
   final UserModel? selectedAssignTo;
   final List<UserModel>? selectedParticipant;
   final DateTime? startDate;
   final DateTime? deadLineDate;
-  final File? attachmentFile;
+  final List<File>? attachmentFile;
   final RecurringType? selectedRecurringType;
   final bool? isRecurring;
   final BlocStatus addTaskStatus;
+  final BlocStatus updateTask;
   final TaskStatusType? selectedStatus;
   final UserModel? filterAssignFrom;
   final UserRegionDepartment? filterAssignTo;
@@ -59,7 +66,10 @@ class TaskState {
   final String? myBranch;
   final BlocStatus addComment;
   final BlocStatus<List<CommentModel>> getTaskComment;
+  final BlocStatus<List<ClientModel>> getListClients;
   final BlocStatus<List<UserReportModel>> getUsersTaskReports;
+  final BlocStatus<List<TaskLogModel>> getTaskLog;
+  final BlocStatus<TaskModel> getCurrentTask;
   final BlocStatus getUsersTaskReportsStatus;
   final bool hasGetAllReports;
   final int totalUserReportCount;
@@ -70,10 +80,12 @@ class TaskState {
     List<UserModel>? selectedParticipant,
     DateTime? startDate,
     DateTime? deadLineDate,
-    File? attachmentFile,
+    List<File>? attachmentFile,
     RecurringType? selectedRecurringType,
     bool? isRecurring,
     BlocStatus? addTaskStatus,
+    BlocStatus? updateTask,
+    BlocStatus? changeTaskAssignStatus,
     BlocStatus? changeTaskStatus,
     BlocStatus<List<CommentModel>>? getTaskComment,
     BlocStatus<List<UserReportModel>>? getUsersTaskReports,
@@ -96,8 +108,12 @@ class TaskState {
     bool isResetTasksState = false,
     bool? hasGetAllReports,
     int? totalUserReportCount,
+    BlocStatus<List<ClientModel>>? getListClients,
+    BlocStatus<TaskModel>? getCurrentTask,
+    BlocStatus<List<TaskLogModel>>? getTaskLog,
   }) {
     return TaskState(
+      getCurrentTask: getCurrentTask ?? this.getCurrentTask,
       selectedAssignTo: isResetAddTask ? null : selectedAssignTo ?? this.selectedAssignTo,
       selectedParticipant: isResetAddTask ? null : selectedParticipant ?? this.selectedParticipant,
       selectedAssignedToType: isResetAddTask
@@ -114,7 +130,11 @@ class TaskState {
       getTasksStatus: getTasksStatus ?? this.getTasksStatus,
       totalUserReportCount: totalUserReportCount ?? this.totalUserReportCount,
       changeTaskStatus: changeTaskStatus ?? this.changeTaskStatus,
+      updateTask: updateTask ?? this.updateTask,
+      getTaskLog: getTaskLog ?? this.getTaskLog,
       addComment: addComment ?? this.addComment,
+      changeTaskAssignStatus: changeTaskAssignStatus ?? this.changeTaskAssignStatus,
+      getListClients: getListClients ?? this.getListClients,
       getUsersTaskReports: getUsersTaskReports ?? this.getUsersTaskReports,
       getUsersTaskReportsStatus: getUsersTaskReportsStatus ?? this.getUsersTaskReportsStatus,
       hasGetAllReports: hasGetAllReports ?? this.hasGetAllReports,
@@ -317,10 +337,12 @@ enum PublicType {
   receiveTicket,
   closeTicket,
   rateTicket,
-  other,
 
   ///tasks
-  addTask
+  addTask,
+
+  //others
+  other,
 }
 
 extension PublicTypeExt on PublicType {

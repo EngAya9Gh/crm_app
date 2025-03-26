@@ -166,6 +166,8 @@ class _Care {
   final getRecommendedClients = 'care/get_recommand_care.php';
   final getRecommendedClientsFilterClient = 'subscribedClients';
   final String viewComments = "viewComments";
+  final String commentMention = "mentionedComments";
+  String getCommentReplies(String idComment) => "viewReplies/$idComment";
 
   final String getClientsAccept = 'getClientsAccept';
 
@@ -277,6 +279,8 @@ class _Task {
   const _Task();
 
   final addTask = 'tasks';
+  String updateTask(int idTask) => 'tasks/$idTask/edit';
+  String changeTaskAssign(int idTask) => 'tasks/$idTask/change-assignee';
   final filterTasksByAll = 'tasks';
 
   String changeStatusTask(String id) => 'tasks/$id/change-status';
@@ -285,6 +289,8 @@ class _Task {
   final getUsersTasksReports = 'tasks/report';
   String addTaskComment(int idTask) => 'tasks/$idTask/add-comment';
   String getTaskComments(int idTask) => 'tasks/$idTask/comments';
+  String getTaskById(int idTask) => 'tasks/$idTask';
+  String tasksLog(int idTask) => 'tasks/$idTask/log';
 }
 
 class _Participate {
@@ -487,6 +493,12 @@ class _Versions {
   final String addVersions = 'version-features';
 
   String updateVersions(int id) => 'version-features/$id/edit';
+  final String getIncommingUpdateInfo = 'version-features/next-update';
+  final String addDemand='demands';
+  String updateDemand(int idDemand)=>'demands/$idDemand/edit';
+  String changeDemandStatus(int idDemand)=>'demands/$idDemand/change-status';
+  String addDemandComments(int idDemand)=>'demands/1/add-comment';
+  String getDemandComments(int idDemand)=>'demands/1/comments';
 }
 
 class _Products {

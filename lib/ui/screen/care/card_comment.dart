@@ -1,7 +1,14 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
+import 'package:crm_smart/core/common/widgets/app_icon.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/core/common/widgets/shimmer_widget.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/view_model/comment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/user_entity.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
@@ -11,18 +18,45 @@ import '../../../core/utils/end_points.dart';
 import '../../../model/commentmodel.dart';
 import '../../../model/usermodel.dart';
 
-class Cardcomment extends StatelessWidget {
-  Cardcomment({required this.commentmodel, this.userModel, this.idClients, Key? key, this.editCommentModel}) : super(key: key);
+class Cardcomment extends StatefulWidget {
+  Cardcomment(
+      {required this.commentmodel,
+      this.userModel,
+      this.idClients,
+      this.color,
+      Key? key,
+      this.editCommentModel,
+      this.canReplay = false,
+      this.fromMenu = false,
+      this.replyOnCommentModel})
+      : super(key: key);
   CommentModel commentmodel;
   UserModel? userModel;
   String? idClients;
+  final Color? color;
+  final bool fromMenu;
   final ValueChanged<CommentModel>? editCommentModel;
+  final ValueChanged<CommentModel>? replyOnCommentModel;
+  final bool canReplay;
+
+  @override
+  State<Cardcomment> createState() => _CardcommentState();
+}
+
+class _CardcommentState extends State<Cardcomment> {
+  final TextEditingController repalyText = TextEditingController();
+  final ValueNotifier<bool> tapToRplay = ValueNotifier(false);
+
+  final ValueNotifier<bool> activeRplay = ValueNotifier(false);
+  final ValueNotifier<bool> showAll = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.all(2),
-        child: Row(
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(2),
+          child: Row(
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(width: 2),
@@ -30,17 +64,18 @@ class Cardcomment extends StatelessWidget {
                 flex: 1,
                 child: Stack(
                   children: [
-                    Positioned(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AppStatusChip(
-                          status: commentmodel.type_comment,
-                          color: AppColors.primaryMain,
-                          fontSize: 13,
+                    if (!widget.fromMenu)
+                      Positioned(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: AppStatusChip(
+                            status: widget.commentmodel.type_comment,
+                            color: AppColors.primaryMain,
+                            fontSize: 13,
+                          ),
                         ),
+                        left: 0,
                       ),
-                      left: 0,
-                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -73,183 +108,115 @@ class Cardcomment extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           AppText(
-                                            commentmodel.nameUser,
+                                            widget.commentmodel.nameUser,
                                             fontWeight: FontWeight.bold,
                                           ),
                                           2.height,
                                           AppText(
                                             HelperFunctions.dateTimeToString(DateTime.parse(
-                                              commentmodel.date_comment,
+                                              widget.commentmodel.date_comment,
                                             )),
                                           ),
+                                          5.height,
+                                          if (widget.fromMenu)
+                                            AppText(
+                                              widget.commentmodel.nameEnterprise,
+                                              color: AppColors.primaryMain,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                         ],
                                       ),
                                     ),
                                   ],
                                 ),
                                 SizedBox(height: 15),
-                               if(commentmodel.content.isNotEmpty) GestureDetector(
-                                  onLongPress: () async {
-                                    await HelperFunctions.copyToClipboard(commentmodel.content);
-                                    AppSnackbar.showSnakeBar('Copied to your clipboard!');
-                                  },
-                                  child: AppText(
-                                    commentmodel.content,
-                                    fontSize: 18,
+                                if (widget.commentmodel.content.isNotEmpty)
+                                  GestureDetector(
+                                    onLongPress: () async {
+                                      await HelperFunctions.copyToClipboard(widget.commentmodel.content);
+                                      AppSnackbar.showSnakeBar('Copied to your clipboard!');
+                                    },
+                                    child: AppText(
+                                      widget.commentmodel.content,
+                                      fontSize: 18,
+                                    ),
                                   ),
-                                ),
                                 Wrap(
-                                  children:
-                                      (commentmodel.mention_users ?? []).map((e) => AppText(' @${e.name} ', color: AppColors.primaryMain)).toList(),
+                                  children: (widget.commentmodel.mention_users ?? [])
+                                      .map((e) => AppText(' @${e.name} ', color: AppColors.primaryMain))
+                                      .toList(),
                                 ),
-                                if (commentmodel.nameUser == userModel?.nameUser)
-                                  Align(
-                                    alignment: AlignmentDirectional.bottomEnd,
-                                    child: InkWell(
-                                      onTap: () {
-                                        editCommentModel?.call(commentmodel);
+                                if (widget.commentmodel.nameUser == widget.userModel?.nameUser)
+                                  if (!widget.fromMenu)
+                                    Align(
+                                      alignment: AlignmentDirectional.bottomEnd,
+                                      child: InkWell(
+                                          onTap: () {
+                                            widget.editCommentModel?.call(widget.commentmodel);
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsetsDirectional.all(8),
+                                            child: Icon(Icons.edit, color: AppColors.primaryMain),
+                                          )),
+                                    ),
+                                if (widget.canReplay)
+                                  ListenableBuilder(
+                                    listenable: Listenable.merge([tapToRplay, activeRplay]),
+                                    builder: (context, child) => TapRegion(
+                                      behavior: HitTestBehavior.opaque,
+                                      onTapOutside: (event) {
+                                        tapToRplay.value = false;
                                       },
-                                        /*onTap: () async {
-                                          ValueNotifier<List<UserEntity>?> _suggestions = ValueNotifier([]);
-                                          Provider.of<comment_vm>(context, listen: false).getAllUsersComment().then(
-                                            (value) {
-                                              _suggestions.value = value;
-                                            },
-                                          );
-                                          GlobalKey<FlutterMentionsState> keyMention = GlobalKey<FlutterMentionsState>();
-                                          List<UserEntity>? usersMentioned = [];
-                                          GlobalKey<FormState> _key = GlobalKey();
-                                          TextEditingController textContrller = TextEditingController(text: commentmodel.content);
-                                          ValueNotifier<CommentTypeEnum?> type =
-                                              ValueNotifier(CommentTypeEnum.values.firstWhereOrNull((e) => e.value == commentmodel.type_comment));
-                                          keyMention.currentState?.controller?.text = commentmodel.content;
-                                          keyMention.currentState?.addMention(
-                                              {},
-                                              Mention(
-                                                trigger: "@",
-                                                style: TextStyle(color: AppColors.primaryMain),
-                                                data: (commentmodel.mention_users ?? []).map((e) => convertEntityToMapMention(e)).toList(),
-                                              ));
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) => Portal(
-                                              child: Directionality(
-                                                textDirection: TextDirection.rtl,
-                                                child: AlertDialog(
-                                                  insetPadding: EdgeInsets.symmetric(horizontal: 8),
-                                                  title: AppText('تعديل التعليق'),
-                                                  content: SizedBox(
-                                                    width: MediaQuery.sizeOf(context).width,
-                                                    child: Form(
-                                                      key: _key,
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize.min,
-                                                        children: [
-                                                          ValueListenableBuilder(
-                                                            valueListenable: _suggestions,
-                                                            builder: (context, value, child) => FlutterMentions(
-                                                              decoration: InputDecoration(
-                                                                  enabledBorder: OutlineInputBorder(
-                                                                    borderSide: BorderSide(color: context.colorScheme.primary, width: 1),
-                                                                    borderRadius: BorderRadius.circular(AppDimensions.kbrBorderTextField),
-                                                                  ),focusedBorder: OutlineInputBorder(
-                                                                borderSide: BorderSide(color: context.colorScheme.primary, width: 1),
-                                                                borderRadius: BorderRadius.circular(AppDimensions.kbrBorderTextField),
-                                                              )),
-                                                              key: keyMention,
-                                                              suggestionPosition: SuggestionPosition.Bottom,
-                                                              maxLines: 5,
-                                                              minLines: 1,
-                                                              textDirection: TextDirection.rtl,
-                                                              onMentionAdd: (p0) {
-                                                                usersMentioned = List.of(usersMentioned ?? [])
-                                                                  ..add(UserEntity(id: p0['id'], name: p0['display']));
-                                                              },
-                                                              mentions: [
-                                                                Mention(
-                                                                  suggestionBuilder: (p0) => Padding(
-                                                                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                                                                    child: Column(
-                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                      children: [
-                                                                        AppText(p0['display']),
-                                                                        Divider(),
-                                                                      ],
+                                      child: Align(
+                                        alignment: AlignmentDirectional.bottomEnd,
+                                        child: Padding(
+                                          padding: EdgeInsetsDirectional.only(end: 5),
+                                          child: AnimatedSwitcher(
+                                              duration: Duration(milliseconds: 200),
+                                              child: tapToRplay.value
+                                                  ? AppTextField(
+                                                      suffixIcon: context.watch<comment_vm>().isLoadingGettingReplies
+                                                          ? SizedBox(
+                                                              child: AppLoader(),
+                                                              width: 20,
+                                                              height: 20,
+                                                            )
+                                                          : activeRplay.value
+                                                              ? InkWell(
+                                                                  onTap: () {
+                                                                    widget.replyOnCommentModel
+                                                                        ?.call(widget.commentmodel.copyWith(content: repalyText.text));
+                                                                    repalyText.clear();
+                                                                  },
+                                                                  child: Transform.flip(
+                                                                    flipX: true,
+                                                                    child: Icon(
+                                                                      Icons.reply_all,
+                                                                      color: AppColors.primaryMain,
                                                                     ),
                                                                   ),
-                                                                  trigger: "@",
-                                                                  style: TextStyle(color: AppColors.primaryMain),
-                                                                  data: (value ?? []).map((e) => convertEntityToMapMention(e)).toList(),
                                                                 )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          10.height,
-                                                          ValueListenableBuilder(
-                                                            valueListenable: type,
-                                                            builder: (context, value, child) => CustomDropDown<CommentTypeEnum>(
-                                                              hint: 'نوع التعليق',
-                                                              items: CommentTypeEnum.values,
-                                                              itemAsString: (value) => value!.value,
-                                                              selectedItem: value,
-                                                              onChanged: (value) {
-                                                                if (value == null) {
-                                                                  return;
-                                                                }
-                                                                type.value = value;
-                                                              },
-                                                              validator: InputValidator.requiredFiled,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                      children: [
-                                                        Consumer<comment_vm>(
-                                                          builder: (context, value, child) => AppElevatedButton(
-                                                            isLoading: value.isloadadd,
-                                                            text: 'تاكيد',
-                                                            backgroundColor: AppColors.green,
-                                                            onPressed: () async {
-                                                              if (_key.currentState!.validate()) {
-                                                                await Provider.of<comment_vm>(context, listen: false)
-                                                                    .editComment_vm(
-                                                                        textContrller.text, commentmodel.copyWith(type_comment: type.value!.value))
-                                                                    .then(
-                                                                  (value) {
-                                                                    Provider.of<comment_vm>(context, listen: false).getComments(idClients!);
-                                                                    context.pop();
-                                                                  },
-                                                                );
-                                                              }
-                                                            },
-                                                          ),
-                                                        ),
-                                                        10.height,
-                                                        AppElevatedButton(
-                                                          text: 'رجوع',
-                                                          backgroundColor: AppColors.statusErrorActive,
-                                                          onPressed: () async {
-                                                            context.pop(false);
-                                                          },
-                                                        ),
-                                                      ],
+                                                              : null,
+                                                      filled: true,
+                                                      fillColor: AppColors.white,
+                                                      hintText: '',
+                                                      controller: repalyText,
+                                                      textDirection: TextDirection.rtl,
+                                                      onChange: (val) {
+                                                        activeRplay.value = val?.isNotEmpty ?? false;
+                                                      },
+                                                      // validator: ,
                                                     )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },*/
-                                        child: Padding(
-                                          padding: EdgeInsetsDirectional.all(8),
-                                          child: Icon(Icons.edit, color: AppColors.primaryMain),
-                                        )),
-                                  )
+                                                  : InkWell(
+                                                      onTap: () {
+                                                        tapToRplay.value = true;
+                                                        Provider.of<comment_vm>(context, listen: false).currentCommentAddReplay(widget.commentmodel);
+                                                      },
+                                                      child: AppText('replay'))),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
@@ -264,12 +231,60 @@ class Cardcomment extends StatelessWidget {
                   ],
                 ),
               ),
-            ]));
+            ],
+          ),
+        ),
+        if (widget.commentmodel.hasReplies ?? false)
+          ValueListenableBuilder(
+            valueListenable: showAll,
+            builder: (context, show, child) => Consumer<comment_vm>(
+              builder: (context, value, child) => AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                child: show
+                    ? Padding(
+                        padding: EdgeInsetsDirectional.only(start: 16),
+                        child: (value.isLoadingGettingReplies && value.idCommentUpdated == widget.commentmodel.idComment)
+                            ? Column(
+                                children: List.generate(
+                                  (widget.commentmodel.replies?.length ?? 0) + 1,
+                                  (index) => index == ((widget.commentmodel.replies?.length ?? 0))
+                                      ? LoadingCommentWidget()
+                                      : Cardcomment(commentmodel: widget.commentmodel.replies![index]),
+                                ),
+                              )
+                            : Column(
+                                children: List.generate(
+                                  widget.commentmodel.replies?.length ?? 0,
+                                  (index) => Cardcomment(commentmodel: widget.commentmodel.replies![index]),
+                                ),
+                              ),
+                      )
+                    : Transform.translate(
+                        offset: Offset(-10, -5),
+                        child: InkWell(
+                          onTap: () {
+                            showAll.value = true;
+                            value.getAllReply(widget.commentmodel);
+                          },
+                          child: Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: AppText(
+                              'view all reply',
+                              color: AppColors.primaryMain,
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+          )
+      ],
+    );
   }
 
   Widget _prepareImage() {
-    final imageUrl = commentmodel.imgImage ?? '';
-    final name = commentmodel.nameUser ?? '';
+    final imageUrl = widget.commentmodel.imgImage ?? '';
+    final name = widget.commentmodel.nameUser ?? '';
     if (imageUrl.isEmpty) {
       if (name.isEmpty) {
         return Icon(
@@ -288,7 +303,7 @@ class Cardcomment extends StatelessWidget {
         width: 1000,
         height: 1000,
         fit: BoxFit.fill,
-        imageUrl: "${EndPoints.baseUrls.urlImage}$imageUrl",
+        imageUrl: "$imageUrl",
       ),
     );
   }
@@ -298,5 +313,52 @@ class Cardcomment extends StatelessWidget {
       'id': userEntity.id,
       'display': userEntity.name,
     };
+  }
+}
+
+class LoadingCommentWidget extends StatelessWidget {
+  const LoadingCommentWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
+        boxShadow: <BoxShadow>[
+          BoxShadow(offset: Offset(1.0, 1.0), blurRadius: 2.0, color: Colors.white24 //.withOpacity(0.2),
+              ),
+        ],
+        color: Colors.black12,
+      ),
+      padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+      margin: EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShimmerWidget.circular(width: 25, height: 25),
+              SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShimmerWidget.rectangular(height: 30),
+                    2.height,
+                    ShimmerWidget.rectangular(height: 30),
+                    5.height,
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 15),
+          ShimmerWidget.rectangular(height: 65),
+        ],
+      ),
+    );
   }
 }

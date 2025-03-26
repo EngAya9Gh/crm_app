@@ -30,7 +30,7 @@ class NotificationService {
   );
 
   static Future<void> init() async {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,name: kIsWeb?null: 'smart_crm');
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, name: kIsWeb ? null : 'smart_crm');
     var tokenFcm = await getFcmToken(repeat: 3);
 
     log((tokenFcm).toString(), name: 'FCM Token');
@@ -55,16 +55,15 @@ class NotificationService {
     return fcmToken;
   }
 
-
   static void listen() {
     FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
       if (message != null) {
-          log('///////////////////////////');
+        log('///////////////////////////');
         log('$message.contentAvailable');
         log(message.data.toString());
         log('${message.notification?.title}');
         Map<String, dynamic> notification = message.data;
-        NotificationService.flutterLocalNotificationsPlugin.show(
+        flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             message.notification?.title,
             message.notification?.body,
@@ -75,19 +74,19 @@ class NotificationService {
                 presentSound: true,
               ),
               android: AndroidNotificationDetails(
-                NotificationService.channel.id,
-                NotificationService.channel.name,
-                channelDescription: NotificationService.channel.description,
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
                 playSound: true,
                 icon: '@mipmap/launcher_icon',
                 importance: Importance.max,
               ),
             ));
-        // String typeNotify = message.data['type_notify'];
-        if(message.data['title']== "مهمة جديدة"){
+        String? typeNotify = message.data['type_notify'];
+        if (message.data['title'] == "مهمة جديدة" || typeNotify == 'commentMention') {
           AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
         }
-        // AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
+        AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen(
@@ -96,8 +95,8 @@ class NotificationService {
         log(message.data.toString());
         log('${message.notification?.title}');
         {
-          String typeNotify = message.data['type_notify'];
-          if(message.data['title']== "مهمة جديدة"){
+          String? typeNotify = message.data['type_notify'];
+          if (message.data['title'] == "مهمة جديدة") {
             AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
           }
           AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
@@ -106,17 +105,16 @@ class NotificationService {
     );
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
-        if(message.data['title']== "مهمة جديدة"){
+        String? typeNotify = message.data['type_notify'];
           AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
-        }
+        // if (message.data['title'] == "مهمة جديدة" || typeNotify == 'commentMention') {
+        // }
         log('///////////////////////////');
         log('$message.contentAvailable');
         log(message.data.toString());
         log('${message.notification?.title}');
-        AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>()
-          .init();
-        AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>()
-          .increaseNotificationCount();
+        AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>().init();
+        AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>().increaseNotificationCount();
         log('///////////////////////////');
         if (kIsWeb) {
           ElegantNotification(

@@ -2,7 +2,6 @@ import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-
 class ShimmerWidget extends StatelessWidget {
   const ShimmerWidget({super.key, required this.width, required this.height, required this.shapeBorder});
 
@@ -32,6 +31,7 @@ class ShimmerWidget extends StatelessWidget {
       highlightColor: Colors.grey[300]!,
       // the duration that loading animation take
       period: const Duration(seconds: 2),
+      direction: ShimmerDirection.rtl,
       child: Container(
         width: width,
         height: height,

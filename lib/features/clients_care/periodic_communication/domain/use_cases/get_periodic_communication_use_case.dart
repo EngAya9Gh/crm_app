@@ -34,20 +34,21 @@ class GetPeriodicCommunicationParams {
   final String? type;
   final double? rate;
   final int clientWhoNotRate;
+  final bool showAllRates;
 
-  const GetPeriodicCommunicationParams({
-    this.skip = 0,
-    this.limit = AppConstants.kPerPage,
-    this.filter,
-    required this.periodicCommunicationType,
-    this.fkUser,
-    this.fkRegion,
-    this.dateFrom,
-    this.dateTo,
-    this.rate,
-    this.type,
-    this.clientWhoNotRate=0,
-  });
+  const GetPeriodicCommunicationParams(
+      {this.skip = 0,
+      this.limit = AppConstants.kPerPage,
+      this.filter,
+      required this.periodicCommunicationType,
+      this.fkUser,
+      this.fkRegion,
+      this.dateFrom,
+      this.dateTo,
+      this.rate,
+      this.type,
+      this.clientWhoNotRate = 0,
+      required this.showAllRates});
 
   Map<String, dynamic> toParams() {
     final Map<String, dynamic> params = {
@@ -55,13 +56,13 @@ class GetPeriodicCommunicationParams {
       'limit': limit,
       'fk_user': fkUser,
       'filter': filter,
-     if(clientWhoNotRate!=0) 'not_rated':clientWhoNotRate,
+      if (clientWhoNotRate != 0) 'not_rated': clientWhoNotRate,
     };
 
     if (periodicCommunicationType.isEvaluated) {
       params.addAll({
         'type': "datedays",
-        'rate': rate?.toInt(),
+        if (!showAllRates) 'rate': rate?.toInt(),
         'from': dateFrom,
         'to': dateTo,
       });
@@ -71,6 +72,6 @@ class GetPeriodicCommunicationParams {
       params.addAll({'fk_regoin': fkRegion, if (type != null && type != 'null') 'type': type});
     }
 
-    return params..removeWhere((key, value) => value == null || value == '');
+    return params..removeWhere((key, value) => (value == null || value == '') && key != 'rate');
   }
 }

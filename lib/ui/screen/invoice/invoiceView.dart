@@ -324,7 +324,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       : Container(),
                                   // widget.type == 'approved'
 
-                                  if (_privilegeCubit.checkPrivilege('41') && invoice.isApprove != null) ...{
+                                  if (_privilegeCubit.checkPrivilege('41')) ...{
                                     5.width,
                                     Expanded(
                                       child: AppElevatedButton(

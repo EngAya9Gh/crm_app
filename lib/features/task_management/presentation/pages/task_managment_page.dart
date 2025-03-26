@@ -1,20 +1,10 @@
 
-import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/ueser_report.dart';
-import 'package:crm_smart/features/task_management/presentation/widgets/task_web_widgets/drag_drop_list_footer.dart';
 
-import 'package:intl/intl.dart' as Intl;
-import '../../../../core/common/helpers/get_color_by_taskstatus.dart';
-import '../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../core/common/widgets/app_elevated_button.dart';
-import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_constants.dart';
-import '../../../../core/utils/app_fonts.dart';
-import '../../../../core/utils/app_styles.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
@@ -27,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../widgets/task_web_widgets/drag_drop_list.dart';
-import '../widgets/task_web_widgets/drag_drop_list_header.dart';
 import 'add_task_page.dart';
 
 class TaskManagementPage extends StatefulWidget {

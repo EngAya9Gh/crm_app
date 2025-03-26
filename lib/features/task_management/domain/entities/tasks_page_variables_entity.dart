@@ -8,6 +8,10 @@ import '../../data/models/task_model.dart';
 class TasksPageVariablesEntity {
   List<TaskModel> allList = [];
   TextEditingController searchController = TextEditingController();
+
+  final TextEditingController fromDateController = TextEditingController();
+  final TextEditingController toDateController = TextEditingController();
+  final ValueNotifier<int?> selectedQuickDateFilter = ValueNotifier(null);
   int totalCount = 0;
   final ValueNotifier<BranchModel?> selectedBranchModel = ValueNotifier(null);
   final ValueNotifier<ManageModel?> selectedManagerModel = ValueNotifier(null);
@@ -25,6 +29,9 @@ class TasksPageVariablesEntity {
       selectedManagerModel,
       atTime,
       afterTime,
+      fromDateController,
+      toDateController,
+      selectedQuickDateFilter,
     ];
   }
 
@@ -34,11 +41,17 @@ class TasksPageVariablesEntity {
     selectedManagerModel.value = null;
     atTime.value = null;
     afterTime.value = null;
+    fromDateController.clear();
+    toDateController.clear();
+    selectedQuickDateFilter.value = null;
   }
 
   bool checkIfFilterIsNotEmpty() {
     return selectedManagerModel.value != null ||
         selectedUserModel.value != null ||
+        toDateController.text.isNotEmpty ||
+        toDateController.text.isNotEmpty ||
+        selectedQuickDateFilter.value != null ||
         selectedBranchModel.value != null ||
         atTime.value != null ||
         afterTime.value != null;

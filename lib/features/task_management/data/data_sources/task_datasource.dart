@@ -1,7 +1,16 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/helpers/responseWrapper.dart';
+import 'package:crm_smart/core/common/models/client_model.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/features/task_management/data/models/task_log_model.dart';
+import 'package:crm_smart/features/task_management/data/models/task_model.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -27,19 +36,21 @@ class TaskDatasource {
   Future<ResponseWrapper<bool>> addTask(Map<String, dynamic> body) async {
     fun() async {
       FormData formData = FormData();
-      if (body['file_path'] != null) {
-        final file = body['file_path'];
-        formData.files.add(MapEntry('file_path', await MultipartFile.fromFile(file.path)));
+      if ((body['file_path'] as List?)?.isNotEmpty ?? false) {
+        final List<File> files = body['file_path'];
+        for (int i = 0; i < files.length; i++) {
+          formData.files.add(MapEntry('file_path[$i]', await MultipartFile.fromFile(files[i].path)));
+        }
       }
       body.forEach((key, value) {
         if (key != 'file_path') formData.fields.add(MapEntry(key, value));
       });
-
+      log(formData.files.map((e) => e.value.filename).toList().toString());
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.postRequestWithFile(endPoint: EndPoints.task.addTask, data: formData);
       _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
 
-      return ResponseWrapper<bool>(message: true, data: true);
+      return ResponseWrapper<bool>(message: false, data: false);
     }
 
     return throwAppException(fun);
@@ -113,6 +124,7 @@ class TaskDatasource {
 
     return throwAppException(fun);
   }
+
   Future<ResponseWrapper<List<UserReportModel>>> getUsersReports(GetUsersReportsParams params) async {
     fun() async {
       _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
@@ -120,6 +132,83 @@ class TaskDatasource {
       return ResponseWrapper<List<UserReportModel>>(
         data: [],
         message: List.from((response['message']).map((e) => UserReportModel.fromJson(e as Map<String, dynamic>))),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<List<ClientModel>>> getListClients() async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(endPoint: EndPoints.client.selectedClient);
+      return ResponseWrapper<List<ClientModel>>(
+        data: [],
+        message: List.from((response['message']).map((e) => ClientModel.fromJson(e as Map<String, dynamic>))),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<TaskModel>> updateTask(AddOrUpdateTaskParams params) async {
+    fun() async {
+      FormData formData = FormData();
+      if ((params.files as List?)?.isNotEmpty ?? false) {
+        final List<File> files = params.files!;
+        for (int i = 0; i < files.length; i++) {
+          formData.files.add(MapEntry('file_path[$i]', await MultipartFile.fromFile(files[i].path)));
+        }
+      }
+      params.toMap.forEach((key, value) {
+        if (key != 'file_path') formData.fields.add(MapEntry(key, value));
+      });
+
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.postRequestWithFile(endPoint: EndPoints.task.updateTask(params.taskId!), data: formData);
+      return ResponseWrapper<TaskModel>(
+        data: TaskModel(),
+        message: TaskModel.fromJson(response['message'] as Map<String, dynamic>),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<TaskModel>> changeTaskAssign(ChangeTaskAssignParams params) async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(endPoint: EndPoints.task.changeTaskAssign(params.taskId), data: params.toMap);
+      return ResponseWrapper<TaskModel>(
+        data: TaskModel(),
+        message: TaskModel.fromJson(response['message'] as Map<String, dynamic>),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<TaskModel>> getTaskById(GetTaskByIdParams params) async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(endPoint: EndPoints.task.getTaskById(params.idTask));
+      return ResponseWrapper<TaskModel>(
+        data: TaskModel(),
+        message: TaskModel.fromJson(response['message'] as Map<String, dynamic>),
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<List<TaskLogModel>>> getTaskLog(GetTaskByIdParams params) async {
+    fun() async {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(endPoint: EndPoints.task.tasksLog(params.idTask));
+      return ResponseWrapper<List<TaskLogModel>>(
+        data: [],
+               message: List.from((response['message']).map((e) => TaskLogModel.fromJson(e as Map<String, dynamic>))),
+
       );
     }
 

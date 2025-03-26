@@ -15,6 +15,9 @@ class CommentModel {
     required this.date_comment,
     required this.type_comment,
     this.mention_users,
+    this.hasReplies,
+    this.replies,
+    this.idDemand,
   });
 
   late final String idComment;
@@ -28,35 +31,54 @@ class CommentModel {
   late final String type_comment;
   List<UserModel>? mention_users;
   UserModel? commentedBy;
+  bool? hasReplies;
+  List<CommentModel>? replies;
+  int? idDemand;
 
   CommentModel.fromJson(Map<String, dynamic> json) {
     final image = json['img_image'];
     if (image != null) {
-      imgImage = EndPoints.baseUrls.urlImage + image;
+      imgImage = EndPoints.baseUrls.laravelFilesUrl + image;
     }
-    idComment = json['id_comment'] != null ? json['id_comment'].toString() : "${json['id'] ?? ''}";
-    fkUser = json['fk_user'] != null ? json['fk_user'].toString() : "";
-    fkClient = json['fk_client'] != null ? json['fk_client'].toString() : "";
-    content = json['content'] ?? '';
-    nameUser = json['nameUser'];
-    imgImage = image;
+    idComment = json['id_comment'] != null ? json['id_comment'].toString() : "${json['id'] ?? json['id_reply'] ?? ''}";
+    fkUser = json['fk_user'] != null
+        ? json['fk_user'].toString()
+        : json['user_id'] != null
+            ? json['user_id'].toString()
+            : "";
+    fkClient = json['fk_client'] != null
+        ? json['fk_client'].toString()
+        : json['client_id'] != null
+            ? json['client_id'].toString()
+            : "";
+    content = json['content'] ?? json['comment'] ?? '';
+    nameUser = json['nameUser'] ?? json['user_name'];
     nameEnterprise = json['name_enterprise'] == null ? null : json['name_enterprise'];
     commentedBy = json['commented_by'] == null ? null : UserModel.fromJson(json['commented_by']);
-    date_comment = json['date_comment'] ?? json['comment_date'];
+    date_comment = json['date_comment'] ?? json['comment_date'] ?? json['date_reply'] ?? json['created_at'];
     type_comment = json['type_comment'] ?? CommentTypeEnum.all.value;
     mention_users = json['mention_users'] == null ? [] : List.of(json['mention_users']).map((e) => UserModel.fromJson(e)).toList();
+    hasReplies = json['has_replies'];
+    idDemand = json['demand_id'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id_comment'] = idComment;
     _data['fk_user'] = fkUser;
+    _data['user_id'] = fkUser;
     _data['fk_client'] = fkClient;
+    _data['client_id'] = fkClient;
     _data['content'] = content;
     _data['nameUser'] = nameUser;
+    _data['user_name'] = nameUser;
     _data['img_image'] = imgImage;
     _data['name_enterprise'] = nameEnterprise;
     _data['date_comment'] = date_comment;
+    _data['id_reply'] = idComment;
+    _data['date_reply'] = date_comment;
+    _data['has_replies'] = hasReplies;
+    _data['demand_id'] = idDemand;
     _data['mention_users'] = mention_users?.map(
       (e) => e.toJson(),
     );
@@ -74,6 +96,8 @@ class CommentModel {
     String? date_comment,
     String? type_comment,
     List<UserModel>? mention_users,
+    bool? hasReplies,
+    List<CommentModel>? replies,
   }) {
     return CommentModel(
       idComment: idComment ?? this.idComment,
@@ -86,6 +110,8 @@ class CommentModel {
       date_comment: date_comment ?? this.date_comment,
       type_comment: type_comment ?? this.type_comment,
       mention_users: mention_users ?? this.mention_users,
+      hasReplies: hasReplies ?? this.hasReplies,
+      replies: replies ?? this.replies,
     );
   }
 }
