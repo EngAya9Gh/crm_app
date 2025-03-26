@@ -74,7 +74,6 @@ class TaskState {
   final bool hasGetAllReports;
   final int totalUserReportCount;
 
-
   TaskState copyWith({
     BlocStatus? getTasksStatus,
     UserModel? selectedAssignTo,
@@ -338,10 +337,12 @@ enum PublicType {
   receiveTicket,
   closeTicket,
   rateTicket,
-  other,
 
   ///tasks
-  addTask
+  addTask,
+
+  //others
+  other,
 }
 
 extension PublicTypeExt on PublicType {
