@@ -28,7 +28,7 @@ class Cardcomment extends StatefulWidget {
       this.editCommentModel,
       this.canReplay = false,
       this.fromMenu = false,
-      this.replyOnCommentModel})
+      this.replyOnCommentModel, this.itemKey, this.shouldHighlight=false})
       : super(key: key);
   CommentModel commentmodel;
   UserModel? userModel;
@@ -38,7 +38,8 @@ class Cardcomment extends StatefulWidget {
   final ValueChanged<CommentModel>? editCommentModel;
   final ValueChanged<CommentModel>? replyOnCommentModel;
   final bool canReplay;
-
+  final GlobalKey? itemKey;
+  final bool shouldHighlight;
   @override
   State<Cardcomment> createState() => _CardcommentState();
 }
@@ -49,6 +50,32 @@ class _CardcommentState extends State<Cardcomment> {
 
   final ValueNotifier<bool> activeRplay = ValueNotifier(false);
   final ValueNotifier<bool> showAll = ValueNotifier(false);
+
+  bool _isHighlighted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.shouldHighlight) {
+      _triggerHighlight();
+    }
+  }
+
+  @override
+  void didUpdateWidget(Cardcomment oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.shouldHighlight && !oldWidget.shouldHighlight) {
+      _triggerHighlight();
+    }
+  }
+
+  void _triggerHighlight() async {
+    setState(() => _isHighlighted = true);
+    await Future.delayed(Duration(milliseconds: 1000));
+    if (mounted) {
+      setState(() => _isHighlighted = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +113,7 @@ class _CardcommentState extends State<Cardcomment> {
                               BoxShadow(offset: Offset(1.0, 1.0), blurRadius: 2.0, color: Colors.white24 //.withOpacity(0.2),
                                   ),
                             ],
-                            color: Colors.black12,
+                            color: _isHighlighted ? AppColors.primaryAltLight : Colors.black12,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(right: 8.0, bottom: 8),

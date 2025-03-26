@@ -23,7 +23,7 @@ class CardNotifications extends StatelessWidget {
       onTap: () => AppDynamicLinks.routeNotifyTo(
         notification.typeNotify,
         context,
-        null,
+        {"paramId": notification.data, "additional_data": notification.additionalData},
         notification.data,
       ),
       child: Column(

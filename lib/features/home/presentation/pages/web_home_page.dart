@@ -139,32 +139,34 @@ class _WebHomePageState extends State<WebHomePage> {
                                   top: 0,
                                   child: Consumer<UserProvider>(
                                     builder: (context, value, child) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColors.statusErrorActive,
-                                        ),
-                                        width: (22.0).scaleWidth,
-                                        height: (22.0).scaleWidth,
-                                        child: Center(
-                                            // child: state.getUnreadNotificationsCountStatus.when(
-                                            // loading: () =>
-                                            // AppLoader(size: (18.0).scaleFontSize, padding: 0),
-                                            // success: (data) {
-                                            // return
-                                            child: AppText(
-                                          (value.currentUser.notificationNotRead ?? 0) > 99
-                                              ? '99'
-                                              : (value.currentUser.notificationNotRead ?? 0).toString(),
-                                          color: Colors.white,
-                                          fontSize: (14.0).scaleFontSize,
-                                        )
-                                            // },
-                                            // empty: () => SizedBox.shrink(),
-                                            // failure: (error, data) => SizedBox.shrink(),
-                                            // ),
-                                            ),
-                                      );
+                                      return (value.currentUser.notificationNotRead ?? 0) == 0
+                                          ? SizedBox.shrink()
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: AppColors.statusErrorActive,
+                                              ),
+                                              width: (22.0).scaleWidth,
+                                              height: (22.0).scaleWidth,
+                                              child: Center(
+                                                  // child: state.getUnreadNotificationsCountStatus.when(
+                                                  // loading: () =>
+                                                  // AppLoader(size: (18.0).scaleFontSize, padding: 0),
+                                                  // success: (data) {
+                                                  // return
+                                                  child: AppText(
+                                                (value.currentUser.notificationNotRead ?? 0) > 99
+                                                    ? '99'
+                                                    : (value.currentUser.notificationNotRead ?? 0).toString(),
+                                                color: Colors.white,
+                                                fontSize: (14.0).scaleFontSize,
+                                              )
+                                                  // },
+                                                  // empty: () => SizedBox.shrink(),
+                                                  // failure: (error, data) => SizedBox.shrink(),
+                                                  // ),
+                                                  ),
+                                            );
                                     },
                                   ),
                                 ),

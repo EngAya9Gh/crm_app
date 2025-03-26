@@ -37,6 +37,7 @@ class TaskState {
     this.myTasks,
     this.hasGetAllReports = false,
     this.totalUserReportCount = 0,
+    this.fileAddedOrEdtiableIndex = const [],
   });
 
   final BlocStatus getTasksStatus;
@@ -73,6 +74,7 @@ class TaskState {
   final BlocStatus getUsersTaskReportsStatus;
   final bool hasGetAllReports;
   final int totalUserReportCount;
+  final List<int> fileAddedOrEdtiableIndex;
 
   TaskState copyWith({
     BlocStatus? getTasksStatus,
@@ -111,6 +113,7 @@ class TaskState {
     BlocStatus<List<ClientModel>>? getListClients,
     BlocStatus<TaskModel>? getCurrentTask,
     BlocStatus<List<TaskLogModel>>? getTaskLog,
+    List<int>? fileAddedOrEdtiableIndex,
   }) {
     return TaskState(
       getCurrentTask: getCurrentTask ?? this.getCurrentTask,
@@ -129,6 +132,7 @@ class TaskState {
       addTaskStatus: isResetAddTask ? const BlocStatus.initial() : addTaskStatus ?? this.addTaskStatus,
       getTasksStatus: getTasksStatus ?? this.getTasksStatus,
       totalUserReportCount: totalUserReportCount ?? this.totalUserReportCount,
+      fileAddedOrEdtiableIndex: fileAddedOrEdtiableIndex ?? this.fileAddedOrEdtiableIndex,
       changeTaskStatus: changeTaskStatus ?? this.changeTaskStatus,
       updateTask: updateTask ?? this.updateTask,
       getTaskLog: getTaskLog ?? this.getTaskLog,

@@ -9,6 +9,7 @@ class NotificationModel {
     required this.tonameuser,
     required this.fromNameuser,
     required this.data,
+    this.additionalData,
     required this.dateNotify,
     this.typeNotifyTranslation,
   });
@@ -22,6 +23,7 @@ class NotificationModel {
   late final String tonameuser;
   String? fromNameuser;
   late final String data;
+  String? additionalData;
   late String dateNotify;
   String? typeNotifyTranslation;
 
@@ -35,6 +37,7 @@ class NotificationModel {
     tonameuser = json['tonameuser'];
     fromNameuser = json['fromNameuser'];
     data = json['data'].toString();
+    additionalData = json['additional_data'] == null ? null : json['additional_data'].toString();
     dateNotify = json['dateNotify'];
     typeNotifyTranslation = json['type_notify_translation'];
   }
@@ -50,6 +53,7 @@ class NotificationModel {
     _data['tonameuser'] = tonameuser;
     _data['fromNameuser'] = fromNameuser;
     _data['data'] = data;
+    _data['additional_data'] = additionalData;
     _data['dateNotify'] = dateNotify;
     _data['type_notify_translation'] = typeNotifyTranslation;
     return _data;

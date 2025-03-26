@@ -3,6 +3,7 @@ import 'package:crm_smart/features/task_management/data/models/task_log_model.da
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/curd_task_files_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:dartz/dartz.dart';
@@ -35,4 +36,5 @@ abstract class TaskRepository {
   Future<Result<ResponseWrapper<List<ClientModel>>>> getListClients();
   Future<Result<ResponseWrapper<TaskModel>>> updateTask(AddOrUpdateTaskParams params);
   Future<Result<ResponseWrapper<TaskModel>>> changeTaskAssign(ChangeTaskAssignParams params);
+  Future<Result<ResponseWrapper<TaskModel>>> crudTaskFiles(CurdFilesTaskParams params);
 }

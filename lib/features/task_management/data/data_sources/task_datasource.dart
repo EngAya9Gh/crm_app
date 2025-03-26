@@ -10,6 +10,7 @@ import 'package:crm_smart/features/task_management/data/models/task_log_model.da
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/curd_task_files_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:dio/dio.dart';
@@ -207,8 +208,21 @@ class TaskDatasource {
       final response = await _apiServices.get(endPoint: EndPoints.task.tasksLog(params.idTask));
       return ResponseWrapper<List<TaskLogModel>>(
         data: [],
-               message: List.from((response['message']).map((e) => TaskLogModel.fromJson(e as Map<String, dynamic>))),
+        message: List.from((response['message']).map((e) => TaskLogModel.fromJson(e as Map<String, dynamic>))),
+      );
+    }
 
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<TaskModel>> crudTaskFiles(CurdFilesTaskParams params) async {
+    fun() async {
+      var formdate = await params.toFormData;
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.postRequestWithFile(endPoint: EndPoints.task.crudFiles(params.taskId), data: formdate);
+      return ResponseWrapper<TaskModel>(
+        data: null,
+        message: TaskModel.fromJson(response['message']),
       );
     }
 
