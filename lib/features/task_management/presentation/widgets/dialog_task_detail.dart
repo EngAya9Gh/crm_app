@@ -1,13 +1,19 @@
+import 'dart:math';
+
 import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/models/file_model.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/files/app_platform_image.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/features/task_management/data/models/task_log_model.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_comment_task_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/curd_task_files_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
+import 'package:crm_smart/ui/widgets/pick_image_bottom_sheet.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -203,60 +209,56 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
               },
               10.height,
               if (widget.task.attachments?.isNotEmpty ?? false)
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: SizedBox(
-                      height: 150.scaleHeight,
-                      child: ListView.separated(
-                        separatorBuilder: (context, index) => 10.width,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: widget.task.attachments?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          if (widget.task.attachments![index].filePath!.endsWith('.pdf') ||
-                              widget.task.attachments![index].filePath!.endsWith('.PDF')) {
-                            return StatefulBuilder(
-                              builder: (context, refresh) {
+                BlocBuilder<TaskCubit, TaskState>(
+                  builder: (context, state) {
+                    return ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: SizedBox(
+                          height: 150.scaleHeight,
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) => 10.width,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: (state.getCurrentTask.data?.attachments?.length ?? 0) + 1,
+                            itemBuilder: (context, index) {
+                              print(state.fileAddedOrEdtiableIndex.contains(index));
+                              if (index == (state.getCurrentTask.data?.attachments?.length ?? 0)) {
                                 return InkWell(
-                                  onTap: () async {
-                                    isLoading = true;
-                                    refresh(() {});
-                                    await InvoiceVm().openFile(
-                                      attachFile: FileAttach(fileAttach: widget.task.attachments?[index].filePath),
-                                      baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+                                  onTap: () {
+                                    showModalBottomSheet(
                                       context: context,
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+                                      builder: (context) => PickImageBottomSheet(
+                                        onPickFile: (context, file) {
+                                          widget.cubit.curdTaskFiles(params: CurdFilesTaskParams(taskId: widget.task.id!, files: [file]));
+                                        },
+                                      ),
                                     );
-                                    isLoading = false;
-                                    refresh(() {});
                                   },
                                   child: Container(
-                                      width: 200.scaleWidth,
-                                      height: 150.scaleHeight,
-                                      decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
-                                      child: isLoading
-                                          ? AppLoader(padding: 12)
-                                          : AppIcon(
-                                              Icons.picture_as_pdf_rounded,
-                                              color: Colors.grey,
-                                            )),
+                                    width: 200.scaleWidth,
+                                    height: 150.scaleHeight,
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppColors.primaryAltLight),
+                                    child: Center(child: Icon(Icons.add)),
+                                  ),
                                 );
-                              },
-                            );
-                          }
-                          return InkWell(
-                            onTap: () => AppFileViewer(
-                              imageSource: ImageSourceViewer.network,
-                              urls: [EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?[index].filePath ?? '')],
-                            ).show(context),
-                            child: FancyImageShimmerViewer(
-                              width: 200.scaleWidth,
-                              height: 150.scaleHeight,
-                              imageUrl: EndPoints.baseUrls.laravelFilesUrl + (widget.task.attachments?[index].filePath ?? ''),
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                      ),
-                    )),
+                              }
+                              var file = state.getCurrentTask.data!.attachments![index];
+                              if ((file.filePath ?? file.xFile?.path)!.endsWith('.pdf') || (file.filePath ?? file.xFile?.path)!.endsWith('.PDF')) {
+                                return fileWidgetAttachement(
+                                    cubit: widget.cubit, file: file, task: widget.task, isLoading: state.fileAddedOrEdtiableIndex.contains(index));
+                              }
+                              return imageWidgetAttachement(
+                                file: file,
+                                isLoading: state.fileAddedOrEdtiableIndex.contains(index),
+                                cubit: widget.cubit,
+                                task: widget.task,
+                              );
+                            },
+                          ),
+                        ));
+                  },
+                ),
               10.height,
               Wrap(
                   spacing: 5,
@@ -383,6 +385,136 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
       ),
     );
   }
+}
+
+class imageWidgetAttachement extends StatelessWidget {
+  const imageWidgetAttachement({
+    super.key,
+    required this.file,
+    this.isLoading = false,
+    required this.cubit,
+    required this.task,
+  });
+  final bool isLoading;
+  final FileAttachmentTaskModel file;
+  final TaskCubit cubit;
+  final TaskModel task;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () => AppFileViewer(
+              imageSource: file.xFile != null ? ImageSourceViewer.file : ImageSourceViewer.network,
+              files: file.xFile != null ? [file.xFile!] : [],
+              urls: [EndPoints.baseUrls.laravelFilesUrl + (file.filePath ?? '')],
+            ).show(context),
+        child: Stack(
+          children: [
+            file.xFile != null
+                ? AppPlatformImage(
+                    fileModel: FileModel(file: file.xFile),
+                    fit: BoxFit.cover,
+                    width: 200.scaleWidth,
+                    height: 150.scaleHeight,
+                  )
+                : FancyImageShimmerViewer(
+                    width: 200.scaleWidth,
+                    height: 150.scaleHeight,
+                    imageUrl: EndPoints.baseUrls.laravelFilesUrl + (file.filePath ?? ''),
+                    fit: BoxFit.cover,
+                  ),
+         if (!isLoading)   Positioned.fill(
+              child: Align(
+                alignment: Alignment.topRight,
+                child: InkWell(
+                  onTap: () {
+                    cubit.curdTaskFiles(params: CurdFilesTaskParams(taskId: task.id!, filesId: [file.id!]));
+                  },
+                  borderRadius: BorderRadius.circular(90),
+                  child: Container(
+                    height: 25,
+                    width: 25,
+                    margin: EdgeInsets.only(top: 5, right: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: AppIcon(
+                      Icons.delete_rounded,
+                      color: Colors.red,
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            if (isLoading) Positioned.fill(child: AppLoader()),
+          ],
+        ));
+  }
+}
+
+Widget fileWidgetAttachement({required TaskCubit cubit, required FileAttachmentTaskModel file, required TaskModel task, bool? isLoading}) {
+  bool isLoadingOpen = false;
+  return StatefulBuilder(
+    builder: (context, refresh) {
+      return InkWell(
+        onTap: () async {
+          isLoadingOpen = true;
+          refresh(() {});
+          await InvoiceVm().openFile(
+            attachFile: FileAttach(fileAttach: file.filePath, file: file.xFile),
+            baseUrl: EndPoints.baseUrls.laravelFilesUrl,
+            context: context,
+          );
+          isLoadingOpen = false;
+          refresh(() {});
+        },
+        child: Stack(
+          children: [
+            Container(
+                width: 200.scaleWidth,
+                height: 150.scaleHeight,
+                decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                child: isLoadingOpen
+                    ? AppLoader(padding: 12)
+                    : AppIcon(
+                        Icons.picture_as_pdf_rounded,
+                        color: Colors.grey,
+                      )),
+          if (!(isLoading??false))    Positioned.fill(
+              child: Align(
+                alignment: Alignment.topRight,
+                child: InkWell(
+                  onTap: () {
+                    cubit.curdTaskFiles(params: CurdFilesTaskParams(taskId: task.id!, filesId: [file.id!]));
+                  },
+                  borderRadius: BorderRadius.circular(90),
+                  child: Container(
+                    height: 25,
+                    width: 25,
+                    margin: EdgeInsets.only(top: 5, right: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: AppIcon(
+                      Icons.delete_rounded,
+                      color: Colors.red,
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            if (isLoading ?? false) Positioned.fill(child: AppLoader())
+          ],
+        ),
+      );
+    },
+  );
 }
 
 class CommentTabView extends StatelessWidget {

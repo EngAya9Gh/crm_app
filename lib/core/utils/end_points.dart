@@ -291,6 +291,7 @@ class _Task {
   String getTaskComments(int idTask) => 'tasks/$idTask/comments';
   String getTaskById(int idTask) => 'tasks/$idTask';
   String tasksLog(int idTask) => 'tasks/$idTask/log';
+  String crudFiles(int idTask) => 'tasks/$idTask/crud-files';
 }
 
 class _Participate {

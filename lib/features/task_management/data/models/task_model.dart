@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:crm_smart/model/usermodel.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/common/models/client_model.dart';
 
@@ -389,6 +390,7 @@ class FileAttachmentTaskModel {
   final int? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final XFile? xFile;
 
   FileAttachmentTaskModel({
     this.id,
@@ -398,6 +400,7 @@ class FileAttachmentTaskModel {
     this.createdBy,
     this.createdAt,
     this.updatedAt,
+    this.xFile,
   });
 
   FileAttachmentTaskModel copyWith({
@@ -408,6 +411,7 @@ class FileAttachmentTaskModel {
     int? createdBy,
     DateTime? createdAt,
     DateTime? updatedAt,
+    XFile? xFile,
   }) =>
       FileAttachmentTaskModel(
         id: id ?? this.id,
@@ -417,6 +421,7 @@ class FileAttachmentTaskModel {
         createdBy: createdBy ?? this.createdBy,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        xFile: xFile ?? this.xFile,
       );
 
   factory FileAttachmentTaskModel.fromJson(Map<String, dynamic> json) => FileAttachmentTaskModel(

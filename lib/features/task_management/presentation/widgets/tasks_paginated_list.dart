@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/scroll_to_find_item.dart';
 import 'package:crm_smart/core/common/models/location/branch_model.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
@@ -42,8 +43,13 @@ import '../manager/task_cubit.dart';
 import 'dialog_task_detail.dart';
 
 class TasksPaginatedList extends StatefulWidget {
-  const TasksPaginatedList({super.key});
-
+  const TasksPaginatedList({
+    super.key,
+    this.idTask,
+    this.idStatus,
+  });
+  final int? idTask;
+  final int? idStatus;
   @override
   State<TasksPaginatedList> createState() => _TasksPaginatedListState();
 }
@@ -62,12 +68,39 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     AppColors.secondaryAltDark,
     AppColors.green,
   ];
+  final GlobalKey _targetKey = GlobalKey();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     _cubit = context.read<TaskCubit>();
+
+    if (widget.idTask != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _findAndScrollToItem(widget.idTask!.toString());
+      });
+    }
+    ;
     super.initState();
   }
+
+  Future<void> _findAndScrollToItem(String targetId) async {
+    await ScrollHelper.scrollToItem(
+      scrollController: _scrollController,
+      targetId: targetId,
+      itemHeight: 95.0, // Your item height
+      items: _cubit.pageVariables.allList,
+      hasReachedMax: _cubit.pageVariables.hasReachedEnd,
+      loadNextPage: () async {
+        _cubit.getTasks(isNewFilter: false);
+        // Wait for load to complete
+        await Future.delayed(Duration(milliseconds: 500));
+      },
+      findItem: (task) => task.id.toString() == targetId,
+    );
+  }
+
+  ValueNotifier<bool> _isHighlighted = ValueNotifier(false);
 
   GlobalKey<FormState> _formKey = GlobalKey();
   @override
@@ -75,8 +108,21 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
         return AppPaginatedList(
+          scrollController: _scrollController,
           items: _cubit.pageVariables.allList,
-          itemBuilder: (context, index) => _buildCard(index, context),
+          itemBuilder: (context, index) {
+            final task = _cubit.pageVariables.allList[index];
+            if (task.id == widget.idTask) {
+              _isHighlighted.value = true;
+              Future.delayed(Duration(seconds: 2)).then(
+                (value) {
+                  _isHighlighted.value = false;
+                },
+              );
+            }
+            return ValueListenableBuilder(
+                valueListenable: _isHighlighted, builder: (context, value, child) => _buildCard(task, _isHighlighted.value, context));
+          },
           isLoading: state.getTasksStatus.isLoading(),
           hasReachedEnd: _cubit.pageVariables.hasReachedEnd,
           onLoadMore: () => _cubit.getTasks(isNewFilter: false),
@@ -85,8 +131,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     );
   }
 
-  Widget _buildCard(int index, BuildContext context) {
-    final task = _cubit.pageVariables.allList[index];
+  Widget _buildCard(TaskModel task, bool isSame, BuildContext context) {
     final assignToUserName = task.assignTo!.nameUser;
     final firstList = assignToUserName?.split(' ').firstOrNull;
     final secondList = assignToUserName?.split(' ').lastOrNull;
@@ -105,7 +150,9 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
 
     final status = TaskStatusType.values.firstWhereOrNull((element) => element.name == task.status?.name);
     return Container(
-      decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadiusDirectional.circular(8)),
+      decoration: BoxDecoration(
+          color: (isSame && task.id == widget.idTask) ? AppColors.primaryAltLight : AppColors.white,
+          borderRadius: BorderRadiusDirectional.circular(8)),
       child: InkWell(
         onTap: status != null && context.read<PrivilegesCubit>().checkPrivilege('165')
             ? () {

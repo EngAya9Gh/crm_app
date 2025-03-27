@@ -5,6 +5,7 @@ import 'package:crm_smart/features/task_management/domain/use_cases/add_comment_
 import 'package:crm_smart/features/task_management/domain/use_cases/add_task_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/add_users_report_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/curd_task_files_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -97,4 +98,9 @@ class TaskRepositoryImpl extends TaskRepository {
   Future<Result<ResponseWrapper<List<TaskLogModel>>>> getTaskLog(GetTaskByIdParams params) {
     return toApiResult(() => datasource.getTaskLog(params));
   }
+
+  @override
+  Future<Result<ResponseWrapper<TaskModel>>> crudTaskFiles(CurdFilesTaskParams params) {
+       return toApiResult(() => datasource.crudTaskFiles(params));
+}
 }

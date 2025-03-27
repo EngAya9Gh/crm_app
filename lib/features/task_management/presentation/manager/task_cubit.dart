@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/common/models/client_model.dart';
+import 'package:crm_smart/features/sales/clients/clients_list/data/models/client_support_file_model.dart';
 import 'package:crm_smart/features/task_management/data/models/task_log_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/curd_task_files_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_list_clients_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_task_log_usecase.dart';
@@ -49,6 +51,7 @@ class TaskCubit extends Cubit<TaskState> {
   final UpdateTaskUsecase _updateTaskUsecase;
   final GetTaskByIdUsecase _getTaskByIdUsecase;
   final GetTaskLogUsecase _getTakslogUsecase;
+  final CrudTaskFilesUsecase _crudTaskFilesUsecase;
 
   Map<TaskStatusType, TaskStatusInfo> taskStatusInfo = {
     TaskStatusType.Open: TaskStatusInfo(),
@@ -69,6 +72,7 @@ class TaskCubit extends Cubit<TaskState> {
     this._updateTaskUsecase,
     this._getTaskByIdUsecase,
     this._getTakslogUsecase,
+    this._crudTaskFilesUsecase,
   ) : super(TaskState());
 
   TasksPageVariablesEntity pageVariables = TasksPageVariablesEntity();
@@ -247,7 +251,7 @@ class TaskCubit extends Cubit<TaskState> {
       },
       (value) {
         onSuccess(value.message!);
-        emit(state.copyWith(getCurrentTask: const BlocStatus.success()));
+        emit(state.copyWith(getCurrentTask: BlocStatus.success(data: value.message)));
       },
     );
   }
@@ -266,6 +270,42 @@ class TaskCubit extends Cubit<TaskState> {
       },
       (value) {
         emit(state.copyWith(getTaskLog: BlocStatus.success(data: value.message)));
+      },
+    );
+  }
+
+
+  curdTaskFiles({
+    required CurdFilesTaskParams params,
+  }) async {
+    var currentAttachments = state.getCurrentTask.data?.attachments ?? [];
+    emit(state.copyWith(
+        getCurrentTask: BlocStatus.success(
+            data: state.getCurrentTask.data?.copyWith(
+      attachments: List.of(currentAttachments)
+        ..addAll((params.files ?? []).map(
+          (e) => FileAttachmentTaskModel(xFile: e),
+        )),
+    ))));
+    var attachmentFileIds = currentAttachments.map((attachment) => attachment.id).toList();
+    var indexOfFiles = params.filesId?.map((fileId) => attachmentFileIds.indexOf(fileId)).toList() ?? [];
+    emit(state.copyWith(fileAddedOrEdtiableIndex: indexOfFiles));
+    final result = await _crudTaskFilesUsecase(params);
+
+    result.extract(
+      (exception, message) {
+        emit(state.copyWith(
+          fileAddedOrEdtiableIndex: [],
+            getCurrentTask: BlocStatus.success(
+                data: state.getCurrentTask.data?.copyWith(
+          attachments: currentAttachments,
+        ))));
+        // if (AppConstants.shouldReturnEarly(message)) return;
+        // emit(state.copyWith(getTaskLog: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        emit(state.copyWith(fileAddedOrEdtiableIndex: [], getCurrentTask: BlocStatus.success(data: value.message)));
+        // emit(state.copyWith(: BlocStatus.success(data: value.message)));
       },
     );
   }

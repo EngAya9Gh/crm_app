@@ -37,9 +37,41 @@ abstract class AppDynamicLinks {
       case "checkComment":
         Navigator.push(context, CupertinoPageRoute(builder: (context) => LatestClientsUpdatesPage()));
         break;
-      // todo: add task
       case "task":
-        Navigator.push(context, CupertinoPageRoute(builder: (context) => TaskManagementListPage()));
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => TaskManagementListPage(
+                      idTaks: data?['paramId'],
+                      idStatus: data?['additional_data'],
+                    )));
+        break;
+      case "updateTask":
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => TaskManagementListPage(
+                      idTaks: data?['paramId'],
+                      idStatus: data?['additional_data'],
+                    )));
+        break;
+      case "assignTask":
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => TaskManagementListPage(
+                      idTaks: data?['paramId'],
+                      idStatus: data?['additional_data'],
+                    )));
+        break;
+      case "addTask":
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => TaskManagementListPage(
+                      idTaks: data?['paramId'],
+                      idStatus: data?['additional_data'],
+                    )));
         break;
       case "Transfer":
         Navigator.push(context, CupertinoPageRoute(builder: (context) => ClientsTransferApprovalsPage()));
@@ -128,7 +160,7 @@ abstract class AppDynamicLinks {
             CupertinoPageRoute(
                 builder: (context) => ClientProfile(
                       tabIndex: 2,
-                      //idinvoice: data==null?datanotify:  data['id_invoice'],
+                      commentId: data?['additional_data'],
                       idClient: data == null ? dataNotify : data['paramId'],
                     )));
         break;
@@ -152,10 +184,7 @@ abstract class AppDynamicLinks {
                     )));
         break;
       case "AddDemand":
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => VersionOrderPage()));
+        Navigator.push(context, CupertinoPageRoute(builder: (context) => VersionOrderPage()));
         break;
       case "Marketing Client":
         Navigator.push(

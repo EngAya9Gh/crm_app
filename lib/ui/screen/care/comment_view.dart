@@ -64,12 +64,12 @@ class _CommentViewState extends State<CommentView> {
   late final comment_vm commentVm;
   // Create a GlobalKey for the target item
   final GlobalKey _targetKey = GlobalKey();
-  final ValueNotifier<bool> isHighlighted = ValueNotifier(false);
   @override
   void initState() {
     commentVm = Provider.of<comment_vm>(context, listen: false);
     pro = context.read<UserProvider>()..getCurrentUser();
     currentUser = pro.currentUser;
+    _selectedCommentType = (currentUser?.typeAdministration == "2") ? CommentTypeEnum.all : null;
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         commentVm.getAllUsersComment().then(
@@ -83,7 +83,6 @@ class _CommentViewState extends State<CommentView> {
     // Check if commentId is provided and scroll to the item
     if (widget.commentId != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        isHighlighted.value = !isHighlighted.value; // Assuming you have a property for highlighting
         _findAndScrollToItem(widget.commentId!.toString());
       });
     }
@@ -93,9 +92,9 @@ class _CommentViewState extends State<CommentView> {
     await ScrollHelper.scrollToItem(
       scrollController: _scrollController,
       targetId: targetId,
-      itemHeight: 73.0, // Your item height
+      itemHeight: 85.0, // Your item height
       items: commentVm.filteredComments,
-      hasReachedMax: false,
+      hasReachedMax: true,
       loadNextPage: () async {
         // _participateListBloc.add(GetParticipateListEvent(isNewFetch: false));
         // Wait for load to complete
@@ -354,52 +353,46 @@ class _CommentViewState extends State<CommentView> {
                 SliverToBoxAdapter(child: 10.height),
 
                 // list of comments
-                context.watch<comment_vm>().isLoading
-                    ? SliverFillRemaining(child: AppLoader())
-                    : Consumer<comment_vm>(
-                        builder: (context, value, child) {
-                          if (value.isLoading) {
-                            return AppLoader();
-                          } else if (value.filteredComments.isEmpty) {
-                            return SliverFillRemaining(
-                              child: AppErrorWidget(message: 'لا يوجد تعليقات'),
+                Consumer<comment_vm>(
+                  builder: (context, value, child) {
+                    if (value.isLoading) {
+                      return SliverFillRemaining(child: AppLoader());
+                    } else if (value.filteredComments.isEmpty) {
+                      return SliverFillRemaining(
+                        child: AppErrorWidget(message: 'لا يوجد تعليقات'),
+                      );
+                    } else {
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return Cardcomment(
+                              itemKey: value.filteredComments[index].idComment == widget.commentId.toString() ? _targetKey : null,
+                              shouldHighlight: widget.commentId.toString() == value.filteredComments[index].idComment,
+                              userModel: currentUser,
+                              canReplay: true,
+                              commentmodel: value.filteredComments[index],
+                              idClients: widget.client!.idClients!,
+                              replyOnCommentModel: (value) {
+                                _sendComment(context, true, value);
+                              },
+                              editCommentModel: (value) {
+                                updateItem.value = value;
+                                _selectedCommentType = CommentTypeEnum.values.firstWhere((element) => element.value == value.type_comment);
+                                // usersMentioned = [...value.mention_users!];
+                                key.currentState?.controller?.text = value.content;
+                                for (UserEntity item in value.mention_users ?? []) {
+                                  key.currentState?.controller?.text =
+                                      (key.currentState?.controller?.text ?? '') + " @${item.name.replaceAll(' ', '_')} ";
+                                }
+                              },
                             );
-                          } else {
-                            return ValueListenableBuilder(
-                              valueListenable: isHighlighted,
-                              builder: (context, highlighted, child) => SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                                  (context, index) {
-                                    return Cardcomment(
-                                      color: (widget.commentId?.toString() == value.filteredComments[index].idComment)
-                                          ? AppColors.primaryAltLight
-                                          : null,
-                                      userModel: currentUser,
-                                      canReplay: true,
-                                      commentmodel: value.filteredComments[index],
-                                      idClients: widget.client!.idClients!,
-                                      replyOnCommentModel: (value) {
-                                        _sendComment(context, true, value);
-                                      },
-                                      editCommentModel: (value) {
-                                        updateItem.value = value;
-                                        _selectedCommentType = CommentTypeEnum.values.firstWhere((element) => element.value == value.type_comment);
-                                        // usersMentioned = [...value.mention_users!];
-                                        key.currentState?.controller?.text = value.content;
-                                        for (UserEntity item in value.mention_users ?? []) {
-                                          key.currentState?.controller?.text =
-                                              (key.currentState?.controller?.text ?? '') + " @${item.name.replaceAll(' ', '_')} ";
-                                        }
-                                      },
-                                    );
-                                  },
-                                  childCount: value.filteredComments.length,
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      ),
+                          },
+                          childCount: value.filteredComments.length,
+                        ),
+                      );
+                    }
+                  },
+                ),
               ],
             ),
           ),
