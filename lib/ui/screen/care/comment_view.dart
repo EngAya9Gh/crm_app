@@ -94,7 +94,7 @@ class _CommentViewState extends State<CommentView> {
       targetId: targetId,
       itemHeight: 85.0, // Your item height
       items: commentVm.filteredComments,
-      hasReachedMax: true,
+      hasReachedMax: false,
       loadNextPage: () async {
         // _participateListBloc.add(GetParticipateListEvent(isNewFetch: false));
         // Wait for load to complete

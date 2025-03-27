@@ -1,6 +1,9 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../features/app/presentation/widgets/app_text.dart';
 import '../../../config/navigator/app_navigator.dart';
@@ -15,11 +18,9 @@ class SectionsCardForList extends StatelessWidget {
   const SectionsCardForList({
     super.key,
     required this.page,
-    this.hasNumberOnCard,
   });
 
   final SectionModel page;
-  final int? hasNumberOnCard;
 
   @override
   Widget build(BuildContext context) {
@@ -69,14 +70,22 @@ class SectionsCardForList extends StatelessWidget {
               ],
             ),
           ),
-          if ((hasNumberOnCard??0)>0)
-            PositionedDirectional(
-                start: 0,top: 0,
-                child: CircleAvatar(
-                  radius: 14,
-                  child: AppText(hasNumberOnCard,color: AppColors.white,),
-                  backgroundColor: AppColors.statusErrorActive,
-                )),
+          if (page.path == AppRoutesPaths.homeSections.taskManagement)
+            Consumer<UserProvider>(
+              builder: (context, value, child) => (value.currentUser.noOfOpenTasks ?? 0) == 0
+                  ? SizedBox.shrink()
+                  : PositionedDirectional(
+                      start: 0,
+                      top: 0,
+                      child: CircleAvatar(
+                        radius: 14,
+                        child: AppText(
+                          value.currentUser.noOfOpenTasks,
+                          color: AppColors.white,
+                        ),
+                        backgroundColor: AppColors.statusErrorActive,
+                      )),
+            ),
         ],
       ),
     );

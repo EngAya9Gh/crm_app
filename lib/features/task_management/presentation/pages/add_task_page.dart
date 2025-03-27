@@ -390,7 +390,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 },
                               ),
                             ),
-                            if (privilegeBloc.checkPrivilege('171')) ...{
+                            if (true??privilegeBloc.checkPrivilege('171')) ...{
                               15.width,
                               Expanded(
                                 child: CustomDateTimePicker(

@@ -1,17 +1,13 @@
-import 'dart:math';
-
 import 'package:crm_smart/core/common/extensions/build_context.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
-import 'package:crm_smart/core/common/models/file_model.dart';
-import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
-import 'package:crm_smart/core/common/widgets/files/app_platform_image.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
-import 'package:crm_smart/features/task_management/data/models/task_log_model.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
-import 'package:crm_smart/features/task_management/domain/use_cases/add_comment_task_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/curd_task_files_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
+import 'package:crm_smart/features/task_management/presentation/widgets/changes_tab_view.dart';
+import 'package:crm_smart/features/task_management/presentation/widgets/comment_tab_view.dart';
+import 'package:crm_smart/features/task_management/presentation/widgets/image_widget_attachement.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/widgets/pick_image_bottom_sheet.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
@@ -24,13 +20,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart' as Intl;
 
 import '../../../../core/common/widgets/app_icon.dart';
-import '../../../../core/common/widgets/app_text_field.dart.dart';
-import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../core/utils/end_points.dart';
-import '../../../../ui/widgets/app_file_viewer.dart';
-import '../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_text.dart';
@@ -50,6 +42,7 @@ class DialogTaskDetail extends StatefulWidget {
 
 class _DialogTaskDetailState extends State<DialogTaskDetail> {
   late ValueNotifier<TaskStatusType> selectedType;
+  ValueNotifier<int> activeTab = ValueNotifier(0);
   TextEditingController textController = TextEditingController();
   bool isLoading = false;
   double? rate;
@@ -248,7 +241,7 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                                 return fileWidgetAttachement(
                                     cubit: widget.cubit, file: file, task: widget.task, isLoading: state.fileAddedOrEdtiableIndex.contains(index));
                               }
-                              return imageWidgetAttachement(
+                              return ImageWidgetAttachement(
                                 file: file,
                                 isLoading: state.fileAddedOrEdtiableIndex.contains(index),
                                 cubit: widget.cubit,
@@ -294,84 +287,45 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                   child: Column(
                     children: [
                       TabBar(
+                        indicatorColor: Colors.transparent,
                         overlayColor: WidgetStateColor.resolveWith(
                           (states) => Colors.transparent,
                         ),
                         dividerColor: Colors.transparent,
-                        indicator: BoxDecoration(
-                          color: AppColors.primaryAltLight,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                        // indicator: BoxDecoration(
+                        // color: AppColors.primaryAltLight,
+                        // borderRadius: BorderRadius.circular(8),
+                        // ),
                         onTap: (value) {
+                          activeTab.value = value;
                           value == 0
                               ? widget.cubit.onGetTaskComments(widget.task.id!)
                               : widget.cubit.getTaskLog(params: GetTaskByIdParams(idTask: widget.task.id!));
                         },
-                        tabs: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: AppText('التعليقات', color: AppColors.black),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: AppText('الاجراءات', color: AppColors.black),
-                          ),
-                        ],
+                        tabs: [0, 1]
+                            .map(
+                              (e) => ValueListenableBuilder(
+                                valueListenable: activeTab,
+                                builder: (context, value, child) => Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: value == e ? AppColors.primaryAltLight.withValues(alpha: .3) : AppColors.outlineBorder,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: AppText(
+                                    e == 0 ? 'التعليقات' : 'التغييرات',
+                                    color: value == e ? AppColors.primaryMain : AppColors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
                       Expanded(
                         child: TabBarView(
                           physics: NeverScrollableScrollPhysics(),
-                          children: [
-                            CommentTabView(textController: textController, widget: widget),
-                            BlocSelector<TaskCubit, TaskState, BlocStatus<List<TaskLogModel>>>(
-                              selector: (state) => state.getTaskLog,
-                              builder: (context, state) {
-                                return state.when(
-                                  success: (data) => ListView.separated(
-                                    itemBuilder: (context, index) {
-                                      return Card(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Expanded(
-                                                    child: AppText(
-                                                      maxLines: 2,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      (data?[index].logType ?? ''),
-                                                      color: AppColors.primaryMain,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  AppText(
-                                                    Intl.DateFormat('dd MM yyyy hh:mm a').format(data![index].date!),
-                                                    color: AppColors.primaryMain,
-                                                    fontSize: 16.scaleFontSize,
-                                                  ),
-                                                ],
-                                              ),
-                                              10.height,
-                                              AppText('التغيرات', style: TextStyle(fontWeight: FontWeight.bold)),
-                                              5.height,
-                                              ...(data[index].value ?? []).map((e) => AppText(e)).toList(),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) => SizedBox(height: 10),
-                                    itemCount: data?.length ?? 0,
-                                  ),
-                                  failure: (error, data) => AppErrorWidget(message: error),
-                                );
-                              },
-                            )
-                          ],
+                          children: [CommentTabView(textController: textController, widget: widget), ChangesTabView()],
                         ),
                       ),
                     ],
@@ -384,74 +338,6 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
         ),
       ),
     );
-  }
-}
-
-class imageWidgetAttachement extends StatelessWidget {
-  const imageWidgetAttachement({
-    super.key,
-    required this.file,
-    this.isLoading = false,
-    required this.cubit,
-    required this.task,
-  });
-  final bool isLoading;
-  final FileAttachmentTaskModel file;
-  final TaskCubit cubit;
-  final TaskModel task;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () => AppFileViewer(
-              imageSource: file.xFile != null ? ImageSourceViewer.file : ImageSourceViewer.network,
-              files: file.xFile != null ? [file.xFile!] : [],
-              urls: [EndPoints.baseUrls.laravelFilesUrl + (file.filePath ?? '')],
-            ).show(context),
-        child: Stack(
-          children: [
-            file.xFile != null
-                ? AppPlatformImage(
-                    fileModel: FileModel(file: file.xFile),
-                    fit: BoxFit.cover,
-                    width: 200.scaleWidth,
-                    height: 150.scaleHeight,
-                  )
-                : FancyImageShimmerViewer(
-                    width: 200.scaleWidth,
-                    height: 150.scaleHeight,
-                    imageUrl: EndPoints.baseUrls.laravelFilesUrl + (file.filePath ?? ''),
-                    fit: BoxFit.cover,
-                  ),
-         if (!isLoading)   Positioned.fill(
-              child: Align(
-                alignment: Alignment.topRight,
-                child: InkWell(
-                  onTap: () {
-                    cubit.curdTaskFiles(params: CurdFilesTaskParams(taskId: task.id!, filesId: [file.id!]));
-                  },
-                  borderRadius: BorderRadius.circular(90),
-                  child: Container(
-                    height: 25,
-                    width: 25,
-                    margin: EdgeInsets.only(top: 5, right: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child: AppIcon(
-                      Icons.delete_rounded,
-                      color: Colors.red,
-                      size: 16,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            if (isLoading) Positioned.fill(child: AppLoader()),
-          ],
-        ));
   }
 }
 
@@ -483,153 +369,39 @@ Widget fileWidgetAttachement({required TaskCubit cubit, required FileAttachmentT
                         Icons.picture_as_pdf_rounded,
                         color: Colors.grey,
                       )),
-          if (!(isLoading??false))    Positioned.fill(
-              child: Align(
-                alignment: Alignment.topRight,
-                child: InkWell(
-                  onTap: () {
-                    cubit.curdTaskFiles(params: CurdFilesTaskParams(taskId: task.id!, filesId: [file.id!]));
-                  },
-                  borderRadius: BorderRadius.circular(90),
-                  child: Container(
-                    height: 25,
-                    width: 25,
-                    margin: EdgeInsets.only(top: 5, right: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child: AppIcon(
-                      Icons.delete_rounded,
-                      color: Colors.red,
-                      size: 16,
+            if (!(isLoading ?? false))
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: InkWell(
+                    onTap: () {
+                      cubit.curdTaskFiles(params: CurdFilesTaskParams(taskId: task.id!, filesId: [file.id!]));
+                    },
+                    borderRadius: BorderRadius.circular(90),
+                    child: Container(
+                      height: 25,
+                      width: 25,
+                      margin: EdgeInsets.only(top: 5, right: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade50,
+                        shape: BoxShape.circle,
+                      ),
+                      alignment: Alignment.center,
+                      child: AppIcon(
+                        Icons.delete_rounded,
+                        color: Colors.red,
+                        size: 16,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
             if (isLoading ?? false) Positioned.fill(child: AppLoader())
           ],
         ),
       );
     },
   );
-}
-
-class CommentTabView extends StatelessWidget {
-  const CommentTabView({
-    super.key,
-    required this.textController,
-    required this.widget,
-  });
-
-  final TextEditingController textController;
-  final DialogTaskDetail widget;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        10.height,
-        Row(
-          children: [
-            CircleAvatar(
-                radius: 15,
-                backgroundColor: AppColors.primaryMain,
-                child: AppText(
-                  context.read<UserProvider>().currentUser.nameUser?.substring(0, 2).toUpperCase(),
-                  fontSize: 12,
-                )),
-            10.width,
-            Expanded(
-              child: AppTextField(
-                hintText: 'اكتب تعليقا',
-                controller: textController,
-              ),
-            ),
-            10.width,
-            InkWell(
-              onTap: () {
-                widget.cubit.onAddTaskComment(
-                  AddTaskCommentParams(taskId: widget.task.id!, content: textController.text),
-                  () {
-                    textController.clear();
-                  },
-                );
-              },
-              child: BlocSelector<TaskCubit, TaskState, BlocStatus>(
-                selector: (state) => state.addComment,
-                builder: (context, state) {
-                  return CircleAvatar(
-                      radius: 16,
-                      backgroundColor: AppColors.primaryMain,
-                      child: state.isLoading()
-                          ? AppLoader(
-                              color: AppColors.white,
-                            )
-                          : AppIcon(
-                              Icons.send,
-                              color: AppColors.white,
-                            ));
-                },
-              ),
-            )
-          ],
-        ),
-        BlocBuilder<TaskCubit, TaskState>(
-          builder: (context, state) {
-            return state.getTaskComment.when(
-              empty: () => AppErrorWidget(message: 'لا يوجد تعليقات بعد'),
-              success: (data) => Expanded(
-                child: ListView.builder(
-                  itemCount: data?.length ?? 0,
-                  itemBuilder: (context, index) => Padding(
-                    padding: EdgeInsetsDirectional.only(top: 5),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                            radius: 15,
-                            backgroundColor: AppColors.primaryMain,
-                            child: AppText(
-                              data?[index].commentedBy?.nameUser?.substring(0, 2).toUpperCase(),
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            )),
-                        10.width,
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppText(
-                                data?[index].commentedBy?.nameUser,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              5.height,
-                              AppText(data?[index].content),
-                              5.height,
-                              AppText(
-                                Intl.DateFormat('dd MMM hh:mm a').format(DateTime.tryParse(data?[index].date_comment ?? '') ?? DateTime.now()),
-                                color: context.colorScheme.grey600,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              failure: (error, data) => AppErrorWidget(message: error),
-            );
-          },
-        ),
-      ],
-    );
-  }
 }
 
 class Dialogs {

@@ -83,9 +83,6 @@ class NotificationService {
               ),
             ));
         String? typeNotify = message.data['type_notify'];
-        if (message.data['title'] == "مهمة جديدة" || typeNotify == 'commentMention') {
-          AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
-        }
         AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
       }
     });
@@ -106,14 +103,19 @@ class NotificationService {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
         String? typeNotify = message.data['type_notify'];
+        if (message.data['title'] == "مهمة جديدة") {
           AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
-        // if (message.data['title'] == "مهمة جديدة" || typeNotify == 'commentMention') {
-        // }
+        }
         log('///////////////////////////');
         log('$message.contentAvailable');
         log(message.data.toString());
         log('${message.notification?.title}');
         AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>().init();
+        var currentUser = AppNavigator.navigatorKey.currentContext?.read<UserProvider>().currentUser;
+        AppNavigator.navigatorKey.currentContext?.read<UserProvider>().currentUser = currentUser!.copyWith(
+          notificationNotRead: (currentUser.notificationNotRead ?? 0) + 1,
+          noOfMentions: typeNotify == 'commentMention' ? (currentUser.noOfMentions ?? 0) + 1 : null,
+        );
         AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>().increaseNotificationCount();
         log('///////////////////////////');
         if (kIsWeb) {

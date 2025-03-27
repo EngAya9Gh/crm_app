@@ -1,13 +1,8 @@
-import 'dart:math';
-
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/scroll_to_find_item.dart';
 import 'package:crm_smart/core/common/models/location/branch_model.dart';
-import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
-import 'package:crm_smart/core/common/widgets/app_group_button.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
@@ -15,7 +10,6 @@ import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
-import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/features/mangement/manage_users/presentation/manager/users_cubit.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
@@ -29,9 +23,10 @@ import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:group_button/group_button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/common/widgets/app_icon.dart';
@@ -48,8 +43,8 @@ class TasksPaginatedList extends StatefulWidget {
     this.idTask,
     this.idStatus,
   });
-  final int? idTask;
-  final int? idStatus;
+  final String? idTask;
+  final String? idStatus;
   @override
   State<TasksPaginatedList> createState() => _TasksPaginatedListState();
 }
@@ -71,13 +66,24 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
   final GlobalKey _targetKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
 
+  late final AutoScrollController controller;
   @override
   void initState() {
     _cubit = context.read<TaskCubit>();
+    controller = AutoScrollController(
+        //add this for advanced viewport boundary. e.g. SafeArea
+        viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
 
+        //choose vertical/horizontal
+        axis: Axis.vertical,
+
+        //this given value will bring the scroll offset to the nearest position in fixed row height case.
+        //for variable row height case, you can still set the average height, it will try to get to the relatively closer offset
+        //and then start searching.
+        suggestedRowHeight: 200);
     if (widget.idTask != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _findAndScrollToItem(widget.idTask!.toString());
+        _findAndScrollToItem(widget.idTask!);
       });
     }
     ;
@@ -85,19 +91,119 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
   }
 
   Future<void> _findAndScrollToItem(String targetId) async {
-    await ScrollHelper.scrollToItem(
-      scrollController: _scrollController,
-      targetId: targetId,
-      itemHeight: 95.0, // Your item height
-      items: _cubit.pageVariables.allList,
-      hasReachedMax: _cubit.pageVariables.hasReachedEnd,
-      loadNextPage: () async {
-        _cubit.getTasks(isNewFilter: false);
-        // Wait for load to complete
-        await Future.delayed(Duration(milliseconds: 500));
-      },
-      findItem: (task) => task.id.toString() == targetId,
-    );
+    // Keep loading pages and scrolling until we find the item
+    try {
+      print('Starting scroll to item: $targetId');
+
+      // Wait for initial data load with timeout
+      int attempts = 0;
+      while (_cubit.pageVariables.allList.isEmpty && attempts < 20) {
+        await Future.delayed(Duration(milliseconds: 100));
+        attempts++;
+      }
+
+      if (_cubit.pageVariables.allList.isEmpty) {
+        print('Failed to load initial data after $attempts attempts');
+        return;
+      }
+
+      // Keep loading pages and scrolling until we find the item
+      bool found = false;
+      int pageLoadAttempts = 0;
+
+      while (!found && !_cubit.pageVariables.hasReachedEnd && pageLoadAttempts < 10) {
+        found = _cubit.pageVariables.allList.any(
+          (element) => element.id.toString() == widget.idTask,
+        );
+
+        print('Searching for item. Found: $found, Page: $pageLoadAttempts');
+
+        if (!found) {
+          try {
+            if (controller.hasClients) {
+              final currentPosition = controller.position.maxScrollExtent;
+              await controller.animateTo(
+                currentPosition,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            } else {
+              print('ScrollController has no clients');
+              await Future.delayed(Duration(milliseconds: 200));
+              continue;
+            }
+
+            // Load next page
+            _cubit.getTasks(isNewFilter: false);
+            //     // Wait for load to complete
+            await Future.delayed(Duration(milliseconds: 500));
+            //
+            await Future.delayed(Duration(milliseconds: 800));
+            pageLoadAttempts++;
+          } catch (scrollError) {
+            print('Error during scroll: $scrollError');
+            await Future.delayed(Duration(milliseconds: 200));
+          }
+        }
+      }
+
+      if (found) {
+        print('Item found, attempting to scroll to position');
+
+        final index = _cubit.pageVariables.allList.indexWhere(
+          (element) => element.id.toString() == widget.idTask,
+        );
+
+        if (index != -1 && controller.hasClients) {
+          for (int i = 0; i < 3; i++) {
+            try {
+              // final itemPosition = index * itemHeight;
+              // await scrollController.animateTo(
+              // itemPosition,
+              // duration: Duration(milliseconds: 500),
+              // curve: Curves.easeInOut,
+              // );
+              print('Successfully scrolled to position ${controller.isIndexStateInLayoutRange(index)}');
+              await controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin).then(
+                (value) {
+                  _isHighlighted.value = true;
+                  Future.delayed(Duration(seconds: 2)).then(
+                    (value) {
+                      _isHighlighted.value = false;
+                    },
+                  );
+                },
+              );
+              break;
+            } catch (scrollError) {
+              print('Scroll attempt $i failed: $scrollError');
+              await Future.delayed(Duration(milliseconds: 200));
+            }
+          }
+        } else {
+          print('Invalid index ($index) or scroll controller not ready');
+        }
+      } else {
+        print('Item not found after $pageLoadAttempts page loads');
+      }
+    } catch (e, stackTrace) {
+      print('Error in scrollToItem: $e');
+      print('Stack trace: $stackTrace');
+    }
+    // await ScrollHelper.scrollToItem(
+    //   scrollController: _scrollController,
+    //   targetId: targetId,
+
+    //   itemHeight: 150.h, // Your item height
+    //   items: _cubit.pageVariables.allList,
+    //   hasReachedMax: _cubit.pageVariables.hasReachedEnd,
+    //   loadNextPage: () async {
+    //     _cubit.getTasks(isNewFilter: false);
+    //     // Wait for load to complete
+    //     await Future.delayed(Duration(milliseconds: 500));
+    //   },
+    //   findItem: (task) => task.id.toString() == targetId,
+    // );
   }
 
   ValueNotifier<bool> _isHighlighted = ValueNotifier(false);
@@ -108,20 +214,14 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
         return AppPaginatedList(
-          scrollController: _scrollController,
+          scrollController: controller,
           items: _cubit.pageVariables.allList,
           itemBuilder: (context, index) {
             final task = _cubit.pageVariables.allList[index];
-            if (task.id == widget.idTask) {
-              _isHighlighted.value = true;
-              Future.delayed(Duration(seconds: 2)).then(
-                (value) {
-                  _isHighlighted.value = false;
-                },
-              );
-            }
             return ValueListenableBuilder(
-                valueListenable: _isHighlighted, builder: (context, value, child) => _buildCard(task, _isHighlighted.value, context));
+                valueListenable: _isHighlighted,
+                builder: (context, value, child) =>
+                    AutoScrollTag(key: ValueKey(index), controller: controller, index: index, child: _buildCard(task, value, context)));
           },
           isLoading: state.getTasksStatus.isLoading(),
           hasReachedEnd: _cubit.pageVariables.hasReachedEnd,
@@ -151,7 +251,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     final status = TaskStatusType.values.firstWhereOrNull((element) => element.name == task.status?.name);
     return Container(
       decoration: BoxDecoration(
-          color: (isSame && task.id == widget.idTask) ? AppColors.primaryAltLight : AppColors.white,
+          color: (isSame && task.id.toString() == widget.idTask) ? AppColors.primaryAltLight : AppColors.white,
           borderRadius: BorderRadiusDirectional.circular(8)),
       child: InkWell(
         onTap: status != null && context.read<PrivilegesCubit>().checkPrivilege('165')
@@ -189,7 +289,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
               if (task.status?.name == TaskStatusType.Open.name || task.status?.name == TaskStatusType.receive.name)
                 PositionedDirectional(
                   child: Icon(
-                    task.overDeadline == 0 ? Icons.arrow_upward : Icons.arrow_downward,
+                    task.overDeadline == 0 ? Icons.timer_outlined : Icons.timer_off_outlined,
                     size: 35,
                     color: task.overDeadline == 0 ? AppColors.green : AppColors.statusErrorActive,
                   ),
@@ -258,7 +358,8 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                               ),
                               if (context.read<PrivilegesCubit>().checkPrivilege('339') &&
                                   ([task.assignFrom?.idUser.toString(), task.assignFrom?.idRegion.toString(), task.assignFrom?.idMange.toString()]
-                                      .contains(context.read<UserProvider>().currentUser.idUser)))
+                                          .contains(context.read<UserProvider>().currentUser.idUser) &&
+                                      (task.status?.name == TaskStatusType.Open.name || task.status?.name == TaskStatusType.receive.name)))
                                 IconButton(
                                     onPressed: () {
                                       Dialogs.showLoadingDialog(context);

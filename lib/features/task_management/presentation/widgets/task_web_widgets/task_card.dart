@@ -70,7 +70,7 @@ class TaskCard {
                       if (task.status?.name == TaskStatusType.Open.name || task.status?.name == TaskStatusType.receive.name)
                         PositionedDirectional(
                           child: Icon(
-                            task.overDeadline == 0 ? Icons.arrow_upward : Icons.arrow_downward,
+                            task.overDeadline == 0 ? Icons.timer_outlined : Icons.timer_off_outlined,
                             size: 40.scaleIconsSize,
                             color: task.overDeadline == 0 ? AppColors.green : AppColors.statusErrorActive,
                           ),

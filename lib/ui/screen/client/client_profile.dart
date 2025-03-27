@@ -85,6 +85,7 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
   }
 
   Future<void> _initializeData() async {
+    Provider.of<comment_vm>(context, listen: false).getComments(widget.idClient.toString());
     await Provider.of<ClientProvider>(context, listen: false).getClientById(widget.idClient.toString());
 
     supportTabCubit.getClientInvoice(
@@ -100,7 +101,6 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
 
     await ticketsCubit.getClientTicket(widget.idClient!);
 
-    Provider.of<comment_vm>(context, listen: false).getComments(widget.idClient.toString());
   }
 
   @override

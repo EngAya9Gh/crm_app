@@ -33,7 +33,6 @@ class SectionsListView extends StatelessWidget {
               }
               return SectionsCardForList(
                 page: sections[index],
-                hasNumberOnCard: sections[index].path == AppRoutesPaths.homeSections.taskManagement ? Provider.of<UserProvider>(context, listen: true).currentUser.noOfOpenTasks : null,
               );
             },
           ),

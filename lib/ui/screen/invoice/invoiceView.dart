@@ -172,6 +172,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                             invoice.renewPlus.toString() == '' || invoice.renewPlus == null
                                 ? Container()
                                 : CardRow(title: 'تجديد الفرع الإضافي', value: invoice.renewPlus.toString()),
+                            invoice.numTax.toString() == '' || invoice.numTax == null
+                                ? Container()
+                                : CardRow(title: 'الرقم الضريبي', value: invoice.numTax.toString()),
 
                             invoice.typeInstallation.toString() == '' ||
                                     invoice.typeInstallation == null ||

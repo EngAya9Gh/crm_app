@@ -37,8 +37,8 @@ import 'add_task_page.dart';
 
 class TaskManagementListPage extends StatefulWidget {
   const TaskManagementListPage({super.key, this.idTaks, this.idStatus});
-  final int? idTaks;
-  final int? idStatus;
+  final String? idTaks;
+  final String? idStatus;
   @override
   State<TaskManagementListPage> createState() => _TaskManagementListPageState();
 }
@@ -89,7 +89,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
     });
     if (widget.idStatus != null) {
       _taskCubit.onChangeStatus(TaskStatusType.values.firstWhere(
-        (element) => element.id == widget.idStatus,
+        (element) => element.id == int.parse(widget.idStatus!),
       ));
       _taskCubit.getTasks();
     }
