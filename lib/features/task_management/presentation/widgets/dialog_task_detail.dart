@@ -201,57 +201,56 @@ class _DialogTaskDetailState extends State<DialogTaskDetail> {
                 ),
               },
               10.height,
-              if (widget.task.attachments?.isNotEmpty ?? false)
-                BlocBuilder<TaskCubit, TaskState>(
-                  builder: (context, state) {
-                    return ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: SizedBox(
-                          height: 150.scaleHeight,
-                          child: ListView.separated(
-                            separatorBuilder: (context, index) => 10.width,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: (state.getCurrentTask.data?.attachments?.length ?? 0) + 1,
-                            itemBuilder: (context, index) {
-                              print(state.fileAddedOrEdtiableIndex.contains(index));
-                              if (index == (state.getCurrentTask.data?.attachments?.length ?? 0)) {
-                                return InkWell(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      backgroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
-                                      builder: (context) => PickImageBottomSheet(
-                                        onPickFile: (context, file) {
-                                          widget.cubit.curdTaskFiles(params: CurdFilesTaskParams(taskId: widget.task.id!, files: [file]));
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 200.scaleWidth,
-                                    height: 150.scaleHeight,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppColors.primaryAltLight),
-                                    child: Center(child: Icon(Icons.add)),
-                                  ),
-                                );
-                              }
-                              var file = state.getCurrentTask.data!.attachments![index];
-                              if ((file.filePath ?? file.xFile?.path)!.endsWith('.pdf') || (file.filePath ?? file.xFile?.path)!.endsWith('.PDF')) {
-                                return fileWidgetAttachement(
-                                    cubit: widget.cubit, file: file, task: widget.task, isLoading: state.fileAddedOrEdtiableIndex.contains(index));
-                              }
-                              return ImageWidgetAttachement(
-                                file: file,
-                                isLoading: state.fileAddedOrEdtiableIndex.contains(index),
-                                cubit: widget.cubit,
-                                task: widget.task,
+              BlocBuilder<TaskCubit, TaskState>(
+                builder: (context, state) {
+                  return ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: SizedBox(
+                        height: 150.scaleHeight,
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) => 10.width,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: (state.getCurrentTask.data?.attachments?.length ?? 0) + 1,
+                          itemBuilder: (context, index) {
+                            print(state.fileAddedOrEdtiableIndex.contains(index));
+                            if (index == (state.getCurrentTask.data?.attachments?.length ?? 0)) {
+                              return InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+                                    builder: (context) => PickImageBottomSheet(
+                                      onPickFile: (context, file) {
+                                        widget.cubit.curdTaskFiles(params: CurdFilesTaskParams(taskId: widget.task.id!, files: [file]));
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 200.scaleWidth,
+                                  height: 150.scaleHeight,
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppColors.primaryAltLight),
+                                  child: Center(child: Icon(Icons.add)),
+                                ),
                               );
-                            },
-                          ),
-                        ));
-                  },
-                ),
+                            }
+                            var file = state.getCurrentTask.data!.attachments![index];
+                            if ((file.filePath ?? file.xFile?.path)!.endsWith('.pdf') || (file.filePath ?? file.xFile?.path)!.endsWith('.PDF')) {
+                              return fileWidgetAttachement(
+                                  cubit: widget.cubit, file: file, task: widget.task, isLoading: state.fileAddedOrEdtiableIndex.contains(index));
+                            }
+                            return ImageWidgetAttachement(
+                              file: file,
+                              isLoading: state.fileAddedOrEdtiableIndex.contains(index),
+                              cubit: widget.cubit,
+                              task: widget.task,
+                            );
+                          },
+                        ),
+                      ));
+                },
+              ),
               10.height,
               Wrap(
                   spacing: 5,

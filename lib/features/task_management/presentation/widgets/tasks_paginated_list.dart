@@ -161,7 +161,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
               // await scrollController.animateTo(
               // itemPosition,
               // duration: Duration(milliseconds: 500),
-              // curve: Curves.easeInOut, 
+              // curve: Curves.easeInOut,
               // );
               print('Successfully scrolled to position ${controller.isIndexStateInLayoutRange(index)}');
               await controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin).then(
