@@ -234,7 +234,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                         ],
                       ),
                       TextButton(
-                        onPressed: () async {
+                        onPressed: () async { 
                           if (kIsWeb) {
                             HelperFunctions.copyToClipboard(
                                 clientModel.mobile.toString());
