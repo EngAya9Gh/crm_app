@@ -83,6 +83,7 @@ dependencies:
   http_interceptor: ^2.0.0
   flutter_secure_storage: ^9.2.3
   scroll_to_index: ^3.0.1
+  firebase_crashlytics: ^4.3.4
   pinput: ^5.0.1
   connectivity_wrapper: ^1.1.4
   location: ^8.0.0
