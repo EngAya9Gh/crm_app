@@ -100,7 +100,6 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
     Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(widget.idClient.toString(), widget.idCommunication);
 
     await ticketsCubit.getClientTicket(widget.idClient!);
-
   }
 
   @override

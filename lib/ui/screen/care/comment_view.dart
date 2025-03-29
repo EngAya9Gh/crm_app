@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../../core/common/enums/comments/comment_type_enum.dart';
 import '../../../core/common/enums/toast_colors_enum.dart';
@@ -64,14 +65,34 @@ class _CommentViewState extends State<CommentView> {
   late final comment_vm commentVm;
   // Create a GlobalKey for the target item
   final GlobalKey _targetKey = GlobalKey();
+  late final AutoScrollController controller;
+  ValueNotifier<bool> _isHighlighted = ValueNotifier(false);
+
   @override
   void initState() {
+    controller = AutoScrollController(
+        //add this for advanced viewport boundary. e.g. SafeArea
+        viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+
+        //choose vertical/horizontal
+        axis: Axis.vertical,
+
+        //this given value will bring the scroll offset to the nearest position in fixed row height case.
+        //for variable row height case, you can still set the average height, it will try to get to the relatively closer offset
+        //and then start searching.
+        suggestedRowHeight: 85);
     commentVm = Provider.of<comment_vm>(context, listen: false);
     pro = context.read<UserProvider>()..getCurrentUser();
     currentUser = pro.currentUser;
     _selectedCommentType = (currentUser?.typeAdministration == "2") ? CommentTypeEnum.all : null;
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
+        // Check if commentId is provided and scroll to the item
+        if (widget.commentId != null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _findAndScrollToItem(widget.commentId!.toString());
+          });
+        }
         commentVm.getAllUsersComment().then(
           (value) {
             _suggestions.value = value;
@@ -80,28 +101,122 @@ class _CommentViewState extends State<CommentView> {
       },
     );
 
-    // Check if commentId is provided and scroll to the item
-    if (widget.commentId != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _findAndScrollToItem(widget.commentId!.toString());
-      });
-    }
+    super.initState();
   }
 
   Future<void> _findAndScrollToItem(String targetId) async {
-    await ScrollHelper.scrollToItem(
-      scrollController: _scrollController,
-      targetId: targetId,
-      itemHeight: 85.0, // Your item height
-      items: commentVm.filteredComments,
-      hasReachedMax: false,
-      loadNextPage: () async {
-        // _participateListBloc.add(GetParticipateListEvent(isNewFetch: false));
-        // Wait for load to complete
-        await Future.delayed(Duration(milliseconds: 500));
-      },
-      findItem: (comment) => comment.idComment == targetId,
-    );
+    // Keep loading pages and scrolling until we find the item
+    try {
+      print('Starting scroll to item: $targetId');
+
+      // Wait for initial data load with timeout
+      int attempts = 0;
+      while (commentVm.filteredComments.isEmpty && attempts < 20) {
+        await Future.delayed(Duration(milliseconds: 100));
+        attempts++;
+      }
+
+      if (commentVm.filteredComments.isEmpty) {
+        print('Failed to load initial data after $attempts attempts');
+        return;
+      }
+
+      // Keep loading pages and scrolling until we find the item
+      bool found = false;
+      int pageLoadAttempts = 0;
+
+      while (!found && pageLoadAttempts < 10) {
+        found = commentVm.filteredComments.any(
+          (element) => element.idComment == widget.commentId.toString(),
+        );
+
+        print('Searching for item. Found: $found, Page: $pageLoadAttempts');
+
+        if (!found) {
+          try {
+            if (controller.hasClients) {
+              final currentPosition = controller.position.maxScrollExtent;
+              await controller.animateTo(
+                currentPosition,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            } else {
+              print('ScrollController has no clients');
+              await Future.delayed(Duration(milliseconds: 200));
+              continue;
+            }
+
+            // Load next page
+            //     // Wait for load to complete
+            await Future.delayed(Duration(milliseconds: 500));
+            //
+            await Future.delayed(Duration(milliseconds: 800));
+            pageLoadAttempts++;
+          } catch (scrollError) {
+            print('Error during scroll: $scrollError');
+            await Future.delayed(Duration(milliseconds: 200));
+          }
+        }
+      }
+
+      if (found) {
+        print('Item found, attempting to scroll to position');
+
+        final index = commentVm.filteredComments.indexWhere(
+          (element) => element.idComment == widget.commentId.toString(),
+        );
+
+        if (index != -1 && controller.hasClients) {
+          for (int i = 0; i < 3; i++) {
+            try {
+              // final itemPosition = index * itemHeight;
+              // await scrollController.animateTo(
+              // itemPosition,
+              // duration: Duration(milliseconds: 500),
+              // curve: Curves.easeInOut,
+              // );
+              print('Successfully scrolled to position ${controller.isIndexStateInLayoutRange(index)}');
+              await controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin).then(
+                (value) {
+                  _isHighlighted.value = true;
+                  Future.delayed(Duration(seconds: 2)).then(
+                    (value) {
+                      _isHighlighted.value = false;
+                    },
+                  );
+                },
+              );
+              break;
+            } catch (scrollError) {
+              print('Scroll attempt $i failed: $scrollError');
+              await Future.delayed(Duration(milliseconds: 200));
+            }
+          }
+        } else {
+          print('Invalid index ($index) or scroll controller not ready');
+        }
+      } else {
+        print('Item not found after $pageLoadAttempts page loads');
+      }
+    } catch (e, stackTrace) {
+      print('Error in scrollToItem: $e');
+      print('Stack trace: $stackTrace');
+    }
+    // await ScrollHelper.scrollToItem(
+    //   scrollController: _scrollController,
+    //   targetId: targetId,
+
+    //   itemHeight: 150.h, // Your item height
+    //   items: commentVm.filteredComments,
+    //   hasReachedMax: _cubit.pageVariables.hasReachedEnd,
+    //   loadNextPage: () async {
+    //     _cubit.getTasks(isNewFilter: false);
+    //     // Wait for load to complete
+    //     await Future.delayed(Duration(milliseconds: 500));
+    //   },
+    //   findItem: (task) => task.id.toString() == targetId,
+    // );
   }
 
   @override
@@ -122,7 +237,7 @@ class _CommentViewState extends State<CommentView> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: CustomScrollView(
-              controller: _scrollController,
+              controller: controller,
               slivers: [
                 // add task button
                 SliverToBoxAdapter(
@@ -365,26 +480,34 @@ class _CommentViewState extends State<CommentView> {
                       return SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (context, index) {
-                            return Cardcomment(
-                              itemKey: value.filteredComments[index].idComment == widget.commentId.toString() ? _targetKey : null,
-                              shouldHighlight: widget.commentId.toString() == value.filteredComments[index].idComment,
-                              userModel: currentUser,
-                              canReplay: true,
-                              commentmodel: value.filteredComments[index],
-                              idClients: widget.client!.idClients!,
-                              replyOnCommentModel: (value) {
-                                _sendComment(context, true, value);
-                              },
-                              editCommentModel: (value) {
-                                updateItem.value = value;
-                                _selectedCommentType = CommentTypeEnum.values.firstWhere((element) => element.value == value.type_comment);
-                                // usersMentioned = [...value.mention_users!];
-                                key.currentState?.controller?.text = value.content;
-                                for (UserEntity item in value.mention_users ?? []) {
-                                  key.currentState?.controller?.text =
-                                      (key.currentState?.controller?.text ?? '') + " @${item.name.replaceAll(' ', '_')} ";
-                                }
-                              },
+                            return ValueListenableBuilder(
+                              valueListenable: _isHighlighted,
+                              builder: (context, heghlight, child) => AutoScrollTag(
+                                key: ValueKey(index),
+                                controller: controller,
+                                index: index,
+                                child: Cardcomment(
+                                  itemKey: value.filteredComments[index].idComment == widget.commentId.toString() ? _targetKey : null,
+                                  shouldHighlight: (widget.commentId.toString() == value.filteredComments[index].idComment && heghlight),
+                                  userModel: currentUser,
+                                  canReplay: true,
+                                  commentmodel: value.filteredComments[index],
+                                  idClients: widget.client!.idClients!,
+                                  replyOnCommentModel: (value) {
+                                    _sendComment(context, true, value);
+                                  },
+                                  editCommentModel: (value) {
+                                    updateItem.value = value;
+                                    _selectedCommentType = CommentTypeEnum.values.firstWhere((element) => element.value == value.type_comment);
+                                    // usersMentioned = [...value.mention_users!];
+                                    key.currentState?.controller?.text = value.content;
+                                    for (UserEntity item in value.mention_users ?? []) {
+                                      key.currentState?.controller?.text =
+                                          (key.currentState?.controller?.text ?? '') + " @${item.name.replaceAll(' ', '_')} ";
+                                    }
+                                  },
+                                ),
+                              ),
                             );
                           },
                           childCount: value.filteredComments.length,

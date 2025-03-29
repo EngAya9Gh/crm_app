@@ -111,7 +111,7 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
       bool found = false;
       int pageLoadAttempts = 0;
 
-      while (!found && !_cubit.pageVariables.hasReachedEnd && pageLoadAttempts < 10) {
+      while (!found && !(_cubit.pageVariables.hasReachedEnd && _cubit.pageVariables.allList.length > 15) && pageLoadAttempts < 10) {
         found = _cubit.pageVariables.allList.any(
           (element) => element.id.toString() == widget.idTask,
         );

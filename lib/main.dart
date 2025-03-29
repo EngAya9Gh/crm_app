@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:crm_smart/core/config/app_init.dart';
 import 'package:crm_smart/services/notification_service.dart';
@@ -24,7 +23,7 @@ void main() async {
       WidgetsFlutterBinding.ensureInitialized();
       FirebaseMessaging.onBackgroundMessage(_firebaseOnBackgroundListener);
       await NotificationService.init();
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+      // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
       // NotificationService.requestPermission();
       NotificationService.listen();
 
@@ -36,7 +35,7 @@ void main() async {
       ));
     },
     (error, stack) async {
-      if (Platform.isIOS || Platform.isAndroid) {
+      if (!kIsWeb) {
         await FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
         FirebaseCrashlytics.instance.recordError;

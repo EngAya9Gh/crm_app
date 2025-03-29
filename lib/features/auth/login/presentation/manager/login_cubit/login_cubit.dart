@@ -67,13 +67,15 @@ class LoginCubit extends Cubit<LoginState> {
     if (kIsWeb) {
       WebBrowserInfo webInfo = await deviceInfoPlugin.webBrowserInfo;
       deviceDetails = "web ${webInfo.userAgent}";
-    } else if (Theme.of(context).platform == TargetPlatform.android) {
-      AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
-      deviceDetails = 'Android ${androidInfo.version.release} - ${androidInfo.model}';
-    } else if (Theme.of(context).platform == TargetPlatform.iOS) {
-      IosDeviceInfo iosInfo = await deviceInfoPlugin.iosInfo;
-      deviceDetails = 'iOS ${iosInfo.utsname.release} - ${iosInfo.utsname.machine}';
-    } else {
+    } 
+    // else if (Theme.of(context).platform == TargetPlatform.android) {
+    //   AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
+    //   deviceDetails = 'Android ${androidInfo.version.release} - ${androidInfo.model}';
+    // } else if (Theme.of(context).platform == TargetPlatform.iOS) {
+    //   IosDeviceInfo iosInfo = await deviceInfoPlugin.iosInfo;
+    //   deviceDetails = 'iOS ${iosInfo.utsname.release} - ${iosInfo.utsname.machine}';
+    // }
+    else {
       deviceDetails = 'Unsupported platform';
     }
 
