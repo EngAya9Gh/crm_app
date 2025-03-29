@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
+import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/config/navigator/app_navigator.dart';
@@ -50,6 +51,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   void _handleSectionTap(SectionModel section, int index) {
     setState(() {
+      if (section.path.startsWith('http')) {
+        HelperFunctions.urlLauncher(section.path, isNewTab: true);
+        Navigator.pop(context);
+        return;
+      }
+      
       if (section.subSections.isEmpty) {
         AppNavigator.go(section.page, name: section.path);
         Navigator.pop(context);
