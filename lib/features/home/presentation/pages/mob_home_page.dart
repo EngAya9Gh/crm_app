@@ -33,10 +33,10 @@ class _MobHomePageState extends State<MobHomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
         // context.read<NotificationsCubit>().getUnreadNotificationsCount(),
-        Provider.of<UserProvider>(context, listen: false).getAllUsers(),
-        Provider.of<RegionProvider>(context, listen: false).getRegions(),
-        Provider.of<product_vm>(context, listen: false).getproduct_vm(),
-        Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket'),
+        // Provider.of<UserProvider>(context, listen: false).getAllUsers(),
+        // Provider.of<RegionProvider>(context, listen: false).getRegions(),
+        // Provider.of<product_vm>(context, listen: false).getproduct_vm(),
+        // Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket'),
       ]);
     });
   }
