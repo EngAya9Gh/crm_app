@@ -70,7 +70,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Colors.white,
+        color: AppColors.white,
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
@@ -79,14 +79,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   // Profile Header Section
                   Container(
                     padding: EdgeInsets.all(16),
-                    color: Color(0xFF579DDE),
+                    color: AppColors.primaryMain,//Color(0xFF579DDE),
                     child: Column(
                       children: [
                         Row(
                           children: [
                             CircleAvatar(
                               radius: 30,
-                              backgroundColor: Colors.white,
+                              backgroundColor: AppColors.white,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(30),
                                 child: AppCachedNetworkImage(
@@ -104,24 +104,24 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  AppText(
                                     Provider.of<UserProvider>(context, listen: true)
                                         .currentUser
                                         .nameUser
                                         .toString(),
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: AppColors.white,
                                       fontSize: 18,
                                       fontFamily: AppFonts.fontFamily1,
                                     ),
                                   ),
-                                  Text(
+                                  AppText(
                                     Provider.of<UserProvider>(context, listen: true)
                                         .currentUser
                                         .email
                                         .toString(),
                                     style: TextStyle(
-                                      color: Colors.white70,
+                                      color: AppColors.white70,
                                       fontSize: 14,
                                       fontFamily: AppFonts.fontFamily1,
                                     ),
@@ -134,7 +134,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 _showProfileSection 
                                     ? Icons.keyboard_arrow_up 
                                     : Icons.keyboard_arrow_down,
-                                color: Colors.white,
+                                color: AppColors.white,
                               ),
                               onPressed: () {
                                 setState(() {
@@ -145,12 +145,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           ],
                         ),
                         if (_showProfileSection) ...[
-                          Divider(color: Colors.white24, height: 24),
+                          Divider(color: AppColors.white24, height: 24),
                           ListTile(
-                            leading: Icon(Icons.person_outline, color: Colors.white),
-                            title: Text(
+                            leading: Icon(Icons.person_outline, color: AppColors.white),
+                            title: AppText(
                               'الملف الشخصي',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: AppColors.white),
                             ),
                             onTap: () => AppNavigator.go(
                               UserScreen(
@@ -161,10 +161,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             ),
                           ),
                           ListTile(
-                            leading: Icon(Icons.logout, color: Colors.white),
-                            title: Text(
+                            leading: Icon(Icons.logout, color: AppColors.white),
+                            title: AppText(
                               'تسجيل الخروج',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: AppColors.white),
                             ),
                             onTap: () async {
                               Provider.of<UserProvider>(context, listen: false).logout(
@@ -186,10 +186,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             },
                           ),
                           ListTile(
-                            leading: Icon(Icons.delete_outline, color: Colors.white),
-                            title: Text(
+                            leading: Icon(Icons.delete_outline, color: AppColors.white),
+                            title: AppText(
                               'حذف حسابي',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: AppColors.white),
                             ),
                             onTap: () {
                               AppConstants.showAppDialog(child: DeleteAccountDialog());
@@ -221,7 +221,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             color: AppColors.primaryMain,
                             size: 24,
                           ),
-                          title: Text(
+                          title: AppText(
                             section.title,
                             style: TextStyle(
                               fontFamily: AppFonts.fontFamily1,
@@ -251,7 +251,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 color: AppColors.primaryMain,
                                 size:  15,
                               ),
-                              title: Text(
+                              title: AppText(
                                 subSection.title,
                                 style: TextStyle(
                                   fontFamily: AppFonts.fontFamily1,
@@ -268,7 +268,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     );
                   }).toList(),
 
-                  Divider(height: 10, thickness: 1, color: Colors.grey.shade200),
+                  Divider(height: 10, thickness: 1, color:  AppColors.grey.shade200),
  
                 ],
               ),
@@ -282,7 +282,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Divider(height: 10, thickness: 1, color: Colors.grey.shade200),
+                    Divider(height: 10, thickness: 1, color:  AppColors.grey.shade200),
                   
                     // Update button
                     Padding(
@@ -299,7 +299,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             child: AppText(
                               'تحقق من وجود تحديثات',
                               fontSize: 16,
-                              color: Colors.white,
+                              color: AppColors.white,
                             ),
                           );
                         },

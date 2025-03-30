@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -399,6 +400,8 @@ import '../../../features/finance/verified_invoice/domain/use_cases/verified_inv
     as _i1029;
 import '../../../features/finance/verified_invoice/presentation/manager/verified_invoice_bloc.dart'
     as _i522;
+import '../../../features/home/presentation/manager/search_cubit.dart'
+    as _i1066;
 import '../../../features/home/presentation/manager/web_home_page_cubit.dart'
     as _i756;
 import '../../../features/mangement/advanced_configs/data/data_sources/advanced_configs_datasource.dart'
@@ -1143,6 +1146,8 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i966.PeriodicCommunicationReportsRepo>(() =>
       _i711.PeriodicCommunicationReportsRepoImpl(
           gh<_i181.PeriodicCommunicationReportsDatasource>()));
+  gh.factory<_i1066.SearchCubit>(
+      () => _i1066.SearchCubit(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i1031.ManageWithdrawalsDatasource>(
       () => _i1031.ManageWithdrawalsDatasource(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i551.ClientsAcceptRepository>(() =>

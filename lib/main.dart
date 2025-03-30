@@ -8,14 +8,17 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'firebase_options.dart';
 import 'services/service_provider.dart';
+// Removed the import for 'cubits/search_cubit.dart' as the target URI doesn't exist
 
 @pragma('vm:entry-point')
 Future<void> _firebaseOnBackgroundListener(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, name: kIsWeb ? null : 'smart_crm');
 }
+ 
 
 void main() async {
   runZonedGuarded(

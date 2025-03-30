@@ -41,6 +41,8 @@ class AppColors {
   static const Color snackbarBackground = Color(0xFF212121);
   static const Color bodyBackground = Color(0xFFE0F7FA);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color white70 =Colors.white70;
+    static const Color white24 =Colors.white24;
   static const Color inactiveColor = Color(0xFFBDBDBD);
   static const Color black = Color(0xFF000000);
   static const Color green = Color(0xFF4CAF50);

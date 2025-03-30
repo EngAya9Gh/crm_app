@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'app_loader.dart';
 
 class AppPaginatedList extends StatefulWidget {
@@ -78,4 +77,12 @@ class _AppPaginatedListState extends State<AppPaginatedList> {
 
     return isScrolling && !widget.isLoading && !widget.hasReachedEnd;
   }
+}
+
+class PageVariables {
+  List<dynamic> allList = [];
+  bool hasReachedEnd = false;
+  int currentPage = 1;
+  int totalPages = 0;
+  int totalCount = 0;
 }

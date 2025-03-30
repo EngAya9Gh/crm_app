@@ -96,7 +96,7 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
     );
 
     invoiceVm.getInvoiceByClient(widget.idClient);
-
+  if (!mounted) return;
     Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(widget.idClient.toString(), widget.idCommunication);
 
     await ticketsCubit.getClientTicket(widget.idClient!);
