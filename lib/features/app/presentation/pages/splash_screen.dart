@@ -1,5 +1,7 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custom_logo.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
@@ -15,6 +17,7 @@ import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../bloc/app_manager_cubit.dart';
 import 'update_app_page.dart';
+import '../../../../core/utils/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -60,49 +63,117 @@ class _SplashScreenState extends State<SplashScreen> {
         message: 'لا يوجد اتصال بالإنترنت',
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomLogo(),
-                20.verticalSpace,
-                BlocBuilder<AppManagerCubit, AppManagerState>(
-                  builder: (context, state) {
-                    if (state.updateState.isError) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AppErrorWidget(
-                          message:
-                              "Please check your connection and try again.",
-                          onPressed: () async {
-                            await appCubit.checkAppUpdate((hasUpdate) {
-                              if (hasUpdate) {
-                                return AppNavigator.pushAndRemoveUntil(
-                                    UpdateAppPage());
-                              }
-                              appCubit.checkRedirections(context);
-                            });
-                          },
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.56,
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
                         ),
-                      );
-                    } else if (state.checkRedirectionsState.isError) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AppErrorWidget(
-                          message:
-                              "Please check your connection and try again.",
-                          onPressed: () {
-                            appCubit.checkRedirections(context);
-                          },
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryMain,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
                         ),
-                      );
-                    }
-                    return const AppLoader.flicker();
-                  },
-                ),
-              ],
-            ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 20),
+                            AppText(
+                              'Welcome Back',
+                              style: TextStyle(
+                                fontSize: 30,
+                                color: AppColors.white70,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AppText(
+                                  'SMARTLIFE',
+                                  style: TextStyle(
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                                SizedBox(height: 1),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    SizedBox(width: 130),
+                                    Transform.scale(
+                                      scale: 1.3,
+                                      child: AppStatusChip(
+                                        status: 'CRM',
+                                        color: AppColors.secondaryMain,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(width: 20),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Rest of the content
+                  Expanded(
+                    child: Center(
+                      child: BlocBuilder<AppManagerCubit, AppManagerState>(
+                        builder: (context, state) {
+                          if (state.updateState.isError) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AppErrorWidget(
+                                message:
+                                    "Please check your connection and try again.",
+                                onPressed: () async {
+                                  await appCubit.checkAppUpdate((hasUpdate) {
+                                    if (hasUpdate) {
+                                      return AppNavigator.pushAndRemoveUntil(
+                                          UpdateAppPage());
+                                    }
+                                    appCubit.checkRedirections(context);
+                                  });
+                                },
+                              ),
+                            );
+                          } else if (state.checkRedirectionsState.isError) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AppErrorWidget(
+                                message:
+                                    "Please check your connection and try again.",
+                                onPressed: () {
+                                  appCubit.checkRedirections(context);
+                                },
+                              ),
+                            );
+                          }
+                          return const AppLoader.flicker();
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

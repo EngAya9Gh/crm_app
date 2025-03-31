@@ -47,39 +47,47 @@ class CustomSearchWidget extends StatelessWidget {
           border: InputBorder.none,
           prefixIcon: Icon(Icons.search),
           filled: true,
-          fillColor: color,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius
-                .circular(10)
-                .r,
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius
-                .circular(10)
-                .r,
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius
-                .circular(10)
-                .r,
-            borderSide: BorderSide(color: color),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius
-                .circular(10)
-                .r,
-            borderSide: BorderSide(color: Colors.red),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius
-                .circular(10)
-                .r,
-            borderSide: BorderSide(color: Colors.red),
+          // fillColor: color,
+ 
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              focusedErrorBorder: InputBorder.none,
+              fillColor: Colors.grey[100],
+              
+             
+          // enabledBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius
+          //       .circular(10)
+          //       .r,
+          //   borderSide: BorderSide(color: Colors.grey.shade300),
+          // ),
+          // focusedBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius
+          //       .circular(10)
+          //       .r,
+          //   borderSide: BorderSide(color: Colors.grey.shade300),
+          // ),
+          // disabledBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius
+          //       .circular(10)
+          //       .r,
+          //   borderSide: BorderSide(color: color),
+          // ),
+          // errorBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius
+          //       .circular(10)
+          //       .r,
+          //   borderSide: BorderSide(color: Colors.red),
+          // ),
+          // focusedErrorBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius
+          //       .circular(10)
+          //       .r,
+          //   borderSide: BorderSide(color: Colors.red),
           ),
         ),
-      ),
+     
     );
   }
 }

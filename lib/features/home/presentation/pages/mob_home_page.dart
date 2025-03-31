@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart' as typform ; 
+import 'package:flutter_typeahead/flutter_typeahead.dart' as typform;
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import '../../../../features/notifications/presentation/manager/notifications_cubit.dart';
 import '../../../../core/common/extensions/build_context.dart';
@@ -24,7 +24,6 @@ import '../../../../core/common/models/search_client_model.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../ui/screen/client/client_profile.dart';
-
 
 class MobHomePage extends StatefulWidget {
   MobHomePage({Key? key}) : super(key: key);
@@ -122,87 +121,89 @@ class _MobHomePageState extends State<MobHomePage> {
                         typform.TypeAheadField<SearchClientModel>(
                           direction: VerticalDirection.down,
                           controller: _searchController,
-                          builder: (context, controller, focusNode) => TextField(
+                          builder: (context, controller, focusNode) =>
+                              TextField(
                             controller: controller,
                             focusNode: focusNode,
                             textDirection: TextDirection.rtl,
                             decoration: InputDecoration(
                               hintTextDirection: TextDirection.rtl,
-                              hintText: 'ابحث عن اسم المؤسسة.. رقم الجوال...',
+                              hintText: 'ابحث عن اسم المؤسسة, رقم الجوال...',
+                              hintStyle: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey.shade500,
+                              ),
                               border: InputBorder.none,
                               fillColor: Colors.white,
                               filled: true,
-                                enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius
-                .circular(10)
-                .r,
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius
-                .circular(10)
-                .r,
-            borderSide: BorderSide(color: Colors.grey.shade300),
-          ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10).r,
+                                borderSide:
+                                    BorderSide(color: Colors.grey.shade300),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10).r,
+                                borderSide:
+                                    BorderSide(color: Colors.grey.shade300),
+                              ),
                             ),
                           ),
-                           
                           decorationBuilder: (context, child) => Material(
                             type: MaterialType.card,
                             elevation: 4,
                             borderRadius: BorderRadius.circular(8),
                             child: child,
                           ),
-                          itemBuilder: (context, suggestion) =>
-                          Directionality(
+                          itemBuilder: (context, suggestion) => Directionality(
                             textDirection: TextDirection.rtl,
                             child: ListTile(
                               title: Text(suggestion.nameEnterprise ?? ''),
                               subtitle: Text(suggestion.phone ?? ''),
                             ),
                           ),
-                         
                           debounceDuration: Duration(milliseconds: 300),
                           hideOnSelect: true,
                           hideOnUnfocus: true,
                           showOnFocus: true,
-                           hideKeyboardOnDrag: true,
+                          hideKeyboardOnDrag: true,
                           hideWithKeyboard: false,
                           retainOnLoading: false,
                           hideOnLoading: false,
                           hideOnEmpty: false,
                           onSelected: (suggestion) {
-                            print('Selected: ${suggestion.idClients}'); // Debug print
+                            print(
+                                'Selected: ${suggestion.idClients}'); // Debug print
                             _searchController.text = suggestion.name ?? '';
                             // TODO: Navigate to client details
                             AppNavigator.go(
-            ClientProfile(idClient:suggestion.idClients),
-            name: AppRoutesNames.clientProfile.inClientsList,
-            pathParameters: {
-              'idClient': suggestion.idClients.toString()
-            },
-          ) ;
+                              ClientProfile(idClient: suggestion.idClients),
+                              name: AppRoutesNames.clientProfile.inClientsList,
+                              pathParameters: {
+                                'idClient': suggestion.idClients.toString()
+                              },
+                            );
                           },
                           suggestionsCallback: (pattern) async {
                             print('Searching for: $pattern'); // Debug print
                             if (pattern.isEmpty) return [];
-                            final results = await _searchCubit.searchClients(pattern);
+                            final results =
+                                await _searchCubit.searchClients(pattern);
                             print('Results: ${results.length}'); // Debug print
                             return results;
                           },
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 5),
                       ],
                     ),
                   ),
                   Expanded(
                     child: Transform.translate(
-                      offset: Offset(0, -65),
+                      offset: Offset(0, -55),
                       child: GridView.count(
                         crossAxisCount: 2,
-                        padding: EdgeInsets.all(20),
-                        mainAxisSpacing: 15,
-                        crossAxisSpacing: 15,
+                        padding: EdgeInsets.all(15),
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
                         childAspectRatio: 1.3,
                         children: [
                           _buildCard('All Leads', '185'),
@@ -235,7 +236,7 @@ class _MobHomePageState extends State<MobHomePage> {
         borderRadius: BorderRadius.circular(15),
       ),
       child: Container(
-        padding: EdgeInsets.all(15),
+        padding: EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -247,7 +248,7 @@ class _MobHomePageState extends State<MobHomePage> {
                 color: AppColors.grey,
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 6),
             AppText(
               value,
               style: TextStyle(

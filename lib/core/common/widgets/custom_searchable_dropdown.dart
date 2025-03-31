@@ -39,6 +39,10 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownSearch<T>(
+        suffixProps: DropdownSuffixProps(
+        dropdownButtonProps: DropdownButtonProps(color: Colors.grey),
+      ),
+      // 
       popupProps: PopupPropsMultiSelection.dialog(
         showSearchBox: true,
         searchDelay: Duration(milliseconds: 500),
@@ -52,13 +56,21 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
             hintTextDirection: TextDirection.rtl,
             hintStyle: AppStyles.textStyle.copyWith(
               fontSize: (18.0).scaleFontSize,
-              color: Colors.grey,
+              color: Colors.grey.shade600,
             ),
             contentPadding: EdgeInsets.symmetric(horizontal: 15),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
-              borderRadius: BorderRadius.circular(12),
-            ),
+            // border: OutlineInputBorder(
+            //   borderSide: BorderSide(color: Colors.grey),
+            //   borderRadius: BorderRadius.circular(12),
+            // ),
+            border: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            focusedErrorBorder: InputBorder.none,
+            fillColor: Colors.grey[100],
+            filled: true,
+            // contentPadding: EdgeInsets.symmetric(horizontal: 12),
           ),
         ),
         containerBuilder: (context, child) {
@@ -103,9 +115,17 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
               context: context,
               hintText: hint,
             ).copyWith(
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              focusedErrorBorder: InputBorder.none,
+              fillColor: Colors.grey[100],
+              filled: true,
+              contentPadding: EdgeInsets.symmetric(horizontal: 12),
               hintStyle: AppStyles.textStyle.copyWith(
                 fontSize: (18.0).scaleFontSize,
-                color: Colors.grey,
+                color: Colors.grey.shade600,
               ),
             ),
         baseStyle: AppStyles.textStyle.copyWith(
@@ -118,7 +138,8 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
       itemAsString: itemAsString,
       onChanged: onChanged,
       selectedItem: selectedItem,
-      validator: validator ?? (isRequired ? InputValidator.requiredFiled : null),
+      validator:
+          validator ?? (isRequired ? InputValidator.requiredFiled : null),
     );
   }
 }

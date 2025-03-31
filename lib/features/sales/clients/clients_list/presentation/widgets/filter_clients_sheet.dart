@@ -76,17 +76,16 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               alignment: Alignment.centerLeft,
               child: ListenableBuilder(
                 listenable: Listenable.merge(_bloc.filterEntity.listenables()),
-                builder: (context, child) =>
-                    AppTextButton(
-                      onPressed: _bloc.filterEntity.checkIfFilterIsNotEmpty()
-                          ? () {
-                        _bloc.filterEntity.clearFilters();
-                        _fetchClients(context);
-                      }
-                          : null,
-                      text: "إعادة الافتراضي",
-                      appButtonStyle: AppButtonStyle.secondary,
-                    ),
+                builder: (context, child) => AppTextButton(
+                  onPressed: _bloc.filterEntity.checkIfFilterIsNotEmpty()
+                      ? () {
+                          _bloc.filterEntity.clearFilters();
+                          _fetchClients(context);
+                        }
+                      : null,
+                  text: "إعادة الافتراضي",
+                  appButtonStyle: AppButtonStyle.secondary,
+                ),
               ),
             ),
             20.height,
@@ -94,11 +93,19 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               builder: (context, clientTypeVm, child) {
                 return CustomMultiSelectionDropdown<String?>(
                   hint: 'الحالة',
-                  items: TypeClientEnum.values.map((e) => e.text,).toList(),
+                  items: TypeClientEnum.values
+                      .map(
+                        (e) => e.text,
+                      )
+                      .toList(),
                   selectedItems: _bloc.filterEntity.statusNotifier.value,
                   itemAsString: (item) => item!,
                   onSave: (selectedItems) {
-                    _bloc.filterEntity.statusNotifier.value = TypeClientEnum.values.where((value) => selectedItems.contains(value.text)).map((e) => e.value).toList();
+                    _bloc.filterEntity.statusNotifier.value = TypeClientEnum
+                        .values
+                        .where((value) => selectedItems.contains(value.text))
+                        .map((e) => e.value)
+                        .toList();
                   },
                   compareFn: (a, b) => a == b,
                 );
@@ -115,10 +122,12 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                         builder: (context, value, _) {
                           return CustomDropDown<String>(
                             hint: 'التسجيل',
+                            isDisabled: true,
                             items: ClientRegistrationType.values
                                 .map((e) => e.value)
                                 .toList(),
-                            compareFn:  (item, selectedItem) => item == selectedItem,
+                            compareFn: (item, selectedItem) =>
+                                item == selectedItem,
                             itemAsString: (item) => item!,
                             selectedItem: value,
                             onChanged: (value) {
@@ -143,10 +152,13 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                         builder: (context, value, _) {
                           return CustomDropDown<String>(
                             hint: 'نوع التصنيف',
+                            isDisabled: true,
+                            
                             items: ClientsClassification.values
                                 .map((e) => e.value)
                                 .toList(),
-                            compareFn:  (item, selectedItem) => item== selectedItem,
+                            compareFn: (item, selectedItem) =>
+                                item == selectedItem,
                             itemAsString: (item) => item!,
                             selectedItem: value,
                             onChanged: (value) {
@@ -169,7 +181,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 Expanded(
                   child: CitiesSearchableDropDown(
                     selectedCityId:
-                    _bloc.filterEntity.cityNotifier.value?.cityId,
+                        _bloc.filterEntity.cityNotifier.value?.cityId,
                     onSelected: (city) {
                       if (city == null) return;
                       _bloc.filterEntity.cityNotifier.value = city;
@@ -187,7 +199,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             return BranchSearchableDropDown(
                               showAllChoice: true,
                               selectedBranchId:
-                              _bloc.filterEntity.regionIdNotifier.value,
+                                  _bloc.filterEntity.regionIdNotifier.value,
                               onSelected: (branch) {
                                 _bloc.filterEntity.regionIdNotifier.value =
                                     branch!.branchId;
@@ -208,9 +220,10 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               BlocBuilder<ClientsListBloc, ClientsListState>(
                 builder: (context, state) {
                   return CustomSearchableDropDown<UserEntity>(
-                    hint: 'الموظف',
-                    items: state.usersSales.data??[],
-                    compareFn:  (item, selectedItem) => item.id == selectedItem.id,
+                    hint: 'الموظف', 
+                    items: state.usersSales.data ?? [],
+                    compareFn: (item, selectedItem) =>
+                        item.id == selectedItem.id,
                     itemAsString: (u) => u!.name,
                     onChanged: (data) {
                       if (data == null) return;
@@ -233,9 +246,12 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                         children: [
                           Flexible(
                             child: CustomSearchableDropDown<ActivityModel>(
-                              hint: 'النشاط',
+                              hint: 'النشاط', 
+                            
                               items: activityVm.activitiesList,
-                              compareFn:  (item, selectedItem) => item.id_activity_type == selectedItem.id_activity_type,
+                              compareFn: (item, selectedItem) =>
+                                  item.id_activity_type ==
+                                  selectedItem.id_activity_type,
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 if (data == null) return;
@@ -244,8 +260,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               },
                               selectedItem: activityVm.activitiesList
                                   .firstWhereOrNull((element) =>
-                              int.parse(element.id_activity_type!) ==
-                                  selectedActivity),
+                                      int.parse(element.id_activity_type!) ==
+                                      selectedActivity),
                               filterFn: (user, filter) =>
                                   user.getFilterActivityType(filter),
                             ),
@@ -254,12 +270,14 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                           Flexible(
                             child: CustomDropDown<ActivitySizeTypeEnum>(
                               hint: "حجم النشاط*",
+                              isDisabled: true,
                               height: 100.h,
-                              compareFn: (item, selectedItem) => item.index == selectedItem.index,
+                              compareFn: (item, selectedItem) =>
+                                  item.index == selectedItem.index,
                               items: ActivitySizeTypeEnum.values,
                               itemAsString: (item) => item!.value,
                               selectedItem:
-                              _bloc.filterEntity.activitySizeNotifier.value,
+                                  _bloc.filterEntity.activitySizeNotifier.value,
                               onChanged: (value) {
                                 _bloc.filterEntity.activitySizeNotifier.value =
                                     value;
@@ -275,8 +293,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             Consumer<UserProvider>(
               builder: (context, userProvider, child) {
                 return CustomSearchableDropDown<ClientSourceEnum>(
-                  hint: "مصدر العميل",
-                  items: ClientSourceEnum.values,
+                    hint: "مصدر العميل",
+                   items: ClientSourceEnum.values,
                   selectedItem: _bloc.filterEntity.clientSourceNotifier.value,
                   itemAsString: (item) => item!.value,
                   validator: (value) {
@@ -302,8 +320,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               builder: (context, setState) {
                 return SubscribingIntentionLevelWidget(
                   subscribingIntentionLevel:
-                  SubscribingIntentionLevelEnum.fromString(
-                      _bloc.filterEntity.subscribingIntentionLevel.value),
+                      SubscribingIntentionLevelEnum.fromString(
+                          _bloc.filterEntity.subscribingIntentionLevel.value),
                   onChanged: (value) {
                     _bloc.filterEntity.subscribingIntentionLevel.value =
                         value?.name;
@@ -325,7 +343,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               hintText: 'من تاريخ',
                               dateTimeType: DateTimeEnum.date,
                               dateTimeController:
-                              _bloc.filterEntity.fromController,
+                                  _bloc.filterEntity.fromController,
                               style2: true,
                             ),
                           ),
@@ -335,7 +353,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               hintText: 'الي تاريخ',
                               dateTimeType: DateTimeEnum.date,
                               dateTimeController:
-                              _bloc.filterEntity.toController,
+                                  _bloc.filterEntity.toController,
                               style2: true,
                             ),
                           ),
