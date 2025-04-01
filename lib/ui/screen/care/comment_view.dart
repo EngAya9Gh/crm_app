@@ -6,6 +6,7 @@ import 'package:crm_smart/core/common/widgets/app_icon.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/common/widgets/custom_filter_icon.dart';
+import 'package:crm_smart/core/common/widgets/loading_comment.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
@@ -379,6 +380,7 @@ class _CommentViewState extends State<CommentView> {
                               .filteredComments
                               .length,
                           withDivider: false,
+                          alignment: MainAxisAlignment.end,
                         ),
                       ),
                     ),
@@ -390,7 +392,8 @@ class _CommentViewState extends State<CommentView> {
                     Consumer<comment_vm>(
                       builder: (context, value, child) {
                         if (value.isLoading) {
-                          return SliverFillRemaining(child: AppLoader());
+                          return SliverFillRemaining(
+                              child: LoadingCommentWidget());
                         } else if (value.filteredComments.isEmpty) {
                           return SliverFillRemaining(
                             child: AppErrorWidget(message: 'لا يوجد تعليقات'),

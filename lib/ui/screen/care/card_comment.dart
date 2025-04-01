@@ -3,6 +3,7 @@ import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/widgets/app_icon.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/core/common/widgets/loading_comment.dart';
 import 'package:crm_smart/core/common/widgets/shimmer_widget.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/view_model/comment.dart';
@@ -118,20 +119,20 @@ class _CardcommentState extends State<Cardcomment> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(15)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  offset: Offset(1.0, 1.0),
-                                  blurRadius: 2.0,
-                                  color: Colors.white24 //.withOpacity(0.2),
-                                  ),
-                            ],
-                            color: _isHighlighted
-                                ? AppColors.primaryAltLight
-                                : Colors.black12,
-                          ),
+                          // decoration: BoxDecoration(
+                          //   borderRadius: BorderRadius.only(
+                          //       bottomLeft: Radius.circular(10)),
+                          //   boxShadow: <BoxShadow>[
+                          //     BoxShadow(
+                          //       offset: Offset(1.0, 1.0),
+                          //       blurRadius: 2.0,
+                          //       color: const Color(0xFFF5F5F5),
+                          //     ),
+                          //   ],
+                          //   color: _isHighlighted
+                          //       ? AppColors.primaryAltLight
+                          //       : Colors.black12,
+                          // ),
                           child: Padding(
                             padding:
                                 const EdgeInsets.only(right: 8.0, bottom: 8),
@@ -302,6 +303,11 @@ class _CardcommentState extends State<Cardcomment> {
                                       ),
                                     ),
                                   ),
+                                Divider(
+                                  color: AppColors.grey,
+                                  height: 0.5,
+                                  thickness: 0.2,
+                                ),
                               ],
                             ),
                           ),
@@ -417,55 +423,5 @@ String _getTimeAgo(String dateString) {
     return timeago.format(date, locale: 'ar');
   } catch (e) {
     return '';
-  }
-}
-
-class LoadingCommentWidget extends StatelessWidget {
-  const LoadingCommentWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              offset: Offset(1.0, 1.0),
-              blurRadius: 2.0,
-              color: Colors.white24 //.withOpacity(0.2),
-              ),
-        ],
-        color: Colors.black12,
-      ),
-      padding: const EdgeInsets.only(right: 8.0, bottom: 8),
-      margin: EdgeInsets.symmetric(vertical: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ShimmerWidget.circular(width: 25, height: 25),
-              SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ShimmerWidget.rectangular(height: 30),
-                    2.height,
-                    ShimmerWidget.rectangular(height: 30),
-                    5.height,
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 15),
-          ShimmerWidget.rectangular(height: 65),
-        ],
-      ),
-    );
   }
 }

@@ -44,7 +44,7 @@ class CardRow extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             textDirection: TextDirection.rtl,
             children: [
               Expanded(
@@ -53,7 +53,7 @@ class CardRow extends StatelessWidget {
                   textDirection: TextDirection.rtl,
                   fontFamily: AppFonts.fontFamily1,
                   fontSize: 16,
-                  color: Colors.grey[600],
+                  color: Colors.black87, //Colors.grey[600],
                   fontWeight: FontWeight.w800,
                   overflow: overflow,
                 ),

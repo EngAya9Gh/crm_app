@@ -170,3 +170,11 @@ flutter:
     - family: Cairo-SemiBold
       fonts:
         - asset: fonts/Cairo-SemiBold.ttf
+    - family: Roboto
+      fonts:
+        - asset: fonts/RobotoSerif-Regular.ttf
+          weight: 400
+        - asset: fonts/RobotoSerif-Medium.ttf
+          weight: 500
+        - asset: fonts/RobotoSerif-Bold.ttf
+          weight: 700

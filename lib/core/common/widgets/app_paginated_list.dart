@@ -47,7 +47,7 @@ class _AppPaginatedListState extends State<AppPaginatedList> {
     return ListView.separated(
       scrollDirection: widget.scrollDirection ?? Axis.vertical,
       padding: widget.listMargin ??
-          const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       cacheExtent: widget.cacheExtent ?? 20,
       controller: scrollController
         ..addListener(() {

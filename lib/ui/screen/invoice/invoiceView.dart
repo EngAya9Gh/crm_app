@@ -2,6 +2,7 @@ import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/common/widgets/section_header.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
 import 'package:flutter/material.dart';
@@ -123,31 +124,38 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 product.price.toString(),
                               ),
 
-                            Container(
-                              color: AppColors.secondaryMain.withOpacity(0.7),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  AppText(
-                                    'المبلغ الإجمالي   ',
-                                    fontFamily: AppFonts.fontFamily1,
-                                    textDirection: TextDirection.rtl,
-                                    fontSize: 18,
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  //Spacer(),
-                                  AppText(
-                                    invoice.total,
-                                    textDirection: TextDirection.rtl,
-                                    fontFamily: AppFonts.fontFamily1,
-                                    fontSize: 18,
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Container(
+                            //   color: AppColors.secondaryMain.withOpacity(0.7),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children: [
+                            //       AppText(
+                            //         'المبلغ الإجمالي   ',
+                            //         fontFamily: AppFonts.fontFamily1,
+                            //         textDirection: TextDirection.rtl,
+                            //         fontSize: 18,
+                            //         color: Colors.black87,
+                            //         fontWeight: FontWeight.w500,
+                            //       ),
+                            //       //Spacer(),
+                            //       AppText(
+                            //         invoice.total,
+                            //         textDirection: TextDirection.rtl,
+                            //         fontFamily: AppFonts.fontFamily1,
+                            //         fontSize: 18,
+                            //         color: Colors.black87,
+                            //         fontWeight: FontWeight.w500,
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
+                            SectionHeader(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                                // Color_label: AppColors.grey.shade100,
+                                textColor: AppColors.grey,
+                                title: ' المبلغ الإجمالي      ' +
+                                    invoice.total.toString()),
                             SizedBox(
                               height: 10,
                             ),
