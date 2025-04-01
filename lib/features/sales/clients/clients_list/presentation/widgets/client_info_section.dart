@@ -203,64 +203,20 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                     children: [
                       Row(
                         children: [
-                          Container(
-                            height: 35.scaleIconsSize,
-                            width: 35.scaleIconsSize,
-                            //color: AppColors.kMainColor,
-                            decoration: BoxDecoration(
-                                color: AppColors.primaryMain,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            child: IconButton(
-                              onPressed: () async {
-                                if (kIsWeb) {
-                                  HelperFunctions.copyToClipboard(
-                                      clientModel.mobile.toString());
-                                  return;
-                                }
-                                await HelperFunctions.urlLauncherPhone( clientModel.mobile.toString());
-
-                                // await FlutterPhoneDirectCaller.callNumber(
-                                //     clientModel.mobile.toString());
-                              },
-                              icon: AppIcon(
-                                kIsWeb ? Icons.copy : Icons.call,
-                                size: 15,
-                              ),
-                              color: AppColors.white,
-                            ),
-                          ),
-                          SpecialClientIconButton(idClients:clientModel.idClients)
+                          SpecialClientIconButton(
+                              idClients: clientModel.idClients)
                         ],
-                      ),
-                      TextButton(
-                        onPressed: () async { 
-                          if (kIsWeb) {
-                            HelperFunctions.copyToClipboard(
-                                clientModel.mobile.toString());
-                            return;
-                          }
-                          await HelperFunctions.urlLauncherPhone( clientModel.mobile.toString());
-
-                          // await FlutterPhoneDirectCaller.callNumber(
-                          //     clientModel.mobile.toString());
-                        },
-                        child: AppText(
-                          clientModel.mobile.toString(),
-                          fontFamily: AppFonts.fontFamily1,
-                          color: AppColors.primaryMain,
-                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
                   ClientInfoDetails(),
                   5.height,
-                  if (clientModel.communicationDetails!=null && clientModel.communicationDetails!.isNotEmpty)
+                  if (clientModel.communicationDetails != null &&
+                      clientModel.communicationDetails!.isNotEmpty)
                     CardRow(
                         title: 'نوع العميل',
-                        value:clientModel.communicationDetails!.first.state??""),
-
+                        value: clientModel.communicationDetails!.first.state ??
+                            ""),
                   if (widget.clientTransfer != 'transfer') ...[
                     Center(
                       child: Column(
@@ -274,18 +230,18 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                               child: AppElevatedButton(
                                 text: 'اجراءات',
                                 onPressed: () async {
-                                  ClientModel? result = await AppConstants.showAppDialog(
+                                  ClientModel? result =
+                                      await AppConstants.showAppDialog(
                                     child: DialogClientSection(
-                                    disableWithdrawal: disableWithdrawal,
-                                    client: clientModel,
-                                    idClient: widget.idClient,
-                                  ),
+                                      disableWithdrawal: disableWithdrawal,
+                                      client: clientModel,
+                                      idClient: widget.idClient,
+                                    ),
                                   );
 
                                   if (result != null) clientModel = result;
 
                                   _clientsListBloc.currentClient = clientModel;
-
                                 },
                               ),
                             ),
@@ -307,7 +263,8 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                   },
                                 );
                                 if (result != null) clientModel = result;
-                                _clientProvider.getClientById(widget.idClient.toString());
+                                _clientProvider
+                                    .getClientById(widget.idClient.toString());
                               },
                             ),
                           ),

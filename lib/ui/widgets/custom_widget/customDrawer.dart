@@ -1,9 +1,11 @@
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/features/mangement/manage_users/presentation/pages/action_user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
@@ -26,7 +28,7 @@ import '../../../view_model/user_vm_provider.dart';
 import '../../screen/user/userview.dart';
 import '../delete_acconut_dialog.dart';
 import '../../../core/common/lists/sections_lists.dart';
-import '../../../core/common/models/sections/section_model.dart';    
+import '../../../core/common/models/sections/section_model.dart';
 
 class CustomDrawer extends StatefulWidget {
   CustomDrawer({super.key});
@@ -40,6 +42,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   bool checkingForUpdate = false;
   bool _showProfileSection = false;
   Map<int, bool> _expandedSections = {};
+  int _expandedSectionIndex = -1;
 
   @override
   void initState() {
@@ -50,19 +53,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   void _handleSectionTap(SectionModel section, int index) {
+    if (section.path.startsWith('http')) {
+      launchUrl(Uri.parse(section.path));
+      return;
+    }
+
+    if (section.subSections.isEmpty) {
+      AppNavigator.go(section.page, name: section.path);
+      return;
+    }
+
     setState(() {
-      if (section.path.startsWith('http')) {
-        HelperFunctions.urlLauncher(section.path, isNewTab: true);
-        Navigator.pop(context);
-        return;
-      }
-      
-      if (section.subSections.isEmpty) {
-        AppNavigator.go(section.page, name: section.path);
-        Navigator.pop(context);
-      } else {
-        _expandedSections[index] = !(_expandedSections[index] ?? false);
-      }
+      _expandedSections[index] = !(_expandedSections[index] ?? false);
     });
   }
 
@@ -79,7 +81,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   // Profile Header Section
                   Container(
                     padding: EdgeInsets.all(16),
-                    color: AppColors.primaryMain,//Color(0xFF579DDE),
+                    color: AppColors.primaryMain, //Color(0xFF579DDE),
                     child: Column(
                       children: [
                         Row(
@@ -93,7 +95,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   width: 60,
                                   height: 60,
                                   fit: BoxFit.cover,
-                                  imageUrl: Provider.of<UserProvider>(context, listen: true)
+                                  imageUrl: Provider.of<UserProvider>(context,
+                                          listen: true)
                                       .currentUser
                                       .img_image,
                                 ),
@@ -105,7 +108,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   AppText(
-                                    Provider.of<UserProvider>(context, listen: true)
+                                    Provider.of<UserProvider>(context,
+                                            listen: true)
                                         .currentUser
                                         .nameUser
                                         .toString(),
@@ -116,7 +120,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     ),
                                   ),
                                   AppText(
-                                    Provider.of<UserProvider>(context, listen: true)
+                                    Provider.of<UserProvider>(context,
+                                            listen: true)
                                         .currentUser
                                         .email
                                         .toString(),
@@ -131,8 +136,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             ),
                             IconButton(
                               icon: Icon(
-                                _showProfileSection 
-                                    ? Icons.keyboard_arrow_up 
+                                _showProfileSection
+                                    ? Icons.keyboard_arrow_up
                                     : Icons.keyboard_arrow_down,
                                 color: AppColors.white,
                               ),
@@ -147,7 +152,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         if (_showProfileSection) ...[
                           Divider(color: AppColors.white24, height: 24),
                           ListTile(
-                            leading: Icon(Icons.person_outline, color: AppColors.white),
+                            leading: Icon(Icons.person_outline,
+                                color: AppColors.white),
                             title: AppText(
                               'الملف الشخصي',
                               style: TextStyle(color: AppColors.white),
@@ -155,11 +161,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             onTap: () => AppNavigator.go(
                               UserScreen(
                                 ismyprofile: 'yes',
-                                user: Provider.of<UserProvider>(context, listen: false).currentUser,
+                                user: Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .currentUser,
                               ),
                               isNew: false,
                             ),
                           ),
+                          if (context
+                              .read<PrivilegesCubit>()
+                              .checkPrivilege('49'))
+                            ListTile(
+                              leading:
+                                  Icon(Icons.add, color: AppColors.white),
+                              title: AppText(
+                                'اضافة حساب جديد',
+                                style: TextStyle(color: AppColors.white),
+                              ),
+                              onTap: () async {
+                                AppNavigator.go(
+                                  ActionUserPage(),
+                                  name: AppRoutesNames
+                                      .managementInternalRoutes.addUser,
+                                );
+                              },
+                            ),
                           ListTile(
                             leading: Icon(Icons.logout, color: AppColors.white),
                             title: AppText(
@@ -167,7 +193,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               style: TextStyle(color: AppColors.white),
                             ),
                             onTap: () async {
-                              Provider.of<UserProvider>(context, listen: false).logout(
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .logout(
                                 onLogoutSuccess: () async {
                                   final secureStorage = getIt<CacheServices>(
                                     instanceName: SecureStorageConsumer.name,
@@ -178,7 +205,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   )
                                       .then(
                                     (value) {
-                                      AppNavigator.goReplacement(LoginPage(),name:AppRoutesNames.generalRoutes.login );
+                                      AppNavigator.goReplacement(LoginPage(),
+                                          name: AppRoutesNames
+                                              .generalRoutes.login);
                                     },
                                   );
                                 },
@@ -186,33 +215,37 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             },
                           ),
                           ListTile(
-                            leading: Icon(Icons.delete_outline, color: AppColors.white),
+                            leading: Icon(Icons.delete_outline,
+                                color: AppColors.white),
                             title: AppText(
                               'حذف حسابي',
                               style: TextStyle(color: AppColors.white),
                             ),
                             onTap: () {
-                              AppConstants.showAppDialog(child: DeleteAccountDialog());
+                              AppConstants.showAppDialog(
+                                  child: DeleteAccountDialog());
                             },
                           ),
                         ],
                       ],
                     ),
                   ),
-                  
+
                   // Main Sections from SectionsLists.homeSections
                   ...SectionsLists.homeSections.asMap().entries.map((entry) {
                     final int index = entry.key;
                     final section = entry.value;
-                    
+
                     // Check if user has privilege to view this section
-                    if (section.privilegeId != null && 
-                        !context.read<PrivilegesCubit>().checkPrivilege(section.privilegeId)) {
+                    if (section.privilegeId != null &&
+                        !context
+                            .read<PrivilegesCubit>()
+                            .checkPrivilege(section.privilegeId)) {
                       return SizedBox.shrink();
                     }
-                    
+
                     final bool isExpanded = _expandedSections[index] ?? false;
-                    
+
                     return Column(
                       children: [
                         ListTile(
@@ -228,9 +261,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               fontSize: 16,
                             ),
                           ),
-                          trailing: section.subSections.isNotEmpty 
+                          trailing: section.subSections.isNotEmpty
                               ? Icon(
-                                  isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                  isExpanded
+                                      ? Icons.keyboard_arrow_up
+                                      : Icons.keyboard_arrow_down,
                                   color: AppColors.primaryMain,
                                 )
                               : null,
@@ -239,17 +274,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         if (isExpanded && section.subSections.isNotEmpty)
                           ...section.subSections.map((subSection) {
                             // Check if user has privilege to view this subsection
-                            if (subSection.privilegeId != null && 
-                                !context.read<PrivilegesCubit>().checkPrivilege(subSection.privilegeId)) {
+                            if (subSection.privilegeId != null &&
+                                !context
+                                    .read<PrivilegesCubit>()
+                                    .checkPrivilege(subSection.privilegeId)) {
                               return SizedBox.shrink();
                             }
-                            
+
                             return ListTile(
                               contentPadding: EdgeInsets.only(right: 32.0),
                               leading: Icon(
                                 subSection.icon ?? Icons.circle,
                                 color: AppColors.primaryMain,
-                                size:  15,
+                                size: 15,
                               ),
                               title: AppText(
                                 subSection.title,
@@ -259,8 +296,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 ),
                               ),
                               onTap: () {
-                                AppNavigator.go(subSection.page, name: subSection.path);
-                                 // Navigator.pop(context);
+                                AppNavigator.go(subSection.page,
+                                    name: subSection.path);
+                                // Navigator.pop(context);
                               },
                             );
                           }).toList(),
@@ -268,12 +306,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     );
                   }).toList(),
 
-                  Divider(height: 10, thickness: 1, color:  AppColors.grey.shade200),
- 
+                  Divider(
+                      height: 10, thickness: 1, color: AppColors.grey.shade200),
                 ],
               ),
             ),
-            
+
             // Bottom Section
             SliverFillRemaining(
               hasScrollBody: false,
@@ -282,8 +320,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Divider(height: 10, thickness: 1, color:  AppColors.grey.shade200),
-                  
+                    Divider(
+                        height: 10,
+                        thickness: 1,
+                        color: AppColors.grey.shade200),
+
                     // Update button
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -322,7 +363,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   Future<void> _downloadUpdateIfAvailable() async {
     try {
-      final isUpdateAvailable = await shorebirdCodePush.checkForUpdate()==UpdateStatus.outdated;
+      final isUpdateAvailable =
+          await shorebirdCodePush.checkForUpdate() == UpdateStatus.outdated;
 
       if (isUpdateAvailable) {
         await shorebirdCodePush.update();
@@ -333,7 +375,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             'جاري تحميل التحديث',
           ],
           onCompletion: () async {
-            await SystemChannels.platform.invokeMethod('SystemNavigator.pop', true);
+            await SystemChannels.platform
+                .invokeMethod('SystemNavigator.pop', true);
           },
         );
         return;

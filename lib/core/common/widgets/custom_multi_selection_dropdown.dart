@@ -56,6 +56,7 @@ class _CustomMultiSelectionDropdownState<T>
   Widget build(BuildContext context) {
     final Widget child = DropdownSearch<T>.multiSelection(
       key: _popupCustomValidationKey,
+      
       items: (filter, loadProps) => widget.items,
       selectedItems: widget.selectedItems,
       itemAsString: widget.itemAsString,

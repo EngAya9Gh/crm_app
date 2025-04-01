@@ -35,43 +35,50 @@ class CardRow extends StatelessWidget {
       if (showEmpty) {
         valueString = "لا يوجد";
       } else {
-        if(anotherWidget==null)
-        return SizedBox.shrink();
+        if (anotherWidget == null) return SizedBox.shrink();
       }
     }
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: alignment ?? MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          textDirection: TextDirection.rtl,
-          children: [
-            Flexible(
-              child: AppText(
-                title,
-                textDirection: TextDirection.rtl,
-                fontWeight: FontWeight.w600,
-                fontFamily: AppFonts.fontFamily1,
-                overflow: overflow,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            textDirection: TextDirection.rtl,
+            children: [
+              Expanded(
+                child: AppText(
+                  title,
+                  textDirection: TextDirection.rtl,
+                  fontFamily: AppFonts.fontFamily1,
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.w800,
+                  overflow: overflow,
+                ),
               ),
-            ),
-            50.width,
-            Flexible(
-              child:anotherWidget?? AppText(
-                valueString,
-                fontWeight: FontWeight.w500,
-                color: valueFontColor,
-                fontFamily: AppFonts.fontFamily1,
-                overflow: overflow,
+              16.width,
+              Expanded(
+                flex: isExpanded ? 2 : 1,
+                child: anotherWidget ??
+                    AppText(
+                      valueString,
+                      textDirection: TextDirection.rtl,
+                      fontFamily: AppFonts.fontFamily1,
+                      fontSize: 16,
+                      color: valueFontColor ?? Colors.black87,
+                      fontWeight: FontWeight.w500,
+                      overflow: overflow,
+                    ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         if (withDivider) ...{
           Divider(
             thickness: 1,
-            color: Colors.grey,
+            color: Colors.grey[300],
           ),
           5.height,
         }

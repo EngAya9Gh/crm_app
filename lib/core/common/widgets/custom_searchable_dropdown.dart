@@ -38,9 +38,11 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownSearch<T>(
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: DropdownSearch<T>(
         suffixProps: DropdownSuffixProps(
-        dropdownButtonProps: DropdownButtonProps(color: Colors.grey),
+          dropdownButtonProps: DropdownButtonProps(color: Colors.grey),
       ),
       // 
       popupProps: PopupPropsMultiSelection.dialog(
@@ -140,6 +142,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
       selectedItem: selectedItem,
       validator:
           validator ?? (isRequired ? InputValidator.requiredFiled : null),
+      ),
     );
   }
 }

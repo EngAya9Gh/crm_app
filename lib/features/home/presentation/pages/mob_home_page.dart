@@ -91,7 +91,7 @@ class _MobHomePageState extends State<MobHomePage> {
                 children: [
                   Container(
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 45),
                     decoration: BoxDecoration(
                       color: AppColors.primaryMain,
                       borderRadius: BorderRadius.only(
@@ -175,8 +175,13 @@ class _MobHomePageState extends State<MobHomePage> {
                                 'Selected: ${suggestion.idClients}'); // Debug print
                             _searchController.text = suggestion.name ?? '';
                             // TODO: Navigate to client details
+                            // (currentUser?.typeAdministration == "2")
+                            //  if(  Provider.of<UserProvider>(context, listen: true).currentUser.typeAdministration=='')
                             AppNavigator.go(
-                              ClientProfile(idClient: suggestion.idClients),
+                              ClientProfile(
+                                idClient: suggestion.idClients,
+                                tabIndex: 0,
+                              ),
                               name: AppRoutesNames.clientProfile.inClientsList,
                               pathParameters: {
                                 'idClient': suggestion.idClients.toString()
@@ -206,16 +211,47 @@ class _MobHomePageState extends State<MobHomePage> {
                         crossAxisSpacing: 10,
                         childAspectRatio: 1.3,
                         children: [
-                          _buildCard('All Leads', '185'),
-                          _buildCard('Fresh Leads', '25'),
-                          _buildCard('Cold Calls', '1'),
-                          _buildCard('No Answer\npotential', '0'),
-                          _buildCard('Follow up', '67'),
-                          _buildCard('No Answer', '4'),
-                          _buildCard('Not interested', '1'),
-                          _buildCard('Follow up To\nMeeting', '2'),
-                          _buildCard('Meeting', '30'),
-                          _buildCard('Follow up After\nMeeting', '2'),
+                          _buildCard('All Leads', '185', () {
+                            // تنفيذ الإجراء عند النقر
+                            //  if(  Provider.of<UserProvider>(context, listen: true).currentUser.typeAdministration=='')
+                            // AppNavigator.go(
+                            //   ClientProfile(
+                            //      idClient: suggestion.idClients
+                            //   ,  tabIndex: 0,
+                            //   ),
+                            //   name: AppRoutesNames.clientProfile.inClientsList,
+                            //   pathParameters: {
+                            //     'idClient': suggestion.idClients.toString()
+                            //   },
+                            // );
+                          }),
+                          _buildCard('Fresh Leads', '25', () {
+                            // تنفيذ الإجراء عند النقر
+                          }),
+                          _buildCard('Cold Calls', '1', () {
+                            // تنفيذ الإجراء عند النقر
+                          }),
+                          _buildCard('No Answer\npotential', '0', () {
+                            // تنفيذ الإجراء عند النقر
+                          }),
+                          _buildCard('Follow up', '67', () {
+                            // تنفيذ الإجراء عند النقر
+                          }),
+                          _buildCard('No Answer', '4', () {
+                            // تنفيذ الإجراء عند النقر
+                          }),
+                          _buildCard('Not interested', '1', () {
+                            // تنفيذ الإجراء عند النقر
+                          }),
+                          _buildCard('Follow up To\nMeeting', '2', () {
+                            // تنفيذ الإجراء عند النقر
+                          }),
+                          _buildCard('Meeting', '30', () {
+                            // تنفيذ الإجراء عند النقر
+                          }),
+                          _buildCard('Follow up After\nMeeting', '2', () {
+                            // تنفيذ الإجراء عند النقر
+                          }),
                         ],
                       ),
                     ),
@@ -229,35 +265,38 @@ class _MobHomePageState extends State<MobHomePage> {
     );
   }
 
-  Widget _buildCard(String title, String value) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AppText(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: AppColors.grey,
+  Widget _buildCard(String title, String value, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppText(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: AppColors.grey,
+                ),
               ),
-            ),
-            SizedBox(height: 6),
-            AppText(
-              value,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryMain,
+              SizedBox(height: 6),
+              AppText(
+                value,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryMain,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

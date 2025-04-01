@@ -1,6 +1,11 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/common/client_profile/client_dates_tab/presentation/pages/clients_dates_page.dart';
+import 'package:crm_smart/features/sales/clients/clients_list/presentation/widgets/special_client_icon_button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +64,8 @@ class ClientProfile extends StatefulWidget {
   State<ClientProfile> createState() => _ClientProfileState();
 }
 
-class _ClientProfileState extends State<ClientProfile> with TickerProviderStateMixin {
+class _ClientProfileState extends State<ClientProfile>
+    with TickerProviderStateMixin {
   late final TicketsCubit ticketsCubit;
   late final SupportTabCubit supportTabCubit;
   late final InvoiceVm invoiceVm;
@@ -80,13 +86,16 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
       await _initializeData();
     });
 
-    _tabController = TabController(length: _tabs().length, vsync: this, initialIndex: indexTab);
+    _tabController = TabController(
+        length: _tabs().length, vsync: this, initialIndex: indexTab);
     _tabController.addListener(onChangeTab);
   }
 
   Future<void> _initializeData() async {
-    Provider.of<comment_vm>(context, listen: false).getComments(widget.idClient.toString());
-    await Provider.of<ClientProvider>(context, listen: false).getClientById(widget.idClient.toString());
+    Provider.of<comment_vm>(context, listen: false)
+        .getComments(widget.idClient.toString());
+    await Provider.of<ClientProvider>(context, listen: false)
+        .getClientById(widget.idClient.toString());
 
     supportTabCubit.getClientInvoice(
       getInvoiceByClientParams: GetInvoiceByClientParams(
@@ -96,8 +105,9 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
     );
 
     invoiceVm.getInvoiceByClient(widget.idClient);
-  if (!mounted) return;
-    Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(widget.idClient.toString(), widget.idCommunication);
+    if (!mounted) return;
+    Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(
+        widget.idClient.toString(), widget.idCommunication);
 
     await ticketsCubit.getClientTicket(widget.idClient!);
   }
@@ -120,7 +130,8 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
   Widget build(BuildContext context) {
     return Consumer<ClientProvider>(
       builder: (context, state, _) {
-        if (state.currentClientModel.isLoading || state.currentClientModel.isInit) {
+        if (state.currentClientModel.isLoading ||
+            state.currentClientModel.isInit) {
           return _buildLoading();
         } else if (state.currentClientModel.isFailure) {
           return _buildFailure();
@@ -142,7 +153,9 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
     return AppScaffold(
       body: Center(
         child: IconButton(
-          onPressed: () => context.read<ClientProvider>().getClientById(widget.idClient.toString()),
+          onPressed: () => context
+              .read<ClientProvider>()
+              .getClientById(widget.idClient.toString()),
           icon: AppIcon(Icons.refresh),
         ),
       ),
@@ -154,7 +167,74 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
       appBar: CustomAppBar(
         title: client!.nameEnterprise,
         showBackButton: true,
-        bottom: _buildTabBar(),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(80),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 8),
+                    TextButton(
+                      onPressed: () async {
+                        if (kIsWeb) {
+                          HelperFunctions.copyToClipboard(
+                              client.mobile.toString());
+                          return;
+                        }
+                        await HelperFunctions.urlLauncherPhone(
+                            client.mobile.toString());
+
+                        // await FlutterPhoneDirectCaller.callNumber(
+                        //     clientModel.mobile.toString());
+                      },
+                      child: AppText(
+                        client.mobile.toString(),
+                        fontFamily: AppFonts.fontFamily1,
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    SizedBox(width: 1),
+                    Container(
+                      height: 31.scaleIconsSize,
+                      width: 31.scaleIconsSize,
+                      //color: AppColors.kMainColor,
+                      decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      child: IconButton(
+                        onPressed: () async {
+                          if (kIsWeb) {
+                            HelperFunctions.copyToClipboard(
+                                client.mobile.toString());
+                            return;
+                          }
+                          await HelperFunctions.urlLauncherPhone(
+                              client.mobile.toString());
+
+                          // await FlutterPhoneDirectCaller.callNumber(
+                          //     clientModel.mobile.toString());
+                        },
+                        icon: AppIcon(
+                          kIsWeb ? Icons.copy : Icons.call,
+                          size: 15,
+                          color: AppColors.primaryMain,
+                        ),
+                        // color: AppColors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              _buildTabBar(),
+            ],
+          ),
+        ),
       ),
       body: ValueListenableBuilder<int>(
         valueListenable: _currentTabIndex,
@@ -203,7 +283,10 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
       indicatorColor: AppColors.white,
       indicatorWeight: 6,
       isScrollable: true,
-      unselectedLabelStyle: TextStyle(fontFamily: AppFonts.fontFamily1, fontSize: 15, fontWeight: FontWeight.w600),
+      unselectedLabelStyle: TextStyle(
+          fontFamily: AppFonts.fontFamily1,
+          fontSize: 15,
+          fontWeight: FontWeight.w600),
       unselectedLabelColor: AppColors.white,
       onTap: (value) => _currentTabIndex.value = value,
       tabAlignment: TabAlignment.center,
@@ -213,16 +296,17 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
 
   List<Widget> _tabs() {
     return <Widget>[
-      Text('البيانات ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      Text('الفواتير ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      Text('التعليقات ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      Text(' الدعم ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      Text('العناية ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      Text('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      Text('الانشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      Text('المواعيد', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      if (context.read<PrivilegesCubit>().checkPrivilege('282')) Text('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      Text('المهام', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText('البيانات ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText('الفواتير ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText('التعليقات ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText(' الدعم ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText('العناية ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText('الانشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText('المواعيد', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      if (context.read<PrivilegesCubit>().checkPrivilege('282'))
+        AppText('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText('المهام', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
     ];
   }
 
@@ -237,7 +321,8 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
       InvoicesTabPage(client: client),
       CommentView(
         client: client,
-        commentId: widget.commentId != null ? int.tryParse(widget.commentId!) : null,
+        commentId:
+            widget.commentId != null ? int.tryParse(widget.commentId!) : null,
       ),
       SupportViewInvoices(itemClient: client),
       CareClientView(

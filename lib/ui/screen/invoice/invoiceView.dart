@@ -64,7 +64,8 @@ class _InvoiceViewState extends State<InvoiceView> {
   late final InvoiceVm _invoiceVm;
   late final InvoicesSectionCubit _invoicesCubit;
 
-  InvoiceModel get invoiceModel => widget.invoice ?? _invoicesCubit.currentInvoice!;
+  InvoiceModel get invoiceModel =>
+      widget.invoice ?? _invoicesCubit.currentInvoice!;
 
   @override
   void initState() {
@@ -85,7 +86,8 @@ class _InvoiceViewState extends State<InvoiceView> {
         client = widget.clientModel;
         return;
       }
-      await Provider.of<ClientProvider>(context, listen: false).getClientById(invoiceModel.fkIdClient.toString(), (value) => client = value);
+      await Provider.of<ClientProvider>(context, listen: false).getClientById(
+          invoiceModel.fkIdClient.toString(), (value) => client = value);
     });
   }
 
@@ -122,16 +124,27 @@ class _InvoiceViewState extends State<InvoiceView> {
                               ),
 
                             Container(
-                              color: Colors.amberAccent,
+                              color: AppColors.secondaryMain.withOpacity(0.7),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   AppText(
                                     'المبلغ الإجمالي   ',
                                     fontFamily: AppFonts.fontFamily1,
+                                    textDirection: TextDirection.rtl,
+                                    fontSize: 18,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                   //Spacer(),
-                                  AppText(invoice.total),
+                                  AppText(
+                                    invoice.total,
+                                    textDirection: TextDirection.rtl,
+                                    fontFamily: AppFonts.fontFamily1,
+                                    fontSize: 18,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ],
                               ),
                             ),
@@ -139,55 +152,104 @@ class _InvoiceViewState extends State<InvoiceView> {
                               height: 10,
                             ),
 
-                            CardRow(title: 'رقم الفاتورة', value: invoice.idInvoice.toString()),
-                            CardRow(title: 'اسم العميل', value: invoice.nameClient.toString()),
-                            CardRow(title: 'اسم المؤسسة', value: invoice.name_enterprise.toString()),
-                            CardRow(title: 'حالة الفاتورة', value: invoice.stateclient.toString()),
-                            CardRow(title: 'فرع الفاتورة', value: invoice.name_regoin_invoice.toString()),
+                            CardRow(
+                                title: 'رقم الفاتورة',
+                                value: invoice.idInvoice.toString()),
+                            CardRow(
+                                title: 'اسم العميل',
+                                value: invoice.nameClient.toString()),
+                            CardRow(
+                                title: 'اسم المؤسسة',
+                                value: invoice.name_enterprise.toString()),
+                            CardRow(
+                                title: 'حالة الفاتورة',
+                                value: invoice.stateclient.toString()),
+                            CardRow(
+                                title: 'فرع الفاتورة',
+                                value: invoice.name_regoin_invoice.toString()),
 
-                            invoice.invoice_source != null ? CardRow(title: 'مصدر الفاتورة', value: invoice.invoice_source!.toString()) : Container(),
+                            invoice.invoice_source != null
+                                ? CardRow(
+                                    title: 'مصدر الفاتورة',
+                                    value: invoice.invoice_source!.toString())
+                                : Container(),
 
-                            CardRow(title: 'اسم الموظف', value: invoice.nameUser.toString()),
-                            CardRow(title: 'فرع الموظف', value: invoice.name_regoin_invoice.toString()),
+                            CardRow(
+                                title: 'اسم الموظف',
+                                value: invoice.nameUser.toString()),
+                            CardRow(
+                                title: 'فرع الموظف',
+                                value: invoice.name_regoin_invoice.toString()),
 
                             CardRow(
                               title: 'تاريخ عقد الإشتراك',
                               value: invoice.date_approve,
                             ),
 
-                            CardRow(title: 'المبلغ المدفوع', value: invoice.amountPaid.toString()),
+                            CardRow(
+                                title: 'المبلغ المدفوع',
+                                value: invoice.amountPaid.toString()),
                             CardRow(
                                 title: ' المبلغ المتبقي',
-                                value: ((num.tryParse(invoice.total?.toString() ?? "0") ?? 0) -
-                                        (num.tryParse(invoice.amountPaid?.toString() ?? "0") ?? 0))
+                                value: ((num.tryParse(
+                                                invoice.total?.toString() ??
+                                                    "0") ??
+                                            0) -
+                                        (num.tryParse(invoice.amountPaid
+                                                    ?.toString() ??
+                                                "0") ??
+                                            0))
                                     .toStringAsFixed(2)),
 
-                            invoice.renewYear != '0' && invoice.renewYear != null
-                                ? CardRow(title: ' التجديد السنوي', value: invoice.renewYear.toString())
+                            invoice.renewYear != '0' &&
+                                    invoice.renewYear != null
+                                ? CardRow(
+                                    title: ' التجديد السنوي',
+                                    value: invoice.renewYear.toString())
                                 : Container(),
-                            invoice.renew2year != '0' && invoice.renew2year != null
-                                ? CardRow(title: 'تجديد الموارد البشرية', value: invoice.renew2year.toString())
+                            invoice.renew2year != '0' &&
+                                    invoice.renew2year != null
+                                ? CardRow(
+                                    title: 'تجديد الموارد البشرية',
+                                    value: invoice.renew2year.toString())
                                 : Container(),
 
-                            invoice.renewPlus.toString() == '' || invoice.renewPlus == null
+                            invoice.renewPlus.toString() == '' ||
+                                    invoice.renewPlus == null
                                 ? Container()
-                                : CardRow(title: 'تجديد الفرع الإضافي', value: invoice.renewPlus.toString()),
-                            invoice.numTax.toString() == '' || invoice.numTax == null
+                                : CardRow(
+                                    title: 'تجديد الفرع الإضافي',
+                                    value: invoice.renewPlus.toString()),
+                            invoice.numTax.toString() == '' ||
+                                    invoice.numTax == null
                                 ? Container()
-                                : CardRow(title: 'الرقم الضريبي', value: invoice.numTax.toString()),
+                                : CardRow(
+                                    title: 'الرقم الضريبي',
+                                    value: invoice.numTax.toString()),
 
                             invoice.typeInstallation.toString() == '' ||
                                     invoice.typeInstallation == null ||
-                                    invoice.typeInstallation.toString() == 'null'
+                                    invoice.typeInstallation.toString() ==
+                                        'null'
                                 ? Container()
                                 : CardRow(
                                     title: 'نوع التركيب',
-                                    value: invoice.typeInstallation.toString() == '0'
-                                        ? 'ميداني'
-                                        : (invoice.typeInstallation.toString() == '2' ? 'عميل موصى به' : 'اونلاين'),
+                                    value:
+                                        invoice.typeInstallation.toString() ==
+                                                '0'
+                                            ? 'ميداني'
+                                            : (invoice.typeInstallation
+                                                        .toString() ==
+                                                    '2'
+                                                ? 'عميل موصى به'
+                                                : 'اونلاين'),
                                   ),
 
-                            CardRow(title: ' طريقة الدفع', value: invoice.typePay.toString() == '0' ? 'نقدا' : 'تحويل'),
+                            CardRow(
+                                title: ' طريقة الدفع',
+                                value: invoice.typePay.toString() == '0'
+                                    ? 'نقدا'
+                                    : 'تحويل'),
                             //nameuserApprove
 
                             CardRow(
@@ -199,77 +261,139 @@ class _InvoiceViewState extends State<InvoiceView> {
                                         : 'SAR'),
 
                             invoice.nameuserApprove != null
-                                ? CardRow(title: 'معتمد الفاتورة', value: (invoice.nameuserApprove.toString()))
+                                ? CardRow(
+                                    title: 'معتمد الفاتورة',
+                                    value: (invoice.nameuserApprove.toString()))
                                 : Container(),
 
                             invoice.nameuserApprove != null
-                                ? CardRow(title: 'تاريخ اعتماد الفاتورة', value: invoice.date_approve.toString())
+                                ? CardRow(
+                                    title: 'تاريخ اعتماد الفاتورة',
+                                    value: invoice.date_approve.toString())
                                 : Container(),
                             invoice.date_lastuserupdate != null
                                 ? CardRow(
                                     title: 'تاريخ آخر تعديل',
-                                    value: invoice.date_lastuserupdate != null ? invoice.date_lastuserupdate.toString() : '')
+                                    value: invoice.date_lastuserupdate != null
+                                        ? invoice.date_lastuserupdate.toString()
+                                        : '')
                                 : Container(),
                             invoice.date_lastuserupdate != null
                                 ? CardRow(
                                     title: 'آخر تعديل من قبل',
-                                    value: invoice.date_lastuserupdate != null ? (invoice.lastuserupdateName.toString()) : '')
+                                    value: invoice.date_lastuserupdate != null
+                                        ? (invoice.lastuserupdateName
+                                            .toString())
+                                        : '')
                                 : Container(),
 
-                            if (invoice.stateclient == TypeClientEnum.withdrawn.value) ...[
+                            if (invoice.stateclient ==
+                                TypeClientEnum.withdrawn.value) ...[
                               invoice.date_change_back != null
-                                  ? CardRow(title: 'تاريخ الإنسحاب', value: invoice.date_change_back.toString())
+                                  ? CardRow(
+                                      title: 'تاريخ الإنسحاب',
+                                      value:
+                                          invoice.date_change_back.toString())
                                   : Container(),
                               invoice.date_change_back != null
-                                  ? CardRow(title: 'تم الإنسحاب عن طريق', value: (invoice.nameuserback.toString()))
+                                  ? CardRow(
+                                      title: 'تم الإنسحاب عن طريق',
+                                      value: (invoice.nameuserback.toString()))
                                   : Container(),
-                              invoice.fkuser_back != null ? CardRow(title: 'المبلغ المسترجع', value: invoice.value_back.toString()) : Container(),
+                              invoice.fkuser_back != null
+                                  ? CardRow(
+                                      title: 'المبلغ المسترجع',
+                                      value: invoice.value_back.toString())
+                                  : Container(),
                               invoice.fkuser_back != null
                                   ? CardRow(
                                       title: 'سبب الإنسحاب',
-                                      value: invoice.desc_reason_back.toString(),
+                                      value:
+                                          invoice.desc_reason_back.toString(),
                                       isExpanded: true,
                                     )
                                   : Container(),
                             ],
 
-                            invoice.numbarnch.toString().trim().isNotEmpty && invoice.numbarnch != null
-                                ? CardRow(title: 'عدد الفروع', value: invoice.numbarnch.toString())
+                            invoice.numbarnch.toString().trim().isNotEmpty &&
+                                    invoice.numbarnch != null
+                                ? CardRow(
+                                    title: 'عدد الفروع',
+                                    value: invoice.numbarnch.toString())
                                 : Container(),
                             //invoice!.nummostda != null||
-                            invoice.nummostda.toString().trim().isNotEmpty && invoice.nummostda != null
-                                ? CardRow(title: 'عدد المستودعات ', value: invoice.nummostda.toString())
+                            invoice.nummostda.toString().trim().isNotEmpty &&
+                                    invoice.nummostda != null
+                                ? CardRow(
+                                    title: 'عدد المستودعات ',
+                                    value: invoice.nummostda.toString())
                                 : Container(),
-                            ((int.tryParse(invoice.renewInventory ?? '0') ?? 0) != 0)
-                                ? CardRow(title: 'تجديد المستودعات', value: invoice.renewInventory.toString())
+                            ((int.tryParse(invoice.renewInventory ?? '0') ??
+                                        0) !=
+                                    0)
+                                ? CardRow(
+                                    title: 'تجديد المستودعات',
+                                    value: invoice.renewInventory.toString())
                                 : Container(),
                             ((int.tryParse(invoice.renewPos ?? '0') ?? 0) != 0)
-                                ? CardRow(title: 'تجديد نقاط البيع', value: invoice.renewPos.toString())
+                                ? CardRow(
+                                    title: 'تجديد نقاط البيع',
+                                    value: invoice.renewPos.toString())
                                 : Container(),
-                            invoice.numusers.toString().trim().isNotEmpty && invoice.numusers != null
-                                ? CardRow(title: 'عدد المستخدمين', value: invoice.numusers.toString())
+                            invoice.numusers.toString().trim().isNotEmpty &&
+                                    invoice.numusers != null
+                                ? CardRow(
+                                    title: 'عدد المستخدمين',
+                                    value: invoice.numusers.toString())
                                 : Container(),
                             invoice.address_invoice.toString() == ''
-                                ? CardRow(title: 'عنوان الفاتورة', value: invoice.address_invoice.toString())
+                                ? CardRow(
+                                    title: 'عنوان الفاتورة',
+                                    value: invoice.address_invoice.toString())
                                 : Container(),
 
                             _privilegeCubit.checkPrivilege('76')
-                                ? invoice.clientusername != null && invoice.clientusername.toString().isNotEmpty
-                                    ? CardRow(title: 'يوزر العميل', value: invoice.clientusername == null ? '' : invoice.clientusername.toString())
+                                ? invoice.clientusername != null &&
+                                        invoice.clientusername
+                                            .toString()
+                                            .isNotEmpty
+                                    ? CardRow(
+                                        title: 'يوزر العميل',
+                                        value: invoice.clientusername == null
+                                            ? ''
+                                            : invoice.clientusername.toString())
                                     : Container()
                                 : Container(),
 
-                            invoice.imagelogo != null && invoice.imagelogo.toString().isNotEmpty
-                                ? widgetlogo(title: 'شعار المؤسسة', value: invoice.imagelogo.toString())
+                            invoice.imagelogo != null &&
+                                    invoice.imagelogo.toString().isNotEmpty
+                                ? widgetlogo(
+                                    title: 'شعار المؤسسة',
+                                    value: invoice.imagelogo.toString())
                                 : Container(),
 
                             invoice.participal != null
                                 ? Column(
                                     children: [
-                                      CardRow(value: invoice.participal!.name_participate.toString(), title: 'اسم المتعاون'),
-                                      CardRow(value: invoice.rate_participate.toString(), title: 'نسبة المتعاون'),
-                                      CardRow(value: invoice.participal!.numberbank_participate.toString(), title: 'رقم بنك المتعاون'),
-                                      CardRow(value: invoice.participal!.mobile_participate.toString(), title: 'رقم موبايل المتعاون'),
+                                      CardRow(
+                                          value: invoice
+                                              .participal!.name_participate
+                                              .toString(),
+                                          title: 'اسم المتعاون'),
+                                      CardRow(
+                                          value: invoice.rate_participate
+                                              .toString(),
+                                          title: 'نسبة المتعاون'),
+                                      CardRow(
+                                          value: invoice.participal!
+                                              .numberbank_participate
+                                              .toString(),
+                                          title: 'رقم بنك المتعاون'),
+                                      CardRow(
+                                          value: invoice
+                                              .participal!.mobile_participate
+                                              .toString(),
+                                          title: 'رقم موبايل المتعاون'),
                                     ],
                                   )
                                 : Container(),
@@ -277,20 +401,39 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 ? Column(
                                     children: [
                                       CardRow(
-                                          value: invoice.agent_distibutor!.nameAgent.toString(),
-                                          title: invoice.agent_distibutor!.typeAgent == '1' ? 'اسم الوكيل' : 'اسم الموزع'),
+                                          value: invoice
+                                              .agent_distibutor!.nameAgent
+                                              .toString(),
+                                          title: invoice.agent_distibutor!
+                                                      .typeAgent ==
+                                                  '1'
+                                              ? 'اسم الوكيل'
+                                              : 'اسم الموزع'),
                                       if (invoice.rate_participate != null)
                                         CardRow(
-                                            value: invoice.rate_participate.toString(),
-                                            title: invoice.agent_distibutor!.typeAgent == '1' ? 'نسبة الوكيل' : 'نسبة الموزع'),
+                                            value: invoice.rate_participate
+                                                .toString(),
+                                            title: invoice.agent_distibutor!
+                                                        .typeAgent ==
+                                                    '1'
+                                                ? 'نسبة الوكيل'
+                                                : 'نسبة الموزع'),
                                       CardRow(
-                                          value: invoice.agent_distibutor!.mobileAgent.toString(),
-                                          title: invoice.agent_distibutor!.typeAgent == '1' ? 'رقم موبايل الوكيل' : 'رقم موبايل الموزع'),
+                                          value: invoice
+                                              .agent_distibutor!.mobileAgent
+                                              .toString(),
+                                          title: invoice.agent_distibutor!
+                                                      .typeAgent ==
+                                                  '1'
+                                              ? 'رقم موبايل الوكيل'
+                                              : 'رقم موبايل الموزع'),
                                     ],
                                   )
                                 : Container(),
 
-                            if (invoice.participal == null && invoice.agent_distibutor == null && invoice.type_seller == "3")
+                            if (invoice.participal == null &&
+                                invoice.agent_distibutor == null &&
+                                invoice.type_seller == "3")
                               CardRow(value: "موظف", title: "نوع البائع"),
 
                             if (widget.showActions) ...{
@@ -307,8 +450,12 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 //crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  _privilegeCubit.checkPrivilege('141') && invoice.isApprove == null ||
-                                          _privilegeCubit.checkPrivilege('31') == true && invoice.isApprove != null
+                                  _privilegeCubit.checkPrivilege('141') &&
+                                              invoice.isApprove == null ||
+                                          _privilegeCubit
+                                                      .checkPrivilege('31') ==
+                                                  true &&
+                                              invoice.isApprove != null
                                       ? Expanded(
                                           child: AppElevatedButton(
                                             text: 'تعديل الفاتورة',
@@ -334,8 +481,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                                         text: 'الاجراءات',
                                         onPressed: () async {
                                           if (client != null) {
-                                            if (invoice.stateclient != StatusClient.restrictWithdrawn.text) {
-                                              _showConvertToRestrictWithdrawDialog(context, invoice);
+                                            if (invoice.stateclient !=
+                                                StatusClient
+                                                    .restrictWithdrawn.text) {
+                                              _showConvertToRestrictWithdrawDialog(
+                                                  context, invoice);
                                             } else {
                                               showDialog<void>(
                                                 context: context,
@@ -363,17 +513,20 @@ class _InvoiceViewState extends State<InvoiceView> {
                                               builder: (context) {
                                                 return AlertDialog(
                                                   title: AppText('التأكيد'),
-                                                  content: AppText('هل تريد حذف الفاتورة'),
+                                                  content: AppText(
+                                                      'هل تريد حذف الفاتورة'),
                                                   actions: <Widget>[
                                                     AppTextButton(
-                                                      onPressed: () => AppNavigator.pop(),
+                                                      onPressed: () =>
+                                                          AppNavigator.pop(),
                                                       child: AppText('لا'),
                                                     ),
                                                     AppTextButton(
                                                       child: AppText('نعم'),
                                                       onPressed: () async {
                                                         AppNavigator.pop();
-                                                        _invoiceVm.deleteInvoice(invoice.idInvoice!);
+                                                        _invoiceVm.deleteInvoice(
+                                                            invoice.idInvoice!);
                                                         AppNavigator.pop();
                                                       },
                                                     ),
@@ -391,7 +544,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   if (_privilegeCubit.checkPrivilege('116') ||
-                                      (_privilegeCubit.checkPrivilege('189') && invoice.isdoneinstall == null))
+                                      (_privilegeCubit.checkPrivilege('189') &&
+                                          invoice.isdoneinstall == null))
                                     Expanded(
                                       child: AppElevatedButton(
                                         text: 'اضافة دفعة للفاتورة',
@@ -406,13 +560,15 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       ),
                                     ),
                                   if (_privilegeCubit.checkPrivilege('115') ||
-                                      (_privilegeCubit.checkPrivilege('182') && invoice.isApprove == null)) ...{
+                                      (_privilegeCubit.checkPrivilege('182') &&
+                                          invoice.isApprove == null)) ...{
                                     SizedBox(width: 5),
                                     Expanded(
                                       child: AppElevatedButton(
                                         text: 'تغيير بيانات الفاتورة',
                                         onPressed: () async {
-                                          print("----------------Navigating to EditInvoice with invoice ID: ${invoice.idInvoice}-----------");
+                                          print(
+                                              "----------------Navigating to EditInvoice with invoice ID: ${invoice.idInvoice}-----------");
                                           AppNavigator.go(
                                             EditInvoice(
                                               key: UniqueKey(),
@@ -440,14 +596,19 @@ class _InvoiceViewState extends State<InvoiceView> {
                                               context: context,
                                               builder: (context) {
                                                 return ModalProgressHUD(
-                                                  inAsyncCall: Provider.of<InvoiceVm>(context).isapproved,
+                                                  inAsyncCall:
+                                                      Provider.of<InvoiceVm>(
+                                                              context)
+                                                          .isapproved,
                                                   child: AlertDialog(
-                                                    content: AppText('تأكيد العملية'),
+                                                    content: AppText(
+                                                        'تأكيد العملية'),
                                                     actions: <Widget>[
                                                       AppElevatedButton(
                                                         text: 'لا',
                                                         onPressed: () {
-                                                          AppNavigator.pop(result: false);
+                                                          AppNavigator.pop(
+                                                              result: false);
                                                         },
                                                       ),
                                                       AppElevatedButton(
@@ -498,14 +659,19 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 },
                               ),
                               5.height,
-                              if (context.read<PrivilegesCubit>().checkPrivilege('325'))
+                              if (context
+                                  .read<PrivilegesCubit>()
+                                  .checkPrivilege('325'))
                                 AppElevatedButton(
-                                  isLoading: state.exportInvoicesToPdfStatus.isLoading(),
+                                  isLoading: state.exportInvoicesToPdfStatus
+                                      .isLoading(),
                                   width: double.infinity,
                                   text: 'تصدير ك ملف pdf',
                                   icon: Icons.file_present_rounded,
                                   onPressed: () {
-                                    _invoicesSectionCubit.exportInvoicesToPdf(ExportInvoiceToPdfParams(invoiceId: invoice.idInvoice!));
+                                    _invoicesSectionCubit.exportInvoicesToPdf(
+                                        ExportInvoiceToPdfParams(
+                                            invoiceId: invoice.idInvoice!));
                                   },
                                 ),
                               SizedBox(height: 20),
@@ -532,7 +698,8 @@ class _InvoiceViewState extends State<InvoiceView> {
     );
   }
 
-  void _showConvertToRestrictWithdrawDialog(BuildContext context, InvoiceModel invoice) {
+  void _showConvertToRestrictWithdrawDialog(
+      BuildContext context, InvoiceModel invoice) {
     showDialog<void>(
       context: context,
       builder: (context) {
@@ -586,7 +753,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                           await _invoiceVm
                             ..RestrictedWithdrawal(invoice.idInvoice)
                             ..getInvoiceByClient(invoice.fkIdClient);
-                          context.read<InvoicesSectionCubit>().getInvoicesByPrivileges().then((value) {
+                          context
+                              .read<InvoicesSectionCubit>()
+                              .getInvoicesByPrivileges()
+                              .then((value) {
                             context.pop(false);
                             context.pop(false);
                             return isLoading = false;
@@ -631,23 +801,47 @@ class _InvoiceViewState extends State<InvoiceView> {
   Widget _product(String name, String amount, String price) {
     return Column(
       children: [
-        Row(
-          children: [
-            //Expanded flex 1
-            Expanded(
-              flex: 1,
-              child: AppText(name),
-            ),
-            // Spacer(),
-            AppText(amount),
-            10.width,
-            AppText(price),
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            textDirection: TextDirection.rtl,
+            children: [
+              Expanded(
+                child: AppText(
+                  name,
+                  textDirection: TextDirection.rtl,
+                  fontFamily: AppFonts.fontFamily1,
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              16.width,
+              AppText(
+                amount,
+                textDirection: TextDirection.rtl,
+                fontFamily: AppFonts.fontFamily1,
+                fontSize: 16,
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+              ),
+              16.width,
+              AppText(
+                price,
+                textDirection: TextDirection.rtl,
+                fontFamily: AppFonts.fontFamily1,
+                fontSize: 16,
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+              ),
+            ],
+          ),
         ),
         Divider(
           thickness: 1,
-          color: Colors.grey,
+          color: Colors.grey[300],
         ),
+        5.height,
       ],
     );
   }

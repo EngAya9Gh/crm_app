@@ -60,6 +60,7 @@ class _EditProfileState extends State<EditProfile> {
     return AppScaffold(
       key: _scaffoldKey,
       appBar: CustomAppBar(
+        title: ' ',
         actions: [
           IconButton(
             icon: const AppIcon(Icons.check),
@@ -71,7 +72,7 @@ class _EditProfileState extends State<EditProfile> {
                   'email': emailController.text,
                   'nameUser': nameUserController.text,
                   'mobile': mobileController.text,
-                  'isActive':_userProvider.currentUser.isActive
+                  'isActive': _userProvider.currentUser.isActive
                 };
                 await _userProvider.updateUserVm(
                   body: body,
@@ -89,53 +90,84 @@ class _EditProfileState extends State<EditProfile> {
           return ModalProgressHUD(
             inAsyncCall: userVM.isUpdate,
             child: SingleChildScrollView(
-              child: ContainerShadows(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: ImageProfile(),
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
                       ),
-                      Form(
-                        key: _globalKey,
-                        child: Column(
+                    ),
+                    padding: EdgeInsets.only(bottom: 80, top: 20),
+                    child: Column(
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
                           children: [
-                            10.height,
-                            _buildAlignedText('الإسم'),
-                            5.height,
-                            AppTextField(
-                              hintText: 'الإسم',
-                              controller: nameUserController,
-                              validator: InputValidator.requiredFiled,
+                            CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.white,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: ImageProfile(),
+                              ),
                             ),
-                            10.height,
-                            _buildAlignedText('البريد الإلكترونى'),
-                            5.height,
-                            AppTextField(
-                              hintText: 'البريد الإلكترونى',
-                              controller: emailController,
-                              validator: InputValidator.requiredFiled,
-                            ),
-                            10.height,
-                            _buildAlignedText(AppStrings.labelMobile),
-                            5.height,
-                            AppTextField(
-                              hintText: AppStrings.labelMobile,
-                              controller: mobileController,
-                              validator: InputValidator.requiredFiled,
-                            ),
-                            20.height,
                           ],
                         ),
-                      )
-                    ],
+                        SizedBox(height: 15),
+                        AppText(
+                          _userProvider.currentUser.nameUser.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                  Transform.translate(
+                    offset: Offset(0, -40),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 20,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Form(
+                          key: _globalKey,
+                          child: Column(
+                            children: [
+                              _buildInfoItem(
+                                icon: Icons.email_outlined,
+                                title: 'Email',
+                                controller: emailController,
+                              ),
+                              Divider(height: 30),
+                              _buildInfoItem(
+                                icon: Icons.phone_outlined,
+                                title: 'Phone',
+                                controller: mobileController,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           );
@@ -144,14 +176,44 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Align _buildAlignedText(String text) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: AppText(
-        text,
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-      ),
+  Widget _buildInfoItem({
+    required IconData icon,
+    required String title,
+    required TextEditingController controller,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, color: Colors.grey, size: 20),
+            SizedBox(width: 10),
+            AppText(
+              title,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 5),
+        AppTextField(
+          controller: controller,
+          validator: InputValidator.requiredFiled,
+          decoration: InputDecoration(
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade200),
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade200),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

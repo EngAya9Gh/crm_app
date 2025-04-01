@@ -295,7 +295,6 @@ class _CommentViewState extends State<CommentView> {
                           SizedBox(width: 8),
                           Expanded(
                             child: CustomDropDown(
-                              
                               hint: 'نوع التعليق',
                               compareFn: (item, selectedItem) =>
                                   item.index == selectedItem.index,

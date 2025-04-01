@@ -193,7 +193,8 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ClientActivitiesBloc>()),
         BlocProvider(create: (context) => getIt<ClientTaskBloc>()),
         BlocProvider(create: (context) => getIt<CommissionCollaboratorsBloc>()),
-        BlocProvider(create: (context) => getIt<RecommendedClientReportsBloc>()),
+        BlocProvider(
+            create: (context) => getIt<RecommendedClientReportsBloc>()),
         BlocProvider(create: (context) => getIt<SearchCubit>()),
       ],
       /* Providers */

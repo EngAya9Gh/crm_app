@@ -14,7 +14,7 @@ class UserAvatar extends StatelessWidget {
     return Padding(
       padding: REdgeInsets.only(top: 20, bottom: 5),
       child: CircleAvatar(
-        radius: 60.scaleIconsSize,
+        radius: 70.scaleIconsSize,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(100),
           child: AppCachedNetworkImage(
