@@ -92,6 +92,8 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
 
   @override
   void initState() {
+    super.initState();
+
     privilegeCubit = context.read<PrivilegesCubit>();
     companyProvider = context.read<CompanyProvider>();
     _bloc = context.read<ClientsListBloc>()
@@ -176,11 +178,15 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       companyProvider
         ..initValueOut()
         ..getcompany(
-            onSuccess: isEdit
-                ? () => context
-                    .read<CompanyProvider>()
-                    .changevalueOut(widget.client?.presystem)
-                : null);
+          onSuccess: isEdit
+              ? () {
+                  if (!mounted) return;
+                  context.read<CompanyProvider>().changevalueOut(
+                        widget.client!.presystem,
+                      );
+                }
+              : null,
+        );
 
       context
           .read<switch_provider>()
@@ -206,7 +212,6 @@ class _ClientAddEditPageState extends State<ClientAddEditPage> {
       reasonReject = ValueNotifier(widget.client?.fkRejectClient);
     });
     // _userProvider.changeClientRegistrationTypeStatus(_selectedClientsClassification.toString());
-    super.initState();
   }
 
   ClientSourceEnum? _initSelectedClientSource() {

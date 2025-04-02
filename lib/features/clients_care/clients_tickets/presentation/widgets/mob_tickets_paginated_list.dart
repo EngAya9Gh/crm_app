@@ -1,4 +1,5 @@
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/widgets/ticket_card/ticket_card.dart';
+import 'package:crm_smart/features/common/client_profile/client_dates_tab/presentation/widgets/ticket_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,20 +21,23 @@ class MobTicketsPaginatedList extends StatelessWidget {
         if (state.getTicketsStatus.isFailed()) {
           return AppErrorWidget(
             message: state.getTicketsStatus.error ?? '',
-            onPressed: () =>  _cubit.getTickets(),
+            onPressed: () => _cubit.getTickets(),
           );
         } else if (state.getTicketsStatus.isEmpty()) {
           return const Center(child: AppText('لا يوجد نتائج'));
-        }else if( state.getTicketsStatus.isLoading() && _cubit.pageVariables.allList.isEmpty){
-          return const Center(child: AppLoader(),);
+        } else if (state.getTicketsStatus.isLoading() &&
+            _cubit.pageVariables.allList.isEmpty) {
+          return const Center(
+            child: AppLoader(),
+          );
         }
-        return  AppPaginatedList(
+        return AppPaginatedList(
           items: _cubit.pageVariables.allList,
           onLoadMore: () async {
             await _cubit.getTickets(isNewFilter: false);
           },
           itemBuilder: (context, index) =>
-              TicketCard(ticket: _cubit.pageVariables.allList[index]),
+              TicketCardNew(ticket: _cubit.pageVariables.allList[index]),
         );
       },
     );

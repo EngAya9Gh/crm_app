@@ -329,11 +329,11 @@ class _AddInvoiceState extends State<AddInvoice> {
       ),
       body: ModalProgressHUD(
         inAsyncCall: Provider.of<LoadProvider>(context).isLoadingAddinvoice,
-        child: Directionality(
-          textDirection: myui.TextDirection.rtl,
-          child: Form(
-            key: _globalKey,
-            child: ListView(
+          child: Directionality(
+            textDirection: myui.TextDirection.rtl,
+            child: Form(
+              key: _globalKey,
+                child: ListView(
               padding: EdgeInsets.zero,
               children: [
                 SectionHeader(title: 'المنتجات'),
@@ -342,33 +342,33 @@ class _AddInvoiceState extends State<AddInvoice> {
                   isRequired: true,
                   customWidget: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      AppElevatedButton(
-                        text: 'إضافة منتجات الفاتورة',
-                        onPressed: () {
-                          AppNavigator.pushAndRemoveUntil(
-                            AddInvoiceProduct(invoice: _invoice),
-                            (Route<dynamic> route) => true,
-                          );
-                        },
-                      ),
+                  children: [
+                    AppElevatedButton(
+                      text: 'إضافة منتجات الفاتورة',
+                      onPressed: () {
+                        AppNavigator.pushAndRemoveUntil(
+                          AddInvoiceProduct(invoice: _invoice),
+                          (Route<dynamic> route) => true,
+                        );
+                      },
+                    ),
                       SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AppText(
-                            AppStrings.labelTotal,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AppText(
+                          AppStrings.labelTotal,
                             style: TextStyle(fontSize: 16),
-                            fontWeight: FontWeight.bold,
-                          ),
-                          10.width,
-                          AppText(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        10.width,
+                        AppText(
                             style: TextStyle(fontSize: 16),
-                            Provider.of<InvoiceVm>(context, listen: true).total,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ],
-                      ),
+                          Provider.of<InvoiceVm>(context, listen: true).total,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ],
+                    ),
                     ],
                   ),
                 ),
@@ -378,42 +378,42 @@ class _AddInvoiceState extends State<AddInvoice> {
                   isRequired: true,
                   customWidget: AppTextField(
                     hintText: '',
-                    controller: addressController,
-                    isRequired: true,
-                  ),
+                      controller: addressController,
+                      isRequired: true,
+                    ),
                 ),
                 InfoItem(
                   title: AppStrings.labelAmountPaid,
                   isRequired: true,
                   customWidget: AppTextField(
                     hintText: '',
-                    controller: amount_paidController,
-                    inputType: TextInputType.numberWithOptions(decimal: true),
-                    validator: (value) {
-                      if (value?.trim().isEmpty ?? true) {
-                        return AppStrings.labelEmpty;
-                      }
+                      controller: amount_paidController,
+                      inputType: TextInputType.numberWithOptions(decimal: true),
+                      validator: (value) {
+                        if (value?.trim().isEmpty ?? true) {
+                          return AppStrings.labelEmpty;
+                        }
                       if (num.tryParse(value.toString()) == null)
                         return 'من فضلك ادخل عدد';
 
-                      if (num.parse(value!) <= 0) {
-                        return "يجب إدخال قيمة مناسبة";
-                      }
+                        if (num.parse(value!) <= 0) {
+                          return "يجب إدخال قيمة مناسبة";
+                        }
 
                       final total =
                           num.tryParse(context.read<InvoiceVm>().total) ?? 0;
-                      final amountPaid = num.tryParse(value) ?? 0;
+                        final amountPaid = num.tryParse(value) ?? 0;
 
-                      if (amountPaid > total) {
-                        return "لا يمكن إدخال مبلغ أكبر من قيمة الفاتورة.";
-                      }
-                      return null;
-                    },
-                  ),
+                        if (amountPaid > total) {
+                          return "لا يمكن إدخال مبلغ أكبر من قيمة الفاتورة.";
+                        }
+                        return null;
+                      },
+                    ),
                 ),
-                Consumer<InvoiceVm>(
-                  builder: (context, data, _) {
-                    bool invoiceHaveProductsOfTypePrograms =
+                    Consumer<InvoiceVm>(
+                      builder: (context, data, _) {
+                        bool invoiceHaveProductsOfTypePrograms =
                         data.productsInvoiceList.any((element) =>
                             element.type ==
                             ProductType.program.index.toString());
@@ -423,26 +423,26 @@ class _AddInvoiceState extends State<AddInvoice> {
                       isRequired: invoiceHaveProductsOfTypePrograms,
                       customWidget: AppTextField(
                         hintText: "",
-                        controller: renewController,
-                        inputType: TextInputType.number,
-                        validator: (value) {
+                              controller: renewController,
+                              inputType: TextInputType.number,
+                              validator: (value) {
                           if ((value?.trim() == '0' ||
                                   (value?.trim().isEmpty ?? true)) &&
                               invoiceHaveProductsOfTypePrograms) {
-                            return 'الحقل مطلوب.';
-                          }
+                                  return 'الحقل مطلوب.';
+                                }
                           if (double.tryParse(value.toString()) == null)
                             return 'من فضلك ادخل عدد';
 
-                          if (num.parse(value!) < 0) {
-                            return "يجب إدخال قيمة أكبر من 0.";
-                          }
-                          return null;
-                        },
-                      ),
-                    );
-                  },
-                ),
+                                if (num.parse(value!) < 0) {
+                                  return "يجب إدخال قيمة أكبر من 0.";
+                                }
+                                return null;
+                              },
+                            ),
+                        );
+                      },
+                    ),
                 Consumer<InvoiceVm>(
                   builder: (_, data, __) {
                     bool invoiceHaveProductsOfTypeResources = data
@@ -454,20 +454,20 @@ class _AddInvoiceState extends State<AddInvoice> {
                       isRequired: invoiceHaveProductsOfTypeResources,
                       customWidget: AppTextField(
                         hintText: "",
-                        controller: renew2Controller,
-                        inputType: TextInputType.number,
+                            controller: renew2Controller,
+                            inputType: TextInputType.number,
                         validator: (text) {
                           if ((text?.trim() == '0' ||
                                   (text?.trim().isEmpty ?? true)) &&
                               invoiceHaveProductsOfTypeResources) {
-                            return 'الحقل مطلوب.';
-                          }
+                                return 'الحقل مطلوب.';
+                              }
 
                           if (num.parse(text!) < 0) {
-                            return "يجب إدخال قيمة أكبر من 0.";
-                          }
-                          return null;
-                        },
+                                return "يجب إدخال قيمة أكبر من 0.";
+                              }
+                              return null;
+                            },
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -482,23 +482,23 @@ class _AddInvoiceState extends State<AddInvoice> {
                     hint: "",
                     compareFn: (item, selectedItem) =>
                         item.index == selectedItem.index,
-                    items: ClientSourceEnum.values,
-                    itemAsString: (item) => item!.value,
-                    onChanged: (value) {
-                      selectedInvoiceSource = value!.value;
-                      setState(() {});
-                    },
-                    validator: InputValidator.requiredFiled,
-                    selectedItem: selectedInvoiceSource != null
+                      items: ClientSourceEnum.values,
+                      itemAsString: (item) => item!.value,
+                      onChanged: (value) {
+                        selectedInvoiceSource = value!.value;
+                        setState(() {});
+                      },
+                      validator: InputValidator.requiredFiled,
+                      selectedItem: selectedInvoiceSource != null
                         ? ClientSourceEnum.values.firstWhereOrNull(
                             (element) => element.value == selectedInvoiceSource)
-                        : null,
-                  ),
+                          : null,
+                    ),
                 ),
                 if ((selectedInvoiceSource ==
                     ClientSourceEnum.recommendedClient.value)) ...[
-                  BlocBuilder<ClientsListBloc, ClientsListState>(
-                    builder: (context, state) {
+                      BlocBuilder<ClientsListBloc, ClientsListState>(
+                        builder: (context, state) {
                       final recommendedList = state
                               .recommendedClientsForFilterState
                               .getDataWhenSuccess ??
@@ -507,45 +507,45 @@ class _AddInvoiceState extends State<AddInvoice> {
                         title: 'العملاء',
                         isRequired: true,
                         customWidget:
-                            CustomSearchableDropDown<SubscribedClientsModel>(
+                              CustomSearchableDropDown<SubscribedClientsModel>(
                           hint: '',
-                          items: recommendedList,
-                          itemAsString: (item) => item!.nameEnterprise!,
-                          validator: InputValidator.requiredFiled,
-                          filterFn: (item, query) {
+                                items: recommendedList,
+                                itemAsString: (item) => item!.nameEnterprise!,
+                                validator: InputValidator.requiredFiled,
+                                filterFn: (item, query) {
                             return item.nameEnterprise!
                                 .toLowerCase()
                                 .contains(query.toLowerCase());
-                          },
-                          compareFn: (item, query) {
+                                },
+                                compareFn: (item, query) {
                             return item.nameEnterprise!.toLowerCase() ==
                                 query.nameEnterprise!.toLowerCase();
-                          },
+                                },
                           selectedItem: recommendedList.firstWhereOrNull(
                               (element) =>
                                   element.id.toString() ==
                                   _selectedARecommendedClient),
-                          onChanged: (value) {
-                            if (value == null) {
-                              return;
-                            }
-                            _selectedARecommendedClient = value.id.toString();
-                            setState(() {});
-                          },
-                        ),
-                      );
-                    },
-                  ),
+                                onChanged: (value) {
+                                  if (value == null) {
+                                    return;
+                                  }
+                                  _selectedARecommendedClient = value.id.toString();
+                                  setState(() {});
+                                },
+                              ),
+                          );
+                        },
+                      ),
                 ],
                 if (widget.invoice == null) ...[
                   InfoItem(
                     title: 'التعليق',
                     isRequired: true,
                     customWidget: AppTextField(
-                      hintText: 'اكتب تعليقاً...',
-                      controller: comment,
-                      validator: InputValidator.requiredFiled,
-                    ),
+                        hintText: 'اكتب تعليقاً...',
+                        controller: comment,
+                        validator: InputValidator.requiredFiled,
+                      ),
                   ),
                 ],
                 SectionHeader(title: 'طريقة الدفع والتركيب'),
@@ -553,18 +553,18 @@ class _AddInvoiceState extends State<AddInvoice> {
                   title: AppStrings.labelTypePay,
                   isRequired: true,
                   customWidget: Container(
-                    padding: EdgeInsets.only(left: 2, right: 2),
-                    decoration: BoxDecoration(
+                      padding: EdgeInsets.only(left: 2, right: 2),
+                      decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(7)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 8.0,
-                          color: Colors.black87.withOpacity(0.2),
-                        ),
-                      ],
-                      color: Colors.white,
-                    ),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 8.0,
+                            color: Colors.black87.withOpacity(0.2),
+                          ),
+                        ],
+                        color: Colors.white,
+                      ),
                     child: Consumer<selected_button_provider>(
                       builder: (context, selectedProvider, child) {
                         return Directionality(
@@ -588,18 +588,18 @@ class _AddInvoiceState extends State<AddInvoice> {
                   title: AppStrings.labelTypeInstall,
                   isRequired: true,
                   customWidget: Container(
-                    padding: EdgeInsets.only(left: 2, right: 2),
-                    decoration: BoxDecoration(
+                      padding: EdgeInsets.only(left: 2, right: 2),
+                      decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(7)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 8.0,
-                          color: Colors.black87.withOpacity(0.2),
-                        ),
-                      ],
-                      color: Colors.white,
-                    ),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 8.0,
+                            color: Colors.black87.withOpacity(0.2),
+                          ),
+                        ],
+                        color: Colors.white,
+                      ),
                     child: Consumer<selected_button_provider>(
                       builder: (context, selectedProvider, child) {
                         return Directionality(
@@ -624,18 +624,18 @@ class _AddInvoiceState extends State<AddInvoice> {
                   title: 'العملة',
                   isRequired: true,
                   customWidget: Container(
-                    padding: EdgeInsets.only(left: 2, right: 2),
-                    decoration: BoxDecoration(
+                      padding: EdgeInsets.only(left: 2, right: 2),
+                      decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(7)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 8.0,
-                          color: Colors.black87.withOpacity(0.2),
-                        ),
-                      ],
-                      color: Colors.white,
-                    ),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 8.0,
+                            color: Colors.black87.withOpacity(0.2),
+                          ),
+                        ],
+                        color: Colors.white,
+                      ),
                     child: Consumer<selected_button_provider>(
                       builder: (context, selectedProvider, child) {
                         return Directionality(
@@ -659,264 +659,264 @@ class _AddInvoiceState extends State<AddInvoice> {
                   title: AppStrings.labelNote,
                   customWidget: AppTextField(
                     hintText: '',
-                    controller: noteController,
-                  ),
+                      controller: noteController,
+                    ),
                 ),
                 SectionHeader(title: 'معلومات إضافية'),
                 InfoItem(
                   title: 'عدد الفروع والمستودعات',
                   customWidget: Row(
-                    children: [
-                      Flexible(
+                      children: [
+                        Flexible(
                         child: AppTextField(
-                          hintText: 'عدد الفروع',
-                          controller: numbranchController,
-                          inputType: TextInputType.number,
+                                hintText: 'عدد الفروع',
+                                controller: numbranchController,
+                                inputType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      10.width,
-                      Flexible(
+                        10.width,
+                        Flexible(
                         child: AppTextField(
                           hintText: ' المستودعات',
-                          controller: nummostawdaController,
-                          inputType: TextInputType.number,
+                                controller: nummostawdaController,
+                                inputType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                 ),
                 InfoItem(
                   title: 'عدد المستخدمين والرقم الضريبي',
                   customWidget: Row(
-                    children: [
-                      Flexible(
+                      children: [
+                        Flexible(
                         child: AppTextField(
-                          hintText: 'عدد المستخدمين',
-                          controller: numuserController,
-                          inputType: TextInputType.number,
+                                hintText: 'عدد المستخدمين',
+                                controller: numuserController,
+                                inputType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      10.width,
-                      Flexible(
+                        10.width,
+                        Flexible(
                         child: AppTextField(
-                          hintText: 'الرقم الضريبي',
-                          controller: numTaxController,
-                          inputType: TextInputType.number,
+                                hintText: 'الرقم الضريبي',
+                                controller: numTaxController,
+                                inputType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                 ),
                 InfoItem(
                   title: 'تجديد المستودعات',
                   customWidget: AppTextField(
                     hintText: '',
-                    controller: numInvoiceController,
-                    inputType: TextInputType.number,
-                    validator: (text) {
-                      if (text?.isNotEmpty ?? false) {
-                        if ((num.parse(text!)) <= 0) {
-                          return "يجب إدخال قيمة اكبر من ال 0";
-                        }
-                        return null;
-                      }
-                      return null;
-                    },
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  ),
+                          controller: numInvoiceController,
+                          inputType: TextInputType.number,
+                          validator: (text) {
+                            if (text?.isNotEmpty ?? false) {
+                              if ((num.parse(text!)) <= 0) {
+                                return "يجب إدخال قيمة اكبر من ال 0";
+                              }
+                              return null;
+                            }
+                            return null;
+                          },
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
                 ),
                 InfoItem(
                   title: 'تجديد نقاط البيع',
                   customWidget: AppTextField(
                     hintText: '',
-                    controller: numPosController,
-                    inputType: TextInputType.number,
-                    validator: (text) {
-                      if (text?.isNotEmpty ?? false) {
-                        if ((num.parse(text!)) <= 0) {
-                          return "يجب إدخال قيمة اكبر من ال 0";
-                        }
-                        return null;
-                      }
-                      return null;
-                    },
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  ),
-                ),
-                ValueListenableBuilder<bool>(
-                    valueListenable: isNumberOfBranchesBiggerThanOne,
-                    builder: (context, value, _) {
-                      return AnimatedOpacity(
-                        opacity: value ? 1.0 : 0.0,
-                        duration: kTabScrollDuration,
-                        child: Offstage(
-                          offstage: !value,
+                          controller: numPosController,
+                          inputType: TextInputType.number,
+                          validator: (text) {
+                            if (text?.isNotEmpty ?? false) {
+                              if ((num.parse(text!)) <= 0) {
+                                return "يجب إدخال قيمة اكبر من ال 0";
+                              }
+                              return null;
+                            }
+                            return null;
+                          },
+                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        ),
+                    ),
+                    ValueListenableBuilder<bool>(
+                        valueListenable: isNumberOfBranchesBiggerThanOne,
+                        builder: (context, value, _) {
+                          return AnimatedOpacity(
+                            opacity: value ? 1.0 : 0.0,
+                            duration: kTabScrollDuration,
+                            child: Offstage(
+                              offstage: !value,
                           child: InfoItem(
                             title: 'تجديد الفروع الاضافي',
                             isRequired: true,
                             customWidget: AppTextField(
                               hintText: '',
-                              controller: renewAdditionalOfBranchesController,
-                              inputType: TextInputType.number,
-                              validator: (text) {
-                                if (!value) {
-                                  return null;
+                                    controller: renewAdditionalOfBranchesController,
+                                    inputType: TextInputType.number,
+                                    validator: (text) {
+                                      if (!value) {
+                                        return null;
                                 } else if (text?.isNotEmpty ?? false) {
-                                  if ((num.parse(text!)) <= 0) {
-                                    return "يجب إدخال قيمة اكبر من ال 0";
-                                  }
-                                  return null;
-                                }
-                                return null;
-                              },
+                                        if ((num.parse(text!)) <= 0) {
+                                          return "يجب إدخال قيمة اكبر من ال 0";
+                                        }
+                                        return null;
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    }),
+                          );
+                        }),
                 if (context.read<PrivilegesCubit>().checkPrivilege('76') ==
                         true &&
-                    _invoice!.idInvoice != null &&
-                    _invoice!.userinstall != null) ...[
+                        _invoice!.idInvoice != null &&
+                        _invoice!.userinstall != null) ...[
                   InfoItem(
                     title: 'يوزر العميل',
                     customWidget: AppTextField(
                       hintText: '',
-                      controller: userclientController,
-                    ),
+                        controller: userclientController,
+                      ),
                   ),
                 ],
                 SectionHeader(title: 'المرفقات'),
                 InfoItem(
                   title: 'شعار المؤسسة',
                   customWidget: ValueListenableBuilder<XFile?>(
-                    valueListenable: companyLogoNotifier,
-                    builder: (context, companyLogo, _) {
-                      return ValueListenableBuilder<bool>(
-                        valueListenable: isDeleteCompanyLogoNetworkImage,
-                        builder: (context, isDeleteCompanyLogo, _) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                        valueListenable: companyLogoNotifier,
+                        builder: (context, companyLogo, _) {
+                          return ValueListenableBuilder<bool>(
+                              valueListenable: isDeleteCompanyLogoNetworkImage,
+                              builder: (context, isDeleteCompanyLogo, _) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
                               if (_hasLogo(
                                   companyLogo, isDeleteCompanyLogo)) ...[
-                                Column(
-                                  children: [
-                                    InkWell(
+                                      Column(
+                                        children: [
+                                          InkWell(
                                       onTap: () => pickImage((context, file) =>
                                           onPickCompanyLogo(file)),
-                                      borderRadius: BorderRadius.circular(90),
-                                      child: Container(
-                                        height: 40.scaleIconsSize,
-                                        width: 40.scaleIconsSize,
+                                            borderRadius: BorderRadius.circular(90),
+                                            child: Container(
+                                              height: 40.scaleIconsSize,
+                                              width: 40.scaleIconsSize,
                                         margin:
                                             EdgeInsets.only(top: 10, right: 15),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade200,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: AppIcon(
-                                          Icons.attachment_rounded,
-                                          color: Colors.grey.shade700,
-                                        ),
-                                      ),
-                                    ),
-                                    InkWell(
-                                      onTap: () => onDeleteCompanyLogo(),
-                                      borderRadius: BorderRadius.circular(90),
-                                      child: Container(
-                                        height: 40.scaleIconsSize,
-                                        width: 40.scaleIconsSize,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey.shade200,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: AppIcon(
+                                                Icons.attachment_rounded,
+                                                color: Colors.grey.shade700,
+                                              ),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () => onDeleteCompanyLogo(),
+                                            borderRadius: BorderRadius.circular(90),
+                                            child: Container(
+                                              height: 40.scaleIconsSize,
+                                              width: 40.scaleIconsSize,
                                         margin:
                                             EdgeInsets.only(top: 10, right: 15),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade200,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: Icon(
-                                          Icons.delete_rounded,
-                                          color: Colors.red,
-                                          size: 20,
-                                        ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey.shade200,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: Icon(
+                                                Icons.delete_rounded,
+                                                color: Colors.red,
+                                                size: 20,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                ),
                               ],
-                              Container(
-                                height: 150.scaleIconsSize,
-                                width: 150.scaleIconsSize,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  shape: BoxShape.circle,
-                                ),
-                                alignment: Alignment.center,
-                                child: companyLogo != null
-                                    ? ClipOval(
-                                        child: AppPlatformImage(
-                                        fileModel: FileModel(
-                                          file: companyLogo,
-                                        ),
-                                        fit: BoxFit.cover,
-                                        height: 150.scaleIconsSize,
-                                        width: 150.scaleIconsSize,
-                                      ))
+                                    Container(
+                                      height: 150.scaleIconsSize,
+                                      width: 150.scaleIconsSize,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade200,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: companyLogo != null
+                                          ? ClipOval(
+                                              child: AppPlatformImage(
+                                              fileModel: FileModel(
+                                                file: companyLogo,
+                                              ),
+                                              fit: BoxFit.cover,
+                                              height: 150.scaleIconsSize,
+                                              width: 150.scaleIconsSize,
+                                            ))
                                     : ((_invoice!.imagelogo?.isNotEmpty ??
                                                 false) &&
                                             !isDeleteCompanyLogo)
-                                        ? InkWell(
+                                              ? InkWell(
                                             onTap: () => AppFileViewer(urls: [
                                               _invoice!.imagelogo!
                                             ]).show(context),
-                                            child: ClipOval(
-                                              child: FancyImageShimmerViewer(
-                                                imageUrl: _invoice!.imagelogo!,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          )
-                                        : InkWell(
+                                                  child: ClipOval(
+                                                    child: FancyImageShimmerViewer(
+                                                      imageUrl: _invoice!.imagelogo!,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                )
+                                              : InkWell(
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                             onTap: () => pickImage(
                                                 (context, file) =>
                                                     onPickCompanyLogo(file)),
-                                            child: Column(
+                                                  child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: [
-                                                AppIcon(
-                                                  Icons.attachment_rounded,
-                                                  color: Colors.grey.shade700,
-                                                ),
-                                                SizedBox(height: 0),
-                                                AppText(
-                                                  'Attach logo',
+                                                    children: [
+                                                      AppIcon(
+                                                        Icons.attachment_rounded,
+                                                        color: Colors.grey.shade700,
+                                                      ),
+                                                      SizedBox(height: 0),
+                                                      AppText(
+                                                        'Attach logo',
                                                   fontFamily:
                                                       AppFonts.fontFamily1,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Colors.grey.shade600,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                              ),
-                            ],
-                          );
+                                                        fontWeight: FontWeight.w700,
+                                                        color: Colors.grey.shade600,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                    ),
+                                  ],
+                                );
                         },
                       );
                     },
@@ -929,85 +929,85 @@ class _AddInvoiceState extends State<AddInvoice> {
                 InfoItem(
                   title: 'المرفقات الإضافية',
                   customWidget: InvoiceImagesFiles(
-                    onDeleteFileAttach: (value) {
-                      if (value.id == null) return;
-                      deletedFiles.add(value.id!);
-                    },
-                  ),
+                      onDeleteFileAttach: (value) {
+                        if (value.id == null) return;
+                        deletedFiles.add(value.id!);
+                      },
+                    ),
                 ),
                 SectionHeader(
                   title: 'تفاصيل البائع',
                   fontWeight: FontWeight.w800,
                 ),
-                Consumer<InvoiceVm>(builder: (context, invoiceVM, _) {
+                    Consumer<InvoiceVm>(builder: (context, invoiceVM, _) {
                   return InfoItem(
                     title: 'نوع البائع',
                     customWidget: Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Container(
-                        padding: EdgeInsets.all(2),
-                        margin: EdgeInsets.zero,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              offset: Offset(1.0, 1.0),
-                              blurRadius: 8.0,
-                              color: Colors.black87.withOpacity(0.2),
-                            ),
-                          ],
-                          color: Colors.white,
-                        ),
-                        child: AppGroupButton(
+                        textDirection: TextDirection.ltr,
+                        child: Container(
+                          padding: EdgeInsets.all(2),
+                          margin: EdgeInsets.zero,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 8.0,
+                                color: Colors.black87.withOpacity(0.2),
+                              ),
+                            ],
+                            color: Colors.white,
+                          ),
+                          child: AppGroupButton(
                           groupButtonController: GroupButtonController(
                               selectedIndex:
                                   invoiceVM.selectedSellerType?.index),
-                          buttons: ['موزع', 'وكيل', 'متعاون', 'موظف'],
-                          onSelected: (value, index, isselected) {
+                            buttons: ['موزع', 'وكيل', 'متعاون', 'موظف'],
+                            onSelected: (value, index, isselected) {
                             invoiceVm.onChangeSellerType(
                                 SellerTypeEnum.values[index]);
-                          },
+                            },
                         ),
-                      ),
-                    ),
-                  );
-                }),
+                          ),
+                        ),
+                      );
+                    }),
                 Consumer<InvoiceVm>(
                   builder: (context, invoice, _) {
-                    final sellerStatus = invoice.sellerStatus;
-                    final selectedSellerType = invoice.selectedSellerType;
+                      final sellerStatus = invoice.sellerStatus;
+                      final selectedSellerType = invoice.selectedSellerType;
 
                     final collaboratesList =
                         invoice.collaboratorsState.data ?? [];
                     final agentsList =
                         invoice.agentDistributorsState.data ?? [];
-                    List<AgentDistributorModel> agentsListtemp = [];
+                      List<AgentDistributorModel> agentsListtemp = [];
 
-                    agentsList.forEach((element) {
+                      agentsList.forEach((element) {
                       if (element.typeAgent ==
                           invoice.selectedSellerType!.index.toString())
                         agentsListtemp.add(element);
-                    });
-                    AgentDistributorModel? selectedAgent =
+                      });
+                      AgentDistributorModel? selectedAgent =
                         selectedSellerType == SellerTypeEnum.distributor
                             ? invoice.selectedDistributor
                             : invoice.selectedAgent;
-                    if (selectedAgent != null) {
-                      agentsListtemp.add(selectedAgent);
-                    }
-                    agentsListtemp.toSet().toList();
+                      if (selectedAgent != null) {
+                        agentsListtemp.add(selectedAgent);
+                      }
+                      agentsListtemp.toSet().toList();
 
                     if (selectedSellerType != null &&
                         selectedSellerType != SellerTypeEnum.employee)
-                      return Column(
-                        children: [
+                        return Column(
+                          children: [
                           InfoItem(
                             title: selectedSellerType == SellerTypeEnum.agent
-                                ? "اسم الوكيل"
+                                  ? "اسم الوكيل"
                                 : selectedSellerType ==
                                         SellerTypeEnum.collaborator
-                                    ? "اسم المتعاون"
-                                    : "اسم الموزع",
+                                      ? "اسم المتعاون"
+                                      : "اسم الموزع",
                             customWidget: SellerWidget(
                               invoiceModel: _invoice,
                               selectedSellerType: selectedSellerType,
@@ -1022,11 +1022,11 @@ class _AddInvoiceState extends State<AddInvoice> {
                                   invoiceVm.selectedSellerType;
                               final title =
                                   selectedSellerType == SellerTypeEnum.agent
-                                      ? "نسبة عمولة الوكيل"
+                                    ? "نسبة عمولة الوكيل"
                                       : selectedSellerType ==
                                               SellerTypeEnum.collaborator
-                                          ? "نسبة عمولة المتعاون"
-                                          : "نسبة عمولة الموزع";
+                                        ? "نسبة عمولة المتعاون"
+                                        : "نسبة عمولة الموزع";
 
                               WidgetsBinding.instance.addPostFrameCallback((_) {
                                 final currentInvoiceType =
@@ -1035,7 +1035,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     currentInvoiceType !=
                                         selectedSellerType?.index.toString()) {
                                   if (sellerCommissionRate.text.isNotEmpty) {
-                                    sellerCommissionRate.clear();
+                                  sellerCommissionRate.clear();
                                   }
                                 } else if (_invoice?.rate_participate != null &&
                                     _invoice?.rate_participate != "" &&
@@ -1047,7 +1047,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 if (selectedSellerType !=
                                     SellerTypeEnum.agent) {
                                   if (renewAgentController.text.isNotEmpty) {
-                                    renewAgentController.clear();
+                                  renewAgentController.clear();
                                   }
                                 } else if (_invoice?.renew_agent != null &&
                                     _invoice?.renew_agent != "" &&
@@ -1057,8 +1057,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 }
                               });
 
-                              return Column(
-                                children: [
+                                return Column(
+                                  children: [
                                   InfoItem(
                                     title: title,
                                     isRequired: selectedSellerType !=
@@ -1126,33 +1126,33 @@ class _AddInvoiceState extends State<AddInvoice> {
                                       ),
                                     ),
                                   ],
-                                ],
-                              );
-                            },
-                          ),
-                        ],
-                      );
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        );
 
-                    return SizedBox();
+                      return SizedBox();
                   },
                 ),
                 20.height,
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppElevatedButton(
-                        text: 'حفظ',
-                        onPressed: () async {
-                          final validate = _globalKey.currentState!.validate();
-                          if (validate) {
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppElevatedButton(
+                            text: 'حفظ',
+                            onPressed: () async {
+                              final validate = _globalKey.currentState!.validate();
+                              if (validate) {
                             typepayController =
                                 Provider.of<selected_button_provider>(context,
                                         listen: false)
                                     .isSelectedtypepay
                                     .toString();
 
-                            typeinstallController =
+                                typeinstallController =
                                 Provider.of<selected_button_provider>(context,
                                         listen: false)
                                     .isSelectedtypeinstall
@@ -1162,25 +1162,25 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 (_invoice!.products!.isNotEmpty)) {
                               Provider.of<LoadProvider>(context, listen: false)
                                   .changebooladdinvoice(true);
-                              totalController = _invoice!.total.toString();
-                              _globalKey.currentState!.save();
-                              List<ProductsInvoice>? _products = [];
-                              _products = _invoice!.products;
+                                  totalController = _invoice!.total.toString();
+                                  _globalKey.currentState!.save();
+                                  List<ProductsInvoice>? _products = [];
+                                  _products = _invoice!.products;
 
-                              final user = context.read<UserProvider>();
-                              if (_invoice?.idInvoice != null) {
-                                String invoiceID = _invoice!.idInvoice!;
-                                final body = _prepareUpdateInvoiceBody(
-                                  context: context,
-                                  invoiceID: invoiceID,
-                                  user: user,
-                                );
-                                await invoiceVm
-                                    .updateInvoiceClientVm(
-                                  body: body,
-                                  idInvoice: invoiceID,
-                                  file: recordCommercialImageNotifier.value,
-                                  fileLogo: companyLogoNotifier.value,
+                                  final user = context.read<UserProvider>();
+                                  if (_invoice?.idInvoice != null) {
+                                    String invoiceID = _invoice!.idInvoice!;
+                                    final body = _prepareUpdateInvoiceBody(
+                                      context: context,
+                                      invoiceID: invoiceID,
+                                      user: user,
+                                    );
+                                    await invoiceVm
+                                        .updateInvoiceClientVm(
+                                      body: body,
+                                      idInvoice: invoiceID,
+                                      file: recordCommercialImageNotifier.value,
+                                      fileLogo: companyLogoNotifier.value,
                                   files: invoiceVm.filesAttach
                                       .where((element) => element.file != null)
                                       .map((e) => e.file!)
@@ -1190,48 +1190,48 @@ class _AddInvoiceState extends State<AddInvoice> {
                                           .value,
                                   isDeleteLogo:
                                       isDeleteCompanyLogoNetworkImage.value,
-                                )
-                                    .then((value) {
+                                    )
+                                        .then((value) {
                                   return value
                                       ? clear(context, invoiceID, _products)
                                       : error(context);
-                                });
-                              } else {
+                                    });
+                                  } else {
                                 Map<String, dynamic> body =
                                     _prepareAddInvoiceBody(
-                                  context: context,
-                                  user: user,
-                                );
-                                if (_products?.isNotEmpty ?? false) {
-                                  body.addAll(_prepareProducts(_products!));
-                                }
-                                // : add invoice
-                                await invoiceVm.AddInvoiceClientVm(
-                                  body,
-                                  recordCommercialImageNotifier.value,
-                                  companyLogoNotifier.value,
+                                      context: context,
+                                      user: user,
+                                    );
+                                    if (_products?.isNotEmpty ?? false) {
+                                      body.addAll(_prepareProducts(_products!));
+                                    }
+                                    // : add invoice
+                                    await invoiceVm.AddInvoiceClientVm(
+                                      body,
+                                      recordCommercialImageNotifier.value,
+                                      companyLogoNotifier.value,
                                   invoiceVm.filesAttach
                                       .where((element) => element.file != null)
                                       .map((e) => e.file!)
                                       .toList(),
-                                  onAddInvoiceSuccess: (InvoiceModel invoice) {
-                                    final commentModel = CommentModel(
-                                      idComment: "idComment",
-                                      fkUser: user.currentUser.idUser!,
-                                      fkClient: widget.itemClient.idClients!,
-                                      content: comment.text,
-                                      nameUser: user.currentUser.nameUser!,
-                                      imgImage: user.currentUser.img_image,
-                                      nameEnterprise: invoice.name_enterprise!,
+                                      onAddInvoiceSuccess: (InvoiceModel invoice) {
+                                        final commentModel = CommentModel(
+                                          idComment: "idComment",
+                                          fkUser: user.currentUser.idUser!,
+                                          fkClient: widget.itemClient.idClients!,
+                                          content: comment.text,
+                                          nameUser: user.currentUser.nameUser!,
+                                          imgImage: user.currentUser.img_image,
+                                          nameEnterprise: invoice.name_enterprise!,
                                       date_comment:
                                           DateTime.now().toIso8601String(),
-                                      type_comment: '',
-                                    );
+                                          type_comment: '',
+                                        );
                                     context
                                         .read<comment_vm>()
                                         .addCommentFromAddInvoice(commentModel);
-                                  },
-                                  onFail: (error) {
+                                      },
+                                      onFail: (error) {
                                     AppSnackbar.showSnakeBar(error,
                                         color: ToastColorsEnum.error);
                                     context
@@ -1243,26 +1243,26 @@ class _AddInvoiceState extends State<AddInvoice> {
                                         ? clear(context, value, _products)
                                         : error(context))
                                     .catchError((e) {});
-                              }
+                                  }
 
-                              invoiceVm.clearProducts();
-                            } else {
-                              AppSnackbar.showSnakeBar(
-                                'من فضلك ادخل منتجات',
-                                color: ToastColorsEnum.warning,
-                              );
-                            }
-                          }
-                        },
+                                  invoiceVm.clearProducts();
+                                } else {
+                                  AppSnackbar.showSnakeBar(
+                                    'من فضلك ادخل منتجات',
+                                    color: ToastColorsEnum.warning,
+                                  );
+                                }
+                              }
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
                 10.height,
-              ],
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
       ),
     );
   }

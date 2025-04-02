@@ -42,6 +42,8 @@ import '../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/common/widgets/files/app_platform_image.dart';
+import '../../../../core/common/widgets/section_header.dart';
+import '../../../../core/common/widgets/info_item.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
@@ -132,7 +134,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late TextEditingController _deadLineDateController;
   late TextEditingController _numberOfRecurringController;
   final ValueNotifier<ClientModel?> selectedClientList = ValueNotifier(null);
-  final ValueNotifier<List<FileAttachmentTaskModel>?> filesNotifier = ValueNotifier([]);
+  final ValueNotifier<List<FileAttachmentTaskModel>?> filesNotifier =
+      ValueNotifier([]);
   late GlobalKey<FormState> _formKey;
   late TaskCubit _taskCubit;
   late PrivilegesCubit privilegeBloc;
@@ -168,10 +171,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
         (value) {
           if (widget.task != null) {
             _taskCubit.onChangeAssignTo(value.firstWhereOrNull(
-              (element) => element.id == widget.task?.assignTo?.idUser.toString(),
+              (element) =>
+                  element.id == widget.task?.assignTo?.idUser.toString(),
             ));
-            _taskCubit.onChangeSelectedAssignedToType(
-                AssignedTypeNew.values.firstWhereOrNull((element) => element.name.toLowerCase() == widget.task?.assignToModel?.toLowerCase()));
+            _taskCubit.onChangeSelectedAssignedToType(AssignedTypeNew.values
+                .firstWhereOrNull((element) =>
+                    element.name.toLowerCase() ==
+                    widget.task?.assignToModel?.toLowerCase()));
           }
         },
       );
@@ -186,13 +192,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
       if (widget.task != null) {
         _taskNameController.text = widget.task?.title ?? '';
         _taskDescriptionController.text = widget.task?.description ?? '';
-        _startDateController.text = Intl.DateFormat('dd MM yyyy HH:mm:ss').format(widget.task!.startDate!);
-        _deadLineDateController.text = Intl.DateFormat('dd MM yyyy HH:mm:ss').format(widget.task!.deadline!);
+        _startDateController.text = Intl.DateFormat('dd MM yyyy HH:mm:ss')
+            .format(widget.task!.startDate!);
+        _deadLineDateController.text = Intl.DateFormat('dd MM yyyy HH:mm:ss')
+            .format(widget.task!.deadline!);
         _taskCubit.onChangeParticipants(widget.task!.collaborators!);
-        selectedClientList.value = widget.task?.client == null ? null : widget.task!.client!;
+        selectedClientList.value =
+            widget.task?.client == null ? null : widget.task!.client!;
         departmentId = widget.task?.assignTo?.idMange?.toString();
         regionId = widget.task?.assignTo?.idRegion?.toString();
-        filesNotifier.value = (widget.task?.attachments ?? []).map((e) => e).toList();
+        filesNotifier.value =
+            (widget.task?.attachments ?? []).map((e) => e).toList();
       }
       _taskCubit.getListClient();
       context.read<RegionProvider>()
@@ -207,10 +217,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   List<AssignedTypeNew> get assignedToList {
     final list = List.of(AssignedTypeNew.values);
-    if (!privilegeBloc.checkPrivilege('167') && !privilegeBloc.checkPrivilege('174')) {
+    if (!privilegeBloc.checkPrivilege('167') &&
+        !privilegeBloc.checkPrivilege('174')) {
       list.remove(AssignedTypeNew.regoin);
     }
-    if (!privilegeBloc.checkPrivilege('168') && !privilegeBloc.checkPrivilege('169')) {
+    if (!privilegeBloc.checkPrivilege('168') &&
+        !privilegeBloc.checkPrivilege('169')) {
       list.remove(AssignedTypeNew.managements);
     }
     if (!privilegeBloc.checkPrivilege('166')) {
@@ -226,7 +238,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
     return BlocProvider.value(
       value: _usersCubit,
       child: ModalProgressHUD(
-        inAsyncCall: context.watch<TaskCubit>().state.addTaskStatus.isLoading() || context.watch<TaskCubit>().state.updateTask.isLoading(),
+        inAsyncCall:
+            context.watch<TaskCubit>().state.addTaskStatus.isLoading() ||
+                context.watch<TaskCubit>().state.updateTask.isLoading(),
         progressIndicator: AppLoader(),
         child: AppScaffold(
           appBar: CustomAppBar(
@@ -250,11 +264,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           return;
                         }
 
-                        final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
-                        final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
-                        var assignToId = state.selectedAssignedToType == AssignedTypeNew.users
+                        final selectedRegionId =
+                            context.read<RegionProvider>().selectedRegionId;
+                        final selectedValueManage =
+                            context.read<manage_provider>().selectedValuemanag;
+                        var assignToId = state.selectedAssignedToType ==
+                                AssignedTypeNew.users
                             ? state.selectedAssignTo?.idUser.toString()
-                            : state.selectedAssignedToType == AssignedTypeNew.managements
+                            : state.selectedAssignedToType ==
+                                    AssignedTypeNew.managements
                                 ? selectedValueManage
                                 : selectedRegionId;
                         var params = AddOrUpdateTaskParams(
@@ -309,229 +327,218 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     children: [
                       10.height,
-                      AppTextField(
-                        labelText: "المهمة*",
-                        maxLines: 1,
-                        validator: InputValidator.requiredFiled,
-                        controller: _taskNameController,
-                      ),
+                      SectionHeader(title: 'معلومات المهمة'),
                       10.height,
-                      AppTextField(
-                        labelText: "وصف المهمة*",
-                        validator: InputValidator.requiredFiled,
-                        controller: _taskDescriptionController,
-                        minLines: 5,
-                        contentPadding: HWEdgeInsets.all(15),
-                      ),
-                      10.height,
-                      BlocBuilder<UsersCubit, UsersState>(
-                        builder: (context, state) {
-                          return CustomMultiSelectionDropdown<UserModel>(
-                            hint: 'المشاركين*',
-                            items: _usersCubit.pageVariables.usersAllList,
-                            selectedItems: taskState.selectedParticipant ?? [],
-                            onSave: _taskCubit.onChangeParticipants,
-                            itemAsString: (u) => u!.userAsString(),
-                            filterFn: (user, filter) => user.nameUser!.contains(filter),
-                            compareFn: (item, selectedItem) => item.idUser == selectedItem.idUser,
-                            // validator: (value) {
-                            //   if (value?.isEmpty ?? true) {
-                            //     return 'هذا الحقل مطلوب.';
-                            //   }
-                            //   return null;
-                            // },
-                          );
-                        },
-                      ),
-                      10.height,
-                      taskState.getListClients.when(
-                        success: (data) => ValueListenableBuilder(
-                          valueListenable: selectedClientList,
-                          builder: (context, value, child) => CustomSearchableDropDown<ClientModel>(
-                            hint: 'العملاء',
-                            items: data ?? [],
-                            selectedItem: value,
-                            onChanged: (value) {
-                              selectedClientList.value = value;
-                            },
-                            itemAsString: (u) => u!.nameEnterprise!,
-                            filterFn: (client, filter) => client.nameEnterprise!.contains(filter),
-                            compareFn: (item, selectedItem) => item.idClients == selectedItem.idClients,
-                          ),
-                        ),
-                        failure: (error, data) {
-                          return AppErrorWidget(message: error);
-                        },
-                      ),
-                      10.height,
-                      Theme(
-                        data: context.theme.copyWith(
-                            timePickerTheme: TimePickerThemeData(
-                          cancelButtonStyle: ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
-                          confirmButtonStyle: ButtonStyle().copyWith(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 12))),
-                          dayPeriodTextStyle: TextStyle(fontSize: 12),
-                          dialTextStyle: TextStyle(fontSize: 12),
-                          helpTextStyle: TextStyle(fontSize: 12),
-                          hourMinuteTextStyle: TextStyle(fontSize: 12),
-                        )),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: CustomDateTimePicker(
-                                dateTimeType: DateTimeEnum.both,
-                                hintText: 'تاريخ البداية',
-                                isStartFromNow: true,
-                                formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
-                                isRequired: true,
-                                dateTimeController: _startDateController,
-                                style2: true,
-                                onDateChange: (p0, p1) {
-                                  _taskCubit.onChangeStartDate(p0);
-                                },
-                              ),
-                            ),
-                            if (true??privilegeBloc.checkPrivilege('171')) ...{
-                              15.width,
-                              Expanded(
-                                child: CustomDateTimePicker(
-                                  dateTimeType: DateTimeEnum.both,
-                                  hintText: 'تاريخ النهاية',
-                                  isStartFromNow: true,
-                                  isRequired: true,
-                                  formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
-                                  dateTimeController: _deadLineDateController,
-                                  style2: true,
-                                  onDateChange: (p0, p1) {
-                                    // _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy HH:mm:ss').format(p0);
-                                    _taskCubit.onChangeDeadLineDate(p0);
-                                  },
-                                ),
-                              ),
-                            },
-                          ],
-                        ),
-                      ),
-                      Visibility(
-                        visible: false,
-                        child: Column(
-                          children: [
-                            10.height,
-                            SwitchListTile(
-                              value: taskState.isRecurring ?? false,
-                              onChanged: _taskCubit.onChangeIsRecurring,
-                              title: AppText("تكرار"),
-                            ),
-                            10.height,
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomDropDown<RecurringType>(
-                                    hint: 'نوع التكرار',
-                                    items: RecurringType.values,
-                                    compareFn: (item, selectedItem) => item.index == selectedItem.index,
-                                    itemAsString: (item) => item!.text,
-                                    selectedItem: taskState.selectedRecurringType,
-                                    onChanged: _taskCubit.onChangeRecurringType,
-                                    validator: InputValidator.requiredFiled,
-                                    height: 135.scaleHeight,
-                                  ),
-                                ),
-                                10.width,
-                                Expanded(
-                                  child: AppTextField(
-                                    labelText: "عدد التكرارات",
-                                    maxLines: 1,
-                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                    inputType: TextInputType.number,
-                                    controller: _numberOfRecurringController,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            10.height,
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomSearchableDropDown<String>(
-                                    hint: 'الفاتورة',
-                                    items: [],
-                                    itemAsString: (u) => u!,
-                                    onChanged: (data) {},
-                                    selectedItem: null,
-                                    filterFn: (user, filter) => user.contains(filter),
-                                  ),
-                                ),
-                                10.width,
-                                Expanded(
-                                  child: CustomSearchableDropDown<String>(
-                                    hint: 'المجموعة',
-                                    items: [],
-                                    itemAsString: (u) => u!,
-                                    onChanged: (data) {},
-                                    selectedItem: null,
-                                    filterFn: (user, filter) => user.contains(filter),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                      InfoItem(
+                        title: 'المهمة*',
+                        customWidget: AppTextField(
+                          maxLines: 1,
+                          validator: InputValidator.requiredFiled,
+                          controller: _taskNameController,
                         ),
                       ),
                       10.height,
-                      AppElevatedButton(
-                        text: 'إضافة مرفق',
-                        onPressed: () async {
-                          final files = await FilePicker.platform.pickFiles(allowMultiple: true);
-
-                          if (files == null) return;
-
-                          _taskCubit.onChangeAttachmentFile(files.files.map((e) => File(e.path!)).toList());
-                        },
-                        icon: Icons.attach_file_rounded,
+                      InfoItem(
+                        title: 'وصف المهمة*',
+                        customWidget: AppTextField(
+                          validator: InputValidator.requiredFiled,
+                          controller: _taskDescriptionController,
+                          minLines: 5,
+                          contentPadding: HWEdgeInsets.all(15),
+                        ),
                       ),
                       10.height,
-                      ValueListenableBuilder(
-                        valueListenable: filesNotifier,
-                        builder: (context, value, child) => BlocBuilder<TaskCubit, TaskState>(
+                      InfoItem(
+                        title: 'المشاركين*',
+                        customWidget: BlocBuilder<UsersCubit, UsersState>(
                           builder: (context, state) {
-                            return AnimatedSwitcher(
-                              duration: Duration(milliseconds: 500),
-                              transitionBuilder: (widget, animation) => FadeTransition(
-                                opacity: animation,
-                                child: widget,
-                              ),
-                              child: (state.attachmentFile == null && (value?.isEmpty ?? true))
-                                  ? SizedBox.shrink()
-                                  : SizedBox(
-                                      height: 100.scaleHeight,
-                                      child: ListView(scrollDirection: Axis.horizontal, children: [
-                                        ...(value ?? []).map((e) {
-                                          return showImageOrFileFromRemote(e);
-                                        }).toList(),
-                                        ...(state.attachmentFile ?? []).map(
-                                          (e) {
-                                            return showImageOrFileFromLocale(e);
-                                          },
-                                        ).toList(),
-                                      ]),
-                                    ),
+                            return CustomMultiSelectionDropdown<UserModel>(
+                              items: _usersCubit.pageVariables.usersAllList,
+                              selectedItems:
+                                  taskState.selectedParticipant ?? [],
+                              onSave: _taskCubit.onChangeParticipants,
+                              itemAsString: (u) => u!.userAsString(),
+                              filterFn: (user, filter) =>
+                                  user.nameUser!.contains(filter),
+                              compareFn: (item, selectedItem) =>
+                                  item.idUser == selectedItem.idUser,
                             );
                           },
                         ),
                       ),
                       10.height,
-                      AppText('اسناد إلى'),
-                      5.height,
-                      AppCardContainer(
-                        child: AppGroupButton(
-                          width: AppDimensions.currentWidth() / (assignedToList.length + 1),
-                          groupButtonController: GroupButtonController(
-                            selectedIndex: taskState.selectedAssignedToType?.index,
+                      InfoItem(
+                        title: 'العملاء',
+                        customWidget: taskState.getListClients.when(
+                          success: (data) => ValueListenableBuilder(
+                            valueListenable: selectedClientList,
+                            builder: (context, value, child) =>
+                                CustomSearchableDropDown<ClientModel>(
+                              hint: 'العملاء',
+                              items: data ?? [],
+                              selectedItem: value,
+                              onChanged: (value) {
+                                selectedClientList.value = value;
+                              },
+                              itemAsString: (u) => u!.nameEnterprise!,
+                              filterFn: (client, filter) =>
+                                  client.nameEnterprise!.contains(filter),
+                              compareFn: (item, selectedItem) =>
+                                  item.idClients == selectedItem.idClients,
+                            ),
                           ),
-                          buttons: assignedToList.map((e) => e.text).toList(),
-                          onSelected: (_, index, isSelected) {
-                            _taskCubit.onChangeSelectedAssignedToType(assignedToList[index]);
+                          failure: (error, data) {
+                            return AppErrorWidget(message: error);
                           },
+                        ),
+                      ),
+                      10.height,
+                      SectionHeader(title: 'تواريخ المهمة'),
+                      10.height,
+                      InfoItem(
+                        title: 'تاريخ البداية*',
+                        customWidget: Theme(
+                          data: context.theme.copyWith(
+                            timePickerTheme: TimePickerThemeData(
+                              cancelButtonStyle: ButtonStyle().copyWith(
+                                  textStyle: WidgetStatePropertyAll(
+                                      TextStyle(fontSize: 12))),
+                              confirmButtonStyle: ButtonStyle().copyWith(
+                                  textStyle: WidgetStatePropertyAll(
+                                      TextStyle(fontSize: 12))),
+                              dayPeriodTextStyle: TextStyle(fontSize: 12),
+                              dialTextStyle: TextStyle(fontSize: 12),
+                              helpTextStyle: TextStyle(fontSize: 12),
+                              hourMinuteTextStyle: TextStyle(fontSize: 12),
+                            ),
+                          ),
+                          child: CustomDateTimePicker(
+                            dateTimeType: DateTimeEnum.both,
+                            hintText: 'تاريخ البداية',
+                            isStartFromNow: true,
+                            formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
+                            isRequired: true,
+                            dateTimeController: _startDateController,
+                            style2: true,
+                            onDateChange: (p0, p1) {
+                              _taskCubit.onChangeStartDate(p0);
+                            },
+                          ),
+                        ),
+                      ),
+                      10.height,
+                      if (true ?? privilegeBloc.checkPrivilege('171'))
+                        InfoItem(
+                          title: 'تاريخ النهاية*',
+                          customWidget: Theme(
+                            data: context.theme.copyWith(
+                              timePickerTheme: TimePickerThemeData(
+                                cancelButtonStyle: ButtonStyle().copyWith(
+                                    textStyle: WidgetStatePropertyAll(
+                                        TextStyle(fontSize: 12))),
+                                confirmButtonStyle: ButtonStyle().copyWith(
+                                    textStyle: WidgetStatePropertyAll(
+                                        TextStyle(fontSize: 12))),
+                                dayPeriodTextStyle: TextStyle(fontSize: 12),
+                                dialTextStyle: TextStyle(fontSize: 12),
+                                helpTextStyle: TextStyle(fontSize: 12),
+                                hourMinuteTextStyle: TextStyle(fontSize: 12),
+                              ),
+                            ),
+                            child: CustomDateTimePicker(
+                              dateTimeType: DateTimeEnum.both,
+                              hintText: 'تاريخ النهاية',
+                              isStartFromNow: true,
+                              isRequired: true,
+                              formatDate:
+                                  Intl.DateFormat('dd MM yyyy HH:mm:ss'),
+                              dateTimeController: _deadLineDateController,
+                              style2: true,
+                              onDateChange: (p0, p1) {
+                                _taskCubit.onChangeDeadLineDate(p0);
+                              },
+                            ),
+                          ),
+                        ),
+                      10.height,
+                      SectionHeader(title: 'مرفقات المهمة'),
+                      10.height,
+                      InfoItem(
+                        title: 'المرفقات',
+                        customWidget: Column(
+                          children: [
+                            AppElevatedButton(
+                              text: 'إضافة مرفق',
+                              onPressed: () async {
+                                final files = await FilePicker.platform
+                                    .pickFiles(allowMultiple: true);
+                                if (files == null) return;
+                                _taskCubit.onChangeAttachmentFile(files.files
+                                    .map((e) => File(e.path!))
+                                    .toList());
+                              },
+                              icon: Icons.attach_file_rounded,
+                            ),
+                            10.height,
+                            ValueListenableBuilder(
+                              valueListenable: filesNotifier,
+                              builder: (context, value, child) =>
+                                  BlocBuilder<TaskCubit, TaskState>(
+                                builder: (context, state) {
+                                  return AnimatedSwitcher(
+                                    duration: Duration(milliseconds: 500),
+                                    transitionBuilder: (widget, animation) =>
+                                        FadeTransition(
+                                      opacity: animation,
+                                      child: widget,
+                                    ),
+                                    child: (state.attachmentFile == null &&
+                                            (value?.isEmpty ?? true))
+                                        ? SizedBox.shrink()
+                                        : SizedBox(
+                                            height: 100.scaleHeight,
+                                            child: ListView(
+                                              scrollDirection: Axis.horizontal,
+                                              children: [
+                                                ...(value ?? [])
+                                                    .map((e) =>
+                                                        showImageOrFileFromRemote(
+                                                            e))
+                                                    .toList(),
+                                                ...(state.attachmentFile ?? [])
+                                                    .map((e) =>
+                                                        showImageOrFileFromLocale(
+                                                            e))
+                                                    .toList(),
+                                              ],
+                                            ),
+                                          ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      10.height,
+                      SectionHeader(title: 'إسناد المهمة'),
+                      10.height,
+                      InfoItem(
+                        title: 'نوع الإسناد',
+                        customWidget: AppCardContainer(
+                          child: AppGroupButton(
+                            width: AppDimensions.currentWidth() /
+                                (assignedToList.length + 1),
+                            groupButtonController: GroupButtonController(
+                              selectedIndex:
+                                  taskState.selectedAssignedToType?.index,
+                            ),
+                            buttons: assignedToList.map((e) => e.text).toList(),
+                            onSelected: (_, index, isSelected) {
+                              _taskCubit.onChangeSelectedAssignedToType(
+                                  assignedToList[index]);
+                            },
+                          ),
                         ),
                       ),
                       10.height,
@@ -570,7 +577,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     width: 200.scaleWidth,
                     height: 150.scaleHeight,
                     margin: EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                    decoration: BoxDecoration(
+                        color: AppColors.primaryMain.withOpacity(0.1)),
                     child: isLoading
                         ? AppLoader(padding: 12)
                         : AppIcon(
@@ -613,7 +621,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     width: 200.scaleWidth,
                     height: 150.scaleHeight,
                     margin: EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                    decoration: BoxDecoration(
+                        color: AppColors.primaryMain.withOpacity(0.1)),
                     child: isLoading
                         ? AppLoader(padding: 12)
                         : AppIcon(
@@ -666,17 +675,22 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (taskState.selectedAssignedToType == AssignedTypeNew.managements)
       return Consumer<manage_provider>(
         builder: (context, manageList, child) {
-          final userDepartment = context.read<UserProvider>().currentUser.typeAdministration;
+          final userDepartment =
+              context.read<UserProvider>().currentUser.typeAdministration;
           final list = getIt<PrivilegesCubit>().checkPrivilege('169')
               ? manageList.listMangTask
-              : getIt<PrivilegesCubit>().checkPrivilege('168') || getIt<PrivilegesCubit>().checkPrivilege('174')
-                  ? manageList.listMangTask.where((element) => element.idMange == userDepartment).toList()
+              : getIt<PrivilegesCubit>().checkPrivilege('168') ||
+                      getIt<PrivilegesCubit>().checkPrivilege('174')
+                  ? manageList.listMangTask
+                      .where((element) => element.idMange == userDepartment)
+                      .toList()
                   : manageList.listMangTask;
 
           return CustomDropDown<ManageModel>(
             hint: 'القسم',
             items: list,
-            compareFn: (item, selectedItem) => item.idMange == selectedItem.idMange,
+            compareFn: (item, selectedItem) =>
+                item.idMange == selectedItem.idMange,
             itemAsString: (item) => item!.name_mange,
             selectedItem: list.firstWhereOrNull(
               (element) => element.idMange == departmentId,
@@ -685,7 +699,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
               manageList.changevalue(data!.idMange);
             },
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedTypeNew.managements) {
+              if (taskState.selectedAssignedToType !=
+                  AssignedTypeNew.managements) {
                 return null;
               }
               if (value == null) {
@@ -707,12 +722,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
           final list = privilegeBloc.checkPrivilege('169')
               ? cart.listRegionTaskFilter
               : privilegeBloc.checkPrivilege('167')
-                  ? cart.listRegionTaskFilter.where((element) => element.branchId == user.fkRegoin).toList()
+                  ? cart.listRegionTaskFilter
+                      .where((element) => element.branchId == user.fkRegoin)
+                      .toList()
                   : cart.listRegionTaskFilter;
           return CustomDropDown<BranchModel>(
             hint: 'الفرع',
             items: list,
-            compareFn: (item, selectedItem) => item.branchId == selectedItem.branchId,
+            compareFn: (item, selectedItem) =>
+                item.branchId == selectedItem.branchId,
             itemAsString: (branch) => branch!.branchName,
             selectedItem: list.firstWhereOrNull(
               (element) => element.branchId == regionId,

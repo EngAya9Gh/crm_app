@@ -56,7 +56,11 @@ class _EventCardState extends State<EventCard> {
             },
             child: Stack(
               children: [
-                if(widget.event.isDone=='4')PositionedDirectional(bottom: 0,end: 0,child: Icon(Icons.pause,color: AppColors.statusErrorActive,)),
+                if(widget.event.isDone=='4')
+                PositionedDirectional(bottom: 0,end: 0,
+                child: Icon(Icons.pause,
+                color: AppColors.statusErrorActive,)),
+               
                 Row(
                   children: [
                     Expanded(

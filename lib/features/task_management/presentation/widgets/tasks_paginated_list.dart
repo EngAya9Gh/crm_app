@@ -10,17 +10,20 @@ import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/common/client_profile/client_dates_tab/presentation/widgets/task_card_new.dart';
 import 'package:crm_smart/features/mangement/manage_users/presentation/manager/users_cubit.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
 import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/add_task_page.dart';
+import 'package:crm_smart/features/task_management/presentation/widgets/task_web_widgets/task_card_web.dart';
 import 'package:crm_smart/model/managmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/manage_provider.dart';
 import 'package:crm_smart/ui/screen/client/client_profile.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -72,7 +75,8 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     _cubit = context.read<TaskCubit>();
     controller = AutoScrollController(
         //add this for advanced viewport boundary. e.g. SafeArea
-        viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+        viewportBoundaryGetter: () =>
+            Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
 
         //choose vertical/horizontal
         axis: Axis.vertical,
@@ -111,7 +115,10 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
       bool found = false;
       int pageLoadAttempts = 0;
 
-      while (!found && !(_cubit.pageVariables.hasReachedEnd && _cubit.pageVariables.allList.length > 15) && pageLoadAttempts < 10) {
+      while (!found &&
+          !(_cubit.pageVariables.hasReachedEnd &&
+              _cubit.pageVariables.allList.length > 15) &&
+          pageLoadAttempts < 10) {
         found = _cubit.pageVariables.allList.any(
           (element) => element.id.toString() == widget.idTask,
         );
@@ -163,8 +170,12 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
               // duration: Duration(milliseconds: 500),
               // curve: Curves.easeInOut,
               // );
-              print('Successfully scrolled to position ${controller.isIndexStateInLayoutRange(index)}');
-              await controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin).then(
+              print(
+                  'Successfully scrolled to position ${controller.isIndexStateInLayoutRange(index)}');
+              await controller
+                  .scrollToIndex(index,
+                      preferPosition: AutoScrollPosition.begin)
+                  .then(
                 (value) {
                   _isHighlighted.value = true;
                   Future.delayed(Duration(seconds: 2)).then(
@@ -220,8 +231,11 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
             final task = _cubit.pageVariables.allList[index];
             return ValueListenableBuilder(
                 valueListenable: _isHighlighted,
-                builder: (context, value, child) =>
-                    AutoScrollTag(key: ValueKey(index), controller: controller, index: index, child: _buildCard(task, value, context)));
+                builder: (context, value, child) => AutoScrollTag(
+                    key: ValueKey(index),
+                    controller: controller,
+                    index: index,
+                    child: _buildCard(task, value, context)));
           },
           isLoading: state.getTasksStatus.isLoading(),
           hasReachedEnd: _cubit.pageVariables.hasReachedEnd,
@@ -235,8 +249,10 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     final assignToUserName = task.assignTo!.nameUser;
     final firstList = assignToUserName?.split(' ').firstOrNull;
     final secondList = assignToUserName?.split(' ').lastOrNull;
-    String? firstChar = (firstList?.isNotEmpty ?? false) ? firstList?.substring(0, 1) : '';
-    String? secondChar = (secondList?.isNotEmpty ?? false) ? secondList?.substring(0, 1) : '';
+    String? firstChar =
+        (firstList?.isNotEmpty ?? false) ? firstList?.substring(0, 1) : '';
+    String? secondChar =
+        (secondList?.isNotEmpty ?? false) ? secondList?.substring(0, 1) : '';
     StringBuffer buffer = StringBuffer();
 
     if (firstChar == null) {
@@ -248,13 +264,17 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
 
     buffer.writeAll([firstChar, secondChar], '.');
 
-    final status = TaskStatusType.values.firstWhereOrNull((element) => element.name == task.status?.name);
+    final status = TaskStatusType.values
+        .firstWhereOrNull((element) => element.name == task.status?.name);
     return Container(
       decoration: BoxDecoration(
-          color: (isSame && task.id.toString() == widget.idTask) ? AppColors.primaryAltLight : AppColors.white,
+          color: (isSame && task.id.toString() == widget.idTask)
+              ? AppColors.primaryAltLight
+              : AppColors.white,
           borderRadius: BorderRadiusDirectional.circular(8)),
       child: InkWell(
-        onTap: status != null && context.read<PrivilegesCubit>().checkPrivilege('165')
+        onTap: status != null &&
+                context.read<PrivilegesCubit>().checkPrivilege('165')
             ? () {
                 Dialogs.showLoadingDialog(context);
                 _cubit
@@ -269,7 +289,8 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                           context: context,
                           barrierDismissible: false,
                           barrierLabel: task.id.toString(),
-                          builder: (context) => DialogTaskDetail(task: value, status: status, cubit: _cubit),
+                          builder: (context) => DialogTaskDetail(
+                              task: value, status: status, cubit: _cubit),
                           // builder: (context) => BlocProvider.value(
                           // value: _cubit,
                           // child: ChangeStatusTaskDialog(
@@ -286,12 +307,17 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
         child: IntrinsicHeight(
           child: Stack(
             children: [
-              if (task.status?.name == TaskStatusType.Open.name || task.status?.name == TaskStatusType.receive.name)
+              if (task.status?.name == TaskStatusType.Open.name ||
+                  task.status?.name == TaskStatusType.receive.name)
                 PositionedDirectional(
                   child: Icon(
-                    task.overDeadline == 0 ? Icons.timer_outlined : Icons.timer_off_outlined,
+                    task.overDeadline == 0
+                        ? Icons.timer_outlined
+                        : Icons.timer_off_outlined,
                     size: 35,
-                    color: task.overDeadline == 0 ? AppColors.green : AppColors.statusErrorActive,
+                    color: task.overDeadline == 0
+                        ? AppColors.green
+                        : AppColors.statusErrorActive,
                   ),
                   bottom: 0,
                   end: 5,
@@ -338,11 +364,17 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                 ],
                                 child: Container(
                                   decoration: (status?.color != null)
-                                      ? BoxDecoration(shape: BoxShape.circle, border: Border.all(width: 2, color: status!.color))
+                                      ? BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              width: 2, color: status!.color))
                                       : null,
                                   child: CircleAvatar(
-                                    backgroundImage: task.assignTo?.image != null
-                                        ? NetworkImage(EndPoints.baseUrls.laravelFilesUrl + task.assignTo!.image!)
+                                    backgroundImage: task.assignTo?.image !=
+                                            null
+                                        ? NetworkImage(
+                                            EndPoints.baseUrls.laravelFilesUrl +
+                                                task.assignTo!.image!)
                                         : null,
                                     child: task.assignTo?.image == null
                                         ? Center(
@@ -356,10 +388,21 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                   ),
                                 ),
                               ),
-                              if (context.read<PrivilegesCubit>().checkPrivilege('339') &&
-                                  ([task.assignFrom?.idUser.toString(), task.assignFrom?.idRegion.toString(), task.assignFrom?.idMange.toString()]
-                                          .contains(context.read<UserProvider>().currentUser.idUser) &&
-                                      (task.status?.name == TaskStatusType.Open.name || task.status?.name == TaskStatusType.receive.name)))
+                              if (context
+                                      .read<PrivilegesCubit>()
+                                      .checkPrivilege('339') &&
+                                  ([
+                                        task.assignFrom?.idUser.toString(),
+                                        task.assignFrom?.idRegion.toString(),
+                                        task.assignFrom?.idMange.toString()
+                                      ].contains(context
+                                          .read<UserProvider>()
+                                          .currentUser
+                                          .idUser) &&
+                                      (task.status?.name ==
+                                              TaskStatusType.Open.name ||
+                                          task.status?.name ==
+                                              TaskStatusType.receive.name)))
                                 IconButton(
                                     onPressed: () {
                                       Dialogs.showLoadingDialog(context);
@@ -371,13 +414,15 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                             Navigator.pop(context);
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
-                                                builder: (context) => AddTaskPage(
+                                                builder: (context) =>
+                                                    AddTaskPage(
                                                   task: value,
                                                 ),
                                               ),
                                             );
                                           },
-                                          params: GetTaskByIdParams(idTask: task.id!));
+                                          params: GetTaskByIdParams(
+                                              idTask: task.id!));
                                     },
                                     icon: Icon(
                                       Icons.edit_square,
@@ -393,18 +438,26 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                 task.title,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              if (((task.assignFrom?.nameRegion?.isEmpty ?? true) &&
-                                      (task.assignFrom?.nameMange?.isEmpty ?? true) &&
-                                      (task.assignFrom?.nameUser?.isEmpty ?? true)) &&
-                                  ((task.assignTo?.nameRegion?.isEmpty ?? true) &&
-                                      (task.assignTo?.nameMange?.isEmpty ?? true) &&
-                                      (task.assignTo?.nameUser?.isEmpty ?? true)))
+                              if (((task
+                                              .assignFrom?.nameRegion?.isEmpty ??
+                                          true) &&
+                                      (task.assignFrom?.nameMange?.isEmpty ??
+                                          true) &&
+                                      (task.assignFrom?.nameUser?.isEmpty ??
+                                          true)) &&
+                                  ((task.assignTo?.nameRegion?.isEmpty ??
+                                          true) &&
+                                      (task.assignTo?.nameMange?.isEmpty ??
+                                          true) &&
+                                      (task.assignTo?.nameUser?.isEmpty ??
+                                          true)))
                                 Row(
                                   children: [
                                     AppText(
                                       (task.assignFromModel == 'region')
                                           ? 'فرع'
-                                          : (task.assignFromModel == 'managements')
+                                          : (task.assignFromModel ==
+                                                  'managements')
                                               ? "قسم"
                                               : "مستخدم",
                                       color: context.colorScheme.grey500,
@@ -414,7 +467,8 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                     AppText(
                                       (task.assignFromModel == 'region')
                                           ? 'فرع'
-                                          : (task.assignFromModel == 'managements')
+                                          : (task.assignFromModel ==
+                                                  'managements')
                                               ? "قسم"
                                               : "مستخدم",
                                       color: AppColors.primaryMain,
@@ -456,9 +510,14 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                             InkWell(
                               onTap: () {
                                 AppNavigator.go(
-                                  ClientProfile(idClient: task.client!.idClients),
-                                  name: AppRoutesNames.clientProfile.inClientsList,
-                                  pathParameters: {'idClient': task.client!.idClients.toString()},
+                                  ClientProfile(
+                                      idClient: task.client!.idClients),
+                                  name: AppRoutesNames
+                                      .clientProfile.inClientsList,
+                                  pathParameters: {
+                                    'idClient':
+                                        task.client!.idClients.toString()
+                                  },
                                 );
                               },
                               child: AppText(
@@ -486,20 +545,25 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                         message: e.nameUser,
                                         child: CircleAvatar(
                                             radius: 20,
-                                            backgroundColor: AppColors.primaryAltLight,
-                                            child: AppText(e.nameUser?.substring(0, 2).toUpperCase())),
+                                            backgroundColor:
+                                                AppColors.primaryAltLight,
+                                            child: AppText(e.nameUser
+                                                ?.substring(0, 2)
+                                                .toUpperCase())),
                                       ))
                                   .toList()),
                           10.height,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              AppIcon(Icons.date_range_rounded, color: context.colorScheme.grey600),
+                              AppIcon(Icons.date_range_rounded,
+                                  color: context.colorScheme.grey600),
                               5.width,
                               Directionality(
                                 textDirection: TextDirection.ltr,
                                 child: AppText(
-                                  Intl.DateFormat('dd MMM hh:mm a').format(task.startDate ?? DateTime.now()),
+                                  Intl.DateFormat('dd MMM hh:mm a')
+                                      .format(task.startDate ?? DateTime.now()),
                                   color: context.colorScheme.grey600,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -515,7 +579,8 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                 strokeAlign: 1.5,
                                 value: (task.completionPercentage ?? 0) / 100,
                                 backgroundColor: Colors.grey[300],
-                                valueColor: AlwaysStoppedAnimation<Color>(AppColors.green),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppColors.green),
                                 strokeWidth: 5,
                               ),
                               AppText(
@@ -545,7 +610,8 @@ Widget assignToEmployeeWidget(AssignedTypeNew? type, ValueNotifier assigned) {
       builder: (context, state) {
         return ValueListenableBuilder(
           valueListenable: assigned,
-          builder: (context, value, child) => CustomSearchableDropDown<UserModel>(
+          builder: (context, value, child) =>
+              CustomSearchableDropDown<UserModel>(
             hint: 'الموظف',
             items: state.getUserSelected.data ?? [],
             itemAsString: (u) => u!.nameUser!,
@@ -575,11 +641,15 @@ Widget assignToDepartmentWidget(AssignedTypeNew? type, ValueNotifier assigned) {
   if (type == AssignedTypeNew.managements)
     return Consumer<manage_provider>(
       builder: (context, manageList, child) {
-        final userDepartment = context.read<UserProvider>().currentUser.typeAdministration;
+        final userDepartment =
+            context.read<UserProvider>().currentUser.typeAdministration;
         final list = getIt<PrivilegesCubit>().checkPrivilege('169')
             ? manageList.listMangTask
-            : getIt<PrivilegesCubit>().checkPrivilege('168') || getIt<PrivilegesCubit>().checkPrivilege('174')
-                ? manageList.listMangTask.where((element) => element.idMange == userDepartment).toList()
+            : getIt<PrivilegesCubit>().checkPrivilege('168') ||
+                    getIt<PrivilegesCubit>().checkPrivilege('174')
+                ? manageList.listMangTask
+                    .where((element) => element.idMange == userDepartment)
+                    .toList()
                 : manageList.listMangTask;
 
         return ValueListenableBuilder(
@@ -587,7 +657,8 @@ Widget assignToDepartmentWidget(AssignedTypeNew? type, ValueNotifier assigned) {
           builder: (context, value, child) => CustomDropDown<ManageModel>(
             hint: 'القسم',
             items: list,
-            compareFn: (item, selectedItem) => item.idMange == selectedItem.idMange,
+            compareFn: (item, selectedItem) =>
+                item.idMange == selectedItem.idMange,
             itemAsString: (item) => item!.name_mange,
             selectedItem: value,
             onChanged: (data) {
@@ -617,14 +688,17 @@ Widget assignToRegionWidget(AssignedTypeNew? type, ValueNotifier assigned) {
         final list = context.read<PrivilegesCubit>().checkPrivilege('169')
             ? cart.listRegionTaskFilter
             : context.read<PrivilegesCubit>().checkPrivilege('167')
-                ? cart.listRegionTaskFilter.where((element) => element.branchId == user.fkRegoin).toList()
+                ? cart.listRegionTaskFilter
+                    .where((element) => element.branchId == user.fkRegoin)
+                    .toList()
                 : cart.listRegionTaskFilter;
         return ValueListenableBuilder(
           valueListenable: assigned,
           builder: (context, value, child) => CustomDropDown<BranchModel>(
             hint: 'الفرع',
             items: list,
-            compareFn: (item, selectedItem) => item.branchId == selectedItem.branchId,
+            compareFn: (item, selectedItem) =>
+                item.branchId == selectedItem.branchId,
             itemAsString: (branch) => branch!.branchName,
             selectedItem: value,
             onChanged: (data) {
@@ -646,7 +720,8 @@ Widget assignToRegionWidget(AssignedTypeNew? type, ValueNotifier assigned) {
   return SizedBox.shrink();
 }
 
-Widget AssignTOAnotherWidget({required TaskModel task, required TaskCubit taskCubit}) {
+Widget AssignTOAnotherWidget(
+    {required TaskModel task, required TaskCubit taskCubit}) {
   ValueNotifier<AssignedTypeNew?> selectedTypeAssign = ValueNotifier(null);
   ValueNotifier assign = ValueNotifier(null);
   GlobalKey<FormState> _formKey = GlobalKey();
@@ -670,7 +745,8 @@ Widget AssignTOAnotherWidget({required TaskModel task, required TaskCubit taskCu
                   items: AssignedTypeNew.values,
                   itemAsString: (item) => item!.text,
                   selectedItem: typeAssinged,
-                  compareFn: (item, selectedItem) => item.index == selectedItem.index,
+                  compareFn: (item, selectedItem) =>
+                      item.index == selectedItem.index,
                   onChanged: (value) {
                     assign.value = null;
                     selectedTypeAssign.value = value;
@@ -697,7 +773,8 @@ Widget AssignTOAnotherWidget({required TaskModel task, required TaskCubit taskCu
                     if (_formKey.currentState!.validate()) {
                       var id = selectedTypeAssign.value == AssignedTypeNew.users
                           ? ((assign.value as UserModel).id)
-                          : selectedTypeAssign.value == AssignedTypeNew.managements
+                          : selectedTypeAssign.value ==
+                                  AssignedTypeNew.managements
                               ? ((assign.value as ManageModel).idMange)
                               : ((assign.value as BranchModel).branchId);
                       taskCubit.changeTaskAssign(

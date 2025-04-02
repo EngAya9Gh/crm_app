@@ -34,6 +34,8 @@ import 'client_info_details.dart';
 import 'dialog_client_section.dart';
 import 'link_client_dailog.dart';
 import 'special_client_icon_button.dart';
+import '../../../../../../core/common/widgets/add_action_button.dart';
+import '../../../../../../core/common/widgets/action_menu_item.dart';
 
 class LinkedClient {
   final String id;
@@ -165,35 +167,39 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                           clientId: clientModel.idClients,
                         ),
                       ),
+                      // Expanded(
+                      //   child: TextButton(
+                      //     onPressed: () async {
+                      //       _linkClientBloc
+                      //           .add(FetchLinkClients(clientModel.idClients!));
+                      //       final result = await showDialog<bool>(
+                      //         context: context,
+                      //         builder: (BuildContext context) {
+                      //           return BlocBuilder<ClientsListBloc,
+                      //               ClientsListState>(
+                      //             bloc: _linkClientBloc,
+                      //             builder: (context, state) {
+                      //               return LinkClientDialog(
+                      //                 clientId: clientModel.idClients!,
+                      //               );
+                      //             },
+                      //           );
+                      //         },
+                      //       );
+                      //       if (result == true) {
+                      //         setState(() {});
+                      //       }
+                      //     },
+                      //     child: AppText(
+                      //       'ربط العميل',
+                      //       fontFamily: AppFonts.fontFamily1,
+                      //       color: AppColors.primaryMain,
+                      //     ),
+                      //   ),
+                      // ),
                       Expanded(
-                        child: TextButton(
-                          onPressed: () async {
-                            _linkClientBloc
-                                .add(FetchLinkClients(clientModel.idClients!));
-                            final result = await showDialog<bool>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return BlocBuilder<ClientsListBloc,
-                                    ClientsListState>(
-                                  bloc: _linkClientBloc,
-                                  builder: (context, state) {
-                                    return LinkClientDialog(
-                                      clientId: clientModel.idClients!,
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                            if (result == true) {
-                              // Refresh the client info or perform any necessary updates
-                              setState(() {});
-                            }
-                          },
-                          child: AppText(
-                            'ربط العميل',
-                            fontFamily: AppFonts.fontFamily1,
-                            color: AppColors.primaryMain,
-                          ),
+                        child: AddActionButton(
+                          onTap: () => _showActionMenu(context),
                         ),
                       ),
                     ],
@@ -210,132 +216,132 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                     ],
                   ),
                   ClientInfoDetails(),
-                  5.height,
-                  if (clientModel.communicationDetails != null &&
-                      clientModel.communicationDetails!.isNotEmpty)
-                    CardRow(
-                        title: 'نوع العميل',
-                        value: clientModel.communicationDetails!.first.state ??
-                            ""),
-                  if (widget.clientTransfer != 'transfer') ...[
-                    Center(
-                      child: Column(
-                        children: [
-                          if (clientModel.typeClient == "عرض سعر" ||
-                              clientModel.typeClient == "تفاوض" ||
-                              clientModel.typeClient == "مستبعد" ||
-                              clientModel.typeClient == 'معلق استبعاد') ...[
-                            SizedBox(
-                              width: double.infinity,
-                              child: AppElevatedButton(
-                                text: 'اجراءات',
-                                onPressed: () async {
-                                  ClientModel? result =
-                                      await AppConstants.showAppDialog(
-                                    child: DialogClientSection(
-                                      disableWithdrawal: disableWithdrawal,
-                                      client: clientModel,
-                                      idClient: widget.idClient,
-                                    ),
-                                  );
+                  // 5.height,
+                  // if (clientModel.communicationDetails != null &&
+                  //     clientModel.communicationDetails!.isNotEmpty)
+                  //   CardRow(
+                  //       title: 'نوع العميل',
+                  //       value: clientModel.communicationDetails!.first.state ??
+                  //           ""),
+                  // if (widget.clientTransfer != 'transfer') ...[
+                  //   Center(
+                  //     child: Column(
+                  //       children: [
+                  //         if (clientModel.typeClient == "عرض سعر" ||
+                  //             clientModel.typeClient == "تفاوض" ||
+                  //             clientModel.typeClient == "مستبعد" ||
+                  //             clientModel.typeClient == 'معلق استبعاد') ...[
+                  //           SizedBox(
+                  //             width: double.infinity,
+                  //             child: AppElevatedButton(
+                  //               text: 'اجراءات',
+                  //               onPressed: () async {
+                  //                 ClientModel? result =
+                  //                     await AppConstants.showAppDialog(
+                  //                   child: DialogClientSection(
+                  //                     disableWithdrawal: disableWithdrawal,
+                  //                     client: clientModel,
+                  //                     idClient: widget.idClient,
+                  //                   ),
+                  //                 );
 
-                                  if (result != null) clientModel = result;
+                  //                 if (result != null) clientModel = result;
 
-                                  _clientsListBloc.currentClient = clientModel;
-                                },
-                              ),
-                            ),
-                          ],
-                          5.height,
-                          SizedBox(
-                            width: double.infinity,
-                            child: AppElevatedButton(
-                              text: 'نوع العميل',
-                              onPressed: () async {
-                                ClientModel? result = await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return DialogClientType(
-                                      disableWithdrawal: disableWithdrawal,
-                                      client: clientModel,
-                                      idClient: widget.idClient,
-                                    );
-                                  },
-                                );
-                                if (result != null) clientModel = result;
-                                _clientProvider
-                                    .getClientById(widget.idClient.toString());
-                              },
-                            ),
-                          ),
-                          5.height,
-                          SizedBox(
-                            width: double.infinity,
-                            child: AppElevatedButton(
-                              text: 'تعديل بيانات العميل',
-                              onPressed: () async => _onPressedUpdate(context),
-                            ),
-                          ),
-                          5.height,
-                          Row(
-                            children: [
-                              if (clientModel.nameTransferTo == null) ...[
-                                Expanded(
-                                  child: AppElevatedButton(
-                                    text: 'تحويل العميل',
-                                    onPressed: () async {
-                                      final transferredClient =
-                                          await AppNavigator.go(
-                                        TransferClientPage(
-                                          nameEnterprise: clientModel
-                                              .nameEnterprise
-                                              .toString(),
-                                          idClient:
-                                              clientModel.idClients.toString(),
-                                          type: "client",
-                                        ),
-                                        isNew: false,
-                                      );
-                                      if (transferredClient != null) {
-                                        final newClient =
-                                            (transferredClient as ClientModel);
-                                        _clientProvider
-                                            .changevalueclient(newClient);
-                                      }
-                                    },
-                                  ),
-                                ),
-                                if (_isValidForReceiving()) ...[
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: BlocBuilder<ClientsListBloc,
-                                        ClientsListState>(
-                                      builder: (context, state) {
-                                        return AppElevatedButton(
-                                          text: 'استلام العميل',
-                                          isLoading: state.receiveClientStatus
-                                              .isLoading(),
-                                          onPressed: () async {
-                                            _clientsListBloc
-                                                .add(ReceiveClientEvent(
-                                              ReceiveClientParams(
-                                                idClient:
-                                                    clientModel.idClients!,
-                                              ),
-                                            ));
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  //                 _clientsListBloc.currentClient = clientModel;
+                  //               },
+                  //             ),
+                  //           ),
+                  //         ],
+                  //         5.height,
+                  //         SizedBox(
+                  //           width: double.infinity,
+                  //           child: AppElevatedButton(
+                  //             text: 'نوع العميل',
+                  //             onPressed: () async {
+                  //               ClientModel? result = await showDialog(
+                  //                 context: context,
+                  //                 builder: (BuildContext context) {
+                  //                   return DialogClientType(
+                  //                     disableWithdrawal: disableWithdrawal,
+                  //                     client: clientModel,
+                  //                     idClient: widget.idClient,
+                  //                   );
+                  //                 },
+                  //               );
+                  //               if (result != null) clientModel = result;
+                  //               _clientProvider
+                  //                   .getClientById(widget.idClient.toString());
+                  //             },
+                  //           ),
+                  //         ),
+                  //         5.height,
+                  //         SizedBox(
+                  //           width: double.infinity,
+                  //           child: AppElevatedButton(
+                  //             text: 'تعديل بيانات العميل',
+                  //             onPressed: () async => _onPressedUpdate(context),
+                  //           ),
+                  //         ),
+                  //         5.height,
+                  //         Row(
+                  //           children: [
+                  //             if (clientModel.nameTransferTo == null) ...[
+                  //               Expanded(
+                  //                 child: AppElevatedButton(
+                  //                   text: 'تحويل العميل',
+                  //                   onPressed: () async {
+                  //                     final transferredClient =
+                  //                         await AppNavigator.go(
+                  //                       TransferClientPage(
+                  //                         nameEnterprise: clientModel
+                  //                             .nameEnterprise
+                  //                             .toString(),
+                  //                         idClient:
+                  //                             clientModel.idClients.toString(),
+                  //                         type: "client",
+                  //                       ),
+                  //                       isNew: false,
+                  //                     );
+                  //                     if (transferredClient != null) {
+                  //                       final newClient =
+                  //                           (transferredClient as ClientModel);
+                  //                       _clientProvider
+                  //                           .changevalueclient(newClient);
+                  //                     }
+                  //                   },
+                  //                 ),
+                  //               ),
+                  //               if (_isValidForReceiving()) ...[
+                  //                 const SizedBox(width: 8),
+                  //                 Expanded(
+                  //                   child: BlocBuilder<ClientsListBloc,
+                  //                       ClientsListState>(
+                  //                     builder: (context, state) {
+                  //                       return AppElevatedButton(
+                  //                         text: 'استلام العميل',
+                  //                         isLoading: state.receiveClientStatus
+                  //                             .isLoading(),
+                  //                         onPressed: () async {
+                  //                           _clientsListBloc
+                  //                               .add(ReceiveClientEvent(
+                  //                             ReceiveClientParams(
+                  //                               idClient:
+                  //                                   clientModel.idClients!,
+                  //                             ),
+                  //                           ));
+                  //                         },
+                  //                       );
+                  //                     },
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ],
+                  //           ],
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ],
                   SizedBox(height: 15),
                   ClientInfoButtons(
                     idClient: widget.idClient,
@@ -371,5 +377,154 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
         clientModel = result;
       });
     }
+  }
+
+  void _showActionMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+      ),
+      builder: (context) => Container(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.clientTransfer != 'transfer') ...[
+              ActionMenuItem(
+                title: 'تعديل بيانات العميل',
+                icon: Icons.edit,
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _onPressedUpdate(context);
+                },
+              ),
+              if (clientModel.typeClient == "عرض سعر" ||
+                  clientModel.typeClient == "تفاوض" ||
+                  clientModel.typeClient == "مستبعد" ||
+                  clientModel.typeClient == 'معلق استبعاد') ...[
+                ActionMenuItem(
+                  title: 'اجراءات',
+                  icon: Icons.list_alt,
+                  onTap: () async {
+                    Navigator.pop(context);
+                    ClientModel? result = await AppConstants.showAppDialog(
+                      child: DialogClientSection(
+                        disableWithdrawal: disableWithdrawal,
+                        client: clientModel,
+                        idClient: widget.idClient,
+                      ),
+                    );
+
+                    if (result != null) {
+                      clientModel = result;
+                      _clientsListBloc.currentClient = clientModel;
+                    }
+                  },
+                ),
+              ],
+              ActionMenuItem(
+                title: 'نوع العميل',
+                icon: Icons.category,
+                onTap: () async {
+                  Navigator.pop(context);
+                  ClientModel? result = await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DialogClientType(
+                        disableWithdrawal: disableWithdrawal,
+                        client: clientModel,
+                        idClient: widget.idClient,
+                      );
+                    },
+                  );
+                  if (result != null) {
+                    clientModel = result;
+                    _clientProvider.getClientById(widget.idClient.toString());
+                  }
+                },
+              ),
+              if (clientModel.nameTransferTo == null) ...[
+                ActionMenuItem(
+                  title: 'تحويل العميل',
+                  icon: Icons.transform,
+                  onTap: () async {
+                    Navigator.pop(context);
+                    final transferredClient = await AppNavigator.go(
+                      TransferClientPage(
+                        nameEnterprise: clientModel.nameEnterprise.toString(),
+                        idClient: clientModel.idClients.toString(),
+                        type: "client",
+                      ),
+                      isNew: false,
+                    );
+                    if (transferredClient != null) {
+                      final newClient = (transferredClient as ClientModel);
+                      _clientProvider.changevalueclient(newClient);
+                    }
+                  },
+                ),
+                if (_isValidForReceiving()) ...[
+                  ActionMenuItem(
+                    title: 'استلام العميل',
+                    icon: Icons.person_add,
+                    onTap: () {
+                      Navigator.pop(context);
+                      _clientsListBloc.add(ReceiveClientEvent(
+                        ReceiveClientParams(
+                          idClient: clientModel.idClients!,
+                        ),
+                      ));
+                    },
+                  ),
+                ],
+              ],
+              ActionMenuItem(
+                title: 'ربط العميل',
+                icon: Icons.link,
+                onTap: () async {
+                  Navigator.pop(context);
+                  _linkClientBloc.add(FetchLinkClients(clientModel.idClients!));
+                  final result = await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return BlocBuilder<ClientsListBloc, ClientsListState>(
+                        bloc: _linkClientBloc,
+                        builder: (context, state) {
+                          return LinkClientDialog(
+                            clientId: clientModel.idClients!,
+                          );
+                        },
+                      );
+                    },
+                  );
+                  if (result == true) {
+                    setState(() {});
+                  }
+                },
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionItem({
+    required String title,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: AppColors.primaryMain),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 16,
+          // fontFamily: 'Cairo',
+        ),
+      ),
+      onTap: onTap,
+    );
   }
 }

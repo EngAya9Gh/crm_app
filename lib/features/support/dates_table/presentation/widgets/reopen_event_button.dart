@@ -35,7 +35,7 @@ class _ReopenEventButtonState extends State<ReopenEventButton> {
   @override
   Widget build(BuildContext context) {
     return AppElevatedButton(
-      width: double.infinity,
+      // width: double.infinity,
       text: "إعادة فتح الزيارة",
       onPressed: () async {
         final EventModel? reOpenedEvent = await _showDialog(

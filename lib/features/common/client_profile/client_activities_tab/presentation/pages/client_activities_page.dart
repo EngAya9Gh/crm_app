@@ -26,6 +26,8 @@ class ClientActivitiesPage extends StatefulWidget {
     _bloc.pageVariables.clear();
     _bloc.pageVariables.clientId = widget.client.idClients!;
     _bloc.add( GetAllClientActivitiesEvent(page: 1, clientId:widget.client.idClients! ));
+  
+  
   }
   @override
   Widget build(BuildContext context) {

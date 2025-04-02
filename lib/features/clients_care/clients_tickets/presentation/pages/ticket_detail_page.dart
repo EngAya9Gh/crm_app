@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/app_card_row.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -66,40 +67,40 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
                     ? TicketDetailsButtons(ticketModel: widget.ticketModel)
                     : SizedBox.shrink(),
               ),
-              SliverToBoxAdapter(child: SizedBox(height: 10)),
-              SliverToBoxAdapter(child: Divider(thickness: 2)),
+              SliverToBoxAdapter(child: SizedBox(height: 5)),
+              SliverToBoxAdapter(child: Divider(thickness: 1)),
               // ticket details
               SliverToBoxAdapter(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(5),
                     color: AppColors.white,
                   ),
                   child: Column(
                     children: [
-                      AppCardRow(
+                      CardRow(
                         title: 'العميل',
                         value: widget.ticketModel.nameEnterprise ?? '',
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
                       10.height,
-                      AppCardRow(
+                      CardRow(
                         title: 'نوع التذكرة',
                         value: widget.ticketModel.typeProblem ?? '',
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
                       10.height,
-                      AppCardRow(
+                      CardRow(
                         title: 'مصدر التذكرة',
                         value: widget.ticketModel.ticketSource ?? '',
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
                       10.height,
-                      AppCardRow(
+                      CardRow(
                         title: 'تفاصيل التذكرة',
                         value: widget.ticketModel.detailsProblem ?? '',
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
                     ],
                   ),
@@ -116,14 +117,14 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: 10);
+                  return SizedBox(height: 5);
                 },
               ),
               SliverToBoxAdapter(
                 child: Column(
                   children: [
                     Divider(thickness: 2),
-                    SizedBox(height: 10),
+                    SizedBox(height: 5),
                   ],
                 ),
               ),

@@ -59,7 +59,7 @@ class _TicketTypeTabsWidgetState extends State<TicketTypeTabsWidget> {
                             fontFamily: AppFonts.fontFamily1,
                             fontWeight: FontWeight.w600,
                             color:  isSelected ? Colors.white : Colors.black,
-                            fontSize: 16,
+                            fontSize: 14,
                           ),
                         ),
                       ),

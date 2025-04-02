@@ -44,21 +44,49 @@ class CardRow extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             textDirection: TextDirection.rtl,
             children: [
               Expanded(
-                child: AppText(
-                  title,
-                  textDirection: TextDirection.rtl,
-                  fontFamily: AppFonts.fontFamily1,
-                  fontSize: 16,
-                  color: Colors.black87, //Colors.grey[600],
-                  fontWeight: FontWeight.w800,
-                  overflow: overflow,
+                flex: 1,
+                child: Container(
+                  color: Color(0xFFF5F5F5),
+                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                  alignment: Alignment.centerRight,
+                  constraints: BoxConstraints(minHeight: 25),
+                  child: Row(
+                    textDirection: TextDirection.rtl,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            color: Color(0xFF616161),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          textAlign: TextAlign.right,
+                          softWrap: true,
+                          overflow: TextOverflow.visible,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              16.width,
+              // Expanded(
+              //   child: AppText(
+              //     title,
+              //     textDirection: TextDirection.rtl,
+              //     fontFamily: AppFonts.fontFamily1,
+              //     fontSize: 16,
+              //     color: Colors.black87, //Colors.grey[600],
+              //     fontWeight: FontWeight.w800,
+              //     overflow: overflow,
+              //   ),
+              // ),
+              10.width,
               Expanded(
                 flex: isExpanded ? 2 : 1,
                 child: anotherWidget ??
@@ -77,10 +105,10 @@ class CardRow extends StatelessWidget {
         ),
         if (withDivider) ...{
           Divider(
-            thickness: 1,
+            thickness: 0.5,
             color: Colors.grey[300],
           ),
-          5.height,
+          1.height,
         }
       ],
     );

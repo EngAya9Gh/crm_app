@@ -172,8 +172,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               .read<PrivilegesCubit>()
                               .checkPrivilege('49'))
                             ListTile(
-                              leading:
-                                  Icon(Icons.add, color: AppColors.white),
+                              leading: Icon(Icons.add, color: AppColors.white),
                               title: AppText(
                                 'اضافة حساب جديد',
                                 style: TextStyle(color: AppColors.white),
