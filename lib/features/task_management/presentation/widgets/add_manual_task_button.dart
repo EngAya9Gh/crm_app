@@ -32,7 +32,8 @@ class AddManualTaskButton extends StatelessWidget {
           onPressed: () async {
             final result = await showDialog(
               context: context,
-              builder: (context) => AddManualTaskPage(
+              builder: (context) => 
+              AddManualTaskPage(
                 list: PublicType.values,
                 invoiceId: invoiceId,
                 clientId: clientId,

@@ -9,10 +9,11 @@ class ClientsDatesPageVariablesEntity {
   int totalCount = 0;
   bool hasReachedEnd = false;
   TextEditingController searchController;
-  LinkedHashMap<DateTime, List<ClientDateModel>> eventDataSource = LinkedHashMap();
+  LinkedHashMap<DateTime, List<ClientDateModel>> eventDataSource =
+      LinkedHashMap();
   ValueNotifier<List<ClientDateModel>> selectedDayEvents = ValueNotifier([]);
   DateTime? selectedDay;
-  CalendarFormat calendarFormat = CalendarFormat.month;
+  CalendarFormat calendarFormat = CalendarFormat.twoWeeks;
   DateTime firstDay = DateTime.now();
   DateTime lastDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
@@ -20,7 +21,6 @@ class ClientsDatesPageVariablesEntity {
 
   int get _currentMonth => DateTime.now().month;
   Map<int, List<int>> loadedMonths = {};
-
 
   ClientsDatesPageVariablesEntity({
     this.allList = const [],
@@ -31,7 +31,7 @@ class ClientsDatesPageVariablesEntity {
 
   void clear() {
     eventDataSource.clear();
-    allList= const [];
+    allList = const [];
     selectedDayEvents.value = [];
     searchController.clear();
     totalCount = 0;
@@ -40,18 +40,21 @@ class ClientsDatesPageVariablesEntity {
     focusedDay = DateTime.now();
     selectedDay = null;
     hasReachedEnd = false;
-    calendarFormat = CalendarFormat.month;
+    calendarFormat = CalendarFormat.twoWeeks;
   }
+
   void loadCalendarData() {
     _handleLoadedMonths();
     _loadFirstDay();
     _loadLastDay();
   }
+
   void _sortEventMap() {
     loadedMonths = LinkedHashMap.fromEntries(
       loadedMonths.entries.toList()..sort((a, b) => a.key.compareTo(b.key)),
     );
   }
+
   void _handleLoadedMonths() {
     if (!loadedMonths.containsKey(focusedDay.year)) {
       loadedMonths[focusedDay.year] = [focusedDay.month];
@@ -92,6 +95,7 @@ class ClientsDatesPageVariablesEntity {
     lastDay = DateTime(date.year, date.month + 1,
         _lastDayOfMoth(year: date.year, month: date.month + 1));
   }
+
   int _lastDayOfMoth({int? year, int? month}) {
     if (year != null && month != null) {
       return DateTime(year, month + 1, 0).day;

@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    appCubit = context.read<AppManagerCubit>();
+     appCubit = context.read<AppManagerCubit>();
     userProvider = context.read<UserProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -44,14 +44,14 @@ class _SplashScreenState extends State<SplashScreen> {
         );
         return;
       }
-      await appCubit.checkAppUpdate((hasUpdate) {
-        if (hasUpdate) {
-          return AppRouter.goRouter.pushReplacementNamed(
-            AppRoutesNames.generalRoutes.updateApp,
-          );
-        }
-        appCubit.checkRedirections(context);
-      });
+      // await appCubit.checkAppUpdate((hasUpdate) {
+      //   if (hasUpdate) {
+      //     return AppRouter.goRouter.pushReplacementNamed(
+      //       AppRoutesNames.generalRoutes.updateApp,
+      //     );
+      //   }
+       appCubit.checkRedirections(context);
+      // });
     });
   }
 

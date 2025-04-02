@@ -2,6 +2,8 @@ import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/models/event_model.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/common/client_profile/client_activities_tab/presentation/manager/client_activities_bloc.dart';
+import 'package:crm_smart/features/task_management/presentation/manager/task_cubit.dart';
+import 'package:crm_smart/features/task_management/presentation/widgets/add_manual_task_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
@@ -22,6 +24,7 @@ import '../widgets/activity_card.dart';
 import '../widgets/task_card_new.dart';
 import '../widgets/ticket_card.dart';
 import '../widgets/date_card.dart';
+import 'package:crm_smart/core/common/widgets/section_with_action.dart';
 
 class ClientsDatesPageMob extends StatefulWidget {
   const ClientsDatesPageMob({Key? key, required this.client}) : super(key: key);
@@ -62,6 +65,7 @@ class _ClientsDatesPageMobState extends State<ClientsDatesPageMob> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
+      // SingleChildScrollView
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(
@@ -90,16 +94,16 @@ class _ClientsDatesPageMobState extends State<ClientsDatesPageMob> {
                       ),
                     );
                   }
-                  return
-                      // SliverToBoxAdapter(child:
-                      ClientDatesCalendar();
-                  //  );
+                  return SliverToBoxAdapter(
+                      child: SizedBox(
+                    child: ClientDatesCalendar(),
+                  ));
                 },
               ),
-              SliverToBoxAdapter(child: 20.height),
+              SliverToBoxAdapter(child: 5.height),
               // Meetings Section
               SliverToBoxAdapter(
-                child: _buildSection(
+                child: SectionWithAction(
                   title: 'Meetings',
                   onAddPressed: () {
                     // TODO: Implement add meeting
@@ -122,7 +126,9 @@ class _ClientsDatesPageMobState extends State<ClientsDatesPageMob> {
                             .map((event) => Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 2),
-                                  child: DateCard.fromClientDate(event),
+                                  child: DateCard.fromClientDate(event,
+                                      showButtons: false,
+                                      showEnterpriseName: false),
                                 ))
                             .toList(),
                       );
@@ -130,13 +136,69 @@ class _ClientsDatesPageMobState extends State<ClientsDatesPageMob> {
                   ),
                 ),
               ),
-              SliverToBoxAdapter(child: 16.height),
+              SliverToBoxAdapter(child: 5.height),
+              // Tickets Section
+              SliverToBoxAdapter(
+                child: SectionWithAction(
+                  title: 'Tickets',
+                  onAddPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddTicketPage(
+                          fkClient: widget.client.idClients,
+                        ),
+                      ),
+                    );
+                  },
+                  child: BlocBuilder<TicketsCubit, TicketsState>(
+                    builder: (context, state) {
+                      return state.getClientsTicketsStatus.when(
+                        success: (data) {
+                          final tickets = _ticketsCubit.clientTicketsList;
+
+                          if (tickets.isEmpty) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: AppText(
+                                'No tickets for this day',
+                                color: Colors.grey,
+                              ),
+                            );
+                          }
+
+                          return Column(
+                            children: tickets
+                                .map((ticket) => TicketCardNew(
+                                    showEnterpriseName: false, ticket: ticket))
+                                .toList(),
+                          );
+                        },
+                        failure: (error, data) => AppErrorWidget(
+                          message: error,
+                          onPressed: () {
+                            _ticketsCubit
+                                .getClientTicket(widget.client.idClients!);
+                          },
+                        ),
+                        loading: () => AppLoader(),
+                        initial: () => AppLoader(),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: 5.height),
               // Tasks Section
               SliverToBoxAdapter(
-                child: _buildSection(
+                child: SectionWithAction(
                   title: 'Tasks',
                   onAddPressed: () {
                     // TODO: Navigate to add task page
+                    AddManualTaskButton(
+                      list: carePublicTypeList,
+                      clientId: widget.client.idClients!,
+                    );
                   },
                   child: BlocBuilder<ClientTaskBloc, ClientTaskState>(
                     builder: (context, state) {
@@ -154,7 +216,10 @@ class _ClientsDatesPageMobState extends State<ClientsDatesPageMob> {
 
                           return Column(
                             children: data
-                                .map((task) => TaskCardNew(task: task))
+                                .map((task) => TaskCardNew(
+                                      task: task,
+                                      showEnterpriseName: false,
+                                    ))
                                 .toList(),
                           );
                         },
@@ -173,10 +238,10 @@ class _ClientsDatesPageMobState extends State<ClientsDatesPageMob> {
                   ),
                 ),
               ),
-              SliverToBoxAdapter(child: 16.height),
+              SliverToBoxAdapter(child: 5.height),
               // Calls Section with Activities
               SliverToBoxAdapter(
-                child: _buildSection(
+                child: SectionWithAction(
                   title: 'Calls',
                   onAddPressed: () {
                     Navigator.push(
@@ -226,92 +291,11 @@ class _ClientsDatesPageMobState extends State<ClientsDatesPageMob> {
                   ),
                 ),
               ),
-              SliverToBoxAdapter(child: 20.height),
-              // Tickets Section
-              SliverToBoxAdapter(
-                child: _buildSection(
-                  title: 'Tickets',
-                  onAddPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddTicketPage(
-                          fkClient: widget.client.idClients,
-                        ),
-                      ),
-                    );
-                  },
-                  child: BlocBuilder<TicketsCubit, TicketsState>(
-                    builder: (context, state) {
-                      return state.getClientsTicketsStatus.when(
-                        success: (data) {
-                          final tickets = _ticketsCubit.clientTicketsList;
-
-                          if (tickets.isEmpty) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8),
-                              child: AppText(
-                                'No tickets for this day',
-                                color: Colors.grey,
-                              ),
-                            );
-                          }
-
-                          return Column(
-                            children: tickets
-                                .map((ticket) => TicketCardNew(ticket: ticket))
-                                .toList(),
-                          );
-                        },
-                        failure: (error, data) => AppErrorWidget(
-                          message: error,
-                          onPressed: () {
-                            _ticketsCubit
-                                .getClientTicket(widget.client.idClients!);
-                          },
-                        ),
-                        loading: () => AppLoader(),
-                        initial: () => AppLoader(),
-                      );
-                    },
-                  ),
-                ),
-              ),
+              // SliverToBoxAdapter(child: 20.height),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildSection({
-    required String title,
-    required VoidCallback onAddPressed,
-    required Widget child,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            AppText(
-              title,
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-            AddActionButton(
-              onTap: onAddPressed,
-              text: '+ ${title.substring(0, title.length - 1)}',
-              backgroundColor: Colors.transparent,
-              textColor: AppColors.primaryMain,
-              iconColor: AppColors.primaryMain,
-            ),
-          ],
-        ),
-        8.height,
-        child,
-      ],
     );
   }
 }
