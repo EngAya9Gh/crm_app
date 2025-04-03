@@ -1,0 +1,2 @@
+D:/cursor_project/app_crm/android/app/.cxx/RelWithDebInfo/3n6s1c5n/x86/CMakeFiles/edit_cache.dir
+D:/cursor_project/app_crm/android/app/.cxx/RelWithDebInfo/3n6s1c5n/x86/CMakeFiles/rebuild_cache.dir
