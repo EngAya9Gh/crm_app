@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/core/services/firebase_analytics_services.dart';
 import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:equatable/equatable.dart';
@@ -94,6 +95,7 @@ class LoginCubit extends Cubit<LoginState> {
       },
       (token) async {
         await cacheToken(token);
+        await AnalyticsService().logLogIn(email: emailController.text);
         await Provider.of<UserProvider>(context, listen: false).getCurrentUser();
         AppNavigator.go(HomePage(), name: AppRoutesNames.generalRoutes.home);
         emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));

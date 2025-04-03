@@ -13,16 +13,18 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import 'firebase_options.dart';
 import 'services/service_provider.dart';
+
 // Removed the import for 'cubits/search_cubit.dart' as the target URI doesn't exist
+late var lastDuation;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseOnBackgroundListener(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, name: kIsWeb ? null : 'smart_crm');
 }
- 
 
 void main() async {
   timeago.setLocaleMessages('ar', timeago.ArMessages());
+  lastDuation = DateTime.now();
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
