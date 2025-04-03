@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/features/mangement/manage_users/presentation/pages/action_user_page.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: 280.scaleWidth,
       child: Container(
         color: AppColors.white,
         child: CustomScrollView(
@@ -115,7 +117,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         .toString(),
                                     style: TextStyle(
                                       color: AppColors.white,
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontFamily: AppFonts.fontFamily1,
                                     ),
                                   ),
@@ -150,12 +152,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           ],
                         ),
                         if (_showProfileSection) ...[
-                          Divider(color: AppColors.white24, height: 24),
+                          Divider(color: AppColors.white24, height: 18),
                           ListTile(
                             leading: Icon(Icons.person_outline,
                                 color: AppColors.white),
                             title: AppText(
                               'الملف الشخصي',
+                              fontSize: 15.scaleFontSize,
                               style: TextStyle(color: AppColors.white),
                             ),
                             onTap: () => AppNavigator.go(
@@ -175,6 +178,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               leading: Icon(Icons.add, color: AppColors.white),
                               title: AppText(
                                 'اضافة حساب جديد',
+                                fontSize: 15.scaleFontSize,
                                 style: TextStyle(color: AppColors.white),
                               ),
                               onTap: () async {
@@ -189,6 +193,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             leading: Icon(Icons.logout, color: AppColors.white),
                             title: AppText(
                               'تسجيل الخروج',
+                              fontSize: 15.scaleFontSize,
                               style: TextStyle(color: AppColors.white),
                             ),
                             onTap: () async {
@@ -218,6 +223,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 color: AppColors.white),
                             title: AppText(
                               'حذف حسابي',
+                              fontSize: 15.scaleFontSize,
                               style: TextStyle(color: AppColors.white),
                             ),
                             onTap: () {
@@ -251,13 +257,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           leading: Icon(
                             section.icon ?? Icons.circle_outlined,
                             color: AppColors.primaryMain,
-                            size: 24,
+                            size: 20.scaleFontSize,
                           ),
                           title: AppText(
                             section.title,
                             style: TextStyle(
                               fontFamily: AppFonts.fontFamily1,
-                              fontSize: 16,
+                              fontSize: 14.scaleFontSize,
                             ),
                           ),
                           trailing: section.subSections.isNotEmpty
@@ -285,13 +291,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               leading: Icon(
                                 subSection.icon ?? Icons.circle,
                                 color: AppColors.primaryMain,
-                                size: 15,
+                                size: 12.scaleFontSize,
                               ),
                               title: AppText(
                                 subSection.title,
                                 style: TextStyle(
                                   fontFamily: AppFonts.fontFamily1,
-                                  fontSize: 14,
+                                  fontSize: 12.scaleFontSize,
                                 ),
                               ),
                               onTap: () {
@@ -338,7 +344,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             },
                             child: AppText(
                               'تحقق من وجود تحديثات',
-                              fontSize: 16,
+                              fontSize: 14.scaleFontSize,
                               color: AppColors.white,
                             ),
                           );

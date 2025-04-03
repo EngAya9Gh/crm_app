@@ -83,6 +83,7 @@ class _CardClientState extends State<CardClient> {
                           Expanded(
                             child: AppText(
                               widget.clientModel.nameEnterprise,
+                              fontSize: 15.scaleFontSize,
                             ),
                           ),
                           if ((widget.clientModel.tag ?? false) &&

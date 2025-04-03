@@ -167,7 +167,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
                       8.width,
                       AppText(
                         widget.text!,
-                        fontSize: 18,
+                        fontSize: 16.scaleFontSize,
                         color: widget.isDisabled == true
                             ? Colors.grey.shade700
                             : widget.textColor ?? Colors.white,
@@ -176,7 +176,7 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
                   )
                 : AppText(
                     widget.text!,
-                    fontSize: 18,
+                    fontSize: 16.scaleFontSize,
                     color: widget.isDisabled == true
                         ? Colors.grey.shade700
                         : widget.textColor ?? Colors.white,
