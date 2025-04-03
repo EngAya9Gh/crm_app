@@ -1,4 +1,5 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
@@ -33,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-     appCubit = context.read<AppManagerCubit>();
+    appCubit = context.read<AppManagerCubit>();
     userProvider = context.read<UserProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -50,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
       //       AppRoutesNames.generalRoutes.updateApp,
       //     );
       //   }
-       appCubit.checkRedirections(context);
+      appCubit.checkRedirections(context);
       // });
     });
   }
@@ -91,7 +92,7 @@ class _SplashScreenState extends State<SplashScreen> {
                             AppText(
                               'Welcome Back',
                               style: TextStyle(
-                                fontSize: 30,
+                                fontSize: 30.scaleFontSize,
                                 color: AppColors.white70,
                               ),
                             ),
@@ -102,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                 AppText(
                                   'SMARTLIFE',
                                   style: TextStyle(
-                                    fontSize: 35,
+                                    fontSize: 35.scaleFontSize,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.white,
                                   ),
@@ -112,16 +113,16 @@ class _SplashScreenState extends State<SplashScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    SizedBox(width: 130),
+                                    SizedBox(width: 130.scaleWidth),
                                     Transform.scale(
                                       scale: 1.3,
                                       child: AppStatusChip(
                                         status: 'CRM',
                                         color: AppColors.secondaryMain,
-                                        fontSize: 18,
+                                        fontSize: 18.scaleFontSize,
                                       ),
                                     ),
-                                    SizedBox(width: 20),
+                                    SizedBox(width: 20.scaleWidth),
                                   ],
                                 ),
                               ],

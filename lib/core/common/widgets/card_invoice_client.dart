@@ -186,7 +186,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 : Expanded(
                                     child: AppText(
                                       widget.invoice.address_invoice.toString(),
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontFamily: AppFonts.fontFamily1,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -205,7 +205,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           children: [
                             AppText(
                               "اسم المؤسسة: ",
-                              fontSize: 18,
+                              fontSize: 16,
                               fontFamily: AppFonts.fontFamily1,
                               fontWeight: FontWeight.bold,
                               color: AppColors.primaryMain,
@@ -214,7 +214,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               child: AppText(
                                 "${widget.invoice.name_enterprise.toString()}",
                                 maxLines: 3,
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontFamily: AppFonts.fontFamily1,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,
@@ -390,7 +390,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                       WithdrawalStatus.values[int.parse(widget.invoice.approveBackDone!)].text,
                       color: Colors.white,
                       fontFamily: AppFonts.fontFamily1,
-                      fontSize: 18,
+                      fontSize: 16,
                     )),
                   ),
               ],

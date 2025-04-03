@@ -7,7 +7,11 @@ import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/common/widgets/custom_filter_icon.dart';
 import 'package:crm_smart/core/common/widgets/loading_comment.dart';
+import 'package:crm_smart/core/common/widgets/section_with_action.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/app_fonts.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
+import 'package:crm_smart/features/task_management/presentation/pages/add_manual_task_page.dart';
 import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
@@ -258,35 +262,22 @@ class _CommentViewState extends State<CommentView> {
                   slivers: [
                     // add task button
                     SliverToBoxAdapter(
-                      child: AddManualTaskButton(
-                        list: commentPublicTypeList,
-                        clientId: widget.client?.idClients,
+                      child: SectionWithAction(
+                        title: 'Tasks',
+                        onAddPressed: () async {
+                          final result = await showDialog(
+                            context: context,
+                            builder: (context) => AddManualTaskPage(
+                              list: PublicType.values,
+                              clientId: widget.client?.idClients,
+                            ),
+                          );
+                        },
+                        child: Container(), // سيتم إضافة قائمة المهام هنا
                       ),
                     ),
-
-                    // CustomFilterIcon(
-                    //   onTap: () async {},
-                    // ),
-                    // Row(
-                    //   children: [
-                    //     CustomFilterIcon(
-                    //       onTap: () async {},
-                    //     ),
-                    // SliverToBoxAdapter(
-                    //   child: Column(
-                    //     children: [
-                    //       10.height,
-                    //       Divider(
-                    //         color: AppColors.primaryMain,
-                    //         thickness: 1,
-                    //       ),
-                    //       20.height,
-                    //     ],
-                    //   ),
-                    // ),
-
-                    ///* comments filters *///
-
+                    SliverToBoxAdapter(child: SizedBox(height: 10)),
+                    // filters section
                     SliverToBoxAdapter(
                       child: Row(
                         children: [
@@ -362,26 +353,6 @@ class _CommentViewState extends State<CommentView> {
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    //   ],
-                    // ),
-
-                    SliverToBoxAdapter(child: 10.height),
-                    // sized box
-
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: CardRow(
-                          title: 'عدد التعليقات',
-                          value: context
-                              .watch<comment_vm>()
-                              .filteredComments
-                              .length,
-                          withDivider: false,
-                          alignment: MainAxisAlignment.end,
-                        ),
                       ),
                     ),
 
@@ -520,6 +491,11 @@ class _CommentViewState extends State<CommentView> {
                                       textDirection: TextDirection.rtl,
                                       decoration: InputDecoration(
                                         hintText: 'اكتب تعليقك هنا...',
+                                        hintStyle: AppStyles.textStyle.copyWith(
+                                          fontSize: 15.scaleFontSize,
+                                          fontFamily: AppFonts.fontFamily2,
+                                          color: Colors.grey.shade600,
+                                        ),
                                         border: InputBorder.none,
                                         contentPadding: EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 8),

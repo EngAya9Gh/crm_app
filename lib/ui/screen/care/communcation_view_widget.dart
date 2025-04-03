@@ -110,7 +110,7 @@ class _CommunicationExpandedWidgetState
     return Column(
       children: [
         // نموذج التقييم - يظهر للتواصل الدوري قبل الضغط على تم التواصل
-        if (widget.communicationModel.typeCommuncation == 'دورى' &&
+        if (widget.communicationModel.typeCommuncation == 'دوري' &&
             widget.communicationModel.dateCommunication == null) ...[
           // تقييم عام للخدمة
           Column(
@@ -119,6 +119,7 @@ class _CommunicationExpandedWidgetState
               AppText(
                 'تقييم عام للخدمة',
                 style: titleStyle,
+                fontSize: 14,
               ),
               AppRateWidget(
                 rateValue: rateSalesValue,
@@ -138,6 +139,7 @@ class _CommunicationExpandedWidgetState
               AppText(
                 'تقييم المنتج',
                 style: titleStyle,
+                fontSize: 14,
               ),
               AppRateWidget(
                 rateValue: rateProductValue,
@@ -157,6 +159,7 @@ class _CommunicationExpandedWidgetState
               AppText(
                 'تقييم الدعم الفني',
                 style: titleStyle,
+                fontSize: 14,
               ),
               AppRateWidget(
                 rateValue: rateSupportValue,
@@ -174,7 +177,10 @@ class _CommunicationExpandedWidgetState
             children: [
               Expanded(
                 child: CheckboxListTile(
-                  title: Text('لا يستخدم النظام'),
+                  title: AppText(
+                    'لا يستخدم النظام',
+                    fontSize: 15.scaleFontSize,
+                  ),
                   value: typepayController,
                   onChanged: (val) {
                     setState(() {
@@ -185,7 +191,10 @@ class _CommunicationExpandedWidgetState
               ),
               Expanded(
                 child: CheckboxListTile(
-                  title: Text('رقم خاطئ'),
+                  title: AppText(
+                    'رقم خاطئ',
+                    fontSize: 15.scaleFontSize,
+                  ),
                   value: numberwrong,
                   onChanged: (val) {
                     setState(() {
@@ -200,7 +209,10 @@ class _CommunicationExpandedWidgetState
             children: [
               Expanded(
                 child: CheckboxListTile(
-                  title: Text('عميل متكرر'),
+                  title: AppText(
+                    'عميل متكرر',
+                    fontSize: 15.scaleFontSize,
+                  ),
                   value: repeat,
                   onChanged: (val) {
                     setState(() {
@@ -211,7 +223,10 @@ class _CommunicationExpandedWidgetState
               ),
               Expanded(
                 child: CheckboxListTile(
-                  title: Text('وصى بالنظام'),
+                  title: AppText(
+                    'وصى بالنظام',
+                    fontSize: 15.scaleFontSize,
+                  ),
                   value: isRecommendation,
                   onChanged: (val) {
                     setState(() {
@@ -226,7 +241,10 @@ class _CommunicationExpandedWidgetState
             children: [
               Expanded(
                 child: CheckboxListTile(
-                  title: Text('يحتاج زيارة'),
+                  title: AppText(
+                    'يحتاج زيارة',
+                    fontSize: 15.scaleFontSize,
+                  ),
                   value: isVisit,
                   onChanged: (val) {
                     setState(() {
@@ -237,16 +255,19 @@ class _CommunicationExpandedWidgetState
               ),
               Expanded(
                 child: CheckboxListTile(
-                  title: Text('معلق'),
+                  title: AppText(
+                    'معلق',
+                    fontSize: 15.scaleFontSize,
+                  ),
                   value: isSuspend,
                   onChanged: (val) {
                     setState(() {
                       isSuspend = val ?? false;
-                      if (isSuspend) {
-                        rateSalesValue = 0.0;
-                        rateProductValue = 0.0;
-                        rateSupportValue = 0.0;
-                      }
+                      // if (isSuspend) {
+                      //   rateSalesValue = 0.0;
+                      //   rateProductValue = 0.0;
+                      //   rateSupportValue = 0.0;
+                      // }
                     });
                   },
                 ),
@@ -264,6 +285,7 @@ class _CommunicationExpandedWidgetState
               AppText(
                 'تقييم عام للتركيب',
                 style: titleStyle,
+                fontSize: 14,
               ),
               AppRateWidget(
                 rateValue: rateSalesValue,
@@ -287,23 +309,23 @@ class _CommunicationExpandedWidgetState
                 onPressed: () => _onDoneCommunication(context),
               ),
             // زر التعديل - يظهر فقط إذا كان هناك تاريخ تواصل
-            if (widget.communicationModel.dateCommunication != null)
-              AppElevatedButton(
-                text: 'تعديل',
-                onPressed: () async {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => EditCareCommunicationSheet(
-                      communicationModel: widget.communicationModel,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(15)),
-                    ),
-                    isScrollControlled: true,
-                  );
-                },
-              ),
+            // if (widget.communicationModel.dateCommunication != null)
+            //   AppElevatedButton(
+            //     text: 'تعديل',
+            //     onPressed: () async {
+            //       showModalBottomSheet(
+            //         context: context,
+            //         builder: (context) => EditCareCommunicationSheet(
+            //           communicationModel: widget.communicationModel,
+            //         ),
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius:
+            //               BorderRadius.vertical(top: Radius.circular(15)),
+            //         ),
+            //         isScrollControlled: true,
+            //       );
+            //     },
+            //   ),
             // زر إضافة موعد زيارة - يظهر فقط في حالة الترحيب
             if (widget.communicationModel.typeCommuncation == 'ترحيب') ...[
               10.width,
@@ -328,7 +350,7 @@ class _CommunicationExpandedWidgetState
           .add('تاريخ الترحيب: ${widget.communicationModel.dateCommunication}');
     }
 
-    if (widget.communicationModel.typeCommuncation == 'دورى') {
+    if (widget.communicationModel.typeCommuncation == 'دوري') {
       // إضافة معلومات الموظف والتاريخ إذا تم التواصل
       if (widget.communicationModel.dateCommunication != null) {
         details.add('موظف التقييم: ${widget.communicationModel.nameUser}');
@@ -343,20 +365,20 @@ class _CommunicationExpandedWidgetState
         }
 
         // إضافة التقييمات
-        if (widget.communicationModel.rate != null &&
-            widget.communicationModel.rate!.isNotEmpty) {
-          details.add('تقييم عام: ${widget.communicationModel.rate}');
-        }
-        if (widget.communicationModel.rateProductValue != null &&
-            widget.communicationModel.rateProductValue!.isNotEmpty) {
-          details.add(
-              'تقييم المنتج: ${widget.communicationModel.rateProductValue}');
-        }
-        if (widget.communicationModel.rateSupportValue != null &&
-            widget.communicationModel.rateSupportValue!.isNotEmpty) {
-          details.add(
-              'تقييم الدعم الفني: ${widget.communicationModel.rateSupportValue}');
-        }
+        // if (widget.communicationModel.rate != null &&
+        //     widget.communicationModel.rate!.isNotEmpty) {
+        //   details.add('تقييم عام: ${widget.communicationModel.rate}');
+        // }
+        // if (widget.communicationModel.rateProductValue != null &&
+        //     widget.communicationModel.rateProductValue!.isNotEmpty) {
+        //   details.add(
+        //       'تقييم المنتج: ${widget.communicationModel.rateProductValue}');
+        // }
+        // if (widget.communicationModel.rateSupportValue != null &&
+        //     widget.communicationModel.rateSupportValue!.isNotEmpty) {
+        //   details.add(
+        //       'تقييم الدعم الفني: ${widget.communicationModel.rateSupportValue}');
+        // }
 
         // إضافة الحالات المختلفة
         if (widget.communicationModel.clientRepeat == 'true') {
@@ -463,6 +485,7 @@ class _CommunicationExpandedWidgetState
       },
       isExpanded: widget.initiallyExpanded,
       actionButtons: _buildActionButtons(),
+      // showActions: false,
     );
   }
 

@@ -58,7 +58,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
       title: Image.asset(
         Assets.imagesLogoCrmLong,
         height: 50.scaleHeight,
-        width: 160.scaleWidth,
+        width: 130.scaleWidth,
       ),
       centerTitle: true,
       elevation: 0,
@@ -93,7 +93,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
                 padding: const EdgeInsets.all(8.0),
                 child: Icon(
                   Icons.notifications,
-                  size: (25.0).scaleFontSize,
+                  size: (22.0).scaleFontSize,
                   color: AppColors.black,
                 ),
               ),
@@ -109,8 +109,8 @@ class _HomeAppBarState extends State<HomeAppBar> {
                               shape: BoxShape.circle,
                               color: AppColors.statusErrorActive,
                             ),
-                            width: (22.0).scaleWidth,
-                            height: (22.0).scaleWidth,
+                            width: (20.0).scaleWidth,
+                            height: (20.0).scaleWidth,
                             child: Center(
                                 // child: state.getUnreadNotificationsCountStatus.when(
                                 // loading: () =>
@@ -118,7 +118,10 @@ class _HomeAppBarState extends State<HomeAppBar> {
                                 // success: (data) {
                                 // return
                                 child: AppText(
-                              (value.currentUser.notificationNotRead ?? 0) > 99 ? '99' : (value.currentUser.notificationNotRead ?? 0).toString(),
+                              (value.currentUser.notificationNotRead ?? 0) > 99
+                                  ? '99'
+                                  : (value.currentUser.notificationNotRead ?? 0)
+                                      .toString(),
                               color: Colors.white,
                               fontSize: (14.0).scaleFontSize,
                             )
@@ -135,7 +138,11 @@ class _HomeAppBarState extends State<HomeAppBar> {
           ),
         ),
         8.width,
-        if ((Provider.of<UserProvider>(context, listen: true).currentUser.noOfMentions ?? 0) != 0) ...{
+        if ((Provider.of<UserProvider>(context, listen: true)
+                    .currentUser
+                    .noOfMentions ??
+                0) !=
+            0) ...{
           Stack(clipBehavior: Clip.none, children: [
             PopupMenuButton(
               offset: Offset(0, 10),
@@ -152,7 +159,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
                 offset: Offset(0, 2),
                 child: Icon(
                   Icons.comment,
-                  size: (25.0).scaleFontSize,
+                  size: (22.0).scaleFontSize,
                 ),
               ),
               itemBuilder: (context) => List.generate(
@@ -164,8 +171,10 @@ class _HomeAppBarState extends State<HomeAppBar> {
                             CupertinoPageRoute(
                                 builder: (context) => ClientProfile(
                                       tabIndex: 2,
-                                      idClient: comment.commentMention[index].fkClient,
-                                      commentId: comment.commentMention[index].idComment,
+                                      idClient: comment
+                                          .commentMention[index].fkClient,
+                                      commentId: comment
+                                          .commentMention[index].idComment,
                                       // idclient:data==null?datanotify: data['paramId'],
                                     )));
                       },
@@ -186,8 +195,8 @@ class _HomeAppBarState extends State<HomeAppBar> {
                       shape: BoxShape.circle,
                       color: Colors.red,
                     ),
-                    width: (22.0).scaleWidth,
-                    height: (22.0).scaleWidth,
+                    width: (20.0).scaleWidth,
+                    height: (20.0).scaleWidth,
                     child: Center(
                       child: AppText(
                         "${Provider.of<UserProvider>(context, listen: true).currentUser.noOfMentions}",

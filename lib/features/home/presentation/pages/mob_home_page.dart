@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -130,7 +131,7 @@ class _MobHomePageState extends State<MobHomePage> {
                               hintTextDirection: TextDirection.rtl,
                               hintText: 'ابحث عن اسم المؤسسة, رقم الجوال...',
                               hintStyle: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12.scaleFontSize, 
                                 color: Colors.grey.shade500,
                               ),
                               border: InputBorder.none,
@@ -157,8 +158,8 @@ class _MobHomePageState extends State<MobHomePage> {
                           itemBuilder: (context, suggestion) => Directionality(
                             textDirection: TextDirection.rtl,
                             child: ListTile(
-                              title: Text(suggestion.nameEnterprise ?? ''),
-                              subtitle: Text(suggestion.phone ?? ''),
+                              title: AppText(suggestion.nameEnterprise ?? ''),
+                              subtitle: AppText(suggestion.phone ?? ''),
                             ),
                           ),
                           debounceDuration: Duration(milliseconds: 300),

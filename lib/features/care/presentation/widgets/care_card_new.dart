@@ -185,9 +185,9 @@ class CareCardNew extends StatelessWidget {
               ],
 
               // Ratings Section
-              if (type == 'دورى' || type == 'تركيب') ...[
+              if (type == 'دوري' || type == 'تركيب') ...[
                 if (rate != null) ...[
-                  AppRateWidget(
+                  AppRateWidget( 
                     title: 'تقييم عام',
                     isReadOnly: true,
                     initialRating: double.tryParse(rate!) ?? 0,
@@ -195,9 +195,9 @@ class CareCardNew extends StatelessWidget {
                   ),
                   8.height,
                 ],
-                if (type == 'دورى') ...[
+                if (type == 'دوري') ...[
                   if (rateProduct != null) ...[
-                    AppRateWidget(
+                    AppRateWidget( 
                       title: 'تقييم المنتج',
                       isReadOnly: true,
                       initialRating: double.tryParse(rateProduct!) ?? 0,
@@ -206,8 +206,9 @@ class CareCardNew extends StatelessWidget {
                     8.height,
                   ],
                   if (rateSupport != null) ...[
-                    AppRateWidget(
+                    AppRateWidget( 
                       title: 'تقييم الدعم الفني (الشات)',
+
                       isReadOnly: true,
                       initialRating: double.tryParse(rateSupport!) ?? 0,
                       rateValue: double.tryParse(rateSupport!) ?? 0,

@@ -59,7 +59,7 @@ class CardRow extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Text(
+                        child: AppText(
                           title,
                           style: TextStyle(
                             color: Color(0xFF616161),

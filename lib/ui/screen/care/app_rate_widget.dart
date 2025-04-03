@@ -63,7 +63,10 @@ class _RateWidgetHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppText('${title}');
+    return AppText(
+      '${title}',
+      fontSize: 15.scaleFontSize,
+    );
   }
 }
 
@@ -89,12 +92,12 @@ class _RateWidgetRatingBar extends StatelessWidget {
       allowHalfRating: false,
       ignoreGestures: isReadOnly,
       itemCount: 5,
-      itemSize: iconSize?.scaleIconsSize ?? 35.scaleFontSize,
+      itemSize: iconSize?.scaleIconsSize ?? 30.scaleFontSize,
       itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
       itemBuilder: (context, _) => Icon(
         Icons.star,
         color: Colors.amber,
-        size: iconSize?.scaleIconsSize ?? 35.scaleFontSize,
+        size: iconSize?.scaleIconsSize ?? 25.scaleFontSize,
       ),
       onRatingUpdate: onRatingUpdate ?? (value) {},
     );

@@ -172,9 +172,8 @@ class _ClientProfileState extends State<ClientProfile>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              
               Padding(
-                padding: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.only(bottom: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -250,11 +249,13 @@ class _ClientProfileState extends State<ClientProfile>
                   ),
               },
               Expanded(
-                child: Container(
+                child: Container( 
                   margin: EdgeInsets.only(bottom: 1),
                   padding: const EdgeInsets.only(top: 0, left: 5, right: 5),
                   height: MediaQuery.of(context).size.height * 0.85,
                   child: TabBarView(
+                   
+
                     controller: _tabController,
                     children: _buildTabViews(client),
                   ),
@@ -275,8 +276,8 @@ class _ClientProfileState extends State<ClientProfile>
       labelPadding: const EdgeInsets.only(left: 8, right: 8),
       labelColor: Colors.white,
       labelStyle: TextStyle(
-        fontFamily: AppFonts.fontFamily1,
-        fontSize: 17,
+        fontFamily: AppFonts.fontFamily2,
+        fontSize: 15.scaleFontSize,
         fontWeight: FontWeight.bold,
       ),
       indicatorSize: TabBarIndicatorSize.label,
@@ -284,8 +285,8 @@ class _ClientProfileState extends State<ClientProfile>
       indicatorWeight: 6,
       isScrollable: true,
       unselectedLabelStyle: TextStyle(
-          fontFamily: AppFonts.fontFamily1,
-          fontSize: 15,
+          fontFamily: AppFonts.fontFamily2,
+          fontSize: 14.scaleFontSize,
           fontWeight: FontWeight.w600),
       unselectedLabelColor: AppColors.white,
       onTap: (value) => _currentTabIndex.value = value,
@@ -296,14 +297,14 @@ class _ClientProfileState extends State<ClientProfile>
 
   List<Widget> _tabs() {
     return <Widget>[
-      AppText('البيانات ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      AppText('الفواتير ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText('البيانات ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
+      AppText('الفواتير ', style: TextStyle(fontFamily: AppFonts.fontFamily2)),
       AppText('التعليقات ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       AppText(' الدعم ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       AppText('العناية ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       // AppText('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       // AppText('الانشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      AppText('المواعيد', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      AppText('الأنشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       if (context.read<PrivilegesCubit>().checkPrivilege('282'))
         AppText('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       // AppText('المهام', style: TextStyle(fontFamily: AppFonts.fontFamily1)),

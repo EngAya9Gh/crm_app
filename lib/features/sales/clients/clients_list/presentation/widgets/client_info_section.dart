@@ -1,6 +1,8 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/widgets/section_with_action.dart';
 import 'package:crm_smart/features/sales/clients/clients_list/presentation/widgets/dialog_client_type.dart';
+import 'package:crm_smart/features/task_management/presentation/pages/add_manual_task_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,7 +119,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
     return Consumer<ClientProvider>(builder: (context, state, _) {
       if (state.currentClientModel.isLoading ||
           state.currentClientModel.isInit) {
-        return Scaffold(
+        return const Scaffold(
           body: Center(child: CircularProgressIndicator()),
         );
       } else if (state.currentClientModel.isFailure) {
@@ -130,9 +132,10 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
       }
       return Directionality(
         textDirection: TextDirection.rtl,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 10),
-          child: SingleChildScrollView(
+        child: Scaffold(
+          body: Padding(
+            padding:
+                const EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 10),
             child: BlocConsumer<ClientsListBloc, ClientsListState>(
               listenWhen: (previous, current) {
                 return current.receiveClientStatus.isSuccess() &&
@@ -149,208 +152,174 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                     previous.receiveClientStatus != current.receiveClientStatus;
               },
               builder: (context, state) {
-                return Column(children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      if (clientModel.isParent != null)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Icon(
-                            Icons.link,
-                            color: AppColors.secondaryMain,
+                return ListView(
+                  children: [
+                    // قسم المهام
+                    SectionWithAction(
+                      title: 'Tasks',
+                      onAddPressed: () async {
+                        final result = await showDialog(
+                          context: context,
+                          builder: (context) => AddManualTaskPage(
+                            list: PublicType.values,
+                            clientId: clientModel.idClients,
                           ),
-                        ),
-                      Expanded(
-                        child: AddManualTaskButton(
-                          list: clientPublicTypeList,
-                          clientId: clientModel.idClients,
-                        ),
-                      ),
-                      // Expanded(
-                      //   child: TextButton(
-                      //     onPressed: () async {
-                      //       _linkClientBloc
-                      //           .add(FetchLinkClients(clientModel.idClients!));
-                      //       final result = await showDialog<bool>(
-                      //         context: context,
-                      //         builder: (BuildContext context) {
-                      //           return BlocBuilder<ClientsListBloc,
-                      //               ClientsListState>(
-                      //             bloc: _linkClientBloc,
-                      //             builder: (context, state) {
-                      //               return LinkClientDialog(
-                      //                 clientId: clientModel.idClients!,
-                      //               );
-                      //             },
-                      //           );
-                      //         },
-                      //       );
-                      //       if (result == true) {
-                      //         setState(() {});
-                      //       }
-                      //     },
-                      //     child: AppText(
-                      //       'ربط العميل',
-                      //       fontFamily: AppFonts.fontFamily1,
-                      //       color: AppColors.primaryMain,
-                      //     ),
-                      //   ),
-                      // ),
-                      Expanded(
-                        child: AddActionButton(
-                          onTap: () => _showActionMenu(context),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+                        );
+                      },
+                      child: Container(), // سيتم إضافة قائمة المهام هنا
+                    ),
+                    // const SizedBox(height: 2),
+                    // قسم معلومات العميل
+                    SectionWithAction(
+                      title: 'الإجراءات',
+                      onAddPressed: () => _showActionMenu(context),
+                      child: Column(
                         children: [
-                          SpecialClientIconButton(
-                              idClients: clientModel.idClients)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  SpecialClientIconButton(
+                                    idClients: clientModel.idClients,
+                                  ),
+                                  if (clientModel.isParent != null)
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: Icon(
+                                        Icons.link,
+                                        color: AppColors.secondaryMain,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          ClientInfoDetails(),
                         ],
                       ),
-                    ],
-                  ),
-                  ClientInfoDetails(),
-                  // 5.height,
-                  // if (clientModel.communicationDetails != null &&
-                  //     clientModel.communicationDetails!.isNotEmpty)
-                  //   CardRow(
-                  //       title: 'نوع العميل',
-                  //       value: clientModel.communicationDetails!.first.state ??
-                  //           ""),
-                  // if (widget.clientTransfer != 'transfer') ...[
-                  //   Center(
-                  //     child: Column(
-                  //       children: [
-                  //         if (clientModel.typeClient == "عرض سعر" ||
-                  //             clientModel.typeClient == "تفاوض" ||
-                  //             clientModel.typeClient == "مستبعد" ||
-                  //             clientModel.typeClient == 'معلق استبعاد') ...[
-                  //           SizedBox(
-                  //             width: double.infinity,
-                  //             child: AppElevatedButton(
-                  //               text: 'اجراءات',
-                  //               onPressed: () async {
-                  //                 ClientModel? result =
-                  //                     await AppConstants.showAppDialog(
-                  //                   child: DialogClientSection(
-                  //                     disableWithdrawal: disableWithdrawal,
-                  //                     client: clientModel,
-                  //                     idClient: widget.idClient,
-                  //                   ),
-                  //                 );
+                    ),
+                    const SizedBox(height: 10),
+                    // قسم الإجراءات
+                    // if (widget.clientTransfer != 'transfer')
+                    //   SectionWithAction(
+                    //     title: 'الإجراءات',
+                    //     onAddPressed: () {},
+                    //     child: Column(
+                    //       children: [
+                    //         if (clientModel.typeClient == "عرض سعر" ||
+                    //             clientModel.typeClient == "تفاوض" ||
+                    //             clientModel.typeClient == "مستبعد" ||
+                    //             clientModel.typeClient == 'معلق استبعاد') ...[
+                    //           SizedBox(
+                    //             width: double.infinity,
+                    //             child: AppElevatedButton(
+                    //               text: 'اجراءات',
+                    //               onPressed: () async {
+                    //                 ClientModel? result =
+                    //                     await AppConstants.showAppDialog(
+                    //                   child: DialogClientSection(
+                    //                     disableWithdrawal: disableWithdrawal,
+                    //                     client: clientModel,
+                    //                     idClient: widget.idClient,
+                    //                   ),
+                    //                 );
 
-                  //                 if (result != null) clientModel = result;
-
-                  //                 _clientsListBloc.currentClient = clientModel;
-                  //               },
-                  //             ),
-                  //           ),
-                  //         ],
-                  //         5.height,
-                  //         SizedBox(
-                  //           width: double.infinity,
-                  //           child: AppElevatedButton(
-                  //             text: 'نوع العميل',
-                  //             onPressed: () async {
-                  //               ClientModel? result = await showDialog(
-                  //                 context: context,
-                  //                 builder: (BuildContext context) {
-                  //                   return DialogClientType(
-                  //                     disableWithdrawal: disableWithdrawal,
-                  //                     client: clientModel,
-                  //                     idClient: widget.idClient,
-                  //                   );
-                  //                 },
-                  //               );
-                  //               if (result != null) clientModel = result;
-                  //               _clientProvider
-                  //                   .getClientById(widget.idClient.toString());
-                  //             },
-                  //           ),
-                  //         ),
-                  //         5.height,
-                  //         SizedBox(
-                  //           width: double.infinity,
-                  //           child: AppElevatedButton(
-                  //             text: 'تعديل بيانات العميل',
-                  //             onPressed: () async => _onPressedUpdate(context),
-                  //           ),
-                  //         ),
-                  //         5.height,
-                  //         Row(
-                  //           children: [
-                  //             if (clientModel.nameTransferTo == null) ...[
-                  //               Expanded(
-                  //                 child: AppElevatedButton(
-                  //                   text: 'تحويل العميل',
-                  //                   onPressed: () async {
-                  //                     final transferredClient =
-                  //                         await AppNavigator.go(
-                  //                       TransferClientPage(
-                  //                         nameEnterprise: clientModel
-                  //                             .nameEnterprise
-                  //                             .toString(),
-                  //                         idClient:
-                  //                             clientModel.idClients.toString(),
-                  //                         type: "client",
-                  //                       ),
-                  //                       isNew: false,
-                  //                     );
-                  //                     if (transferredClient != null) {
-                  //                       final newClient =
-                  //                           (transferredClient as ClientModel);
-                  //                       _clientProvider
-                  //                           .changevalueclient(newClient);
-                  //                     }
-                  //                   },
-                  //                 ),
-                  //               ),
-                  //               if (_isValidForReceiving()) ...[
-                  //                 const SizedBox(width: 8),
-                  //                 Expanded(
-                  //                   child: BlocBuilder<ClientsListBloc,
-                  //                       ClientsListState>(
-                  //                     builder: (context, state) {
-                  //                       return AppElevatedButton(
-                  //                         text: 'استلام العميل',
-                  //                         isLoading: state.receiveClientStatus
-                  //                             .isLoading(),
-                  //                         onPressed: () async {
-                  //                           _clientsListBloc
-                  //                               .add(ReceiveClientEvent(
-                  //                             ReceiveClientParams(
-                  //                               idClient:
-                  //                                   clientModel.idClients!,
-                  //                             ),
-                  //                           ));
-                  //                         },
-                  //                       );
-                  //                     },
-                  //                   ),
-                  //                 ),
-                  //               ],
-                  //             ],
-                  //           ],
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ],
-                  SizedBox(height: 15),
-                  ClientInfoButtons(
-                    idClient: widget.idClient,
-                    client: clientModel,
-                    invoice: widget.invoice,
-                    typeInvoice: widget.typeInvoice,
-                    clientTransfer: widget.clientTransfer,
-                  ),
-                ]);
+                    //                 if (result != null) {
+                    //                   clientModel = result;
+                    //                   _clientsListBloc.currentClient =
+                    //                       clientModel;
+                    //                 }
+                    //               },
+                    //             ),
+                    //           ),
+                    //           const SizedBox(height: 5),
+                    //         ],
+                    // SizedBox(
+                    //   width: double.infinity,
+                    //   child: AppElevatedButton(
+                    //     text: 'نوع العميل',
+                    //     onPressed: () async {
+                    //       ClientModel? result = await showDialog(
+                    //         context: context,
+                    //         builder: (BuildContext context) {
+                    //           return DialogClientType(
+                    //             disableWithdrawal: disableWithdrawal,
+                    //             client: clientModel,
+                    //             idClient: widget.idClient,
+                    //           );
+                    //         },
+                    //       );
+                    //       if (result != null) {
+                    //         clientModel = result;
+                    //         _clientProvider.getClientById(
+                    //             widget.idClient.toString());
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 5),
+                    // if (clientModel.nameTransferTo == null) ...[
+                    //   Row(
+                    //     children: [
+                    //       Expanded(
+                    //         child: AppElevatedButton(
+                    //           text: 'تحويل العميل',
+                    //           onPressed: () async {
+                    //             final transferredClient =
+                    //                 await AppNavigator.go(
+                    //               TransferClientPage(
+                    //                 nameEnterprise: clientModel
+                    //                     .nameEnterprise
+                    //                     .toString(),
+                    //                 idClient: clientModel.idClients
+                    //                     .toString(),
+                    //                 type: "client",
+                    //               ),
+                    //               isNew: false,
+                    //             );
+                    //             if (transferredClient != null) {
+                    //               final newClient = (transferredClient
+                    //                   as ClientModel);
+                    //               _clientProvider
+                    //                   .changevalueclient(newClient);
+                    //             }
+                    //           },
+                    //         ),
+                    //       ),
+                    //       if (_isValidForReceiving()) ...[
+                    //         const SizedBox(width: 8),
+                    //         Expanded(
+                    //           child: BlocBuilder<ClientsListBloc,
+                    //               ClientsListState>(
+                    //             builder: (context, state) {
+                    //               return AppElevatedButton(
+                    //                 text: 'استلام العميل',
+                    //                 isLoading: state.receiveClientStatus
+                    //                     .isLoading(),
+                    //                 onPressed: () async {
+                    //                   _clientsListBloc
+                    //                       .add(ReceiveClientEvent(
+                    //                     ReceiveClientParams(
+                    //                       idClient:
+                    //                           clientModel.idClients!,
+                    //                     ),
+                    //                   ));
+                    //                 },
+                    //               );
+                    //             },
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ],
+                    //   ),
+                    // ],
+                    //       ],
+                    //    ),
+                    // ),
+                  ],
+                );
               },
             ),
           ),

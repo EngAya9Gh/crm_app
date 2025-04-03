@@ -83,9 +83,10 @@ class CustomDropDown<T> extends StatelessWidget {
               ),
               child: AppText(
                 itemAsString(item),
-                fontSize: 20,
+                fontSize: 15.scaleFontSize,
                 style: AppStyles.textStyle.copyWith(
                   overflow: TextOverflow.ellipsis,
+                  color: AppColors.grey,
                 ),
               ),
             );
@@ -109,7 +110,8 @@ class CustomDropDown<T> extends StatelessWidget {
           textAlignVertical: TextAlignVertical.center,
           decoration: _dropdownSearchDecoration(context),
           baseStyle: AppStyles.textStyle.copyWith(
-            fontSize: 18.scaleFontSize,
+            fontSize: 15.scaleFontSize,
+            color: Colors.grey.shade600,
           ),
         ),
       ),
@@ -151,9 +153,9 @@ class CustomDropDown<T> extends StatelessWidget {
           focusedErrorBorder: InputBorder.none,
           fillColor: Colors.grey[100],
           filled: true,
-          contentPadding: EdgeInsets.symmetric(horizontal: 12),
+          contentPadding: EdgeInsets.symmetric(horizontal: 5),
           hintStyle: AppStyles.textStyle.copyWith(
-            fontSize: 18.scaleFontSize,
+            fontSize: 15.scaleFontSize,
             color: Colors.grey.shade600,
           ),
         );
@@ -164,13 +166,13 @@ class CustomDropDown<T> extends StatelessWidget {
         hintText: hint,
       ).copyWith(
         hintStyle: AppStyles.textStyle.copyWith(
-          fontSize: 18.scaleFontSize,
+          fontSize: 15.scaleFontSize,
           color: Colors.grey.shade600,
         ),
         label: label != null
             ? AppText(
                 label,
-                fontSize: 18.scaleFontSize,
+                fontSize: 15.scaleFontSize,
                 color: Colors.grey.shade600,
               )
             : null,
@@ -205,7 +207,7 @@ class CustomDropDown<T> extends StatelessWidget {
         focusedErrorBorder: InputBorder.none,
         fillColor: Colors.grey[100],
         filled: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 12),
+        contentPadding: EdgeInsets.symmetric(horizontal: 5),
       );
     }
 
@@ -215,25 +217,24 @@ class CustomDropDown<T> extends StatelessWidget {
           hintText: hint,
         ).copyWith(
           hintStyle: AppStyles.textStyle.copyWith(
-            fontSize: 18.scaleFontSize,
+            fontSize: 15.scaleFontSize,
             color: Colors.grey,
           ),
           label: label != null
               ? AppText(
                   label,
-                  fontSize: 18.scaleFontSize,
+                  fontSize: 15.scaleFontSize,
                   color: Colors.grey,
                 )
               : null,
-         border: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        errorBorder: InputBorder.none,
-        focusedErrorBorder: InputBorder.none,
-        fillColor: Colors.grey[100],
-        filled: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 12),
-     
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
+          fillColor: Colors.grey[100],
+          filled: true,
+          // contentPadding: EdgeInsets.symmetric(horizontal: 5),
         );
   }
 }

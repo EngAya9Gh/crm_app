@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/features/sales/clients/clients_list/presentation/widgets/assign_clients_to_employee_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -118,7 +119,10 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                             value: 'export_excel',
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: AppText("Excel تصدير إلى"),
+                              child: AppText(
+                                "Excel تصدير إلى",
+                                fontSize: 14.scaleFontSize,
+                              ),
                             ),
                           ),
                         if (_privilegeCubit.checkPrivilege('186'))
@@ -126,7 +130,10 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                             value: 'marketing_report',
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: AppText("تقرير التسويق"),
+                              child: AppText(
+                                "تقرير التسويق",
+                                fontSize: 14.scaleFontSize,
+                              ),
                             ),
                           ),
                         if (_privilegeCubit.checkPrivilege('47'))
@@ -134,7 +141,10 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                             value: 'add_client',
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: AppText("إضافة عميل"),
+                              child: AppText(
+                                "إضافة عميل",
+                                fontSize: 14.scaleFontSize,
+                              ),
                             ),
                           ),
                       ],
@@ -222,6 +232,7 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                   },
                   title: AppText(
                     "انشطة العملاء المشتركين",
+                    fontSize: 16.scaleFontSize,
                     style: AppStyles.textStyle,
                   ),
                 ),
@@ -236,7 +247,10 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        AppText('اختر الكل'),
+                        AppText(
+                          'اختر الكل',
+                          fontSize: 12.scaleFontSize,
+                        ),
                         ValueListenableBuilder(
                           valueListenable: chooseAll,
                           builder: (context, value, child) => Checkbox(

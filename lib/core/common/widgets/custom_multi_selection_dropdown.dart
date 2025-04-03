@@ -56,7 +56,7 @@ class _CustomMultiSelectionDropdownState<T>
   Widget build(BuildContext context) {
     final Widget child = DropdownSearch<T>.multiSelection(
       key: _popupCustomValidationKey,
-      
+
       items: (filter, loadProps) => widget.items,
       selectedItems: widget.selectedItems,
       itemAsString: widget.itemAsString,
@@ -85,20 +85,20 @@ class _CustomMultiSelectionDropdownState<T>
         searchFieldProps: TextFieldProps(
           textDirection: TextDirection.rtl,
           style: AppStyles.textStyle.copyWith(
-            fontSize: 18.scaleFontSize,
+            fontSize: 15.scaleFontSize,
           ),
           decoration: InputDecoration(
             hintText: "بحث",
             hintTextDirection: TextDirection.rtl,
             hintStyle: AppStyles.textStyle.copyWith(
-              fontSize: 18.scaleFontSize,
+              fontSize: 15.scaleFontSize,
               color: AppColors.grey,
             ),
             errorStyle: AppStyles.textStyle.copyWith(
-              fontSize: 18.scaleFontSize,
+              fontSize: 15.scaleFontSize,
               color: Colors.red,
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 15),
+            // contentPadding: EdgeInsets.symmetric(horizontal: 15),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.grey),
               borderRadius: BorderRadius.circular(12),
@@ -125,7 +125,7 @@ class _CustomMultiSelectionDropdownState<T>
             ),
           ),
           strutStyle: StrutStyle(
-            fontSize: 18.scaleFontSize,
+            fontSize: 15.scaleFontSize,
           ),
         ),
         checkBoxBuilder: (context, item, isDisabled, isSelected) {
@@ -184,13 +184,14 @@ class _CustomMultiSelectionDropdownState<T>
               decoration: BoxDecoration(
                 color: isSelected
                     ? AppColors.grey.withOpacity(0.2)
-                    : Colors.transparent,
+                    : const Color.fromARGB(0, 149, 146, 146),
               ),
               child: AppText(
                 widget.itemAsString!(item),
-                fontSize: 18,
+                fontSize: 15,
                 style: AppStyles.textStyle.copyWith(
                   overflow: TextOverflow.ellipsis,
+                  // color: AppColors.grey,
                 ),
               ),
             ),
@@ -210,20 +211,18 @@ class _CustomMultiSelectionDropdownState<T>
                     .map((e) => widget.itemAsString!(e))
                     .toList()
                     .join(', '),
-            overflow: TextOverflow.ellipsis,
+            overflow: TextOverflow.clip,
             maxLines: 1,
             color: AppColors.grey,
-            fontSize: 18,
+            fontSize: 15,
           ),
         );
       },
       // button decoration
       decoratorProps: DropDownDecoratorProps(
         decoration: widget.dropdownSearchDecoration ??
-            AppStyles.roundedDropdownButtonDecoration(
-              context: context,
-              hintText: widget.hint ?? '',
-            ).copyWith(
+            InputDecoration(
+              contentPadding: EdgeInsets.symmetric(horizontal: 5),
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -231,10 +230,9 @@ class _CustomMultiSelectionDropdownState<T>
               focusedErrorBorder: InputBorder.none,
               fillColor: Colors.grey[100],
               filled: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 12),
             ),
         baseStyle: AppStyles.textStyle.copyWith(
-          fontSize: 18.scaleFontSize,
+          fontSize: 15.scaleFontSize,
         ),
       ),
     );

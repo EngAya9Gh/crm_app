@@ -5,6 +5,7 @@ import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/common/widgets/loading_comment.dart';
 import 'package:crm_smart/core/common/widgets/shimmer_widget.dart';
+import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:flutter/material.dart';
@@ -192,7 +193,9 @@ class _CardcommentState extends State<Cardcomment> {
                                     },
                                     child: AppText(
                                       widget.commentmodel.content,
-                                      fontSize: 18,
+                                      fontSize: 16,
+                                      fontFamily:AppFonts.fontFamily2
+                                      ,
                                     ),
                                   ),
                                 Wrap(

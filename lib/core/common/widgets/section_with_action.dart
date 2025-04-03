@@ -26,32 +26,34 @@ class SectionWithAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppText(
               title,
-              fontSize: 18,
+              fontSize: 14.scaleFontSize,
               fontWeight: FontWeight.w500,
             ),
             TextButton.icon(
               onPressed: onAddPressed,
               icon: Icon(Icons.add, color: iconColor ?? AppColors.primaryMain),
               label: AppText(
-                addButtonText ?? ' ${title.substring(0, title.length - 1)}',
+                fontSize: 14.scaleFontSize,
+                addButtonText ??
+                    title, //' ${title.substring(0, title.length - 1)}',
                 color: textColor ?? AppColors.primaryMain,
+                overflow: TextOverflow.visible,
               ),
               style: TextButton.styleFrom(
                 backgroundColor: backgroundColor,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
               ),
             ),
           ],
         ),
-        8.height,
+        4.height,
         child,
       ],
     );

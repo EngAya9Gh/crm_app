@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +9,7 @@ import '../../../../../../core/common/helpers/app_snackbar.dart';
 import '../../../../../../core/common/models/client_model.dart';
 import '../../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../../core/common/widgets/app_scaffold.dart';
-import '../../../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../../../core/common/widgets/section_with_action.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import '../widgets/support_add.dart';
 
@@ -54,15 +55,40 @@ class SupportViewInvoices extends StatelessWidget {
           return AppErrorWidget(message: 'العميل غير مشترك');
         }
         return AppScaffold(
-          body: AppPaginatedList(
-            items: supportTabCubit.listInvoiceClientSupport,
-            itemBuilder: (context, index) {
-              return SupportAdd(
-                idInvoice:
-                    supportTabCubit.listInvoiceClientSupport[index].idInvoice,
-                idClient: itemClient.idClients,
-              );
-            },
+          body: SafeArea(
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 2.0, bottom: 2, left: 4, right: 4),
+                    child: SectionWithAction(
+                      title: 'فواتير الدعم',
+                      onAddPressed: () {
+                        // TODO: Add support invoice action
+                      },
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height - 120,
+                        child: AppPaginatedList(
+                          items: supportTabCubit.listInvoiceClientSupport,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 1.0),
+                              child: SupportAdd(
+                                idInvoice: supportTabCubit
+                                    .listInvoiceClientSupport[index].idInvoice,
+                                idClient: itemClient.idClients,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

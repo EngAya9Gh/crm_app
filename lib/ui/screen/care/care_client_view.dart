@@ -122,6 +122,7 @@ class _CareClientViewState extends State<CareClientView> {
                                 ? Padding(
                                     padding: EdgeInsets.symmetric(vertical: 8),
                                     child: AppText(
+                                      fontSize: 15.scaleFontSize,
                                       'لا يوجد بيانات',
                                       color: Colors.grey,
                                     ),
