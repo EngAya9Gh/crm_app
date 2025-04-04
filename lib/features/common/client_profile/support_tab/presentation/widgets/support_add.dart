@@ -1,12 +1,16 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/common/widgets/app_dialog.dart';
+import 'package:crm_smart/core/common/widgets/section_header.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/common/widgets/build_detail_row.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/add_manual_task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart' as intl;
 
 import '../../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../../core/common/widgets/section_with_action.dart';
@@ -33,6 +37,7 @@ import 'custom_done_install_button.dart';
 import 'dialog_ready.dart';
 import 'receive_device_state.dart';
 import 'set_ready_install_date_button.dart';
+import '../../../../../../features/common/widgets/build_detail_row_2.dart';
 
 class SupportAdd extends StatefulWidget {
   const SupportAdd({
@@ -54,6 +59,7 @@ class _SupportAddState extends State<SupportAdd> {
   TextEditingController _endtimeController = TextEditingController();
   late PrivilegesCubit _privilegeCubit;
   late final SupportTabCubit supportTabCubit;
+  bool isSmartView = true;
 
   late InvoiceModel? _invoice = null;
   String? fk_client;
@@ -111,64 +117,165 @@ class _SupportAddState extends State<SupportAdd> {
 
   @override
   Widget build(BuildContext context) {
+    final formattedDate = _invoice!.date_approve != null
+        ? intl.DateFormat('yyyy/MM/dd')
+            .format(DateTime.parse(_invoice!.date_approve!))
+        : 'غير محدد';
+
     return SafeArea(
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
-            child: buildcardExpansion(
-              "فاتورة  ${_invoice!.date_approve.toString()}  # ${_invoice!.idInvoice}",
-              '',
-              Column(
-                children: [
-                  // Tasks Section
-                  SectionWithAction(
-                    title: 'المهام',
-                    onAddPressed: () async {
-                      final result = await showDialog(
-                        context: context,
-                        builder: (context) => AddManualTaskPage(
-                          list: PublicType.values,
-                          invoiceId: widget.idInvoice,
+            child: Stack(
+              children: [
+                buildcardExpansion(
+                  '',
+                  '',
+                  Column(
+                    children: [
+                      const Divider(),
+                      // Tasks Section
+                      SectionWithAction(
+                        title: 'المهام',
+                        onAddPressed: () async {
+                          final result = await showDialog(
+                            context: context,
+                            builder: (context) => AddManualTaskPage(
+                              list: PublicType.values,
+                              invoiceId: widget.idInvoice,
+                            ),
+                          );
+                        },
+                        child: Container(),
+                      ),
+                       SectionWithAction(
+                        title: 'تفاصيل التركيب',
+                        onAddPressed: () {},
+                        child: Column(
+                          children: [
+                            ClientSupportCardDetails(
+                              invoiceModel: _invoice,
+                              datesInstallation: datesInstallation,
+                              list_installation_type: list_installation_type,
+                              nextInstallation: nextInstallation,
+                              selectInstallationType: selectInstallationType,
+                              isSmartView: isSmartView,
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    child: Container(),
-                  ),
+                      ),
+                      // Attachments Section
+                      SectionWithAction(
+                        title: 'المرفقات',
+                        onAddPressed: () {},
+                        child: SupportAttachmentsRow(
+                          idInvoice: widget.idInvoice!,
+                        ),
+                      ),
 
-                  // Attachments Section
-                  SectionWithAction(
-                    title: 'المرفقات',
-                    onAddPressed: () {},
-                    child: SupportAttachmentsRow(
-                      idInvoice: widget.idInvoice!,
-                    ),
-                  ),
+                      // Installation Details Section
+                      
 
-                  // Installation Details Section
-                  SectionWithAction(
-                    title: 'تفاصيل التركيب',
-                    onAddPressed: () => _showActionMenu(context),
-                    child: Column(
-                      children: [
-                        ClientSupportCardDetails(
-                          invoiceModel: _invoice,
-                          datesInstallation: datesInstallation,
-                          list_installation_type: list_installation_type,
-                          nextInstallation: nextInstallation,
-                          selectInstallationType: selectInstallationType,
+                      SectionHeader(title: 'VIEW OPTIONS'),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isSmartView = !isSmartView;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          color: Colors.white,
+                          child: Center(
+                            child: AppText(
+                              isSmartView
+                                  ? 'Switch to View'
+                                  : 'Switch to Smart View',
+                              style: TextStyle(
+                                color: AppColors.primaryMain,
+                                fontSize: 16.scaleFontSize,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  titleWidget: Column(
+                    children: [
+                      _buildDetailRowWidget(
+                        title: 'رقم الفاتورة',
+                        value: '#${_invoice!.idInvoice.toString()}',
+                        icon: Icons.receipt,
+                      ),
+                      _buildDetailRowWidget(
+                        title: 'تاريخ الاعتماد',
+                        value: formattedDate,
+                        icon: Icons.calendar_today,
+                      ),
+                    ],
+                  ),
+                ),
+                // Action Button positioned on top-left
+                Positioned(
+                  left: 8,
+                  top: 8,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 2,
+                          offset: const Offset(0, 1),
                         ),
                       ],
                     ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () => _showActionMenu(context),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.more_vert,
+                            color: AppColors.primaryMain,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildDetailRowWidget({
+    required String title,
+    required String value,
+    IconData? icon,
+  }) {
+    return isSmartView
+        ? BuildDetailRow2(
+            title: title,
+            value: value,
+            icon: icon,
+          )
+        : BuildDetailRow(
+            title: title,
+            value: value,
+            icon: icon,
+          );
   }
 
   void _showActionMenu(BuildContext context) {

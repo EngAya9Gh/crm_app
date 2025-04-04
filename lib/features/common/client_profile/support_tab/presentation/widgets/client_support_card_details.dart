@@ -3,6 +3,8 @@ import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/features/common/client_profile/support_tab/data/module_invioce_model.dart';
+import 'package:crm_smart/features/common/widgets/build_detail_row.dart';
+import 'package:crm_smart/features/common/widgets/build_detail_row_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -21,21 +23,87 @@ import '../../../../../support/dates_table/presentation/pages/dates_table_page.d
 import '../../domain/use_cases/cancel_date_usecase.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 
-class ClientSupportCardDetails extends StatefulWidget {
-  const ClientSupportCardDetails({
-    super.key,
-    this.invoiceModel,
-    required this.datesInstallation,
-    this.nextInstallation,
-    required this.list_installation_type,
-    this.selectInstallationType,
-  });
+// class BuildDetailRow extends StatelessWidget {
+//   final String title;
+//   final String value;
+//   final IconData? icon;
+//   final bool isExpanded;
+//   final VoidCallback? onTap;
 
+//   const BuildDetailRow({
+//     Key? key,
+//     required this.title,
+//     required this.value,
+//     this.icon,
+//     this.isExpanded = false,
+//     this.onTap,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return InkWell(
+//       onTap: onTap,
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+//         child: Row(
+//           children: [
+//             if (icon != null) ...[
+//               Icon(icon, size: 18, color: Colors.grey),
+//               const SizedBox(width: 8),
+//             ],
+//             Text(
+//               title,
+//               style: TextStyle(
+//                 fontSize: 14,
+//                 color: Colors.grey[600],
+//                 fontWeight: FontWeight.w500,
+//               ),
+//             ),
+//             const SizedBox(width: 8),
+//             if (isExpanded)
+//               Expanded(
+//                 child: Text(
+//                   value,
+//                   style: const TextStyle(
+//                     fontSize: 14,
+//                     color: Colors.black87,
+//                     fontWeight: FontWeight.w400,
+//                   ),
+//                 ),
+//               )
+//             else
+//               Text(
+//                 value,
+//                 style: const TextStyle(
+//                   fontSize: 14,
+//                   color: Colors.black87,
+//                   fontWeight: FontWeight.w400,
+//                 ),
+//               ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class ClientSupportCardDetails extends StatefulWidget {
   final InvoiceModel? invoiceModel;
   final List<DateInstallationClient> datesInstallation;
-  final DateInstallationClient? nextInstallation;
   final List<String> list_installation_type;
+  final DateInstallationClient? nextInstallation;
   final String? selectInstallationType;
+  final bool isSmartView;
+
+  const ClientSupportCardDetails({
+    Key? key,
+    required this.invoiceModel,
+    required this.datesInstallation,
+    required this.list_installation_type,
+    required this.nextInstallation,
+    required this.selectInstallationType,
+    required this.isSmartView,
+  }) : super(key: key);
 
   @override
   State<ClientSupportCardDetails> createState() =>
@@ -68,13 +136,13 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
               _buildDetailSection(
                 title: 'معلومات التركيب',
                 children: [
-                  _buildDetailRow(
+                  _buildDetailRowWidget(
                     title: 'تاريخ التركيب',
                     value: DateFormat('yyyy-MM-dd HH:mm').format(
                         DateTime.parse(invoice.dateinstall_done.toString())),
                     icon: Icons.calendar_today,
                   ),
-                  _buildDetailRow(
+                  _buildDetailRowWidget(
                     title: 'تم التركيب من قبل',
                     value: invoice.nameuserinstall.toString(),
                     icon: Icons.person,
@@ -89,14 +157,14 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
               title: 'الزيارات',
               children: [
                 if (widget.nextInstallation?.dateClientVisit != null)
-                  _buildDetailRow(
+                  _buildDetailRowWidget(
                     title: 'تاريخ الزيارة القادمة',
                     value: DateFormat('yyyy-MM-dd HH:mm')
                         .format(widget.nextInstallation!.dateClientVisit!),
                     // icon: Icons.event_upcoming,
                     onTap: () => AppNavigator.go(DatesTablePage()),
                   ),
-                _buildDetailRow(
+                _buildDetailRowWidget(
                   title: 'عدد الزيارات التي تمت',
                   value: widget.datesInstallation
                       .where((element) => element.isDone == "1")
@@ -106,7 +174,7 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
                   onTap: () => AppNavigator.go(DatesTablePage(),
                       name: AppRoutesPaths.supportSubSections.datesTable),
                 ),
-                _buildDetailRow(
+                _buildDetailRowWidget(
                   title: 'عدد الزيارات المتبقية',
                   value: widget.datesInstallation
                       .where((element) =>
@@ -116,7 +184,7 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
                   icon: Icons.pending_actions,
                   onTap: () => AppNavigator.go(DatesTablePage()),
                 ),
-                _buildDetailRow(
+                _buildDetailRowWidget(
                   title: 'عدد الزيارات الملغية',
                   value: widget.datesInstallation
                       .where((element) => element.isDone == "2")
@@ -228,17 +296,17 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
               title: 'معلومات الفاتورة',
               children: [
                 if (invoice.clientusername != null)
-                  _buildDetailRow(
+                  _buildDetailRowWidget(
                     title: 'يوزر العميل',
                     value: invoice.clientusername.toString(),
                     icon: Icons.person_outline,
                   ),
-                _buildDetailRow(
+                _buildDetailRowWidget(
                   title: 'حالة الفاتورة',
                   value: invoice.stateclient.toString(),
                   icon: Icons.info_outline,
                 ),
-                _buildDetailRow(
+                _buildDetailRowWidget(
                   title: 'عنوان الفاتورة',
                   value: invoice.address_invoice.toString(),
                   icon: Icons.location_on_outlined,
@@ -252,18 +320,18 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
               _buildDetailSection(
                 title: 'معلومات إعادة الجدولة',
                 children: [
-                  _buildDetailRow(
+                  _buildDetailRowWidget(
                     title: 'تاريخ إعادة الجدولة',
                     value: DateFormat('yyyy-MM-dd HH:mm')
                         .format(DateTime.parse(invoice.daterepaly.toString())),
                     icon: Icons.event_repeat,
                   ),
-                  _buildDetailRow(
+                  _buildDetailRowWidget(
                     title: 'قام بإعادة الجدولة',
                     value: invoice.nameuserreplay.toString(),
                     icon: Icons.person_outline,
                   ),
-                  _buildDetailRow(
+                  _buildDetailRowWidget(
                     title: 'سبب إعادة الجدولة',
                     value: invoice.reason_date.toString(),
                     icon: Icons.note_outlined,
@@ -279,13 +347,13 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
               _buildDetailSection(
                 title: 'جدولة التركيب',
                 children: [
-                  _buildDetailRow(
+                  _buildDetailRowWidget(
                     title: 'تاريخ جدولة التركيب',
                     value: DateFormat('yyyy-MM-dd HH:mm').format(
                         DateTime.parse(invoice.dateinstall_task.toString())),
                     icon: Icons.event,
                   ),
-                  _buildDetailRow(
+                  _buildDetailRowWidget(
                     title: 'قام بجدولة التركيب',
                     value: invoice.nameusertask.toString(),
                     icon: Icons.person_outline,
@@ -299,7 +367,7 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
             _buildDetailSection(
               title: 'حالة التركيب',
               children: [
-                _buildDetailRow(
+                _buildDetailRowWidget(
                   title: 'طريقة التركيب',
                   value: invoice.typeInstallation.toString() == '0'
                       ? 'ميداني'
@@ -308,7 +376,7 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
                           : 'اونلاين'),
                   icon: Icons.settings_outlined,
                 ),
-                _buildDetailRow(
+                _buildDetailRowWidget(
                   title: 'حالة التركيب',
                   value: _getInstallationStatus(invoice, context),
                   icon: Icons.info_outline,
@@ -325,21 +393,21 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
                 title: 'تفاصيل التعليق',
                 children: [
                   if (invoice.notes_ready != null)
-                    _buildDetailRow(
+                    _buildDetailRowWidget(
                       title: 'ملاحظة التعليق',
                       value: invoice.notes_ready.toString(),
                       icon: Icons.note_outlined,
                     ),
                   if (invoice.TypeReadyClient == 'notReady' &&
                       invoice.reason_notReady != null)
-                    _buildDetailRow(
+                    _buildDetailRowWidget(
                       title: 'سبب تعليق العميل',
                       value: invoice.reason_notReady.toString(),
                       icon: Icons.warning_outlined,
                     ),
                   if (invoice.TypeReadyClient == 'suspend' &&
                       invoice.reason_suspend != null)
-                    _buildDetailRow(
+                    _buildDetailRowWidget(
                       title: 'سبب تعليق العميل',
                       value: invoice.reason_suspend.toString(),
                       icon: Icons.warning_outlined,
@@ -356,27 +424,27 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
                 title: 'تغييرات حالة التعليق',
                 children: [
                   if (invoice.date_readyinstall != null) ...[
-                    _buildDetailRow(
+                    _buildDetailRowWidget(
                       title: 'تاريخ الغاء تعليق العميل',
                       value: DateFormat('yyyy-MM-dd HH:mm').format(
                           DateTime.parse(invoice.date_readyinstall.toString())),
                       icon: Icons.event_available,
                     ),
-                    _buildDetailRow(
+                    _buildDetailRowWidget(
                       title: 'قام بالغاء تعليق العميل',
                       value: invoice.nameuser_ready_install.toString(),
                       icon: Icons.person_outline,
                     ),
                   ],
                   if (invoice.date_not_readyinstall != null) ...[
-                    _buildDetailRow(
+                    _buildDetailRowWidget(
                       title: 'تاريخ تعليق العميل',
                       value: DateFormat('yyyy-MM-dd HH:mm').format(
                           DateTime.parse(
                               invoice.date_not_readyinstall.toString())),
                       icon: Icons.event_busy,
                     ),
-                    _buildDetailRow(
+                    _buildDetailRowWidget(
                       title: 'قام بتعليق العميل',
                       value: invoice.nameuser_notready_install.toString(),
                       icon: Icons.person_outline,
@@ -420,7 +488,7 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
         AppText(
           title,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 15.scaleFontSize,
             fontWeight: FontWeight.bold,
             color: AppColors.primaryMain,
           ),
@@ -428,67 +496,6 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
         8.height,
         ...children,
       ],
-    );
-  }
-
-  Widget _buildDetailRow({
-    required String title,
-    required String value,
-    IconData? icon,
-    bool isExpanded = false,
-    VoidCallback? onTap,
-  }) {
-    final content = Container(
-      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-      decoration: BoxDecoration(
-        color: AppColors.grey.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Row(
-        crossAxisAlignment:
-            isExpanded ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-        children: [
-          if (icon != null) ...[
-            Icon(icon, size: 20, color: AppColors.grey),
-            12.width,
-          ],
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppText(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14.scaleFontSize,
-                    color: AppColors.grey,
-                  ),
-                ),
-                4.height,
-                AppText(
-                  value,
-                  style: TextStyle(
-                    fontSize: 15.scaleFontSize,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (onTap != null)
-            Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.grey),
-        ],
-      ),
-    );
-
-    return Padding(
-      padding: EdgeInsets.only(bottom: 8),
-      child: onTap != null
-          ? InkWell(
-              onTap: onTap,
-              borderRadius: BorderRadius.circular(8),
-              child: content,
-            )
-          : content,
     );
   }
 
@@ -526,5 +533,28 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
         ),
       ),
     );
+  }
+
+  Widget _buildDetailRowWidget({
+    required String title,
+    required String value,
+    IconData? icon,
+    VoidCallback? onTap,
+    bool isExpanded = false,
+  }) {
+    return widget.isSmartView
+        ? BuildDetailRow2(
+            title: title,
+            value: value,
+            icon: icon,
+            onTap: onTap,
+          )
+        : BuildDetailRow(
+            title: title,
+            value: value,
+            icon: icon,
+            onTap: onTap,
+            isExpanded: isExpanded,
+          );
   }
 }

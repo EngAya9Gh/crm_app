@@ -1,10 +1,14 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/features/common/widgets/build_detail_row.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 
-Widget buildcardExpansion(String title, String? subtitle, Widget items,
+Widget buildcardExpansion(
+  
+  String title, String? subtitle, Widget items,
+  
     {bool initiallyExpanded = false,
     Widget? subTitleWidget,
     Widget? titleWidget}) {
@@ -20,7 +24,8 @@ Widget buildcardExpansion(String title, String? subtitle, Widget items,
               ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: Center(
-                    child: Text(
+                    child: 
+                    Text(
                       subtitle,
                       style: TextStyle(
                           color: Colors.black,
@@ -35,6 +40,7 @@ Widget buildcardExpansion(String title, String? subtitle, Widget items,
       textColor: AppColors.primaryMain,
       iconColor: AppColors.primaryMain,
       title: titleWidget ??
+  
           Text(
             title,
             style: TextStyle(

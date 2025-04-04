@@ -82,13 +82,15 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
                   ),
                 );
               },
-              child: AppText(
-                '   +  ',
-                color: AppColors.grey,
-                fontSize: 20.scaleFontSize,
-                fontWeight: FontWeight.bold,
-              ),
+              child:  Container(
+                                  width: 150.scaleWidth,
+                                  height: 100.scaleHeight,
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppColors.primaryAltLight),
+                                  child: Center(child: Icon(Icons.add)),
+                                ),
             ),
+         
+         
           ],
         ),
         10.height,
