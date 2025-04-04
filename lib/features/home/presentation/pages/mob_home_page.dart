@@ -86,8 +86,7 @@ class _MobHomePageState extends State<MobHomePage> {
           drawer: CustomDrawer(),
           body: Directionality(
             textDirection: TextDirection.ltr,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 15),
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   Container(
@@ -103,22 +102,6 @@ class _MobHomePageState extends State<MobHomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Text(
-                        //   'Welcome Back',
-                        //   style: TextStyle(
-                        //     fontSize: 24,
-                        //     color: AppColors.white70,
-                        //   ),
-                        // ),
-                        // Text(
-                        //   'SMART CRM',
-                        //   style: TextStyle(
-                        //     fontSize: 28,
-                        //     fontWeight: FontWeight.bold,
-                        //     color: AppColors.white,
-                        //   ),
-                        // ),
-                        // SizedBox(height: 20),
                         typform.TypeAheadField<SearchClientModel>(
                           direction: VerticalDirection.down,
                           controller: _searchController,
@@ -172,12 +155,7 @@ class _MobHomePageState extends State<MobHomePage> {
                           hideOnLoading: false,
                           hideOnEmpty: false,
                           onSelected: (suggestion) {
-                            print(
-                                'Selected: ${suggestion.idClients}'); // Debug print
                             _searchController.text = suggestion.name ?? '';
-                            // TODO: Navigate to client details
-                            // (currentUser?.typeAdministration == "2")
-                            //  if(  Provider.of<UserProvider>(context, listen: true).currentUser.typeAdministration=='')
                             AppNavigator.go(
                               ClientProfile(
                                 idClient: suggestion.idClients,
@@ -190,11 +168,9 @@ class _MobHomePageState extends State<MobHomePage> {
                             );
                           },
                           suggestionsCallback: (pattern) async {
-                            print('Searching for: $pattern'); // Debug print
                             if (pattern.isEmpty) return [];
                             final results =
                                 await _searchCubit.searchClients(pattern);
-                            print('Results: ${results.length}'); // Debug print
                             return results;
                           },
                         ),
@@ -202,50 +178,9 @@ class _MobHomePageState extends State<MobHomePage> {
                       ],
                     ),
                   ),
-                  //  Expanded(
-                  //   child: Transform.translate(
-                  //     offset: Offset(0, -55),
-                  //     child: GridView.count(
-                  //       crossAxisCount: 2,
-                  //       padding: EdgeInsets.all(15),
-                  //       mainAxisSpacing: 10,
-                  //       crossAxisSpacing: 10,
-                  //       childAspectRatio: 1.3,
-                  //       children: [
-                  //         _buildCard('All Leads', '185', () {
-                       
-                  //         }),
-                  //         _buildCard('Fresh Leads', '25', () {
-                  //           // تنفيذ الإجراء عند النقر
-                  //         }),
-                  //         _buildCard('Cold Calls', '1', () {
-                  //           // تنفيذ الإجراء عند النقر
-                  //         }),
-                  //         _buildCard('No Answer\npotential', '0', () {
-                  //           // تنفيذ الإجراء عند النقر
-                  //         }),
-                  //         _buildCard('Follow up', '67', () {
-                  //           // تنفيذ الإجراء عند النقر
-                  //         }),
-                  //         _buildCard('No Answer', '4', () {
-                  //           // تنفيذ الإجراء عند النقر
-                  //         }),
-                  //         _buildCard('Not interested', '1', () {
-                  //           // تنفيذ الإجراء عند النقر
-                  //         }),
-                  //         _buildCard('Follow up To\nMeeting', '2', () {
-                  //           // تنفيذ الإجراء عند النقر
-                  //         }),
-                  //         _buildCard('Meeting', '30', () {
-                  //           // تنفيذ الإجراء عند النقر
-                  //         }),
-                  //         _buildCard('Follow up After\nMeeting', '2', () {
-                  //           // تنفيذ الإجراء عند النقر
-                  //         }),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
+                  _buildStatisticsSection(),
+                  _buildApprovalSection(),
+                  _buildProgressSection(),
                 ],
               ),
             ),
@@ -255,40 +190,195 @@ class _MobHomePageState extends State<MobHomePage> {
     );
   }
 
-  Widget _buildCard(String title, String value, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildApprovalSection() {
+    return Container(
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(
-                title,
-                textAlign: TextAlign.center,
+              Text(
+                'Waiting for approval',
                 style: TextStyle(
                   fontSize: 16,
-                  color: AppColors.grey,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 6),
-              AppText(
-                value,
+              Text(
+                '8 users',
                 style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryMain,
+                  color: Colors.grey,
+                  fontSize: 14,
                 ),
               ),
             ],
           ),
-        ),
+          SizedBox(height: 12),
+          SizedBox(
+            height: 40,
+            child: Stack(
+              children: List.generate(
+                2,
+                (index) => Positioned(
+                  left: index * 25.0,
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.grey[300],
+                    child: Icon(Icons.person, color: Colors.grey[600]),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
+    );
+  }
+
+  Widget _buildStatisticsSection() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(child: _buildStatItem('Projects', '1', Icons.work)),
+              SizedBox(width: 16),
+              Expanded(child: _buildStatItem('Clients', '2', Icons.people)),
+              SizedBox(width: 16),
+              Expanded(child: _buildStatItem('Task', '13', Icons.task)),
+            ],
+          ),
+          SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                  child: _buildStatItem('Income', '00', Icons.trending_up)),
+              SizedBox(width: 16),
+              Expanded(
+                  child: _buildStatItem('Expense', '00', Icons.trending_down)),
+              SizedBox(width: 16),
+              Expanded(
+                  child: _buildStatItem('Profit', '00', Icons.account_balance)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatItem(String title, String value, IconData icon) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 24, color: AppColors.primaryMain),
+          SizedBox(height: 8),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProgressSection() {
+    return Container(
+      margin: EdgeInsets.all(16),
+      child: Column(
+        children: [
+          _buildProgressBar(
+            'Open Tasks',
+            0.66, // 2/3
+            Colors.orange,
+            '2/3',
+          ),
+          SizedBox(height: 12),
+          _buildProgressBar(
+            'Days Left',
+            0.15, // Approximate for -166/29
+            Colors.green,
+            '-166/29',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProgressBar(
+      String title, double value, Color color, String label) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 8),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: LinearProgressIndicator(
+            value: value,
+            backgroundColor: color.withOpacity(0.2),
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+            minHeight: 8,
+          ),
+        ),
+      ],
     );
   }
 }
