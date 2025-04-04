@@ -249,18 +249,20 @@ class _ClientProfileState extends State<ClientProfile>
                   ),
               },
               Expanded(
-                child: Container( 
+                  child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: Container(
                   margin: EdgeInsets.only(bottom: 1),
                   padding: const EdgeInsets.only(top: 0, left: 5, right: 5),
                   height: MediaQuery.of(context).size.height * 0.85,
-                  child: TabBarView(
-                   
-
-                    controller: _tabController,
-                    children: _buildTabViews(client),
-                  ),
+                  child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: _buildTabViews(client).reversed.toList(),
+                      )),
                 ),
-              ),
+              )),
             ],
           );
         },
@@ -291,7 +293,7 @@ class _ClientProfileState extends State<ClientProfile>
       unselectedLabelColor: AppColors.white,
       onTap: (value) => _currentTabIndex.value = value,
       tabAlignment: TabAlignment.center,
-      tabs: _tabs(),
+      tabs: _tabs().reversed.toList(),
     );
   }
 

@@ -191,7 +191,7 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
                       .length
                       .toString(),
                   icon: Icons.cancel_outlined,
-                  onTap: () => AppNavigator.go(DatesTablePage()),
+              onTap: () => AppNavigator.go(DatesTablePage()),
                 ),
               ],
             ),
@@ -201,33 +201,33 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
             _buildDetailSection(
               title: 'موديلات التركيب',
               children: [
-                InkWell(
-                  onTap: () => AppConstants.showAppDialog(
-                    child: AppDialog(
-                      title: 'موديلات التركيب',
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(15),
+            InkWell(
+              onTap: () => AppConstants.showAppDialog(
+                  child: AppDialog(
+                title: 'موديلات التركيب',
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(15),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadiusDirectional.circular(8),
                             border: Border.all(color: Colors.black),
                           ),
-                          child: (state.invoiceModules.isEmpty())
-                              ? AppText('لايوجد اقرارات لعرضها')
-                              : Wrap(
-                                  spacing: 5,
-                                  runSpacing: 5,
+                    child: (state.invoiceModules.isEmpty())
+                        ? AppText('لايوجد اقرارات لعرضها')
+                        : Wrap(
+                            spacing: 5,
+                            runSpacing: 5,
                                   children: ((state.invoiceModules.data ?? []))
-                                      .map((e) => AppStatusChip(
+                                .map((e) => AppStatusChip(
                                             status: (e as Map<String, dynamic>)[
                                                     'name'] ??
                                                 '',
-                                            color: AppColors.primaryMain,
-                                          ))
-                                      .toList(),
-                                ),
-                        ),
-                      ],
+                                      color: AppColors.primaryMain,
+                                    ))
+                                .toList(),
+                          ),
+                  ),
+                ],
                     ),
                   ),
                   child: Container(
@@ -265,23 +265,23 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
               _buildDetailSection(
                 title: 'وثائق التدريب',
                 children: [
-                  if (invoice.trainingPlan != null)
+            if (invoice.trainingPlan != null)
                     _buildDocumentRow(
                       title: invoice.trainingPlan!.name,
                       onTap: () => HelperFunctions.urlLauncher(
-                          invoice.trainingPlan!.path,
+                      invoice.trainingPlan!.path,
                           isNewTab: true),
                     ),
-                  if (invoice.trainingSession != null)
+            if (invoice.trainingSession != null)
                     _buildDocumentRow(
-                      title: invoice.trainingSession!.name,
+                  title: invoice.trainingSession!.name,
                       onTap: () => HelperFunctions.urlLauncher(
-                          invoice.trainingSession!.path,
+                      invoice.trainingSession!.path,
                           isNewTab: true),
-                    ),
-                  if (invoice.trainingMultiSession != null)
+              ),
+            if (invoice.trainingMultiSession != null)
                     _buildDocumentRow(
-                      title: invoice.trainingMultiSession!.name,
+                  title: invoice.trainingMultiSession!.name,
                       onTap: () => HelperFunctions.urlLauncher(
                           invoice.trainingMultiSession!.path,
                           isNewTab: true),
@@ -369,8 +369,8 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
               children: [
                 _buildDetailRowWidget(
                   title: 'طريقة التركيب',
-                  value: invoice.typeInstallation.toString() == '0'
-                      ? 'ميداني'
+                value: invoice.typeInstallation.toString() == '0'
+                    ? 'ميداني'
                       : (invoice.typeInstallation.toString() == '2'
                           ? 'عميل موصى به'
                           : 'اونلاين'),
@@ -555,6 +555,6 @@ class _ClientSupportCardDetailsState extends State<ClientSupportCardDetails> {
             icon: icon,
             onTap: onTap,
             isExpanded: isExpanded,
-          );
+    );
   }
 }

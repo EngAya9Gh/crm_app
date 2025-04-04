@@ -162,7 +162,7 @@ class _MobHomePageState extends State<MobHomePage> {
                               subtitle: AppText(suggestion.phone ?? ''),
                             ),
                           ),
-                          debounceDuration: Duration(milliseconds: 300),
+                          debounceDuration: Duration(milliseconds: 800),
                           hideOnSelect: true,
                           hideOnUnfocus: true,
                           showOnFocus: true,
@@ -202,61 +202,50 @@ class _MobHomePageState extends State<MobHomePage> {
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Transform.translate(
-                      offset: Offset(0, -55),
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        padding: EdgeInsets.all(15),
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        childAspectRatio: 1.3,
-                        children: [
-                          _buildCard('All Leads', '185', () {
-                            // تنفيذ الإجراء عند النقر
-                            //  if(  Provider.of<UserProvider>(context, listen: true).currentUser.typeAdministration=='')
-                            // AppNavigator.go(
-                            //   ClientProfile(
-                            //      idClient: suggestion.idClients
-                            //   ,  tabIndex: 0,
-                            //   ),
-                            //   name: AppRoutesNames.clientProfile.inClientsList,
-                            //   pathParameters: {
-                            //     'idClient': suggestion.idClients.toString()
-                            //   },
-                            // );
-                          }),
-                          _buildCard('Fresh Leads', '25', () {
-                            // تنفيذ الإجراء عند النقر
-                          }),
-                          _buildCard('Cold Calls', '1', () {
-                            // تنفيذ الإجراء عند النقر
-                          }),
-                          _buildCard('No Answer\npotential', '0', () {
-                            // تنفيذ الإجراء عند النقر
-                          }),
-                          _buildCard('Follow up', '67', () {
-                            // تنفيذ الإجراء عند النقر
-                          }),
-                          _buildCard('No Answer', '4', () {
-                            // تنفيذ الإجراء عند النقر
-                          }),
-                          _buildCard('Not interested', '1', () {
-                            // تنفيذ الإجراء عند النقر
-                          }),
-                          _buildCard('Follow up To\nMeeting', '2', () {
-                            // تنفيذ الإجراء عند النقر
-                          }),
-                          _buildCard('Meeting', '30', () {
-                            // تنفيذ الإجراء عند النقر
-                          }),
-                          _buildCard('Follow up After\nMeeting', '2', () {
-                            // تنفيذ الإجراء عند النقر
-                          }),
-                        ],
-                      ),
-                    ),
-                  ),
+                  //  Expanded(
+                  //   child: Transform.translate(
+                  //     offset: Offset(0, -55),
+                  //     child: GridView.count(
+                  //       crossAxisCount: 2,
+                  //       padding: EdgeInsets.all(15),
+                  //       mainAxisSpacing: 10,
+                  //       crossAxisSpacing: 10,
+                  //       childAspectRatio: 1.3,
+                  //       children: [
+                  //         _buildCard('All Leads', '185', () {
+                       
+                  //         }),
+                  //         _buildCard('Fresh Leads', '25', () {
+                  //           // تنفيذ الإجراء عند النقر
+                  //         }),
+                  //         _buildCard('Cold Calls', '1', () {
+                  //           // تنفيذ الإجراء عند النقر
+                  //         }),
+                  //         _buildCard('No Answer\npotential', '0', () {
+                  //           // تنفيذ الإجراء عند النقر
+                  //         }),
+                  //         _buildCard('Follow up', '67', () {
+                  //           // تنفيذ الإجراء عند النقر
+                  //         }),
+                  //         _buildCard('No Answer', '4', () {
+                  //           // تنفيذ الإجراء عند النقر
+                  //         }),
+                  //         _buildCard('Not interested', '1', () {
+                  //           // تنفيذ الإجراء عند النقر
+                  //         }),
+                  //         _buildCard('Follow up To\nMeeting', '2', () {
+                  //           // تنفيذ الإجراء عند النقر
+                  //         }),
+                  //         _buildCard('Meeting', '30', () {
+                  //           // تنفيذ الإجراء عند النقر
+                  //         }),
+                  //         _buildCard('Follow up After\nMeeting', '2', () {
+                  //           // تنفيذ الإجراء عند النقر
+                  //         }),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

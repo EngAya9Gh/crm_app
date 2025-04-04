@@ -6,7 +6,9 @@ import '../../../../../../features/task_management/data/models/task_model.dart';
 class TaskCardNew extends StatelessWidget {
   final TaskModel task;
 
-  const TaskCardNew({Key? key, required this.task, required bool showEnterpriseName}) : super(key: key);
+  const TaskCardNew(
+      {Key? key, required this.task, required bool showEnterpriseName})
+      : super(key: key);
 
   Color _getTaskStatusColor(num? percentage) {
     if (percentage == null) return Colors.grey;
@@ -46,12 +48,16 @@ class TaskCardNew extends StatelessWidget {
               ),
               8.width,
               Expanded(
+                flex: 1,
                 child: AppText(
                   task.title ?? '',
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+              8.width,
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
@@ -73,29 +79,35 @@ class TaskCardNew extends StatelessWidget {
               task.description!,
               fontSize: 14,
               color: Colors.grey[600],
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
           8.height,
-          Row(
-            children: [
-              Icon(Icons.calendar_today, size: 16, color: Colors.grey),
-              4.width,
-              AppText(
-                task.startDate?.toString() ?? '',
-                fontSize: 12,
-                color: Colors.grey,
-              ),
-              if (task.deadline != null) ...[
-                8.width,
-                Icon(Icons.timer, size: 16, color: Colors.grey),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.calendar_today, size: 16, color: Colors.grey),
                 4.width,
                 AppText(
-                  task.deadline.toString(),
+                  task.startDate?.toString() ?? '',
                   fontSize: 12,
                   color: Colors.grey,
                 ),
+                if (task.deadline != null) ...[
+                  8.width,
+                  Icon(Icons.timer, size: 16, color: Colors.grey),
+                  4.width,
+                  AppText(
+                    task.deadline.toString(),
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ],
       ),

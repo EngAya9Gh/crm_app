@@ -1,10 +1,13 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/action_menu_item.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/common/widgets/section_header.dart';
+import 'package:crm_smart/core/common/widgets/section_with_action.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:crm_smart/features/sales/invoices_list/presentation/manager/invoices_section_cubit.dart';
+import 'package:crm_smart/features/task_management/presentation/pages/add_manual_task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -111,18 +114,368 @@ class _InvoiceViewState extends State<InvoiceView> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            AddManualTaskButton(
-                              list: invoicePublicTypeList,
-                              invoiceId: invoiceModel.idInvoice!,
-                            ),
-                            _product('اسم المنتج', 'الكمية', 'السعر'),
+                            // AddManualTaskButton(
+                            //   list: invoicePublicTypeList,
+                            //   invoiceId: invoiceModel.idInvoice!,
+                            // ),
 
-                            for (ProductsInvoice product in invoice!.products!)
-                              _product(
-                                product.nameProduct.toString(),
-                                product.amount.toString(),
-                                product.price.toString(),
+                            SectionWithAction(
+                              title: 'Tasks',
+                              onAddPressed: () async {
+                                final result = await showDialog(
+                                  context: context,
+                                  builder: (context) => AddManualTaskPage(
+                                    list: PublicType.values,
+                                    invoiceId: invoiceModel.idInvoice!,
+                                  ),
+                                );
+                              },
+                              child: Container(), // سيتم إضافة قائمة المهام هنا
+                            ),
+                            SectionWithAction(
+                              title: 'الإجراءات',
+                              onAddPressed: () => _showActionMenu(context),
+                              child: Column(
+                                children: [
+                                  _product('اسم المنتج', 'الكمية', 'السعر'),
+
+                                  for (ProductsInvoice product
+                                      in invoice!.products!)
+                                    _product(
+                                      product.nameProduct.toString(),
+                                      product.amount.toString(),
+                                      product.price.toString(),
+                                    ),
+                                  SectionHeader(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800,
+                                      // Color_label: AppColors.grey.shade100,
+                                      textColor: AppColors.grey,
+                                      title: ' المبلغ الإجمالي      ' +
+                                          invoice.total.toString()),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  CardRow(
+                                      title: 'رقم الفاتورة',
+                                      value: invoice.idInvoice.toString()),
+                                  CardRow(
+                                      title: 'اسم العميل',
+                                      value: invoice.nameClient.toString()),
+                                  CardRow(
+                                      title: 'اسم المؤسسة',
+                                      value:
+                                          invoice.name_enterprise.toString()),
+                                  CardRow(
+                                      title: 'حالة الفاتورة',
+                                      value: invoice.stateclient.toString()),
+                                  CardRow(
+                                      title: 'فرع الفاتورة',
+                                      value: invoice.name_regoin_invoice
+                                          .toString()),
+
+                                  invoice.invoice_source != null
+                                      ? CardRow(
+                                          title: 'مصدر الفاتورة',
+                                          value: invoice.invoice_source!
+                                              .toString())
+                                      : Container(),
+
+                                  CardRow(
+                                      title: 'اسم الموظف',
+                                      value: invoice.nameUser.toString()),
+                                  CardRow(
+                                      title: 'فرع الموظف',
+                                      value: invoice.name_regoin_invoice
+                                          .toString()),
+
+                                  CardRow(
+                                    title: 'تاريخ عقد الإشتراك',
+                                    value: invoice.date_approve,
+                                  ),
+
+                                  CardRow(
+                                      title: 'المبلغ المدفوع',
+                                      value: invoice.amountPaid.toString()),
+                                  CardRow(
+                                      title: ' المبلغ المتبقي',
+                                      value: ((num.tryParse(invoice.total
+                                                          ?.toString() ??
+                                                      "0") ??
+                                                  0) -
+                                              (num.tryParse(invoice.amountPaid
+                                                          ?.toString() ??
+                                                      "0") ??
+                                                  0))
+                                          .toStringAsFixed(2)),
+
+                                  invoice.renewYear != '0' &&
+                                          invoice.renewYear != null
+                                      ? CardRow(
+                                          title: ' التجديد السنوي',
+                                          value: invoice.renewYear.toString())
+                                      : Container(),
+                                  invoice.renew2year != '0' &&
+                                          invoice.renew2year != null
+                                      ? CardRow(
+                                          title: 'تجديد الموارد البشرية',
+                                          value: invoice.renew2year.toString())
+                                      : Container(),
+
+                                  invoice.renewPlus.toString() == '' ||
+                                          invoice.renewPlus == null
+                                      ? Container()
+                                      : CardRow(
+                                          title: 'تجديد الفرع الإضافي',
+                                          value: invoice.renewPlus.toString()),
+                                  invoice.numTax.toString() == '' ||
+                                          invoice.numTax == null
+                                      ? Container()
+                                      : CardRow(
+                                          title: 'الرقم الضريبي',
+                                          value: invoice.numTax.toString()),
+
+                                  invoice.typeInstallation.toString() == '' ||
+                                          invoice.typeInstallation == null ||
+                                          invoice.typeInstallation.toString() ==
+                                              'null'
+                                      ? Container()
+                                      : CardRow(
+                                          title: 'نوع التركيب',
+                                          value: invoice.typeInstallation
+                                                      .toString() ==
+                                                  '0'
+                                              ? 'ميداني'
+                                              : (invoice.typeInstallation
+                                                          .toString() ==
+                                                      '2'
+                                                  ? 'عميل موصى به'
+                                                  : 'اونلاين'),
+                                        ),
+
+                                  CardRow(
+                                      title: ' طريقة الدفع',
+                                      value: invoice.typePay.toString() == '0'
+                                          ? 'نقدا'
+                                          : 'تحويل'),
+                                  //nameuserApprove
+
+                                  CardRow(
+                                      title: ' العملة',
+                                      value: invoice.currency_name == null
+                                          ? 'SAR'
+                                          : invoice.currency_name.toString() ==
+                                                  '0'
+                                              ? 'USD'
+                                              : 'SAR'),
+
+                                  invoice.nameuserApprove != null
+                                      ? CardRow(
+                                          title: 'معتمد الفاتورة',
+                                          value: (invoice.nameuserApprove
+                                              .toString()))
+                                      : Container(),
+
+                                  invoice.nameuserApprove != null
+                                      ? CardRow(
+                                          title: 'تاريخ اعتماد الفاتورة',
+                                          value:
+                                              invoice.date_approve.toString())
+                                      : Container(),
+                                  invoice.date_lastuserupdate != null
+                                      ? CardRow(
+                                          title: 'تاريخ آخر تعديل',
+                                          value: invoice.date_lastuserupdate !=
+                                                  null
+                                              ? invoice.date_lastuserupdate
+                                                  .toString()
+                                              : '')
+                                      : Container(),
+                                  invoice.date_lastuserupdate != null
+                                      ? CardRow(
+                                          title: 'آخر تعديل من قبل',
+                                          value: invoice.date_lastuserupdate !=
+                                                  null
+                                              ? (invoice.lastuserupdateName
+                                                  .toString())
+                                              : '')
+                                      : Container(),
+
+                                  if (invoice.stateclient ==
+                                      TypeClientEnum.withdrawn.value) ...[
+                                    invoice.date_change_back != null
+                                        ? CardRow(
+                                            title: 'تاريخ الإنسحاب',
+                                            value: invoice.date_change_back
+                                                .toString())
+                                        : Container(),
+                                    invoice.date_change_back != null
+                                        ? CardRow(
+                                            title: 'تم الإنسحاب عن طريق',
+                                            value: (invoice.nameuserback
+                                                .toString()))
+                                        : Container(),
+                                    invoice.fkuser_back != null
+                                        ? CardRow(
+                                            title: 'المبلغ المسترجع',
+                                            value:
+                                                invoice.value_back.toString())
+                                        : Container(),
+                                    invoice.fkuser_back != null
+                                        ? CardRow(
+                                            title: 'سبب الإنسحاب',
+                                            value: invoice.desc_reason_back
+                                                .toString(),
+                                            isExpanded: true,
+                                          )
+                                        : Container(),
+                                  ],
+
+                                  invoice.numbarnch
+                                              .toString()
+                                              .trim()
+                                              .isNotEmpty &&
+                                          invoice.numbarnch != null
+                                      ? CardRow(
+                                          title: 'عدد الفروع',
+                                          value: invoice.numbarnch.toString())
+                                      : Container(),
+                                  //invoice!.nummostda != null||
+                                  invoice.nummostda
+                                              .toString()
+                                              .trim()
+                                              .isNotEmpty &&
+                                          invoice.nummostda != null
+                                      ? CardRow(
+                                          title: 'عدد المستودعات ',
+                                          value: invoice.nummostda.toString())
+                                      : Container(),
+                                  ((int.tryParse(invoice.renewInventory ??
+                                                  '0') ??
+                                              0) !=
+                                          0)
+                                      ? CardRow(
+                                          title: 'تجديد المستودعات',
+                                          value:
+                                              invoice.renewInventory.toString())
+                                      : Container(),
+                                  ((int.tryParse(invoice.renewPos ?? '0') ??
+                                              0) !=
+                                          0)
+                                      ? CardRow(
+                                          title: 'تجديد نقاط البيع',
+                                          value: invoice.renewPos.toString())
+                                      : Container(),
+                                  invoice.numusers
+                                              .toString()
+                                              .trim()
+                                              .isNotEmpty &&
+                                          invoice.numusers != null
+                                      ? CardRow(
+                                          title: 'عدد المستخدمين',
+                                          value: invoice.numusers.toString())
+                                      : Container(),
+                                  invoice.address_invoice.toString() == ''
+                                      ? CardRow(
+                                          title: 'عنوان الفاتورة',
+                                          value: invoice.address_invoice
+                                              .toString())
+                                      : Container(),
+
+                                  _privilegeCubit.checkPrivilege('76')
+                                      ? invoice.clientusername != null &&
+                                              invoice.clientusername
+                                                  .toString()
+                                                  .isNotEmpty
+                                          ? CardRow(
+                                              title: 'يوزر العميل',
+                                              value:
+                                                  invoice.clientusername == null
+                                                      ? ''
+                                                      : invoice.clientusername
+                                                          .toString())
+                                          : Container()
+                                      : Container(),
+
+                                  invoice.imagelogo != null &&
+                                          invoice.imagelogo
+                                              .toString()
+                                              .isNotEmpty
+                                      ? widgetlogo(
+                                          title: 'شعار المؤسسة',
+                                          value: invoice.imagelogo.toString())
+                                      : Container(),
+
+                                  invoice.participal != null
+                                      ? Column(
+                                          children: [
+                                            CardRow(
+                                                value: invoice.participal!
+                                                    .name_participate
+                                                    .toString(),
+                                                title: 'اسم المتعاون'),
+                                            CardRow(
+                                                value: invoice.rate_participate
+                                                    .toString(),
+                                                title: 'نسبة المتعاون'),
+                                            CardRow(
+                                                value: invoice.participal!
+                                                    .numberbank_participate
+                                                    .toString(),
+                                                title: 'رقم بنك المتعاون'),
+                                            CardRow(
+                                                value: invoice.participal!
+                                                    .mobile_participate
+                                                    .toString(),
+                                                title: 'رقم موبايل المتعاون'),
+                                          ],
+                                        )
+                                      : Container(),
+                                  invoice.agent_distibutor != null
+                                      ? Column(
+                                          children: [
+                                            CardRow(
+                                                value: invoice
+                                                    .agent_distibutor!.nameAgent
+                                                    .toString(),
+                                                title: invoice.agent_distibutor!
+                                                            .typeAgent ==
+                                                        '1'
+                                                    ? 'اسم الوكيل'
+                                                    : 'اسم الموزع'),
+                                            if (invoice.rate_participate !=
+                                                null)
+                                              CardRow(
+                                                  value: invoice
+                                                      .rate_participate
+                                                      .toString(),
+                                                  title: invoice
+                                                              .agent_distibutor!
+                                                              .typeAgent ==
+                                                          '1'
+                                                      ? 'نسبة الوكيل'
+                                                      : 'نسبة الموزع'),
+                                            CardRow(
+                                                value: invoice.agent_distibutor!
+                                                    .mobileAgent
+                                                    .toString(),
+                                                title: invoice.agent_distibutor!
+                                                            .typeAgent ==
+                                                        '1'
+                                                    ? 'رقم موبايل الوكيل'
+                                                    : 'رقم موبايل الموزع'),
+                                          ],
+                                        )
+                                      : Container(),
+
+                                  if (invoice.participal == null &&
+                                      invoice.agent_distibutor == null &&
+                                      invoice.type_seller == "3")
+                                    CardRow(value: "موظف", title: "نوع البائع"),
+                                ],
                               ),
+                            ),
 
                             // Container(
                             //   color: AppColors.secondaryMain.withOpacity(0.7),
@@ -149,300 +502,6 @@ class _InvoiceViewState extends State<InvoiceView> {
                             //     ],
                             //   ),
                             // ),
-                            SectionHeader(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800,
-                                // Color_label: AppColors.grey.shade100,
-                                textColor: AppColors.grey,
-                                title: ' المبلغ الإجمالي      ' +
-                                    invoice.total.toString()),
-                            SizedBox(
-                              height: 10,
-                            ),
-
-                            CardRow(
-                                title: 'رقم الفاتورة',
-                                value: invoice.idInvoice.toString()),
-                            CardRow(
-                                title: 'اسم العميل',
-                                value: invoice.nameClient.toString()),
-                            CardRow(
-                                title: 'اسم المؤسسة',
-                                value: invoice.name_enterprise.toString()),
-                            CardRow(
-                                title: 'حالة الفاتورة',
-                                value: invoice.stateclient.toString()),
-                            CardRow(
-                                title: 'فرع الفاتورة',
-                                value: invoice.name_regoin_invoice.toString()),
-
-                            invoice.invoice_source != null
-                                ? CardRow(
-                                    title: 'مصدر الفاتورة',
-                                    value: invoice.invoice_source!.toString())
-                                : Container(),
-
-                            CardRow(
-                                title: 'اسم الموظف',
-                                value: invoice.nameUser.toString()),
-                            CardRow(
-                                title: 'فرع الموظف',
-                                value: invoice.name_regoin_invoice.toString()),
-
-                            CardRow(
-                              title: 'تاريخ عقد الإشتراك',
-                              value: invoice.date_approve,
-                            ),
-
-                            CardRow(
-                                title: 'المبلغ المدفوع',
-                                value: invoice.amountPaid.toString()),
-                            CardRow(
-                                title: ' المبلغ المتبقي',
-                                value: ((num.tryParse(
-                                                invoice.total?.toString() ??
-                                                    "0") ??
-                                            0) -
-                                        (num.tryParse(invoice.amountPaid
-                                                    ?.toString() ??
-                                                "0") ??
-                                            0))
-                                    .toStringAsFixed(2)),
-
-                            invoice.renewYear != '0' &&
-                                    invoice.renewYear != null
-                                ? CardRow(
-                                    title: ' التجديد السنوي',
-                                    value: invoice.renewYear.toString())
-                                : Container(),
-                            invoice.renew2year != '0' &&
-                                    invoice.renew2year != null
-                                ? CardRow(
-                                    title: 'تجديد الموارد البشرية',
-                                    value: invoice.renew2year.toString())
-                                : Container(),
-
-                            invoice.renewPlus.toString() == '' ||
-                                    invoice.renewPlus == null
-                                ? Container()
-                                : CardRow(
-                                    title: 'تجديد الفرع الإضافي',
-                                    value: invoice.renewPlus.toString()),
-                            invoice.numTax.toString() == '' ||
-                                    invoice.numTax == null
-                                ? Container()
-                                : CardRow(
-                                    title: 'الرقم الضريبي',
-                                    value: invoice.numTax.toString()),
-
-                            invoice.typeInstallation.toString() == '' ||
-                                    invoice.typeInstallation == null ||
-                                    invoice.typeInstallation.toString() ==
-                                        'null'
-                                ? Container()
-                                : CardRow(
-                                    title: 'نوع التركيب',
-                                    value:
-                                        invoice.typeInstallation.toString() ==
-                                                '0'
-                                            ? 'ميداني'
-                                            : (invoice.typeInstallation
-                                                        .toString() ==
-                                                    '2'
-                                                ? 'عميل موصى به'
-                                                : 'اونلاين'),
-                                  ),
-
-                            CardRow(
-                                title: ' طريقة الدفع',
-                                value: invoice.typePay.toString() == '0'
-                                    ? 'نقدا'
-                                    : 'تحويل'),
-                            //nameuserApprove
-
-                            CardRow(
-                                title: ' العملة',
-                                value: invoice.currency_name == null
-                                    ? 'SAR'
-                                    : invoice.currency_name.toString() == '0'
-                                        ? 'USD'
-                                        : 'SAR'),
-
-                            invoice.nameuserApprove != null
-                                ? CardRow(
-                                    title: 'معتمد الفاتورة',
-                                    value: (invoice.nameuserApprove.toString()))
-                                : Container(),
-
-                            invoice.nameuserApprove != null
-                                ? CardRow(
-                                    title: 'تاريخ اعتماد الفاتورة',
-                                    value: invoice.date_approve.toString())
-                                : Container(),
-                            invoice.date_lastuserupdate != null
-                                ? CardRow(
-                                    title: 'تاريخ آخر تعديل',
-                                    value: invoice.date_lastuserupdate != null
-                                        ? invoice.date_lastuserupdate.toString()
-                                        : '')
-                                : Container(),
-                            invoice.date_lastuserupdate != null
-                                ? CardRow(
-                                    title: 'آخر تعديل من قبل',
-                                    value: invoice.date_lastuserupdate != null
-                                        ? (invoice.lastuserupdateName
-                                            .toString())
-                                        : '')
-                                : Container(),
-
-                            if (invoice.stateclient ==
-                                TypeClientEnum.withdrawn.value) ...[
-                              invoice.date_change_back != null
-                                  ? CardRow(
-                                      title: 'تاريخ الإنسحاب',
-                                      value:
-                                          invoice.date_change_back.toString())
-                                  : Container(),
-                              invoice.date_change_back != null
-                                  ? CardRow(
-                                      title: 'تم الإنسحاب عن طريق',
-                                      value: (invoice.nameuserback.toString()))
-                                  : Container(),
-                              invoice.fkuser_back != null
-                                  ? CardRow(
-                                      title: 'المبلغ المسترجع',
-                                      value: invoice.value_back.toString())
-                                  : Container(),
-                              invoice.fkuser_back != null
-                                  ? CardRow(
-                                      title: 'سبب الإنسحاب',
-                                      value:
-                                          invoice.desc_reason_back.toString(),
-                                      isExpanded: true,
-                                    )
-                                  : Container(),
-                            ],
-
-                            invoice.numbarnch.toString().trim().isNotEmpty &&
-                                    invoice.numbarnch != null
-                                ? CardRow(
-                                    title: 'عدد الفروع',
-                                    value: invoice.numbarnch.toString())
-                                : Container(),
-                            //invoice!.nummostda != null||
-                            invoice.nummostda.toString().trim().isNotEmpty &&
-                                    invoice.nummostda != null
-                                ? CardRow(
-                                    title: 'عدد المستودعات ',
-                                    value: invoice.nummostda.toString())
-                                : Container(),
-                            ((int.tryParse(invoice.renewInventory ?? '0') ??
-                                        0) !=
-                                    0)
-                                ? CardRow(
-                                    title: 'تجديد المستودعات',
-                                    value: invoice.renewInventory.toString())
-                                : Container(),
-                            ((int.tryParse(invoice.renewPos ?? '0') ?? 0) != 0)
-                                ? CardRow(
-                                    title: 'تجديد نقاط البيع',
-                                    value: invoice.renewPos.toString())
-                                : Container(),
-                            invoice.numusers.toString().trim().isNotEmpty &&
-                                    invoice.numusers != null
-                                ? CardRow(
-                                    title: 'عدد المستخدمين',
-                                    value: invoice.numusers.toString())
-                                : Container(),
-                            invoice.address_invoice.toString() == ''
-                                ? CardRow(
-                                    title: 'عنوان الفاتورة',
-                                    value: invoice.address_invoice.toString())
-                                : Container(),
-
-                            _privilegeCubit.checkPrivilege('76')
-                                ? invoice.clientusername != null &&
-                                        invoice.clientusername
-                                            .toString()
-                                            .isNotEmpty
-                                    ? CardRow(
-                                        title: 'يوزر العميل',
-                                        value: invoice.clientusername == null
-                                            ? ''
-                                            : invoice.clientusername.toString())
-                                    : Container()
-                                : Container(),
-
-                            invoice.imagelogo != null &&
-                                    invoice.imagelogo.toString().isNotEmpty
-                                ? widgetlogo(
-                                    title: 'شعار المؤسسة',
-                                    value: invoice.imagelogo.toString())
-                                : Container(),
-
-                            invoice.participal != null
-                                ? Column(
-                                    children: [
-                                      CardRow(
-                                          value: invoice
-                                              .participal!.name_participate
-                                              .toString(),
-                                          title: 'اسم المتعاون'),
-                                      CardRow(
-                                          value: invoice.rate_participate
-                                              .toString(),
-                                          title: 'نسبة المتعاون'),
-                                      CardRow(
-                                          value: invoice.participal!
-                                              .numberbank_participate
-                                              .toString(),
-                                          title: 'رقم بنك المتعاون'),
-                                      CardRow(
-                                          value: invoice
-                                              .participal!.mobile_participate
-                                              .toString(),
-                                          title: 'رقم موبايل المتعاون'),
-                                    ],
-                                  )
-                                : Container(),
-                            invoice.agent_distibutor != null
-                                ? Column(
-                                    children: [
-                                      CardRow(
-                                          value: invoice
-                                              .agent_distibutor!.nameAgent
-                                              .toString(),
-                                          title: invoice.agent_distibutor!
-                                                      .typeAgent ==
-                                                  '1'
-                                              ? 'اسم الوكيل'
-                                              : 'اسم الموزع'),
-                                      if (invoice.rate_participate != null)
-                                        CardRow(
-                                            value: invoice.rate_participate
-                                                .toString(),
-                                            title: invoice.agent_distibutor!
-                                                        .typeAgent ==
-                                                    '1'
-                                                ? 'نسبة الوكيل'
-                                                : 'نسبة الموزع'),
-                                      CardRow(
-                                          value: invoice
-                                              .agent_distibutor!.mobileAgent
-                                              .toString(),
-                                          title: invoice.agent_distibutor!
-                                                      .typeAgent ==
-                                                  '1'
-                                              ? 'رقم موبايل الوكيل'
-                                              : 'رقم موبايل الموزع'),
-                                    ],
-                                  )
-                                : Container(),
-
-                            if (invoice.participal == null &&
-                                invoice.agent_distibutor == null &&
-                                invoice.type_seller == "3")
-                              CardRow(value: "موظف", title: "نوع البائع"),
 
                             if (widget.showActions) ...{
                               Consumer<InvoiceVm>(
@@ -454,142 +513,142 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 },
                               ),
                               5.height,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                //crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  _privilegeCubit.checkPrivilege('141') &&
-                                              invoice.isApprove == null ||
-                                          _privilegeCubit
-                                                      .checkPrivilege('31') ==
-                                                  true &&
-                                              invoice.isApprove != null
-                                      ? Expanded(
-                                          child: AppElevatedButton(
-                                            text: 'تعديل الفاتورة',
-                                            onPressed: () async {
-                                              if (client != null)
-                                                AppNavigator.go(
-                                                  AddInvoice(
-                                                    invoice: invoice,
-                                                    itemClient: client!,
-                                                  ),
-                                                  isNew: false,
-                                                );
-                                            },
-                                          ),
-                                        )
-                                      : Container(),
-                                  // widget.type == 'approved'
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              //   //crossAxisAlignment: CrossAxisAlignment.center,
+                              //   children: [
+                              //     _privilegeCubit.checkPrivilege('141') &&
+                              //                 invoice.isApprove == null ||
+                              //             _privilegeCubit
+                              //                         .checkPrivilege('31') ==
+                              //                     true &&
+                              //                 invoice.isApprove != null
+                              //         ? Expanded(
+                              //             child: AppElevatedButton(
+                              //               text: 'تعديل الفاتورة',
+                              //               onPressed: () async {
+                              //                 if (client != null)
+                              //                   AppNavigator.go(
+                              //                     AddInvoice(
+                              //                       invoice: invoice,
+                              //                       itemClient: client!,
+                              //                     ),
+                              //                     isNew: false,
+                              //                   );
+                              //               },
+                              //             ),
+                              //           )
+                              //         : Container(),
+                              //     // widget.type == 'approved'
 
-                                  if (_privilegeCubit.checkPrivilege('41')) ...{
-                                    5.width,
-                                    Expanded(
-                                      child: AppElevatedButton(
-                                        text: 'الاجراءات',
-                                        onPressed: () async {
-                                          if (client != null) {
-                                            if (invoice.stateclient !=
-                                                StatusClient
-                                                    .restrictWithdrawn.text) {
-                                              _showConvertToRestrictWithdrawDialog(
-                                                  context, invoice);
-                                            } else {
-                                              showDialog<void>(
-                                                context: context,
-                                                builder: (context) {
-                                                  return RejectDialog(
-                                                    invoice: invoice,
-                                                    clientModel: client!,
-                                                  );
-                                                },
-                                              );
-                                            }
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  },
-                                  if (_privilegeCubit.checkPrivilege('32')) ...{
-                                    SizedBox(width: 5),
-                                    Expanded(
-                                      child: AppElevatedButton(
-                                          text: 'حذف الفاتورة',
-                                          onPressed: () async {
-                                            await showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: AppText('التأكيد'),
-                                                  content: AppText(
-                                                      'هل تريد حذف الفاتورة'),
-                                                  actions: <Widget>[
-                                                    AppTextButton(
-                                                      onPressed: () =>
-                                                          AppNavigator.pop(),
-                                                      child: AppText('لا'),
-                                                    ),
-                                                    AppTextButton(
-                                                      child: AppText('نعم'),
-                                                      onPressed: () async {
-                                                        AppNavigator.pop();
-                                                        _invoiceVm.deleteInvoice(
-                                                            invoice.idInvoice!);
-                                                        AppNavigator.pop();
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          }),
-                                    ),
-                                  },
-                                ],
-                              ),
-                              5.height,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  if (_privilegeCubit.checkPrivilege('116') ||
-                                      (_privilegeCubit.checkPrivilege('189') &&
-                                          invoice.isdoneinstall == null))
-                                    Expanded(
-                                      child: AppElevatedButton(
-                                        text: 'اضافة دفعة للفاتورة',
-                                        onPressed: () async {
-                                          AppNavigator.go(
-                                            AddPayement(
-                                              invoiceModel: invoice,
-                                            ),
-                                            isNew: false,
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  if (_privilegeCubit.checkPrivilege('115') ||
-                                      (_privilegeCubit.checkPrivilege('182') &&
-                                          invoice.isApprove == null)) ...{
-                                    SizedBox(width: 5),
-                                    Expanded(
-                                      child: AppElevatedButton(
-                                        text: 'تغيير بيانات الفاتورة',
-                                        onPressed: () async {
-                                          print(
-                                              "----------------Navigating to EditInvoice with invoice ID: ${invoice.idInvoice}-----------");
-                                          AppNavigator.go(
-                                            EditInvoice(
-                                              key: UniqueKey(),
-                                              invoiceModel: invoice,
-                                            ),
-                                            isNew: false,
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  },
-                                ],
-                              ),
+                              //     if (_privilegeCubit.checkPrivilege('41')) ...{
+                              //       5.width,
+                              //       Expanded(
+                              //         child: AppElevatedButton(
+                              //           text: 'الاجراءات',
+                              //           onPressed: () async {
+                              //             if (client != null) {
+                              //               if (invoice.stateclient !=
+                              //                   StatusClient
+                              //                       .restrictWithdrawn.text) {
+                              //                 _showConvertToRestrictWithdrawDialog(
+                              //                     context, invoice);
+                              //               } else {
+                              //                 showDialog<void>(
+                              //                   context: context,
+                              //                   builder: (context) {
+                              //                     return RejectDialog(
+                              //                       invoice: invoice,
+                              //                       clientModel: client!,
+                              //                     );
+                              //                   },
+                              //                 );
+                              //               }
+                              //             }
+                              //           },
+                              //         ),
+                              //       ),
+                              //     },
+                              //     if (_privilegeCubit.checkPrivilege('32')) ...{
+                              //       SizedBox(width: 5),
+                              //       Expanded(
+                              //         child: AppElevatedButton(
+                              //             text: 'حذف الفاتورة',
+                              //             onPressed: () async {
+                              //               await showDialog(
+                              //                 context: context,
+                              //                 builder: (context) {
+                              //                   return AlertDialog(
+                              //                     title: AppText('التأكيد'),
+                              //                     content: AppText(
+                              //                         'هل تريد حذف الفاتورة'),
+                              //                     actions: <Widget>[
+                              //                       AppTextButton(
+                              //                         onPressed: () =>
+                              //                             AppNavigator.pop(),
+                              //                         child: AppText('لا'),
+                              //                       ),
+                              //                       AppTextButton(
+                              //                         child: AppText('نعم'),
+                              //                         onPressed: () async {
+                              //                           AppNavigator.pop();
+                              //                           _invoiceVm.deleteInvoice(
+                              //                               invoice.idInvoice!);
+                              //                           AppNavigator.pop();
+                              //                         },
+                              //                       ),
+                              //                     ],
+                              //                   );
+                              //                 },
+                              //               );
+                              //             }),
+                              //       ),
+                              //     },
+                              //   ],
+                              // ),
+                              // 5.height,
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              //   children: [
+                              // if (_privilegeCubit.checkPrivilege('116') ||
+                              //     (_privilegeCubit.checkPrivilege('189') &&
+                              //         invoice.isdoneinstall == null))
+                              //   Expanded(
+                              //     child: AppElevatedButton(
+                              //       text: 'اضافة دفعة للفاتورة',
+                              //       onPressed: () async {
+                              //         AppNavigator.go(
+                              //           AddPayement(
+                              //             invoiceModel: invoice,
+                              //           ),
+                              //           isNew: false,
+                              //         );
+                              //       },
+                              //     ),
+                              //   ),
+                              //     if (_privilegeCubit.checkPrivilege('115') ||
+                              //         (_privilegeCubit.checkPrivilege('182') &&
+                              //             invoice.isApprove == null)) ...{
+                              //       SizedBox(width: 5),
+                              //       Expanded(
+                              //         child: AppElevatedButton(
+                              //           text: 'تغيير بيانات الفاتورة',
+                              //           onPressed: () async {
+                              //             print(
+                              //                 "----------------Navigating to EditInvoice with invoice ID: ${invoice.idInvoice}-----------");
+                              //             AppNavigator.go(
+                              //               EditInvoice(
+                              //                 key: UniqueKey(),
+                              //                 invoiceModel: invoice,
+                              //               ),
+                              //               isNew: false,
+                              //             );
+                              //           },
+                              //         ),
+                              //       ),
+                              //     },
+                              //   ],
+                              // ),
                               5.height,
                               if (widget.type == 'approved') ...[
                                 if (invoice.isApprove == null)
@@ -654,34 +713,34 @@ class _InvoiceViewState extends State<InvoiceView> {
                                     ],
                                   ),
                               ],
-                              5.height,
-                              AppElevatedButton(
-                                width: double.infinity,
-                                text: 'مرفقات الفاتورة',
-                                icon: Icons.file_present_rounded,
-                                onPressed: () {
-                                  AppNavigator.go(
-                                    InvoiceFileGalleryPage(),
-                                    isNew: false,
-                                  );
-                                },
-                              ),
-                              5.height,
-                              if (context
-                                  .read<PrivilegesCubit>()
-                                  .checkPrivilege('325'))
-                                AppElevatedButton(
-                                  isLoading: state.exportInvoicesToPdfStatus
-                                      .isLoading(),
-                                  width: double.infinity,
-                                  text: 'تصدير ك ملف pdf',
-                                  icon: Icons.file_present_rounded,
-                                  onPressed: () {
-                                    _invoicesSectionCubit.exportInvoicesToPdf(
-                                        ExportInvoiceToPdfParams(
-                                            invoiceId: invoice.idInvoice!));
-                                  },
-                                ),
+                              // 5.height,
+                              // AppElevatedButton(
+                              //   width: double.infinity,
+                              //   text: 'مرفقات الفاتورة',
+                              //   icon: Icons.file_present_rounded,
+                              //   onPressed: () {
+                              //     AppNavigator.go(
+                              //       InvoiceFileGalleryPage(),
+                              //       isNew: false,
+                              //     );
+                              //   },
+                              // ),
+                              // 5.height,
+                              // if (context
+                              //     .read<PrivilegesCubit>()
+                              //     .checkPrivilege('325'))
+                              //   AppElevatedButton(
+                              //     isLoading: state.exportInvoicesToPdfStatus
+                              //         .isLoading(),
+                              //     width: double.infinity,
+                              //     text: 'تصدير ك ملف pdf',
+                              //     icon: Icons.file_present_rounded,
+                              //     onPressed: () {
+                              //       _invoicesSectionCubit.exportInvoicesToPdf(
+                              //           ExportInvoiceToPdfParams(
+                              //               invoiceId: invoice.idInvoice!));
+                              //     },
+                              //   ),
                               SizedBox(height: 20),
                             },
                           ],
@@ -702,6 +761,154 @@ class _InvoiceViewState extends State<InvoiceView> {
             },
           );
         },
+      ),
+    );
+  }
+
+  void _showActionMenu(BuildContext context) {
+    final invoice = _invoiceVm.currentInvoice!;
+
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+      ),
+      builder: (context) => Container(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: ListView(
+          children: [
+            if (_privilegeCubit.checkPrivilege('141') &&
+                    invoice.isApprove == null ||
+                _privilegeCubit.checkPrivilege('31') == true &&
+                    invoice.isApprove != null)
+              ActionMenuItem(
+                icon: Icons.edit,
+                title: 'تعديل الفاتورة',
+                onTap: () async {
+                  AppNavigator.pop();
+                  if (client != null) {
+                    AppNavigator.go(
+                      AddInvoice(
+                        invoice: invoice,
+                        itemClient: client!,
+                      ),
+                      isNew: false,
+                    );
+                  }
+                },
+              ),
+            if (_privilegeCubit.checkPrivilege('41'))
+              ActionMenuItem(
+                icon: Icons.settings,
+                title: 'الاجراءات',
+                onTap: () async {
+                  AppNavigator.pop();
+                  if (client != null) {
+                    if (invoice.stateclient !=
+                        StatusClient.restrictWithdrawn.text) {
+                      _showConvertToRestrictWithdrawDialog(context, invoice);
+                    } else {
+                      showDialog<void>(
+                        context: context,
+                        builder: (context) {
+                          return RejectDialog(
+                            invoice: invoice,
+                            clientModel: client!,
+                          );
+                        },
+                      );
+                    }
+                  }
+                },
+              ),
+            if (_privilegeCubit.checkPrivilege('32'))
+              ActionMenuItem(
+                icon: Icons.delete,
+                title: 'حذف الفاتورة',
+                textColor: Colors.red,
+                iconColor: Colors.red,
+                onTap: () async {
+                  AppNavigator.pop();
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: AppText('التأكيد'),
+                        content: AppText('هل تريد حذف الفاتورة'),
+                        actions: <Widget>[
+                          AppTextButton(
+                            onPressed: () => AppNavigator.pop(),
+                            child: AppText('لا'),
+                          ),
+                          AppTextButton(
+                            child: AppText('نعم'),
+                            onPressed: () async {
+                              AppNavigator.pop();
+                              _invoiceVm.deleteInvoice(invoice.idInvoice!);
+                              AppNavigator.pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            if (_privilegeCubit.checkPrivilege('115') ||
+                (_privilegeCubit.checkPrivilege('182') &&
+                    invoice.isApprove == null))
+              ActionMenuItem(
+                icon: Icons.edit_note,
+                title: 'تغيير بيانات الفاتورة',
+                onTap: () async {
+                  AppNavigator.pop();
+                  AppNavigator.go(
+                    EditInvoice(
+                      key: UniqueKey(),
+                      invoiceModel: invoice,
+                    ),
+                    isNew: false,
+                  );
+                },
+              ),
+            if (_privilegeCubit.checkPrivilege('116') ||
+                (_privilegeCubit.checkPrivilege('189') &&
+                    invoice.isdoneinstall == null))
+              ActionMenuItem(
+                title: 'اضافة دفعة للفاتورة',
+                icon: Icons.payment,
+                onTap: () async {
+                  AppNavigator.pop();
+                  AppNavigator.go(
+                    AddPayement(
+                      invoiceModel: invoice,
+                    ),
+                    isNew: false,
+                  );
+                },
+              ),
+            ActionMenuItem(
+                title: 'مرفقات الفاتورة',
+                icon: Icons.file_present_rounded,
+                onTap: () {
+                  AppNavigator.pop();
+                  AppNavigator.go(
+                    InvoiceFileGalleryPage(),
+                    isNew: false,
+                  );
+                }),
+            if (context.read<PrivilegesCubit>().checkPrivilege('325'))
+              ActionMenuItem(
+                title: 'تصدير ك ملف pdf',
+                icon: Icons.import_export,
+                onTap: () async {
+                  AppNavigator.pop();
+                  _invoicesSectionCubit.exportInvoicesToPdf(
+                      ExportInvoiceToPdfParams(invoiceId: invoice.idInvoice!));
+                },
+              ),
+          ],
+        ),
       ),
     );
   }

@@ -153,8 +153,8 @@ class _SupportAddState extends State<SupportAdd> {
                       SectionWithAction(
                         title: 'تفاصيل التركيب',
                         onAddPressed: () {},
-                        child: Column(
-                          children: [
+                child: Column(
+                  children: [
                             ClientSupportCardDetails(
                               invoiceModel: _invoice,
                               datesInstallation: datesInstallation,
@@ -313,18 +313,18 @@ class _SupportAddState extends State<SupportAdd> {
                     icon: Icons.add_alarm,
                     onTap: () async {
                       Navigator.pop(context);
-                      await showDialog<void>(
-                        context: context,
-                        builder: (context) {
-                          return AddDateDialog(
-                            invoiceModel: _invoice!,
-                            idClient: widget.idClient!,
-                            datesInstallation: datesInstallation,
+                          await showDialog<void>(
+                            context: context,
+                            builder: (context) {
+                              return AddDateDialog(
+                                invoiceModel: _invoice!,
+                                idClient: widget.idClient!,
+                                datesInstallation: datesInstallation,
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                  ),
+                      ),
                 if (_privilegeCubit.checkPrivilege("43"))
                   ActionMenuItem(
                     title: 'تم التركيب',
@@ -493,9 +493,9 @@ class _SupportAddState extends State<SupportAdd> {
                                     );
                                   },
                                 ),
-                              ],
-                            ),
-                          ),
+                  ],
+                ),
+              ),
                         ],
                       ),
                     );
