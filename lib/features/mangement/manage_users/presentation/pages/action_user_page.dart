@@ -59,7 +59,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
 
   @override
   void initState() {
-    _usersCubit = context.read<UsersCubit>()..init();
+     _usersCubit = context.read<UsersCubit>()..init();
     isEdit = widget.user != null || widget.userId != null;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -95,15 +95,15 @@ class _ActionUserPageState extends State<ActionUserPage> {
 
     // تعيين قيم القوائم المنسدلة
     if (user!.typeAdministration != null) {
-      _usersCubit.setSelectedManage(user!.typeAdministration!);
+    _usersCubit.setSelectedManage(user!.typeAdministration!);
     }
 
     if (user!.typeLevel != null) {
-      _usersCubit.setSelectedLevel(user!.typeLevel!);
+    _usersCubit.setSelectedLevel(user!.typeLevel!);
     }
 
     if (user!.fkRegoin != null) {
-      _usersCubit.setSelectedBranch(user!.fkRegoin!);
+    _usersCubit.setSelectedBranch(user!.fkRegoin!);
     }
 
     // تحديث الحالة لإعادة بناء الواجهة
@@ -128,16 +128,16 @@ class _ActionUserPageState extends State<ActionUserPage> {
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : BlocBuilder<UsersCubit, UsersState>(
-              builder: (context, state) {
-                return state.getUserByIdStatus.when(
-                  success: (data) {
-                    return Form(
-                      key: _formKey,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+        builder: (context, state) {
+          return state.getUserByIdStatus.when(
+            success: (data) {
+              return Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                           textDirection: TextDirection.rtl,
-                          children: [
+                      children: [
                             SectionHeader(title: 'USER INFORMATION'),
                             InfoItem(
                               title: 'الإسم',
@@ -145,9 +145,9 @@ class _ActionUserPageState extends State<ActionUserPage> {
                               customWidget: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16),
                                 child: AppTextField(
-                                  hintText: 'الإسم',
-                                  controller: nameController,
-                                  isRequired: true,
+                            hintText: 'الإسم',
+                            controller: nameController,
+                            isRequired: true,
                                   textAlign: TextAlign.right,
                                 ),
                               ),
@@ -158,9 +158,9 @@ class _ActionUserPageState extends State<ActionUserPage> {
                               customWidget: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16),
                                 child: AppTextField(
-                                  hintText: 'البريد الإلكتروني',
+                          hintText: 'البريد الإلكتروني',
                                   controller: emailController,
-                                  isRequired: true,
+                          isRequired: true,
                                   textAlign: TextAlign.right,
                                 ),
                               ),
@@ -170,7 +170,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                               value: _usersCubit.userActionsEntity
                                       .selectedManage?.name_mange ??
                                   '',
-                              isRequired: true,
+                          isRequired: true,
                               showArrow: true,
                               onTap: () => _showManageDialog(),
                             ),
@@ -179,7 +179,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                               value: _usersCubit.userActionsEntity.selectedLevel
                                       ?.nameLevel ??
                                   '',
-                              isRequired: true,
+                          isRequired: true,
                               showArrow: true,
                               onTap: () => _showLevelDialog(),
                             ),
@@ -188,7 +188,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                               value: _usersCubit.userActionsEntity
                                       .selectedBranch?.branchName ??
                                   '',
-                              isRequired: true,
+                          isRequired: true,
                               showArrow: true,
                               onTap: () => _showBranchDialog(),
                             ),
@@ -215,12 +215,12 @@ class _ActionUserPageState extends State<ActionUserPage> {
                               customWidget: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16),
                                 child: AppTextField(
-                                  hintText: '966000000000',
-                                  controller: mobileController,
+                          hintText: '966000000000',
+                          controller: mobileController,
                                   inputType: TextInputType.phone,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                                   maxLength: 15,
                                   isRequired: true,
                                   textAlign: TextAlign.right,
@@ -234,17 +234,17 @@ class _ActionUserPageState extends State<ActionUserPage> {
                                     vertical: 16, horizontal: 16),
                                 color: Colors.white,
                                 child: Center(
-                                  child: AppGroupButton(
+                            child: AppGroupButton(
                                     groupButtonController:
                                         GroupButtonController(
-                                            selectedIndex: int.parse(isActive)),
-                                    buttons: ['غير نشط', 'نشط'],
-                                    onSelected: (_, index, isSelected) {
-                                      isActive = index.toString();
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
+                                  selectedIndex: int.parse(isActive)),
+                              buttons: ['غير نشط', 'نشط'],
+                              onSelected: (_, index, isSelected) {
+                                isActive = index.toString();
+                                setState(() {});
+                              },
+                            ),
+                          ),
                               ),
                             ],
                             SectionHeader(title: 'VIEW OPTIONS'),
@@ -267,19 +267,19 @@ class _ActionUserPageState extends State<ActionUserPage> {
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                    );
-                  },
-                  failure: (error, data) {
-                    return AppErrorWidget(
-                      message: error,
-                      onPressed: () => _usersCubit.getUserById(widget.userId!),
-                    );
-                  },
-                );
-              },
-            ),
+                  ),
+                ),
+              );
+            },
+            failure: (error, data) {
+              return AppErrorWidget(
+                message: error,
+                onPressed: () => _usersCubit.getUserById(widget.userId!),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 

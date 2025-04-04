@@ -146,7 +146,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                     textDirection: TextDirection.rtl,
                     children: [
                       AppIcon(item.icon, color: AppColors.primaryMain),
-                      AppText(item.title),
+                      AppText(item.title, fontSize: 14.scaleFontSize,),
                     ],
                   ),
                 )

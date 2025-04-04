@@ -74,7 +74,7 @@ class _UserScreenState extends State<UserScreen> {
               child: Column(
                 children: [
                   Container(
-                    width: double.infinity,
+              width: double.infinity,
                     decoration: BoxDecoration(
                       color: AppColors.primaryMain,
                       borderRadius: BorderRadius.only(
@@ -83,8 +83,8 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                     ),
                     padding: EdgeInsets.only(bottom: 80, top: 20),
-                    child: Column(
-                      children: [
+                  child: Column(
+                    children: [
                         CircleAvatar(
                           radius: 50,
                           backgroundColor: Colors.white,
@@ -116,16 +116,16 @@ class _UserScreenState extends State<UserScreen> {
                           ),
                         ),
                         SizedBox(height: 15),
-                        AppText(
+                                        AppText(
                           userVm.currentUser.nameUser.toString(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                   ),
                   Transform.translate(
                     offset: Offset(0, -40),
@@ -142,7 +142,7 @@ class _UserScreenState extends State<UserScreen> {
                           ),
                         ],
                       ),
-                      child: Padding(
+                                  child: Padding(
                         padding: EdgeInsets.all(20),
                         child: Column(
                           children: [

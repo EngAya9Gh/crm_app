@@ -202,13 +202,13 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                     ),
                     const SizedBox(height: 10),
 
-                     ClientInfoButtons(
-                    idClient: widget.idClient,
-                    client: clientModel,
-                    invoice: widget.invoice,
-                    typeInvoice: widget.typeInvoice,
-                    clientTransfer: widget.clientTransfer,
-                  ),
+                    ClientInfoButtons(
+                      idClient: widget.idClient,
+                      client: clientModel,
+                      invoice: widget.invoice,
+                      typeInvoice: widget.typeInvoice,
+                      clientTransfer: widget.clientTransfer,
+                    ),
                     // قسم الإجراءات
                     // if (widget.clientTransfer != 'transfer')
                     //   SectionWithAction(

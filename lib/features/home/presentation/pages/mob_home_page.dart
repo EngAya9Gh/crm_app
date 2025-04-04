@@ -131,7 +131,7 @@ class _MobHomePageState extends State<MobHomePage> {
                               hintTextDirection: TextDirection.rtl,
                               hintText: 'ابحث عن اسم المؤسسة, رقم الجوال...',
                               hintStyle: TextStyle(
-                                fontSize: 12.scaleFontSize, 
+                                fontSize: 12.scaleFontSize,
                                 color: Colors.grey.shade500,
                               ),
                               border: InputBorder.none,

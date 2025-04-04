@@ -16,6 +16,8 @@ import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:crm_smart/core/common/widgets/section_header.dart';
+import 'package:crm_smart/core/common/widgets/info_item.dart';
 
 class OrderNewVersionDialog extends StatefulWidget {
   const OrderNewVersionDialog({
@@ -83,28 +85,36 @@ class _OrderNewVersionDialogState extends State<OrderNewVersionDialog> {
               key: _globalKey,
               child: Column(
                 children: [
-                  AppTextField(
-                    hintText: "عنوان الطلب",
+                  SectionHeader(title: 'معلومات الطلب'),
+                  InfoItem(
+                    title: "عنوان الطلب",
                     isRequired: true,
-                    controller: titleController,
+                    customWidget: AppTextField(
+                      controller: titleController,
+                    ),
                   ),
                   10.height,
-                  AppTextField(
-                    hintText: "الهدف",
+                  InfoItem(
+                    title: "الهدف",
                     isRequired: true,
-                    maxLines: 3,
-                    controller: goalController,
+                    customWidget: AppTextField(
+                      maxLines: 3,
+                      controller: goalController,
+                    ),
                   ),
                   10.height,
-                  AppTextField(
-                    hintText: "الوصف",
-                    controller: desciptionController,
-                    onChange: (val) {},
+                  InfoItem(
+                    title: "الوصف",
                     isRequired: true,
-                    maxLines: 4,
+                    customWidget: AppTextField(
+                      controller: desciptionController,
+                      onChange: (val) {},
+                      maxLines: 4,
+                    ),
                   ),
                   10.height,
-                  BlocBuilder<ViolationsCubit, ViolationsState>(builder: (context, state) {
+                  BlocBuilder<ViolationsCubit, ViolationsState>(
+                      builder: (context, state) {
                     if (state.getManagementStatus.isLoading()) {
                       return AppLoader();
                     } else if (state.getManagementStatus.isFailed()) {
@@ -114,28 +124,40 @@ class _OrderNewVersionDialogState extends State<OrderNewVersionDialog> {
                     }
                     return ValueListenableBuilder(
                       valueListenable: idmanagement,
-                      builder: (context, managementId, child) => AppDropdownButtonFormField(
-                        value: managementId,
-                        items: List.of(violationsCubit.pageVariables.managementList)..insert(0, ManagementModel(idManage: 0, nameManage: 'عام')),
-                        itemBuilder: (item) => AppText(item?.nameManage ?? ''),
-                        itemAsValue: (item) => item?.idManage,
-                        // itemAsString: (item) => item??'' ,
-                        onChange: (value) {
-                          idmanagement.value = value!;
-                        },
-                        validator: InputValidator.requiredFiled,
+                      builder: (context, managementId, child) => InfoItem(
+                        title: "القسم",
+                        isRequired: true,
+                        customWidget: AppDropdownButtonFormField(
+                          value: managementId,
+                          items: List.of(
+                              violationsCubit.pageVariables.managementList)
+                            ..insert(
+                                0,
+                                ManagementModel(
+                                    idManage: 0, nameManage: 'عام')),
+                          itemBuilder: (item) =>
+                              AppText(item?.nameManage ?? ''),
+                          itemAsValue: (item) => item?.idManage,
+                          onChange: (value) {
+                            idmanagement.value = value!;
+                          },
+                          validator: InputValidator.requiredFiled,
+                        ),
                       ),
                     );
                   }),
                   10.height,
-                  AppTextField(
-                    hintText: "الملاحظات",
-                    controller: noteController,
-                    onChange: (val) {},
-                    maxLines: 4,
+                  InfoItem(
+                    title: "الملاحظات",
+                    customWidget: AppTextField(
+                      controller: noteController,
+                      onChange: (val) {},
+                      maxLines: 4,
+                    ),
                   ),
                   20.height,
-                  BlocBuilder<VersionsBloc, VersionsState>(builder: (context, state) {
+                  BlocBuilder<VersionsBloc, VersionsState>(
+                      builder: (context, state) {
                     return AppElevatedButton(
                       width: double.infinity,
                       isLoading: state.addDemandStatus.isLoading(),
@@ -145,7 +167,9 @@ class _OrderNewVersionDialogState extends State<OrderNewVersionDialog> {
                           bloc.add(AddDemandEvent(
                             params: AddOrUpdateDemandParams(
                               idDemand: widget.demandModel?.id,
-                              idManagement: idmanagement.value == 0 ? null : idmanagement.value,
+                              idManagement: idmanagement.value == 0
+                                  ? null
+                                  : idmanagement.value,
                               title: titleController.text,
                               goal: goalController.text,
                               description: desciptionController.text,

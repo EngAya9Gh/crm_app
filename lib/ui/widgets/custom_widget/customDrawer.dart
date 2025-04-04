@@ -91,9 +91,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             CircleAvatar(
                               radius: 30,
                               backgroundColor: AppColors.white,
-                              child: ClipRRect(
+                      child: ClipRRect(
                                 borderRadius: BorderRadius.circular(30),
-                                child: AppCachedNetworkImage(
+                        child: AppCachedNetworkImage(
                                   width: 60,
                                   height: 60,
                                   fit: BoxFit.cover,
@@ -127,10 +127,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         .currentUser
                                         .email
                                         .toString(),
-                                    style: TextStyle(
+                      style: TextStyle(
                                       color: AppColors.white70,
                                       fontSize: 14,
-                                      fontFamily: AppFonts.fontFamily1,
+                        fontFamily: AppFonts.fontFamily1,
                                     ),
                                   ),
                                 ],
@@ -160,21 +160,21 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               'الملف الشخصي',
                               fontSize: 15.scaleFontSize,
                               style: TextStyle(color: AppColors.white),
-                            ),
-                            onTap: () => AppNavigator.go(
-                              UserScreen(
-                                ismyprofile: 'yes',
+                    ),
+                    onTap: () => AppNavigator.go(
+                      UserScreen(
+                        ismyprofile: 'yes',
                                 user: Provider.of<UserProvider>(context,
                                         listen: false)
                                     .currentUser,
-                              ),
-                              isNew: false,
-                            ),
-                          ),
+                      ),
+                      isNew: false,
+                    ),
+                  ),
                           if (context
                               .read<PrivilegesCubit>()
                               .checkPrivilege('49'))
-                            ListTile(
+                  ListTile(
                               leading: Icon(Icons.add, color: AppColors.white),
                               title: AppText(
                                 'اضافة حساب جديد',
@@ -195,34 +195,34 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               'تسجيل الخروج',
                               fontSize: 15.scaleFontSize,
                               style: TextStyle(color: AppColors.white),
-                            ),
-                            onTap: () async {
+                    ),
+                    onTap: () async {
                               Provider.of<UserProvider>(context, listen: false)
                                   .logout(
-                                onLogoutSuccess: () async {
-                                  final secureStorage = getIt<CacheServices>(
-                                    instanceName: SecureStorageConsumer.name,
-                                  );
-                                  await secureStorage
-                                      .removeData(
-                                    key: AppStrings.secureStorage.token,
-                                  )
-                                      .then(
-                                    (value) {
+                        onLogoutSuccess: () async {
+                          final secureStorage = getIt<CacheServices>(
+                            instanceName: SecureStorageConsumer.name,
+                          );
+                          await secureStorage
+                              .removeData(
+                            key: AppStrings.secureStorage.token,
+                          )
+                              .then(
+                            (value) {
                                       AppNavigator.goReplacement(LoginPage(),
                                           name: AppRoutesNames
                                               .generalRoutes.login);
-                                    },
-                                  );
-                                },
-                              );
                             },
-                          ),
-                          ListTile(
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  ListTile(
                             leading: Icon(Icons.delete_outline,
                                 color: AppColors.white),
                             title: AppText(
-                              'حذف حسابي',
+                      'حذف حسابي',
                               fontSize: 15.scaleFontSize,
                               style: TextStyle(color: AppColors.white),
                             ),
@@ -332,23 +332,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
                     // Update button
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: StatefulBuilder(
-                        builder: (context, refresh) {
-                          return AppElevatedButton(
-                            isLoading: checkingForUpdate,
-                            onPressed: () async {
-                              _changeUpdateStateLoading(refresh);
-                              await _downloadUpdateIfAvailable();
-                              _changeUpdateStateLoading(refresh);
-                            },
-                            child: AppText(
-                              'تحقق من وجود تحديثات',
+                    padding: const EdgeInsets.all(8.0),
+                    child: StatefulBuilder(
+                      builder: (context, refresh) {
+                        return AppElevatedButton(
+                          isLoading: checkingForUpdate,
+                          onPressed: () async {
+                            _changeUpdateStateLoading(refresh);
+                            await _downloadUpdateIfAvailable();
+                            _changeUpdateStateLoading(refresh);
+                          },
+                          child: AppText(
+                            'تحقق من وجود تحديثات',
                               fontSize: 14.scaleFontSize,
                               color: AppColors.white,
-                            ),
-                          );
-                        },
+                          ),
+                        );
+                      },
                       ),
                     ),
                   ],

@@ -21,6 +21,8 @@ import '../../../../sales/public_relations/agents_and_distributors/presentation/
 import '../../../../support/dates_table/data/models/subscribed_client_model.dart';
 import '../../data/models/activity_type_model.dart';
 import '../manager/crud_activities_bloc.dart';
+import 'package:crm_smart/core/common/widgets/section_header.dart';
+import 'package:crm_smart/core/common/widgets/info_item.dart';
 
 class AddActivityPage extends StatefulWidget {
   const AddActivityPage({this.activity, super.key});
@@ -57,111 +59,169 @@ class _AddActivityPageState extends State<AddActivityPage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(title: widget.activity == null ? "إضافة نشاط" : 'تعديل نشاط', showBackButton: true),
+      appBar: CustomAppBar(
+          title: widget.activity == null ? "إضافة نشاط" : 'تعديل نشاط',
+          showBackButton: true),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Form(
           key: _bloc.addActivityEntity.globalKey,
           child: BlocBuilder<CrudActivitiesBloc, CrudActivitiesState>(
             buildWhen: (previous, current) =>
-                previous.addClientActivityStatus != current.addClientActivityStatus ||
-                previous.updateClientActivityStatus != current.updateClientActivityStatus,
+                previous.addClientActivityStatus !=
+                    current.addClientActivityStatus ||
+                previous.updateClientActivityStatus !=
+                    current.updateClientActivityStatus,
             builder: (context, state) {
               return RepaintBoundary(
                 child: ModalProgressHUD(
-                  inAsyncCall: state.addClientActivityStatus.isLoading() || state.updateClientActivityStatus.isLoading(),
+                  inAsyncCall: state.addClientActivityStatus.isLoading() ||
+                      state.updateClientActivityStatus.isLoading(),
                   progressIndicator: AppLoader(),
                   child: ListView(
                     padding: const EdgeInsets.all(16.0),
                     children: [
-                      BlocSelector<CrudActivitiesBloc, CrudActivitiesState, BlocStatus>(
+                      SectionHeader(title: 'معلومات النشاط'),
+                      BlocSelector<CrudActivitiesBloc, CrudActivitiesState,
+                          BlocStatus>(
                         selector: (state) => state.getActivityTypesStatus,
                         builder: (context, getActivityTypesStatus) {
                           return getActivityTypesStatus.isLoading()
                               ? AppLoader()
-                              : CustomDropDown<ActivityTypeModel>(
-                                  hint: "نوع النشاط",
-                                  isDisabled: widget.activity == null ? false : widget.activity!.state == "completed",
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  items: _bloc.addActivityEntity.addActivityTypesList.value,
-                                  itemAsString: (item) => item!.name,
-                            compareFn:  (item, selectedItem) => item.id == selectedItem.id,
-                                  selectedItem: _bloc.addActivityEntity.selectedActivityType.value == null
-                                      ? null
-                                      : _bloc.addActivityEntity.selectedActivityType.value,
-                                  onChanged: (value) {
-                                    if (value == null) return;
-                                    _bloc.addActivityEntity.selectedActivityType.value = value;
-                                  },
-                                  validator: InputValidator.requiredFiled,
+                              : InfoItem(
+                                  title: "نوع النشاط",
+                                  isRequired: true,
+                                  customWidget:
+                                      CustomDropDown<ActivityTypeModel>(
+                                    hint: "نوع النشاط",
+                                    isDisabled: widget.activity == null
+                                        ? false
+                                        : widget.activity!.state == "completed",
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    items: _bloc.addActivityEntity
+                                        .addActivityTypesList.value,
+                                    itemAsString: (item) => item!.name,
+                                    compareFn: (item, selectedItem) =>
+                                        item.id == selectedItem.id,
+                                    selectedItem: _bloc.addActivityEntity
+                                                .selectedActivityType.value ==
+                                            null
+                                        ? null
+                                        : _bloc.addActivityEntity
+                                            .selectedActivityType.value,
+                                    onChanged: (value) {
+                                      if (value == null) return;
+                                      _bloc.addActivityEntity
+                                          .selectedActivityType.value = value;
+                                    },
+                                    validator: InputValidator.requiredFiled,
+                                  ),
                                 );
                         },
                       ),
                       10.height,
-                      AppTextField(
-                        hintText: "العنوان",
-                        controller: _bloc.addActivityEntity.nameController,
-                        enabled: !(widget.activity == null ? false : widget.activity!.state == "completed"),
+                      InfoItem(
+                        title: "العنوان",
                         isRequired: true,
+                        customWidget: AppTextField(
+                          controller: _bloc.addActivityEntity.nameController,
+                          enabled: !(widget.activity == null
+                              ? false
+                              : widget.activity!.state == "completed"),
+                        ),
                       ),
                       10.height,
-                      AppTextField(
-                        hintText: "الوصف",
-                        controller: _bloc.addActivityEntity.descriptionController,
-                        enabled: !(widget.activity == null ? false : widget.activity!.state == "completed"),
+                      InfoItem(
+                        title: "الوصف",
                         isRequired: true,
-                        maxLines: 3,
+                        customWidget: AppTextField(
+                          controller:
+                              _bloc.addActivityEntity.descriptionController,
+                          enabled: !(widget.activity == null
+                              ? false
+                              : widget.activity!.state == "completed"),
+                          maxLines: 3,
+                        ),
                       ),
                       10.height,
-                      CustomDateTimePicker(
-                        dateTimeType: DateTimeEnum.both,
-                        hintText: 'تاريخ البداية',
-                        enabled: !(widget.activity == null ? false : widget.activity!.state == "completed"),
-                        dateTimeController: _bloc.addActivityEntity.startDateController,
-                        style2: true,
+                      SectionHeader(title: 'التوقيت'),
+                      InfoItem(
+                        title: "تاريخ البداية",
+                        isRequired: true,
+                        customWidget: CustomDateTimePicker(
+                          dateTimeType: DateTimeEnum.both,
+                          enabled: !(widget.activity == null
+                              ? false
+                              : widget.activity!.state == "completed"),
+                          dateTimeController:
+                              _bloc.addActivityEntity.startDateController,
+                          style2: true,
+                        ),
                       ),
                       10.height,
-                      BlocSelector<CrudActivitiesBloc, CrudActivitiesState, bool>(
+                      BlocSelector<CrudActivitiesBloc, CrudActivitiesState,
+                          bool>(
                         selector: (state) => state.wholeDay,
                         builder: (context, wholeDay) {
-                          return CustomDateTimePicker(
-                            dateTimeType: DateTimeEnum.both,
-                            hintText: 'تاريخ النهاية',
-                            enabled: !(widget.activity == null ? false : widget.activity!.state == "completed"),
-                            dateTimeController: _bloc.addActivityEntity.endDateController,
-                            style2: true,
+                          return InfoItem(
+                            title: "تاريخ النهاية",
                             isRequired: !wholeDay,
+                            customWidget: CustomDateTimePicker(
+                              dateTimeType: DateTimeEnum.both,
+                              enabled: !(widget.activity == null
+                                  ? false
+                                  : widget.activity!.state == "completed"),
+                              dateTimeController:
+                                  _bloc.addActivityEntity.endDateController,
+                              style2: true,
+                            ),
                           );
                         },
                       ),
                       10.height,
+                      SectionHeader(title: 'حالة النشاط'),
                       Row(
                         children: [
                           Expanded(
-                            child: Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: CustomDropDown<ActivityStateEnum>(
-                                hint: "الحالة",
-                                isDisabled: widget.activity == null ? false : widget.activity!.state == "completed",
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                items: ActivityStateEnum.values,
-                                compareFn:  (item, selectedItem) => item.index == selectedItem.index,
-                                itemAsString: (item) => item!.name,
-                                selectedItem: _bloc.addActivityEntity.activityState.value == null
-                                    ? null
-                                    : ActivityStateExtension.fromValue(_bloc.addActivityEntity.activityState.value ?? ""),
-                                itemAsIcon: (value) {
-                                  return Icon(
-                                    value!.icon,
-                                    color: value.color,
-                                    size: 25.scaleIconsSize,
-                                  );
-                                },
-                                onChanged: (value) {
-                                  if (value == null) return;
-                                  _bloc.addActivityEntity.activityState.value = value.enName;
-                                },
-                                validator: InputValidator.requiredFiled,
+                            child: InfoItem(
+                              title: "الحالة",
+                              isRequired: true,
+                              customWidget: Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: CustomDropDown<ActivityStateEnum>(
+                                  hint: "الحالة",
+                                  isDisabled: widget.activity == null
+                                      ? false
+                                      : widget.activity!.state == "completed",
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  items: ActivityStateEnum.values,
+                                  compareFn: (item, selectedItem) =>
+                                      item.index == selectedItem.index,
+                                  itemAsString: (item) => item!.name,
+                                  selectedItem: _bloc.addActivityEntity
+                                              .activityState.value ==
+                                          null
+                                      ? null
+                                      : ActivityStateExtension.fromValue(_bloc
+                                              .addActivityEntity
+                                              .activityState
+                                              .value ??
+                                          ""),
+                                  itemAsIcon: (value) {
+                                    return Icon(
+                                      value!.icon,
+                                      color: value.color,
+                                      size: 25.scaleIconsSize,
+                                    );
+                                  },
+                                  onChanged: (value) {
+                                    if (value == null) return;
+                                    _bloc.addActivityEntity.activityState
+                                        .value = value.enName;
+                                  },
+                                  validator: InputValidator.requiredFiled,
+                                ),
                               ),
                             ),
                           ),
@@ -169,10 +229,22 @@ class _AddActivityPageState extends State<AddActivityPage> {
                           AppIcon(
                             _bloc.addActivityEntity.activityState.value == null
                                 ? Icons.schedule
-                                : ActivityStateExtension.fromValue(_bloc.addActivityEntity.activityState.value ?? "").icon,
-                            color: _bloc.addActivityEntity.activityState.value == null
-                                ? ActivityStateEnum.schedule.color
-                                : ActivityStateExtension.fromValue(_bloc.addActivityEntity.activityState.value ?? "").color,
+                                : ActivityStateExtension.fromValue(_bloc
+                                            .addActivityEntity
+                                            .activityState
+                                            .value ??
+                                        "")
+                                    .icon,
+                            color:
+                                _bloc.addActivityEntity.activityState.value ==
+                                        null
+                                    ? ActivityStateEnum.schedule.color
+                                    : ActivityStateExtension.fromValue(_bloc
+                                                .addActivityEntity
+                                                .activityState
+                                                .value ??
+                                            "")
+                                        .color,
                           ),
                         ],
                       ),
@@ -180,97 +252,124 @@ class _AddActivityPageState extends State<AddActivityPage> {
                       Row(
                         children: [
                           Expanded(
-                            child: CustomDropDown<ActivityPriorityEnum>(
-                              hint: "الأولوية",
-                              items: ActivityPriorityEnum.values,
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              isDisabled: widget.activity == null ? false : widget.activity!.state == "completed",
-                              itemAsString: (item) => item!.name,
-                              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
-                              selectedItem: _bloc.addActivityEntity.priority.value == null
-                                  ? null
-                                  : ActivityPriorityExtension.fromValue(_bloc.addActivityEntity.priority.value ?? ""),
-                              onChanged: (value) {
-                                if (value == null) return;
-                                _bloc.addActivityEntity.priority.value = value.enName;
-                              },
-                              itemAsIcon: (value) {
-                                return Icon(
-                                  Icons.flag,
-                                  color: value!.color,
-                                  size: 25.scaleIconsSize,
-                                );
-                              },
-                              validator: InputValidator.requiredFiled,
+                            child: InfoItem(
+                              title: "الأولوية",
+                              isRequired: true,
+                              customWidget:
+                                  CustomDropDown<ActivityPriorityEnum>(
+                                hint: "الأولوية",
+                                items: ActivityPriorityEnum.values,
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                isDisabled: widget.activity == null
+                                    ? false
+                                    : widget.activity!.state == "completed",
+                                itemAsString: (item) => item!.name,
+                                compareFn: (item, selectedItem) =>
+                                    item.index == selectedItem.index,
+                                selectedItem: _bloc
+                                            .addActivityEntity.priority.value ==
+                                        null
+                                    ? null
+                                    : ActivityPriorityExtension.fromValue(_bloc
+                                            .addActivityEntity.priority.value ??
+                                        ""),
+                                onChanged: (value) {
+                                  if (value == null) return;
+                                  _bloc.addActivityEntity.priority.value =
+                                      value.enName;
+                                },
+                                itemAsIcon: (value) {
+                                  return Icon(
+                                    Icons.flag,
+                                    color: value!.color,
+                                    size: 25.scaleIconsSize,
+                                  );
+                                },
+                                validator: InputValidator.requiredFiled,
+                              ),
                             ),
                           ),
                           SizedBox(width: 10),
                           AppIcon(
                             Icons.flag,
-                            color: _bloc.addActivityEntity.priority.value == null
-                                ? ActivityPriorityEnum.normal.color
-                                : ActivityPriorityExtension.fromValue(_bloc.addActivityEntity.priority.value ?? "").color,
+                            color:
+                                _bloc.addActivityEntity.priority.value == null
+                                    ? ActivityPriorityEnum.normal.color
+                                    : ActivityPriorityExtension.fromValue(_bloc
+                                                .addActivityEntity
+                                                .priority
+                                                .value ??
+                                            "")
+                                        .color,
                           ),
                         ],
                       ),
                       10.height,
-                      BlocSelector<CrudActivitiesBloc, CrudActivitiesState, BlocStatus>(
+                      SectionHeader(title: 'معلومات العميل'),
+                      BlocSelector<CrudActivitiesBloc, CrudActivitiesState,
+                          BlocStatus>(
                         selector: (state) => state.getSubscribedClientsStatus,
                         builder: (context, getSubscribedClientsStatus) {
                           return getSubscribedClientsStatus.isLoading()
                               ? AppLoader()
-                              : CustomSearchableDropDown<SubscribedClientModel>(
-                                  hint: 'العميل',
-                                  enabled: !(widget.activity == null ? false : widget.activity!.state == "completed"),
-                                  items: _bloc.addActivityEntity.subscribedClientsList.value,
-                                  itemAsString: (item) => item!.name,
-                                  selectedItem: _bloc.addActivityEntity.selectedClient.value,
-                                  onChanged: (widget.activity != null && widget.activity!.state == "completed")
-                                      ? null
-                                      : (value) async {
-                                          _bloc.addActivityEntity.selectedClient.value = value;
-                                        },
-                                  validator: (value) {
-                                    return InputValidator.requiredFiled(value);
-                                  },
-                                  filterFn: (item, filter) {
-                                    return item.name.toLowerCase().contains(filter.toLowerCase());
-                                  },
-                                  compareFn: (item, selectedItem) => item.id == selectedItem.id);
+                              : InfoItem(
+                                  title: "العميل",
+                                  isRequired: true,
+                                  customWidget: CustomSearchableDropDown<
+                                      SubscribedClientModel>(
+                                    hint: 'العميل',
+                                    enabled: !(widget.activity == null
+                                        ? false
+                                        : widget.activity!.state ==
+                                            "completed"),
+                                    items: _bloc.addActivityEntity
+                                        .subscribedClientsList.value,
+                                    itemAsString: (item) => item!.name,
+                                    selectedItem: _bloc
+                                        .addActivityEntity.selectedClient.value,
+                                    onChanged: (widget.activity != null &&
+                                            widget.activity!.state ==
+                                                "completed")
+                                        ? null
+                                        : (value) async {
+                                            _bloc.addActivityEntity
+                                                .selectedClient.value = value;
+                                          },
+                                    validator: (value) {
+                                      return InputValidator.requiredFiled(
+                                          value);
+                                    },
+                                    filterFn: (item, filter) {
+                                      return item.name
+                                          .toLowerCase()
+                                          .contains(filter.toLowerCase());
+                                    },
+                                    compareFn: (item, selectedItem) =>
+                                        item.id == selectedItem.id,
+                                  ),
+                                );
                         },
                       ),
-                      10.height,
-                      Row(
-                        children: [
-                          BlocSelector<CrudActivitiesBloc, CrudActivitiesState, bool>(
-                            selector: (state) => state.wholeDay,
-                            builder: (context, wholeDay) {
-                              return Checkbox(
-                                value: wholeDay,
-                                onChanged: (value) {
-                                  _bloc.add(ChangeWholeDayValueEvent());
-                                  _bloc.addActivityEntity.wholeDay.value = value!;
-                                  if (_bloc.addActivityEntity.wholeDay.value) {
-                                    _bloc.addActivityEntity.endDateController.text = '';
-                                  }
-                                },
-                              );
-                            },
-                          ),
-                          AppText('اليوم كامل'),
-                        ],
-                      ),
                       AppElevatedButton(
-                        onPressed: (widget.activity != null && widget.activity!.state == "completed")
+                        onPressed: (widget.activity != null &&
+                                widget.activity!.state == "completed")
                             ? null
                             : () {
-                                if (_bloc.addActivityEntity.globalKey.currentState!.validate()) {
-                                  if (_bloc.addActivityEntity.endDateController.text != '') {
+                                if (_bloc
+                                    .addActivityEntity.globalKey.currentState!
+                                    .validate()) {
+                                  if (_bloc.addActivityEntity.endDateController
+                                          .text !=
+                                      '') {
                                     bool isAfter = IsStartAfterEnd(
-                                        _bloc.addActivityEntity.startDateController.text, _bloc.addActivityEntity.endDateController.text,
+                                        _bloc.addActivityEntity
+                                            .startDateController.text,
+                                        _bloc.addActivityEntity
+                                            .endDateController.text,
                                         isDate: true);
                                     if (isAfter) {
-                                      AppSnackbar.showSnakeBar('لا يمكن أن يكون وقت النهاية قبل وقت البداية');
+                                      AppSnackbar.showSnakeBar(
+                                          'لا يمكن أن يكون وقت النهاية قبل وقت البداية');
                                       return;
                                     }
                                   }
@@ -278,7 +377,8 @@ class _AddActivityPageState extends State<AddActivityPage> {
                                     _bloc.add(
                                       AddActivityEvent(
                                         onSuccess: () {
-                                          AppSnackbar.showSnakeBar("تمت اضافة النشاط بنجاح");
+                                          AppSnackbar.showSnakeBar(
+                                              "تمت اضافة النشاط بنجاح");
                                           Navigator.pop(context);
                                         },
                                       ),
@@ -286,9 +386,11 @@ class _AddActivityPageState extends State<AddActivityPage> {
                                   } else {
                                     _bloc.add(
                                       UpdateCrudActivityEvent(
-                                        activityId: widget.activity!.id.toString(),
+                                        activityId:
+                                            widget.activity!.id.toString(),
                                         onSuccess: () {
-                                          AppSnackbar.showSnakeBar("تمت تعديل النشاط بنجاح");
+                                          AppSnackbar.showSnakeBar(
+                                              "تمت تعديل النشاط بنجاح");
                                           Navigator.pop(context);
                                         },
                                       ),
@@ -296,7 +398,8 @@ class _AddActivityPageState extends State<AddActivityPage> {
                                   }
                                 }
                               },
-                        child: Text(widget.activity == null ? "إضافة" : "تعديل"),
+                        child:
+                            Text(widget.activity == null ? "إضافة" : "تعديل"),
                       ),
                     ],
                   ),

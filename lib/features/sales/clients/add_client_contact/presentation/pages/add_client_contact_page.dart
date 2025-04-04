@@ -18,6 +18,8 @@ import '../../../clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../domain/use_cases/add_client_contact_usecase.dart';
 import '../manager/add_client_contact_bloc.dart';
 import '../widgets/clients_list_search_dialog.dart';
+import 'package:crm_smart/core/common/widgets/section_header.dart';
+import 'package:crm_smart/core/common/widgets/info_item.dart';
 
 class AddClientContactPage extends StatefulWidget {
   final ClientContactModel? clientContact;
@@ -43,10 +45,17 @@ class _AddClientContactPageState extends State<AddClientContactPage> {
     super.initState();
     _bloc = context.read<AddClientContactBloc>();
 
-    nameController = TextEditingController(text: widget.clientContact!=null?widget.clientContact!.name:null);
-    contactValueController = TextEditingController(text: widget.clientContact!=null?widget.clientContact!.contactValue:null);
-    clientController = TextEditingController(text: widget.clientContact!=null && widget.clientContact!.client!=null
-        ?widget.clientContact!.client!.nameClient:null);
+    nameController = TextEditingController(
+        text: widget.clientContact != null ? widget.clientContact!.name : null);
+    contactValueController = TextEditingController(
+        text: widget.clientContact != null
+            ? widget.clientContact!.contactValue
+            : null);
+    clientController = TextEditingController(
+        text:
+            widget.clientContact != null && widget.clientContact!.client != null
+                ? widget.clientContact!.client!.nameClient
+                : null);
   }
 
   @override
@@ -62,86 +71,108 @@ class _AddClientContactPageState extends State<AddClientContactPage> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: AppScaffold(
-        appBar: CustomAppBar(
-          title: 'إضافة جهة اتصال',showBackButton: true
-        ),
+        appBar: CustomAppBar(title: 'إضافة جهة اتصال', showBackButton: true),
         body: Form(
           key: _formKey,
           child: BlocBuilder<AddClientContactBloc, AddClientContactState>(
               buildWhen: (previous, current) =>
-              previous.addClientContactStatus != current.addClientContactStatus,
+                  previous.addClientContactStatus !=
+                  current.addClientContactStatus,
               builder: (context, state) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-              child: Column(
-                children: [
-                  AppTextField(
-                    labelText: "اسم جهة الاتصال*",
-                    controller: nameController,
-                    isRequired: true,
-                    validator: InputValidator.requiredFiled,
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SectionHeader(title: 'معلومات جهة الاتصال'),
+                      InfoItem(
+                        title: "اسم جهة الاتصال",
+                        isRequired: true,
+                        customWidget: AppTextField(
+                          controller: nameController,
+                          validator: InputValidator.requiredFiled,
+                        ),
+                      ),
+                      15.verticalSpace,
+                      InfoItem(
+                        title: "العميل",
+                        isRequired: true,
+                        customWidget: AppTextField(
+                          controller: clientController,
+                          readOnly: true,
+                          validator: InputValidator.requiredFiled,
+                          suffixIcon: const Icon(Icons.search),
+                          onTap: _showClientSearchDialog,
+                        ),
+                      ),
+                      15.verticalSpace,
+                      InfoItem(
+                        title: "نوع الاتصال",
+                        isRequired: true,
+                        customWidget: CustomDropDown<ContactTypeEnum>(
+                          hint: "نوع الاتصال*",
+                          items: ContactTypeEnum.values,
+                          compareFn: (item, selectedItem) =>
+                              item.index == selectedItem.index,
+                          itemAsString: (item) => item!.displayNameAr,
+                          selectedItem: _selectedContactType,
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() {
+                              _selectedContactType = value;
+                              contactValueController.clear();
+                            });
+                          },
+                          validator: InputValidator.requiredFiled,
+                        ),
+                      ),
+                      15.verticalSpace,
+                      InfoItem(
+                        title: _getContactValueLabel(),
+                        isRequired: true,
+                        customWidget: AppTextField(
+                          controller: contactValueController,
+                          validator: InputValidator.requiredFiled,
+                          inputType: _getKeyboardType(),
+                          maxLength:
+                              _selectedContactType == ContactTypeEnum.mobile
+                                  ? 15
+                                  : null,
+                        ),
+                      ),
+                      15.verticalSpace,
+                      InfoItem(
+                        title: "نوع جهة الاتصال",
+                        isRequired: true,
+                        customWidget: CustomDropDown<ContactTypeRoleEnum>(
+                          hint: "نوع جهة الاتصال*",
+                          items: ContactTypeRoleEnum.values,
+                          itemAsString: (item) => item!.name,
+                          compareFn: (item, selectedItem) =>
+                              item.index == selectedItem.index,
+                          selectedItem: state.selectedRole,
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() {
+                              _bloc.add(UpdateContactRoleEvent(value));
+                            });
+                          },
+                          validator: InputValidator.requiredFiled,
+                        ),
+                      ),
+                      15.verticalSpace,
+                      Center(
+                        child: AppElevatedButton(
+                          text:
+                              widget.clientContact == null ? "إضافة" : "تعديل",
+                          isLoading: state.addClientContactStatus.isLoading(),
+                          onPressed: _onSubmit,
+                        ),
+                      ),
+                    ],
                   ),
-                  15.verticalSpace,
-                  AppTextField(
-                    labelText: "العميل*",
-                    controller: clientController,
-                    isRequired: true,
-                    readOnly: true,
-                    validator: InputValidator.requiredFiled,
-                    suffixIcon: const Icon(Icons.search),
-                    onTap: _showClientSearchDialog,
-                  ),
-                  15.verticalSpace,
-                  CustomDropDown<ContactTypeEnum>(
-                    hint: "نوع الاتصال*",
-                    items: ContactTypeEnum.values,
-                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
-                    itemAsString: (item) => item!.displayNameAr,
-                    selectedItem: _selectedContactType,
-                    onChanged: (value) {
-                      if (value == null) return;
-                      setState(() {
-                        _selectedContactType = value;
-                        contactValueController.clear();
-                      });
-                    },
-                    validator: InputValidator.requiredFiled,
-                  ),
-                  15.verticalSpace,
-                  AppTextField(
-                    labelText: _getContactValueLabel(),
-                    controller: contactValueController,
-                    isRequired: true,
-                    validator: InputValidator.requiredFiled,
-                    inputType: _getKeyboardType(),
-                    maxLength: _selectedContactType ==
-                        ContactTypeEnum.mobile ? 15 : null,
-                  ),
-                  15.verticalSpace,
-                  CustomDropDown<ContactTypeRoleEnum>(
-                    hint: "نوع جهة الاتصال*",
-                    items: ContactTypeRoleEnum.values,
-                    itemAsString: (item) => item!.name,
-                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
-                    selectedItem: state.selectedRole,
-                    onChanged: (value) {
-                      if (value == null) return;
-                      setState(() {
-                        _bloc.add(UpdateContactRoleEvent(value));
-                      });
-                    },
-                    validator: InputValidator.requiredFiled,
-                  ),
-                  15.verticalSpace,
-                  AppElevatedButton(
-                    text:widget.clientContact==null? "إضافة":"تعديل",
-                    isLoading: state.addClientContactStatus.isLoading(),
-                    onPressed: _onSubmit,
-                  ),
-                ],
-              ),
-            );
-          }),
+                );
+              }),
         ),
       ),
     );
@@ -169,20 +200,21 @@ class _AddClientContactPageState extends State<AddClientContactPage> {
     if (!_formKey.currentState!.validate()) return;
 
     final params = AddClientContactParams(
-      contactId: widget.clientContact!=null?widget.clientContact!.id.toString():null,
+      contactId: widget.clientContact != null
+          ? widget.clientContact!.id.toString()
+          : null,
       name: nameController.text,
       contactType: _selectedContactType,
       contactValue: contactValueController.text,
     );
-    if(widget.clientContact==null)
-      {
-        _bloc.add(AddClientContactSubmitEvent(
-          params,
-          onSuccess: (contact) {
-            AppNavigator.pop(result: contact);
-          },
-        ));
-      }else{
+    if (widget.clientContact == null) {
+      _bloc.add(AddClientContactSubmitEvent(
+        params,
+        onSuccess: (contact) {
+          AppNavigator.pop(result: contact);
+        },
+      ));
+    } else {
       _bloc.add(UpdateClientContactEvent(
         params,
         onSuccess: (contact) {
@@ -190,18 +222,16 @@ class _AddClientContactPageState extends State<AddClientContactPage> {
         },
       ));
     }
-
   }
 
   void _showClientSearchDialog() async {
     final result = await showDialog<ClientModel>(
       context: context,
       useRootNavigator: true,
-      builder: (context) =>
-          BlocProvider.value(
-            value: getIt<ClientsListBloc>(),
-            child: const ClientsSearchDialog(),
-          ),
+      builder: (context) => BlocProvider.value(
+        value: getIt<ClientsListBloc>(),
+        child: const ClientsSearchDialog(),
+      ),
     );
 
     if (result != null) {

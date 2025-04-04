@@ -115,13 +115,13 @@ class _CommunicationExpandedWidgetState
           // تقييم عام للخدمة
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+                children: [
               AppText(
                 'تقييم عام للخدمة',
                 style: titleStyle,
                 fontSize: 14,
               ),
-              AppRateWidget(
+                    AppRateWidget(
                 rateValue: rateSalesValue,
                 onRatingUpdate: (value) {
                   setState(() {
@@ -140,8 +140,8 @@ class _CommunicationExpandedWidgetState
                 'تقييم المنتج',
                 style: titleStyle,
                 fontSize: 14,
-              ),
-              AppRateWidget(
+                    ),
+                    AppRateWidget(
                 rateValue: rateProductValue,
                 onRatingUpdate: (value) {
                   setState(() {
@@ -155,7 +155,7 @@ class _CommunicationExpandedWidgetState
           // تقييم الدعم الفني
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+                    children: [
               AppText(
                 'تقييم الدعم الفني',
                 style: titleStyle,
@@ -183,10 +183,10 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: typepayController,
                   onChanged: (val) {
-                    setState(() {
+                                  setState(() {
                       typepayController = val ?? false;
-                    });
-                  },
+                                  });
+                                },
                 ),
               ),
               Expanded(
@@ -197,10 +197,10 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: numberwrong,
                   onChanged: (val) {
-                    setState(() {
+                                  setState(() {
                       numberwrong = val ?? false;
-                    });
-                  },
+                                  });
+                                },
                 ),
               ),
             ],
@@ -215,10 +215,10 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: repeat,
                   onChanged: (val) {
-                    setState(() {
+                                  setState(() {
                       repeat = val ?? false;
-                    });
-                  },
+                                  });
+                                },
                 ),
               ),
               Expanded(
@@ -229,10 +229,10 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: isRecommendation,
                   onChanged: (val) {
-                    setState(() {
+                                  setState(() {
                       isRecommendation = val ?? false;
-                    });
-                  },
+                                  });
+                                },
                 ),
               ),
             ],
@@ -247,10 +247,10 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: isVisit,
                   onChanged: (val) {
-                    setState(() {
+                                  setState(() {
                       isVisit = val ?? false;
-                    });
-                  },
+                                  });
+                                },
                 ),
               ),
               Expanded(
@@ -261,15 +261,15 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: isSuspend,
                   onChanged: (val) {
-                    setState(() {
+                                  setState(() {
                       isSuspend = val ?? false;
                       // if (isSuspend) {
                       //   rateSalesValue = 0.0;
                       //   rateProductValue = 0.0;
                       //   rateSupportValue = 0.0;
                       // }
-                    });
-                  },
+                                  });
+                                },
                 ),
               ),
             ],
@@ -287,25 +287,25 @@ class _CommunicationExpandedWidgetState
                 style: titleStyle,
                 fontSize: 14,
               ),
-              AppRateWidget(
-                rateValue: rateSalesValue,
-                onRatingUpdate: (value) {
-                  setState(() {
-                    rateSalesValue = value;
-                  });
+                          AppRateWidget(
+                              rateValue: rateSalesValue,
+                              onRatingUpdate: (value) {
+                                setState(() {
+                                  rateSalesValue = value;
+                                });
                 },
               ),
             ],
-          ),
-          20.height,
+                        ),
+                        20.height,
         ],
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
             // زر تم التواصل - يظهر فقط إذا لم يكن هناك تاريخ تواصل
             if (widget.communicationModel.dateCommunication == null)
-              AppElevatedButton(
-                text: 'تم التواصل',
+                            AppElevatedButton(
+                              text: 'تم التواصل',
                 onPressed: () => _onDoneCommunication(context),
               ),
             // زر التعديل - يظهر فقط إذا كان هناك تاريخ تواصل
@@ -327,16 +327,16 @@ class _CommunicationExpandedWidgetState
             //     },
             //   ),
             // زر إضافة موعد زيارة - يظهر فقط في حالة الترحيب
-            if (widget.communicationModel.typeCommuncation == 'ترحيب') ...[
-              10.width,
-              AppElevatedButton(
-                text: 'إضافة موعد زيارة',
-                onPressed: () => _addDateInstall(context),
-                appButtonStyle: AppButtonStyle.secondary,
-              ),
-            ],
-          ],
-        ),
+                            if (widget.communicationModel.typeCommuncation == 'ترحيب') ...[
+                              10.width,
+                              AppElevatedButton(
+                                text: 'إضافة موعد زيارة',
+                                onPressed: () => _addDateInstall(context),
+                                appButtonStyle: AppButtonStyle.secondary,
+                              ),
+                            ],
+                          ],
+                        ),
       ],
     );
   }
@@ -435,7 +435,7 @@ class _CommunicationExpandedWidgetState
   @override
   Widget build(BuildContext context) {
     if (widget.communicationModel.idCommunication == '') {
-      return SizedBox.shrink();
+    return SizedBox.shrink();
     }
 
     String? dateinvoice = widget.communicationModel.date_approve;
@@ -506,7 +506,7 @@ class _CommunicationExpandedWidgetState
     Provider.of<CommunicationVm>(context, listen: false).isloadval(true);
 
     try {
-      if (widget.communicationModel.typeCommuncation != 'دوري') {
+    if (widget.communicationModel.typeCommuncation != 'دوري') {
         // التعامل مع التركيب والترحيب
         await Provider.of<CommunicationVm>(context, listen: false)
             .addCommunication(
@@ -528,31 +528,31 @@ class _CommunicationExpandedWidgetState
               ? 1
               : int.parse(widget.communicationModel.type_install.toString()),
         ).then((value) => clear(value));
-      } else {
+    } else {
         // التعامل مع التواصل الدوري
-        if (widget.communicationModel.dateCommunication == null) {
+      if (widget.communicationModel.dateCommunication == null) {
           if (isSuspend) rateSalesValue = 0.0;
 
           await Provider.of<CommunicationVm>(context, listen: false)
               .updateCareCommunication(
-            body: {
-              'rate': rateSalesValue.toString(),
-              'rate_product': rateProductValue.toString(),
-              'rate_chat': rateSupportValue.toString(),
-              'number_wrong': numberwrong.toString(),
-              'client_repeat': repeat.toString(),
-              'type': 'دوري',
+          body: {
+            'rate': rateSalesValue.toString(),
+            'rate_product': rateProductValue.toString(),
+            'rate_chat': rateSupportValue.toString(),
+            'number_wrong': numberwrong.toString(),
+            'client_repeat': repeat.toString(),
+            'type': 'دوري',
               'result': typepayController.toString(),
-              'isRecommendation': isRecommendation.toString(),
-              'is_visit': isVisit.toString(),
-              'is_suspend': isSuspend.toString(),
+            'isRecommendation': isRecommendation.toString(),
+            'is_visit': isVisit.toString(),
+            'is_suspend': isSuspend.toString(),
               if (clientTypeNotifier.value != null)
                 'state': clientTypeNotifier.value!.value,
               if (withdrawalReasonNotifier.value != null)
                 'reason_id': withdrawalReasonNotifier.value!.idReason,
-            },
-            id_communication: widget.communicationModel.idCommunication,
-          );
+          },
+          id_communication: widget.communicationModel.idCommunication,
+        );
         }
       }
     } finally {

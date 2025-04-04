@@ -86,8 +86,8 @@ class _ClientsDatesPageMobState extends State<ClientsDatesPageMob> {
                     return SliverFillRemaining(child: AppLoader());
                   } else if (state.getAllClientsDatesStatus.isFailed()) {
                     return SliverToBoxAdapter(
-                      child: AppErrorWidget(
-                        message: state.getAllClientsDatesStatus.error,
+                        child: AppErrorWidget(
+                          message: state.getAllClientsDatesStatus.error,
                         onPressed: () => _cubit.getAllClientsDates(
                           clientId: widget.client.idClients!,
                         ),
@@ -109,8 +109,8 @@ class _ClientsDatesPageMobState extends State<ClientsDatesPageMob> {
                     // TODO: Implement add meeting
                   },
                   child: ValueListenableBuilder<List<ClientDateModel>>(
-                    valueListenable: _cubit.pageVariables.selectedDayEvents,
-                    builder: (context, events, child) {
+                valueListenable: _cubit.pageVariables.selectedDayEvents,
+                builder: (context, events, child) {
                       if (events.isEmpty) {
                         return Padding(
                           padding: EdgeInsets.symmetric(vertical: 8),
@@ -248,9 +248,9 @@ class _ClientsDatesPageMobState extends State<ClientsDatesPageMob> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddActivityPage(),
-                      ),
-                    );
-                  },
+                    ),
+                  );
+                },
                   child:
                       BlocBuilder<ClientActivitiesBloc, ClientActivitiesState>(
                     builder: (context, state) {

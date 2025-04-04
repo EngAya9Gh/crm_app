@@ -150,7 +150,7 @@ class _SupportAddState extends State<SupportAdd> {
                         },
                         child: Container(),
                       ),
-                       SectionWithAction(
+                      SectionWithAction(
                         title: 'تفاصيل التركيب',
                         onAddPressed: () {},
                         child: Column(
@@ -176,7 +176,6 @@ class _SupportAddState extends State<SupportAdd> {
                       ),
 
                       // Installation Details Section
-                      
 
                       SectionHeader(title: 'VIEW OPTIONS'),
                       GestureDetector(

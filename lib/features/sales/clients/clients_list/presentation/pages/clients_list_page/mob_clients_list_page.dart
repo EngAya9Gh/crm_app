@@ -114,6 +114,19 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                         }
                       },
                       itemBuilder: (context) => [
+
+                           if (_privilegeCubit.checkPrivilege('47'))
+                          PopupMenuItem(
+                            value: 'add_client',
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: AppText(
+                                "إضافة عميل",
+                                fontSize: 14.scaleFontSize,
+                              ),
+                            ),
+                          ),
+
                         if (_privilegeCubit.checkPrivilege('287'))
                           PopupMenuItem(
                             value: 'export_excel',
@@ -136,17 +149,7 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                               ),
                             ),
                           ),
-                        if (_privilegeCubit.checkPrivilege('47'))
-                          PopupMenuItem(
-                            value: 'add_client',
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: AppText(
-                                "إضافة عميل",
-                                fontSize: 14.scaleFontSize,
-                              ),
-                            ),
-                          ),
+                     
                       ],
                     ),
                   );
