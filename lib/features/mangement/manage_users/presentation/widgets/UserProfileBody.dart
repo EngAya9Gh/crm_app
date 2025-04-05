@@ -41,20 +41,20 @@ class _UserProfileBodyState extends State<UserProfileBody> {
       builder: (context, state) {
         final user = state.currentUser!;
         return AppScaffold(
-            backgroundColor: Colors.white,
-            appBar: CustomAppBar(
+          backgroundColor: Colors.white,
+          appBar: CustomAppBar(
               title: '',
               backgroundColor: Theme.of(context).primaryColor,
               //elevation: 0,
-              actions: [
-                IconButton(
-                  icon: const AppIcon(Icons.edit),
-                  onPressed: () => buildGo(user),
-                ),
-              ],
-            ),
-            body: Directionality(
-              textDirection: TextDirection.rtl,
+            actions: [
+              IconButton(
+                icon: const AppIcon(Icons.edit),
+                onPressed: () => buildGo(user),
+              ),
+            ],
+          ),
+          body: Directionality(
+            textDirection: TextDirection.rtl,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -108,8 +108,8 @@ class _UserProfileBodyState extends State<UserProfileBody> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.all(20),
-                          child: Column(
-                            children: [
+            child: Column(
+              children: [
                               ProfileInfoItem(
                                 icon: Icons.email_outlined,
                                 title: 'البريد الإلكتروني',
@@ -180,9 +180,9 @@ class _UserProfileBodyState extends State<UserProfileBody> {
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
+              ],
+            ),
+          ),
             ));
       },
     );

@@ -257,11 +257,11 @@ class _CommentViewState extends State<CommentView> {
                   top: 10,
                   bottom: MediaQuery.of(context).viewInsets.bottom + 80,
                 ),
-                child: CustomScrollView(
-                  controller: controller,
-                  slivers: [
-                    // add task button
-                    SliverToBoxAdapter(
+            child: CustomScrollView(
+              controller: controller,
+              slivers: [
+                // add task button
+                SliverToBoxAdapter(
                       child: SectionWithAction(
                         title: 'Tasks',
                         onAddPressed: () async {
@@ -269,55 +269,55 @@ class _CommentViewState extends State<CommentView> {
                             context: context,
                             builder: (context) => AddManualTaskPage(
                               list: PublicType.values,
-                              clientId: widget.client?.idClients,
-                            ),
-                          );
-                        },
+                    clientId: widget.client?.idClients,
+                                        ),
+                                      );
+                                    },
                         child: Container(), // سيتم إضافة قائمة المهام هنا
                       ),
                     ),
                     SliverToBoxAdapter(child: SizedBox(height: 10)),
                     // filters section
-                    SliverToBoxAdapter(
+                SliverToBoxAdapter(
                       child: Row(
-                        children: [
+                    children: [
                           CustomFilterIcon(
                             onTap: () async {},
                           ),
                           SizedBox(width: 8),
                           Expanded(
-                            child: CustomDropDown(
-                              hint: 'نوع التعليق',
+                  child: CustomDropDown(
+                    hint: 'نوع التعليق',
                               compareFn: (item, selectedItem) =>
                                   item.index == selectedItem.index,
                               items: CommentTypeEnum.values
                                   .where(excludedTypes)
                                   .toList(),
-                              itemAsString: (value) => value!.value,
-                              selectedItem: _filterCommentType,
-                              onChanged: (value) {
-                                if (value == null) return;
+                    itemAsString: (value) => value!.value,
+                    selectedItem: _filterCommentType,
+                    onChanged: (value) {
+                      if (value == null) return;
 
                                 Provider.of<comment_vm>(context, listen: false)
                                     .filterCommentsByType(value.value,
                                         nameUsers: filterUserName);
-                                _filterCommentType = value;
-                                setState(() {});
-                              },
-                              validator: InputValidator.requiredFiled,
-                              height: 260.scaleHeight,
-                            ),
-                          ),
+                      _filterCommentType = value;
+                      setState(() {});
+                    },
+                    validator: InputValidator.requiredFiled,
+                    height: 260.scaleHeight,
+                  ),
+                ),
                           SizedBox(width: 8),
                           Expanded(
                             child: Consumer(
                               builder: (context, value, child) =>
                                   ValueListenableBuilder(
-                                valueListenable: _suggestions,
+                      valueListenable: _suggestions,
                                 builder: (context, value, child) =>
                                     CustomMultiSelectionDropdown<UserEntity>(
                                   hint: 'المنشنات',
-                                  items: value ?? [],
+                        items: value ?? [],
                                   selectedItems: value
                                           ?.where((element) =>
                                               filterUserName
@@ -325,7 +325,7 @@ class _CommentViewState extends State<CommentView> {
                                               false)
                                           .toList() ??
                                       [],
-                                  onSave: (value) {
+                        onSave: (value) {
                                     filterUserName =
                                         value.map((e) => e.name).toList();
                                     Provider.of<comment_vm>(context,
@@ -335,52 +335,52 @@ class _CommentViewState extends State<CommentView> {
                                             nameUsers: value
                                                 .map((e) => e.name)
                                                 .toList());
-                                    setState(() {});
-                                  },
-                                  itemAsString: (u) => u!.name,
+                          setState(() {});
+                        },
+                        itemAsString: (u) => u!.name,
                                   filterFn: (user, filter) =>
                                       user.name.contains(filter),
                                   compareFn: (item, selectedItem) =>
                                       item.id == selectedItem.id,
-                                  validator: (value) {
-                                    if (value?.isEmpty ?? true) {
-                                      return 'هذا الحقل مطلوب.';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'هذا الحقل مطلوب.';
+                          }
+                          return null;
+                        },
                       ),
                     ),
+                  ),
+                ),
+                        ],
+                      ),
+                ),
 
-                    SliverToBoxAdapter(child: 10.height),
+                SliverToBoxAdapter(child: 10.height),
 
                     // list of comments
-                    // list of comments
-                    Consumer<comment_vm>(
-                      builder: (context, value, child) {
-                        if (value.isLoading) {
+                // list of comments
+                Consumer<comment_vm>(
+                  builder: (context, value, child) {
+                    if (value.isLoading) {
                           return SliverFillRemaining(
                               child: LoadingCommentWidget());
-                        } else if (value.filteredComments.isEmpty) {
-                          return SliverFillRemaining(
-                            child: AppErrorWidget(message: 'لا يوجد تعليقات'),
-                          );
-                        } else {
-                          return SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                                return ValueListenableBuilder(
-                                  valueListenable: _isHighlighted,
+                    } else if (value.filteredComments.isEmpty) {
+                      return SliverFillRemaining(
+                        child: AppErrorWidget(message: 'لا يوجد تعليقات'),
+                      );
+                    } else {
+                      return SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return ValueListenableBuilder(
+                              valueListenable: _isHighlighted,
                                   builder: (context, heghlight, child) =>
                                       AutoScrollTag(
-                                    key: ValueKey(index),
-                                    controller: controller,
-                                    index: index,
-                                    child: Cardcomment(
+                                key: ValueKey(index),
+                                controller: controller,
+                                index: index,
+                                child: Cardcomment(
                                       itemKey: value.filteredComments[index]
                                                   .idComment ==
                                               widget.commentId.toString()
@@ -391,23 +391,23 @@ class _CommentViewState extends State<CommentView> {
                                                   value.filteredComments[index]
                                                       .idComment &&
                                               heghlight),
-                                      userModel: currentUser,
-                                      canReplay: true,
+                                  userModel: currentUser,
+                                  canReplay: true,
                                       commentmodel:
                                           value.filteredComments[index],
-                                      idClients: widget.client!.idClients!,
-                                      replyOnCommentModel: (value) {
-                                        _sendComment(context, true, value);
-                                      },
-                                      editCommentModel: (value) {
-                                        updateItem.value = value;
+                                  idClients: widget.client!.idClients!,
+                                  replyOnCommentModel: (value) {
+                                    _sendComment(context, true, value);
+                                  },
+                                  editCommentModel: (value) {
+                                    updateItem.value = value;
                                         _selectedCommentType = CommentTypeEnum
                                             .values
                                             .firstWhere((element) =>
                                                 element.value ==
                                                 value.type_comment);
-                                        // usersMentioned = [...value.mention_users!];
-                                        key.currentState?.controller?.text =
+                                    // usersMentioned = [...value.mention_users!];
+                                      key.currentState?.controller?.text =
                                             value.content;
                                         for (UserEntity item
                                             in value.mention_users ?? []) {
@@ -416,20 +416,20 @@ class _CommentViewState extends State<CommentView> {
                                                       ?.controller?.text ??
                                                   '') +
                                               " @${item.name.replaceAll(' ', '_')} ";
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                );
-                              },
-                              childCount: value.filteredComments.length,
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ],
+                                    }
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                          childCount: value.filteredComments.length,
+                        ),
+                      );
+                    }
+                  },
                 ),
+              ],
+            ),
               ),
               Positioned(
                 left: 0,

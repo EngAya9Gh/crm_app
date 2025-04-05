@@ -1,5 +1,6 @@
 
 import 'package:crm_smart/core/services/api/api_services.dart';
+import 'package:crm_smart/core/utils/end_points.dart';
 
 /// Repositorio para manejar aprobaciones pendientes
 abstract class PendingApprovalsRepository {
@@ -17,7 +18,8 @@ class PendingApprovalsRepositoryImpl implements PendingApprovalsRepository {
   @override
   Future<List<dynamic>> getPendingApprovals() async {
     try {
-      final response = await _apiServices.get('users/pending_approvals');
+        _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(endPoint: 'users/pending_approvals');
       return response['data'] ?? [];
     } catch (e) {
       print('Error fetching pending approvals: $e');
@@ -41,7 +43,7 @@ class PendingApprovalsRepositoryImpl implements PendingApprovalsRepository {
   Future<bool> approveUser(String userId) async {
     try {
       final response = await _apiServices.post(
-        'users/approve',
+       endPoint:  'users/approve',
         data: {'userId': userId},
       );
       return response['success'] ?? false;
@@ -54,7 +56,7 @@ class PendingApprovalsRepositoryImpl implements PendingApprovalsRepository {
   @override
   Future<bool> rejectUser(String userId) async {
     try {
-      final response = await _apiServices.post(
+      final response = await _apiServices.post(endPoint: 
         'users/reject',
         data: {'userId': userId},
       );

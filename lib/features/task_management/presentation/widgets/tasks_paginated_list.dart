@@ -284,22 +284,28 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                         Navigator.pop(context);
                       },
                       onSuccess: (value) {
+                        // AppNavigator.go(
+                        //   DialogTaskDetail(
+                        //       task: value, status: status, cubit: _cubit),
+                        //   name:
+                        //       AppRoutesNames.clientDashboard.inPendingInvoices,
+                        // );
                         Navigator.pop(context);
                         showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          barrierLabel: task.id.toString(),
-                          builder: (context) => DialogTaskDetail(
-                              task: value, status: status, cubit: _cubit),
-                          // builder: (context) => BlocProvider.value(
-                          // value: _cubit,
-                          // child: ChangeStatusTaskDialog(
-                          // status: status,
-                          // taskModel: task,
-                          // tasksCubit: _cubit,
-                          // ),
-                          // ),
-                        );
+                            context: context,
+                            barrierDismissible: false,
+                            barrierLabel: task.id.toString(),
+                            builder: (context) => DialogTaskDetail(
+                                task: value, status: status, cubit: _cubit));
+                        //   // builder: (context) => BlocProvider.value(
+                        //   // value: _cubit,
+                        //   // child: ChangeStatusTaskDialog(
+                        //   // status: status,
+                        //   // taskModel: task,
+                        //   // tasksCubit: _cubit,
+                        //   // ),
+                        //   // ),
+                        // );
                       },
                       params: GetTaskByIdParams(idTask: task.id!));
               }

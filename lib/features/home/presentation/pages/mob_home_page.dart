@@ -1,4 +1,8 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/utils/end_points.dart';
+import 'package:crm_smart/features/home/data/repositories/pending_approvals_repository_impl.dart';
+import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
+import 'package:crm_smart/features/sales/clients/pending_invoices/presentation/pages/pending_invoices_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -27,8 +31,66 @@ import '../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../ui/screen/client/client_profile.dart';
 import '../../../../features/ai_chat/presentation/pages/ai_chat_page.dart';
 import '../../../../core/services/api/api_services.dart';
+import 'package:get_it/get_it.dart';
 
+/// Modelo para estadísticas de la página de inicio
+class HomeStatisticsModel {
+  final int projects;
+  final int clients;
+  final int tasks;
+  final double income;
+  final double expenses;
+  final double profit;
+  final double openTasksProgress;
+  final double openTicketsProgress;
+  final String openTasksLabel;
+  final String openTicketsLabel;
 
+  HomeStatisticsModel({
+    this.projects = 0,
+    this.clients = 0,
+    this.tasks = 0,
+    this.income = 0.0,
+    this.expenses = 0.0,
+    this.profit = 0.0,
+    this.openTasksProgress = 0.5,
+    this.openTicketsProgress = 0.15,
+    this.openTasksLabel = '0/0',
+    this.openTicketsLabel = '0/0',
+  });
+
+  factory HomeStatisticsModel.fromJson(Map<String, dynamic> json) {
+    return HomeStatisticsModel(
+      projects: json['projects'] ?? 0,
+      clients: json['clients'] ?? 0,
+      tasks: json['tasks'] ?? 0,
+      income: double.tryParse('${json['income']}') ?? 0.0,
+      expenses: double.tryParse('${json['expenses']}') ?? 0.0,
+      profit: double.tryParse('${json['profit']}') ?? 0.0,
+      openTasksProgress:
+          double.tryParse('${json['open_tasks_progress']}') ?? 0.5,
+      openTicketsProgress:
+          double.tryParse('${json['open_tickets_progress']}') ?? 0.15,
+      openTasksLabel: json['open_tasks_label'] ?? '0/0',
+      openTicketsLabel: json['open_tickets_label'] ?? '0/0',
+    );
+  }
+
+  factory HomeStatisticsModel.mock() {
+    return HomeStatisticsModel(
+      projects: 12,
+      clients: 45,
+      tasks: 23,
+      income: 25000,
+      expenses: 15000,
+      profit: 10000,
+      openTasksProgress: 0.66,
+      openTicketsProgress: 0.15,
+      openTasksLabel: '2/3',
+      openTicketsLabel: '-166/29',
+    );
+  }
+}
 
 class MobHomePage extends StatefulWidget {
   MobHomePage({Key? key}) : super(key: key);
@@ -42,17 +104,22 @@ class _MobHomePageState extends State<MobHomePage> {
   late final SearchCubit _searchCubit;
   final TextEditingController _searchController = TextEditingController();
   bool _isApprovalExpanded = false;
-  List<dynamic> _pendingApprovals = [];
+  List<dynamic> _pendingApprovals = [1, 2, 3];
   bool _isLoadingApprovals = false;
   late final PendingApprovalsRepository _approvalsRepository;
+
+  // Añadir propiedades para estadísticas
+  HomeStatisticsModel _statistics = HomeStatisticsModel.mock();
+  bool _isLoadingStatistics = true;
+  late ApiServices _apiServices;
 
   @override
   void initState() {
     super.initState();
     _searchCubit = context.read<SearchCubit>();
     // Inicializar el repositorio
-    final ApiServices apiServices = context.read<ApiServices>();
-    _approvalsRepository = PendingApprovalsRepositoryImpl(apiServices);
+    // final ApiServices apiServices = context.read<ApiServices>();
+    // _approvalsRepository = PendingApprovalsRepositoryImpl(apiServices);
 
     context.read<NotificationsCubit>()..init();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -63,8 +130,35 @@ class _MobHomePageState extends State<MobHomePage> {
         // Provider.of<product_vm>(context, listen: false).getproduct_vm(),
         // Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket'),
       ]);
-      _fetchPendingApprovals();
+      //_fetchPendingApprovals();
     });
+
+    // Inicializar API y cargar estadísticas
+    _apiServices = GetIt.instance<ApiServices>();
+    _fetchHomeStatistics();
+    // _fetchPendingApprovals();
+  }
+
+  // Método para obtener estadísticas
+  Future<void> _fetchHomeStatistics() async {
+    setState(() {
+      _isLoadingStatistics = true;
+    });
+
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.get(endPoint: EndPoints.statistics);
+      setState(() {
+        _statistics = HomeStatisticsModel.fromJson(response['data']);
+        _isLoadingStatistics = false;
+      });
+    } catch (e) {
+      print('Error fetching home statistics: $e');
+      setState(() {
+        _statistics = HomeStatisticsModel.mock();
+        _isLoadingStatistics = false;
+      });
+    }
   }
 
   // Usar el repositorio para obtener los datos
@@ -94,71 +188,71 @@ class _MobHomePageState extends State<MobHomePage> {
     }
   }
 
-  // Aprobar un usuario
-  Future<void> _approveUser(String userId) async {
-    setState(() {
-      _isLoadingApprovals = true;
-    });
+  // // Aprobar un usuario
+  // Future<void> _approveUser(String userId) async {
+  //   setState(() {
+  //     _isLoadingApprovals = true;
+  //   });
 
-    try {
-      final success = await _approvalsRepository.approveUser(userId);
+  //   try {
+  //     final success = await _approvalsRepository.approveUser(userId);
 
-      if (success && mounted) {
-        // Recargar la lista después de la aprobación
-        _fetchPendingApprovals();
-      } else if (mounted) {
-        setState(() {
-          _isLoadingApprovals = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al aprobar usuario')),
-        );
-      }
-    } catch (e) {
-      print('Error approving user: $e');
-      if (mounted) {
-        setState(() {
-          _isLoadingApprovals = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al aprobar usuario')),
-        );
-      }
-    }
-  }
+  //     if (success && mounted) {
+  //       // Recargar la lista después de la aprobación
+  //       _fetchPendingApprovals();
+  //     } else if (mounted) {
+  //       setState(() {
+  //         _isLoadingApprovals = false;
+  //       });
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Error al aprobar usuario')),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     print('Error approving user: $e');
+  //     if (mounted) {
+  //       setState(() {
+  //         _isLoadingApprovals = false;
+  //       });
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Error al aprobar usuario')),
+  //       );
+  //     }
+  //   }
+  // }
 
-  // Rechazar un usuario
-  Future<void> _rejectUser(String userId) async {
-    setState(() {
-      _isLoadingApprovals = true;
-    });
+  // // Rechazar un usuario
+  // Future<void> _rejectUser(String userId) async {
+  //   setState(() {
+  //     _isLoadingApprovals = true;
+  //   });
 
-    try {
-      final success = await _approvalsRepository.rejectUser(userId);
+  //   try {
+  //     final success = await _approvalsRepository.rejectUser(userId);
 
-      if (success && mounted) {
-        // Recargar la lista después del rechazo
-        _fetchPendingApprovals();
-      } else if (mounted) {
-        setState(() {
-          _isLoadingApprovals = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al rechazar usuario')),
-        );
-      }
-    } catch (e) {
-      print('Error rejecting user: $e');
-      if (mounted) {
-        setState(() {
-          _isLoadingApprovals = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al rechazar usuario')),
-        );
-      }
-    }
-  }
+  //     if (success && mounted) {
+  //       // Recargar la lista después del rechazo
+  //       _fetchPendingApprovals();
+  //     } else if (mounted) {
+  //       setState(() {
+  //         _isLoadingApprovals = false;
+  //       });
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Error al rechazar usuario')),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     print('Error rejecting user: $e');
+  //     if (mounted) {
+  //       setState(() {
+  //         _isLoadingApprovals = false;
+  //       });
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Error al rechazar usuario')),
+  //       );
+  //     }
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -310,9 +404,11 @@ class _MobHomePageState extends State<MobHomePage> {
   Widget _buildApprovalSection() {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _isApprovalExpanded = !_isApprovalExpanded;
-        });
+        if (context.read<PrivilegesCubit>().checkPrivilege("40"))
+          AppNavigator.go(
+            PendingInvoicesPage(),
+            name: AppRoutesNames.clientDashboard.inPendingInvoices,
+          );
       },
       child: Container(
         margin: EdgeInsets.all(16),
@@ -341,13 +437,13 @@ class _MobHomePageState extends State<MobHomePage> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                AppText(
-                  '${_pendingApprovals.length} users',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14.scaleFontSize,
-                  ),
-                ),
+                // AppText(
+                //   '${_pendingApprovals.length} users',
+                //   style: TextStyle(
+                //     color: Colors.grey,
+                //     fontSize: 14.scaleFontSize,
+                //   ),
+                // ),
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -412,31 +508,17 @@ class _MobHomePageState extends State<MobHomePage> {
                               color: Colors.grey,
                             ),
                           ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.check_circle,
-                                    color: Colors.green),
-                                onPressed: () => _approveUser(user['id']),
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.cancel, color: Colors.red),
-                                onPressed: () => _rejectUser(user['id']),
-                              ),
-                            ],
-                          ),
                         );
                       },
                     ),
             ],
             SizedBox(height: 8),
-            Center(
-              child: Icon(
-                _isApprovalExpanded ? Icons.expand_less : Icons.expand_more,
-                color: Colors.grey,
-              ),
-            ),
+            // Center(
+            //   child: Icon(
+            //     _isApprovalExpanded ? Icons.expand_less : Icons.expand_more,
+            //     color: Colors.grey,
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -444,35 +526,50 @@ class _MobHomePageState extends State<MobHomePage> {
   }
 
   Widget _buildStatisticsSection() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(child: _buildStatItem('Projects', '1', Icons.work)),
-              SizedBox(width: 16),
-              Expanded(child: _buildStatItem('Clients', '2', Icons.people)),
-              SizedBox(width: 16),
-              Expanded(child: _buildStatItem('Task', '13', Icons.task)),
-            ],
-          ),
-          SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                  child: _buildStatItem('Income', '00', Icons.trending_up)),
-              SizedBox(width: 16),
-              Expanded(
-                  child: _buildStatItem('Expense', '00', Icons.trending_down)),
-              SizedBox(width: 16),
-              Expanded(
-                  child: _buildStatItem('Profit', '00', Icons.account_balance)),
-            ],
-          ),
-        ],
-      ),
-    );
+    return _isLoadingStatistics
+        ? Center(child: CircularProgressIndicator())
+        : Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                        child: _buildStatItem('Projects',
+                            _statistics.projects.toString(), Icons.work)),
+                    SizedBox(width: 16),
+                    Expanded(
+                        child: _buildStatItem('Clients',
+                            _statistics.clients.toString(), Icons.people)),
+                    SizedBox(width: 16),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Task', _statistics.tasks.toString(), Icons.task)),
+                  ],
+                ),
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                        child: _buildStatItem('Income',
+                            _statistics.income.toString(), Icons.trending_up)),
+                    SizedBox(width: 16),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Expense',
+                            _statistics.expenses.toString(),
+                            Icons.trending_down)),
+                    SizedBox(width: 16),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Profit',
+                            _statistics.profit.toString(),
+                            Icons.account_balance)),
+                  ],
+                ),
+              ],
+            ),
+          );
   }
 
   Widget _buildStatItem(String title, String value, IconData icon) {
@@ -522,20 +619,20 @@ class _MobHomePageState extends State<MobHomePage> {
         children: [
           _buildProgressBar(
             'Open Tasks',
-            Provider.of<UserProvider>(context, listen: true)
-                .currentUser
-                .noOfOpenTasks!
-                .dg, // 0.66, // 2/3
+            _statistics.openTasksProgress,
             Colors.orange,
-            '2/3',
+            _statistics.openTasksLabel,
           ),
           SizedBox(height: 12),
           _buildProgressBar(
-            'Days Left',
-            0.15, // Approximate for -166/29
+            'Open Ticket',
+            _statistics.openTicketsProgress,
             Colors.green,
-            '-166/29',
+            _statistics.openTicketsLabel,
           ),
+          SizedBox(
+            height: 4,
+          )
         ],
       ),
     );

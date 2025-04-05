@@ -153,7 +153,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
               },
               builder: (context, state) {
                 return ListView(
-                  children: [
+                    children: [
                     // قسم المهام
                     SectionWithAction(
                       title: 'Tasks',
@@ -175,12 +175,12 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                       onAddPressed: () => _showActionMenu(context),
                       child: Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  SpecialClientIconButton(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SpecialClientIconButton(
                                     idClients: clientModel.idClients,
                                   ),
                                   if (clientModel.isParent != null)
@@ -190,8 +190,8 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                                       child: Icon(
                                         Icons.link,
                                         color: AppColors.secondaryMain,
-                                      ),
                                     ),
+                                  ),
                                 ],
                               ),
                             ],
@@ -202,13 +202,13 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
                     ),
                     const SizedBox(height: 10),
 
-                    ClientInfoButtons(
-                      idClient: widget.idClient,
-                      client: clientModel,
-                      invoice: widget.invoice,
-                      typeInvoice: widget.typeInvoice,
-                      clientTransfer: widget.clientTransfer,
-                    ),
+                  ClientInfoButtons(
+                    idClient: widget.idClient,
+                    client: clientModel,
+                    invoice: widget.invoice,
+                    typeInvoice: widget.typeInvoice,
+                    clientTransfer: widget.clientTransfer,
+                  ),
                     // قسم الإجراءات
                     // if (widget.clientTransfer != 'transfer')
                     //   SectionWithAction(

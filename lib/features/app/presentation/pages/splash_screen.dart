@@ -45,14 +45,14 @@ class _SplashScreenState extends State<SplashScreen> {
         );
         return;
       }
-      // await appCubit.checkAppUpdate((hasUpdate) {
-      //   if (hasUpdate) {
-      //     return AppRouter.goRouter.pushReplacementNamed(
-      //       AppRoutesNames.generalRoutes.updateApp,
-      //     );
-      //   }
+      await appCubit.checkAppUpdate((hasUpdate) {
+        if (hasUpdate) {
+          return AppRouter.goRouter.pushReplacementNamed(
+            AppRoutesNames.generalRoutes.updateApp,
+          );
+        }
       appCubit.checkRedirections(context);
-      // });
+      });
     });
   }
 
@@ -103,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                 AppText(
                                   'SMARTLIFE',
                                   style: TextStyle(
-                                    fontSize: 35.scaleFontSize,
+                                    fontSize: 33.scaleFontSize,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.white,
                                   ),
@@ -113,7 +113,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    SizedBox(width: 130.scaleWidth),
+                                    SizedBox(width: 146.scaleWidth),
                                     Transform.scale(
                                       scale: 1.3,
                                       child: AppStatusChip(
