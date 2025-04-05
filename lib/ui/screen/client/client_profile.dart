@@ -15,6 +15,7 @@ import '../../../core/common/widgets/app_icon.dart';
 import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
+import '../../../features/ai_chat/presentation/pages/client_ai_chat_page.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/common/client_profile/client_activities_tab/presentation/pages/client_activities_page.dart';
 import '../../../features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
@@ -235,37 +236,34 @@ class _ClientProfileState extends State<ClientProfile>
           ),
         ),
       ),
-      body: ValueListenableBuilder<int>(
-        valueListenable: _currentTabIndex,
-        builder: (context, currentIndex, _) {
-          return Column(
-            children: [
-              if ((client.tag ?? false) && currentIndex != 0) ...{
-                SizedBox(height: 20),
-                if (context.read<PrivilegesCubit>().checkPrivilege('133'))
-                  AppIcon(
-                    CupertinoIcons.checkmark_seal_fill,
-                    color: AppColors.secondaryMain,
+      body: Stack(
+        children: [
+          ValueListenableBuilder<int>(
+            valueListenable: _currentTabIndex,
+            builder: (context, currentIndex, _) {
+              return Column(
+                children: [
+                  if ((client.tag ?? false) && currentIndex != 0) ...{
+                    SizedBox(height: 20),
+                    if (context.read<PrivilegesCubit>().checkPrivilege('133'))
+                      AppIcon(
+                        CupertinoIcons.checkmark_seal_fill,
+                        color: AppColors.secondaryMain,
+                      ),
+                  },
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: _buildTabViews(client!),
+                    ),
                   ),
-              },
-              Expanded(
-                  child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 1),
-                  padding: const EdgeInsets.only(top: 0, left: 5, right: 5),
-                  height: MediaQuery.of(context).size.height * 0.85,
-                  child: Directionality(
-                      textDirection: TextDirection.rtl,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: _buildTabViews(client).reversed.toList(),
-                      )),
-                ),
-              )),
-            ],
-          );
-        },
+                ],
+              );
+            },
+          ),
+          // Add AI Chat for client profile
+          ClientAIChatPage(clientId: widget.idClient ?? ''),
+        ],
       ),
     );
   }
@@ -293,7 +291,7 @@ class _ClientProfileState extends State<ClientProfile>
       unselectedLabelColor: AppColors.white,
       onTap: (value) => _currentTabIndex.value = value,
       tabAlignment: TabAlignment.center,
-      tabs: _tabs().reversed.toList(),
+      tabs: _tabs(),
     );
   }
 

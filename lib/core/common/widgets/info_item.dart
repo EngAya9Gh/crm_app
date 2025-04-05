@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
 class InfoItem extends StatelessWidget {
@@ -55,7 +56,7 @@ class InfoItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (isRequired)
-                  Text(
+                  AppText(
                     '* ',
                     style: TextStyle(
                       color: Colors.red,
@@ -63,7 +64,7 @@ class InfoItem extends StatelessWidget {
                     ),
                   ),
                 Expanded(
-                  child: Text(
+                  child: AppText(
                     title,
                     style: TextStyle(
                       color: Color(0xFF616161),
@@ -111,7 +112,7 @@ class InfoItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (isRequired)
-                    Text(
+                    AppText(
                       '* ',
                       style: TextStyle(
                         color: Colors.red,
@@ -119,7 +120,7 @@ class InfoItem extends StatelessWidget {
                       ),
                     ),
                   Expanded(
-                    child: Text(
+                    child: AppText(
                       title,
                       style: TextStyle(
                         color: Color(0xFF616161),
@@ -144,7 +145,7 @@ class InfoItem extends StatelessWidget {
                 textDirection: TextDirection.rtl,
                 children: [
                   Expanded(
-                    child: Text(
+                    child: AppText(
                       value,
                       style: TextStyle(
                         color: Colors.black87,

@@ -25,6 +25,10 @@ import '../../../../core/common/models/search_client_model.dart';
 import '../../../../core/config/navigator/app_navigator.dart';
 import '../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../ui/screen/client/client_profile.dart';
+import '../../../../features/ai_chat/presentation/pages/ai_chat_page.dart';
+import '../../../../core/services/api/api_services.dart';
+
+
 
 class MobHomePage extends StatefulWidget {
   MobHomePage({Key? key}) : super(key: key);
@@ -37,11 +41,19 @@ class _MobHomePageState extends State<MobHomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late final SearchCubit _searchCubit;
   final TextEditingController _searchController = TextEditingController();
+  bool _isApprovalExpanded = false;
+  List<dynamic> _pendingApprovals = [];
+  bool _isLoadingApprovals = false;
+  late final PendingApprovalsRepository _approvalsRepository;
 
   @override
   void initState() {
     super.initState();
     _searchCubit = context.read<SearchCubit>();
+    // Inicializar el repositorio
+    final ApiServices apiServices = context.read<ApiServices>();
+    _approvalsRepository = PendingApprovalsRepositoryImpl(apiServices);
+
     context.read<NotificationsCubit>()..init();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
@@ -51,7 +63,101 @@ class _MobHomePageState extends State<MobHomePage> {
         // Provider.of<product_vm>(context, listen: false).getproduct_vm(),
         // Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket'),
       ]);
+      _fetchPendingApprovals();
     });
+  }
+
+  // Usar el repositorio para obtener los datos
+  Future<void> _fetchPendingApprovals() async {
+    if (mounted) {
+      setState(() {
+        _isLoadingApprovals = true;
+      });
+
+      try {
+        final approvals = await _approvalsRepository.getPendingApprovals();
+
+        if (mounted) {
+          setState(() {
+            _pendingApprovals = approvals;
+            _isLoadingApprovals = false;
+          });
+        }
+      } catch (e) {
+        print('Error in _fetchPendingApprovals: $e');
+        if (mounted) {
+          setState(() {
+            _isLoadingApprovals = false;
+          });
+        }
+      }
+    }
+  }
+
+  // Aprobar un usuario
+  Future<void> _approveUser(String userId) async {
+    setState(() {
+      _isLoadingApprovals = true;
+    });
+
+    try {
+      final success = await _approvalsRepository.approveUser(userId);
+
+      if (success && mounted) {
+        // Recargar la lista después de la aprobación
+        _fetchPendingApprovals();
+      } else if (mounted) {
+        setState(() {
+          _isLoadingApprovals = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al aprobar usuario')),
+        );
+      }
+    } catch (e) {
+      print('Error approving user: $e');
+      if (mounted) {
+        setState(() {
+          _isLoadingApprovals = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al aprobar usuario')),
+        );
+      }
+    }
+  }
+
+  // Rechazar un usuario
+  Future<void> _rejectUser(String userId) async {
+    setState(() {
+      _isLoadingApprovals = true;
+    });
+
+    try {
+      final success = await _approvalsRepository.rejectUser(userId);
+
+      if (success && mounted) {
+        // Recargar la lista después del rechazo
+        _fetchPendingApprovals();
+      } else if (mounted) {
+        setState(() {
+          _isLoadingApprovals = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al rechazar usuario')),
+        );
+      }
+    } catch (e) {
+      print('Error rejecting user: $e');
+      if (mounted) {
+        setState(() {
+          _isLoadingApprovals = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al rechazar usuario')),
+        );
+      }
+    }
   }
 
   @override
@@ -84,106 +190,117 @@ class _MobHomePageState extends State<MobHomePage> {
             ),
           ),
           drawer: CustomDrawer(),
-          body: Directionality(
-            textDirection: TextDirection.ltr,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 45),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryMain,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        typform.TypeAheadField<SearchClientModel>(
-                          direction: VerticalDirection.down,
-                          controller: _searchController,
-                          builder: (context, controller, focusNode) =>
-                              TextField(
-                            controller: controller,
-                            focusNode: focusNode,
-                            textDirection: TextDirection.rtl,
-                            decoration: InputDecoration(
-                              hintTextDirection: TextDirection.rtl,
-                              hintText: 'ابحث عن اسم المؤسسة, رقم الجوال...',
-                              hintStyle: TextStyle(
-                                fontSize: 12.scaleFontSize,
-                                color: Colors.grey.shade500,
-                              ),
-                              border: InputBorder.none,
-                              fillColor: Colors.white,
-                              filled: true,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10).r,
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade300),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10).r,
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade300),
-                              ),
-                            ),
+          body: Stack(
+            children: [
+              Directionality(
+                textDirection: TextDirection.ltr,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 45),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryMain,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
                           ),
-                          decorationBuilder: (context, child) => Material(
-                            type: MaterialType.card,
-                            elevation: 4,
-                            borderRadius: BorderRadius.circular(8),
-                            child: child,
-                          ),
-                          itemBuilder: (context, suggestion) => Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: ListTile(
-                              title: AppText(suggestion.nameEnterprise ?? ''),
-                              subtitle: AppText(suggestion.phone ?? ''),
-                            ),
-                          ),
-                          debounceDuration: Duration(milliseconds: 800),
-                          hideOnSelect: true,
-                          hideOnUnfocus: true,
-                          showOnFocus: true,
-                          hideKeyboardOnDrag: true,
-                          hideWithKeyboard: false,
-                          retainOnLoading: false,
-                          hideOnLoading: false,
-                          hideOnEmpty: false,
-                          onSelected: (suggestion) {
-                            _searchController.text = suggestion.name ?? '';
-                            AppNavigator.go(
-                              ClientProfile(
-                                idClient: suggestion.idClients,
-                                tabIndex: 0,
-                              ),
-                              name: AppRoutesNames.clientProfile.inClientsList,
-                              pathParameters: {
-                                'idClient': suggestion.idClients.toString()
-                              },
-                            );
-                          },
-                          suggestionsCallback: (pattern) async {
-                            if (pattern.isEmpty) return [];
-                            final results =
-                                await _searchCubit.searchClients(pattern);
-                            return results;
-                          },
                         ),
-                        SizedBox(height: 5),
-                      ],
-                    ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            typform.TypeAheadField<SearchClientModel>(
+                              direction: VerticalDirection.down,
+                              controller: _searchController,
+                              builder: (context, controller, focusNode) =>
+                                  TextField(
+                                controller: controller,
+                                focusNode: focusNode,
+                                textDirection: TextDirection.rtl,
+                                decoration: InputDecoration(
+                                  hintTextDirection: TextDirection.rtl,
+                                  hintText:
+                                      'ابحث عن اسم المؤسسة, رقم الجوال...',
+                                  hintStyle: TextStyle(
+                                    fontSize: 12.scaleFontSize,
+                                    color: Colors.grey.shade500,
+                                  ),
+                                  border: InputBorder.none,
+                                  fillColor: Colors.white,
+                                  filled: true,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10).r,
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade300),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10).r,
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade300),
+                                  ),
+                                ),
+                              ),
+                              decorationBuilder: (context, child) => Material(
+                                type: MaterialType.card,
+                                elevation: 4,
+                                borderRadius: BorderRadius.circular(8),
+                                child: child,
+                              ),
+                              itemBuilder: (context, suggestion) =>
+                                  Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: ListTile(
+                                  title:
+                                      AppText(suggestion.nameEnterprise ?? ''),
+                                  subtitle: AppText(suggestion.phone ?? ''),
+                                ),
+                              ),
+                              debounceDuration: Duration(milliseconds: 1000),
+                              hideOnSelect: true,
+                              hideOnUnfocus: true,
+                              showOnFocus: true,
+                              hideKeyboardOnDrag: true,
+                              hideWithKeyboard: false,
+                              retainOnLoading: false,
+                              hideOnLoading: false,
+                              hideOnEmpty: false,
+                              onSelected: (suggestion) {
+                                _searchController.text = suggestion.name ?? '';
+
+                                AppNavigator.go(
+                                  ClientProfile(
+                                    idClient: suggestion.idClients,
+                                    tabIndex: 0,
+                                  ),
+                                  name: AppRoutesNames
+                                      .clientProfile.inClientsList,
+                                  pathParameters: {
+                                    'idClient': suggestion.idClients.toString()
+                                  },
+                                );
+                              },
+                              suggestionsCallback: (pattern) async {
+                                if (pattern.isEmpty) return [];
+                                final results =
+                                    await _searchCubit.searchClients(pattern);
+                                return results;
+                              },
+                            ),
+                            SizedBox(height: 5),
+                          ],
+                        ),
+                      ),
+                      _buildApprovalSection(),
+                      _buildStatisticsSection(),
+                      _buildProgressSection(),
+                    ],
                   ),
-                  _buildStatisticsSection(),
-                  _buildApprovalSection(),
-                  _buildProgressSection(),
-                ],
+                ),
               ),
-            ),
+              const AIChatPage(),
+            ],
           ),
         ),
       ),
@@ -191,60 +308,137 @@ class _MobHomePageState extends State<MobHomePage> {
   }
 
   Widget _buildApprovalSection() {
-    return Container(
-      margin: EdgeInsets.all(16),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 5,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Waiting for approval',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                '8 users',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 12),
-          SizedBox(
-            height: 40,
-            child: Stack(
-              children: List.generate(
-                2,
-                (index) => Positioned(
-                  left: index * 25.0,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.grey[300],
-                    child: Icon(Icons.person, color: Colors.grey[600]),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _isApprovalExpanded = !_isApprovalExpanded;
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 5,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppText(
+                  'Waiting for approval',
+                  style: TextStyle(
+                    fontSize: 16.scaleFontSize,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
+                AppText(
+                  '${_pendingApprovals.length} users',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14.scaleFontSize,
+                  ),
+                ),
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.grey[300],
+                      child: Icon(Icons.person, color: Colors.grey[600]),
+                    ),
+                    if (_pendingApprovals.length > 1)
+                      Positioned(
+                        top: -5,
+                        right: -5,
+                        child: Container(
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryMain,
+                            shape: BoxShape.circle,
+                          ),
+                          child: AppText(
+                            '+${_pendingApprovals.length - 1}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10.scaleFontSize,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+            if (_isApprovalExpanded) ...[
+              SizedBox(height: 16),
+              _isLoadingApprovals
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: _pendingApprovals.length,
+                      itemBuilder: (context, index) {
+                        final user = _pendingApprovals[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.symmetric(vertical: 4),
+                          leading: CircleAvatar(
+                            radius: 18,
+                            backgroundColor: Colors.grey[300],
+                            child: Icon(Icons.person,
+                                color: Colors.grey[600], size: 18),
+                          ),
+                          title: AppText(
+                            user['name'] ?? 'Unknown User',
+                            style: TextStyle(
+                              fontSize: 14.scaleFontSize,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          subtitle: AppText(
+                            'Pending since ${user['date'] ?? 'N/A'}',
+                            style: TextStyle(
+                              fontSize: 12.scaleFontSize,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.check_circle,
+                                    color: Colors.green),
+                                onPressed: () => _approveUser(user['id']),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.cancel, color: Colors.red),
+                                onPressed: () => _rejectUser(user['id']),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+            ],
+            SizedBox(height: 8),
+            Center(
+              child: Icon(
+                _isApprovalExpanded ? Icons.expand_less : Icons.expand_more,
+                color: Colors.grey,
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -328,7 +522,10 @@ class _MobHomePageState extends State<MobHomePage> {
         children: [
           _buildProgressBar(
             'Open Tasks',
-            0.66, // 2/3
+            Provider.of<UserProvider>(context, listen: true)
+                .currentUser
+                .noOfOpenTasks!
+                .dg, // 0.66, // 2/3
             Colors.orange,
             '2/3',
           ),

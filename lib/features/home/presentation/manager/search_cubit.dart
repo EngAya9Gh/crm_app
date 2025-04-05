@@ -37,7 +37,7 @@ class SearchCubit extends Cubit<SearchState> {
       
       final response = await _api.get(
         endPoint: EndPoints.client.allClientsWithFilter, 
-        queryParameters: {"search": query}
+        queryParameters: {"filter": query}
       );
 
       print('SearchCubit: API response received: ${response != null}'); // Debug print

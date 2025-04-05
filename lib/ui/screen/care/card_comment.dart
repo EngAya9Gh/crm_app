@@ -157,7 +157,8 @@ class _CardcommentState extends State<Cardcomment> {
                                         children: [
                                           AppText(
                                             widget.commentmodel.nameUser,
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16.scaleFontSize,
                                           ),
                                           2.height,
                                           AppText(
@@ -194,14 +195,14 @@ class _CardcommentState extends State<Cardcomment> {
                                     child: AppText(
                                       widget.commentmodel.content,
                                       fontSize: 16,
-                                      fontFamily:AppFonts.fontFamily2
-                                      ,
+                                      fontFamily: AppFonts.fontFamily2,
                                     ),
                                   ),
                                 Wrap(
                                   children:
                                       (widget.commentmodel.mention_users ?? [])
                                           .map((e) => AppText(' @${e.name} ',
+                                              fontSize: 16.scaleFontSize,
                                               color: AppColors.grey))
                                           .toList(),
                                 ),
@@ -300,8 +301,13 @@ class _CardcommentState extends State<Cardcomment> {
                                                                 widget
                                                                     .commentmodel);
                                                       },
-                                                      child:
-                                                          AppText('replay'))),
+                                                      child: AppText(
+                                                        color: AppColors
+                                                            .primaryAltDark,
+                                                        'replay',
+                                                        fontSize:
+                                                            16.scaleFontSize,
+                                                      ))),
                                         ),
                                       ),
                                     ),
@@ -364,7 +370,7 @@ class _CardcommentState extends State<Cardcomment> {
                               ),
                       )
                     : Transform.translate(
-                        offset: Offset(-10, -5),
+                        offset: Offset(-35, -5),
                         child: InkWell(
                           onTap: () {
                             showAll.value = true;
@@ -374,6 +380,7 @@ class _CardcommentState extends State<Cardcomment> {
                             alignment: AlignmentDirectional.centerStart,
                             child: AppText(
                               'view all reply',
+                              fontSize: 16.scaleFontSize,
                               color: AppColors.grey,
                             ),
                           ),

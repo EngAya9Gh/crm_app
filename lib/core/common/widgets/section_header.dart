@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
 class SectionHeader extends StatelessWidget {
@@ -28,7 +29,7 @@ class SectionHeader extends StatelessWidget {
       width: double.infinity,
       color: backgroundColor,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Text(
+      child: AppText(
         title,
         style: TextStyle(
           fontSize: fontSize,

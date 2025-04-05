@@ -37,6 +37,7 @@ abstract class EndPoints {
   static const branches = _Branches();
   static const finance = _Finance();
   static const offers = _Offers();
+    static const chatAi = _ChatAi();
 }
 
 class _BaseUrls {
@@ -205,6 +206,13 @@ class _Privilege {
   String getPrivileges(String levelId) => "privileges/$levelId";
   final updatePrivileges = "updatePermissions";
   final getLevels = "levels";
+}
+
+class _ChatAi {
+  const _ChatAi();
+
+
+  final send_question = "chatAi/send_message_ai.php";
 }
 
 class _Client {
