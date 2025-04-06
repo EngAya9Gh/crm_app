@@ -65,8 +65,7 @@ class ClientProfile extends StatefulWidget {
   State<ClientProfile> createState() => _ClientProfileState();
 }
 
-class _ClientProfileState extends State<ClientProfile>
-    with TickerProviderStateMixin {
+class _ClientProfileState extends State<ClientProfile> with TickerProviderStateMixin {
   late final TicketsCubit ticketsCubit;
   late final SupportTabCubit supportTabCubit;
   late final InvoiceVm invoiceVm;
@@ -87,16 +86,13 @@ class _ClientProfileState extends State<ClientProfile>
       await _initializeData();
     });
 
-    _tabController = TabController(
-        length: _tabs().length, vsync: this, initialIndex: indexTab);
+    _tabController = TabController(length: _tabs().length, vsync: this, initialIndex: indexTab);
     _tabController.addListener(onChangeTab);
   }
 
   Future<void> _initializeData() async {
-    Provider.of<comment_vm>(context, listen: false)
-        .getComments(widget.idClient.toString());
-    await Provider.of<ClientProvider>(context, listen: false)
-        .getClientById(widget.idClient.toString());
+    Provider.of<comment_vm>(context, listen: false).getComments(widget.idClient.toString());
+    await Provider.of<ClientProvider>(context, listen: false).getClientById(widget.idClient.toString());
 
     supportTabCubit.getClientInvoice(
       getInvoiceByClientParams: GetInvoiceByClientParams(
@@ -107,8 +103,7 @@ class _ClientProfileState extends State<ClientProfile>
 
     invoiceVm.getInvoiceByClient(widget.idClient);
     if (!mounted) return;
-    Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(
-        widget.idClient.toString(), widget.idCommunication);
+    Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(widget.idClient.toString(), widget.idCommunication);
 
     await ticketsCubit.getClientTicket(widget.idClient!);
   }
@@ -131,8 +126,7 @@ class _ClientProfileState extends State<ClientProfile>
   Widget build(BuildContext context) {
     return Consumer<ClientProvider>(
       builder: (context, state, _) {
-        if (state.currentClientModel.isLoading ||
-            state.currentClientModel.isInit) {
+        if (state.currentClientModel.isLoading || state.currentClientModel.isInit) {
           return _buildLoading();
         } else if (state.currentClientModel.isFailure) {
           return _buildFailure();
@@ -154,9 +148,7 @@ class _ClientProfileState extends State<ClientProfile>
     return AppScaffold(
       body: Center(
         child: IconButton(
-          onPressed: () => context
-              .read<ClientProvider>()
-              .getClientById(widget.idClient.toString()),
+          onPressed: () => context.read<ClientProvider>().getClientById(widget.idClient.toString()),
           icon: AppIcon(Icons.refresh),
         ),
       ),
@@ -182,12 +174,10 @@ class _ClientProfileState extends State<ClientProfile>
                     TextButton(
                       onPressed: () async {
                         if (kIsWeb) {
-                          HelperFunctions.copyToClipboard(
-                              client.mobile.toString());
+                          HelperFunctions.copyToClipboard(client.mobile.toString());
                           return;
                         }
-                        await HelperFunctions.urlLauncherPhone(
-                            client.mobile.toString());
+                        await HelperFunctions.urlLauncherPhone(client.mobile.toString());
 
                         // await FlutterPhoneDirectCaller.callNumber(
                         //     clientModel.mobile.toString());
@@ -204,18 +194,14 @@ class _ClientProfileState extends State<ClientProfile>
                       height: 31.scaleIconsSize,
                       width: 31.scaleIconsSize,
                       //color: AppColors.kMainColor,
-                      decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(9))),
+                      decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.all(Radius.circular(9))),
                       child: IconButton(
                         onPressed: () async {
                           if (kIsWeb) {
-                            HelperFunctions.copyToClipboard(
-                                client.mobile.toString());
+                            HelperFunctions.copyToClipboard(client.mobile.toString());
                             return;
                           }
-                          await HelperFunctions.urlLauncherPhone(
-                              client.mobile.toString());
+                          await HelperFunctions.urlLauncherPhone(client.mobile.toString());
 
                           // await FlutterPhoneDirectCaller.callNumber(
                           //     clientModel.mobile.toString());
@@ -268,30 +254,30 @@ class _ClientProfileState extends State<ClientProfile>
     );
   }
 
-  TabBar _buildTabBar() {
-    return TabBar(
-      controller: _tabController,
-      physics: AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      labelPadding: const EdgeInsets.only(left: 8, right: 8),
-      labelColor: Colors.white,
-      labelStyle: TextStyle(
-        fontFamily: AppFonts.fontFamily2,
-        fontSize: 15.scaleFontSize,
-        fontWeight: FontWeight.bold,
-      ),
-      indicatorSize: TabBarIndicatorSize.label,
-      indicatorColor: AppColors.white,
-      indicatorWeight: 6,
-      isScrollable: true,
-      unselectedLabelStyle: TextStyle(
+  Widget _buildTabBar() {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: TabBar(
+        controller: _tabController,
+        physics: AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(horizontal: 8),
+        labelPadding: const EdgeInsets.only(left: 8, right: 8),
+        labelColor: Colors.white,
+        labelStyle: TextStyle(
           fontFamily: AppFonts.fontFamily2,
-          fontSize: 14.scaleFontSize,
-          fontWeight: FontWeight.w600),
-      unselectedLabelColor: AppColors.white,
-      onTap: (value) => _currentTabIndex.value = value,
-      tabAlignment: TabAlignment.center,
-      tabs: _tabs(),
+          fontSize: 15.scaleFontSize,
+          fontWeight: FontWeight.bold,
+        ),
+        indicatorSize: TabBarIndicatorSize.label,
+        indicatorColor: AppColors.white,
+        indicatorWeight: 6,
+        isScrollable: true,
+        unselectedLabelStyle: TextStyle(fontFamily: AppFonts.fontFamily2, fontSize: 14.scaleFontSize, fontWeight: FontWeight.w600),
+        unselectedLabelColor: AppColors.white,
+        onTap: (value) => _currentTabIndex.value = value,
+        tabAlignment: TabAlignment.center,
+        tabs: _tabs(),
+      ),
     );
   }
 
@@ -305,8 +291,7 @@ class _ClientProfileState extends State<ClientProfile>
       // AppText('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       // AppText('الانشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       AppText('الأنشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      if (context.read<PrivilegesCubit>().checkPrivilege('282'))
-        AppText('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      if (context.read<PrivilegesCubit>().checkPrivilege('282')) AppText('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       // AppText('المهام', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
     ];
   }
@@ -322,8 +307,7 @@ class _ClientProfileState extends State<ClientProfile>
       InvoicesTabPage(client: client),
       CommentView(
         client: client,
-        commentId:
-            widget.commentId != null ? int.tryParse(widget.commentId!) : null,
+        commentId: widget.commentId != null ? int.tryParse(widget.commentId!) : null,
       ),
       SupportViewInvoices(itemClient: client),
       CareClientView(

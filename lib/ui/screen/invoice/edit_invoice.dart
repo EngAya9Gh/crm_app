@@ -54,13 +54,12 @@ class _EditInvoiceState extends State<EditInvoice> {
 
   Future<void> _handleApprovingInvoiceDate(BuildContext context, DateTime? pickedDate) async {
     if (pickedDate != null) //&& pickedDate != currentDate)
-        {
+    {
       setState(() {
         _currentDateApprove = pickedDate;
         approvingDateController.text = HelperFunctions.formatDate(pickedDate);
       });
-      Provider.of<datetime_vm>(context, listen: false)
-          .setdatetimevalue1(_currentDateApprove!);
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDateApprove!);
     }
   }
 
@@ -72,8 +71,7 @@ class _EditInvoiceState extends State<EditInvoice> {
       }
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue2(_currentDateCreate);
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue2(_currentDateCreate);
     });
   }
 
@@ -88,20 +86,18 @@ class _EditInvoiceState extends State<EditInvoice> {
     regoininvoice = widget.invoiceModel.fk_regoin_invoice.toString();
 
     if (widget.invoiceModel.date_approve != null) {
-      _currentDateApprove =
-          DateTime.parse(widget.invoiceModel.date_approve.toString());
-      Provider.of<datetime_vm>(context, listen: false)
-          .setdatetimevalue1(_currentDateApprove!);
+      _currentDateApprove = DateTime.parse(widget.invoiceModel.date_approve.toString());
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDateApprove!);
     }
     if (widget.invoiceModel.dateCreate != null) {
-      _currentDateCreate =
-          DateTime.parse(widget.invoiceModel.dateCreate.toString());
+      _currentDateCreate = DateTime.parse(widget.invoiceModel.dateCreate.toString());
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<datetime_vm>(context, listen: false)
-          .setdatetimevalue2(_currentDateCreate);
-      Provider.of<RegionProvider>(context, listen: false).changeVal(regoin);
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue2(_currentDateCreate);
+      Provider.of<RegionProvider>(context, listen: false)
+        ..getRegions()
+        ..changeVal(regoin);
       Provider.of<UserProvider>(context, listen: false).changeValUserID(iduser);
     });
     approvingDateController.text = HelperFunctions.formatDate(widget.invoiceModel.date_approve);
@@ -114,10 +110,7 @@ class _EditInvoiceState extends State<EditInvoice> {
     return AppScaffold(
       appBar: CustomAppBar(title: 'تغيير بيانات الفاتورة', showBackButton: true),
       body: ModalProgressHUD(
-        inAsyncCall:
-        Provider
-            .of<InvoiceVm>(context, listen: true)
-            .isloadingdone,
+        inAsyncCall: Provider.of<InvoiceVm>(context, listen: true).isloadingdone,
         child: Directionality(
           textDirection: ii.TextDirection.rtl,
           child: Form(
@@ -135,13 +128,13 @@ class _EditInvoiceState extends State<EditInvoice> {
                         builder: (context, cart, child) {
                           return CustomSearchableDropDown<UserModel>(
                             hint: 'الموظف',
-                            items: state.usersSales.data??[],
+                            items: state.usersSales.data ?? [],
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
                               iduser = data!.idUser;
                               cart.changeValUserID(data.idUser);
                             },
-                            compareFn:  (item, selectedItem) => item.id == selectedItem.id,
+                            compareFn: (item, selectedItem) => item.id == selectedItem.id,
                             selectedItem: cart.selectedUser,
                             filterFn: (user, filter) => user.getfilteruser(filter),
                           );
@@ -157,10 +150,10 @@ class _EditInvoiceState extends State<EditInvoice> {
                       return CustomDropDown<BranchModel>(
                         hint: 'الفرع',
                         items: cart.listRegionFilter,
-                        compareFn:  (item, selectedItem) => item.branchId == selectedItem.branchId,
+                        compareFn: (item, selectedItem) => item.branchId == selectedItem.branchId,
                         itemAsString: (branch) => branch!.branchName,
                         selectedItem: cart.listRegionFilter.firstWhereOrNull(
-                              (element) => element.branchId == regoininvoice,
+                          (element) => element.branchId == regoininvoice,
                         ),
                         onChanged: (data) {
                           cart.changeVal(data!.branchId);
@@ -199,24 +192,22 @@ class _EditInvoiceState extends State<EditInvoice> {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: CardRow(
                         title: 'تاريخ عقد الإشتراك',
-                        value: widget.invoiceModel.dateCreate == null ? "" : DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.invoiceModel
-                            .dateCreate!.toString()))
-                    ),
+                        value: widget.invoiceModel.dateCreate == null
+                            ? ""
+                            : DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.invoiceModel.dateCreate!.toString()))),
                   ),
                   widget.invoiceModel.date_approve != null
                       ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: CardRow(
-                        title: 'تاريخ اعتماد الفاتورة',
-                        value: widget.invoiceModel.date_approve == null ? "" : DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.invoiceModel
-                            .date_approve!.toString()))),
-                  )
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: CardRow(
+                              title: 'تاريخ اعتماد الفاتورة',
+                              value: widget.invoiceModel.date_approve == null
+                                  ? ""
+                                  : DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.invoiceModel.date_approve!.toString()))),
+                        )
                       : Container(),
                   widget.invoiceModel.dateinstall_task != null
-                      ? CardRow(
-                      title: 'تاريخ التركيب',
-                      value:
-                      widget.invoiceModel.dateinstall_task.toString())
+                      ? CardRow(title: 'تاريخ التركيب', value: widget.invoiceModel.dateinstall_task.toString())
                       : Container(),
                   10.height,
                   AppElevatedButton(
@@ -232,8 +223,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                         if (_currentDateApprove != null) {
                           invoiceData['date_approve'] = _currentDateApprove.toString();
                         }
-                        Provider.of<InvoiceVm>(context, listen: false)
-                            .edit_invoice(invoiceData, widget.invoiceModel.idInvoice);
+                        Provider.of<InvoiceVm>(context, listen: false).edit_invoice(invoiceData, widget.invoiceModel.idInvoice);
                         setState(() {
                           widget.invoiceModel.dateCreate = _currentDateCreate.toString();
                           if (_currentDateApprove != null) {
