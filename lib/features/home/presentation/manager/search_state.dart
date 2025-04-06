@@ -1,8 +1,20 @@
 part of 'search_cubit.dart';
 
-@freezed
-class SearchState with _$SearchState {
-  const factory SearchState({
-    @Default(Status.initial()) Status searchStatus,
-  }) = _SearchState;
-} 
+class SearchState {
+  final BlocStatus searchStatus;
+  final BlocStatus<HomeStatisticsModel> homeStatistics;
+  const SearchState({
+    this.searchStatus = const BlocStatus.initial(),
+    this.homeStatistics = const BlocStatus.initial(),
+  });
+
+  SearchState copyWith({
+    BlocStatus? searchStatus,
+    BlocStatus<HomeStatisticsModel>? homeStatistics,
+  }) {
+    return SearchState(
+      searchStatus: searchStatus ?? this.searchStatus,
+      homeStatistics: homeStatistics ?? this.homeStatistics,
+    );
+  }
+}

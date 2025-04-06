@@ -400,6 +400,14 @@ import '../../../features/finance/verified_invoice/domain/use_cases/verified_inv
     as _i1029;
 import '../../../features/finance/verified_invoice/presentation/manager/verified_invoice_bloc.dart'
     as _i522;
+import '../../../features/home/data/data_sources/remote_date_source.dart'
+    as _i626;
+import '../../../features/home/data/repositories/pending_approvals_repository_impl.dart'
+    as _i1070;
+import '../../../features/home/domain/repositories/pending_approvals_repository.dart'
+    as _i869;
+import '../../../features/home/domain/use_cases/get_home_statistic_usecase.dart'
+    as _i447;
 import '../../../features/home/presentation/manager/search_cubit.dart'
     as _i1066;
 import '../../../features/home/presentation/manager/web_home_page_cubit.dart'
@@ -1146,8 +1154,6 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i966.PeriodicCommunicationReportsRepo>(() =>
       _i711.PeriodicCommunicationReportsRepoImpl(
           gh<_i181.PeriodicCommunicationReportsDatasource>()));
-  gh.factory<_i1066.SearchCubit>(
-      () => _i1066.SearchCubit(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i1031.ManageWithdrawalsDatasource>(
       () => _i1031.ManageWithdrawalsDatasource(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i551.ClientsAcceptRepository>(() =>
@@ -1215,6 +1221,8 @@ _i174.GetIt $initGetIt(
       () => _i304.PackagesOffersDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i674.ImportantLinksDatasource>(
       () => _i674.ImportantLinksDatasource(gh<_i124.ApiServices>()));
+  gh.lazySingleton<_i626.HomeRemoteDataSource>(
+      () => _i626.HomeRemoteDataSourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i330.UsersDatasource>(
       () => _i330.UsersDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i453.CitiesDatasource>(
@@ -1294,6 +1302,11 @@ _i174.GetIt $initGetIt(
   gh.factory<_i65.RecommendedClientReportsBloc>(() =>
       _i65.RecommendedClientReportsBloc(
           gh<_i56.GetRecommendClientsReportsUsecase>()));
+  gh.lazySingleton<_i869.PendingApprovalsRepository>(
+      () => _i1070.PendingApprovalsRepositoryImpl(
+            gh<_i124.ApiServices>(),
+            gh<_i626.HomeRemoteDataSource>(),
+          ));
   gh.lazySingleton<_i566.ClientLogsTabRepo>(
       () => _i313.ClientLogsTabRepoImpl(gh<_i40.ClientLogsTabDataSource>()));
   gh.lazySingleton<_i1028.DeletedInvoicesDatasource>(
@@ -1814,6 +1827,8 @@ _i174.GetIt $initGetIt(
       () => _i19.AddAgentUseCase(gh<_i866.AgentsDistributorsActionsRepo>()));
   gh.lazySingleton<_i191.UpdateAgentUseCase>(() =>
       _i191.UpdateAgentUseCase(gh<_i866.AgentsDistributorsActionsRepo>()));
+  gh.lazySingleton<_i447.GetHomeStatisticUsecase>(() =>
+      _i447.GetHomeStatisticUsecase(gh<_i869.PendingApprovalsRepository>()));
   gh.lazySingleton<_i767.GetDelayInstallReportsUseCase>(() =>
       _i767.GetDelayInstallReportsUseCase(gh<_i503.DelayInstallReportsRepo>()));
   gh.lazySingleton<_i207.CrudAgentSupportFilesUsecase>(() =>
@@ -1912,6 +1927,10 @@ _i174.GetIt $initGetIt(
           gh<_i478.GetGreetingCommunicationUseCase>()));
   gh.lazySingleton<_i867.GetRegionsUseCase>(
       () => _i867.GetRegionsUseCase(gh<_i1041.RegionsRepository>()));
+  gh.factory<_i1066.SearchCubit>(() => _i1066.SearchCubit(
+        gh<_i124.ApiServices>(),
+        gh<_i447.GetHomeStatisticUsecase>(),
+      ));
   gh.lazySingleton<_i189.GetLatestClientsUseCase>(() =>
       _i189.GetLatestClientsUseCase(gh<_i88.LatestClientsUpdatesRepository>()));
   gh.factory<_i927.AdvancedCofigsCubit>(() => _i927.AdvancedCofigsCubit(

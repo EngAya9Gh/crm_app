@@ -7,9 +7,9 @@ import 'package:injectable/injectable.dart';
 
 
 @lazySingleton
-class CacheTokenUsecase
+class GetHomeStatisticUsecase
     extends UseCaseNoParam<Result<ResponseWrapper<HomeStatisticsModel>>> {
-  CacheTokenUsecase(this._repository);
+  GetHomeStatisticUsecase(this._repository);
 
   final PendingApprovalsRepository _repository;
 

@@ -1,21 +1,24 @@
-
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
+import 'package:crm_smart/core/services/api/api_utils.dart';
 import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
+import 'package:crm_smart/features/home/data/data_sources/remote_date_source.dart';
 import 'package:crm_smart/features/home/domain/repositories/pending_approvals_repository.dart';
 import 'package:crm_smart/features/home/presentation/pages/mob_home_page.dart';
+import 'package:injectable/injectable.dart';
 
 /// Implementación del repositorio de aprobaciones
+@LazySingleton(as:PendingApprovalsRepository)
 class PendingApprovalsRepositoryImpl implements PendingApprovalsRepository {
   final ApiServices _apiServices;
-
-  PendingApprovalsRepositoryImpl(this._apiServices);
+  HomeRemoteDataSource _dataSource;
+  PendingApprovalsRepositoryImpl(this._apiServices, this._dataSource);
 
   @override
   Future<List<dynamic>> getPendingApprovals() async {
     try {
-        _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _apiServices.get(endPoint: 'users/pending_approvals');
       return response['data'] ?? [];
     } catch (e) {
@@ -40,7 +43,7 @@ class PendingApprovalsRepositoryImpl implements PendingApprovalsRepository {
   Future<bool> approveUser(String userId) async {
     try {
       final response = await _apiServices.post(
-       endPoint:  'users/approve',
+        endPoint: 'users/approve',
         data: {'userId': userId},
       );
       return response['success'] ?? false;
@@ -53,8 +56,8 @@ class PendingApprovalsRepositoryImpl implements PendingApprovalsRepository {
   @override
   Future<bool> rejectUser(String userId) async {
     try {
-      final response = await _apiServices.post(endPoint: 
-        'users/reject',
+      final response = await _apiServices.post(
+        endPoint: 'users/reject',
         data: {'userId': userId},
       );
       return response['success'] ?? false;
@@ -65,8 +68,7 @@ class PendingApprovalsRepositoryImpl implements PendingApprovalsRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<HomeStatisticsModel>>> getHomeStatistices() {
-    // TODO: implement getHomeStatistices
-    throw UnimplementedError();
+  Future<Result<ResponseWrapper<HomeStatisticsModel>>> getHomeStatistices() async {
+    return toApiResult(() => _dataSource.getHomeStatistices());
   }
 }
