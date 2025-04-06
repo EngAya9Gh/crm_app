@@ -75,7 +75,7 @@ class _ChatWindowState extends State<ChatWindow>
           scale: _animation,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.64,
+            height: MediaQuery.of(context).size.height * 0.7,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),

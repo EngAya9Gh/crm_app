@@ -103,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                 AppText(
                                   'SMARTLIFE',
                                   style: TextStyle(
-                                    fontSize: 33.scaleFontSize,
+                                    fontSize: 37.scaleFontSize,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.white,
                                   ),

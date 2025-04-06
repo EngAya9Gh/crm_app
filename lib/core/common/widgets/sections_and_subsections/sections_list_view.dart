@@ -1,6 +1,5 @@
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -43,17 +42,15 @@ class SectionsListView extends StatelessWidget {
 
        
         Expanded(
-
-            
           child: AppPaginatedList(
             items: sections,
             itemBuilder: (context, index) {
               if (!context.read<PrivilegesCubit>().checkPrivilege(sections[index].privilegeId)) {
                 return SizedBox.shrink();
               }
-              return //SectionsCardForList(
-                _buildCard( sections[index].title,'',() => 
-                sections[index],
+              return SectionsCardForList(
+                
+                page: sections[index],
               );
             },
           ),
@@ -81,39 +78,3 @@ class SectionsListView extends StatelessWidget {
 
   bool _isAllowed(BuildContext context, SectionModel subsection) => context.read<PrivilegesCubit>().checkPrivilege(subsection.privilegeId);
 }
- Widget _buildCard(String title, String value, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AppText(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppColors.grey,
-                ),
-              ),
-              SizedBox(height: 6),
-              AppText(
-                value,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryMain,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
