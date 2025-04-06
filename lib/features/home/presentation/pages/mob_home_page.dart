@@ -162,7 +162,6 @@ class _MobHomePageState extends State<MobHomePage> {
     }
   }
 
-
   @override
   void dispose() {
     _searchController.dispose();
@@ -375,7 +374,7 @@ class _MobHomePageState extends State<MobHomePage> {
                       ],
                     );
                   },
-                ),
+                )
               ],
             ),
             if (_isApprovalExpanded) ...[
