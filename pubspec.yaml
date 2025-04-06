@@ -141,41 +141,12 @@ flutter:
 
 
   fonts:
-    - family: Pacifico
+
+    - family: Tajawal
       fonts:
-        - asset: fonts/Pacifico-Regular.ttf
-    - family: Amiri
-      fonts:
-        - asset: fonts/Amiri-Regular.ttf
-    - family: Cairo-Bold
-      fonts:
-        - asset: fonts/Cairo-Bold.ttf
-    - family: Cairo-Light
-      fonts:
-        - asset: fonts/Cairo-Light.ttf
-    - family: Cairo-Regular
-      fonts:
-        - asset: fonts/Cairo-Regular.ttf
-    - family: Cairo-Black
-      fonts:
-        - asset: fonts/Cairo-Black.ttf
-    - family: Cairo-ExtraBold
-      fonts:
-        - asset: fonts/Cairo-ExtraBold.ttf
-    - family: Cairo-ExtraLight
-      fonts:
-        - asset: fonts/Cairo-ExtraLight.ttf
-    - family: Cairo-Medium
-      fonts:
-        - asset: fonts/Cairo-Medium.ttf
-    - family: Cairo-SemiBold
-      fonts:
-        - asset: fonts/Cairo-SemiBold.ttf
-    - family: Roboto
-      fonts:
-        - asset: fonts/RobotoSerif-Regular.ttf
+        - asset: fonts/Tajawal-Regular.ttf
           weight: 400
-        - asset: fonts/RobotoSerif-Medium.ttf
+        - asset: fonts/Tajawal-Medium.ttf
           weight: 500
-        - asset: fonts/RobotoSerif-Bold.ttf
-          weight: 700
+        - asset: fonts/Tajawal-Bold.ttf
+          weight: 700    

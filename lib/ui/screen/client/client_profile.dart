@@ -248,7 +248,10 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
             },
           ),
           // Add AI Chat for client profile
-          ClientAIChatPage(clientId: widget.idClient ?? ''),
+          Padding(
+            padding: EdgeInsets.only(bottom: 14, left: 10),
+            child: ClientAIChatPage(clientId: widget.idClient ?? ''),
+          )
         ],
       ),
     );

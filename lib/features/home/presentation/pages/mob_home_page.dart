@@ -43,7 +43,7 @@ class HomeStatisticsModel {
   final double income;
   final double expenses;
   final double profit;
-  final double approveCount;
+  final int approveCount;
   final double openTasksProgress;
   final double openTicketsProgress;
   final String openTasksLabel;
@@ -56,7 +56,7 @@ class HomeStatisticsModel {
     this.income = 0.0,
     this.expenses = 0.0,
     this.profit = 0.0,
-    this.approveCount = 0.0,
+    this.approveCount = 0,
     this.openTasksProgress = 0.5,
     this.openTicketsProgress = 0.15,
     this.openTasksLabel = '0/0',
@@ -71,9 +71,11 @@ class HomeStatisticsModel {
       income: double.tryParse('${json['income']}') ?? 0.0,
       expenses: double.tryParse('${json['expenses']}') ?? 0.0,
       profit: double.tryParse('${json['profit']}') ?? 0.0,
-      approveCount: double.tryParse('${json['approve_count']}') ?? 0.0,
-      openTasksProgress: double.tryParse('${json['open_tasks_progress']}') ?? 0.5,
-      openTicketsProgress: double.tryParse('${json['open_tickets_progress']}') ?? 0.15,
+      approveCount: int.tryParse('${json['approve_count']}') ?? 0,
+      openTasksProgress:
+          double.tryParse('${json['open_tasks_progress']}') ?? 0.5,
+      openTicketsProgress:
+          double.tryParse('${json['open_tickets_progress']}') ?? 0.15,
       openTasksLabel: json['open_tasks_label'] ?? '0/0',
       openTicketsLabel: json['open_tickets_label'] ?? '0/0',
     );
@@ -201,7 +203,8 @@ class _MobHomePageState extends State<MobHomePage> {
                     children: [
                       Container(
                         width: double.infinity,
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 45),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 45),
                         decoration: BoxDecoration(
                           color: AppColors.primaryMain,
                           borderRadius: BorderRadius.only(
@@ -215,13 +218,15 @@ class _MobHomePageState extends State<MobHomePage> {
                             typform.TypeAheadField<SearchClientModel>(
                               direction: VerticalDirection.down,
                               controller: _searchController,
-                              builder: (context, controller, focusNode) => TextField(
+                              builder: (context, controller, focusNode) =>
+                                  TextField(
                                 controller: controller,
                                 focusNode: focusNode,
                                 textDirection: TextDirection.rtl,
                                 decoration: InputDecoration(
                                   hintTextDirection: TextDirection.rtl,
-                                  hintText: 'ابحث عن اسم المؤسسة, رقم الجوال...',
+                                  hintText:
+                                      'ابحث عن اسم المؤسسة, رقم الجوال...',
                                   hintStyle: TextStyle(
                                     fontSize: 12.scaleFontSize,
                                     color: Colors.grey.shade500,
@@ -231,11 +236,13 @@ class _MobHomePageState extends State<MobHomePage> {
                                   filled: true,
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10).r,
-                                    borderSide: BorderSide(color: Colors.grey.shade300),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade300),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10).r,
-                                    borderSide: BorderSide(color: Colors.grey.shade300),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade300),
                                   ),
                                 ),
                               ),
@@ -245,10 +252,12 @@ class _MobHomePageState extends State<MobHomePage> {
                                 borderRadius: BorderRadius.circular(8),
                                 child: child,
                               ),
-                              itemBuilder: (context, suggestion) => Directionality(
+                              itemBuilder: (context, suggestion) =>
+                                  Directionality(
                                 textDirection: TextDirection.rtl,
                                 child: ListTile(
-                                  title: AppText(suggestion.nameEnterprise ?? ''),
+                                  title:
+                                      AppText(suggestion.nameEnterprise ?? ''),
                                   subtitle: AppText(suggestion.phone ?? ''),
                                 ),
                               ),
@@ -262,20 +271,27 @@ class _MobHomePageState extends State<MobHomePage> {
                               hideOnLoading: false,
                               hideOnEmpty: false,
                               onSelected: (suggestion) {
-                                _searchController.text = suggestion.name ?? '';
+                                _searchController.text =
+                                    suggestion.nameEnterprise ?? '';
 
                                 AppNavigator.go(
                                   ClientProfile(
                                     idClient: suggestion.idClients,
                                     tabIndex: 0,
                                   ),
-                                  name: AppRoutesNames.clientProfile.inClientsList,
-                                  pathParameters: {'idClient': suggestion.idClients.toString()},
+                                  name: AppRoutesNames
+                                      .clientProfile.inClientsList,
+                                  pathParameters: {
+                                    'idClient': suggestion.idClients.toString()
+                                  },
                                 );
+                                FocusScope.of(context).unfocus();
+
                               },
                               suggestionsCallback: (pattern) async {
                                 if (pattern.isEmpty) return [];
-                                final results = await _searchCubit.searchClients(pattern);
+                                final results =
+                                    await _searchCubit.searchClients(pattern);
                                 return results;
                               },
                             ),
@@ -283,6 +299,7 @@ class _MobHomePageState extends State<MobHomePage> {
                           ],
                         ),
                       ),
+                      //  if (context.read<PrivilegesCubit>().checkPrivilege("40"))
                       _buildApprovalSection(),
                       _buildStatisticsSection(),
                       _buildProgressSection(),
@@ -392,7 +409,8 @@ class _MobHomePageState extends State<MobHomePage> {
                           leading: CircleAvatar(
                             radius: 18,
                             backgroundColor: Colors.grey[300],
-                            child: Icon(Icons.person, color: Colors.grey[600], size: 18),
+                            child: Icon(Icons.person,
+                                color: Colors.grey[600], size: 18),
                           ),
                           title: AppText(
                             user['name'] ?? 'Unknown User',
@@ -535,7 +553,8 @@ class _MobHomePageState extends State<MobHomePage> {
     );
   }
 
-  Widget _buildProgressBar(String title, double value, Color color, String label) {
+  Widget _buildProgressBar(
+      String title, double value, Color color, String label) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
