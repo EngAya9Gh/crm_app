@@ -224,54 +224,141 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
   Widget build(BuildContext context) {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
-        return AppPaginatedList(
-          scrollController: controller,
-          items: _cubit.pageVariables.allList,
+        final items = _cubit.pageVariables.allList;
+        
+        return Stack(
+          children: [
+            NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollInfo) {
+                if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 200 && 
+                    !_cubit.pageVariables.hasReachedEnd && 
+                    !state.getTasksStatus.isLoading()) {
+                  _cubit.getTasks(isNewFilter: false);
+                }
+                return true;
+              },
+              child: GridView.builder(
+                controller: controller,
+                padding: EdgeInsets.all(16),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: MediaQuery.of(context).size.width > 900 ? 3 : 
+                                  MediaQuery.of(context).size.width > 600 ? 2 : 1,
+                  childAspectRatio: 1.1,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: items.length,
           itemBuilder: (context, index) {
-            final task = _cubit.pageVariables.allList[index];
+                  final task = items[index];
             return ValueListenableBuilder(
                 valueListenable: _isHighlighted,
-                builder: (context, value, child) => AutoScrollTag(
-                    key: ValueKey(index),
-                    controller: controller,
-                    index: index,
-                    child: _buildCard(task, value, context)));
-          },
-          isLoading: state.getTasksStatus.isLoading(),
-          hasReachedEnd: _cubit.pageVariables.hasReachedEnd,
-          onLoadMore: () => _cubit.getTasks(isNewFilter: false),
+                    builder: (context, value, child) => AutoScrollTag(
+                      key: ValueKey(index), 
+                      controller: controller, 
+                      index: index,
+                      child: _buildCardNew(task, value && task.id.toString() == widget.idTask, context),
+                    ),
+                  );
+                },
+              ),
+            ),
+            if (state.getTasksStatus.isLoading())
+              Positioned(
+                bottom: 20,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 5,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.primaryMain,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        AppText(
+                          'جاري التحميل...',
+                          fontSize: 14,
+                          color: Colors.grey.shade700,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
         );
       },
     );
   }
 
-  Widget _buildCard(TaskModel task, bool isSame, BuildContext context) {
-    final assignToUserName = task.assignTo!.nameUser;
-    final firstList = assignToUserName?.split(' ').firstOrNull;
-    final secondList = assignToUserName?.split(' ').lastOrNull;
-    String? firstChar =
-        (firstList?.isNotEmpty ?? false) ? firstList?.substring(0, 1) : '';
-    String? secondChar =
-        (secondList?.isNotEmpty ?? false) ? secondList?.substring(0, 1) : '';
-    StringBuffer buffer = StringBuffer();
-
-    if (firstChar == null) {
-      firstChar = assignToUserName?.substring(0, 1);
-    }
-    if (secondChar == null) {
-      secondChar = assignToUserName?.substring(1, 2);
-    }
-
-    buffer.writeAll([firstChar, secondChar], '.');
-
+  // Nueva implementación del card con diseño mejorado
+  Widget _buildCardNew(TaskModel task, bool isHighlighted, BuildContext context) {
     final status = TaskStatusType.values
         .firstWhereOrNull((element) => element.name == task.status?.name);
+    
+    // Generar iniciales para avatar
+    final assignToUserName = task.assignTo!.nameUser;
+    final parts = assignToUserName?.split(' ');
+    final firstChar = parts?.isNotEmpty == true ? parts!.first.substring(0, 1) : '';
+    final secondChar = parts?.length == 2 ? parts![1].substring(0, 1) : '';
+    final initials = '$firstChar$secondChar';
+    
+    // Obtener icono según el porcentaje de completado
+    IconData getProgressIcon(int percentage) {
+      if (percentage >= 90) return Icons.verified_rounded;
+      if (percentage >= 75) return Icons.assignment_turned_in;
+      if (percentage >= 50) return Icons.assignment_late;
+      if (percentage >= 25) return Icons.assignment;
+      return Icons.assignment_outlined;
+    }
+    
+    // Obtener color según el porcentaje de completado
+    Color getProgressColor(int percentage) {
+      if (percentage >= 90) return Colors.green;
+      if (percentage >= 75) return Colors.lightGreen;
+      if (percentage >= 50) return Colors.amber;
+      if (percentage >= 25) return Colors.orange;
+      return Colors.red;
+    }
+    
+    final completionPercentage = (task.completionPercentage ?? 0).toInt();
+
     return Container(
       decoration: BoxDecoration(
-          color: (isSame && task.id.toString() == widget.idTask)
-              ? AppColors.primaryAltLight
-              : AppColors.white,
-          borderRadius: BorderRadiusDirectional.circular(8)),
+        color: isHighlighted ? AppColors.primaryAltLight.withOpacity(0.3) : Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: Offset(0, 3),
+          ),
+        ],
+        border: Border.all(
+          color: isHighlighted ? AppColors.primaryMain : Colors.grey.shade200,
+          width: isHighlighted ? 2 : 1,
+        ),
+      ),
       child: InkWell(
         onTap: status != null &&
                 context.read<PrivilegesCubit>().checkPrivilege('165')
@@ -284,132 +371,256 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                         Navigator.pop(context);
                       },
                       onSuccess: (value) {
-                        // AppNavigator.go(
-                        //   DialogTaskDetail(
-                        //       task: value, status: status, cubit: _cubit),
-                        //   name:
-                        //       AppRoutesNames.clientDashboard.inPendingInvoices,
-                        // );
                         Navigator.pop(context);
                         showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            barrierLabel: task.id.toString(),
+                          context: context,
+                          barrierDismissible: false,
+                          barrierLabel: task.id.toString(),
                             builder: (context) => DialogTaskDetail(
                                 task: value, status: status, cubit: _cubit));
-                        //   // builder: (context) => BlocProvider.value(
-                        //   // value: _cubit,
-                        //   // child: ChangeStatusTaskDialog(
-                        //   // status: status,
-                        //   // taskModel: task,
-                        //   // tasksCubit: _cubit,
-                        //   // ),
-                        //   // ),
-                        // );
                       },
                       params: GetTaskByIdParams(idTask: task.id!));
               }
             : null,
-        child: IntrinsicHeight(
-          child: Stack(
+        borderRadius: BorderRadius.circular(12),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (task.status?.name == TaskStatusType.Open.name ||
-                  task.status?.name == TaskStatusType.receive.name)
-                PositionedDirectional(
-                  child: Icon(
-                    task.overDeadline == 0
-                        ? Icons.timer_outlined
-                        : Icons.timer_off_outlined,
-                    size: 35,
-                    color: task.overDeadline == 0
-                        ? AppColors.green
-                        : AppColors.statusErrorActive,
-                  ),
-                  bottom: 0,
-                  end: 5,
-                ),
-              Row(
-                children: [
-                  5.width,
-                  Container(
-                    width: 4,
-                    decoration: BoxDecoration(
-                      color: status?.color,
-                      borderRadius: BorderRadius.circular(5),
+              // Header with status and progress icon
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  color: status?.color.withOpacity(0.1),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: status?.color ?? Colors.grey.shade300,
+                      width: 1,
                     ),
                   ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Status indicator
+              Row(
+                children: [
+                  Container(
+                          width: 10,
+                          height: 10,
+                    decoration: BoxDecoration(
+                      color: status?.color,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        AppText(
+                          status?.text ?? 'غير معروف',
+                          color: status?.color,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    ),
+                    
+                    // Progress icon
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: getProgressColor(completionPercentage).withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        getProgressIcon(completionPercentage),
+                        color: getProgressColor(completionPercentage),
+                        size: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              // Content
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
+                      AppText(
+                        task.title ?? '',
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 8),
+                      
+                      // Participants row
+                      Row(
                         children: [
-                          10.height,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // Assigned from
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              PopupMenuButton(
-                                offset: Offset(0, 10),
-                                constraints: BoxConstraints(
-                                    // Set the width to match screen width
-                                    minWidth: 420.scaleWidth,
-                                    maxWidth: 520.scaleWidth,
-                                    maxHeight: 600.scaleHeight),
-                                position: PopupMenuPosition.under,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                                AppText(
+                                  'من:',
+                                  fontSize: 12,
+                                  color: Colors.grey.shade600,
                                 ),
-                                itemBuilder: (context) => [
-                                  PopupMenuItem(
-                                      enabled: false,
-                                      padding: EdgeInsets.all(10),
-                                      child: AssignTOAnotherWidget(
-                                        task: task,
-                                        taskCubit: _cubit,
-                                      )),
-                                ],
-                                child: Container(
-                                  decoration: (status?.color != null)
-                                      ? BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                              width: 2, color: status!.color))
-                                      : null,
-                                  child: CircleAvatar(
-                                    backgroundImage: task.assignTo?.image !=
-                                            null
-                                        ? NetworkImage(
-                                            EndPoints.baseUrls.laravelFilesUrl +
-                                                task.assignTo!.image!)
-                                        : null,
-                                    child: task.assignTo?.image == null
-                                        ? Center(
-                                            child: AppText(
-                                              buffer.toString(),
-                                              color: context.colorScheme.white,
-                                            ),
-                                          )
-                                        : null,
-                                    radius: 22.scaleIconsSize,
-                                  ),
+                                SizedBox(height: 4),
+                                AppText(
+                                  '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser ?? "غير محدد"}',
+                                  fontSize: 13,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.grey.shade800,
                                 ),
+                              ],
+                            ),
+                          ),
+                          
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryMain.withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.arrow_forward,
+                              size: 14,
+                              color: AppColors.primaryMain,
+                            ),
+                          ),
+                          
+                          // Assigned to
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppText(
+                                  'إلى:',
+                                  fontSize: 12,
+                                  color: Colors.grey.shade600,
+                                ),
+                                SizedBox(height: 4),
+                                AppText(
+                                  '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser ?? "غير محدد"}',
+                                  fontSize: 13,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: AppColors.primaryMain,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      
+                      SizedBox(height: 8),
+                      
+                      // Client info if available
+                      if (task.client?.nameEnterprise?.isNotEmpty == true) ...[
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.business_outlined,
+                              size: 16,
+                              color: AppColors.primaryMain,
+                            ),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: AppText(
+                                task.client?.nameEnterprise ?? '',
+                                fontSize: 13,
+                                color: AppColors.primaryMain,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              if (context
-                                      .read<PrivilegesCubit>()
-                                      .checkPrivilege('339') &&
-                                  ([
-                                        task.assignFrom?.idUser.toString(),
-                                        task.assignFrom?.idRegion.toString(),
-                                        task.assignFrom?.idMange.toString()
-                                      ].contains(context
-                                          .read<UserProvider>()
-                                          .currentUser
-                                          .idUser) &&
-                                      (task.status?.name ==
-                                              TaskStatusType.Open.name ||
-                                          task.status?.name ==
-                                              TaskStatusType.receive.name)))
-                                IconButton(
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                      ],
+                      
+                      // Date
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_today_outlined,
+                            size: 14,
+                            color: Colors.grey.shade600,
+                          ),
+                          SizedBox(width: 8),
+                          Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: AppText(
+                              Intl.DateFormat('dd MMM yyyy').format(task.startDate ?? DateTime.now()),
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              
+              // Footer
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  border: Border(
+                    top: BorderSide(
+                      color: Colors.grey.shade200,
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Colaborators
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.group_outlined,
+                          size: 16,
+                          color: Colors.grey.shade600,
+                        ),
+                        SizedBox(width: 8),
+                        AppText(
+                          '${task.collaborators?.length ?? 0}',
+                          fontSize: 14,
+                          color: Colors.grey.shade700,
+                        ),
+                      ],
+                    ),
+                    
+                    // Edit button if allowed
+                              if (context.read<PrivilegesCubit>().checkPrivilege('339') &&
+                        ([
+                          task.assignFrom?.idUser.toString(),
+                          task.assignFrom?.idRegion.toString(),
+                          task.assignFrom?.idMange.toString()
+                        ].contains(context.read<UserProvider>().currentUser.idUser) &&
+                        (task.status?.name == TaskStatusType.Open.name ||
+                          task.status?.name == TaskStatusType.receive.name)))
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryAltLight.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: IconButton(
+                          constraints: BoxConstraints(minWidth: 32, maxWidth: 32, minHeight: 32, maxHeight: 32),
+                          padding: EdgeInsets.zero,
+                          iconSize: 16,
                                     onPressed: () {
                                       Dialogs.showLoadingDialog(context);
                                       context.read<TaskCubit>().getTaskById(
@@ -420,187 +631,41 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                             Navigator.pop(context);
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AddTaskPage(
+                                                builder: (context) => AddTaskPage(
                                                   task: value,
                                                 ),
                                               ),
                                             );
                                           },
-                                          params: GetTaskByIdParams(
-                                              idTask: task.id!));
+                                params: GetTaskByIdParams(
+                                    idTask: task.id!));
                                     },
                                     icon: Icon(
-                                      Icons.edit_square,
+                            Icons.edit_outlined,
                                       color: AppColors.primaryMain,
-                                    )),
-                            ],
                           ),
-                          10.width,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppText(
-                                task.title,
-                                overflow: TextOverflow.ellipsis,
                               ),
-                              if (((task
-                                              .assignFrom?.nameRegion?.isEmpty ??
-                                          true) &&
-                                      (task.assignFrom?.nameMange?.isEmpty ??
-                                          true) &&
-                                      (task.assignFrom?.nameUser?.isEmpty ??
-                                          true)) &&
-                                  ((task.assignTo?.nameRegion?.isEmpty ??
-                                          true) &&
-                                      (task.assignTo?.nameMange?.isEmpty ??
-                                          true) &&
-                                      (task.assignTo?.nameUser?.isEmpty ??
-                                          true)))
-                                Row(
-                                  children: [
-                                    AppText(
-                                      (task.assignFromModel == 'region')
-                                          ? 'فرع'
-                                          : (task.assignFromModel ==
-                                                  'managements')
-                                              ? "قسم"
-                                              : "مستخدم",
-                                      color: context.colorScheme.grey500,
-                                    ),
-                                    AppText(' --> '),
-                                    // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
-                                    AppText(
-                                      (task.assignFromModel == 'region')
-                                          ? 'فرع'
-                                          : (task.assignFromModel ==
-                                                  'managements')
-                                              ? "قسم"
-                                              : "مستخدم",
-                                      color: AppColors.primaryMain,
-                                    ),
-                                  ],
-                                ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              AppText(
-                                '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
-                                color: context.colorScheme.grey500,
                               ),
-                              AppText(' --> '),
-                              // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
-                              AppText(
-                                '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser}',
-                                color: AppColors.primaryMain,
-                              ),
-                            ],
-                          ),
+                    
+                    // Time taken if available
                           if (task.timeTaken != null)
                             Row(
                               children: [
-                                AppText(
-                                  'عدد الساعات ما بين استلام المهمة واكمالها',
-                                  color: context.colorScheme.grey500,
-                                  fontSize: 12,
-                                ),
-                                AppText(' --> '),
-                                AppText(
-                                  task.timeTaken.toString(),
-                                  color: AppColors.primaryMain,
-                                ),
-                              ],
-                            ),
-                          if (task.client != null) ...{
-                            InkWell(
-                              onTap: () {
-                                AppNavigator.go(
-                                  ClientProfile(
-                                      idClient: task.client!.idClients),
-                                  name: AppRoutesNames
-                                      .clientProfile.inClientsList,
-                                  pathParameters: {
-                                    'idClient':
-                                        task.client!.idClients.toString()
-                                  },
-                                );
-                              },
-                              child: AppText(
-                                task.client?.nameEnterprise ?? '',
-                                color: AppColors.primaryMain,
-                              ),
-                            ),
-                            10.height,
-                          },
-                          if (task.description?.isNotEmpty ?? false) ...{
-                            Expanded(
-                              child: AppText(
-                                task.description ?? '',
-                                fontSize: 15.scaleFontSize,
-                                color: context.colorScheme.grey600,
-                              ),
-                            ),
-                          },
-                          10.height,
-                          Wrap(
-                              spacing: 5,
-                              runSpacing: 5,
-                              children: (task.collaborators ?? [])
-                                  .map((e) => Tooltip(
-                                        message: e.nameUser,
-                                        child: CircleAvatar(
-                                            radius: 20,
-                                            backgroundColor:
-                                                AppColors.primaryAltLight,
-                                            child: AppText(e.nameUser
-                                                ?.substring(0, 2)
-                                                .toUpperCase())),
-                                      ))
-                                  .toList()),
-                          10.height,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              AppIcon(Icons.date_range_rounded,
-                                  color: context.colorScheme.grey600),
-                              5.width,
-                              Directionality(
-                                textDirection: TextDirection.ltr,
-                                child: AppText(
-                                  Intl.DateFormat('dd MMM hh:mm a')
-                                      .format(task.startDate ?? DateTime.now()),
-                                  color: context.colorScheme.grey600,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ],
+                          Icon(
+                            Icons.access_time_outlined,
+                            size: 16,
+                            color: Colors.grey.shade600,
                           ),
-                          15.height,
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              CircularProgressIndicator(
-                                strokeAlign: 1.5,
-                                value: (task.completionPercentage ?? 0) / 100,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    AppColors.green),
-                                strokeWidth: 5,
-                              ),
+                          SizedBox(width: 6),
                               AppText(
-                                '${(task.completionPercentage ?? 0).toInt()}%',
-                                color: AppColors.green,
-                              ),
-                            ],
+                            '${task.timeTaken}',
+                            fontSize: 14,
+                            color: Colors.grey.shade700,
                           ),
-                          15.height,
                         ],
                       ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -801,3 +866,5 @@ Widget AssignTOAnotherWidget(
     ),
   );
 }
+
+ 

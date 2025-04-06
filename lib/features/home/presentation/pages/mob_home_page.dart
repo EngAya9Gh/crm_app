@@ -443,7 +443,7 @@ class _MobHomePageState extends State<MobHomePage> {
                       backgroundColor: Colors.grey[300],
                       child: Icon(Icons.person, color: Colors.grey[600]),
                     ),
-                    if (_pendingApprovals.length > 1)
+                    if (_statistics.approveCount > 1)
                       Positioned(
                         top: -5,
                         right: -5,

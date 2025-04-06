@@ -72,7 +72,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      width: 290.scaleWidth,
+      width: 300.scaleWidth,
       child: Container(
         color: AppColors.white,
         child: CustomScrollView(
