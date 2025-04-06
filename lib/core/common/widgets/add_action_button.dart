@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:flutter/material.dart';
 import '../../../core/utils/app_colors.dart';
 
@@ -37,7 +38,7 @@ class AddActionButton extends StatelessWidget {
               style: TextStyle(
                 color: textColor,
                 fontSize: 14,
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.fontFamily2 ,
                 fontWeight: FontWeight.w500,
               ),
             ),

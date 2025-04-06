@@ -26,7 +26,6 @@ class AnalyticsService {
       parameters: {
         'screen_name': ((parameters?['duration'] != null) ? "$name duration ${parameters?['duration']}" : '$name') +
             " by ${AppConstants.currentUser.idUser.toString()}",
-      },د
-    );
+      },   );
   }
 }
