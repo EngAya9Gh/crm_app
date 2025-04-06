@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/enums/toast_colors_enum.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/common/widgets/app_dialog.dart';
 import 'package:crm_smart/core/common/widgets/section_header.dart';
@@ -90,22 +92,16 @@ class _SupportAddState extends State<SupportAdd> {
     clientsListBloc = context.read<ClientsListBloc>();
     invoiceVm = context.read<InvoiceVm>();
 
-    _invoice = context
-        .read<SupportTabCubit>()
-        .listInvoiceClientSupport
-        .firstWhere((element) => element.idInvoice == widget.idInvoice);
+    _invoice = context.read<SupportTabCubit>().listInvoiceClientSupport.firstWhere((element) => element.idInvoice == widget.idInvoice);
 
-    datesInstallation = List<DateInstallationClient>.of(
-        _invoice?.datesInstallationClient ?? []);
+    datesInstallation = List<DateInstallationClient>.of(_invoice?.datesInstallationClient ?? []);
 
     final listDates = List<DateInstallationClient>.of(datesInstallation);
     listDates.sort((a, b) => a.dateClientVisit!.compareTo(b.dateClientVisit!));
-    nextInstallation = listDates.firstWhereOrNull(
-        (element) => element.isDone == "0" || element.isDone == '3');
+    nextInstallation = listDates.firstWhereOrNull((element) => element.isDone == "0" || element.isDone == '3');
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      clientsListBloc
-          .add(GetClientSupportFilesEvent(GetClientSupportFilesParams(
+      clientsListBloc.add(GetClientSupportFilesEvent(GetClientSupportFilesParams(
         invoiceId: widget.idInvoice!,
       )));
     });
@@ -117,10 +113,7 @@ class _SupportAddState extends State<SupportAdd> {
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate = _invoice!.date_approve != null
-        ? intl.DateFormat('yyyy/MM/dd')
-            .format(DateTime.parse(_invoice!.date_approve!))
-        : 'غير محدد';
+    final formattedDate = _invoice!.date_approve != null ? intl.DateFormat('yyyy/MM/dd').format(DateTime.parse(_invoice!.date_approve!)) : 'غير محدد';
 
     return SafeArea(
       child: Directionality(
@@ -153,8 +146,8 @@ class _SupportAddState extends State<SupportAdd> {
                       SectionWithAction(
                         title: 'تفاصيل التركيب',
                         onAddPressed: () {},
-                child: Column(
-                  children: [
+                        child: Column(
+                          children: [
                             ClientSupportCardDetails(
                               invoiceModel: _invoice,
                               datesInstallation: datesInstallation,
@@ -189,9 +182,7 @@ class _SupportAddState extends State<SupportAdd> {
                           color: Colors.white,
                           child: Center(
                             child: AppText(
-                              isSmartView
-                                  ? 'Switch to View'
-                                  : 'Switch to Smart View',
+                              isSmartView ? 'Switch to View' : 'Switch to Smart View',
                               style: TextStyle(
                                 color: AppColors.primaryMain,
                                 fontSize: 16.scaleFontSize,
@@ -313,34 +304,38 @@ class _SupportAddState extends State<SupportAdd> {
                     icon: Icons.add_alarm,
                     onTap: () async {
                       Navigator.pop(context);
-                          await showDialog<void>(
-                            context: context,
-                            builder: (context) {
-                              return AddDateDialog(
-                                invoiceModel: _invoice!,
-                                idClient: widget.idClient!,
-                                datesInstallation: datesInstallation,
-                              );
-                            },
+                      await showDialog<void>(
+                        context: context,
+                        builder: (context) {
+                          return AddDateDialog(
+                            invoiceModel: _invoice!,
+                            idClient: widget.idClient!,
+                            datesInstallation: datesInstallation,
                           );
                         },
-                      ),
+                      );
+                    },
+                  ),
                 if (_privilegeCubit.checkPrivilege("43"))
                   ActionMenuItem(
                     title: 'تم التركيب',
                     icon: Icons.check_circle,
                     onTap: () {
+                      if (_invoice!.ready_install == '0') {
+                        AppSnackbar.showSnakeBar(
+                          'العميل غير جاهز للتركيب',
+                          color: ToastColorsEnum.warning,
+                        );
+                        return;
+                      }
                       Navigator.pop(context);
                       showDialog(
                         context: context,
-                        builder: (context) =>
-                            CustomDoneInstallButton(invoiceModel: _invoice!),
+                        builder: (context) => CustomDoneInstallButton(invoiceModel: _invoice!),
                       );
                     },
                   ),
-                if (_privilegeCubit.checkPrivilege("196") &&
-                    _invoice!.isApprove != null &&
-                    _invoice!.isdoneinstall == null)
+                if (_privilegeCubit.checkPrivilege("196") && _invoice!.isApprove != null && _invoice!.isdoneinstall == null)
                   ActionMenuItem(
                     title: 'ارجاع العميل للاعتماد',
                     icon: Icons.replay,
@@ -390,8 +385,7 @@ class _SupportAddState extends State<SupportAdd> {
                       }
                     },
                   ),
-                if (_privilegeCubit.checkPrivilege("110") ||
-                    _privilegeCubit.checkPrivilege("152"))
+                if (_privilegeCubit.checkPrivilege("110") || _privilegeCubit.checkPrivilege("152"))
                   ActionMenuItem(
                     title: 'تحديد موعد التركيب',
                     icon: Icons.calendar_today,
@@ -399,14 +393,11 @@ class _SupportAddState extends State<SupportAdd> {
                       Navigator.pop(context);
                       showDialog(
                         context: context,
-                        builder: (context) =>
-                            SetReadyInstallDateButton(invoiceModel: _invoice!),
+                        builder: (context) => SetReadyInstallDateButton(invoiceModel: _invoice!),
                       );
                     },
                   ),
-                if (_privilegeCubit.checkPrivilege("192") &&
-                    _invoice!.hasDevices == true &&
-                    _invoice!.deviceState == 'ready')
+                if (_privilegeCubit.checkPrivilege("192") && _invoice!.hasDevices == true && _invoice!.deviceState == 'ready')
                   ActionMenuItem(
                     title: 'استلام الأجهزة',
                     icon: Icons.devices,
@@ -414,8 +405,7 @@ class _SupportAddState extends State<SupportAdd> {
                       Navigator.pop(context);
                       showDialog(
                         context: context,
-                        builder: (context) =>
-                            ReceiveDeviceState(invoiceModel: _invoice!),
+                        builder: (context) => ReceiveDeviceState(invoiceModel: _invoice!),
                       );
                     },
                   ),
@@ -493,9 +483,9 @@ class _SupportAddState extends State<SupportAdd> {
                                     );
                                   },
                                 ),
-                  ],
-                ),
-              ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     );
@@ -513,9 +503,7 @@ class _SupportAddState extends State<SupportAdd> {
 
   clear() {
     endTime = TimeOfDay(hour: -1, minute: 00);
-    if (context.mounted)
-      Provider.of<datetime_vm>(context, listen: false)
-          .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
+    if (context.mounted) Provider.of<datetime_vm>(context, listen: false).setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
     selectInstallationType = null;
     Value_installation_type = null;
   }

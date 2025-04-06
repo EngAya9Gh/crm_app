@@ -1,11 +1,15 @@
 import 'dart:ui' as ii;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/enums/toast_colors_enum.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -223,7 +227,17 @@ class _EditInvoiceState extends State<EditInvoice> {
                         if (_currentDateApprove != null) {
                           invoiceData['date_approve'] = _currentDateApprove.toString();
                         }
-                        Provider.of<InvoiceVm>(context, listen: false).edit_invoice(invoiceData, widget.invoiceModel.idInvoice);
+                        Provider.of<InvoiceVm>(context, listen: false).edit_invoice(invoiceData, widget.invoiceModel.idInvoice).then(
+                          (value) {
+                            if (value) {
+                              AppSnackbar.showSnakeBar(
+                                " تم التعديل بنجاح",
+                                color: ToastColorsEnum.success,
+                              );
+                              AppNavigator.pop();
+                            }
+                          },
+                        );
                         setState(() {
                           widget.invoiceModel.dateCreate = _currentDateCreate.toString();
                           if (_currentDateApprove != null) {
