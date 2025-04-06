@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/main.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:intl/intl.dart';
 
 class AnalyticsService {
   static final FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.instance;
@@ -23,9 +24,8 @@ class AnalyticsService {
     await AnalyticsService.firebaseAnalytics.logEvent(
       name: 'screen_view_duration',
       parameters: {
-        'screen_name': name,
-        'user_id': AppConstants.currentUser.idUser.toString(),
-        if (data != null) ...data,
+        'screen_name': ((parameters?['duration'] != null) ? "$name duration ${parameters?['duration']}" : '$name') +
+            " by ${AppConstants.currentUser.idUser.toString()}",
       },
     );
   }

@@ -1,13 +1,10 @@
 
+import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
-
-/// Repositorio para manejar aprobaciones pendientes
-abstract class PendingApprovalsRepository {
-  Future<List<dynamic>> getPendingApprovals();
-  Future<bool> approveUser(String userId);
-  Future<bool> rejectUser(String userId);
-}
+import 'package:crm_smart/features/home/domain/repositories/pending_approvals_repository.dart';
+import 'package:crm_smart/features/home/presentation/pages/mob_home_page.dart';
 
 /// Implementación del repositorio de aprobaciones
 class PendingApprovalsRepositoryImpl implements PendingApprovalsRepository {
@@ -65,5 +62,11 @@ class PendingApprovalsRepositoryImpl implements PendingApprovalsRepository {
       print('Error rejecting user: $e');
       return false;
     }
+  }
+
+  @override
+  Future<Result<ResponseWrapper<HomeStatisticsModel>>> getHomeStatistices() {
+    // TODO: implement getHomeStatistices
+    throw UnimplementedError();
   }
 }

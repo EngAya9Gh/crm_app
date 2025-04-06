@@ -1,13 +1,9 @@
 import 'package:crm_smart/core/config/navigator/routes/finance_routes.dart';
-import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/services/firebase_analytics_services.dart';
-import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:crm_smart/features/versions/presentation/pages/incomming_versions_page.dart';
 import 'package:crm_smart/features/versions/presentation/pages/version_demand_page.dart';
 import 'package:crm_smart/features/versions/presentation/pages/versions_page.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
@@ -35,6 +31,8 @@ import 'routes/support_routes.dart';
 
 abstract class AppNavigator {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static DateTime? date;
+  static String? lastPage;
   static Future<dynamic> go(
     Widget page, {
     String? name,
@@ -43,7 +41,12 @@ abstract class AppNavigator {
     Map<String, String>? pathParameters,
     bool isNew = true,
   }) {
-    AnalyticsService().logCustomEvent(name: name?.split('/').last ?? page.toString());
+    if (lastPage != null)
+      AnalyticsService().logCustomEvent(name: lastPage ?? "", parameters: {
+        if (date != null) 'duration': DateTime.now().difference(date!).toString(),
+      });
+    lastPage = name?.split('/').last ?? page.toString();
+    date = DateTime.now();
     // AnalyticsService.firebaseAnalytics.logEvent(
     //   name: 'screen_view_duration',
     //   parameters: {
@@ -94,7 +97,12 @@ abstract class AppNavigator {
     Map<String, String>? pathParameters,
     bool isNew = true,
   }) {
-    AnalyticsService().logCustomEvent(name: name?.split('/').last ?? page.toString());
+    if (lastPage != null)
+      AnalyticsService().logCustomEvent(name: lastPage ?? "", parameters: {
+        if (date != null) 'duration': DateTime.now().difference(date!).toString(),
+      });
+    lastPage = name?.split('/').last ?? page.toString();
+    date = DateTime.now();
 
     if (kIsWeb && isNew) {
       AppRouter.goRouter.replaceNamed(
@@ -117,7 +125,12 @@ abstract class AppNavigator {
     Map<String, dynamic>? queryParameters,
     Map<String, String>? pathParameters,
   }) {
-    AnalyticsService().logCustomEvent(name: name?.split('/').last ?? page.toString());
+    if (lastPage != null)
+      AnalyticsService().logCustomEvent(name: lastPage ?? "", parameters: {
+        if (date != null) 'duration': DateTime.now().difference(date!).toString(),
+      });
+    lastPage = name?.split('/').last ?? page.toString();
+    date = DateTime.now();
 
     if (kIsWeb) {
       AppRouter.goRouter.pushNamed(
@@ -144,13 +157,23 @@ abstract class AppNavigator {
   }
 
   static Future<dynamic> pushReplacement(Widget page) {
-    AnalyticsService().logCustomEvent(name: page.toString());
+    if (lastPage != null)
+      AnalyticsService().logCustomEvent(name: lastPage ?? "", parameters: {
+        if (date != null) 'duration': DateTime.now().difference(date!).toString(),
+      });
+    lastPage = page.toString();
+    date = DateTime.now();
     return navigatorKey.currentState!.pushReplacement(CupertinoPageRoute(builder: (context) => page));
   }
 
   // add predicate
   static Future<dynamic> pushAndRemoveUntil(Widget page, [bool Function(Route<dynamic>)? predicate]) {
-    AnalyticsService().logCustomEvent(name: page.toString());
+    if (lastPage != null)
+      AnalyticsService().logCustomEvent(name: lastPage ?? "", parameters: {
+        if (date != null) 'duration': DateTime.now().difference(date!).toString(),
+      });
+    lastPage = page.toString();
+    date = DateTime.now();
     return navigatorKey.currentState!.pushAndRemoveUntil(
       CupertinoPageRoute(builder: (context) => page),
       predicate ?? (route) => false,
