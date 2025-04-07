@@ -82,6 +82,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
         ],
       ),
       child: AppCardContainer(
+        width: double.infinity,
         color: _isHighlighted ? AppColors.primaryAltLight : null,
         onTap: () {
           context.read<ParticipateListBloc>().add(ChanageCurrentParticipate(widget.participate));
@@ -97,26 +98,23 @@ class _ParticipateCardState extends State<ParticipateCard> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: AppText(
-                      widget.participate.name_participate,
-                      fontSize: 16,
-                      fontFamily: AppFonts.fontFamily1,
-                    ),
-                  ),
-                  AppText(
-                    _getDate(),
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.fontFamily1,
-                    color: AppColors.primaryMain,
-                    textDirection: TextDirection.ltr,
-                  ),
-                ],
+              AppText(
+                widget.participate.name_participate,
+                fontSize: 16,
+                fontFamily: AppFonts.fontFamily1,
+              ),
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: AppText(
+                  _getDate(),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: AppFonts.fontFamily1,
+                  color: AppColors.primaryMain,
+                  textDirection: TextDirection.ltr,
+                ),
               ),
             ],
           ),

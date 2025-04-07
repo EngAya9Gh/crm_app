@@ -36,9 +36,7 @@ class _SubSectionsListViewState extends State<SubSectionsListView> {
   @override
   Widget build(BuildContext context) {
     // Filtrar subsecciones permitidas
-    final allowedSubsections = widget.subSections
-        .where((subsection) => _isAllowed(context, subsection))
-        .toList();
+    final allowedSubsections = widget.subSections.where((subsection) => _isAllowed(context, subsection)).toList();
 
     return AppScaffold(
       appBar: CustomAppBar(title: widget.title),
@@ -57,58 +55,55 @@ class _SubSectionsListViewState extends State<SubSectionsListView> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: 
-               Transform.translate(
-                      offset: Offset(0, -55),child: 
-              GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // 2 tarjetas por fila
-                  childAspectRatio:
-                      1.1, // Proporción ancho/alto de las tarjetas
-                  crossAxisSpacing: 10, // Espaciado horizontal
-                  mainAxisSpacing: 10, // Espaciado vertical
-                ),
-                itemCount: allowedSubsections.length,
-                itemBuilder: (context, index) {
-                  final subsection = allowedSubsections[index];
-                  return _buildCard(
-                    subsection.title ?? '',
-                    _getIconForSection(subsection.title ?? ''),
-                    () {
-                      if (subsection.page != null) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => subsection.page!,
-                          ),
+                padding: const EdgeInsets.all(10),
+                child: Transform.translate(
+                  offset: Offset(0, -55),
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, // 2 tarjetas por fila
+                        childAspectRatio: 1.1, // Proporción ancho/alto de las tarjetas
+                        crossAxisSpacing: 10, // Espaciado horizontal
+                        mainAxisSpacing: 10, // Espaciado vertical
+                      ),
+                      itemCount: allowedSubsections.length,
+                      itemBuilder: (context, index) {
+                        final subsection = allowedSubsections[index];
+                        return _buildCard(
+                          subsection.title ?? '',
+                          _getIconForSection(subsection.title ?? ''),
+                          () {
+                            if (subsection.page != null) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => subsection.page!,
+                                ),
+                              );
+                            }
+                          },
                         );
-                      }
-                    },
-                  );
-                },
-              ),
-                )    ),
+                      },
+                    ),
+                  ),
+                )),
           ),
         ],
       ),
     );
   }
 
-  bool _isAllowed(BuildContext context, SectionModel subsection) =>
-      context.read<PrivilegesCubit>().checkPrivilege(subsection.privilegeId);
+  bool _isAllowed(BuildContext context, SectionModel subsection) => context.read<PrivilegesCubit>().checkPrivilege(subsection.privilegeId);
 
   // Función para determinar el icono basado en el título de la sección
   IconData _getIconForSection(String title) {
     // Mapeo de títulos a iconos (agrega más según sea necesario)
-    if (title.contains('تقارير') || title.contains('احصائيات'))
-      return Icons.bar_chart_rounded;
+    if (title.contains('تقارير') || title.contains('احصائيات')) return Icons.bar_chart_rounded;
     if (title.contains('عملاء') || title.contains('زبائن')) return Icons.people;
     if (title.contains('مبيعات')) return Icons.attach_money;
-    if (title.contains('إدارة') || title.contains('ادارة'))
-      return Icons.admin_panel_settings;
+    if (title.contains('إدارة') || title.contains('ادارة')) return Icons.admin_panel_settings;
     if (title.contains('فواتير')) return Icons.receipt_long;
-    if (title.contains('دعم') || title.contains('مساعدة'))
-      return Icons.support_agent;
+    if (title.contains('دعم') || title.contains('مساعدة')) return Icons.support_agent;
     if (title.contains('إعدادات')) return Icons.settings;
     if (title.contains('مهام')) return Icons.task_alt;
     if (title.contains('مستخدمين')) return Icons.supervised_user_circle;
@@ -161,6 +156,9 @@ Widget _buildCard(String title, IconData icon, VoidCallback onTap) {
             AppText(
               title,
               textAlign: TextAlign.center,
+              maxLines: 2,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,

@@ -294,7 +294,7 @@ abstract class AppDynamicLinks {
       case "closeSchedule":
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
-            tabIndex: 7,
+            tabIndex: 5,
             idClient: data == null ? dataNotify : data['paramId'],
           );
         }));
@@ -360,7 +360,7 @@ abstract class AppDynamicLinks {
       case "clientVisit":
         Navigator.push(context, CupertinoPageRoute(builder: (context) {
           return ClientProfile(
-            tabIndex: 7,
+            tabIndex: 5,
             idClient: data == null ? dataNotify : data['paramId'],
           );
         }));

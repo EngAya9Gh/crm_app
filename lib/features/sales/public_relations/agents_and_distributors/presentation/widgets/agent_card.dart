@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -77,31 +78,25 @@ class AgentCard extends StatelessWidget {
             ],
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: AppText(
-                      agentModel.nameAgent,
-                      fontFamily: AppFonts.fontFamily1,
-                    ),
-                  ),
-                  AppText(
-                    agentModel.addDate != null
-                        ? DateTime.tryParse(agentModel.addDate.toString()) !=
-                                null
-                            ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
-                                .format(DateTime.parse(agentModel.addDate!))
-                            : agentModel.addDate.toString()
-                        : '',
-                    fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.fontFamily1,
-                    color: AppColors.primaryMain,
-                    textDirection: TextDirection.ltr,
-                  ),
-                ],
+              AppText(
+                agentModel.nameAgent,
+                fontFamily: AppFonts.fontFamily1,
+              ),
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: AppText(
+                  agentModel.addDate != null
+                      ? DateTime.tryParse(agentModel.addDate.toString()) != null
+                          ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(agentModel.addDate!))
+                          : agentModel.addDate.toString()
+                      : '',
+                  fontWeight: FontWeight.bold,
+                  fontFamily: AppFonts.fontFamily1,
+                  color: AppColors.primaryMain,
+                  textDirection: TextDirection.ltr,
+                ),
               ),
             ],
           ),
