@@ -294,7 +294,8 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
       // AppText('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       // AppText('الانشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       AppText('الأنشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      if (context.read<PrivilegesCubit>().checkPrivilege('282')) AppText('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      if (context.read<PrivilegesCubit>().checkPrivilege('282')) 
+      AppText('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       // AppText('المهام', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
     ];
   }
@@ -321,6 +322,7 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
       // TicketProfile(itemClient: client),
       // ClientActivitiesPage(client: client),
       ClientsDatesPage(client: client),
+      if (context.read<PrivilegesCubit>().checkPrivilege('282')) 
       ClientLogsTabPage(client: client),
       // ClientTasksTabPage(client: client),
     ];

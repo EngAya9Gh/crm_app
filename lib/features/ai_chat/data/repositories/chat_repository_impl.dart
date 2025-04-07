@@ -1,22 +1,20 @@
 import 'dart:convert';
+import 'package:crm_smart/core/services/api/api_services.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
-import 'package:http/http.dart' as http;
+
 import '../../domain/repositories/chat_repository.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
-  final String baseUrl;
-
-  ChatRepositoryImpl({String? baseUrl})
-      : baseUrl = baseUrl ?? EndPoints.baseUrls.url;
+  ChatRepositoryImpl();
 
   @override
   Future<String> sendMessageToAI(String questionId, {String? clientId}) async {
     try {
       print('chatting with questionId: $questionId, clientId: $clientId');
-      final uri = Uri.parse('$baseUrl${EndPoints.chatAi.send_question}');
-      print(uri);
 
-      final Map<String, dynamic> payload = {
+      final ApiServices apiServices = getIt<ApiServices>();
+      final dynamic payload = {
         'questionId': questionId,
       };
 
@@ -24,26 +22,29 @@ class ChatRepositoryImpl implements ChatRepository {
       if (clientId != null) {
         payload['clientId'] = clientId;
       }
-     print(jsonEncode(payload).toString());
-      final response = await http.post(
-        uri,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(payload),
+      print(jsonEncode(payload).toString());
+
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.post(
+        endPoint: EndPoints.chatAi.send_question,
+        data: payload,
       );
 
       print('response');
-      print(response.body);
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        print(data);
-        return data['response'] ?? 'No response from AI';
-      } else {
-        throw Exception(
-            'Failed to get response from AI: ${response.statusCode}');
+      print(response);
+
+      // Handle the response as a Map
+      if (response is Map<String, dynamic>) {
+        final data = response['response'];
+        if (data != null) {
+          return data;
+        }
       }
+
+      // If we get here, something went wrong with the response
+      return 'No response from AI';
     } catch (e) {
+      print('Error in sendMessageToAI: $e');
       // For development purposes, return a mock response
       return _getMockResponse(questionId, clientId);
     }

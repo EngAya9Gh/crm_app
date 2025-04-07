@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.development;
+  static AppMode appMode = AppMode.production;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -214,7 +214,7 @@ class _Privilege {
 class _ChatAi {
   const _ChatAi();
 
-  final send_question = "chatAi/send_message_ai.php";
+  final send_question = "ai-chat";
 }
 
 class _Client {

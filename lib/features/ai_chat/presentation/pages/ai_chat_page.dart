@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -5,6 +6,7 @@ import '../../data/repositories/chat_repository_impl.dart';
 import '../manager/chat_cubit.dart';
 import '../manager/chat_state.dart';
 import '../widgets/chat_window.dart';
+import '../widgets/ai_chat_button.dart';
 
 class AIChatPage extends StatelessWidget {
   const AIChatPage({Key? key}) : super(key: key);
@@ -38,41 +40,14 @@ class AIChatView extends StatelessWidget {
             Positioned(
               bottom: 20,
               right: 20,
-              child: _buildChatButton(context, state),
+              child: AIChatButton(
+                showChatWindow: state.showChatWindow,
+                onTap: () => context.read<ChatCubit>().toggleChatWindow(),
+              ),
             ),
           ],
         );
       },
-    );
-  }
-
-  Widget _buildChatButton(BuildContext context, ChatState state) {
-    return GestureDetector(
-      onTap: () {
-        context.read<ChatCubit>().toggleChatWindow();
-      },
-      child: Container(
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Center(
-          child: Icon(
-            state.showChatWindow ? Icons.close : Icons.chat,
-            color: Colors.white,
-            size: 24,
-          ),
-        ),
-      ),
     );
   }
 }

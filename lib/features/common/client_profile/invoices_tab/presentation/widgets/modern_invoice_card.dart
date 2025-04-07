@@ -570,7 +570,7 @@ class ModernInvoiceCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        AppText(
           label,
           style: TextStyle(
             fontSize: 12.scaleFontSize,
@@ -579,7 +579,7 @@ class ModernInvoiceCard extends StatelessWidget {
           ),
         ),
         SizedBox(height: 4),
-        Text(
+        AppText(
           formatter.format(amount),
           style: TextStyle(
             fontSize: 14.scaleFontSize,

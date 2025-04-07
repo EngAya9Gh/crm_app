@@ -86,6 +86,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     color: AppColors.primaryMain, //Color(0xFF579DDE),
                     child: Column(
                       children: [
+                        SizedBox(height: 8.scaleHeight),
                         Row(
                           children: [
                             CircleAvatar(
@@ -117,7 +118,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         .toString(),
                                     style: TextStyle(
                                       color: AppColors.white,
-                                      fontSize: 16,
+                                      fontSize: 16.scaleFontSize,
                                       fontFamily: AppFonts.fontFamily1,
                                     ),
                                   ),
@@ -129,7 +130,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         .toString(),
                       style: TextStyle(
                                       color: AppColors.white70,
-                                      fontSize: 14,
+                                      fontSize: 14.scaleFontSize,
                         fontFamily: AppFonts.fontFamily1,
                                     ),
                                   ),

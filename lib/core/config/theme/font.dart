@@ -48,7 +48,7 @@ abstract class _FontFamily {
   static const String medium = "Tajawal-Medium";
   static const String extraLight = "Tajawal-ExtraLight";
   static const String extraBold = "Tajawal-ExtraBold";
-  static const String semiBold = "Tajawal-ExtraBold";
+  static const String semiBold = "Tajawal-Regular";
 }
 
 abstract class _FontSize {

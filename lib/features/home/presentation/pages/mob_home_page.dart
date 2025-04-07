@@ -32,14 +32,14 @@ var formatter = intl.NumberFormat("#,##0.00", "ar_SA");
 //     final homeStatisticsModel = homeStatisticsModelFromJson(jsonString);
 
 class HomeStatisticsModel {
-  final num? dailyClients;
-  final num? notDoneVisits;
-  final num? dailyNotDoneVisits;
-  final num? tasks;
+  final int? dailyClients;
+  final int? notDoneVisits;
+  final int? dailyNotDoneVisits;
+  final int? tasks;
   final num? dailySales;
   final num? monthlySales;
   final num? monthlyWithdrawLosses;
-  final num? monthlyNoWithdraw;
+  final int? monthlyNoWithdraw;
   final num? openTasksProgress;
   final num? openTicketsProgress;
   final num? notDoneVisitsProgress;
@@ -67,14 +67,14 @@ class HomeStatisticsModel {
   });
 
   HomeStatisticsModel copyWith({
-    num? dailyClients,
-    num? notDoneVisits,
-    num? dailyNotDoneVisits,
-    num? tasks,
+    int? dailyClients,
+    int? notDoneVisits,
+    int? dailyNotDoneVisits,
+    int? tasks,
     num? dailySales,
     num? monthlySales,
     num? monthlyWithdrawLosses,
-    num? monthlyNoWithdraw,
+    int? monthlyNoWithdraw,
     num? openTasksProgress,
     num? openTicketsProgress,
     num? notDoneVisitsProgress,
@@ -90,22 +90,25 @@ class HomeStatisticsModel {
         tasks: tasks ?? this.tasks,
         dailySales: dailySales ?? this.dailySales,
         monthlySales: monthlySales ?? this.monthlySales,
-        monthlyWithdrawLosses: monthlyWithdrawLosses ?? this.monthlyWithdrawLosses,
+        monthlyWithdrawLosses:
+            monthlyWithdrawLosses ?? this.monthlyWithdrawLosses,
         monthlyNoWithdraw: monthlyNoWithdraw ?? this.monthlyNoWithdraw,
         openTasksProgress: openTasksProgress ?? this.openTasksProgress,
         openTicketsProgress: openTicketsProgress ?? this.openTicketsProgress,
-        notDoneVisitsProgress: notDoneVisitsProgress ?? this.notDoneVisitsProgress,
+        notDoneVisitsProgress:
+            notDoneVisitsProgress ?? this.notDoneVisitsProgress,
         notDoneVisitsLabel: notDoneVisitsLabel ?? this.notDoneVisitsLabel,
         openTasksLabel: openTasksLabel ?? this.openTasksLabel,
         openTicketsLabel: openTicketsLabel ?? this.openTicketsLabel,
         approveCount: approveCount ?? this.approveCount,
       );
 
-  factory HomeStatisticsModel.fromJson(Map<String, dynamic> json) => HomeStatisticsModel(
+  factory HomeStatisticsModel.fromJson(Map<String, dynamic> json) =>
+      HomeStatisticsModel(
         dailyClients: json["daily_clients"],
         notDoneVisits: json["not_done_visits"],
         dailyNotDoneVisits: json["daily_not_done_visits"],
-        tasks: json["tasks"],
+        tasks: json["tasks"].toInt(),
         dailySales: json["daily_sales"],
         monthlySales: json["monthly_sales"]?.toDouble(),
         monthlyWithdrawLosses: json["monthly_withdraw_losses"],
@@ -244,7 +247,8 @@ class _MobHomePageState extends State<MobHomePage> {
                     children: [
                       Container(
                         width: double.infinity,
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 45),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 45),
                         decoration: BoxDecoration(
                           color: AppColors.primaryMain,
                           borderRadius: BorderRadius.only(
@@ -258,13 +262,15 @@ class _MobHomePageState extends State<MobHomePage> {
                             typform.TypeAheadField<SearchClientModel>(
                               direction: VerticalDirection.down,
                               controller: _searchController,
-                              builder: (context, controller, focusNode) => TextField(
+                              builder: (context, controller, focusNode) =>
+                                  TextField(
                                 controller: controller,
                                 focusNode: focusNode,
                                 textDirection: TextDirection.rtl,
                                 decoration: InputDecoration(
                                   hintTextDirection: TextDirection.rtl,
-                                  hintText: 'ابحث عن اسم المؤسسة, رقم الجوال...',
+                                  hintText:
+                                      'ابحث عن اسم المؤسسة, رقم الجوال...',
                                   hintStyle: TextStyle(
                                     fontSize: 12.scaleFontSize,
                                     color: Colors.grey.shade500,
@@ -274,11 +280,13 @@ class _MobHomePageState extends State<MobHomePage> {
                                   filled: true,
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10).r,
-                                    borderSide: BorderSide(color: Colors.grey.shade300),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade300),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10).r,
-                                    borderSide: BorderSide(color: Colors.grey.shade300),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade300),
                                   ),
                                 ),
                               ),
@@ -288,10 +296,12 @@ class _MobHomePageState extends State<MobHomePage> {
                                 borderRadius: BorderRadius.circular(8),
                                 child: child,
                               ),
-                              itemBuilder: (context, suggestion) => Directionality(
+                              itemBuilder: (context, suggestion) =>
+                                  Directionality(
                                 textDirection: TextDirection.rtl,
                                 child: ListTile(
-                                  title: AppText(suggestion.nameEnterprise ?? ''),
+                                  title:
+                                      AppText(suggestion.nameEnterprise ?? ''),
                                   subtitle: AppText(suggestion.phone ?? ''),
                                 ),
                               ),
@@ -305,21 +315,26 @@ class _MobHomePageState extends State<MobHomePage> {
                               hideOnLoading: false,
                               hideOnEmpty: false,
                               onSelected: (suggestion) {
-                                _searchController.text = suggestion.nameEnterprise ?? '';
+                                _searchController.text =
+                                    suggestion.nameEnterprise ?? '';
 
                                 AppNavigator.go(
                                   ClientProfile(
                                     idClient: suggestion.idClients,
                                     tabIndex: 0,
                                   ),
-                                  name: AppRoutesNames.clientProfile.inClientsList,
-                                  pathParameters: {'idClient': suggestion.idClients.toString()},
+                                  name: AppRoutesNames
+                                      .clientProfile.inClientsList,
+                                  pathParameters: {
+                                    'idClient': suggestion.idClients.toString()
+                                  },
                                 );
                                 FocusScope.of(context).unfocus();
                               },
                               suggestionsCallback: (pattern) async {
                                 if (pattern.isEmpty) return [];
-                                final results = await _searchCubit.searchClients(pattern);
+                                final results =
+                                    await _searchCubit.searchClients(pattern);
                                 return results;
                               },
                             ),
@@ -353,7 +368,7 @@ class _MobHomePageState extends State<MobHomePage> {
           );
       },
       child: Container(
-        margin: EdgeInsets.all(16),
+        margin: EdgeInsets.only(top: 5, left: 16, right: 16, bottom: 8),
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -375,9 +390,9 @@ class _MobHomePageState extends State<MobHomePage> {
                 AppText(
                   'Waiting for approval',
                   style: TextStyle(
-                    fontSize: 16.scaleFontSize,
-                    fontWeight: FontWeight.w600,
-                  ),
+                      fontSize: 16.scaleFontSize,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryMain),
                 ),
                 // AppText(
                 //   '${_pendingApprovals.length} users',
@@ -401,16 +416,16 @@ class _MobHomePageState extends State<MobHomePage> {
                             top: -5,
                             right: -5,
                             child: Container(
-                              padding: EdgeInsets.all(4),
+                              padding: EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                 color: AppColors.primaryMain,
                                 shape: BoxShape.circle,
                               ),
                               child: AppText(
-                                '+${state.homeStatistics.data?.approveCount.toString()}',
+                                '${state.homeStatistics.data?.approveCount.toString()}',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10.scaleFontSize,
+                                  fontSize: 12.scaleFontSize,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -437,7 +452,8 @@ class _MobHomePageState extends State<MobHomePage> {
                           leading: CircleAvatar(
                             radius: 18,
                             backgroundColor: Colors.grey[300],
-                            child: Icon(Icons.person, color: Colors.grey[600], size: 18),
+                            child: Icon(Icons.person,
+                                color: Colors.grey[600], size: 18),
                           ),
                           title: AppText(
                             user['name'] ?? 'Unknown User',
@@ -457,7 +473,7 @@ class _MobHomePageState extends State<MobHomePage> {
                       },
                     ),
             ],
-            SizedBox(height: 8),
+            // SizedBox(height: 8),
             // Center(
             //   child: Icon(
             //     _isApprovalExpanded ? Icons.expand_less : Icons.expand_more,
@@ -479,38 +495,58 @@ class _MobHomePageState extends State<MobHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText('ToDo :'),
-                Divider(),
+                AppText('ToDo '),
+                // Divider(),
                 Row(
                   children: [
-                    Expanded(child: _buildStatItem('visit', data?.notDoneVisits, Icons.work)),
+                    Expanded(
+                        child: _buildStatItem(
+                            'visit', data?.notDoneVisits, Icons.work)),
                     16.width,
-                    Expanded(child: _buildStatItem('task', data?.tasks, Icons.task)),
+                    Expanded(
+                        child: _buildStatItem('task', data?.tasks, Icons.task)),
                   ],
                 ),
-                16.height,
-                AppText('Daily :'),
-                Divider(),
+                12.height,
+                AppText(
+                  'Daily :',
+                ),
+                //Divider(),
                 Row(
                   children: [
-                    Expanded(child: _buildStatItem("Client", data?.dailyClients, Icons.work)),
+                    Expanded(
+                        child: _buildStatItem(
+                            "Client", data?.dailyClients, Icons.people)),
                     16.width,
-                    Expanded(child: _buildStatItem('Income', data?.dailySales, Icons.task)),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Income',
+                            formatter.format(data?.dailySales),
+                            Icons.account_balance)),
                   ],
                 ),
-                16.height,
+                12.height,
                 AppText('Monthly :'),
-                Divider(),
                 Row(
                   children: [
-                    Expanded(child: _buildStatItem('No.Loss', data?.monthlyNoWithdraw, Icons.work)),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Income',
+                            formatter.format(data?.monthlySales),
+                            Icons.trending_up)),
                     16.width,
-                    Expanded(child: _buildStatItem('Loss', data?.monthlyWithdrawLosses, Icons.work)),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Loss',
+                            formatter.format(data?.monthlyWithdrawLosses),
+                            Icons.trending_down)),
                     16.width,
-                    Expanded(child: _buildStatItem('Income', data?.monthlySales, Icons.task)),
+                    Expanded(
+                        child: _buildStatItem('No.Loss',
+                            data?.monthlyNoWithdraw, Icons.people_outline)),
                   ],
                 ),
-                16.height,
+                // 8.height,
                 // Row(
                 //   children: [
                 //     Expanded(child: _buildStatItem('Income', data?.income, Icons.trending_up)),
@@ -533,8 +569,9 @@ class _MobHomePageState extends State<MobHomePage> {
   }
 
   Widget _buildStatItem(String title, dynamic value, IconData icon) {
+    final displayValue = value ?? 0;
     return Container(
-      height: 135.scaleHeight,
+      height: 120.scaleHeight,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -554,7 +591,8 @@ class _MobHomePageState extends State<MobHomePage> {
           SizedBox(height: 8),
           AppText(
             textAlign: TextAlign.center,
-            formatter.format(value),
+            displayValue,
+            // formatter.format(displayValue),
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -590,7 +628,8 @@ class _MobHomePageState extends State<MobHomePage> {
               SizedBox(height: 12),
               _buildProgressBar(
                 'Open Ticket',
-                (state.homeStatistics.data?.openTicketsProgress ?? 0).toDouble(),
+                (state.homeStatistics.data?.openTicketsProgress ?? 0)
+                    .toDouble(),
                 Colors.green,
                 state.homeStatistics.data?.openTicketsLabel ?? '',
               ),
@@ -599,7 +638,8 @@ class _MobHomePageState extends State<MobHomePage> {
               ),
               _buildProgressBar(
                 'Open visit',
-                (state.homeStatistics.data?.notDoneVisitsProgress ?? 0).toDouble(),
+                (state.homeStatistics.data?.notDoneVisitsProgress ?? 0)
+                    .toDouble(),
                 Colors.green,
                 state.homeStatistics.data?.notDoneVisitsLabel ?? '',
               ),
@@ -611,7 +651,8 @@ class _MobHomePageState extends State<MobHomePage> {
     );
   }
 
-  Widget _buildProgressBar(String title, double value, Color color, String label) {
+  Widget _buildProgressBar(
+      String title, double value, Color color, String label) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
