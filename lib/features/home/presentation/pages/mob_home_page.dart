@@ -27,64 +27,115 @@ import 'package:intl/intl.dart' as intl;
 
 var formatter = intl.NumberFormat("#,##0.00", "ar_SA");
 
-/// Modelo para estadísticas de la página de inicio
+/// Modelo para estadísticas de la página de inicio// To parse this JSON data, do
+//
+//     final homeStatisticsModel = homeStatisticsModelFromJson(jsonString);
+
 class HomeStatisticsModel {
-  final int visits;
-  final int clients;
-  final int tasks;
-  final double income;
-  final double expenses;
-  final double profit;
-  final int approveCount;
-  final double openTasksProgress;
-  final double openTicketsProgress;
-  final String openTasksLabel;
-  final String openTicketsLabel;
+  final num? dailyClients;
+  final num? notDoneVisits;
+  final num? dailyNotDoneVisits;
+  final num? tasks;
+  final num? dailySales;
+  final num? monthlySales;
+  final num? monthlyWithdrawLosses;
+  final num? monthlyNoWithdraw;
+  final num? openTasksProgress;
+  final num? openTicketsProgress;
+  final num? notDoneVisitsProgress;
+  final String? notDoneVisitsLabel;
+  final String? openTasksLabel;
+  final String? openTicketsLabel;
+  final num? approveCount;
 
   HomeStatisticsModel({
-    this.visits = 0,
-    this.clients = 0,
-    this.tasks = 0,
-    this.income = 0.0,
-    this.expenses = 0.0,
-    this.profit = 0.0,
-    this.approveCount = 0,
-    this.openTasksProgress = 0.5,
-    this.openTicketsProgress = 0.15,
-    this.openTasksLabel = '0/0',
-    this.openTicketsLabel = '0/0',
+    this.dailyClients,
+    this.notDoneVisits,
+    this.dailyNotDoneVisits,
+    this.tasks,
+    this.dailySales,
+    this.monthlySales,
+    this.monthlyWithdrawLosses,
+    this.monthlyNoWithdraw,
+    this.openTasksProgress,
+    this.openTicketsProgress,
+    this.notDoneVisitsProgress,
+    this.notDoneVisitsLabel,
+    this.openTasksLabel,
+    this.openTicketsLabel,
+    this.approveCount,
   });
 
-  factory HomeStatisticsModel.fromJson(Map<String, dynamic> json) {
-    return HomeStatisticsModel(
-      visits: json['visits'] ?? 0,
-      clients: json['clients'] ?? 0,
-      tasks: json['tasks'] ?? 0,
-      income: double.tryParse('${json['income']}') ?? 0.0,
-      expenses: double.tryParse('${json['expenses']}') ?? 0.0,
-      profit: double.tryParse('${json['profit']}') ?? 0.0,
-      approveCount: int.tryParse('${json['approve_count']}') ?? 0,
-      openTasksProgress: double.tryParse('${json['open_tasks_progress']}') ?? 0.5,
-      openTicketsProgress: double.tryParse('${json['open_tickets_progress']}') ?? 0.15,
-      openTasksLabel: json['open_tasks_label'] ?? '0/0',
-      openTicketsLabel: json['open_tickets_label'] ?? '0/0',
-    );
-  }
+  HomeStatisticsModel copyWith({
+    num? dailyClients,
+    num? notDoneVisits,
+    num? dailyNotDoneVisits,
+    num? tasks,
+    num? dailySales,
+    num? monthlySales,
+    num? monthlyWithdrawLosses,
+    num? monthlyNoWithdraw,
+    num? openTasksProgress,
+    num? openTicketsProgress,
+    num? notDoneVisitsProgress,
+    String? notDoneVisitsLabel,
+    String? openTasksLabel,
+    String? openTicketsLabel,
+    num? approveCount,
+  }) =>
+      HomeStatisticsModel(
+        dailyClients: dailyClients ?? this.dailyClients,
+        notDoneVisits: notDoneVisits ?? this.notDoneVisits,
+        dailyNotDoneVisits: dailyNotDoneVisits ?? this.dailyNotDoneVisits,
+        tasks: tasks ?? this.tasks,
+        dailySales: dailySales ?? this.dailySales,
+        monthlySales: monthlySales ?? this.monthlySales,
+        monthlyWithdrawLosses: monthlyWithdrawLosses ?? this.monthlyWithdrawLosses,
+        monthlyNoWithdraw: monthlyNoWithdraw ?? this.monthlyNoWithdraw,
+        openTasksProgress: openTasksProgress ?? this.openTasksProgress,
+        openTicketsProgress: openTicketsProgress ?? this.openTicketsProgress,
+        notDoneVisitsProgress: notDoneVisitsProgress ?? this.notDoneVisitsProgress,
+        notDoneVisitsLabel: notDoneVisitsLabel ?? this.notDoneVisitsLabel,
+        openTasksLabel: openTasksLabel ?? this.openTasksLabel,
+        openTicketsLabel: openTicketsLabel ?? this.openTicketsLabel,
+        approveCount: approveCount ?? this.approveCount,
+      );
 
-  factory HomeStatisticsModel.mock() {
-    return HomeStatisticsModel(
-      visits: 12,
-      clients: 45,
-      tasks: 23,
-      income: 25000,
-      expenses: 15000,
-      profit: 10000,
-      openTasksProgress: 0.66,
-      openTicketsProgress: 0.15,
-      openTasksLabel: '2/3',
-      openTicketsLabel: '-166/29',
-    );
-  }
+  factory HomeStatisticsModel.fromJson(Map<String, dynamic> json) => HomeStatisticsModel(
+        dailyClients: json["daily_clients"],
+        notDoneVisits: json["not_done_visits"],
+        dailyNotDoneVisits: json["daily_not_done_visits"],
+        tasks: json["tasks"],
+        dailySales: json["daily_sales"],
+        monthlySales: json["monthly_sales"]?.toDouble(),
+        monthlyWithdrawLosses: json["monthly_withdraw_losses"],
+        monthlyNoWithdraw: json["monthly_no_withdraw"],
+        openTasksProgress: json["open_tasks_progress"]?.toDouble(),
+        openTicketsProgress: json["open_tickets_progress"]?.toDouble(),
+        notDoneVisitsProgress: json["not_done_visits_progress"],
+        notDoneVisitsLabel: json["not_done_visits_label"],
+        openTasksLabel: json["open_tasks_label"],
+        openTicketsLabel: json["open_tickets_label"],
+        approveCount: json["approve_count"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "daily_clients": dailyClients,
+        "not_done_visits": notDoneVisits,
+        "daily_not_done_visits": dailyNotDoneVisits,
+        "tasks": tasks,
+        "daily_sales": dailySales,
+        "monthly_sales": monthlySales,
+        "monthly_withdraw_losses": monthlyWithdrawLosses,
+        "monthly_no_withdraw": monthlyNoWithdraw,
+        "open_tasks_progress": openTasksProgress,
+        "open_tickets_progress": openTicketsProgress,
+        "not_done_visits_progress": notDoneVisitsProgress,
+        "not_done_visits_label": notDoneVisitsLabel,
+        "open_tasks_label": openTasksLabel,
+        "open_tickets_label": openTicketsLabel,
+        "approve_count": approveCount,
+      };
 }
 
 class MobHomePage extends StatefulWidget {
@@ -428,25 +479,47 @@ class _MobHomePageState extends State<MobHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                AppText('ToDo :'),
+                Divider(),
                 Row(
                   children: [
-                    Expanded(child: _buildStatItem('visits', data?.visits, Icons.work)),
-                    SizedBox(width: 16),
-                    Expanded(child: _buildStatItem('Clients', data?.clients, Icons.people)),
-                    SizedBox(width: 16),
-                    Expanded(child: _buildStatItem('Task', data?.tasks, Icons.task)),
+                    Expanded(child: _buildStatItem('visit', data?.notDoneVisits, Icons.work)),
+                    16.width,
+                    Expanded(child: _buildStatItem('task', data?.tasks, Icons.task)),
                   ],
                 ),
-                SizedBox(height: 16),
+                16.height,
+                AppText('Daily :'),
+                Divider(),
                 Row(
                   children: [
-                    Expanded(child: _buildStatItem('Income', data?.income, Icons.trending_up)),
-                    SizedBox(width: 16),
-                    Expanded(child: _buildStatItem('Expense', data?.expenses, Icons.trending_down)),
-                    SizedBox(width: 16),
-                    Expanded(child: _buildStatItem('Profit', data?.profit, Icons.account_balance)),
+                    Expanded(child: _buildStatItem("Client", data?.dailyClients, Icons.work)),
+                    16.width,
+                    Expanded(child: _buildStatItem('Income', data?.dailySales, Icons.task)),
                   ],
                 ),
+                16.height,
+                AppText('Monthly :'),
+                Divider(),
+                Row(
+                  children: [
+                    Expanded(child: _buildStatItem('No.Loss', data?.monthlyNoWithdraw, Icons.work)),
+                    16.width,
+                    Expanded(child: _buildStatItem('Loss', data?.monthlyWithdrawLosses, Icons.work)),
+                    16.width,
+                    Expanded(child: _buildStatItem('Income', data?.monthlySales, Icons.task)),
+                  ],
+                ),
+                16.height,
+                // Row(
+                //   children: [
+                //     Expanded(child: _buildStatItem('Income', data?.income, Icons.trending_up)),
+                //     SizedBox(width: 16),
+                //     Expanded(child: _buildStatItem('Expense', data?.expenses, Icons.trending_down)),
+                //     SizedBox(width: 16),
+                //     Expanded(child: _buildStatItem('Profit', data?.profit, Icons.account_balance)),
+                //   ],
+                // ),
               ],
             ),
           );
@@ -461,7 +534,8 @@ class _MobHomePageState extends State<MobHomePage> {
 
   Widget _buildStatItem(String title, dynamic value, IconData icon) {
     return Container(
-      padding: EdgeInsets.all(16),
+      height: 135.scaleHeight,
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -478,7 +552,8 @@ class _MobHomePageState extends State<MobHomePage> {
         children: [
           Icon(icon, size: 24, color: AppColors.primaryMain),
           SizedBox(height: 8),
-          Text(
+          AppText(
+            textAlign: TextAlign.center,
             formatter.format(value),
             style: TextStyle(
               fontSize: 20,
@@ -486,7 +561,7 @@ class _MobHomePageState extends State<MobHomePage> {
             ),
           ),
           SizedBox(height: 4),
-          Text(
+          AppText(
             title,
             style: TextStyle(
               fontSize: 12,
@@ -508,20 +583,27 @@ class _MobHomePageState extends State<MobHomePage> {
             children: [
               _buildProgressBar(
                 'Open Tasks',
-                state.homeStatistics.data?.openTasksProgress ?? 0,
+                (state.homeStatistics.data?.openTasksProgress ?? 0).toDouble(),
                 Colors.orange,
                 state.homeStatistics.data?.openTasksLabel ?? '',
               ),
               SizedBox(height: 12),
               _buildProgressBar(
                 'Open Ticket',
-                state.homeStatistics.data?.openTicketsProgress ?? 0,
+                (state.homeStatistics.data?.openTicketsProgress ?? 0).toDouble(),
                 Colors.green,
                 state.homeStatistics.data?.openTicketsLabel ?? '',
               ),
               SizedBox(
-                height: 4,
-              )
+                height: 12,
+              ),
+              _buildProgressBar(
+                'Open visit',
+                (state.homeStatistics.data?.notDoneVisitsProgress ?? 0).toDouble(),
+                Colors.green,
+                state.homeStatistics.data?.notDoneVisitsLabel ?? '',
+              ),
+              75.height,
             ],
           ),
         );
