@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/features/common/client_profile/client_dates_tab/presentation/widgets/date_card.dart';
 import 'package:crm_smart/features/common/regions/presentation/manager/regions_cubit.dart';
 import 'package:crm_smart/features/home/presentation/pages/app_web_side_bar.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,8 @@ class _WebDatesTablePageState extends State<WebDatesTablePage> {
                 child: AppPaginatedList(
                   items: events,
                   itemBuilder: (context, index) {
-                    return WebEventCard(event: events[index]);
+                    return DateCard(event: events[index]);
+                    // return WebEventCard(event: events[index]);
                   },
                 ),
               ),

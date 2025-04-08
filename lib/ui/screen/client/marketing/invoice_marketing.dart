@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/widgets/modern_invoice_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -176,11 +177,11 @@ class _invoice_marketingState extends State<invoice_marketing> {
                                                 child: Padding(
                                                     padding:
                                                         const EdgeInsets.all(2),
-                                                    child: CardInvoiceClient(
+                                                    child: ModernInvoiceCard(
                                                       type: 'profile',
                                                       invoice: value
                                                               .listinvoicesMarketing[
-                                                          index],
+                                                          index], routeName: '',
 
                                                       //itemClient :  itemClient,
                                                     )),

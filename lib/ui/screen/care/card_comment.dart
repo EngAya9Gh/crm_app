@@ -3,7 +3,9 @@ import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/widgets/app_icon.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/core/common/widgets/loading_comment.dart';
 import 'package:crm_smart/core/common/widgets/shimmer_widget.dart';
+import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../model/commentmodel.dart';
 import '../../../model/usermodel.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Cardcomment extends StatefulWidget {
   Cardcomment(
@@ -28,7 +31,9 @@ class Cardcomment extends StatefulWidget {
       this.editCommentModel,
       this.canReplay = false,
       this.fromMenu = false,
-      this.replyOnCommentModel})
+      this.replyOnCommentModel,
+      this.itemKey,
+      this.shouldHighlight = false})
       : super(key: key);
   CommentModel commentmodel;
   UserModel? userModel;
@@ -38,7 +43,8 @@ class Cardcomment extends StatefulWidget {
   final ValueChanged<CommentModel>? editCommentModel;
   final ValueChanged<CommentModel>? replyOnCommentModel;
   final bool canReplay;
-
+  final GlobalKey? itemKey;
+  final bool shouldHighlight;
   @override
   State<Cardcomment> createState() => _CardcommentState();
 }
@@ -50,6 +56,32 @@ class _CardcommentState extends State<Cardcomment> {
   final ValueNotifier<bool> activeRplay = ValueNotifier(false);
   final ValueNotifier<bool> showAll = ValueNotifier(false);
 
+  bool _isHighlighted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.shouldHighlight) {
+      _triggerHighlight();
+    }
+  }
+
+  @override
+  void didUpdateWidget(Cardcomment oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.shouldHighlight && !oldWidget.shouldHighlight) {
+      _triggerHighlight();
+    }
+  }
+
+  void _triggerHighlight() async {
+    setState(() => _isHighlighted = true);
+    await Future.delayed(Duration(milliseconds: 1000));
+    if (mounted) {
+      setState(() => _isHighlighted = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,8 +89,16 @@ class _CardcommentState extends State<Cardcomment> {
         Padding(
           padding: EdgeInsets.all(2),
           child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Column(
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    child: _prepareImage(),
+                  ),
+                ],
+              ),
               SizedBox(width: 2),
               Expanded(
                 flex: 1,
@@ -80,14 +120,20 @@ class _CardcommentState extends State<Cardcomment> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(offset: Offset(1.0, 1.0), blurRadius: 2.0, color: Colors.white24 //.withOpacity(0.2),
-                                  ),
-                            ],
-                            color: Colors.black12,
-                          ),
+                          // decoration: BoxDecoration(
+                          //   borderRadius: BorderRadius.only(
+                          //       bottomLeft: Radius.circular(10)),
+                          //   boxShadow: <BoxShadow>[
+                          //     BoxShadow(
+                          //       offset: Offset(1.0, 1.0),
+                          //       blurRadius: 2.0,
+                          //       color: const Color(0xFFF5F5F5),
+                          //     ),
+                          //   ],
+                          //   color: _isHighlighted
+                          //       ? AppColors.primaryAltLight
+                          //       : Colors.black12,
+                          // ),
                           child: Padding(
                             padding: const EdgeInsets.only(right: 8.0, bottom: 8),
                             child: Column(
@@ -97,11 +143,11 @@ class _CardcommentState extends State<Cardcomment> {
                                   //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   //crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CircleAvatar(
-                                      radius: 20,
-                                      child: _prepareImage(),
-                                    ),
-                                    SizedBox(width: 10),
+                                    // CircleAvatar(
+                                    //   radius: 20,
+                                    //   child: _prepareImage(),
+                                    // ),
+                                    // SizedBox(width: 10),
                                     Expanded(
                                       child: Column(
                                         // mainAxisAlignment: MainAxisAlignment.end,
@@ -109,13 +155,16 @@ class _CardcommentState extends State<Cardcomment> {
                                         children: [
                                           AppText(
                                             widget.commentmodel.nameUser,
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16.scaleFontSize,
                                           ),
                                           2.height,
                                           AppText(
-                                            HelperFunctions.dateTimeToString(DateTime.parse(
-                                              widget.commentmodel.date_comment,
-                                            )),
+                                            _getTimeAgo(widget.commentmodel.date_comment ?? ''),
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12,
+                                            ),
                                           ),
                                           5.height,
                                           if (widget.fromMenu)
@@ -138,27 +187,28 @@ class _CardcommentState extends State<Cardcomment> {
                                     },
                                     child: AppText(
                                       widget.commentmodel.content,
-                                      fontSize: 18,
+                                      fontSize: 16,
+                                      fontFamily: AppFonts.fontFamily2,
                                     ),
                                   ),
                                 Wrap(
                                   children: (widget.commentmodel.mention_users ?? [])
-                                      .map((e) => AppText(' @${e.name} ', color: AppColors.primaryMain))
+                                      .map((e) => AppText(' @${e.name} ', fontSize: 16.scaleFontSize, color: AppColors.grey))
                                       .toList(),
                                 ),
                                 if (widget.commentmodel.nameUser == widget.userModel?.nameUser)
-                                if (!widget.fromMenu)
-                                  Align(
-                                    alignment: AlignmentDirectional.bottomEnd,
-                                    child: InkWell(
-                                        onTap: () {
-                                          widget.editCommentModel?.call(widget.commentmodel);
-                                        },
-                                        child: Padding(
-                                          padding: EdgeInsetsDirectional.all(8),
-                                          child: Icon(Icons.edit, color: AppColors.primaryMain),
-                                        )),
-                                  ),
+                                  if (!widget.fromMenu)
+                                    Align(
+                                      alignment: AlignmentDirectional.bottomEnd,
+                                      child: InkWell(
+                                          onTap: () {
+                                            widget.editCommentModel?.call(widget.commentmodel);
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsetsDirectional.all(8),
+                                            child: Icon(Icons.edit, color: AppColors.grey),
+                                          )),
+                                    ),
                                 if (widget.canReplay)
                                   ListenableBuilder(
                                     listenable: Listenable.merge([tapToRplay, activeRplay]),
@@ -191,8 +241,8 @@ class _CardcommentState extends State<Cardcomment> {
                                                                   child: Transform.flip(
                                                                     flipX: true,
                                                                     child: Icon(
-                                                                      Icons.reply_all,
-                                                                      color: AppColors.primaryMain,
+                                                                      Icons.reply,
+                                                                      color: AppColors.grey,
                                                                     ),
                                                                   ),
                                                                 )
@@ -212,11 +262,20 @@ class _CardcommentState extends State<Cardcomment> {
                                                         tapToRplay.value = true;
                                                         Provider.of<comment_vm>(context, listen: false).currentCommentAddReplay(widget.commentmodel);
                                                       },
-                                                      child: AppText('replay'))),
+                                                      child: AppText(
+                                                        color: AppColors.primaryAltDark,
+                                                        'reply',
+                                                        fontSize: 16.scaleFontSize,
+                                                      ))),
                                         ),
                                       ),
                                     ),
                                   ),
+                                Divider(
+                                  color: AppColors.grey,
+                                  height: 0.5,
+                                  thickness: 0.2,
+                                ),
                               ],
                             ),
                           ),
@@ -260,17 +319,21 @@ class _CardcommentState extends State<Cardcomment> {
                               ),
                       )
                     : Transform.translate(
-                        offset: Offset(-10, -5),
+                        offset: Offset(-35, -5),
                         child: InkWell(
                           onTap: () {
                             showAll.value = true;
                             value.getAllReply(widget.commentmodel);
                           },
-                          child: Align(
-                            alignment: AlignmentDirectional.centerStart,
-                            child: AppText(
-                              'view all reply',
-                              color: AppColors.primaryMain,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 3, left: 3, right: 3),
+                            child: Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: AppText(
+                                'view all reply',
+                                fontSize: 16.scaleFontSize,
+                                color: AppColors.grey,
+                              ),
                             ),
                           ),
                         ),
@@ -303,7 +366,7 @@ class _CardcommentState extends State<Cardcomment> {
         width: 1000,
         height: 1000,
         fit: BoxFit.fill,
-        imageUrl: "${EndPoints.baseUrls.urlImage}$imageUrl",
+        imageUrl: "$imageUrl",
       ),
     );
   }
@@ -316,49 +379,12 @@ class _CardcommentState extends State<Cardcomment> {
   }
 }
 
-class LoadingCommentWidget extends StatelessWidget {
-  const LoadingCommentWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(offset: Offset(1.0, 1.0), blurRadius: 2.0, color: Colors.white24 //.withOpacity(0.2),
-              ),
-        ],
-        color: Colors.black12,
-      ),
-      padding: const EdgeInsets.only(right: 8.0, bottom: 8),
-      margin: EdgeInsets.symmetric(vertical: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ShimmerWidget.circular(width: 25, height: 25),
-              SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ShimmerWidget.rectangular(height: 30),
-                    2.height,
-                    ShimmerWidget.rectangular(height: 30),
-                    5.height,
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 15),
-          ShimmerWidget.rectangular(height: 65),
-        ],
-      ),
-    );
+String _getTimeAgo(String dateString) {
+  try {
+    final date = DateTime.parse(dateString);
+    var t = timeago.format(date, locale: 'ar');
+    return t;
+  } catch (e) {
+    return '';
   }
 }

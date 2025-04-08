@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/widgets/modern_invoice_card.dart';
 import 'package:crm_smart/features/finance/verified_invoice/presentation/manager/verified_invoice_bloc.dart';
 import 'package:crm_smart/features/finance/verified_invoice/presentation/widgets/insure_transfer_inoivce_dialog.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -29,7 +30,8 @@ class MobVerifiedInvoicesPage extends StatefulWidget {
   const MobVerifiedInvoicesPage({super.key});
 
   @override
-  State<MobVerifiedInvoicesPage> createState() => _MobVerifiedInvoicesPageState();
+  State<MobVerifiedInvoicesPage> createState() =>
+      _MobVerifiedInvoicesPageState();
 }
 
 class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
@@ -71,11 +73,14 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                               'get_verified_invoices-debounce',
                               Duration(milliseconds: 500),
                               () => _bloc.add(GetVerifiedInvoiceEvent(
-                                addNewFilter: true,
+                                  addNewFilter: true,
                                   getInvoicesByPrivilegesParams:
-                                      (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(filter:() =>  value,
-                                        fromPage:true ,
-                                      ))),
+                                      (state.getInvoicesByPrivilegesParams ??
+                                              GetInvoicesByPrivilegesParams())
+                                          .copyWith(
+                                    filter: () => value,
+                                    fromPage: true,
+                                  ))),
                             );
                           },
                         ),
@@ -86,19 +91,33 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                             context: context,
                             child: FilterInvoicesSheet(
                               onFilter: () {
-                                var _blocFilter = context.read<InvoicesSectionCubit>();
-                                var params = (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(
-                                  fromPage:true ,
-                                  typeSeller: _blocFilter.filtersEntity.filterInvoicesSellerType.value,
-                                  participateFk: _blocFilter.prepareUserId(SellerTypeEnum.collaborator),
-                                  fkAgent: _blocFilter.prepareUserId(SellerTypeEnum.agent),
-                                  fkIdUser: _blocFilter.prepareUserId(SellerTypeEnum.employee),
-                                  fkRegionInvoice: _blocFilter.filtersEntity.filterSelectedRegion.value?.branchId,
-                                  from: _blocFilter.filtersEntity.dateFromController.text,
-                                  to: _blocFilter.filtersEntity.dateToController.text,
-                                  typeReadyClient: _blocFilter.filtersEntity.filterClientStatus.value?.toParam,
-                                  invoiceType: () => _blocFilter.filtersEntity.filterInvoiceType.value,
-                                  hasDevices: _blocFilter.filtersEntity.filterDeviceState.value?.toParam,
+                                var _blocFilter =
+                                    context.read<InvoicesSectionCubit>();
+                                var params =
+                                    (state.getInvoicesByPrivilegesParams ??
+                                            GetInvoicesByPrivilegesParams())
+                                        .copyWith(
+                                  fromPage: true,
+                                  typeSeller: _blocFilter.filtersEntity
+                                      .filterInvoicesSellerType.value,
+                                  participateFk: _blocFilter.prepareUserId(
+                                      SellerTypeEnum.collaborator),
+                                  fkAgent: _blocFilter
+                                      .prepareUserId(SellerTypeEnum.agent),
+                                  fkIdUser: _blocFilter
+                                      .prepareUserId(SellerTypeEnum.employee),
+                                  fkRegionInvoice: _blocFilter.filtersEntity
+                                      .filterSelectedRegion.value?.branchId,
+                                  from: _blocFilter
+                                      .filtersEntity.dateFromController.text,
+                                  to: _blocFilter
+                                      .filtersEntity.dateToController.text,
+                                  typeReadyClient: _blocFilter.filtersEntity
+                                      .filterClientStatus.value?.toParam,
+                                  invoiceType: () => _blocFilter
+                                      .filtersEntity.filterInvoiceType.value,
+                                  hasDevices: _blocFilter.filtersEntity
+                                      .filterDeviceState.value?.toParam,
                                 );
                                 _bloc.add(GetVerifiedInvoiceEvent(
                                   addNewFilter: true,
@@ -125,9 +144,11 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                       AppText('عدد الفواتير: '),
                       BlocBuilder<VerifiedInvoiceBloc, VerifiedInvoiceState>(
                         builder: (context, state) {
-                          return ((state.verifiedInvoiceList.data ?? []).isEmpty)
+                          return ((state.verifiedInvoiceList.data ?? [])
+                                  .isEmpty)
                               ? SizedBox.shrink()
-                              : AppText('${state.verifiedInvoiceList.data?.length ?? ''}/${state.totalCount}');
+                              : AppText(
+                                  '${state.verifiedInvoiceList.data?.length ?? ''}/${state.totalCount}');
                         },
                       ),
                     ],
@@ -135,9 +156,11 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
               SizedBox(height: 10),
               BlocBuilder<VerifiedInvoiceBloc, VerifiedInvoiceState>(
                 builder: (context, state) {
-                  if (state.verifiedInvoiceList.isLoading() && state.verifiedInvoiceList.isEmpty()) {
+                  if (state.verifiedInvoiceList.isLoading() &&
+                      state.verifiedInvoiceList.isEmpty()) {
                     return Expanded(child: AppLoader());
-                  } else if (state.verifiedInvoiceList.isFailed() && state.verifiedInvoiceList.isEmpty()) {
+                  } else if (state.verifiedInvoiceList.isFailed() &&
+                      state.verifiedInvoiceList.isEmpty()) {
                     return AppErrorWidget(
                       onPressed: () {
                         _bloc.add(GetVerifiedInvoiceEvent());
@@ -153,22 +176,26 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                       items: state.verifiedInvoiceList.data ?? [],
                       hasReachedEnd: state.hasReachedMax,
                       onLoadMore: () {
-                        if(state.hasReachedMax){
+                        if (state.hasReachedMax) {
                           return;
                         }
                         _bloc.add(GetVerifiedInvoiceEvent(
-                          getInvoicesByPrivilegesParams: (state.getInvoicesByPrivilegesParams ?? GetInvoicesByPrivilegesParams()).copyWith(
-                            fromPage:true ,
-                            page: ((state.getInvoicesByPrivilegesParams?.page??1)+1),
+                          getInvoicesByPrivilegesParams:
+                              (state.getInvoicesByPrivilegesParams ??
+                                      GetInvoicesByPrivilegesParams())
+                                  .copyWith(
+                            fromPage: true,
+                            page: ((state.getInvoicesByPrivilegesParams?.page ??
+                                    1) +
+                                1),
                           ),
                         ));
                       },
                       itemBuilder: (context, index) {
-                        return CardInvoiceClient(
+                        return ModernInvoiceCard(
                           type: 'profile',
                           invoice: state.verifiedInvoiceList.data![index],
                           transferWidget: Column(
-
                             children: [
                               AppElevatedButton(
                                 text: 'ترحيل الفاتورة',
@@ -176,13 +203,14 @@ class _MobVerifiedInvoicesPageState extends State<MobVerifiedInvoicesPage> {
                                   AppConstants.showAppDialog(
                                     child: InsureTransferInoivceDialog(
                                       bloc: _bloc,
-                                      invoiceModel: state.verifiedInvoiceList.data![index],
+                                      invoiceModel: state
+                                          .verifiedInvoiceList.data![index],
                                     ),
                                   );
                                 },
                               ),
                             ],
-                          ),
+                          ), routeName: '',
                         );
                       },
                       separatorBuilder: (_, __) => const SizedBox.shrink(),

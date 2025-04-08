@@ -33,6 +33,8 @@ import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../data/models/user_region_department.dart';
 import '../manager/task_cubit.dart';
 import '../pages/add_task_page.dart';
+import '../../../../core/common/widgets/section_header.dart';
+import '../../../../core/common/widgets/info_item.dart';
 
 class AddManualTaskPage extends StatefulWidget {
   const AddManualTaskPage({
@@ -113,7 +115,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
             child: Directionality(
               textDirection: TextDirection.rtl,
               child: Dialog(
-                insetPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                insetPadding:
+                    EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.0),
                   child: SingleChildScrollView(
@@ -124,7 +127,9 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                         Row(
                           children: [
                             SizedBox(width: 10),
-                            InkWell(onTap: Navigator.of(context).pop, child: AppIcon(Icons.close)),
+                            InkWell(
+                                onTap: Navigator.of(context).pop,
+                                child: AppIcon(Icons.close)),
                             Spacer(),
                             AppText('إضافة مهمة'),
                             SizedBox(width: 30),
@@ -132,88 +137,116 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                           ],
                         ),
                         25.height,
-                        CustomDropDown<PublicType>(
-                          compareFn:  (item, selectedItem) => item.index == selectedItem.index,
-                          hint: "نوع المهمة*",
-                          items: widget.list,
-                          itemAsString: (item) => item!.text,
-                          selectedItem: selectedPublicType,
-                          onChanged: (value) {
-                            selectedPublicType = value;
-                            setState(() {});
-                          },
-                          validator: InputValidator.requiredFiled,
+                        SectionHeader(title: 'تفاصيل المهمة'),
+                        InfoItem(
+                          title: "نوع المهمة",
+                          isRequired: true,
+                          customWidget: CustomDropDown<PublicType>(
+                            compareFn: (item, selectedItem) =>
+                                item.index == selectedItem.index,
+                            hint: "نوع المهمة*",
+                            items: widget.list,
+                            itemAsString: (item) => item!.text,
+                            selectedItem: selectedPublicType,
+                            onChanged: (value) {
+                              selectedPublicType = value;
+                              setState(() {});
+                            },
+                            validator: InputValidator.requiredFiled,
+                          ),
                         ),
                         10.height,
                         if (selectedPublicType == PublicType.other) ...[
-                          AppTextField(
-                            labelText: "عنوان المهمة*",
-                            maxLines: 1,
-                            validator: (value) {
-                              if (selectedPublicType != PublicType.other) return null;
+                          InfoItem(
+                            title: "عنوان المهمة",
+                            isRequired: true,
+                            customWidget: AppTextField(
+                              maxLines: 1,
+                              validator: (value) {
+                                if (selectedPublicType != PublicType.other)
+                                  return null;
 
-                              if (value?.trim().isEmpty ?? true) {
-                                return "هذا الحقل مطلوب.";
-                              }
-                              return null;
-                            },
-                            controller: _taskNameController,
+                                if (value?.trim().isEmpty ?? true) {
+                                  return "هذا الحقل مطلوب.";
+                                }
+                                return null;
+                              },
+                              controller: _taskNameController,
+                            ),
                           ),
                           10.height,
                         ],
-                        AppTextField(
-                          labelText: "وصف المهمة*",
-                          validator: InputValidator.requiredFiled,
-                          minLines: 3,
-                          contentPadding: HWEdgeInsets.all(15),
-                          controller: _taskDescriptionController,
+                        InfoItem(
+                          title: "وصف المهمة",
+                          isRequired: true,
+                          customWidget: AppTextField(
+                            validator: InputValidator.requiredFiled,
+                            minLines: 3,
+                            contentPadding: HWEdgeInsets.all(15),
+                            controller: _taskDescriptionController,
+                          ),
                         ),
                         10.height,
                         if (privilegeBloc.checkPrivilege('171'))
-                          InkWell(
-                            onTap: () async {
-                              final selectedTime = TimeOfDay.fromDateTime(state.deadLineDate ?? DateTime.now());
+                          InfoItem(
+                            title: "تاريخ التسليم",
+                            isRequired: true,
+                            customWidget: InkWell(
+                              onTap: () async {
+                                final selectedTime = TimeOfDay.fromDateTime(
+                                    state.deadLineDate ?? DateTime.now());
 
-                              DateTime? date = await showDatePicker(
-                                context: context,
-                                initialDate: state.deadLineDate ?? DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime.now().add(Duration(days: 365)),
-                              );
+                                DateTime? date = await showDatePicker(
+                                  context: context,
+                                  initialDate:
+                                      state.deadLineDate ?? DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate:
+                                      DateTime.now().add(Duration(days: 365)),
+                                );
 
-                              if (date == null) return;
+                                if (date == null) return;
 
-                              final time = await showTimePicker(
-                                context: context,
-                                initialTime: selectedTime,
-                              );
-                              if (time != null) {
-                                date = date.copyWith(hour: time.hour, minute: time.minute);
-                              }
+                                final time = await showTimePicker(
+                                  context: context,
+                                  initialTime: selectedTime,
+                                );
+                                if (time != null) {
+                                  date = date.copyWith(
+                                      hour: time.hour, minute: time.minute);
+                                }
 
-                              _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy, HH:mm').format(date);
-                              _taskCubit.onChangeDeadLineDate(date);
-                            },
-                            child: IgnorePointer(
-                              ignoring: true,
-                              child: AppTextField(
-                                labelText: "تاريخ التسليم*",
-                                maxLines: 1,
-                                validator: InputValidator.requiredFiled,
-                                readOnly: true,
-                                controller: _deadLineDateController,
-                                textDirection: TextDirection.ltr,
-                                textAlign: TextAlign.center,
+                                _deadLineDateController.text =
+                                    Intl.DateFormat('dd MMM yyyy, HH:mm')
+                                        .format(date);
+                                _taskCubit.onChangeDeadLineDate(date);
+                              },
+                              child: IgnorePointer(
+                                ignoring: true,
+                                child: AppTextField(
+                                  maxLines: 1,
+                                  validator: InputValidator.requiredFiled,
+                                  readOnly: true,
+                                  controller: _deadLineDateController,
+                                  textDirection: TextDirection.ltr,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),
                         10.height,
+                        SectionHeader(title: 'إسناد المهمة'),
                         AppCardContainer(
                           child: AppGroupButton(
-                            groupButtonController: GroupButtonController(selectedIndex: state.selectedAssignedToType?.index),
-                            buttons: assignedToList.map((e) => e.text).toList(growable: false),
+                            groupButtonController: GroupButtonController(
+                                selectedIndex:
+                                    state.selectedAssignedToType?.index),
+                            buttons: assignedToList
+                                .map((e) => e.text)
+                                .toList(growable: false),
                             onSelected: (value, index, isselected) {
-                              _taskCubit.onChangeSelectedAssignedToType(assignedToList[index]);
+                              _taskCubit.onChangeSelectedAssignedToType(
+                                  assignedToList[index]);
                             },
                           ),
                         ),
@@ -231,66 +264,80 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                                   text: "حفظ",
                                   isLoading: state.addTaskStatus.isLoading(),
                                   onPressed: () {
-                                    final isValid = _formKey.currentState!.validate();
+                                    final isValid =
+                                        _formKey.currentState!.validate();
                                     if (!isValid) return;
 
                                     if (state.selectedAssignedToType == null) {
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
                                         content: AppText(
                                           "من فضلك قم باختيار اسناد إلى",
-                                          style: context.textTheme.bodyMedium!.sb!.copyWith(color: context.colorScheme.white),
+                                          style: context
+                                              .textTheme.bodyMedium!.sb!
+                                              .copyWith(
+                                                  color: context
+                                                      .colorScheme.white),
                                         ),
-                                        backgroundColor: context.colorScheme.error,
+                                        backgroundColor:
+                                            context.colorScheme.error,
                                       ));
                                       return;
                                     }
 
-                                    final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
-                                    final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
-                                 var assignToId=   state.selectedAssignedToType == AssignedTypeNew.users
-                                        ? state.selectedAssignTo?.idUser.toString()
-                                        : state.selectedAssignedToType == AssignedTypeNew.managements
-                                        ? selectedValueManage
-                                        : selectedRegionId;
+                                    final selectedRegionId = context
+                                        .read<RegionProvider>()
+                                        .selectedRegionId;
+                                    final selectedValueManage = context
+                                        .read<manage_provider>()
+                                        .selectedValuemanag;
+                                    var assignToId = state
+                                                .selectedAssignedToType ==
+                                            AssignedTypeNew.users
+                                        ? state.selectedAssignTo?.idUser
+                                            .toString()
+                                        : state.selectedAssignedToType ==
+                                                AssignedTypeNew.managements
+                                            ? selectedValueManage
+                                            : selectedRegionId;
                                     _taskCubit.addTaskAction(
                                         onSuccess: () {
-                                          Navigator.pop(context, selectedPublicType == PublicType.linkComment);
+                                          Navigator.pop(
+                                              context,
+                                              selectedPublicType ==
+                                                  PublicType.linkComment);
                                         },
-                                        addTaskParams: AddTaskParams(
-                                            title: selectedPublicType == PublicType.other ? _taskNameController.text : selectedPublicType?.text,
-                                            description: _taskDescriptionController.text,
-                                            assignFrom: AssignedTypeNew.users.name.toString(),
-                                            assignFromId: currentUser.idUser!,
-                                            assignTo: state.selectedAssignedToType?.name,
-                                            assignToId: assignToId,
-                                            userId: currentUser.idUser!,
-                                             clientId: widget.clientId,
-                                             invoiceId: widget.invoiceId,
-                                            startDate: state.startDate,
-                                            file: state.attachmentFile,
-                                            deadLineDate: state.deadLineDate,
-                                            publicType: PublicType.addTask.name.toString(),
-                                            participants: state.selectedParticipant ?? [])
-/*
-                                      taskName:
-                                          selectedPublicType == PublicType.other
-                                              ? _taskNameController.text
-                                              : selectedPublicType?.text,
-                                      onSuccess: () => Navigator.pop(
-                                          context,
-                                          selectedPublicType ==
-                                              PublicType.linkComment),
-                                      regionId: selectedRegionId,
-                                      departmentId: selectedValueManage,
-                                      userId: currentUser.idUser!,
-                                      description:
-                                          _taskDescriptionController.text,
-                                      mainTypeTask: 'ProcessManual',
-                                      publicType: selectedPublicType,
-                                      clientId: widget.clientId,
-                                      invoiceId: widget.invoiceId,
-*/
-                                        );
+                                        addTaskParams:
+                                            AddOrUpdateTaskParams(
+                                                title: selectedPublicType ==
+                                                        PublicType.other
+                                                    ? _taskNameController.text
+                                                    : selectedPublicType?.text,
+                                                description:
+                                                    _taskDescriptionController
+                                                        .text,
+                                                assignFrom: AssignedTypeNew
+                                                    .users.name
+                                                    .toString(),
+                                                assignFromId:
+                                                    currentUser.idUser!,
+                                                assignTo: state
+                                                    .selectedAssignedToType
+                                                    ?.name,
+                                                assignToId: assignToId,
+                                                userId: currentUser.idUser!,
+                                                clientId: widget.clientId,
+                                                invoiceId: widget.invoiceId,
+                                                startDate: state.startDate,
+                                                files: state.attachmentFile,
+                                                deadLineDate:
+                                                    state.deadLineDate,
+                                                publicType: PublicType
+                                                    .addTask.name
+                                                    .toString(),
+                                                participants:
+                                                    state.selectedParticipant ??
+                                                        []));
                                   },
                                   appButtonStyle: AppButtonStyle.secondary,
                                 ),
@@ -313,10 +360,12 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
 
   List<AssignedTypeNew> get assignedToList {
     final list = List.of(AssignedTypeNew.values);
-    if (!privilegeBloc.checkPrivilege('167') && !privilegeBloc.checkPrivilege('174')) {
+    if (!privilegeBloc.checkPrivilege('167') &&
+        !privilegeBloc.checkPrivilege('174')) {
       list.remove(AssignedTypeNew.regoin);
     }
-    if (!privilegeBloc.checkPrivilege('168') && !privilegeBloc.checkPrivilege('169')) {
+    if (!privilegeBloc.checkPrivilege('168') &&
+        !privilegeBloc.checkPrivilege('169')) {
       list.remove(AssignedTypeNew.managements);
     }
     if (!privilegeBloc.checkPrivilege('166')) {
@@ -332,7 +381,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
         builder: (context, state) {
           return CustomSearchableDropDown<UserModel>(
             hint: "الموظف",
-            compareFn:  (item, selectedItem) => item.id == selectedItem.id,
+            compareFn: (item, selectedItem) => item.id == selectedItem.id,
             items: state.getUserSelected.data ?? [],
             itemAsString: (u) => u!.nameUser.toString(),
             onChanged: (data) {
@@ -359,11 +408,15 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
     if (taskState.selectedAssignedToType == AssignedTypeNew.managements)
       return Consumer<manage_provider>(
         builder: (context, manageList, child) {
-          final userDepartment = context.read<UserProvider>().currentUser.typeAdministration;
+          final userDepartment =
+              context.read<UserProvider>().currentUser.typeAdministration;
           final list = getIt<PrivilegesCubit>().checkPrivilege('169')
               ? manageList.listMangTask
-              : getIt<PrivilegesCubit>().checkPrivilege('168') || getIt<PrivilegesCubit>().checkPrivilege('174')
-                  ? manageList.listMangTask.where((element) => element.idMange == userDepartment).toList()
+              : getIt<PrivilegesCubit>().checkPrivilege('168') ||
+                      getIt<PrivilegesCubit>().checkPrivilege('174')
+                  ? manageList.listMangTask
+                      .where((element) => element.idMange == userDepartment)
+                      .toList()
                   : manageList.listMangTask;
           return AppDropdownButtonFormField<ManageModel, String>(
             items: list,
@@ -373,7 +426,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
             itemAsString: (item) => item!.name_mange,
             value: manageList.selectedValuemanag,
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedTypeNew.managements) {
+              if (taskState.selectedAssignedToType !=
+                  AssignedTypeNew.managements) {
                 return null;
               }
               if (value == null) {
@@ -395,7 +449,9 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
           final list = privilegeBloc.checkPrivilege('169')
               ? cart.listRegionTaskFilter
               : privilegeBloc.checkPrivilege('167')
-                  ? cart.listRegionTaskFilter.where((element) => element.branchId == user.fkRegoin).toList()
+                  ? cart.listRegionTaskFilter
+                      .where((element) => element.branchId == user.fkRegoin)
+                      .toList()
                   : cart.listRegionTaskFilter;
           return AppDropdownButtonFormField<BranchModel, String>(
             items: list,

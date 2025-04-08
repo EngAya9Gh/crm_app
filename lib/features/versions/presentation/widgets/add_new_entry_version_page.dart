@@ -17,6 +17,8 @@ import '../../../clients_care/violations_clienta_care/presentation/manager/viola
 import '../../domain/use_cases/add_version_usecase.dart';
 import '../manager/versions_bloc.dart';
 import 'new_entry_version_widget.dart';
+import 'package:crm_smart/core/common/widgets/section_header.dart';
+import 'package:crm_smart/core/common/widgets/info_item.dart';
 
 class AddVersionPage extends StatefulWidget {
   const AddVersionPage({super.key, this.versionModel});
@@ -43,11 +45,13 @@ class _AddVersionPageState extends State<AddVersionPage> {
     violationsCubit = context.read<ViolationsCubit>()..init;
     violationsCubit.getAllManagements(
       onSuccess: (value) {
-        listManagement.value = value..insert(0, ManagementModel(idManage: 0, nameManage: 'عام'));
+        listManagement.value = value
+          ..insert(0, ManagementModel(idManage: 0, nameManage: 'عام'));
       },
     );
     if (widget.versionModel?.versionDate != null) {
-      date.text = DateFormat('yyyy-MM-dd').format(widget.versionModel!.versionDate!);
+      date.text =
+          DateFormat('yyyy-MM-dd').format(widget.versionModel!.versionDate!);
     }
     if (widget.versionModel?.versionNo != null) {
       versionNo.text = widget.versionModel!.versionNo!;
@@ -70,6 +74,7 @@ class _AddVersionPageState extends State<AddVersionPage> {
               valueListenable: versionDateIndex,
               builder: (context, typeVersion, child) => Column(
                 children: [
+                  SectionHeader(title: 'نوع التحديث'),
                   Container(
                     padding: EdgeInsets.only(left: 2, right: 2),
                     decoration: BoxDecoration(
@@ -85,7 +90,8 @@ class _AddVersionPageState extends State<AddVersionPage> {
                     ),
                     child: AppGroupButton(
                       width: (MediaQuery.of(context).size.width / 2) - 50,
-                      groupButtonController: GroupButtonController(selectedIndex: typeVersion),
+                      groupButtonController:
+                          GroupButtonController(selectedIndex: typeVersion),
                       buttons: ['تحديث جديد', 'تحديث قادم'],
                       onSelected: (value, index, isSelected) {
                         versionDateIndex.value = index;
@@ -93,39 +99,45 @@ class _AddVersionPageState extends State<AddVersionPage> {
                     ),
                   ),
                   10.height,
-                  AppTextField(
-                    hintText: "رقم التحديث",
-                    controller: versionNo,
-                    enabled: widget.versionModel == null,
-                    validator: typeVersion == 1 ? null : InputValidator.requiredFiled,
+                  SectionHeader(title: 'معلومات التحديث'),
+                  InfoItem(
+                    title: "رقم التحديث",
+                    isRequired: typeVersion != 1,
+                    customWidget: AppTextField(
+                      controller: versionNo,
+                      enabled: widget.versionModel == null,
+                    ),
                   ),
                   10.height,
-                  AppTextField(
-                    hintText: "التاريخ",
-                    controller: date,
-                    validator: typeVersion == 1 ? null : InputValidator.requiredFiled,
-                    onTap: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2101),
-                      ).then((selectedDate) {
-                        // Handle the selected date and time here.
-                        if (selectedDate != null) {
-                          DateTime selectedDateTime = DateTime(
-                            selectedDate.year,
-                            selectedDate.month,
-                            selectedDate.day,
-                          );
-                          print(selectedDateTime); // You can use the selectedDateTime as needed.
-                          date.text = DateFormat('yyyy-MM-dd').format(selectedDateTime);
-                        }
-                      });
-                    },
-                    readOnly: true,
+                  InfoItem(
+                    title: "التاريخ",
+                    isRequired: typeVersion != 1,
+                    customWidget: AppTextField(
+                      controller: date,
+                      onTap: () {
+                        showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2101),
+                        ).then((selectedDate) {
+                          if (selectedDate != null) {
+                            DateTime selectedDateTime = DateTime(
+                              selectedDate.year,
+                              selectedDate.month,
+                              selectedDate.day,
+                            );
+                            print(selectedDateTime);
+                            date.text = DateFormat('yyyy-MM-dd')
+                                .format(selectedDateTime);
+                          }
+                        });
+                      },
+                      readOnly: true,
+                    ),
                   ),
                   40.height,
+                  SectionHeader(title: 'تفاصيل التحديث'),
                   BlocBuilder<VersionsBloc, VersionsState>(
                     builder: (context, state) {
                       return Column(
@@ -135,9 +147,11 @@ class _AddVersionPageState extends State<AddVersionPage> {
                             padding: const EdgeInsets.only(bottom: 45),
                             child: ValueListenableBuilder(
                               valueListenable: listManagement,
-                              builder: (context, value, child) => AddNewEntryVersion(
+                              builder: (context, value, child) =>
+                                  AddNewEntryVersion(
                                 isTitleOpional: typeVersion == 1,
-                                shouldShowClose: e.index != 0 && widget.versionModel == null,
+                                shouldShowClose:
+                                    e.index != 0 && widget.versionModel == null,
                                 listManagement: value,
                                 oneItemVersionEntity: e,
                               ),
@@ -152,7 +166,11 @@ class _AddVersionPageState extends State<AddVersionPage> {
                       text: 'add new',
                       onPressed: () {
                         bloc.add(AddOrUpdateNewVersionItemEvent(
-                            oneItemVersionEntity: OneItemVersionEntity(index: (bloc.state.listAddNew.lastOrNull?.index ?? -1) + 1)));
+                            oneItemVersionEntity: OneItemVersionEntity(
+                                index:
+                                    (bloc.state.listAddNew.lastOrNull?.index ??
+                                            -1) +
+                                        1)));
                       },
                     ),
                   40.height,
@@ -161,7 +179,8 @@ class _AddVersionPageState extends State<AddVersionPage> {
                       Expanded(
                           flex: 2,
                           child: AppElevatedButton(
-                            text: widget.versionModel != null ? "update" : 'add',
+                            text:
+                                widget.versionModel != null ? "update" : 'add',
                             onPressed: () {
                               if (_globalKey.currentState!.validate()) {
                                 if (widget.versionModel != null) {

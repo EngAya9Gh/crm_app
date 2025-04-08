@@ -27,6 +27,7 @@ class AppErrorWidget extends StatelessWidget {
       children: [
         if (message != null) ...[
           AppText(
+            fontSize: 15.scaleFontSize,
             message!,
             textAlign: TextAlign.center,
           ),
@@ -37,7 +38,7 @@ class AppErrorWidget extends StatelessWidget {
             onPressed: onPressed,
             icon: Icon(
               Icons.refresh,
-              size: (25.0).scaleIconsSize,
+              size: (20.0).scaleIconsSize,
             ),
           ),
         ],

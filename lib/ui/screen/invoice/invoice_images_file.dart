@@ -52,6 +52,7 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
       builder: (context, value, child) {
         final files = value.filesAttach;
         return Column(
+          textDirection: TextDirection.rtl,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,7 +61,8 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                 AppTextButton(
                   text: "إضافة",
                   onPressed: () {
-                    final ValueNotifier<FileAttach?> selectedFile = ValueNotifier(FileAttach(type: 'all'));
+                    final ValueNotifier<FileAttach?> selectedFile =
+                        ValueNotifier(FileAttach(type: 'all'));
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -73,7 +75,8 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                               onTap: () {
                                 pickImage(
                                   (context, file) {
-                                    selectedFile.value = selectedFile.value?.copyWith(file: file.xFile);
+                                    selectedFile.value = selectedFile.value
+                                        ?.copyWith(file: file.xFile);
                                   },
                                 );
                               },
@@ -83,7 +86,10 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                                 width: .9.sw,
                                 margin: EdgeInsetsDirectional.only(bottom: 10),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadiusDirectional.circular(12.r), border: Border.all(color: AppColors.primaryMain)),
+                                    borderRadius:
+                                        BorderRadiusDirectional.circular(12.r),
+                                    border: Border.all(
+                                        color: AppColors.primaryMain)),
                                 child: ValueListenableBuilder(
                                   valueListenable: selectedFile,
                                   builder: (context, value, child) {
@@ -96,8 +102,10 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                                           ));
                                     }
                                     return Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(Icons.attachment),
                                         AppText('choose image'),
@@ -110,13 +118,16 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                             ValueListenableBuilder(
                               valueListenable: selectedFile,
                               builder: (context, value, child) {
-                                return AppDropdownButtonFormField<TypeSubClientEnum, dynamic>(
+                                return AppDropdownButtonFormField<
+                                    TypeSubClientEnum, dynamic>(
                                   items: TypeSubClientEnum.values,
                                   onChange: (value) {
-                                    selectedFile.value = selectedFile.value?.copyWith(type: value);
+                                    selectedFile.value = selectedFile.value
+                                        ?.copyWith(type: value);
                                   },
                                   hint: "النوع",
-                                  itemAsValue: (TypeSubClientEnum? item) => item!.id,
+                                  itemAsValue: (TypeSubClientEnum? item) =>
+                                      item!.id,
                                   itemAsString: (item) => item!.text,
                                   value: value?.type ?? 'all',
                                   validator: (value) {
@@ -134,30 +145,37 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                                 Expanded(
                                     flex: 2,
                                     child: AppElevatedButton(
-                                      text: 'add',
                                       onPressed: () {
-                                        if (selectedFile.value != null) {
-                                          if (selectedFile.value?.file != null) {
-                                            invoiceVm.addOnFilesAttach(
-                                              [selectedFile.value!],
-                                              () =>
-                                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("أكثر عدد مسموح به هو 20 ملف."))),
-                                            );
-                                            context.pop();
-                                          } else if (selectedFile.value?.file == null) {
-                                            AppSnackbar.showSnakeBar('الحقل الصورة مطلوب', color: ToastColorsEnum.warning);
-                                          }
-                                        }
+                                        context.pop();
                                       },
+                                      text: 'الغاء',
                                     )),
                                 Spacer(),
                                 Expanded(
                                     flex: 2,
                                     child: AppElevatedButton(
+                                      text: 'اضافة',
                                       onPressed: () {
-                                        context.pop();
+                                        if (selectedFile.value != null) {
+                                          if (selectedFile.value?.file !=
+                                              null) {
+                                            invoiceVm.addOnFilesAttach(
+                                              [selectedFile.value!],
+                                              () => ScaffoldMessenger.of(
+                                                      context)
+                                                  .showSnackBar(SnackBar(
+                                                      content: Text(
+                                                          "أكثر عدد مسموح به هو 20 ملف."))),
+                                            );
+                                            context.pop();
+                                          } else if (selectedFile.value?.file ==
+                                              null) {
+                                            AppSnackbar.showSnakeBar(
+                                                'الحقل الصورة مطلوب',
+                                                color: ToastColorsEnum.warning);
+                                          }
+                                        }
                                       },
-                                      text: 'cancel',
                                     )),
                               ],
                             )
@@ -175,7 +193,8 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                 child: ListView.separated(
                   itemBuilder: (context, index) {
                     final attachFile = files[index];
-                    if (attachFile.file != null || (attachFile.fileAttach?.endsWith('.pdf') ?? false)) {
+                    if (attachFile.file != null ||
+                        (attachFile.fileAttach?.endsWith('.pdf') ?? false)) {
                       return fileImage(
                         attachFile,
                         () {
@@ -214,7 +233,8 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
           Positioned.fill(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: (fileAttach.file?.name.ext == '.pdf' || (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
+              child: (fileAttach.file?.name.ext == '.pdf' ||
+                      (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
                   ? StatefulBuilder(
                       builder: (context, refresh) {
                         return InkWell(
@@ -231,7 +251,9 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                           },
                           child: Container(
                               width: 110.scaleIconsSize,
-                              decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                              decoration: BoxDecoration(
+                                  color:
+                                      AppColors.primaryMain.withOpacity(0.1)),
                               child: isLoading
                                   ? AppLoader()
                                   : AppIcon(
@@ -291,10 +313,13 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
               child: InkWell(
                 onTap: () => AppFileViewer(
                   imageSource: ImageSourceViewer.network,
-                  urls: [EndPoints.baseUrls.laravelFilesUrl + fileAttach.fileAttach!],
+                  urls: [
+                    EndPoints.baseUrls.laravelFilesUrl + fileAttach.fileAttach!
+                  ],
                 ).show(context),
                 child: FancyImageShimmerViewer(
-                  imageUrl: EndPoints.baseUrls.laravelFilesUrl + (fileAttach.fileAttach ?? ""),
+                  imageUrl: EndPoints.baseUrls.laravelFilesUrl +
+                      (fileAttach.fileAttach ?? ""),
                   fit: BoxFit.cover,
                 ),
               ),

@@ -53,7 +53,7 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppText('المرفقات', fontWeight: FontWeight.bold),
+            //AppText('المرفقات', fontWeight: FontWeight.bold),
             BlocBuilder<AttachmentsRowCubit, AttachmentsRowState>(
               buildWhen: (previous, current) {
                 return previous is AttachmentsRowLoaded ||
@@ -82,12 +82,15 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
                   ),
                 );
               },
-              child: AppText(
-                'إضافة',
-                color: AppColors.grey,
-                fontWeight: FontWeight.bold,
-              ),
+              child:  Container(
+                                  width: 150.scaleWidth,
+                                  height: 100.scaleHeight,
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppColors.primaryAltLight),
+                                  child: Center(child: Icon(Icons.add)),
+                                ),
             ),
+         
+         
           ],
         ),
         10.height,

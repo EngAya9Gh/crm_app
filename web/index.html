@@ -41,5 +41,11 @@
 <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-messaging.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"></script>
+<script>
+  if (window.flutterConfiguration === undefined) {
+    window.flutterConfiguration = {};
+  }
+  window.flutterConfiguration.renderer = "html"; // أو "canvaskit"
+</script>
 </body>
 </html>

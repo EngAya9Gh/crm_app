@@ -9,6 +9,7 @@ import '../../../../core/common/helpers/input_validator.dart';
 import '../../../../core/common/widgets/app_text_field.dart.dart';
 import '../../../clients_care/violations_clienta_care/data/models/management_model.dart';
 import '../manager/versions_bloc.dart';
+import 'package:crm_smart/core/common/widgets/info_item.dart';
 
 class AddNewEntryVersion extends StatefulWidget {
   const AddNewEntryVersion({
@@ -51,7 +52,8 @@ class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
             child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  bloc.add(RemoveItemVersion(index: widget.oneItemVersionEntity.index));
+                  bloc.add(RemoveItemVersion(
+                      index: widget.oneItemVersionEntity.index));
                 },
                 child: CircleAvatar(
                   backgroundColor: Colors.red,
@@ -62,37 +64,59 @@ class _AddNewEntryVersionState extends State<AddNewEntryVersion> {
                 )),
           ),
         5.height,
-        AppTextField(
-          hintText: "العنوان",
-          onChange: (val) {
-            bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(title: val)));
-          },
-          controller: title,
-          validator:widget.isTitleOpional?null: InputValidator.requiredFiled,
+        InfoItem(
+          title: "العنوان",
+          value: widget.oneItemVersionEntity.title ?? '',
+          isRequired: widget.isTitleOpional ? false : true,
+          customWidget: AppTextField(
+            hintText: "العنوان",
+            onChange: (val) {
+              bloc.add(AddOrUpdateNewVersionItemEvent(
+                  oneItemVersionEntity:
+                      widget.oneItemVersionEntity.copyWith(title: val)));
+            },
+            controller: title,
+            validator:
+                widget.isTitleOpional ? null : InputValidator.requiredFiled,
+          ),
         ),
         10.height,
-        AppDropdownButtonFormField(
-          value: (widget.oneItemVersionEntity.management?.isEmpty ?? true) ? '0' : widget.oneItemVersionEntity.management,
-          items: widget.listManagement,
-          itemBuilder: (item) => AppText(item?.nameManage ?? ''),
-          itemAsValue: (item) => item?.idManage.toString(),
-          // itemAsString: (item) => item??'' ,
-          onChange: (value) {
-            bloc.add(
-                AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(management: value == -1 ? null : value)));
-          },
+        InfoItem(
+          title: "الإدارة",
+          value: widget.oneItemVersionEntity.management ?? '',
+          isRequired: true,
+          customWidget: AppDropdownButtonFormField(
+            value: (widget.oneItemVersionEntity.management?.isEmpty ?? true)
+                ? '0'
+                : widget.oneItemVersionEntity.management,
+            items: widget.listManagement,
+            itemBuilder: (item) => AppText(item?.nameManage ?? ''),
+            itemAsValue: (item) => item?.idManage.toString(),
+            // itemAsString: (item) => item??'' ,
+            onChange: (value) {
+              bloc.add(AddOrUpdateNewVersionItemEvent(
+                  oneItemVersionEntity: widget.oneItemVersionEntity
+                      .copyWith(management: value == -1 ? null : value)));
+            },
+          ),
         ),
         10.verticalSpace,
-        AppTextField(
-          validator: InputValidator.requiredFiled,
-          hintText: "الوصف",
-          controller: description,
-          onChange: (val) {
-            bloc.add(AddOrUpdateNewVersionItemEvent(oneItemVersionEntity: widget.oneItemVersionEntity.copyWith(description: val)));
-          },
+        InfoItem(
+          title: "الوصف",
+          value: widget.oneItemVersionEntity.description ?? '',
           isRequired: true,
-          maxLines: 5,
-        )
+          customWidget: AppTextField(
+            validator: InputValidator.requiredFiled,
+            hintText: "الوصف",
+            controller: description,
+            onChange: (val) {
+              bloc.add(AddOrUpdateNewVersionItemEvent(
+                  oneItemVersionEntity:
+                      widget.oneItemVersionEntity.copyWith(description: val)));
+            },
+            maxLines: 5,
+          ),
+        ),
       ],
     );
   }

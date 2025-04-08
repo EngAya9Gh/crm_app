@@ -22,6 +22,7 @@ import '../manager/dates_table_cubit.dart';
 import '../widgets/dates_table_calendar.dart';
 import '../widgets/event_card/event_card.dart';
 import '../widgets/filter_dates_table_sheet.dart';
+import 'package:crm_smart/features/common/client_profile/client_dates_tab/presentation/widgets/date_card.dart';
 
 class MobDatesTablePage extends StatefulWidget {
   const MobDatesTablePage({super.key, this.onInit});
@@ -66,18 +67,20 @@ class _MobDatesTablePageState extends State<MobDatesTablePage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(title: 'جدول التركيب للعملاء',
+      appBar: CustomAppBar(
+        title: 'جدول التركيب للعملاء',
         actions: [
-        IconButton(
-          icon: Icon(Icons.timeline),
-          onPressed: () {
-            // Navigate to the dates timeline page
-            AppNavigator.go(
-              DatesTimelinePage(),
-            );
+          IconButton(
+            icon: Icon(Icons.timeline),
+            onPressed: () {
+              // Navigate to the dates timeline page
+              AppNavigator.go(
+                DatesTimelinePage(),
+              );
             },
-        ),
-      ],),
+          ),
+        ],
+      ),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(
@@ -122,11 +125,11 @@ class _MobDatesTablePageState extends State<MobDatesTablePage> {
                   if (state.getDateInstallationStatus.isLoading()) {
                     SliverFillRemaining(child: AppLoader());
                   } else if (state.getDateInstallationStatus.isFailed()) {
-                    return  SliverToBoxAdapter(
+                    return SliverToBoxAdapter(
                         child: AppErrorWidget(
-                          message: state.getDateInstallationStatus.error,
-                          onPressed: () => _cubit.getDateInstallation(),
-                        ));
+                      message: state.getDateInstallationStatus.error,
+                      onPressed: () => _cubit.getDateInstallation(),
+                    ));
                   }
                   return SliverToBoxAdapter(child: DatesTableCalendar());
                 },
@@ -137,12 +140,19 @@ class _MobDatesTablePageState extends State<MobDatesTablePage> {
               ValueListenableBuilder<List<EventModel>>(
                 valueListenable: _cubit.pageVariables.selectedDayEvents,
                 builder: (context, events, child) {
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return EventCard(event: events[index]);
-                      },
-                      childCount: events.length,
+                  if (events.isEmpty) {
+                    return const SliverToBoxAdapter(
+                      child: Center(
+                        child: Text('No events for this day'),
+                      ),
+                    );
+                  }
+                  return SliverPadding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate(
+                        events.map((event) => DateCard(event: event)).toList(),
+                      ),
                     ),
                   );
                 },

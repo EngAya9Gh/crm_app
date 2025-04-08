@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import '../../errors/server_exceptions.dart';
 import 'result.dart';
 
@@ -27,7 +30,7 @@ Future<T> throwAppException<T>(FutureOr<T> Function() call) async {
 
     throw ServerException.unknown(exception: e, message: e.toString());
   } catch (e, s) {
-    showMessage(e.toString());
+    showMessage("Unknown Error!");
 
     log(e.toString(), stackTrace: s);
     throw ServerException.unknown(exception: e, message: e.toString());
@@ -35,14 +38,14 @@ Future<T> throwAppException<T>(FutureOr<T> Function() call) async {
 }
 
 void showMessage(String message, {bool isSuccess = false}) {
-  // Fluttertoast.showToast(
-  //     msg: message,
-  //     toastLength: Toast.LENGTH_SHORT,
-  //     gravity: ToastGravity.BOTTOM,
-  //     timeInSecForIosWeb: 1,
-  //     backgroundColor: isSuccess ? Colors.greenAccent : Colors.red,
-  //     textColor: Colors.white,
-  //     fontSize: 16.0);
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: isSuccess ? Colors.greenAccent : Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 Future<Result<T>> toApiResult<T>(FutureOr<T> Function() call) async {

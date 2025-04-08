@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -399,6 +400,16 @@ import '../../../features/finance/verified_invoice/domain/use_cases/verified_inv
     as _i1029;
 import '../../../features/finance/verified_invoice/presentation/manager/verified_invoice_bloc.dart'
     as _i522;
+import '../../../features/home/data/data_sources/remote_date_source.dart'
+    as _i626;
+import '../../../features/home/data/repositories/pending_approvals_repository_impl.dart'
+    as _i1070;
+import '../../../features/home/domain/repositories/pending_approvals_repository.dart'
+    as _i869;
+import '../../../features/home/domain/use_cases/get_home_statistic_usecase.dart'
+    as _i447;
+import '../../../features/home/presentation/manager/search_cubit.dart'
+    as _i1066;
 import '../../../features/home/presentation/manager/web_home_page_cubit.dart'
     as _i756;
 import '../../../features/mangement/advanced_configs/data/data_sources/advanced_configs_datasource.dart'
@@ -989,12 +1000,24 @@ import '../../../features/task_management/domain/use_cases/add_users_report_usec
     as _i668;
 import '../../../features/task_management/domain/use_cases/change_status_usecase.dart'
     as _i831;
+import '../../../features/task_management/domain/use_cases/change_task_assign_usecase.dart'
+    as _i26;
+import '../../../features/task_management/domain/use_cases/curd_task_files_usecase.dart'
+    as _i818;
 import '../../../features/task_management/domain/use_cases/get_comments_task_usecase.dart'
     as _i755;
+import '../../../features/task_management/domain/use_cases/get_list_clients_usecase.dart'
+    as _i927;
+import '../../../features/task_management/domain/use_cases/get_task_by_id_usecase.dart'
+    as _i625;
+import '../../../features/task_management/domain/use_cases/get_task_log_usecase.dart'
+    as _i305;
 import '../../../features/task_management/domain/use_cases/get_tasks_usecase.dart'
     as _i439;
 import '../../../features/task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart'
     as _i526;
+import '../../../features/task_management/domain/use_cases/update_task_usecase.dart'
+    as _i161;
 import '../../../features/task_management/presentation/manager/task_cubit.dart'
     as _i855;
 import '../../../features/versions/data/data_sources/versions_datasource.dart'
@@ -1198,6 +1221,8 @@ _i174.GetIt $initGetIt(
       () => _i304.PackagesOffersDatasource(gh<_i124.ApiServices>()));
   gh.factory<_i674.ImportantLinksDatasource>(
       () => _i674.ImportantLinksDatasource(gh<_i124.ApiServices>()));
+  gh.lazySingleton<_i626.HomeRemoteDataSource>(
+      () => _i626.HomeRemoteDataSourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i330.UsersDatasource>(
       () => _i330.UsersDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i453.CitiesDatasource>(
@@ -1277,6 +1302,11 @@ _i174.GetIt $initGetIt(
   gh.factory<_i65.RecommendedClientReportsBloc>(() =>
       _i65.RecommendedClientReportsBloc(
           gh<_i56.GetRecommendClientsReportsUsecase>()));
+  gh.lazySingleton<_i869.PendingApprovalsRepository>(
+      () => _i1070.PendingApprovalsRepositoryImpl(
+            gh<_i124.ApiServices>(),
+            gh<_i626.HomeRemoteDataSource>(),
+          ));
   gh.lazySingleton<_i566.ClientLogsTabRepo>(
       () => _i313.ClientLogsTabRepoImpl(gh<_i40.ClientLogsTabDataSource>()));
   gh.lazySingleton<_i1028.DeletedInvoicesDatasource>(
@@ -1797,6 +1827,8 @@ _i174.GetIt $initGetIt(
       () => _i19.AddAgentUseCase(gh<_i866.AgentsDistributorsActionsRepo>()));
   gh.lazySingleton<_i191.UpdateAgentUseCase>(() =>
       _i191.UpdateAgentUseCase(gh<_i866.AgentsDistributorsActionsRepo>()));
+  gh.lazySingleton<_i447.GetHomeStatisticUsecase>(() =>
+      _i447.GetHomeStatisticUsecase(gh<_i869.PendingApprovalsRepository>()));
   gh.lazySingleton<_i767.GetDelayInstallReportsUseCase>(() =>
       _i767.GetDelayInstallReportsUseCase(gh<_i503.DelayInstallReportsRepo>()));
   gh.lazySingleton<_i207.CrudAgentSupportFilesUsecase>(() =>
@@ -1895,6 +1927,10 @@ _i174.GetIt $initGetIt(
           gh<_i478.GetGreetingCommunicationUseCase>()));
   gh.lazySingleton<_i867.GetRegionsUseCase>(
       () => _i867.GetRegionsUseCase(gh<_i1041.RegionsRepository>()));
+  gh.factory<_i1066.SearchCubit>(() => _i1066.SearchCubit(
+        gh<_i124.ApiServices>(),
+        gh<_i447.GetHomeStatisticUsecase>(),
+      ));
   gh.lazySingleton<_i189.GetLatestClientsUseCase>(() =>
       _i189.GetLatestClientsUseCase(gh<_i88.LatestClientsUpdatesRepository>()));
   gh.factory<_i927.AdvancedCofigsCubit>(() => _i927.AdvancedCofigsCubit(
@@ -2101,12 +2137,24 @@ _i174.GetIt $initGetIt(
       () => _i668.GetUsersReportsTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i831.ChangeStatusTaskUsecase>(
       () => _i831.ChangeStatusTaskUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i26.ChangeTaskAssignUsecase>(
+      () => _i26.ChangeTaskAssignUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i818.CrudTaskFilesUsecase>(
+      () => _i818.CrudTaskFilesUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i755.GetCommentsTaskUsecase>(
       () => _i755.GetCommentsTaskUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i927.GetListClientsUsecase>(
+      () => _i927.GetListClientsUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i439.GetTasksUsecase>(
       () => _i439.GetTasksUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i625.GetTaskByIdUsecase>(
+      () => _i625.GetTaskByIdUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i305.GetTaskLogUsecase>(
+      () => _i305.GetTaskLogUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i526.GetUsersByDepartmentAndRegionUsecase>(() =>
       _i526.GetUsersByDepartmentAndRegionUsecase(gh<_i956.TaskRepository>()));
+  gh.factory<_i161.UpdateTaskUsecase>(
+      () => _i161.UpdateTaskUsecase(gh<_i956.TaskRepository>()));
   gh.factory<_i943.CrudActivitiesBloc>(() => _i943.CrudActivitiesBloc(
         gh<_i75.GetCrudActivitiesUseCase>(),
         gh<_i245.UpdateActivityCrudUseCase>(),
@@ -2190,6 +2238,12 @@ _i174.GetIt $initGetIt(
         gh<_i356.AddCommentTaskUsecase>(),
         gh<_i755.GetCommentsTaskUsecase>(),
         gh<_i668.GetUsersReportsTaskUsecase>(),
+        gh<_i927.GetListClientsUsecase>(),
+        gh<_i26.ChangeTaskAssignUsecase>(),
+        gh<_i161.UpdateTaskUsecase>(),
+        gh<_i625.GetTaskByIdUsecase>(),
+        gh<_i305.GetTaskLogUsecase>(),
+        gh<_i818.CrudTaskFilesUsecase>(),
       ));
   return getIt;
 }

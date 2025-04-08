@@ -103,6 +103,7 @@ import '../view_model/ticket_vm.dart';
 import '../view_model/typeclient.dart';
 import '../view_model/user_vm_provider.dart';
 import '../view_model/usertest_vm.dart';
+import '../features/home/presentation/manager/search_cubit.dart';
 
 class ServiceProvider extends StatelessWidget {
   const ServiceProvider({super.key});
@@ -192,7 +193,9 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ClientActivitiesBloc>()),
         BlocProvider(create: (context) => getIt<ClientTaskBloc>()),
         BlocProvider(create: (context) => getIt<CommissionCollaboratorsBloc>()),
-        BlocProvider(create: (context) => getIt<RecommendedClientReportsBloc>()),
+        BlocProvider(
+            create: (context) => getIt<RecommendedClientReportsBloc>()),
+        BlocProvider(create: (context) => getIt<SearchCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

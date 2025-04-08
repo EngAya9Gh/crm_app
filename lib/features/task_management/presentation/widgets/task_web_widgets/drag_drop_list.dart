@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/task_management/presentation/widgets/task_web_widgets/task_card.dart';
+import 'package:crm_smart/features/task_management/presentation/widgets/task_web_widgets/task_card_web.dart';
 import 'package:flutter/material.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import '../../../../../core/common/models/page_state/bloc_status.dart';
@@ -28,7 +28,8 @@ class DragDropListBuilder {
     } else if (statusInfo?.tasks.isEmpty ?? true) {
       listItems.add(EmptyListPlaceholder.build());
     } else {
-      listItems.addAll(statusInfo!.tasks.map((task) => TaskCard.build(task,context)));
+      listItems.addAll(statusInfo!.tasks.map((task) => 
+      TaskCardWeb.build(task,context)));
     }
 
     return DragAndDropList(

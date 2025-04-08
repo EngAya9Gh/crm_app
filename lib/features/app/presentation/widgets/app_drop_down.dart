@@ -97,7 +97,8 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
                             trailing: CircleAvatar(
                               radius: 18,
                               child: AppCachedNetworkImage(
-                                imageUrl: "https://smartcrm.ws/test/api/imagesApp/profile/48464df755303690b6627314ec202d64.png",
+                                imageUrl:
+                                    "https://smartcrm.ws/test/api/imagesApp/profile/48464df755303690b6627314ec202d64.png",
                               ),
                             ),
                             enabled: !isDisabled,
@@ -128,8 +129,10 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
                             itemAsString?.call(item) ?? item.toString(),
                             style: textStyle ??
                                 (isDisabled
-                                    ? context.textTheme.titleSmall?.copyWith(color: Colors.grey)
-                                    : context.textTheme.titleSmall?.copyWith(color: Colors.white)),
+                                    ? context.textTheme.titleSmall
+                                        ?.copyWith(color: Colors.grey)
+                                    : context.textTheme.titleSmall
+                                        ?.copyWith(color: Colors.black)),
                           )
                         : itemBuilderSelected?.call(item) ?? itemBuilder!(item),
                   ),
@@ -143,7 +146,9 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
           hint: hint != null
               ? AppText(
                   hint!,
-                  style: styleForHintText ?? context.textTheme.titleSmall?.copyWith(color: Colors.grey),
+                  style: styleForHintText ??
+                      context.textTheme.titleSmall
+                          ?.copyWith(color: Colors.grey),
                 )
               : null,
           borderRadius: BorderRadius.circular(8).r,
@@ -153,15 +158,18 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
             filled: isFilledColor ?? false,
             fillColor: isFilledColor ?? false ? fillColor : null,
             border: OutlineInputBorder(
-              borderSide: BorderSide(color: borderColor ?? context.colorScheme.primary),
+              borderSide:
+                  BorderSide(color: borderColor ?? context.colorScheme.primary),
               borderRadius: BorderRadius.circular(10).r,
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: borderColor ?? context.colorScheme.primary),
+              borderSide:
+                  BorderSide(color: borderColor ?? context.colorScheme.primary),
               borderRadius: BorderRadius.circular(10).r,
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: borderColor ?? context.colorScheme.primary),
+              borderSide:
+                  BorderSide(color: borderColor ?? context.colorScheme.primary),
               borderRadius: BorderRadius.circular(10).r,
             ),
             disabledBorder: OutlineInputBorder(
@@ -183,7 +191,9 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
                         ? AppColors.white
                         : (isDisabled
                             ? context.colorScheme.primary.withOpacity(0.3)
-                            : (items.isEmpty ? context.colorScheme.primary.withOpacity(0.3) : context.colorScheme.primary))),
+                            : (items.isEmpty
+                                ? context.colorScheme.primary.withOpacity(0.3)
+                                : context.colorScheme.primary))),
           ),
         ),
       ],

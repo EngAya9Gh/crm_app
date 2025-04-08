@@ -251,7 +251,7 @@ class UsersCubit extends Cubit<UsersState> {
     );
   }
 
-  onGetUserSelected([String? type]) async {
+  onGetUserSelected([String? type, ValueChanged<List<UserModel>>? onSuccess]) async {
     emit(state.copyWith(getUserSelected: const BlocStatus.loading()));
     final response = await _getUserSelectUsecase(GetUsersParams(type: type));
 
@@ -262,6 +262,7 @@ class UsersCubit extends Cubit<UsersState> {
       },
       (value) {
         emit(state.copyWith(getUserSelected: BlocStatus.success(data: value.message ?? [])));
+        onSuccess?.call(value.message??[]);
       },
     );
   }

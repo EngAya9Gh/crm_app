@@ -1,11 +1,16 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/features/mangement/manage_users/presentation/pages/action_user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/common/extensions/build_context.dart';
 import '../../../core/common/helpers/app_snackbar.dart';
+import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
 import '../../../core/config/navigator/app_navigator.dart';
@@ -19,9 +24,12 @@ import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/auth/login/presentation/pages/login/login_page.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../screen/user/userview.dart';
 import '../delete_acconut_dialog.dart';
+import '../../../core/common/lists/sections_lists.dart';
+import '../../../core/common/models/sections/section_model.dart';
 
 class CustomDrawer extends StatefulWidget {
   CustomDrawer({super.key});
@@ -33,6 +41,9 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   final shorebirdCodePush = ShorebirdUpdater();
   bool checkingForUpdate = false;
+  bool _showProfileSection = false;
+  Map<int, bool> _expandedSections = {};
+  int _expandedSectionIndex = -1;
 
   @override
   void initState() {
@@ -42,82 +53,153 @@ class _CustomDrawerState extends State<CustomDrawer> {
     super.initState();
   }
 
+  void _handleSectionTap(SectionModel section, int index) {
+    if (section.path.startsWith('http')) {
+      launchUrl(Uri.parse(section.path));
+      return;
+    }
+
+    if (section.subSections.isEmpty) {
+      AppNavigator.go(section.page, name: section.path);
+      return;
+    }
+
+    setState(() {
+      _expandedSections[index] = !(_expandedSections[index] ?? false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: 300.scaleWidth,
       child: Container(
-        color: Colors.white,
+        color: AppColors.white,
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  UserAccountsDrawerHeader(
-                    decoration: BoxDecoration(color: Colors.white24 //Color(0xFF56ccf2),
-                        ),
-                    accountName: Text(
-                      Provider.of<UserProvider>(context, listen: true).currentUser.nameUser.toString(),
-                      style: TextStyle(fontFamily: AppFonts.fontFamily1, color: context.colorScheme.onBackground),
-                    ),
-                    accountEmail: Text(
-                      Provider.of<UserProvider>(context, listen: true).currentUser.email.toString(),
-                      style: TextStyle(fontFamily: AppFonts.fontFamily1, color: context.colorScheme.onBackground),
-                    ),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundColor: AppColors.primaryMain,
+                  // Profile Header Section
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    color: AppColors.primaryMain, //Color(0xFF579DDE),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 8.scaleHeight),
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: AppColors.white,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(45),
+                                borderRadius: BorderRadius.circular(30),
                         child: AppCachedNetworkImage(
-                          width: 500,
-                          height: 500,
-                          fit: BoxFit.fill,
-                          imageUrl: Provider.of<UserProvider>(context, listen: true).currentUser.img_image,
-                        ),
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'الملف الشخصي',
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                  imageUrl: Provider.of<UserProvider>(context,
+                                          listen: true)
+                                      .currentUser
+                                      .img_image,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppText(
+                                    Provider.of<UserProvider>(context,
+                                            listen: true)
+                                        .currentUser
+                                        .nameUser
+                                        .toString(),
+                                    style: TextStyle(
+                                      color: AppColors.white,
+                                      fontSize: 16.scaleFontSize,
+                                      fontFamily: AppFonts.fontFamily1,
+                                    ),
+                                  ),
+                                  AppText(
+                                    Provider.of<UserProvider>(context,
+                                            listen: true)
+                                        .currentUser
+                                        .email
+                                        .toString(),
                       style: TextStyle(
+                                      color: AppColors.white70,
+                                      fontSize: 14.scaleFontSize,
                         fontFamily: AppFonts.fontFamily1,
-                        fontSize: 20,
-                      ),
-                    ),
-                    leading: Icon(
-                      Icons.shop,
-                      color: AppColors.primaryMain,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                _showProfileSection
+                                    ? Icons.keyboard_arrow_up
+                                    : Icons.keyboard_arrow_down,
+                                color: AppColors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _showProfileSection = !_showProfileSection;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        if (_showProfileSection) ...[
+                          Divider(color: AppColors.white24, height: 18),
+                          ListTile(
+                            leading: Icon(Icons.person_outline,
+                                color: AppColors.white),
+                            title: AppText(
+                              'الملف الشخصي',
+                              fontSize: 15.scaleFontSize,
+                              style: TextStyle(color: AppColors.white),
                     ),
                     onTap: () => AppNavigator.go(
                       UserScreen(
                         ismyprofile: 'yes',
-                        user: Provider.of<UserProvider>(context, listen: false).currentUser,
+                                user: Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .currentUser,
                       ),
                       isNew: false,
                     ),
                   ),
+                          if (context
+                              .read<PrivilegesCubit>()
+                              .checkPrivilege('49'))
                   ListTile(
-                    title: Text(
-                      'تسجيل الخروج',
-                      style: TextStyle(
-                        fontFamily: AppFonts.fontFamily1,
-                        fontSize: 20,
-                      ),
-                    ),
-                    leading: Consumer<UserProvider>(
-                      builder: (context, value, child) => value.logoutFromAccount
-                          ? SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: AppLoader(),
-                            )
-                          : Icon(
-                              Icons.exit_to_app,
-                              color: AppColors.primaryMain,
+                              leading: Icon(Icons.add, color: AppColors.white),
+                              title: AppText(
+                                'اضافة حساب جديد',
+                                fontSize: 15.scaleFontSize,
+                                style: TextStyle(color: AppColors.white),
+                              ),
+                              onTap: () async {
+                                AppNavigator.go(
+                                  ActionUserPage(),
+                                  name: AppRoutesNames
+                                      .managementInternalRoutes.addUser,
+                                );
+                              },
                             ),
+                          ListTile(
+                            leading: Icon(Icons.logout, color: AppColors.white),
+                            title: AppText(
+                              'تسجيل الخروج',
+                              fontSize: 15.scaleFontSize,
+                              style: TextStyle(color: AppColors.white),
                     ),
                     onTap: () async {
-                      Provider.of<UserProvider>(context, listen: false).logout(
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .logout(
                         onLogoutSuccess: () async {
                           final secureStorage = getIt<CacheServices>(
                             instanceName: SecureStorageConsumer.name,
@@ -128,7 +210,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           )
                               .then(
                             (value) {
-                              AppNavigator.goReplacement(LoginPage(),name:AppRoutesNames.generalRoutes.login );
+                                      AppNavigator.goReplacement(LoginPage(),
+                                          name: AppRoutesNames
+                                              .generalRoutes.login);
                             },
                           );
                         },
@@ -136,30 +220,119 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     },
                   ),
                   ListTile(
-                    title: Text(
+                            leading: Icon(Icons.delete_outline,
+                                color: AppColors.white),
+                            title: AppText(
                       'حذف حسابي',
-                      style: TextStyle(
-                        fontFamily: AppFonts.fontFamily1,
-                        fontSize: 20,
-                      ),
+                              fontSize: 15.scaleFontSize,
+                              style: TextStyle(color: AppColors.white),
+                            ),
+                            onTap: () {
+                              AppConstants.showAppDialog(
+                                  child: DeleteAccountDialog());
+                            },
+                          ),
+                        ],
+                      ],
                     ),
-                    leading: Icon(
-                      Icons.delete_rounded,
-                      color: Colors.red,
-                    ),
-                    onTap: () async {
-                      AppConstants.showAppDialog(child: DeleteAccountDialog());
-                    },
                   ),
+
+                  // Main Sections from SectionsLists.homeSections
+                  ...SectionsLists.homeSections.asMap().entries.map((entry) {
+                    final int index = entry.key;
+                    final section = entry.value;
+
+                    // Check if user has privilege to view this section
+                    if (section.privilegeId != null &&
+                        !context
+                            .read<PrivilegesCubit>()
+                            .checkPrivilege(section.privilegeId)) {
+                      return SizedBox.shrink();
+                    }
+
+                    final bool isExpanded = _expandedSections[index] ?? false;
+
+                    return Column(
+                      children: [
+                        ListTile(
+                          leading: Icon(
+                            section.icon ?? Icons.circle_outlined,
+                            color: AppColors.primaryMain,
+                            size: 20.scaleFontSize,
+                          ),
+                          title: AppText(
+                            section.title,
+                            style: TextStyle(
+                              fontFamily: AppFonts.fontFamily1,
+                              fontSize: 14.scaleFontSize,
+                            ),
+                          ),
+                          trailing: section.subSections.isNotEmpty
+                              ? Icon(
+                                  isExpanded
+                                      ? Icons.keyboard_arrow_up
+                                      : Icons.keyboard_arrow_down,
+                                  color: AppColors.primaryMain,
+                                )
+                              : null,
+                          onTap: () => _handleSectionTap(section, index),
+                        ),
+                        if (isExpanded && section.subSections.isNotEmpty)
+                          ...section.subSections.map((subSection) {
+                            // Check if user has privilege to view this subsection
+                            if (subSection.privilegeId != null &&
+                                !context
+                                    .read<PrivilegesCubit>()
+                                    .checkPrivilege(subSection.privilegeId)) {
+                              return SizedBox.shrink();
+                            }
+
+                            return ListTile(
+                              contentPadding: EdgeInsets.only(right: 32.0),
+                              leading: Icon(
+                                subSection.icon ?? Icons.circle,
+                                color: AppColors.primaryMain,
+                                size: 12.scaleFontSize,
+                              ),
+                              title: AppText(
+                                subSection.title,
+                                style: TextStyle(
+                                  fontFamily: AppFonts.fontFamily1,
+                                  fontSize: 12.scaleFontSize,
+                                ),
+                              ),
+                              onTap: () {
+                                AppNavigator.go(subSection.page,
+                                    name: subSection.path);
+                                // Navigator.pop(context);
+                              },
+                            );
+                          }).toList(),
+                      ],
+                    );
+                  }).toList(),
+
+                  Divider(
+                      height: 10, thickness: 1, color: AppColors.grey.shade200),
                 ],
               ),
             ),
-            // check for update button at the end of the drawer
+
+            // Bottom Section
             SliverFillRemaining(
               hasScrollBody: false,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Padding(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Divider(
+                        height: 10,
+                        thickness: 1,
+                        color: AppColors.grey.shade200),
+
+                    // Update button
+                    Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: StatefulBuilder(
                       builder: (context, refresh) {
@@ -167,19 +340,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           isLoading: checkingForUpdate,
                           onPressed: () async {
                             _changeUpdateStateLoading(refresh);
-
                             await _downloadUpdateIfAvailable();
-
                             _changeUpdateStateLoading(refresh);
                           },
                           child: AppText(
                             'تحقق من وجود تحديثات',
-                            fontSize: 16,
-                            color: Colors.white,
+                              fontSize: 14.scaleFontSize,
+                              color: AppColors.white,
                           ),
                         );
                       },
-                    )),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -195,7 +369,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   Future<void> _downloadUpdateIfAvailable() async {
     try {
-      final isUpdateAvailable = await shorebirdCodePush.checkForUpdate()==UpdateStatus.outdated;
+      final isUpdateAvailable =
+          await shorebirdCodePush.checkForUpdate() == UpdateStatus.outdated;
 
       if (isUpdateAvailable) {
         await shorebirdCodePush.update();
@@ -206,7 +381,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             'جاري تحميل التحديث',
           ],
           onCompletion: () async {
-            await SystemChannels.platform.invokeMethod('SystemNavigator.pop', true);
+            await SystemChannels.platform
+                .invokeMethod('SystemNavigator.pop', true);
           },
         );
         return;

@@ -42,7 +42,9 @@ class _BranchSearchableDropDownState extends State<BranchSearchableDropDown> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _loadBranches().then((_) => _loadSelectedBranch());
       _prepareBranchesList();
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
     super.initState();
   }
@@ -53,7 +55,9 @@ class _BranchSearchableDropDownState extends State<BranchSearchableDropDown> {
   }
 
   void _loadSelectedBranch() {
-    _cubit.loadCurrentBranchesById(cityId: widget.selectedBranchId);
+    if (widget.selectedBranchId != null) {
+      _cubit.loadCurrentBranchesById(cityId: widget.selectedBranchId);
+    }
   }
 
   void _prepareBranchesList() {

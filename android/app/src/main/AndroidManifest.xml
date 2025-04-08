@@ -18,7 +18,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <application
             android:label="Smart CRM"
-            android:icon="@mipmap/launcher_icon">
+            android:name="${applicationName}"
+            android:icon="@mipmap/launcher_icon"
+            android:enableOnBackInvokedCallback="true">
         <meta-data android:name="com.google.android.geo.API_KEY"
                    android:value="AIzaSyDPc1bZGUTKYilLcLMJbxd8I4RInrPo8AQ"/>
         <activity

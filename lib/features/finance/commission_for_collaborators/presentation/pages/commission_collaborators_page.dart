@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/Card_invoice_client.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/widgets/modern_invoice_card.dart';
 import 'package:crm_smart/features/finance/commission_for_collaborators/presentation/widgets/analytics_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,10 +26,12 @@ class CommissionCollaboratorsPage extends StatefulWidget {
   const CommissionCollaboratorsPage({super.key});
 
   @override
-  State<CommissionCollaboratorsPage> createState() => CommissionCollaboratorsPageState();
+  State<CommissionCollaboratorsPage> createState() =>
+      CommissionCollaboratorsPageState();
 }
 
-class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage> {
+class CommissionCollaboratorsPageState
+    extends State<CommissionCollaboratorsPage> {
   late final CommissionCollaboratorsBloc _bloc;
   late final ClientsListBloc userBloc;
   CommissionCollaboratorsParams params = CommissionCollaboratorsParams();
@@ -50,7 +53,8 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
     return AppScaffold(
       appBar: CustomAppBar(title: 'عمولة المتعاونين'),
       backgroundColor: Colors.grey.shade100,
-      body: BlocBuilder<CommissionCollaboratorsBloc, CommissionCollaboratorsState>(
+      body: BlocBuilder<CommissionCollaboratorsBloc,
+          CommissionCollaboratorsState>(
         builder: (context, state) {
           return Directionality(
             textDirection: TextDirection.rtl,
@@ -63,7 +67,9 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                       child: CustomSearchWidget(
                         searchController: searchController,
                         onChanged: (value) {
-                          params = CommissionCollaboratorsParams(page: 1, filter: searchController.text);
+                          params = CommissionCollaboratorsParams(
+                              page: 1, filter: searchController.text);
+
                           ///after search success form page 1 should increase second page
                           AppConstants.debounceFunction(
                             () => _bloc.add(GetCommissionCollaboratorsEvent(
@@ -88,7 +94,7 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                             userBloc: userBloc,
                           ),
                         );
-                        if (value!=null) {
+                        if (value != null) {
                           params = value;
                         }
                       },
@@ -108,18 +114,26 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                         Expanded(
                           flex: 3,
                           child: AnalyticsCard(
-                            value: (state.commissionCollaboratorsResponse.data?.totalSale ?? 0).toStringAsFixed(2),
+                            value: (state.commissionCollaboratorsResponse.data
+                                        ?.totalSale ??
+                                    0)
+                                .toStringAsFixed(2),
                             text: 'اجمالي المبيعات',
-                            icon: Icon(Icons.analytics_outlined, size: 28, color: Colors.black),
+                            icon: Icon(Icons.analytics_outlined,
+                                size: 28, color: Colors.black),
                           ),
                         ),
                         Spacer(),
                         Expanded(
                           flex: 3,
                           child: AnalyticsCard(
-                            value: (state.commissionCollaboratorsResponse.data?.totalPaid ?? 0).toStringAsFixed(2),
+                            value: (state.commissionCollaboratorsResponse.data
+                                        ?.totalPaid ??
+                                    0)
+                                .toStringAsFixed(2),
                             text: 'اجمالي المدفوعات',
-                            icon: Icon(Icons.analytics_outlined, size: 28, color: Colors.black),
+                            icon: Icon(Icons.analytics_outlined,
+                                size: 28, color: Colors.black),
                           ),
                         ),
                         Spacer(),
@@ -133,18 +147,26 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                         Expanded(
                           flex: 3,
                           child: AnalyticsCard(
-                            value: (state.commissionCollaboratorsResponse.data?.totalDue ?? 0).toStringAsFixed(2),
+                            value: (state.commissionCollaboratorsResponse.data
+                                        ?.totalDue ??
+                                    0)
+                                .toStringAsFixed(2),
                             text: 'الاجمالي ',
-                            icon: Icon(Icons.analytics_outlined, size: 28, color: Colors.black),
+                            icon: Icon(Icons.analytics_outlined,
+                                size: 28, color: Colors.black),
                           ),
                         ),
                         Spacer(),
                         Expanded(
                           flex: 3,
                           child: AnalyticsCard(
-                            value: (state.commissionCollaboratorsResponse.data?.totalProgram ?? 0).toStringAsFixed(2),
+                            value: (state.commissionCollaboratorsResponse.data
+                                        ?.totalProgram ??
+                                    0)
+                                .toStringAsFixed(2),
                             text: 'اجمالي البرامج',
-                            icon: Icon(Icons.analytics_outlined, size: 28, color: Colors.black),
+                            icon: Icon(Icons.analytics_outlined,
+                                size: 28, color: Colors.black),
                           ),
                         ),
                         Spacer(),
@@ -158,9 +180,13 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                         Expanded(
                           flex: 3,
                           child: AnalyticsCard(
-                            value: (state.commissionCollaboratorsResponse.data?.totalDevices ?? 0).toStringAsFixed(2),
+                            value: (state.commissionCollaboratorsResponse.data
+                                        ?.totalDevices ??
+                                    0)
+                                .toStringAsFixed(2),
                             text: 'اجمالي الاجهزة',
-                            icon: Icon(Icons.analytics_outlined, size: 28, color: Colors.black),
+                            icon: Icon(Icons.analytics_outlined,
+                                size: 28, color: Colors.black),
                           ),
                         ),
                         Spacer(),
@@ -179,9 +205,13 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         AppText('عدد العناصر: '),
-                        ((state.commissionCollaboratorsResponse.data?.invoiceModel ?? []).isEmpty)
+                        ((state.commissionCollaboratorsResponse.data
+                                        ?.invoiceModel ??
+                                    [])
+                                .isEmpty)
                             ? SizedBox.shrink()
-                            : AppText('${state.commissionCollaboratorsResponse.data?.invoiceModel?.length ?? ''}/${state.totalCount}'),
+                            : AppText(
+                                '${state.commissionCollaboratorsResponse.data?.invoiceModel?.length ?? ''}/${state.totalCount}'),
                       ],
                     )),
                 10.height,
@@ -190,10 +220,13 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                     success: (data) => AppPaginatedList(
                       scrollController: ScrollController(),
                       isLoading: state.gettingData.isLoading(),
-                      items: state.commissionCollaboratorsResponse.data?.invoiceModel ?? [],
+                      items: state.commissionCollaboratorsResponse.data
+                              ?.invoiceModel ??
+                          [],
                       hasReachedEnd: state.hasReachedMax,
                       onLoadMore: () {
-                        params = CommissionCollaboratorsParams(page: nextPage, filter: searchController.text);
+                        params = CommissionCollaboratorsParams(
+                            page: nextPage, filter: searchController.text);
                         _bloc.add(GetCommissionCollaboratorsEvent(
                           params: params,
                           onSuccess: (value) {
@@ -202,18 +235,33 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                         ));
                       },
                       itemBuilder: (context, index) {
-                        return CardInvoiceClient(
+                        return ModernInvoiceCard(
                           type: 'profile',
-                          invoice: state.commissionCollaboratorsResponse.data!.invoiceModel![index],
+                          invoice: state.commissionCollaboratorsResponse.data!
+                              .invoiceModel![index],
                           commissionWidget: (state
-                                      .commissionCollaboratorsResponse.data?.invoiceModel?[index].participateInfo?.first.nameParticipate?.isEmpty ??
+                                      .commissionCollaboratorsResponse
+                                      .data
+                                      ?.invoiceModel?[index]
+                                      .participateInfo
+                                      ?.first
+                                      .nameParticipate
+                                      ?.isEmpty ??
                                   true)
                               ? SizedBox.shrink()
                               : Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     AppText(
-                                      state.commissionCollaboratorsResponse.data?.invoiceModel?[index].participateInfo?.first.nameParticipate ?? '',
+                                      state
+                                              .commissionCollaboratorsResponse
+                                              .data
+                                              ?.invoiceModel?[index]
+                                              .participateInfo
+                                              ?.first
+                                              .nameParticipate ??
+                                          '',
                                       fontFamily: AppFonts.fontFamily1,
                                       color: AppColors.primaryMain,
                                       fontSize: 14,
@@ -226,7 +274,7 @@ class CommissionCollaboratorsPageState extends State<CommissionCollaboratorsPage
                                       fontSize: 14,
                                     ),
                                   ],
-                                ),
+                                ), routeName: '',
                         );
                       },
                       separatorBuilder: (_, __) => const SizedBox.shrink(),

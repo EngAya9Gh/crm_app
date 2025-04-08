@@ -21,6 +21,9 @@ class AppDatasource {
           response,
           (json) => List.from((json as List<dynamic>)
               .map((e) => UpdateConfig.fromJson(e as Map<String, dynamic>))));
+      // TODO: uncommit this edit comminted code
+      // return ResponseWrapper<List<UpdateConfig>>(data: [], message: [UpdateConfig()]);
+              
     }
 
     return throwAppException(fun);

@@ -36,6 +36,7 @@ class UserModel extends UserEntity {
   List<PrivilegeModel> privilegesList;
   int? noOfOpenTasks;
   int? noOfMentions;
+  int? notificationNotRead;
 
   // List<> maincitylist_user;
 
@@ -71,6 +72,7 @@ class UserModel extends UserEntity {
     this.privilegesList = const [],
     this.noOfOpenTasks,
     this.noOfMentions,
+    this.notificationNotRead,
     // this.privilgelist,
   }) : super(
           id: idUser!,
@@ -108,6 +110,7 @@ class UserModel extends UserEntity {
       path: ApiHelper.handleString(jsonData['path']),
       noOfOpenTasks: jsonData['no_of_open_tasks'],
       noOfMentions: jsonData['no_of_mentions'],
+      notificationNotRead: jsonData['notification_not_read'],
       fkuserupdate: ApiHelper.handleString(jsonData['fkuserupdate']),
       updated_at: ApiHelper.handleString(jsonData['updated_at']),
       nameuserupdate: jsonData['nameuserupdate'] != null
@@ -119,6 +122,71 @@ class UserModel extends UserEntity {
       privilegesList: List.of(jsonData['privilgelist'] ?? [])
           .map((e) => PrivilegeModel.fromJson(e))
           .toList(),
+    );
+  }
+  UserModel copyWith({
+    String? idUser,
+    String? nameUser,
+    String? email,
+    String? mobile,
+    String? codeVerfiy,
+    String? fkCountry,
+    String? typeAdministration,
+    String? name_mange,
+    String? typeLevel,
+    String? fkRegoin,
+    String? nameCountry,
+    String? nameRegoin,
+    String? name_level,
+    String? priority,
+    String? isActive,
+    String? currency,
+    String? fkuserAdd,
+    String? nameuserAdd,
+    String? created_at,
+    String? img_image,
+    String? img_thumbnail,
+    String? path,
+    int? noOfOpenTasks,
+    int? noOfMentions,
+    int? notificationNotRead,
+    String? fkuserupdate,
+    String? updated_at,
+    String? nameuserupdate,
+    List<UserRegion>? maincitylist_user,
+    List<PrivilegeModel>? privilegesList,
+  }) {
+    return UserModel(
+      idUser: idUser ?? this.idUser,
+      nameUser: nameUser ?? this.nameUser,
+      email: email ?? this.email,
+      mobile: mobile ?? this.mobile,
+      codeVerfiy: codeVerfiy ?? this.codeVerfiy,
+      fkCountry: fkCountry ?? this.fkCountry,
+      typeAdministration: typeAdministration ?? this.typeAdministration,
+      name_mange: name_mange ?? this.name_mange,
+      typeLevel: typeLevel ?? this.typeLevel,
+      fkRegoin: fkRegoin ?? this.fkRegoin,
+      nameCountry: nameCountry ?? this.nameCountry,
+      nameRegoin: nameRegoin ?? this.nameRegoin,
+      name_level: name_level ?? this.name_level,
+      priority: priority ?? this.priority,
+      isActive: isActive ?? this.isActive,
+      currency: currency ?? this.currency,
+      fkuserAdd: fkuserAdd ?? this.fkuserAdd,
+      nameuserAdd: nameuserAdd ?? this.nameuserAdd,
+      created_at: created_at ?? this.created_at,
+      img_image: img_image ?? this.img_image,
+      img_thumbnail: img_thumbnail ?? this.img_thumbnail,
+      path: path ?? this.path,
+      noOfOpenTasks: noOfOpenTasks ?? this.noOfOpenTasks,
+      noOfMentions: noOfMentions ?? this.noOfMentions,
+      notificationNotRead: notificationNotRead ?? this.notificationNotRead,
+      fkuserupdate: fkuserupdate ?? this.fkuserupdate,
+      updated_at: updated_at ?? this.updated_at,
+      nameuserupdate: nameuserupdate ?? this.nameuserupdate,
+      maincitylist_user: maincitylist_user ?? this.maincitylist_user,
+      privilegesList: privilegesList ?? this.privilegesList,
     );
   }
 
@@ -150,6 +218,7 @@ class UserModel extends UserEntity {
     _data['path'] = path;
     _data['no_of_open_tasks'] = noOfOpenTasks;
     _data['no_of_mentions'] = noOfMentions;
+    _data['notification_not_read'] = notificationNotRead;
     _data['maincitylist_user'] =
         maincitylist_user?.map((e) => e.toMap()).toList();
     _data['privilgelist'] = privilegesList.map((e) => e.toJson()).toList();

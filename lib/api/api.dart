@@ -121,7 +121,8 @@ class Api {
   }) async {
     try {
       ApiServices apiServices = getIt<ApiServices>();
-      final result = await apiServices.post(endPoint: url,data: body);
+      final result = await apiServices.post(endPoint: url,
+      data: body);
       return result;
 
 

@@ -38,7 +38,7 @@ class CommentModel {
   CommentModel.fromJson(Map<String, dynamic> json) {
     final image = json['img_image'];
     if (image != null) {
-      imgImage = EndPoints.baseUrls.urlImage + image;
+      imgImage = EndPoints.baseUrls.laravelFilesUrl + image;
     }
     idComment = json['id_comment'] != null ? json['id_comment'].toString() : "${json['id'] ?? json['id_reply'] ?? ''}";
     fkUser = json['fk_user'] != null
@@ -53,7 +53,6 @@ class CommentModel {
             : "";
     content = json['content'] ?? json['comment'] ?? '';
     nameUser = json['nameUser'] ?? json['user_name'];
-    imgImage = image;
     nameEnterprise = json['name_enterprise'] == null ? null : json['name_enterprise'];
     commentedBy = json['commented_by'] == null ? null : UserModel.fromJson(json['commented_by']);
     date_comment = json['date_comment'] ?? json['comment_date'] ?? json['date_reply'] ?? json['created_at'];

@@ -1,7 +1,7 @@
 name: crm_smart
 description: A new Flutter project.
 publish_to: 'none'
-version: 2.26.1+76
+version: 3.0.0+80
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -38,11 +38,13 @@ dependencies:
   fancy_shimmer_image: ^2.0.2
   collection: ^1.17.1
   in_date_utils: ^1.2.0+2
-  loading_animation_widget: ^1.2.0+4
+  loading_animation_widget: ^1.3.0
   flutter_slidable: ^4.0.0
   drag_and_drop_lists: ^0.4.1
   calendar_view: ^1.2.0
   encrypt: ^5.0.3
+  flutter_typeahead: ^5.2.0
+  flutter_keyboard_visibility: ^6.0.0
 
   # DI
   get_it: ^8.0.3
@@ -82,6 +84,9 @@ dependencies:
   device_info_plus: ^11.3.0
   http_interceptor: ^2.0.0
   flutter_secure_storage: ^9.2.3
+  scroll_to_index: ^3.0.1
+  firebase_crashlytics: ^4.3.4
+  firebase_analytics: ^11.4.5
   pinput: ^5.0.1
   connectivity_wrapper: ^1.1.4
   location: ^8.0.0
@@ -104,6 +109,7 @@ dependencies:
   easy_sidemenu: ^0.6.0
   flutter_expanded_tile: ^0.4.0
   mocktail: ^1.0.4
+  timeago: ^3.6.0
 
 dependency_overrides:
   web: ^1.1.0
@@ -135,33 +141,12 @@ flutter:
 
 
   fonts:
-    - family: Pacifico
+
+    - family: Tajawal
       fonts:
-        - asset: fonts/Pacifico-Regular.ttf
-    - family: Amiri
-      fonts:
-        - asset: fonts/Amiri-Regular.ttf
-    - family: Cairo-Bold
-      fonts:
-        - asset: fonts/Cairo-Bold.ttf
-    - family: Cairo-Light
-      fonts:
-        - asset: fonts/Cairo-Light.ttf
-    - family: Cairo-Regular
-      fonts:
-        - asset: fonts/Cairo-Regular.ttf
-    - family: Cairo-Black
-      fonts:
-        - asset: fonts/Cairo-Black.ttf
-    - family: Cairo-ExtraBold
-      fonts:
-        - asset: fonts/Cairo-ExtraBold.ttf
-    - family: Cairo-ExtraLight
-      fonts:
-        - asset: fonts/Cairo-ExtraLight.ttf
-    - family: Cairo-Medium
-      fonts:
-        - asset: fonts/Cairo-Medium.ttf
-    - family: Cairo-SemiBold
-      fonts:
-        - asset: fonts/Cairo-SemiBold.ttf
+        - asset: fonts/Tajawal-Regular.ttf
+          weight: 400
+        - asset: fonts/Tajawal-Medium.ttf
+          weight: 500
+        - asset: fonts/Tajawal-Bold.ttf
+          weight: 700    

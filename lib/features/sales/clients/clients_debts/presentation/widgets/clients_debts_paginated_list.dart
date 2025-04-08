@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/widgets/modern_invoice_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +18,7 @@ class ClientsDebtsPaginatedList extends StatelessWidget {
         return AppPaginatedList(
           items: cubit.pageVariables.filteredList,
           itemBuilder: (context, index) {
-            return CardInvoiceClient(
+            return ModernInvoiceCard(
               type: 'profile',
               invoice: cubit.pageVariables.filteredList[index],
               routeName: AppRoutesNames.clientProfile.inClientsDebts,

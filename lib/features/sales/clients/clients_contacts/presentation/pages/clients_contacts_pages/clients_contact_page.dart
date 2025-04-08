@@ -46,7 +46,10 @@ class ClientsContactsPage extends StatefulWidget {
       appBar: CustomAppBar(
           title: 'قائمة جهات الاتصال',
           actions: [
-            AppTextButton(child: Icon(Icons.add_box_outlined,color: AppColors.white,),onPressed: ()async{
+            AppTextButton(child: 
+            Icon(Icons.add_box_outlined,
+            color: AppColors.white,),
+            onPressed: () async{
               ClientContactModel? result =
               await AppNavigator.go(
                   AddClientContactPage(),

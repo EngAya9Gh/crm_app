@@ -43,6 +43,7 @@ class GetTaskParams {
   final String? managerId;
   final bool? atTime;
   final bool? afterTime;
+  final int? quickDateChose;
 
   GetTaskParams({
     this.skip = 0,
@@ -66,6 +67,7 @@ class GetTaskParams {
     this.managerId,
     this.atTime,
     this.afterTime,
+    this.quickDateChose,
   });
 
   Map<String, dynamic> get toMap => {
@@ -76,8 +78,11 @@ class GetTaskParams {
         'branch_id': myBranch,
         'user_id': userId,
         'management_id': managerId,
-        if (atTime != null&&atTime!) 'done_at_time': 1,
-        if (afterTime != null&&afterTime!) 'time_out': 1,
+        'quick_filter_date': quickDateChose,
+        'from': startDateFrom?.toIso8601String(),
+        'to': startDateTo?.toIso8601String(),
+        if (atTime != null && atTime!) 'done_at_time': 1,
+        if (afterTime != null && afterTime!) 'time_out': 1,
         /*
         'assigned_to': assignedTo,
         'date_time_created': dateTimeCreated?.toIso8601String(),

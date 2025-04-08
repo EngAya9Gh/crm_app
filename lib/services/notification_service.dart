@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:crm_smart/core/services/di/di_container.dart';
+import 'package:crm_smart/view_model/comment.dart';
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 import '../core/config/app_dynamic_links.dart';
 import '../core/config/navigator/app_navigator.dart';
@@ -83,9 +86,6 @@ class NotificationService {
               ),
             ));
         String? typeNotify = message.data['type_notify'];
-        if (message.data['title'] == "مهمة جديدة" || typeNotify == 'commentMention') {
-          AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
-        }
         AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
       }
     });
@@ -96,7 +96,9 @@ class NotificationService {
         log('${message.notification?.title}');
         {
           String? typeNotify = message.data['type_notify'];
-          if (message.data['title'] == "مهمة جديدة") {
+          if (typeNotify == 'commentReply') {
+            Provider.of<comment_vm>(AppNavigator.navigatorKey.currentContext!, listen: false).getCommentMentions();
+          } else if (message.data['title'] == "مهمة جديدة") {
             AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
           }
           AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
@@ -106,7 +108,7 @@ class NotificationService {
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
         String? typeNotify = message.data['type_notify'];
-        if (message.data['title'] == "مهمة جديدة" || typeNotify == 'commentMention') {
+        if (message.data['title'] == "مهمة جديدة") {
           AppNavigator.navigatorKey.currentContext?.read<UserProvider>().getCurrentUser();
         }
         log('///////////////////////////');
@@ -114,6 +116,11 @@ class NotificationService {
         log(message.data.toString());
         log('${message.notification?.title}');
         AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>().init();
+        var currentUser = AppNavigator.navigatorKey.currentContext?.read<UserProvider>().currentUser;
+        AppNavigator.navigatorKey.currentContext?.read<UserProvider>().currentUser = currentUser!.copyWith(
+          notificationNotRead: (currentUser.notificationNotRead ?? 0) + 1,
+          noOfMentions: typeNotify == 'commentMention' ? (currentUser.noOfMentions ?? 0) + 1 : null,
+        );
         AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>().increaseNotificationCount();
         log('///////////////////////////');
         if (kIsWeb) {

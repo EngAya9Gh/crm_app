@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/common/widgets/app_status_chip.dart';
@@ -45,30 +46,36 @@ Widget prepareStatusWidget({
 }) {
   if (  isDeleted == true) {
     return AppStatusChip(
+      fontSize: 12.scaleFontSize,
       status: 'محذوف',
       color: Colors.red,
     );
   }
  else if (isApprove == '1' && stateclient == StatusClient.subscriber.text) {
     return AppStatusChip(
+      fontSize: 12.scaleFontSize,
       status: StatusClient.subscriber.text,
       color: StatusClient.subscriber.color,
     );
   }
   else if (isApprove != '1' && stateclient == StatusClient.unsupported.text) {
     return AppStatusChip(
+      fontSize: 12.scaleFontSize,
       status: StatusClient.unsupported.text,
       color: StatusClient.unsupported.color,
     );
   }
   else if (stateclient == StatusClient.withdrawn.text) {
     return AppStatusChip(
+      fontSize: 12.scaleFontSize,
       status: StatusClient.withdrawn.text,
       color: StatusClient.withdrawn.color,
     );
   }
   else if(stateclient==StatusClient.restrictWithdrawn.text){
-    return AppStatusChip(
+      
+      return AppStatusChip(
+      fontSize: 12.scaleFontSize,
       status: StatusClient.restrictWithdrawn.text,
       color: StatusClient.restrictWithdrawn.color,
     );

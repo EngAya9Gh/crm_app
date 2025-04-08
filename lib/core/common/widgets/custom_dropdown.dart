@@ -21,7 +21,8 @@ class CustomDropDown<T> extends StatelessWidget {
     this.itemAsIcon,
     this.padding,
     this.label,
-    this.isDisabled = false,required this.compareFn,
+    this.isDisabled = false,
+    required this.compareFn,
   });
 
   final String hint;
@@ -49,10 +50,15 @@ class CustomDropDown<T> extends StatelessWidget {
       child: DropdownSearch<T>(
         items: (filter, loadProps) => items,
         itemAsString: itemAsString,
-        compareFn:compareFn,
+        compareFn: compareFn,
         onChanged: isDisabled ? null : onChanged,
         selectedItem: selectedItem,
         validator: validator,
+        suffixProps: DropdownSuffixProps(
+          dropdownButtonProps: DropdownButtonProps(
+            color: Colors.grey.shade600,
+          ),
+        ),
         popupProps: PopupProps.menu(
           containerBuilder: (context, child) {
             return Padding(
@@ -77,7 +83,11 @@ class CustomDropDown<T> extends StatelessWidget {
               ),
               child: AppText(
                 itemAsString(item),
-                fontSize: 18,
+                fontSize: 15.scaleFontSize,
+                style: AppStyles.textStyle.copyWith(
+                  overflow: TextOverflow.ellipsis,
+                  color: AppColors.grey,
+                ),
               ),
             );
             final icon = itemAsIcon?.call(item);
@@ -100,7 +110,8 @@ class CustomDropDown<T> extends StatelessWidget {
           textAlignVertical: TextAlignVertical.center,
           decoration: _dropdownSearchDecoration(context),
           baseStyle: AppStyles.textStyle.copyWith(
-            fontSize: 18.scaleFontSize,
+            fontSize: 15.scaleFontSize,
+            color: Colors.grey.shade600,
           ),
         ),
       ),
@@ -111,33 +122,41 @@ class CustomDropDown<T> extends StatelessWidget {
     if (isDisabled) {
       if (buttonDecoration != null) {
         return buttonDecoration!.copyWith(
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
+          // border: OutlineInputBorder(
+          //   borderSide: BorderSide(color: AppColors.grey),
+          //   borderRadius: BorderRadius.circular(12),
+          // ),
+          // enabledBorder: OutlineInputBorder(
+          //   borderSide: BorderSide(color: AppColors.grey),
+          //   borderRadius: BorderRadius.circular(12),
+          // ),
+          // focusedBorder: OutlineInputBorder(
+          //   borderSide: BorderSide(color: AppColors.grey),
+          //   borderRadius: BorderRadius.circular(12),
+          // ),
+          // disabledBorder: OutlineInputBorder(
+          //   borderSide: BorderSide(color: AppColors.grey),
+          //   borderRadius: BorderRadius.circular(12),
+          // ),
+          // errorBorder: OutlineInputBorder(
+          //   borderSide: BorderSide(color: AppColors.grey),
+          //   borderRadius: BorderRadius.circular(12),
+          // ),
+          // focusedErrorBorder: OutlineInputBorder(
+          //   borderSide: BorderSide(color: AppColors.grey),
+          //   borderRadius: BorderRadius.circular(12),
+          // ),
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
+          fillColor: Colors.grey[100],
+          filled: true,
+          contentPadding: EdgeInsets.symmetric(horizontal: 5),
           hintStyle: AppStyles.textStyle.copyWith(
-            fontSize: 18.scaleFontSize,
-            color: Colors.grey,
+            fontSize: 15.scaleFontSize,
+            color: Colors.grey.shade600,
           ),
         );
       }
@@ -147,40 +166,48 @@ class CustomDropDown<T> extends StatelessWidget {
         hintText: hint,
       ).copyWith(
         hintStyle: AppStyles.textStyle.copyWith(
-          fontSize: 18.scaleFontSize,
-          color: Colors.grey,
+          fontSize: 15.scaleFontSize,
+          color: Colors.grey.shade600,
         ),
         label: label != null
             ? AppText(
                 label,
-                fontSize: 18.scaleFontSize,
-                color: Colors.grey,
+                fontSize: 15.scaleFontSize,
+                color: Colors.grey.shade600,
               )
             : null,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.grey),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.grey),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.grey),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.grey),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.grey),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.grey),
-          borderRadius: BorderRadius.circular(12),
-        ),
+        // border: OutlineInputBorder(
+        //   borderSide: BorderSide(color: AppColors.grey),
+        //   borderRadius: BorderRadius.circular(12),
+        // ),
+        // enabledBorder: OutlineInputBorder(
+        //   borderSide: BorderSide(color: AppColors.grey),
+        //   borderRadius: BorderRadius.circular(12),
+        // ),
+        // focusedBorder: OutlineInputBorder(
+        //   borderSide: BorderSide(color: AppColors.grey),
+        //   borderRadius: BorderRadius.circular(12),
+        // ),
+        // disabledBorder: OutlineInputBorder(
+        //   borderSide: BorderSide(color: AppColors.grey),
+        //   borderRadius: BorderRadius.circular(12),
+        // ),
+        // errorBorder: OutlineInputBorder(
+        //   borderSide: BorderSide(color: AppColors.grey),
+        //   borderRadius: BorderRadius.circular(12),
+        // ),
+        // focusedErrorBorder: OutlineInputBorder(
+        //   borderSide: BorderSide(color: AppColors.grey),
+        //   borderRadius: BorderRadius.circular(12),
+        // ),
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        focusedErrorBorder: InputBorder.none,
+        fillColor: Colors.grey[100],
+        filled: true,
+        contentPadding: EdgeInsets.symmetric(horizontal: 5),
       );
     }
 
@@ -190,16 +217,24 @@ class CustomDropDown<T> extends StatelessWidget {
           hintText: hint,
         ).copyWith(
           hintStyle: AppStyles.textStyle.copyWith(
-            fontSize: 18.scaleFontSize,
+            fontSize: 15.scaleFontSize,
             color: Colors.grey,
           ),
           label: label != null
               ? AppText(
                   label,
-                  fontSize: 18.scaleFontSize,
+                  fontSize: 15.scaleFontSize,
                   color: Colors.grey,
                 )
               : null,
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
+          fillColor: Colors.grey[100],
+          filled: true,
+          // contentPadding: EdgeInsets.symmetric(horizontal: 5),
         );
   }
 }

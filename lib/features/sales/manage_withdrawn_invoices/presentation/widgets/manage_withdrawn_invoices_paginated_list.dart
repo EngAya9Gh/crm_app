@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/widgets/modern_invoice_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,11 +18,10 @@ class ManageWithdrawnInvoicesPaginatedList extends StatelessWidget {
         return AppPaginatedList(
           items: _cubit.pageVariables.allList,
           itemBuilder: (context, index) {
-            return CardInvoiceClient(
-
+            return ModernInvoiceCard(
               type: 'withdrawn',
               invoice: _cubit.pageVariables.allList[index],
-              isFromWithdrawalsInvoicesList: true,
+              isFromWithdrawalsInvoicesList: true, routeName: '',
             );
           },
           isLoading: state.getManageWithdrawnInvoicesStatus.isLoading(),

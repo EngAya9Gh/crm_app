@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/scroll_to_find_item.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:crm_smart/core/common/widgets/count_paginated_list.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
@@ -35,8 +36,9 @@ import '../manager/task_cubit.dart';
 import 'add_task_page.dart';
 
 class TaskManagementListPage extends StatefulWidget {
-  const TaskManagementListPage({super.key});
-
+  const TaskManagementListPage({super.key, this.idTaks, this.idStatus});
+  final String? idTaks;
+  final String? idStatus;
   @override
   State<TaskManagementListPage> createState() => _TaskManagementListPageState();
 }
@@ -85,6 +87,12 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
         ..getRegionsTasks();
       _taskCubit.getTasks();
     });
+    if (widget.idStatus != null) {
+      _taskCubit.onChangeStatus(TaskStatusType.values.firstWhere(
+        (element) => element.id == int.parse(widget.idStatus!),
+      ));
+      _taskCubit.getTasks();
+    }
   }
 
   @override
@@ -225,7 +233,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> {
                   return state.getTasksStatus.when(
                     success: (data) {
                       return Expanded(
-                        child: TasksPaginatedList(),
+                        child: TasksPaginatedList(idTask: widget.idTaks, idStatus: widget.idStatus),
                       );
                     },
                     failure: (error, data) => AppErrorWidget(

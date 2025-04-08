@@ -21,8 +21,7 @@ class TechSupportUsersDropDown extends StatefulWidget {
   final String? fkUser;
   final Function(UserModel)? onSelectUser;
   @override
-  State<TechSupportUsersDropDown> createState() =>
-      _TechSupportUsersDropDownState();
+  State<TechSupportUsersDropDown> createState() => _TechSupportUsersDropDownState();
 }
 
 class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
@@ -32,6 +31,7 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
   void initState() {
     userProvider = context.read<UserProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      userProvider.getUsersVm();
       if (widget.fkUser != null) {
         onSelectUser();
       }
@@ -64,8 +64,7 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
                 },
                 selectedItem: userProvider.selectedUser,
                 filterFn: (user, filter) => user.getfilteruser(filter),
-                compareFn: (item, selectedItem) =>
-                    item.idUser == selectedItem.idUser,
+                compareFn: (item, selectedItem) => item.idUser == selectedItem.idUser,
                 validator: (value) {
                   return InputValidator.requiredFiled(value);
                 },

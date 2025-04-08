@@ -44,6 +44,7 @@ void main() {
         email: "abdullah.bokl@gmail.com",
         otp: "12345",
         token: "token",
+        userAgent: "test",
       );
       when(mockApiServices.post(
         endPoint: EndPoints.auth.verifyOtp,

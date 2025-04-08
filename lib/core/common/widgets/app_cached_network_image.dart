@@ -26,14 +26,17 @@ class AppCachedNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String decodedUrl = Uri.decodeFull(imageUrl!);
     return InkWell(
       onTap: function,
       child: CachedNetworkImage(
-        errorListener: (value) {
-          debugPrint(
-              'Error in AppCachedNetworkImage => $value | url is => $imageUrl');
+        httpHeaders: {
+          'Access-Control-Allow-Origin': '*',
         },
-        imageUrl: imageUrl ?? '',
+        errorListener: (value) {
+          debugPrint('Error in AppCachedNetworkImage => $value | url is => $imageUrl');
+        },
+        imageUrl: decodedUrl,
         fit: fit ?? BoxFit.cover,
         width: width?.scaleWidth,
         height: height?.scaleHeight,
