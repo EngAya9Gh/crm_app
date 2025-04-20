@@ -1,0 +1,2 @@
+D:/cursor_project/app_crm/android/app/.cxx/Debug/q1a6j716/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/cursor_project/app_crm/android/app/.cxx/Debug/q1a6j716/arm64-v8a/CMakeFiles/rebuild_cache.dir
