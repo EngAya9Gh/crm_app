@@ -19,11 +19,9 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
     this._getPeriodicCommunicationUsecase,
   ) : super(PeriodicCommunicationState());
 
-  PeriodicCommunicationPageVariablesEntity pageVariables =
-      PeriodicCommunicationPageVariablesEntity();
+  PeriodicCommunicationPageVariablesEntity pageVariables = PeriodicCommunicationPageVariablesEntity();
 
-  FilterPeriodicCommunicationEntity filterEntity =
-      FilterPeriodicCommunicationEntity();
+  FilterPeriodicCommunicationEntity filterEntity = FilterPeriodicCommunicationEntity();
 
   void init() {
     pageVariables = PeriodicCommunicationPageVariablesEntity();
@@ -44,8 +42,7 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
         }
         if (pageVariables.hasReachedEnd) return;
 
-        emit(state.copyWith(
-            getPeriodicCommunicationStatus: BlocStatus.loading()));
+        emit(state.copyWith(getPeriodicCommunicationStatus: BlocStatus.loading()));
         filterEntity.savePreviousState();
         final result = await _getPeriodicCommunicationUsecase(
           GetPeriodicCommunicationParams(
@@ -59,7 +56,8 @@ class PeriodicCommunicationCubit extends Cubit<PeriodicCommunicationState> {
             dateTo: filterEntity.dateToController.text,
             rate: filterEntity.rateNotifier.value,
             showAllRates: filterEntity.showAllRates.value,
-             clientWhoNotRate: filterEntity.isClientWhoNotRate.value?1:0
+            clientWhoNotRate: filterEntity.isClientWhoNotRate.value ? 1 : 0,
+            typeClient: filterEntity.clientIsUseOffline.value ? 'offline' : null,
           ),
         );
         result.fold(

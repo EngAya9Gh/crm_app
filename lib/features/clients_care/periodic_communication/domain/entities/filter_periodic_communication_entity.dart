@@ -9,7 +9,8 @@ class FilterPeriodicCommunicationEntity {
   FilterPeriodicCommunicationEntity();
 
   ValueNotifier<bool> isMyClientsNotifier = ValueNotifier<bool>(false);
-  ValueNotifier<bool> isClientWhoNotRate = ValueNotifier<bool>(false);
+  ValueNotifier<bool> isClientWhoNotRate = ValueNotifier<bool>(true);
+  ValueNotifier<bool> clientIsUseOffline = ValueNotifier<bool>(false);
   ValueNotifier<bool> showAllRates = ValueNotifier<bool>(true);
   ValueNotifier<String?> userIdNotifier = ValueNotifier<String?>(null);
   ValueNotifier<double?> rateNotifier = ValueNotifier<double?>(null);
@@ -21,6 +22,7 @@ class FilterPeriodicCommunicationEntity {
   void clearFilters() {
     isMyClientsNotifier.value = false;
     isClientWhoNotRate.value = false;
+    clientIsUseOffline.value = false;
     showAllRates.value = false;
     userIdNotifier.value = null;
     regionNotifier.value = null;
@@ -35,6 +37,7 @@ class FilterPeriodicCommunicationEntity {
     _previousState = FilterPeriodicCommunicationEntity()
       ..isMyClientsNotifier.value = this.isMyClientsNotifier.value
       ..isClientWhoNotRate.value = this.isClientWhoNotRate.value
+      ..clientIsUseOffline.value = this.clientIsUseOffline.value
       ..showAllRates.value = this.showAllRates.value
       ..userIdNotifier.value = this.userIdNotifier.value
       ..regionNotifier.value = this.regionNotifier.value
@@ -61,12 +64,14 @@ class FilterPeriodicCommunicationEntity {
       rateNotifier,
       dateFromController,
       dateToController,
+      clientIsUseOffline,
     ];
   }
 
   bool checkIfFilterIsNotEmpty() {
     return isMyClientsNotifier.value ||
         isClientWhoNotRate.value ||
+        clientIsUseOffline.value ||
         showAllRates.value ||
         userIdNotifier.value != null ||
         regionNotifier.value != null ||

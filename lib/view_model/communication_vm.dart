@@ -50,7 +50,6 @@ class CommunicationVm extends ChangeNotifier {
   Map<String, List<CommunicationModel>> careClientState = Map();
   bool isLoadingCareClient = false;
 
-
   void getCommunicationclient(String fk_client, String idCommunication) async {
     try {
       listCommunicationClient = [];
@@ -59,8 +58,8 @@ class CommunicationVm extends ChangeNotifier {
 
       List<dynamic> data = [];
       var api = getIt<ApiServices>()..changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      var response = await api.get(endPoint: EndPoints.care.communicationsByClient(fk_client),queryParameters: {
-        'id_communication':idCommunication,
+      var response = await api.get(endPoint: EndPoints.care.communicationsByClient(fk_client), queryParameters: {
+        'id_communication': idCommunication,
       });
       data = response['message'];
 
@@ -94,7 +93,6 @@ class CommunicationVm extends ChangeNotifier {
         }
       }
 
-
       careClientState['ترحيب'] = listWelcome;
       careClientState['تركيب'] = listInstallation;
       careClientState['دوري'] = listRepeat;
@@ -116,8 +114,9 @@ class CommunicationVm extends ChangeNotifier {
     }
   }
 
-  void isloadval(bool val) {
+  void isloadval(bool val, {String? id}) {
     isload = val;
+    this.id = id ?? '';
     notifyListeners();
   }
 
@@ -152,6 +151,7 @@ class CommunicationVm extends ChangeNotifier {
   List<CommunicationModel> listCommunicationInstall2_temp = [];
 
   bool isload = false;
+  String id = '';
 
   void setIsLoad(bool val) {
     isload = val;

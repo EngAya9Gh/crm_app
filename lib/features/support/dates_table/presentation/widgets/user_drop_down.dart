@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,9 @@ class _UserDropdownState extends State<UserDropdown> {
   @override
   void initState() {
     datesTableCubit = BlocProvider.of<DatesTableCubit>(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<UserProvider>(context, listen: false).getUsersVm();
+    });
     super.initState();
   }
 
@@ -32,30 +36,27 @@ class _UserDropdownState extends State<UserDropdown> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Consumer<UserProvider>(
-        builder: (context, userProvider, child) {
-          return BlocBuilder<DatesTableCubit, DatesTableState>(
-            builder: (context, state) {
-              return CustomSearchableDropDown<UserModel>(
-                hint: 'الموظف',
-                items: userProvider.usersSupportManagement,
-                itemAsString: (u) => u!.userAsString(),
-                onChanged: widget.onChanged,
-                selectedItem: datesTableCubit.filterEntity.userNotifier.value,
-                filterFn: (user, filter) => user.getfilteruser(filter),
-                compareFn: (item, selectedItem) =>
-                    item.idUser == selectedItem.idUser,
-                validator: (value) {
-                  if (value == null) {
-                    return 'يرجى اختيار الموظف';
-                  }
-                  return null;
-                },
-              );
-            },
-          );
-        },
-      ),
+      child: Consumer<UserProvider>(builder: (context, userProvider, child) {
+        return BlocBuilder<DatesTableCubit, DatesTableState>(
+          builder: (context, state) {
+            return CustomSearchableDropDown<UserModel>(
+              hint: 'الموظف',
+              items: userProvider.usersSupportManagement,
+              itemAsString: (u) => u!.userAsString(),
+              onChanged: widget.onChanged,
+              selectedItem: datesTableCubit.filterEntity.userNotifier.value,
+              filterFn: (user, filter) => user.getfilteruser(filter),
+              compareFn: (item, selectedItem) => item.idUser == selectedItem.idUser,
+              validator: (value) {
+                if (value == null) {
+                  return 'يرجى اختيار الموظف';
+                }
+                return null;
+              },
+            );
+          },
+        );
+      }),
     );
   }
 }
