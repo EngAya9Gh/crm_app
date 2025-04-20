@@ -1,9 +1,16 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/core/common/widgets/app_icon.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/core/common/widgets/loading_comment.dart';
+import 'package:crm_smart/core/common/widgets/shimmer_widget.dart';
+import 'package:crm_smart/core/utils/app_fonts.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/view_model/comment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/models/user_entity.dart';
 import '../../../core/common/widgets/app_cached_network_image.dart';
@@ -12,52 +19,121 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../model/commentmodel.dart';
 import '../../../model/usermodel.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
-class Cardcomment extends StatelessWidget {
-  Cardcomment({required this.commentmodel, this.userModel, this.idClients, Key? key, this.editCommentModel, this.canReplay = false})
+class Cardcomment extends StatefulWidget {
+  Cardcomment(
+      {required this.commentmodel,
+      this.userModel,
+      this.idClients,
+      this.color,
+      Key? key,
+      this.editCommentModel,
+      this.canReplay = false,
+      this.fromMenu = false,
+      this.replyOnCommentModel,
+      this.itemKey,
+      this.shouldHighlight = false})
       : super(key: key);
   CommentModel commentmodel;
   UserModel? userModel;
   String? idClients;
+  final Color? color;
+  final bool fromMenu;
   final ValueChanged<CommentModel>? editCommentModel;
+  final ValueChanged<CommentModel>? replyOnCommentModel;
   final bool canReplay;
-  final ValueNotifier<bool> tapToRplay = ValueNotifier(false);
+  final GlobalKey? itemKey;
+  final bool shouldHighlight;
+  @override
+  State<Cardcomment> createState() => _CardcommentState();
+}
+
+class _CardcommentState extends State<Cardcomment> {
   final TextEditingController repalyText = TextEditingController();
+  final ValueNotifier<bool> tapToRplay = ValueNotifier(false);
+
+  final ValueNotifier<bool> activeRplay = ValueNotifier(false);
+  final ValueNotifier<bool> showAll = ValueNotifier(false);
+
+  bool _isHighlighted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.shouldHighlight) {
+      _triggerHighlight();
+    }
+  }
+
+  @override
+  void didUpdateWidget(Cardcomment oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.shouldHighlight && !oldWidget.shouldHighlight) {
+      _triggerHighlight();
+    }
+  }
+
+  void _triggerHighlight() async {
+    setState(() => _isHighlighted = true);
+    await Future.delayed(Duration(milliseconds: 1000));
+    if (mounted) {
+      setState(() => _isHighlighted = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.all(2),
-        child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(2),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Column(
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    child: _prepareImage(),
+                  ),
+                ],
+              ),
               SizedBox(width: 2),
               Expanded(
                 flex: 1,
                 child: Stack(
                   children: [
-                    Positioned(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AppStatusChip(
-                          status: commentmodel.type_comment,
-                          color: AppColors.primaryMain,
-                          fontSize: 13,
+                    if (!widget.fromMenu)
+                      Positioned(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: AppStatusChip(
+                            status: widget.commentmodel.type_comment,
+                            color: AppColors.primaryMain,
+                            fontSize: 13,
+                          ),
                         ),
+                        left: 0,
                       ),
-                      left: 0,
-                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(offset: Offset(1.0, 1.0), blurRadius: 2.0, color: Colors.white24 //.withOpacity(0.2),
-                                  ),
-                            ],
-                            color: Colors.black12,
-                          ),
+                          // decoration: BoxDecoration(
+                          //   borderRadius: BorderRadius.only(
+                          //       bottomLeft: Radius.circular(10)),
+                          //   boxShadow: <BoxShadow>[
+                          //     BoxShadow(
+                          //       offset: Offset(1.0, 1.0),
+                          //       blurRadius: 2.0,
+                          //       color: const Color(0xFFF5F5F5),
+                          //     ),
+                          //   ],
+                          //   color: _isHighlighted
+                          //       ? AppColors.primaryAltLight
+                          //       : Colors.black12,
+                          // ),
                           child: Padding(
                             padding: const EdgeInsets.only(right: 8.0, bottom: 8),
                             child: Column(
@@ -67,63 +143,76 @@ class Cardcomment extends StatelessWidget {
                                   //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   //crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CircleAvatar(
-                                      radius: 20,
-                                      child: _prepareImage(),
-                                    ),
-                                    SizedBox(width: 10),
+                                    // CircleAvatar(
+                                    //   radius: 20,
+                                    //   child: _prepareImage(),
+                                    // ),
+                                    // SizedBox(width: 10),
                                     Expanded(
                                       child: Column(
                                         // mainAxisAlignment: MainAxisAlignment.end,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           AppText(
-                                            commentmodel.nameUser,
-                                            fontWeight: FontWeight.bold,
+                                            widget.commentmodel.nameUser,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16.scaleFontSize,
                                           ),
                                           2.height,
                                           AppText(
-                                            HelperFunctions.dateTimeToString(DateTime.parse(
-                                              commentmodel.date_comment,
-                                            )),
+                                            _getTimeAgo(widget.commentmodel.date_comment ?? ''),
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12,
+                                            ),
                                           ),
+                                          5.height,
+                                          if (widget.fromMenu)
+                                            AppText(
+                                              widget.commentmodel.nameEnterprise,
+                                              color: AppColors.primaryMain,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                         ],
                                       ),
                                     ),
                                   ],
                                 ),
                                 SizedBox(height: 15),
-                                if (commentmodel.content.isNotEmpty)
+                                if (widget.commentmodel.content.isNotEmpty)
                                   GestureDetector(
                                     onLongPress: () async {
-                                      await HelperFunctions.copyToClipboard(commentmodel.content);
+                                      await HelperFunctions.copyToClipboard(widget.commentmodel.content);
                                       AppSnackbar.showSnakeBar('Copied to your clipboard!');
                                     },
                                     child: AppText(
-                                      commentmodel.content,
-                                      fontSize: 18,
+                                      widget.commentmodel.content,
+                                      fontSize: 16,
+                                      fontFamily: AppFonts.fontFamily2,
                                     ),
                                   ),
                                 Wrap(
-                                  children:
-                                      (commentmodel.mention_users ?? []).map((e) => AppText(' @${e.name} ', color: AppColors.primaryMain)).toList(),
+                                  children: (widget.commentmodel.mention_users ?? [])
+                                      .map((e) => AppText(' @${e.name} ', fontSize: 16.scaleFontSize, color: AppColors.grey))
+                                      .toList(),
                                 ),
-                                // if (commentmodel.nameUser == userModel?.nameUser)
-                                Align(
-                                  alignment: AlignmentDirectional.bottomEnd,
-                                  child: InkWell(
-                                      onTap: () {
-                                        editCommentModel?.call(commentmodel);
-                                      },
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.all(8),
-                                        child: Icon(Icons.edit, color: AppColors.primaryMain),
-                                      )),
-                                ),
-                                if (canReplay)
-                                  ValueListenableBuilder(
-                                    valueListenable: tapToRplay,
-                                    builder: (context, value, child) => TapRegion(
+                                if (widget.commentmodel.nameUser == widget.userModel?.nameUser)
+                                  if (!widget.fromMenu)
+                                    Align(
+                                      alignment: AlignmentDirectional.bottomEnd,
+                                      child: InkWell(
+                                          onTap: () {
+                                            widget.editCommentModel?.call(widget.commentmodel);
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsetsDirectional.all(8),
+                                            child: Icon(Icons.edit, color: AppColors.grey),
+                                          )),
+                                    ),
+                                if (widget.canReplay)
+                                  ListenableBuilder(
+                                    listenable: Listenable.merge([tapToRplay, activeRplay]),
+                                    builder: (context, child) => TapRegion(
                                       behavior: HitTestBehavior.opaque,
                                       onTapOutside: (event) {
                                         tapToRplay.value = false;
@@ -134,32 +223,59 @@ class Cardcomment extends StatelessWidget {
                                           padding: EdgeInsetsDirectional.only(end: 5),
                                           child: AnimatedSwitcher(
                                               duration: Duration(milliseconds: 200),
-                                              child: value
+                                              child: tapToRplay.value
                                                   ? AppTextField(
-                                                      suffixIcon: Transform.flip(
-                                                        flipX: true,
-                                                        child: Icon(
-                                                          Icons.reply_all,
-                                                          color: AppColors.primaryMain,
-                                                        ),
-                                                      ),
+                                                      suffixIcon: context.watch<comment_vm>().isLoadingGettingReplies
+                                                          ? SizedBox(
+                                                              child: AppLoader(),
+                                                              width: 20,
+                                                              height: 20,
+                                                            )
+                                                          : activeRplay.value
+                                                              ? InkWell(
+                                                                  onTap: () {
+                                                                    widget.replyOnCommentModel
+                                                                        ?.call(widget.commentmodel.copyWith(content: repalyText.text));
+                                                                    repalyText.clear();
+                                                                  },
+                                                                  child: Transform.flip(
+                                                                    flipX: true,
+                                                                    child: Icon(
+                                                                      Icons.reply,
+                                                                      color: AppColors.grey,
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              : null,
                                                       filled: true,
                                                       fillColor: AppColors.white,
                                                       hintText: '',
                                                       controller: repalyText,
                                                       textDirection: TextDirection.rtl,
-                                                      onChange: (val) {},
+                                                      onChange: (val) {
+                                                        activeRplay.value = val?.isNotEmpty ?? false;
+                                                      },
                                                       // validator: ,
                                                     )
                                                   : InkWell(
                                                       onTap: () {
                                                         tapToRplay.value = true;
+                                                        Provider.of<comment_vm>(context, listen: false).currentCommentAddReplay(widget.commentmodel);
                                                       },
-                                                      child: AppText('replay'))),
+                                                      child: AppText(
+                                                        color: AppColors.primaryAltDark,
+                                                        'reply',
+                                                        fontSize: 16.scaleFontSize,
+                                                      ))),
                                         ),
                                       ),
                                     ),
                                   ),
+                                Divider(
+                                  color: AppColors.grey,
+                                  height: 0.5,
+                                  thickness: 0.2,
+                                ),
                               ],
                             ),
                           ),
@@ -174,12 +290,64 @@ class Cardcomment extends StatelessWidget {
                   ],
                 ),
               ),
-            ]));
+            ],
+          ),
+        ),
+        if (widget.commentmodel.hasReplies ?? false)
+          ValueListenableBuilder(
+            valueListenable: showAll,
+            builder: (context, show, child) => Consumer<comment_vm>(
+              builder: (context, value, child) => AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                child: show
+                    ? Padding(
+                        padding: EdgeInsetsDirectional.only(start: 16),
+                        child: (value.isLoadingGettingReplies && value.idCommentUpdated == widget.commentmodel.idComment)
+                            ? Column(
+                                children: List.generate(
+                                  (widget.commentmodel.replies?.length ?? 0) + 1,
+                                  (index) => index == ((widget.commentmodel.replies?.length ?? 0))
+                                      ? LoadingCommentWidget()
+                                      : Cardcomment(commentmodel: widget.commentmodel.replies![index]),
+                                ),
+                              )
+                            : Column(
+                                children: List.generate(
+                                  widget.commentmodel.replies?.length ?? 0,
+                                  (index) => Cardcomment(commentmodel: widget.commentmodel.replies![index]),
+                                ),
+                              ),
+                      )
+                    : Transform.translate(
+                        offset: Offset(-35, -5),
+                        child: InkWell(
+                          onTap: () {
+                            showAll.value = true;
+                            value.getAllReply(widget.commentmodel);
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 3, left: 3, right: 3),
+                            child: Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: AppText(
+                                'view all reply',
+                                fontSize: 16.scaleFontSize,
+                                color: AppColors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+          )
+      ],
+    );
   }
 
   Widget _prepareImage() {
-    final imageUrl = commentmodel.imgImage ?? '';
-    final name = commentmodel.nameUser ?? '';
+    final imageUrl = widget.commentmodel.imgImage ?? '';
+    final name = widget.commentmodel.nameUser ?? '';
     if (imageUrl.isEmpty) {
       if (name.isEmpty) {
         return Icon(
@@ -198,7 +366,7 @@ class Cardcomment extends StatelessWidget {
         width: 1000,
         height: 1000,
         fit: BoxFit.fill,
-        imageUrl: "${EndPoints.baseUrls.urlImage}$imageUrl",
+        imageUrl: "$imageUrl",
       ),
     );
   }
@@ -208,5 +376,15 @@ class Cardcomment extends StatelessWidget {
       'id': userEntity.id,
       'display': userEntity.name,
     };
+  }
+}
+
+String _getTimeAgo(String dateString) {
+  try {
+    final date = DateTime.parse(dateString);
+    var t = timeago.format(date, locale: 'ar');
+    return t;
+  } catch (e) {
+    return '';
   }
 }

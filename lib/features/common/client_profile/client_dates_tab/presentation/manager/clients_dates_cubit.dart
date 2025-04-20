@@ -26,23 +26,23 @@ class ClientsDatesCubit extends Cubit<ClientsDatesState> {
   }
 
   FutureOr<void> getAllClientsDates({
-    required String clientId,}
-      ) async {
+    required String clientId,
+  }) async {
     if (state.getAllClientsDatesStatus.isLoading()) return;
 
     emit(state.copyWith(getAllClientsDatesStatus: BlocStatus.loading()));
 
-    final params = GetAllClientsDatesParams(clientId:clientId);
+    final params = GetAllClientsDatesParams(clientId: clientId);
 
     try {
-        pageVariables.allList = [];
-        pageVariables.totalCount = 0;
+      pageVariables.allList = [];
+      pageVariables.totalCount = 0;
       final response = await _getAllClientsDatesUseCase(params);
       pageVariables.totalCount = response.count ?? 0;
       List<ClientDateModel> newList = List<ClientDateModel>.from(pageVariables.allList);
       newList = response.message ?? [];
       pageVariables.allList = newList;
-        loadCalendarData();
+      loadCalendarData();
       loadEventDataSource(newList);
       pageVariables.hasReachedEnd = true;
 
@@ -69,20 +69,16 @@ class ClientsDatesCubit extends Cubit<ClientsDatesState> {
     emit(state.copyWith(getAllClientsDatesStatus: BlocStatus.success()));
   }
 
-
   void refreshUi({BlocStatus? status}) {
     if (status == null) {
       return emit(state.copyWith(refreshUi: state.refreshUi + 1));
     }
-    emit(state.copyWith(
-        renderEventsStatus: status, refreshUi: state.refreshUi + 1));
+    emit(state.copyWith(renderEventsStatus: status, refreshUi: state.refreshUi + 1));
   }
-
 
   static int _getHashCode(DateTime key) {
     return key.day * 1000000 + key.month * 10000 + key.year;
   }
-
 
   void loadEventDataSource(List<ClientDateModel> newList) {
     emit(state.copyWith(getAllClientsDatesStatus: BlocStatus.loading()));
@@ -91,22 +87,26 @@ class ClientsDatesCubit extends Cubit<ClientsDatesState> {
       equals: isSameDay,
       hashCode: _getHashCode,
     )..addAll(Map<DateTime, List<ClientDateModel>>.fromIterable(
-      newList,
-      key: (item) => (item as ClientDateModel).dateClientVisit!,
-      value: (item) => newList.where((element) {
-        return isSameDay((item as ClientDateModel).dateClientVisit, element.dateClientVisit);
-      }).toList(),
-    ));
+        newList,
+        key: (item) => (item as ClientDateModel).dateClientVisit!,
+        value: (item) => newList.where((element) {
+          return isSameDay((item as ClientDateModel).dateClientVisit, element.dateClientVisit);
+        }).toList(),
+      ));
     _handleSelectedDayEvents();
 
     emit(state.copyWith(getAllClientsDatesStatus: BlocStatus.success()));
   }
+
   void _handleSelectedDayEvents() {
+    if (pageVariables.selectedDay == null) {
+      pageVariables.selectedDayEvents.value = pageVariables.allList;
+      return;
+    }
     pageVariables.selectedDayEvents.value = List.from(
       pageVariables.allList.where((element) {
         return isSameDay(element.dateClientVisit, pageVariables.selectedDay);
       }),
     );
   }
-
 }

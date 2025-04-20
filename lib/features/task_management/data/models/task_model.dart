@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:crm_smart/model/usermodel.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/common/models/client_model.dart';
 
@@ -29,7 +30,7 @@ class TaskModel {
   final DateTime? startDate;
   final dynamic deadline;
   final String? type;
-  final dynamic completionPercentage;
+  final num? completionPercentage;
   final dynamic recurringType;
   final dynamic recurringNumber;
   final AssignFromOrToModel? createdBy;
@@ -88,7 +89,7 @@ class TaskModel {
     DateTime? startDate,
     dynamic deadline,
     String? type,
-    dynamic completionPercentage,
+    num? completionPercentage,
     dynamic recurringType,
     dynamic recurringNumber,
     AssignFromOrToModel? createdBy,
@@ -145,7 +146,7 @@ class TaskModel {
         group: json["group"],
         code: json["code"],
         startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
-        deadline: json["deadline"],
+        deadline: json["deadline"] == null ? null : DateTime.parse(json["deadline"]),
         type: json["type"],
         completionPercentage: json["completion_percentage"],
         recurringType: json["recurring_type"],
@@ -389,6 +390,7 @@ class FileAttachmentTaskModel {
   final int? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final XFile? xFile;
 
   FileAttachmentTaskModel({
     this.id,
@@ -398,6 +400,7 @@ class FileAttachmentTaskModel {
     this.createdBy,
     this.createdAt,
     this.updatedAt,
+    this.xFile,
   });
 
   FileAttachmentTaskModel copyWith({
@@ -408,6 +411,7 @@ class FileAttachmentTaskModel {
     int? createdBy,
     DateTime? createdAt,
     DateTime? updatedAt,
+    XFile? xFile,
   }) =>
       FileAttachmentTaskModel(
         id: id ?? this.id,
@@ -417,6 +421,7 @@ class FileAttachmentTaskModel {
         createdBy: createdBy ?? this.createdBy,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        xFile: xFile ?? this.xFile,
       );
 
   factory FileAttachmentTaskModel.fromJson(Map<String, dynamic> json) => FileAttachmentTaskModel(

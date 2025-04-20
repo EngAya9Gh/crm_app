@@ -68,7 +68,8 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (widget.eventModel.verifiedAt == null && widget.eventModel.isDone != IsDoneDateEnum.started.value)
+        if (widget.eventModel.verifiedAt == null &&
+            widget.eventModel.isDone != IsDoneDateEnum.started.value)
           BlocBuilder<DatesTableCubit, DatesTableState>(
             builder: (context, state) {
               if (state.confirmVisitDateStatus.isLoading()) {
@@ -82,7 +83,8 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 text: "تأكيد الموعد",
                 onTap: () async {
                   await datesTableCubit.confirmVisitDate(
-                    ConfirmVisitDateParams(idVisit: widget.eventModel.idClientsDate!),
+                    ConfirmVisitDateParams(
+                        idVisit: widget.eventModel.idClientsDate!),
                   );
                 },
               );
@@ -93,7 +95,8 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
             builder: (context, state) {
               print(widget.eventModel.isDone);
               print(widget.eventModel.isDone != '4');
-              if (state.startDateVisitStatus.isLoading() && state.editItemId == widget.eventModel.idClientsDate) {
+              if (state.startDateVisitStatus.isLoading() &&
+                  state.editItemId == widget.eventModel.idClientsDate) {
                 return SizedBox(
                   height: 20,
                   width: 20,
@@ -104,70 +107,76 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                 text: "بدء الزيارة",
                 onTap: () async {
                   await datesTableCubit.startDateVisit(
-                      ConfirmVisitDateParams(idVisit: widget.eventModel.idClientsDate!, location: location), widget.eventModel.idClientsDate!);
+                      ConfirmVisitDateParams(
+                          idVisit: widget.eventModel.idClientsDate!,
+                          location: location),
+                      widget.eventModel.idClientsDate!);
                 },
               );
             },
           ),
         if (widget.eventModel.isDone == IsDoneDateEnum.started.value)
-        Consumer<EventProvider>(
-          builder: (context, eventProvider, _) {
-            if (eventProvider.isloadingDoneEvent) {
-              return SizedBox(
-                height: 20,
-                width: 20,
-                child: AppLoader(),
-              );
-            }
-            return _CustomTextButton(
-              text: "إغلاق الزيارة",
-              onTap: () async {
-                if((widget.eventModel.fkAgent!=null)){
-                  _showDialog(body: DoneClientEventDialog(event: widget.eventModel));
-                  return;
-                }
-                _showDialog(
-                    body: AlertDialog(
-                  title: Center(
-                    child: AppText('اختر نوع الجدولة'),
-                  ),
-                  actions: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        AppElevatedButton(
-                          text: 'اغلاق مع جدولة',
-                          onPressed: () {
-                            context.pop(true);
-                          },
-                        ),
-                        10.height,
-                        AppElevatedButton(
-                          text: 'اغلاق بدون جدولة',
-                          onPressed: () {
-                            context.pop(false);
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                )).then(
-                  (value) {
-                    if (value) {
-                      _showDialog(
-                          body: DoneClientEventDialog(
-                        event: widget.eventModel,
-                        isReschedule: true,
-                      ));
-                    } else {
-                      _showDialog(body: DoneClientEventDialog(event: widget.eventModel));
-                    }
-                  },
+          Consumer<EventProvider>(
+            builder: (context, eventProvider, _) {
+              if (eventProvider.isloadingDoneEvent) {
+                return SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: AppLoader(),
                 );
-              },
-            );
-          },
-        ),
+              }
+              return _CustomTextButton(
+                text: "إغلاق الزيارة",
+                onTap: () async {
+                  if ((widget.eventModel.fkAgent != null)) {
+                    _showDialog(
+                        body: DoneClientEventDialog(event: widget.eventModel));
+                    return;
+                  }
+                  _showDialog(
+                      body: AlertDialog(
+                    title: Center(
+                      child: AppText('اختر نوع الجدولة'),
+                    ),
+                    actions: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          AppElevatedButton(
+                            text: 'اغلاق مع جدولة',
+                            onPressed: () {
+                              context.pop(true);
+                            },
+                          ),
+                          10.height,
+                          AppElevatedButton(
+                            text: 'اغلاق بدون جدولة',
+                            onPressed: () {
+                              context.pop(false);
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  )).then(
+                    (value) {
+                      if (value) {
+                        _showDialog(
+                            body: DoneClientEventDialog(
+                          event: widget.eventModel,
+                          isReschedule: true,
+                        ));
+                      } else {
+                        _showDialog(
+                            body: DoneClientEventDialog(
+                                event: widget.eventModel));
+                      }
+                    },
+                  );
+                },
+              );
+            },
+          ),
         const SizedBox(height: 10),
         if (widget.eventModel.isDone != IsDoneDateEnum.started.value)
           _CustomTextButton(
@@ -228,6 +237,7 @@ class _CustomTextButton extends StatelessWidget {
     return AppTextButton(
       text: text,
       onPressed: onTap,
+      fontSize: 1,
     );
   }
 }

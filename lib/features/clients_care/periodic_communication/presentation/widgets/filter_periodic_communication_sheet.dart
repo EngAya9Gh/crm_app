@@ -80,8 +80,8 @@ class _FilterPeriodicCommunicationSheetState extends State<FilterPeriodicCommuni
               },
             ),
             ValueListenableBuilder(
-               valueListenable:_cubit.filterEntity.isClientWhoNotRate ,
-              builder:(context, value, child) =>  SwitchListTile(
+              valueListenable: _cubit.filterEntity.isClientWhoNotRate,
+              builder: (context, value, child) => SwitchListTile(
                 value: value,
                 onChanged: (value) {
                   _cubit.filterEntity.isClientWhoNotRate.value = value;
@@ -121,15 +121,34 @@ class _FilterPeriodicCommunicationSheetState extends State<FilterPeriodicCommuni
                 ],
               ),
               10.height,
-              Align(
-                alignment: Alignment.centerRight,
-                child: AppRateWidget(
-                  title: 'التقييم',
-                  rateValue: _cubit.filterEntity.rateNotifier.value ?? 0,
-                  initialRating: _cubit.filterEntity.rateNotifier.value ?? 0,
-                  onRatingUpdate: (value) {
-                    _cubit.filterEntity.rateNotifier.value = value;
+              ValueListenableBuilder(
+                valueListenable: _cubit.filterEntity.showAllRates,
+                builder: (context, showAll, child) => CheckboxListTile.adaptive(
+                  contentPadding: EdgeInsets.zero,
+                  value: showAll,
+                  title: AppText('اظهار كل التقييمات '),
+                  onChanged: (value) {
+                    _cubit.filterEntity.showAllRates.value = value ?? false;
+                    _cubit.filterEntity.rateNotifier.value = null;
                   },
+                ),
+              ),
+              ValueListenableBuilder(
+                valueListenable: _cubit.filterEntity.rateNotifier,
+                builder: (context, rateNoti, child) => ValueListenableBuilder(
+                  valueListenable: _cubit.filterEntity.showAllRates,
+                  builder: (context, showAll, child) => Align(
+                    alignment: Alignment.centerRight,
+                    child: AppRateWidget(
+                      title: 'التقييم',
+                      rateValue: rateNoti ?? 0,
+                      initialRating: rateNoti ?? 0,
+                      isReadOnly: showAll,
+                      onRatingUpdate: (value) {
+                        _cubit.filterEntity.rateNotifier.value = value;
+                      },
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -137,7 +156,7 @@ class _FilterPeriodicCommunicationSheetState extends State<FilterPeriodicCommuni
               CustomDropDown<PeriodicCommunicationClientTypeEnum>(
                 hint: "نوع العميل",
                 items: PeriodicCommunicationClientTypeEnum.values,
-                compareFn:  (item, selectedItem) => item.index == selectedItem.index,
+                compareFn: (item, selectedItem) => item.index == selectedItem.index,
                 itemAsString: (item) => item!.value,
                 selectedItem: _cubit.filterEntity.type.value,
                 onChanged: (value) => _cubit.filterEntity.type.value = value,

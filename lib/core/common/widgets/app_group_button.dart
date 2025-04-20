@@ -38,7 +38,7 @@ class AppGroupButton extends StatelessWidget {
         );
       },
       options: GroupButtonOptions(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(7),
       ),
     );
   }

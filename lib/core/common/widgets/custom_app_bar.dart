@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/config/size_config.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:flutter/foundation.dart';
@@ -18,15 +19,15 @@ AppBar CustomAppBar({
   PreferredSizeWidget? bottom,
   bool? showBackButton,
 }) {
-  showBackButton ??=  !kIsWeb;
-      //AppDimensions.currentWidth() < SizeConfig.desktop;
+  showBackButton ??= !kIsWeb;
+  //AppDimensions.currentWidth() < SizeConfig.desktop;
   return AppBar(
     title: title == null
         ? null
         : AppText(
             title,
             color: AppColors.white,
-            fontSize: 22,
+            fontSize: 21.scaleFontSize,
             fontFamily: AppFonts.fontFamily1,
             fontWeight: FontWeight.bold,
           ),
@@ -52,7 +53,7 @@ Widget? _leading(
   if (leadingBackgroundColor == null) return child;
 
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.all(6.0),
     child: ClipOval(
       child: ColoredBox(
         color: leadingBackgroundColor,

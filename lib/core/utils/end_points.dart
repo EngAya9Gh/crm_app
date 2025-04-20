@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.development;
+  static AppMode appMode = AppMode.production;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -37,6 +37,8 @@ abstract class EndPoints {
   static const branches = _Branches();
   static const finance = _Finance();
   static const offers = _Offers();
+  static const chatAi = _ChatAi();
+  static const statistics = 'home/statistics';
 }
 
 class _BaseUrls {
@@ -154,7 +156,8 @@ class _Series {
   final getWithdrawnDetails = 'series/view_detail_demand.php';
   final deleteDemandOut = 'series/delete_demand_out.php';
 
-  String cancelWithdrawal(String idInvoice) => "cancelWithdrawInvoice/$idInvoice";
+  String cancelWithdrawal(String idInvoice) =>
+      "cancelWithdrawInvoice/$idInvoice";
 
   String seriesApprove(String idInvoice) => "series/approve/$idInvoice";
 }
@@ -166,6 +169,8 @@ class _Care {
   final getRecommendedClients = 'care/get_recommand_care.php';
   final getRecommendedClientsFilterClient = 'subscribedClients';
   final String viewComments = "viewComments";
+  final String commentMention = "mentionedComments";
+  String getCommentReplies(String idComment) => "viewReplies/$idComment";
 
   final String getClientsAccept = 'getClientsAccept';
 
@@ -191,7 +196,8 @@ class _Care {
 
   String updateActivity(String activityId) => "activities/$activityId/edit";
 
-  String getActivityByClient(String clientId) => "activities/by-client/$clientId";
+  String getActivityByClient(String clientId) =>
+      "activities/by-client/$clientId";
 
   String updateViolation(String violationId) => "violations/$violationId/edit";
   final String violations = "violations";
@@ -203,6 +209,12 @@ class _Privilege {
   String getPrivileges(String levelId) => "privileges/$levelId";
   final updatePrivileges = "updatePermissions";
   final getLevels = "levels";
+}
+
+class _ChatAi {
+  const _ChatAi();
+
+  final send_question = "ai-chat";
 }
 
 class _Client {
@@ -219,12 +231,14 @@ class _Client {
   final selectedClient = 'selectClient';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final updateClient = "updateClient/"; // "client/clientUpdate.php";
-  String editClientByTypeClient(String idClient) => "editClientByTypeClient/$idClient";
+  String editClientByTypeClient(String idClient) =>
+      "editClientByTypeClient/$idClient";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
   final transferMultiClient = "transferMultiClient";
   final storeClientCommunication = "communication-details";
 
-  String changeClientCommunication(String idClient) => "communication-details/$idClient/edit";
+  String changeClientCommunication(String idClient) =>
+      "communication-details/$idClient/edit";
   final getRejectReasons = "reasons-reject";
   final addRejectReasons = "reasons-reject";
 
@@ -232,7 +246,8 @@ class _Client {
   final distinctiveClient = "tagClients";
   final transferClient = "transferClient/";
   final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
-  final String getTransferClientsWithPrivileges = "getTransferClientsWithPrivileges";
+  final String getTransferClientsWithPrivileges =
+      "getTransferClientsWithPrivileges";
 
   final String getClientLastComment = "getClientLastComment";
 
@@ -277,14 +292,20 @@ class _Task {
   const _Task();
 
   final addTask = 'tasks';
+  String updateTask(int idTask) => 'tasks/$idTask/edit';
+  String changeTaskAssign(int idTask) => 'tasks/$idTask/change-assignee';
   final filterTasksByAll = 'tasks';
 
   String changeStatusTask(String id) => 'tasks/$id/change-status';
-  final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
+  final getUsersByTypeAdministrationAndRegion =
+      'getUsersByTypeAdministrationAndRegion';
   final getUserSelect = 'tasks/employees';
   final getUsersTasksReports = 'tasks/report';
   String addTaskComment(int idTask) => 'tasks/$idTask/add-comment';
   String getTaskComments(int idTask) => 'tasks/$idTask/comments';
+  String getTaskById(int idTask) => 'tasks/$idTask';
+  String tasksLog(int idTask) => 'tasks/$idTask/log';
+  String crudFiles(int idTask) => 'tasks/$idTask/crud-files';
 }
 
 class _Participate {
@@ -294,7 +315,8 @@ class _Participate {
   final allParticipates = 'agent/get_participate.php';
   final addParticipate = 'participates';
 
-  String updateParticipate(String participateId) => 'participates/$participateId/edit';
+  String updateParticipate(String participateId) =>
+      'participates/$participateId/edit';
 
   final allParticipateClients = 'getParticipateClints';
   final allParticipateInvoices = 'getParticipateInvoices';
@@ -351,7 +373,8 @@ class _Invoice {
 
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
 
-  final String crudFilesInvoice = 'FilesInvoice/crud_files_invoice.php?fk_invoice=';
+  final String crudFilesInvoice =
+      'FilesInvoice/crud_files_invoice.php?fk_invoice=';
 
   final String getClientSupportFiles = 'getFilesInvoices';
   final String crudClientSupportFiles = 'InvoiceFiles';
@@ -412,16 +435,20 @@ class _Tickets {
 class _Events {
   const _Events();
 
-  String updateStatusForVisit(String scheduleId) => 'updateStatusForVisit/$scheduleId';
+  String updateStatusForVisit(String scheduleId) =>
+      'updateStatusForVisit/$scheduleId';
 
   String verifyDateVisit(String scheduleId) => 'verifyDateVisit/$scheduleId';
 
-  String startDateVisitStatus(String scheduleId) => 'startDateVisit/$scheduleId';
+  String startDateVisitStatus(String scheduleId) =>
+      'startDateVisit/$scheduleId';
   final String addDateInstall = "addDateInstall";
 
-  String rescheduleOrCancelVisitClient(String scheduleId) => "rescheduleOrCancelVisitClient/$scheduleId";
+  String rescheduleOrCancelVisitClient(String scheduleId) =>
+      "rescheduleOrCancelVisitClient/$scheduleId";
 
-  String returnScheduleVisitToOpen(String scheduleId) => "returnScheduleVisitToOpen/$scheduleId";
+  String returnScheduleVisitToOpen(String scheduleId) =>
+      "returnScheduleVisitToOpen/$scheduleId";
 
   final String getInstallDate = "getInstallDate";
 
@@ -467,7 +494,8 @@ class _Reports {
   final String getClientsInstallReports = 'reports/support_report_install.php';
   final String getClientsCareReports = 'reports/care_report.php';
   final String getEvaluationLevelReport = 'reports/report_care_rate.php';
-  final String getPeriodicCommunicationReports = "reports/care_communication_report.php";
+  final String getPeriodicCommunicationReports =
+      "reports/care_communication_report.php";
   final String getRecommendedClientReports = "recommendClients";
 }
 
@@ -487,6 +515,12 @@ class _Versions {
   final String addVersions = 'version-features';
 
   String updateVersions(int id) => 'version-features/$id/edit';
+  final String getIncommingUpdateInfo = 'version-features/next-update';
+  final String addDemand = 'demands';
+  String updateDemand(int idDemand) => 'demands/$idDemand/edit';
+  String changeDemandStatus(int idDemand) => 'demands/$idDemand/change-status';
+  String addDemandComments(int idDemand) => 'demands/1/add-comment';
+  String getDemandComments(int idDemand) => 'demands/1/comments';
 }
 
 class _Products {

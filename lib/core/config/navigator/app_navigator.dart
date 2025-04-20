@@ -1,6 +1,8 @@
 import 'package:crm_smart/core/config/navigator/routes/finance_routes.dart';
+import 'package:crm_smart/core/services/firebase_analytics_services.dart';
 import 'package:crm_smart/features/notifications/presentation/pages/notifications_page.dart';
-import 'package:crm_smart/features/task_management/presentation/pages/task_managment_page.dart';
+import 'package:crm_smart/features/versions/presentation/pages/incomming_versions_page.dart';
+import 'package:crm_smart/features/versions/presentation/pages/version_demand_page.dart';
 import 'package:crm_smart/features/versions/presentation/pages/versions_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -12,14 +14,11 @@ import '../../../features/app/presentation/pages/update_app_page.dart';
 import '../../../features/auth/login/presentation/pages/login/login_page.dart';
 import '../../../features/auth/login/presentation/pages/otp/verify_otp_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
-import '../../../features/task_management/presentation/pages/task_management_list_page.dart';
 import '../../../features/task_management/presentation/pages/ueser_report.dart';
 import '../../../features/versions/presentation/widgets/add_new_entry_version_page.dart';
-import '../../../features/versions/presentation/widgets/new_entry_version_widget.dart';
 import '../../../model/versionModel.dart';
 import '../../common/helpers/selected_sections_handler.dart';
 import '../../common/lists/sections_lists.dart';
-import '../../common/widgets/app_adaptive_builder.dart';
 import '../../common/widgets/not_found_page.dart';
 import 'app_navigator_observer.dart';
 import 'app_routes_names.dart';
@@ -29,11 +28,11 @@ import 'routes/care_routes.dart';
 import 'routes/management_routes.dart';
 import 'routes/sales_routes.dart';
 import 'routes/support_routes.dart';
-import 'dart:ui' as ui;
 
 abstract class AppNavigator {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
+  static DateTime? date;
+  static String? lastPage;
   static Future<dynamic> go(
     Widget page, {
     String? name,
@@ -42,6 +41,20 @@ abstract class AppNavigator {
     Map<String, String>? pathParameters,
     bool isNew = true,
   }) {
+    if (lastPage != null)
+      AnalyticsService().logCustomEvent(name: lastPage ?? "", parameters: {
+        if (date != null) 'duration': DateTime.now().difference(date!).toString(),
+      });
+    lastPage = name?.split('/').last ?? page.toString();
+    date = DateTime.now();
+    // AnalyticsService.firebaseAnalytics.logEvent(
+    //   name: 'screen_view_duration',
+    //   parameters: {
+    //     'screen_name': name?.split('/').last ?? page.toString(),
+    //     'duration_seconds': DateTime.now().second,
+    //     'user_id': AppConstants.currentUser.idUser.toString()
+    //   },
+    // );
     if (kIsWeb && isNew) {
       SelectedSectionsHandler.handle(name: name?.split('/').last ?? page.toString(), pathParameters: pathParameters);
       AppRouter.goRouter.goNamed(
@@ -84,6 +97,13 @@ abstract class AppNavigator {
     Map<String, String>? pathParameters,
     bool isNew = true,
   }) {
+    if (lastPage != null)
+      AnalyticsService().logCustomEvent(name: lastPage ?? "", parameters: {
+        if (date != null) 'duration': DateTime.now().difference(date!).toString(),
+      });
+    lastPage = name?.split('/').last ?? page.toString();
+    date = DateTime.now();
+
     if (kIsWeb && isNew) {
       AppRouter.goRouter.replaceNamed(
         name?.split('/').last ?? page.toString(),
@@ -105,6 +125,13 @@ abstract class AppNavigator {
     Map<String, dynamic>? queryParameters,
     Map<String, String>? pathParameters,
   }) {
+    if (lastPage != null)
+      AnalyticsService().logCustomEvent(name: lastPage ?? "", parameters: {
+        if (date != null) 'duration': DateTime.now().difference(date!).toString(),
+      });
+    lastPage = name?.split('/').last ?? page.toString();
+    date = DateTime.now();
+
     if (kIsWeb) {
       AppRouter.goRouter.pushNamed(
         name?.split('/').last ?? page.toString(),
@@ -130,11 +157,23 @@ abstract class AppNavigator {
   }
 
   static Future<dynamic> pushReplacement(Widget page) {
+    if (lastPage != null)
+      AnalyticsService().logCustomEvent(name: lastPage ?? "", parameters: {
+        if (date != null) 'duration': DateTime.now().difference(date!).toString(),
+      });
+    lastPage = page.toString();
+    date = DateTime.now();
     return navigatorKey.currentState!.pushReplacement(CupertinoPageRoute(builder: (context) => page));
   }
 
   // add predicate
   static Future<dynamic> pushAndRemoveUntil(Widget page, [bool Function(Route<dynamic>)? predicate]) {
+    if (lastPage != null)
+      AnalyticsService().logCustomEvent(name: lastPage ?? "", parameters: {
+        if (date != null) 'duration': DateTime.now().difference(date!).toString(),
+      });
+    lastPage = page.toString();
+    date = DateTime.now();
     return navigatorKey.currentState!.pushAndRemoveUntil(
       CupertinoPageRoute(builder: (context) => page),
       predicate ?? (route) => false,
@@ -145,7 +184,9 @@ abstract class AppNavigator {
 abstract class AppRouter {
   static final GoRouter goRouter = GoRouter(
     navigatorKey: AppNavigator.navigatorKey,
-    observers: [AppNavigatorObserver()],
+    observers: [
+      AppNavigatorObserver(),
+    ],
     initialLocation: AppRoutesPaths.init.splashScreen,
     debugLogDiagnostics: true,
     errorBuilder: (context, state) => NotFoundPage(),
@@ -195,8 +236,8 @@ abstract class AppRouter {
                 builder: (context, state) => section.page,
                 routes: [
                   GoRoute(
-                    path: (AppRoutesPaths.homeSections.taskManagement+'reports').split('/').last,
-                    name: AppRoutesPaths.homeSections.taskManagement+'reports',
+                    path: (AppRoutesPaths.homeSections.taskManagement + 'reports').split('/').last,
+                    name: AppRoutesPaths.homeSections.taskManagement + 'reports',
                     builder: (context, state) => TaskUsersReportsPage(),
                   ),
                   ...List.generate(
@@ -227,7 +268,13 @@ abstract class AppRouter {
             builder: (context, state) => AddVersionPage(
               versionModel: state.extra as VersionModel?,
             ),
-          )
+          ),
+          GoRoute(
+              name: AppRoutesNames.generalRoutes.showIncommingUpdate,
+              path: AppRoutesPaths.incommingUpdate,
+              builder: (context, state) => IncommingVersionsPage()),
+          GoRoute(
+              name: AppRoutesNames.generalRoutes.versionOrder, path: AppRoutesPaths.versionOrder, builder: (context, state) => VersionOrderPage()),
         ]),
       ]),
 
@@ -261,6 +308,8 @@ abstract class AppRouter {
       //   ],
       // ),
     ],
-    redirect: (context, state) => AppRedirections.handleRedirection(context, state),
+    redirect: (context, state) {
+      return AppRedirections.handleRedirection(context, state);
+    },
   );
 }

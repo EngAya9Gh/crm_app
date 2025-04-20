@@ -41,14 +41,14 @@ extension FontExt on TextStyle? {
 }
 
 abstract class _FontFamily {
-  static const String light = "Cairo-Light";
-  static const String regular = "Cairo-Regular";
-  static const String bold = "Cairo-Bold";
-  static const String black = "Cairo-Black";
-  static const String medium = "Cairo-Medium";
-  static const String extraLight = "Cairo-ExtraLight";
-  static const String extraBold = "Cairo-ExtraBold";
-  static const String semiBold = "Cairo-SemiBold";
+  static const String light = "Tajawal-Light";
+  static const String regular = "Tajawal-Regular";
+  static const String bold = "Tajawal-Bold";
+  static const String black = "Tajawal-Black";
+  static const String medium = "Tajawal-Medium";
+  static const String extraLight = "Tajawal-ExtraLight";
+  static const String extraBold = "Tajawal-ExtraBold";
+  static const String semiBold = "Tajawal-Regular";
 }
 
 abstract class _FontSize {

@@ -1,6 +1,15 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/models/client_model.dart';
+import 'package:crm_smart/features/sales/clients/clients_list/data/models/client_support_file_model.dart';
+import 'package:crm_smart/features/task_management/data/models/task_log_model.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/curd_task_files_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_list_clients_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_log_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/update_task_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -37,6 +46,12 @@ class TaskCubit extends Cubit<TaskState> {
   final AddCommentTaskUsecase _addCommentTaskUsecase;
   final GetCommentsTaskUsecase _getCommentsTaskUsecase;
   final GetUsersReportsTaskUsecase _getUsersReportsTaskUsecase;
+  final GetListClientsUsecase _getListClientUsecase;
+  final ChangeTaskAssignUsecase _changeTaskAssignUsecase;
+  final UpdateTaskUsecase _updateTaskUsecase;
+  final GetTaskByIdUsecase _getTaskByIdUsecase;
+  final GetTaskLogUsecase _getTakslogUsecase;
+  final CrudTaskFilesUsecase _crudTaskFilesUsecase;
 
   Map<TaskStatusType, TaskStatusInfo> taskStatusInfo = {
     TaskStatusType.Open: TaskStatusInfo(),
@@ -52,6 +67,12 @@ class TaskCubit extends Cubit<TaskState> {
     this._addCommentTaskUsecase,
     this._getCommentsTaskUsecase,
     this._getUsersReportsTaskUsecase,
+    this._getListClientUsecase,
+    this._changeTaskAssignUsecase,
+    this._updateTaskUsecase,
+    this._getTaskByIdUsecase,
+    this._getTakslogUsecase,
+    this._crudTaskFilesUsecase,
   ) : super(TaskState());
 
   TasksPageVariablesEntity pageVariables = TasksPageVariablesEntity();
@@ -86,15 +107,17 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(selectedRecurringType: type));
   }
 
-  onChangeAttachmentFile(File file) {
-    emit(state.copyWith(attachmentFile: file));
+  onChangeAttachmentFile(List<File> file) {
+    emit(state.copyWith(
+        attachmentFile: List.of(state.attachmentFile ?? [])..addAll(file)));
   }
 
   onChangeStatus(TaskStatusType? status) {
     emit(state.copyWith(selectedStatus: Nullable.value(status)));
   }
 
-  Future<void> getTasksForStatus(TaskStatusType status, {bool isLoadMore = false}) async {
+  Future<void> getTasksForStatus(TaskStatusType status,
+      {bool isLoadMore = false}) async {
     if (!isLoadMore) {
       taskStatusInfo[status] = TaskStatusInfo();
     }
@@ -144,9 +167,13 @@ class TaskCubit extends Cubit<TaskState> {
     });
   }
 
+  resetAddUpdate() {
+    emit(state.copyWith(isResetAddTask: true));
+  }
+
   addTaskAction({
     required VoidCallback onSuccess,
-    required AddTaskParams addTaskParams,
+    required AddOrUpdateTaskParams addTaskParams,
   }) async {
     emit(state.copyWith(addTaskStatus: const BlocStatus.loading()));
 
@@ -183,7 +210,142 @@ class TaskCubit extends Cubit<TaskState> {
       },
       (value) {
         onSuccess();
-        emit(state.copyWith(addTaskStatus: const BlocStatus.success(), isResetAddTask: true));
+        emit(state.copyWith(
+            addTaskStatus: const BlocStatus.success(), isResetAddTask: true));
+      },
+    );
+  }
+
+  updateTask({
+    required VoidCallback onSuccess,
+    required AddOrUpdateTaskParams addTaskParams,
+  }) async {
+    emit(state.copyWith(updateTask: const BlocStatus.loading()));
+
+    final result = await _updateTaskUsecase(addTaskParams);
+
+    result.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(updateTask: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        onSuccess();
+        emit(state.copyWith(
+            updateTask: const BlocStatus.success(), isResetAddTask: true));
+        pageVariables.allList = pageVariables.allList
+            .map((e) => e.id == addTaskParams.taskId ? value.message! : e)
+            .toList();
+      },
+    );
+  }
+
+  getTaskById({
+    required ValueChanged<TaskModel> onSuccess,
+    required VoidCallback onFaild,
+    required GetTaskByIdParams params,
+  }) async {
+    emit(state.copyWith(getCurrentTask: const BlocStatus.loading()));
+
+    final result = await _getTaskByIdUsecase(params);
+
+    result.extract(
+      (exception, message) {
+        onFaild();
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(getCurrentTask: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        onSuccess(value.message!);
+        emit(state.copyWith(
+            getCurrentTask: BlocStatus.success(data: value.message)));
+      },
+    );
+  }
+
+  getTaskLog({
+    required GetTaskByIdParams params,
+  }) async {
+    emit(state.copyWith(getTaskLog: const BlocStatus.loading()));
+
+    final result = await _getTakslogUsecase(params);
+
+    result.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(getTaskLog: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        emit(state.copyWith(
+            getTaskLog: BlocStatus.success(data: value.message)));
+      },
+    );
+  }
+
+  curdTaskFiles({
+    required CurdFilesTaskParams params,
+  }) async {
+    var currentAttachments = state.getCurrentTask.data?.attachments ?? [];
+    emit(state.copyWith(
+        getCurrentTask: BlocStatus.success(
+            data: state.getCurrentTask.data?.copyWith(
+      attachments: List.of(currentAttachments)
+        ..addAll((params.files ?? []).map(
+          (e) => FileAttachmentTaskModel(xFile: e),
+        )),
+    ))));
+    var attachmentFileIds =
+        currentAttachments.map((attachment) => attachment.id).toList();
+    var indexOfFiles = params.filesId
+            ?.map((fileId) => attachmentFileIds.indexOf(fileId))
+            .toList() ??
+        [];
+    emit(state.copyWith(fileAddedOrEdtiableIndex: indexOfFiles));
+    final result = await _crudTaskFilesUsecase(params);
+
+    result.extract(
+      (exception, message) {
+        emit(state.copyWith(
+            fileAddedOrEdtiableIndex: [],
+            getCurrentTask: BlocStatus.success(
+                data: state.getCurrentTask.data?.copyWith(
+              attachments: currentAttachments,
+            ))));
+        // if (AppConstants.shouldReturnEarly(message)) return;
+        // emit(state.copyWith(getTaskLog: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        emit(state.copyWith(
+            fileAddedOrEdtiableIndex: [],
+            getCurrentTask: BlocStatus.success(data: value.message)));
+        // emit(state.copyWith(: BlocStatus.success(data: value.message)));
+      },
+    );
+  }
+
+  changeTaskAssign({
+    required VoidCallback onSuccess,
+    required ChangeTaskAssignParams changeTaskAssignParams,
+  }) async {
+    emit(state.copyWith(changeTaskAssignStatus: const BlocStatus.loading()));
+
+    final result = await _changeTaskAssignUsecase(changeTaskAssignParams);
+
+    result.extract(
+      (exception, message) {
+        if (AppConstants.shouldReturnEarly(message)) return;
+        emit(state.copyWith(
+            changeTaskAssignStatus: BlocStatus.fail(error: message)));
+      },
+      (value) {
+        onSuccess();
+        emit(state.copyWith(
+            changeTaskAssignStatus: const BlocStatus.success(),
+            isResetAddTask: true));
+        pageVariables.allList = pageVariables.allList
+            .map((e) =>
+                e.id == changeTaskAssignParams.taskId ? value.message! : e)
+            .toList();
       },
     );
   }
@@ -210,8 +372,12 @@ class TaskCubit extends Cubit<TaskState> {
             statusName: ((state.selectedStatus?.id ?? 1)),
             assignedTo: state.filterAssignTo?.idUser?.toString(),
             assignedBy: state.filterAssignFrom?.idUser.toString(),
-            startDateFrom: state.filterFromDate,
-            startDateTo: state.filterToDate,
+            startDateFrom: (pageVariables.fromDateController.text.isNotEmpty)
+                ? state.filterFromDate
+                : null,
+            startDateTo: (pageVariables.toDateController.text.isNotEmpty)
+                ? state.filterToDate
+                : null,
             departmentFrom: state.departmentFrom?.idMange,
             departmentTo: state.departmentTo?.idMange,
             regionFrom: state.regionFrom?.branchId,
@@ -223,6 +389,7 @@ class TaskCubit extends Cubit<TaskState> {
             managerId: pageVariables.selectedManagerModel.value?.idMange,
             atTime: pageVariables.atTime.value,
             afterTime: pageVariables.afterTime.value,
+            quickDateChose: pageVariables.selectedQuickDateFilter.value,
           ),
         );
         result.fold(
@@ -235,7 +402,8 @@ class TaskCubit extends Cubit<TaskState> {
           (value) {
             pageVariables.allList.addAll(value.data);
             pageVariables.totalCount = value.count ?? 0;
-            pageVariables.hasReachedEnd = value.data.length < AppConstants.kPerPage;
+            pageVariables.hasReachedEnd =
+                value.data.length < AppConstants.kPerPage;
             if (pageVariables.allList.isEmpty) {
               return emit(state.copyWith(
                 getTasksStatus: BlocStatus.empty(),
@@ -305,11 +473,14 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(isResetTasksState: true));
   }
 
-  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess, String userId, bool fromDialog,
+  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType,
+      VoidCallback onSuccess, String userId, bool fromDialog,
       [double? rate]) async {
     emit(state.copyWith(changeTaskStatus: const BlocStatus.loading()));
     final response = await _changeStatusTaskUsecase(ChangeStatusTaskParams(
-      fromDialog ? taskStatusType.next.id.toString() : taskStatusType.id.toString(),
+      fromDialog
+          ? taskStatusType.next.id.toString()
+          : taskStatusType.id.toString(),
       taskModel.id.toString(),
       userId,
       rate,
@@ -326,14 +497,23 @@ class TaskCubit extends Cubit<TaskState> {
           taskList.removeWhere((element) => element.id == taskModel.id);
         } else {
           taskList = taskList
-              .map((e) =>
-                  e.id == taskModel.id ? e.copyWith(status: e.status?.copyWith(name: taskStatusType.next.name, id: taskStatusType.next.id)) : e)
+              .map((e) => e.id == taskModel.id
+                  ? e.copyWith(
+                      status: e.status?.copyWith(
+                          name: taskStatusType.next.name,
+                          id: taskStatusType.next.id))
+                  : e)
               .toList();
         }
         List<TaskModel> allTasks = List.from(pageVariables.allList);
 
         allTasks = allTasks
-            .map((e) => e.id == taskModel.id ? e.copyWith(status: e.status?.copyWith(name: taskStatusType.next.name, id: taskStatusType.next.id)) : e)
+            .map((e) => e.id == taskModel.id
+                ? e.copyWith(
+                    status: e.status?.copyWith(
+                        name: taskStatusType.next.name,
+                        id: taskStatusType.next.id))
+                : e)
             .toList();
 
         onSuccess();
@@ -353,7 +533,8 @@ class TaskCubit extends Cubit<TaskState> {
 
   onGetTaskComments(int taskId) async {
     emit(state.copyWith(getTaskComment: BlocStatus.loading()));
-    final result = await _getCommentsTaskUsecase(AddTaskCommentParams(taskId: taskId, content: ''));
+    final result = await _getCommentsTaskUsecase(
+        AddTaskCommentParams(taskId: taskId, content: ''));
     result.extract(
       (exception, message) => emit(
         state.copyWith(getTaskComment: BlocStatus.fail(error: message)),
@@ -366,7 +547,8 @@ class TaskCubit extends Cubit<TaskState> {
           return;
         }
         emit(
-          state.copyWith(getTaskComment: BlocStatus.success(data: value.message ?? [])),
+          state.copyWith(
+              getTaskComment: BlocStatus.success(data: value.message ?? [])),
         );
       },
     );
@@ -382,15 +564,17 @@ class TaskCubit extends Cubit<TaskState> {
       (value) {
         onGetTaskComments(params.taskId);
         emit(
-          state.copyWith(addComment: BlocStatus.success(data: value.message ?? [])),
+          state.copyWith(
+              addComment: BlocStatus.success(data: value.message ?? [])),
         );
         onSuccess?.call();
       },
     );
   }
 
-  getUserTaskReports(GetUsersReportsParams params,[VoidCallback? onSuccess]) async {
-    if(state.getUsersTaskReportsStatus.isLoading()){
+  getUserTaskReports(GetUsersReportsParams params,
+      [VoidCallback? onSuccess]) async {
+    if (state.getUsersTaskReportsStatus.isLoading()) {
       return;
     }
     emit(state.copyWith(getUsersTaskReportsStatus: BlocStatus.loading()));
@@ -400,16 +584,21 @@ class TaskCubit extends Cubit<TaskState> {
     final result = await _getUsersReportsTaskUsecase(params);
     result.extract(
       (exception, message) => emit(
-        state.copyWith(getUsersTaskReports: BlocStatus.fail(error: message), getUsersTaskReportsStatus: BlocStatus.fail(error: message)),
+        state.copyWith(
+            getUsersTaskReports: BlocStatus.fail(error: message),
+            getUsersTaskReportsStatus: BlocStatus.fail(error: message)),
       ),
       (value) {
         onSuccess?.call();
-        emit(state.copyWith(hasGetAllReports: (value.message?.isEmpty ?? false)));
+        emit(state.copyWith(
+            hasGetAllReports: (value.message?.isEmpty ?? false)));
         if (params.page > 1) {
           emit(
             state.copyWith(
                 totalUserReportCount: value.count,
-                getUsersTaskReports: BlocStatus.success(data: List.of(state.getUsersTaskReports.data ?? [])..addAll(value.message ?? [])),
+                getUsersTaskReports: BlocStatus.success(
+                    data: List.of(state.getUsersTaskReports.data ?? [])
+                      ..addAll(value.message ?? [])),
                 getUsersTaskReportsStatus: BlocStatus.success()),
           );
           return;
@@ -417,9 +606,24 @@ class TaskCubit extends Cubit<TaskState> {
         emit(
           state.copyWith(
               totalUserReportCount: value.count,
-              getUsersTaskReports: BlocStatus.success(data: value.message ?? []),
+              getUsersTaskReports:
+                  BlocStatus.success(data: value.message ?? []),
               getUsersTaskReportsStatus: BlocStatus.success()),
         );
+      },
+    );
+  }
+
+  getListClient() async {
+    emit(state.copyWith(getListClients: BlocStatus.loading()));
+    final result = await _getListClientUsecase();
+    result.extract(
+      (exception, message) => emit(
+        state.copyWith(getListClients: BlocStatus.fail(error: message)),
+      ),
+      (value) {
+        emit(state.copyWith(
+            getListClients: BlocStatus.success(data: value.message ?? [])));
       },
     );
   }

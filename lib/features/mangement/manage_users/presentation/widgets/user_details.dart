@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/widgets/profile/profile_info_item.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
@@ -15,46 +16,93 @@ class UserDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView(
-        children: [
-          _buildInfoCard('الإدارات', user.name_mange),
-          10.height,
-          _buildInfoCard('الفرع', user.nameRegoin),
-          10.height,
-          _buildInfoCard('المستوى', user.name_level),
-          10.height,
-          _buildInfoCard('الحالة', user.isActive == "1" ? 'نشط' : 'غير نشط'),
-          10.height,
-          _buildInfoCard('البريد الإلكتروني', user.email.toString()),
-          10.height,
-          InkWell(
-            onTap: () async {
-              await HelperFunctions.urlLauncherPhone(user.mobile.toString());
-              // await FlutterPhoneDirectCaller.callNumber(user.mobile.toString());
-            },
-            child: _buildInfoCard('الهاتف', user.mobile.toString()),
-          ),
-          10.height,
-          _buildInfoCard('تمت الإضافة من قبل', user.nameuserAdd.toString()),
-          10.height,
-          _buildInfoCard('تاريخ الإضافة', user.created_at.toString()),
-          10.height,
-          if (user.nameuserupdate != null) ...[
-            _buildInfoCard('تم التعديل من قبل', user.nameuserupdate.toString()),
-            10.height,
-            _buildInfoCard('تاريخ التعديل', user.updated_at.toString()),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 20,
+              offset: Offset(0, 5),
+            ),
           ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoCard(String title, String? value) {
-    return AppCardContainer(
-      child: CardRow(
-        title: title,
-        value: value,
-        withDivider: false,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: 
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                ProfileInfoItem(
+                icon: Icons.business_outlined,
+                title: 'الإدارات',
+                value: user.name_mange ?? '',
+              ),
+              Divider(height: 30),
+              ProfileInfoItem(
+                icon: Icons.location_city_outlined,
+                title: 'الفرع',
+                value: user.nameRegoin ?? '',
+              ),
+              Divider(height: 30),
+              ProfileInfoItem(
+                icon: Icons.grade_outlined,
+                title: 'المستوى',
+                value: user.name_level ?? '',
+              ),
+              Divider(height: 30),
+              ProfileInfoItem(
+                icon: Icons.check_circle_outline,
+                title: 'الحالة',
+                value: user.isActive == "1" ? 'نشط' : 'غير نشط',
+              ),
+              Divider(height: 30),
+              ProfileInfoItem(
+                icon: Icons.email_outlined,
+                title: 'البريد الإلكتروني',
+                value: user.email.toString(),
+              ),
+              Divider(height: 30),
+              ProfileInfoItem(
+                icon: Icons.phone_outlined,
+                title: 'الهاتف',
+                value: user.mobile.toString(),
+                onTap: () async {
+                  await HelperFunctions.urlLauncherPhone(
+                      user.mobile.toString());
+                },
+              ),
+              Divider(height: 30),
+              ProfileInfoItem(
+                icon: Icons.person_add_outlined,
+                title: 'تمت الإضافة من قبل',
+                value: user.nameuserAdd.toString(),
+              ),
+              Divider(height: 30),
+              ProfileInfoItem(
+                icon: Icons.calendar_today_outlined,
+                title: 'تاريخ الإضافة',
+                value: user.created_at.toString(),
+              ),
+              if (user.nameuserupdate != null) ...[
+                Divider(height: 30),
+                ProfileInfoItem(
+                  icon: Icons.edit_outlined,
+                  title: 'تم التعديل من قبل',
+                  value: user.nameuserupdate.toString(),
+                ),
+                Divider(height: 30),
+                ProfileInfoItem(
+                  icon: Icons.update_outlined,
+                  title: 'تاريخ التعديل',
+                  value: user.updated_at.toString(),
+                ),
+              ],
+           ],  ),
+          ),
+        ),
       ),
     );
   }

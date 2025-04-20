@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ScrollHelper {
   /// Scrolls to an item in a paginated list
-  /// 
+  ///
   /// Parameters:
   /// - scrollController: The ScrollController for the list
   /// - targetId: The ID of the item to scroll to
@@ -38,10 +38,10 @@ class ScrollHelper {
       // Keep loading pages and scrolling until we find the item
       bool found = false;
       int pageLoadAttempts = 0;
-      
+
       while (!found && !hasReachedMax && pageLoadAttempts < 10) {
         found = items.any(findItem);
-        
+
         print('Searching for item. Found: $found, Page: $pageLoadAttempts');
 
         if (!found) {
@@ -72,7 +72,7 @@ class ScrollHelper {
 
       if (found) {
         print('Item found, attempting to scroll to position');
-        
+
         final index = items.indexWhere(findItem);
 
         if (index != -1 && scrollController.hasClients) {
@@ -84,7 +84,7 @@ class ScrollHelper {
                 duration: Duration(milliseconds: 500),
                 curve: Curves.easeInOut,
               );
-              
+
               print('Successfully scrolled to position $itemPosition');
               break;
             } catch (scrollError) {

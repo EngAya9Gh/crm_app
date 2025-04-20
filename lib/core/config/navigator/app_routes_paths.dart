@@ -32,6 +32,8 @@ abstract class AppRoutesPaths {
   static const String notifications = 'notifications';
   static const String versions = 'versions';
   static const String addVersions = 'addVersions';
+  static const String incommingUpdate = 'incommingUpdate';
+  static const String versionOrder = 'versionOrder';
 }
 
 class _AppInit {

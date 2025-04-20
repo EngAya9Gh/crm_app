@@ -17,6 +17,7 @@ import '../widgets/app_adaptive_builder.dart';
 import '../widgets/sections_and_subsections/sub_sections_list_view.dart';
 import 'all_sub_sections_lists.dart';
 import 'sales_sub_sections_lists.dart';
+import '../../../core/utils/end_points.dart';
 
 abstract class SectionsLists {
   /* Home Sections */
@@ -40,6 +41,7 @@ abstract class SectionsLists {
       path: AppRoutesPaths.homeSections.sales,
       subSections: salesSections,
     ),
+ 
     SectionModel(
       page: SubSectionsListView(
         title: 'الدعم الفني',
@@ -97,6 +99,15 @@ abstract class SectionsLists {
       title: 'إدارة المهام',
       icon: FontAwesomeIcons.listCheck,
       path: AppRoutesPaths.homeSections.taskManagement,
+    ),
+  
+    SectionModel(
+      page: SizedBox.shrink(),
+      title: 'الحملات الإعلانية',
+      icon: FontAwesomeIcons.bullhorn,
+      path: '${EndPoints.baseUrls.urlLaravel}campaigns',
+      privilegeId: '289',
+      subSections: [],
     ),
   ];
 

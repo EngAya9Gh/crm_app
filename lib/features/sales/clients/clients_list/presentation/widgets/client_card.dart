@@ -20,9 +20,10 @@ import '../../../../../mangement/manage_privileges/privileges/presentation/manag
 import '../pages/client_add_edit_page.dart';
 
 class CardClient extends StatefulWidget {
-  CardClient({Key? key, required this.clientModel, this.widget}) : super(key: key);
+  CardClient({Key? key, required this.clientModel, this.widget})
+      : super(key: key);
   ClientModel clientModel;
-final Widget? widget;
+  final Widget? widget;
   @override
   State<CardClient> createState() => _CardClientState();
 }
@@ -68,52 +69,64 @@ class _CardClientState extends State<CardClient> {
             },
           );
         },
-        child: Row(
+        child: Column(
           children: [
-            widget.widget??SizedBox.shrink(),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+            Row(
+              children: [
+                widget.widget ?? SizedBox.shrink(),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: AppText(
-                          widget.clientModel.nameEnterprise,
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: AppText(
+                              widget.clientModel.nameEnterprise,
+                              fontSize: 15.scaleFontSize,
+                            ),
+                          ),
+                          if ((widget.clientModel.tag ?? false) &&
+                              context
+                                  .read<PrivilegesCubit>()
+                                  .checkPrivilege('133')) ...[
+                            SizedBox(width: 10),
+                            AppIcon(
+                              CupertinoIcons.checkmark_seal_fill,
+                              color: AppColors.secondaryMain,
+                            ),
+                          ],
+                        ],
                       ),
-                      if ((widget.clientModel.tag ?? false) &&
-                          context.read<PrivilegesCubit>().checkPrivilege('133')) ...[
-                        SizedBox(width: 10),
-                        AppIcon(
-                          CupertinoIcons.checkmark_seal_fill,
-                          color: AppColors.secondaryMain,
-                        ),
-                      ],
+                      5.height,
+                      Row(
+                        children: [
+                          AppText(
+                            DateTime.tryParse(widget.clientModel.dateCreate!) !=
+                                    null
+                                ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
+                                    .format(DateTime.parse(
+                                        widget.clientModel.dateCreate!))
+                                : widget.clientModel.dateCreate.toString(),
+                            color: AppColors.primaryMain,
+                            fontSize: 12.sp,
+                            textDirection: TextDirection.ltr,
+                          ),
+                          Spacer(),
+                          if (widget.clientModel.subscribingIntentionLevel !=
+                              null) ...[
+                            AppIcon(
+                              Icons.flag,
+                              color: widget
+                                  .clientModel.subscribingIntentionLevel?.color,
+                            ),
+                          ],
+                        ],
+                      ),
                     ],
                   ),
-                  5.height,
-                  Row(children: [
-                    AppText(
-                      DateTime.tryParse(widget.clientModel.dateCreate!) != null
-                          ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
-                          DateTime.parse(widget.clientModel.dateCreate!))
-                          : widget.clientModel.dateCreate.toString(),
-                      color: AppColors.primaryMain,
-                      fontSize: 12.sp,
-                      textDirection: TextDirection.ltr,
-                    ),
-                    Spacer(),
-                    if (widget.clientModel.subscribingIntentionLevel != null) ...[
-                      AppIcon(
-                        Icons.flag,
-                        color: widget.clientModel.subscribingIntentionLevel?.color,
-                      ),
-                    ],
-                  ],)
-
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

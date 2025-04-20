@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
@@ -43,16 +44,19 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   });
 
   @override
-  State<CustomMultiSelectionDropdown<T>> createState() => _CustomMultiSelectionDropdownState<T>();
+  State<CustomMultiSelectionDropdown<T>> createState() =>
+      _CustomMultiSelectionDropdownState<T>();
 }
 
-class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDropdown<T>> {
+class _CustomMultiSelectionDropdownState<T>
+    extends State<CustomMultiSelectionDropdown<T>> {
   final _popupCustomValidationKey = GlobalKey<DropdownSearchState<T>>();
 
   @override
   Widget build(BuildContext context) {
     final Widget child = DropdownSearch<T>.multiSelection(
       key: _popupCustomValidationKey,
+
       items: (filter, loadProps) => widget.items,
       selectedItems: widget.selectedItems,
       itemAsString: widget.itemAsString,
@@ -61,11 +65,17 @@ class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDr
       onChanged: (value) {
         widget.onSave!(value);
       },
-      enabled: widget.isDisabled != true,
-      validator: widget.validator ?? (widget.isRequired ? (value) => value == null || value.isEmpty ? AppStrings.messageEmpty : null : null),
+
+      // enabled: widget.isDisabled != true,
+      validator: widget.validator ??
+          (widget.isRequired
+              ? (value) => value == null || value.isEmpty
+                  ? AppStrings.messageEmpty
+                  : null
+              : null),
       // suffix icon props
       suffixProps: DropdownSuffixProps(
-        dropdownButtonProps: DropdownButtonProps(color: widget.isDisabled == true ? Colors.grey : null),
+        dropdownButtonProps: DropdownButtonProps(color: AppColors.grey),
       ),
       // popup props
       popupProps: PopupPropsMultiSelection.dialog(
@@ -75,22 +85,22 @@ class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDr
         searchFieldProps: TextFieldProps(
           textDirection: TextDirection.rtl,
           style: AppStyles.textStyle.copyWith(
-            fontSize: 18.scaleFontSize,
+            fontSize: 15.scaleFontSize,
           ),
           decoration: InputDecoration(
             hintText: "بحث",
             hintTextDirection: TextDirection.rtl,
             hintStyle: AppStyles.textStyle.copyWith(
-              fontSize: 18.scaleFontSize,
-              color: Colors.grey,
+              fontSize: 15.scaleFontSize,
+              color: AppColors.grey,
             ),
             errorStyle: AppStyles.textStyle.copyWith(
-              fontSize: 18.scaleFontSize,
+              fontSize: 15.scaleFontSize,
               color: Colors.red,
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 15),
+            // contentPadding: EdgeInsets.symmetric(horizontal: 15),
             border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: BorderSide(color: AppColors.grey),
               borderRadius: BorderRadius.circular(12),
             ),
             errorBorder: OutlineInputBorder(
@@ -102,20 +112,20 @@ class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDr
               borderRadius: BorderRadius.circular(12),
             ),
             disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: BorderSide(color: AppColors.grey),
               borderRadius: BorderRadius.circular(12),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: BorderSide(color: AppColors.grey),
               borderRadius: BorderRadius.circular(12),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: BorderSide(color: AppColors.grey),
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           strutStyle: StrutStyle(
-            fontSize: 18.scaleFontSize,
+            fontSize: 15.scaleFontSize,
           ),
         ),
         checkBoxBuilder: (context, item, isDisabled, isSelected) {
@@ -124,11 +134,11 @@ class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDr
             child: isSelected
                 ? AppIcon(
                     Icons.check_box,
-                    color: Colors.blue,
+                    color: AppColors.grey,
                   )
                 : AppIcon(
                     Icons.check_box_outline_blank,
-                    color: Colors.grey,
+                    color: AppColors.grey,
                   ),
           );
         },
@@ -143,7 +153,8 @@ class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDr
           return AppElevatedButton(
             text: "حفظ",
             onPressed: () {
-              _popupCustomValidationKey.currentState?.changeSelectedItems(items);
+              _popupCustomValidationKey.currentState
+                  ?.changeSelectedItems(items);
               _popupCustomValidationKey.currentState?.popupOnValidate();
             },
           );
@@ -158,7 +169,7 @@ class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDr
         dialogProps: DialogProps(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
-            side: BorderSide(color: Colors.grey),
+            side: BorderSide(color: AppColors.grey),
           ),
           contentPadding: EdgeInsets.symmetric(
             horizontal: 8,
@@ -171,13 +182,16 @@ class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDr
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               decoration: BoxDecoration(
-                color: isSelected ? Colors.grey.withOpacity(0.2) : Colors.transparent,
+                color: isSelected
+                    ? AppColors.grey.withOpacity(0.2)
+                    : const Color.fromARGB(0, 149, 146, 146),
               ),
               child: AppText(
                 widget.itemAsString!(item),
-                fontSize: 18,
+                fontSize: 15,
                 style: AppStyles.textStyle.copyWith(
                   overflow: TextOverflow.ellipsis,
+                  // color: AppColors.grey,
                 ),
               ),
             ),
@@ -191,28 +205,34 @@ class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDr
         return Padding(
           padding: EdgeInsets.all(8),
           child: AppText(
-            selectedItems.isEmpty ? widget.hint ?? '' : selectedItems.map((e) => widget.itemAsString!(e)).toList().join(', '),
-            overflow: TextOverflow.ellipsis,
+            selectedItems.isEmpty
+                ? widget.hint ?? ''
+                : selectedItems
+                    .map((e) => widget.itemAsString!(e))
+                    .toList()
+                    .join(', '),
+            overflow: TextOverflow.clip,
             maxLines: 1,
-            color: Colors.grey,
-            fontSize: 18,
+            color: AppColors.grey,
+            fontSize: 15,
           ),
         );
       },
       // button decoration
       decoratorProps: DropDownDecoratorProps(
         decoration: widget.dropdownSearchDecoration ??
-            AppStyles.roundedDropdownButtonDecoration(
-              context: context,
-              hintText: widget.hint ?? '',
-            ).copyWith(
-              hintStyle: AppStyles.textStyle.copyWith(
-                fontSize: 18.scaleFontSize,
-                color: Colors.grey,
-              ),
+            InputDecoration(
+              contentPadding: EdgeInsets.symmetric(horizontal: 5),
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              focusedErrorBorder: InputBorder.none,
+              fillColor: Colors.grey[100],
+              filled: true,
             ),
         baseStyle: AppStyles.textStyle.copyWith(
-          fontSize: 18.scaleFontSize,
+          fontSize: 15.scaleFontSize,
         ),
       ),
     );
@@ -221,7 +241,7 @@ class _CustomMultiSelectionDropdownState<T> extends State<CustomMultiSelectionDr
         ? Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: widget.isDisabled == true ? Colors.grey.shade300 : null,
+              color: widget.isDisabled == true ? AppColors.grey.shade300 : null,
             ),
             child: child,
           )

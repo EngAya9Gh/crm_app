@@ -76,17 +76,16 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               alignment: Alignment.centerLeft,
               child: ListenableBuilder(
                 listenable: Listenable.merge(_bloc.filterEntity.listenables()),
-                builder: (context, child) =>
-                    AppTextButton(
-                      onPressed: _bloc.filterEntity.checkIfFilterIsNotEmpty()
-                          ? () {
-                        _bloc.filterEntity.clearFilters();
-                        _fetchClients(context);
-                      }
-                          : null,
-                      text: "إعادة الافتراضي",
-                      appButtonStyle: AppButtonStyle.secondary,
-                    ),
+                builder: (context, child) => AppTextButton(
+                  onPressed: _bloc.filterEntity.checkIfFilterIsNotEmpty()
+                      ? () {
+                          _bloc.filterEntity.clearFilters();
+                          _fetchClients(context);
+                        }
+                      : null,
+                  text: "إعادة الافتراضي",
+                  appButtonStyle: AppButtonStyle.secondary,
+                ),
               ),
             ),
             20.height,
@@ -94,11 +93,16 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               builder: (context, clientTypeVm, child) {
                 return CustomMultiSelectionDropdown<String?>(
                   hint: 'الحالة',
-                  items: TypeClientEnum.values.map((e) => e.text,).toList(),
+                  items: TypeClientEnum.values
+                      .map(
+                        (e) => e.text,
+                      )
+                      .toList(),
                   selectedItems: _bloc.filterEntity.statusNotifier.value,
                   itemAsString: (item) => item!,
                   onSave: (selectedItems) {
-                    _bloc.filterEntity.statusNotifier.value = TypeClientEnum.values.where((value) => selectedItems.contains(value.text)).map((e) => e.value).toList();
+                    _bloc.filterEntity.statusNotifier.value =
+                        TypeClientEnum.values.where((value) => selectedItems.contains(value.text)).map((e) => e.value).toList();
                   },
                   compareFn: (a, b) => a == b,
                 );
@@ -115,17 +119,14 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                         builder: (context, value, _) {
                           return CustomDropDown<String>(
                             hint: 'التسجيل',
-                            items: ClientRegistrationType.values
-                                .map((e) => e.value)
-                                .toList(),
-                            compareFn:  (item, selectedItem) => item == selectedItem,
+                            items: ClientRegistrationType.values.map((e) => e.value).toList(),
+                            compareFn: (item, selectedItem) => item == selectedItem,
                             itemAsString: (item) => item!,
                             selectedItem: value,
                             onChanged: (value) {
                               if (value == null) return;
 
-                              _bloc.filterEntity.recordTypeNotifier.value =
-                                  value;
+                              _bloc.filterEntity.recordTypeNotifier.value = value;
                             },
                             height: 140.scaleHeight,
                           );
@@ -143,17 +144,14 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                         builder: (context, value, _) {
                           return CustomDropDown<String>(
                             hint: 'نوع التصنيف',
-                            items: ClientsClassification.values
-                                .map((e) => e.value)
-                                .toList(),
-                            compareFn:  (item, selectedItem) => item== selectedItem,
+                            items: ClientsClassification.values.map((e) => e.value).toList(),
+                            compareFn: (item, selectedItem) => item == selectedItem,
                             itemAsString: (item) => item!,
                             selectedItem: value,
                             onChanged: (value) {
                               if (value == null) return;
 
-                              _bloc.filterEntity.classTypeNotifier.value =
-                                  value;
+                              _bloc.filterEntity.classTypeNotifier.value = value;
                             },
                           );
                         },
@@ -168,8 +166,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               children: [
                 Expanded(
                   child: CitiesSearchableDropDown(
-                    selectedCityId:
-                    _bloc.filterEntity.cityNotifier.value?.cityId,
+                    selectedCityId: _bloc.filterEntity.cityNotifier.value?.cityId,
                     onSelected: (city) {
                       if (city == null) return;
                       _bloc.filterEntity.cityNotifier.value = city;
@@ -186,11 +183,9 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                           builder: (context, value, child) {
                             return BranchSearchableDropDown(
                               showAllChoice: true,
-                              selectedBranchId:
-                              _bloc.filterEntity.regionIdNotifier.value,
+                              selectedBranchId: _bloc.filterEntity.regionIdNotifier.value,
                               onSelected: (branch) {
-                                _bloc.filterEntity.regionIdNotifier.value =
-                                    branch!.branchId;
+                                _bloc.filterEntity.regionIdNotifier.value = branch!.branchId;
                               },
                             );
                           },
@@ -202,23 +197,20 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               ],
             ),
             10.height,
-            if (_privilegeCubit.checkPrivilege('15') ||
-                _privilegeCubit.checkPrivilege('8') ||
-                widget.val) ...[
+            if (_privilegeCubit.checkPrivilege('15') || _privilegeCubit.checkPrivilege('8') || widget.val) ...[
               BlocBuilder<ClientsListBloc, ClientsListState>(
                 builder: (context, state) {
                   return CustomSearchableDropDown<UserEntity>(
                     hint: 'الموظف',
-                    items: state.usersSales.data??[],
-                    compareFn:  (item, selectedItem) => item.id == selectedItem.id,
+                    items: state.usersSales.data ?? [],
+                    compareFn: (item, selectedItem) => item.id == selectedItem.id,
                     itemAsString: (u) => u!.name,
                     onChanged: (data) {
                       if (data == null) return;
                       _bloc.filterEntity.userNotifier.value = data;
                     },
                     selectedItem: _bloc.filterEntity.userNotifier.value,
-                    filterFn: (user, filter) =>
-                        user.name.toLowerCase().contains(filter.toLowerCase()),
+                    filterFn: (user, filter) => user.name.toLowerCase().contains(filter.toLowerCase()),
                   );
                 },
               ),
@@ -235,34 +227,29 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             child: CustomSearchableDropDown<ActivityModel>(
                               hint: 'النشاط',
                               items: activityVm.activitiesList,
-                              compareFn:  (item, selectedItem) => item.id_activity_type == selectedItem.id_activity_type,
+                              compareFn: (item, selectedItem) => item.id_activity_type == selectedItem.id_activity_type,
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 if (data == null) return;
-                                _bloc.filterEntity.activityNotifier.value =
-                                    int.parse(data.id_activity_type!);
+                                _bloc.filterEntity.activityNotifier.value = int.parse(data.id_activity_type!);
                               },
-                              selectedItem: activityVm.activitiesList
-                                  .firstWhereOrNull((element) =>
-                              int.parse(element.id_activity_type!) ==
-                                  selectedActivity),
-                              filterFn: (user, filter) =>
-                                  user.getFilterActivityType(filter),
+                              selectedItem:
+                                  activityVm.activitiesList.firstWhereOrNull((element) => int.parse(element.id_activity_type!) == selectedActivity),
+                              filterFn: (user, filter) => user.getFilterActivityType(filter),
                             ),
                           ),
                           8.width,
                           Flexible(
                             child: CustomDropDown<ActivitySizeTypeEnum>(
                               hint: "حجم النشاط*",
+                              isDisabled: true,
                               height: 100.h,
                               compareFn: (item, selectedItem) => item.index == selectedItem.index,
                               items: ActivitySizeTypeEnum.values,
                               itemAsString: (item) => item!.value,
-                              selectedItem:
-                              _bloc.filterEntity.activitySizeNotifier.value,
+                              selectedItem: _bloc.filterEntity.activitySizeNotifier.value,
                               onChanged: (value) {
-                                _bloc.filterEntity.activitySizeNotifier.value =
-                                    value;
+                                _bloc.filterEntity.activitySizeNotifier.value = value;
                               },
                             ),
                           ),
@@ -289,9 +276,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     _bloc.filterEntity.clientSourceNotifier.value = value;
                   },
                   filterFn: (clientSource, filter) {
-                    return clientSource.value
-                        .toLowerCase()
-                        .contains(filter.toLowerCase());
+                    return clientSource.value.toLowerCase().contains(filter.toLowerCase());
                   },
                   compareFn: (a, b) => a.value == b.value,
                 );
@@ -301,12 +286,9 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             StatefulBuilder(
               builder: (context, setState) {
                 return SubscribingIntentionLevelWidget(
-                  subscribingIntentionLevel:
-                  SubscribingIntentionLevelEnum.fromString(
-                      _bloc.filterEntity.subscribingIntentionLevel.value),
+                  subscribingIntentionLevel: SubscribingIntentionLevelEnum.fromString(_bloc.filterEntity.subscribingIntentionLevel.value),
                   onChanged: (value) {
-                    _bloc.filterEntity.subscribingIntentionLevel.value =
-                        value?.name;
+                    _bloc.filterEntity.subscribingIntentionLevel.value = value?.name;
                     setState(() {});
                   },
                 );
@@ -324,8 +306,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             child: CustomDateTimePicker(
                               hintText: 'من تاريخ',
                               dateTimeType: DateTimeEnum.date,
-                              dateTimeController:
-                              _bloc.filterEntity.fromController,
+                              dateTimeController: _bloc.filterEntity.fromController,
                               style2: true,
                             ),
                           ),
@@ -334,8 +315,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             child: CustomDateTimePicker(
                               hintText: 'الي تاريخ',
                               dateTimeType: DateTimeEnum.date,
-                              dateTimeController:
-                              _bloc.filterEntity.toController,
+                              dateTimeController: _bloc.filterEntity.toController,
                               style2: true,
                             ),
                           ),

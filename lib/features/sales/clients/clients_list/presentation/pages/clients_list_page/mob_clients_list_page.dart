@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/features/sales/clients/clients_list/presentation/widgets/assign_clients_to_employee_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -78,7 +79,8 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
               textDirection: TextDirection.rtl,
               child: BlocConsumer<ClientsListBloc, ClientsListState>(
                 listenWhen: (previous, current) {
-                  return previous.exportClientsToExcelStatus != current.exportClientsToExcelStatus;
+                  return previous.exportClientsToExcelStatus !=
+                      current.exportClientsToExcelStatus;
                 },
                 listener: (context, state) {
                   if (state.exportClientsToExcelStatus.isFailed()) {
@@ -89,7 +91,8 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                   }
                 },
                 buildWhen: (previous, current) {
-                  return previous.exportClientsToExcelStatus != current.exportClientsToExcelStatus;
+                  return previous.exportClientsToExcelStatus !=
+                      current.exportClientsToExcelStatus;
                 },
                 builder: (context, state) {
                   if (state.exportClientsToExcelStatus.isLoading()) {
@@ -98,23 +101,41 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                   return Directionality(
                     textDirection: TextDirection.rtl,
                     child: PopupMenuButton<String>(
-                      icon: Icon(Icons.more_vert, color: Colors.white), // Set icon color to white
+                      icon: Icon(Icons.more_vert,
+                          color: Colors.white), // Set icon color to white
                       onSelected: (value) {
                         if (value == 'export_excel') {
                           _exportToExcel();
                         } else if (value == 'marketing_report') {
-                          AppNavigator.go(ClientMarketingReportPage(), isNew: false);
+                          AppNavigator.go(ClientMarketingReportPage(),
+                              isNew: false);
                         } else if (value == 'add_client') {
                           AppNavigator.go(ClientAddEditPage(), isNew: false);
                         }
                       },
                       itemBuilder: (context) => [
+
+                           if (_privilegeCubit.checkPrivilege('47'))
+                          PopupMenuItem(
+                            value: 'add_client',
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: AppText(
+                                "إضافة عميل",
+                                fontSize: 14.scaleFontSize,
+                              ),
+                            ),
+                          ),
+
                         if (_privilegeCubit.checkPrivilege('287'))
                           PopupMenuItem(
                             value: 'export_excel',
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: AppText("Excel تصدير إلى"),
+                              child: AppText(
+                                "Excel تصدير إلى",
+                                fontSize: 14.scaleFontSize,
+                              ),
                             ),
                           ),
                         if (_privilegeCubit.checkPrivilege('186'))
@@ -122,17 +143,13 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                             value: 'marketing_report',
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: AppText("تقرير التسويق"),
+                              child: AppText(
+                                "تقرير التسويق",
+                                fontSize: 14.scaleFontSize,
+                              ),
                             ),
                           ),
-                        if (_privilegeCubit.checkPrivilege('47'))
-                          PopupMenuItem(
-                            value: 'add_client',
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: AppText("إضافة عميل"),
-                            ),
-                          ),
+                     
                       ],
                     ),
                   );
@@ -149,6 +166,7 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
               opacity: animation,
               child: widget,
             ),
+
             ///determine to show widget depending on listIds content
             child: listIds.isEmpty
                 ? SizedBox.shrink()
@@ -157,9 +175,12 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                     child: AppElevatedButton(
                       text: 'تحويل العملاء المحددين',
                       onPressed: () async {
-                        final ValueNotifier<UserModel?> selectedUser = ValueNotifier(null);
+                        final ValueNotifier<UserModel?> selectedUser =
+                            ValueNotifier(null);
                         AppConstants.showAppDialog(
-                          child: assignClientsToEmployeeDialog(selectedUser: selectedUser, clientsListBloc: _clientsListBloc),
+                          child: assignClientsToEmployeeDialog(
+                              selectedUser: selectedUser,
+                              clientsListBloc: _clientsListBloc),
                         );
                       },
                     ),
@@ -177,7 +198,8 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                   children: [
                     Expanded(
                       child: CustomSearchWidget(
-                        searchController: _clientsListBloc.pageVariables.searchController,
+                        searchController:
+                            _clientsListBloc.pageVariables.searchController,
                         onChanged: (value) {
                           _fetchClients(isDebounced: true);
                         },
@@ -199,17 +221,21 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                   value: _clientsListBloc.filterEntity.isSwitchOnNotifier.value,
                   onChanged: (value) {
                     value1 = value;
-                    _clientsListBloc.filterEntity.isSwitchOnNotifier.value = value;
+                    _clientsListBloc.filterEntity.isSwitchOnNotifier.value =
+                        value;
                     setState(() {});
 
-                    _clientsListBloc.filterEntity.statusNotifier.value = value ? ['مشترك'] : [];
+                    _clientsListBloc.filterEntity.statusNotifier.value =
+                        value ? ['مشترك'] : [];
                     _fetchClients();
+
                     ///when change type of client clear all any select
-                    _clientsListBloc.pageVariables.selectedItemsId.value=[];
-                    chooseAll.value=false;
+                    _clientsListBloc.pageVariables.selectedItemsId.value = [];
+                    chooseAll.value = false;
                   },
                   title: AppText(
                     "انشطة العملاء المشتركين",
+                    fontSize: 16.scaleFontSize,
                     style: AppStyles.textStyle,
                   ),
                 ),
@@ -218,37 +244,49 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: ClientsListCount(),
                 ),
-                if(context.read<PrivilegesCubit>().checkPrivilege('326'))Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppText('اختر الكل'),
-                      ValueListenableBuilder(
-                        valueListenable: chooseAll,
-                        builder: (context, value, child) => Checkbox(
-                          value: value,
-                          onChanged: (value) {
-                            ///if value true select all data appear
-                            ///else make all data unselected
-                            chooseAll.value = value ?? false;
-                            if (value ?? false) {
-                              _clientsListBloc.pageVariables.selectedItemsId.value = List.of(_clientsListBloc.pageVariables.selectedItemsId.value)
-                                ..addAll((_clientsListBloc.pageVariables.allList).map((e) => e.idClients!));
-                            } else {
-                              _clientsListBloc.pageVariables.selectedItemsId.value = [];
-                            }
-                          },
+                if (context.read<PrivilegesCubit>().checkPrivilege('326'))
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AppText(
+                          'اختر الكل',
+                          fontSize: 12.scaleFontSize,
                         ),
-                      )
-                    ],
+                        ValueListenableBuilder(
+                          valueListenable: chooseAll,
+                          builder: (context, value, child) => Checkbox(
+                            value: value,
+                            onChanged: (value) {
+                              ///if value true select all data appear
+                              ///else make all data unselected
+                              chooseAll.value = value ?? false;
+                              if (value ?? false) {
+                                _clientsListBloc
+                                        .pageVariables.selectedItemsId.value =
+                                    List.of(_clientsListBloc
+                                        .pageVariables.selectedItemsId.value)
+                                      ..addAll((_clientsListBloc
+                                              .pageVariables.allList)
+                                          .map((e) => e.idClients!));
+                              } else {
+                                _clientsListBloc
+                                    .pageVariables.selectedItemsId.value = [];
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                5.verticalSpace,
+                1.verticalSpace,
                 Expanded(
                   child: BlocBuilder<ClientsListBloc, ClientsListState>(
                     buildWhen: (previous, current) {
-                      return previous.getAllClientsStatus != current.getAllClientsStatus && _clientsListBloc.pageVariables.isNewFilter;
+                      return previous.getAllClientsStatus !=
+                              current.getAllClientsStatus &&
+                          _clientsListBloc.pageVariables.isNewFilter;
                     },
                     builder: (context, state) {
                       return state.getAllClientsStatus.when(

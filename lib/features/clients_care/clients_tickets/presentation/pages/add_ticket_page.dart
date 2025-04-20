@@ -25,6 +25,8 @@ import '../../../../finance/clients_attachments/presentation/manager/client_atta
 import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
+import '../../../../../core/common/widgets/section_header.dart';
+import '../../../../../core/common/widgets/info_item.dart';
 
 class AddTicketPage extends StatefulWidget {
   const AddTicketPage({
@@ -54,8 +56,10 @@ class _AddTicketPageState extends State<AddTicketPage> {
     addTicketCubit = context.read<AddTicketCubit>();
     // fkClientNotifier.value = widget.fkClient;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ClientProvider>(context, listen: false).getclient_Accept();
-      Provider.of<ClientProvider>(context, listen: false).changevalueclient(null);
+      await Provider.of<ClientProvider>(context, listen: false)
+          .getclient_Accept();
+      Provider.of<ClientProvider>(context, listen: false)
+          .changevalueclient(null);
     });
     super.initState();
   }
@@ -76,97 +80,116 @@ class _AddTicketPageState extends State<AddTicketPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       10.height,
-                      AppText('اسم العميل*'),
-                      5.height,
-                      BlocBuilder<ClientAttachmentsBloc, ClientAttachmentsState>(
-                        builder: (context, state) {
-                          return ValueListenableBuilder(
-                            valueListenable: fkClientNotifier,
-                            builder: (context, value, child) => CustomSearchableDropDown<SubscribedClientsModel>(
-                              hint: 'العميل',
-                              items: state.getAllClients.data ?? [],
-                              itemAsString: (u) => u?.nameEnterprise ?? '',
-                              selectedItem: value,
-                              onChanged: (data) {
-                                fkClientNotifier.value = data;
-                                // fkClientNotifier.value = data!.idClients;
-                                // cart.changevalueclient(data);
-                                // name_enterprise = data.nameEnterprise!;
-                                // name_regoin = data.nameRegion!;
-                                // name_country = data.nameCountry!;
-                              },
-                              filterFn: (user, filter) {
-                                return user.nameEnterprise!.toLowerCase().contains(filter.toLowerCase());
-                              },
-                              compareFn: (item, selectedItem) => item.id == selectedItem.id,
-                            ),
-                          );
-                        },
+                      const SectionHeader(title: 'معلومات العميل'),
+                      10.height,
+                      InfoItem(
+                        title: 'اسم العميل*',
+                        isRequired: true,
+                        customWidget: BlocBuilder<ClientAttachmentsBloc,
+                            ClientAttachmentsState>(
+                          builder: (context, state) {
+                            return ValueListenableBuilder(
+                              valueListenable: fkClientNotifier,
+                              builder: (context, value, child) =>
+                                  CustomSearchableDropDown<
+                                      SubscribedClientsModel>(
+                                hint: 'العميل',
+                                items: state.getAllClients.data ?? [],
+                                itemAsString: (u) => u?.nameEnterprise ?? '',
+                                selectedItem: value,
+                                onChanged: (data) {
+                                  fkClientNotifier.value = data;
+                                },
+                                filterFn: (user, filter) {
+                                  return user.nameEnterprise!
+                                      .toLowerCase()
+                                      .contains(filter.toLowerCase());
+                                },
+                                compareFn: (item, selectedItem) =>
+                                    item.id == selectedItem.id,
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                      SizedBox(height: 10),
                       if (fkClientNotifier.value != null) ...[
+                        10.height,
                         Center(
                           child: AppElevatedButton(
                             text: 'ملف العميل',
                             onPressed: () {
                               AppNavigator.go(
                                 ClientProfile(
-                                  idClient: fkClientNotifier.value!.id.toString(),
+                                  idClient:
+                                      fkClientNotifier.value!.id.toString(),
                                 ),
                                 name: AppRoutesNames.clientProfile.inAddTicket,
                                 pathParameters: {
-                                  'idClient': fkClientNotifier.value!.id.toString(),
+                                  'idClient':
+                                      fkClientNotifier.value!.id.toString(),
                                 },
                               );
                             },
                           ),
                         ),
                       ],
+                      20.height,
+                      const SectionHeader(title: 'تفاصيل التذكرة'),
                       10.height,
-                      AppText('نوع المشكلة*'),
-                      5.height,
-                      Consumer<ClientTypeProvider>(
-                        builder: (context, cart, child) {
-                          return CustomDropDown<String>(
-                            hint: 'نوع المشكلة',
-                            items: cart.type_of_out.map((e) {
-                              return e.nameReason;
-                            }).toList(),
-                            compareFn:  (item, selectedItem) => item == selectedItem,
-                            itemAsString: (nameReason) => nameReason!,
-                            selectedItem: cart.selectedValueOut,
-                            onChanged: (value) {
-                              cart.changevalueOut(value!);
-                            },
-                          );
-                        },
+                      InfoItem(
+                        title: 'نوع المشكلة*',
+                        isRequired: true,
+                        customWidget: Consumer<ClientTypeProvider>(
+                          builder: (context, cart, child) {
+                            return CustomDropDown<String>(
+                              hint: 'نوع المشكلة',
+                              items: cart.type_of_out.map((e) {
+                                return e.nameReason;
+                              }).toList(),
+                              compareFn: (item, selectedItem) =>
+                                  item == selectedItem,
+                              itemAsString: (nameReason) => nameReason!,
+                              selectedItem: cart.selectedValueOut,
+                              onChanged: (value) {
+                                cart.changevalueOut(value!);
+                              },
+                            );
+                          },
+                        ),
                       ),
                       10.height,
-                      AppText('مصدر التذكرة'),
-                      5.height,
-                      CustomDropDown<String>(
-                        hint: 'مصدر التذكرة',
-                        items: TicketSourceEnum.values.where((e) => e != TicketSourceEnum.location).map((e) => e.value).toList(),
-                        itemAsString: (nameReason) => nameReason!,
-                        selectedItem: ticketSource?.value,
-                        compareFn:  (item, selectedItem) => item== selectedItem,
-                        onChanged: (value) {
-                          ticketSource = TicketSourceEnum.fromString(
-                            value.toString(),
-                          );
-                        },
+                      InfoItem(
+                        title: 'مصدر التذكرة',
+                        customWidget: CustomDropDown<String>(
+                          hint: 'مصدر التذكرة',
+                          items: TicketSourceEnum.values
+                              .where((e) => e != TicketSourceEnum.location)
+                              .map((e) => e.value)
+                              .toList(),
+                          itemAsString: (nameReason) => nameReason!,
+                          selectedItem: ticketSource?.value,
+                          compareFn: (item, selectedItem) =>
+                              item == selectedItem,
+                          onChanged: (value) {
+                            ticketSource = TicketSourceEnum.fromString(
+                              value.toString(),
+                            );
+                          },
+                        ),
                       ),
                       10.height,
-                      AppText('وصف المشكلة'),
-                      5.height,
-                      AppTextField(
-                        hintText: 'وصف المشكلة',
-                        controller: problem_desc,
-                        maxLines: 4,
-                        validator: InputValidator.requiredFiled,
-                        contentPadding: EdgeInsets.all(10),
+                      InfoItem(
+                        title: 'وصف المشكلة',
+                        isRequired: true,
+                        customWidget: AppTextField(
+                          hintText: 'وصف المشكلة',
+                          controller: problem_desc,
+                          maxLines: 4,
+                          validator: InputValidator.requiredFiled,
+                          contentPadding: EdgeInsets.all(10),
+                        ),
                       ),
-                      SizedBox(height: 15),
+                      20.height,
                       BlocConsumer<AddTicketCubit, AddTicketState>(
                         listener: (context, state) {
                           if (state is AddTicketSuccess) {
@@ -182,30 +205,37 @@ class _AddTicketPageState extends State<AddTicketPage> {
                           return SizedBox(
                             width: double.infinity,
                             child: AppElevatedButton(
-                                text: 'حفظ',
-                                isLoading: state is AddTicketLoading,
-                                onPressed: () async {
-                                  _globalKey.currentState!.save();
-                                  if (_globalKey.currentState!.validate()) {
-                                    if (fkClientNotifier.value == null) {
-                                      AppSnackbar.showSnakeBar(
-                                        'من فضلك اختر عميل',
-                                      );
-                                      return;
-                                    }
-                                    await addTicketCubit.addTicket(
-                                      AddTicketParams(
-                                        fkClient: fkClientNotifier.value!.id.toString(),
-                                        typeProblem: Provider.of<ClientTypeProvider>(context, listen: false).selectedValueOut.toString(),
-                                        detailsProblem: problem_desc.text,
-                                        ticketSource: ticketSource?.value ?? '',
-                                        clientType: '0',
-                                        notes: '',
-                                      ),
+                              text: 'حفظ',
+                              isLoading: state is AddTicketLoading,
+                              onPressed: () async {
+                                _globalKey.currentState!.save();
+                                if (_globalKey.currentState!.validate()) {
+                                  if (fkClientNotifier.value == null) {
+                                    AppSnackbar.showSnakeBar(
+                                      'من فضلك اختر عميل',
                                     );
-                                    AppNavigator.pop();
+                                    return;
                                   }
-                                }),
+                                  await addTicketCubit.addTicket(
+                                    AddTicketParams(
+                                      fkClient:
+                                          fkClientNotifier.value!.id.toString(),
+                                      typeProblem:
+                                          Provider.of<ClientTypeProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .selectedValueOut
+                                              .toString(),
+                                      detailsProblem: problem_desc.text,
+                                      ticketSource: ticketSource?.value ?? '',
+                                      clientType: '0',
+                                      notes: '',
+                                    ),
+                                  );
+                                  AppNavigator.pop();
+                                }
+                              },
+                            ),
                           );
                         },
                       ),

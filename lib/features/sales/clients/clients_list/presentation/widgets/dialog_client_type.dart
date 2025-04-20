@@ -53,10 +53,8 @@ class _DialogClientTypeState extends State<DialogClientType> {
   late final ClientsListBloc _clientsListBloc;
 
   final _globalKey = GlobalKey<FormState>();
-  ValueNotifier<PeriodicCommunicationClientTypeEnum?> clientTypeNotifier =
-  ValueNotifier<PeriodicCommunicationClientTypeEnum?>(null);
-  ValueNotifier<CommunicationWithdrawalReasonModel?> withdrawalReasonNotifier =
-  ValueNotifier<CommunicationWithdrawalReasonModel?>(null);
+  ValueNotifier<PeriodicCommunicationClientTypeEnum?> clientTypeNotifier = ValueNotifier<PeriodicCommunicationClientTypeEnum?>(null);
+  ValueNotifier<CommunicationWithdrawalReasonModel?> withdrawalReasonNotifier = ValueNotifier<CommunicationWithdrawalReasonModel?>(null);
 
   @override
   void initState() {
@@ -64,12 +62,12 @@ class _DialogClientTypeState extends State<DialogClientType> {
     if (widget.client.communicationDetails != null &&
         widget.client.communicationDetails!.isNotEmpty &&
         PeriodicCommunicationClientTypeEnum.values.isNotEmpty) {
-      if (PeriodicCommunicationClientTypeEnum.values.any((type) =>
-      type.toString().split('.').last.toLowerCase()
-          == widget.client.communicationDetails!.first.state?.toLowerCase(),)) {
-        clientTypeNotifier.value = PeriodicCommunicationClientTypeEnum.values.firstWhere((type) =>
-        type.toString().split('.').last.toLowerCase()
-                  == widget.client.communicationDetails!.first.state?.toLowerCase(),);
+      if (PeriodicCommunicationClientTypeEnum.values.any(
+        (type) => type.value.toLowerCase() == widget.client.communicationDetails!.first.state?.toLowerCase(),
+      )) {
+        clientTypeNotifier.value = PeriodicCommunicationClientTypeEnum.values.firstWhere(
+          (type) => type.value.toLowerCase() == widget.client.communicationDetails!.first.state?.toLowerCase(),
+        );
       }
       super.initState();
     }
@@ -92,7 +90,7 @@ class _DialogClientTypeState extends State<DialogClientType> {
                     CustomDropDown<PeriodicCommunicationClientTypeEnum>(
                       hint: "نوع العميل",
                       items: PeriodicCommunicationClientTypeEnum.values,
-                      compareFn:  (item, selectedItem) => item.index == selectedItem.index,
+                      compareFn: (item, selectedItem) => item.index == selectedItem.index,
                       itemAsString: (item) => item!.value,
                       selectedItem: clientTypeNotifier.value,
                       onChanged: (value) => clientTypeNotifier.value = value,
@@ -105,7 +103,7 @@ class _DialogClientTypeState extends State<DialogClientType> {
                         if (clientTypeNotifier.value?.isWithdrawn ?? false) {
                           return CommunicationWithdrawalReasonsDropDown(
                             withdrawalReason: withdrawalReasonNotifier.value,
-                            initialValue:widget.client.communicationDetails!.isEmpty?null:widget.client.communicationDetails!.first.reason,
+                            initialValue: widget.client.communicationDetails!.isEmpty ? null : widget.client.communicationDetails!.first.reason,
                             onChanged: (value) {
                               withdrawalReasonNotifier.value = value;
                             },
@@ -125,31 +123,33 @@ class _DialogClientTypeState extends State<DialogClientType> {
                             if (!_globalKey.currentState!.validate()) {
                               return;
                             }
-                            if(widget.client.communicationDetails!=null && widget.client.communicationDetails!.isNotEmpty){
-                              ChangeClientCommunicationParam changeClientCommunicationParam =
-                              ChangeClientCommunicationParam(state: clientTypeNotifier.value!.name,
+                            if (widget.client.communicationDetails != null && widget.client.communicationDetails!.isNotEmpty) {
+                              ChangeClientCommunicationParam changeClientCommunicationParam = ChangeClientCommunicationParam(
+                                  state: clientTypeNotifier.value!.name,
                                   clientRecordId: widget.client.communicationDetails!.first.id!,
-                                  reasonId:clientTypeNotifier.value!= PeriodicCommunicationClientTypeEnum.withdrawn ?null:
-                                      withdrawalReasonNotifier.value==null?null:withdrawalReasonNotifier.value!.idReason
-                              );
-                              _clientsListBloc.add(ChangeClientCommunicationEvent(
-                                  changeClientCommunicationParam, onSuccess: (comDetails) {
-                                    final client = widget.client.copyWith(communicationDetails: [comDetails]);
+                                  reasonId: clientTypeNotifier.value != PeriodicCommunicationClientTypeEnum.withdrawn
+                                      ? null
+                                      : withdrawalReasonNotifier.value == null
+                                          ? null
+                                          : withdrawalReasonNotifier.value!.idReason);
+                              _clientsListBloc.add(ChangeClientCommunicationEvent(changeClientCommunicationParam, onSuccess: (comDetails) {
+                                final client = widget.client.copyWith(communicationDetails: [comDetails]);
                                 Navigator.pop(context, client);
                               }));
-                            }else{
-                              StoreClientCommunicationParam storeClientCommunicationParam =
-                              StoreClientCommunicationParam(state: clientTypeNotifier.value!.name,
+                            } else {
+                              StoreClientCommunicationParam storeClientCommunicationParam = StoreClientCommunicationParam(
+                                  state: clientTypeNotifier.value!.name,
                                   clientId: widget.idClient,
-                                  reasonId:clientTypeNotifier.value!= PeriodicCommunicationClientTypeEnum.withdrawn?null:
-                                  withdrawalReasonNotifier.value==null?null:withdrawalReasonNotifier.value!.idReason                              );
-                              _clientsListBloc.add(StoreClientCommunicationEvent(
-                                  storeClientCommunicationParam, onSuccess: (comDetails) {
+                                  reasonId: clientTypeNotifier.value != PeriodicCommunicationClientTypeEnum.withdrawn
+                                      ? null
+                                      : withdrawalReasonNotifier.value == null
+                                          ? null
+                                          : withdrawalReasonNotifier.value!.idReason);
+                              _clientsListBloc.add(StoreClientCommunicationEvent(storeClientCommunicationParam, onSuccess: (comDetails) {
                                 final client = widget.client.copyWith(communicationDetails: [comDetails]);
                                 Navigator.pop(context, client);
                               }));
                             }
-
                           },
                         );
                       },

@@ -47,7 +47,7 @@ class _AppCardContainerState extends State<AppCardContainer> {
           margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
           padding: widget.padding ?? EdgeInsets.all(15),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(2),
             color: isHighlight
                 ? Colors.grey.withOpacity(0.1)
                 : widget.color ?? Colors.white,
@@ -55,9 +55,9 @@ class _AppCardContainerState extends State<AppCardContainer> {
               BoxShadow(
                 color: isHighlight
                     ? Colors.transparent
-                    : Colors.grey.withOpacity(0.5),
+                    : Colors.grey.withOpacity(0.2),
                 spreadRadius: 1,
-                blurRadius: 5,
+                blurRadius: 1,
                 offset: const Offset(0, 3),
               ),
             ],

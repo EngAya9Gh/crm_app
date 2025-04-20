@@ -20,8 +20,7 @@ ServerException handleException(dynamic e) {
 
 ServerException _handleDioException(DioException exception) {
   if (exception.response?.statusCode.toString().matchAsPrefix('5') != null) {
-    return AppNetworkException(
-        reason: AppNetworkExceptionReason.serverError, exception: exception);
+    return AppNetworkException(reason: AppNetworkExceptionReason.serverError, exception: exception);
   }
   switch (exception.type) {
     case DioExceptionType.cancel:
@@ -33,8 +32,7 @@ ServerException _handleDioException(DioException exception) {
     case DioExceptionType.connectionTimeout:
     case DioExceptionType.receiveTimeout:
     case DioExceptionType.sendTimeout:
-      return AppNetworkException(
-          reason: AppNetworkExceptionReason.timedOut, exception: exception);
+      return AppNetworkException(reason: AppNetworkExceptionReason.timedOut, exception: exception);
     case DioExceptionType.badResponse:
       final response = exception.response;
       if (response == null) {
@@ -49,8 +47,7 @@ ServerException _handleDioException(DioException exception) {
     case DioExceptionType.unknown:
     default:
       if (exception.error is SocketException) {
-        return AppNetworkException(
-            reason: AppNetworkExceptionReason.noInternet, exception: exception);
+        return AppNetworkException(reason: AppNetworkExceptionReason.noInternet, exception: exception);
       }
       return ServerException.unknown(
         exception: exception,
@@ -70,13 +67,10 @@ String _handleUnknownMessage(DioException exception) {
   return exception.response?.data['message'];
 }
 
-class ServerException<OriginalException> extends BaseAppException
-    implements Exception {
-  ServerException({required this.message, required this.exception})
-      : super(message: message);
+class ServerException<OriginalException> extends BaseAppException implements Exception {
+  ServerException({required this.message, required this.exception}) : super(message: message);
 
-  ServerException.unknown({required this.exception, required this.message})
-      : super(message: message);
+  ServerException.unknown({required this.exception, required this.message}) : super(message: message);
 
   final OriginalException exception;
   final String message;
@@ -92,13 +86,7 @@ class ServerException<OriginalException> extends BaseAppException
   }
 }
 
-enum AppNetworkExceptionReason {
-  canceled,
-  timedOut,
-  responseError,
-  noInternet,
-  serverError
-}
+enum AppNetworkExceptionReason { canceled, timedOut, responseError, noInternet, serverError }
 
 extension AppNetworkExceptionReasonExt on AppNetworkExceptionReason {
   String get message {
@@ -117,8 +105,7 @@ extension AppNetworkExceptionReasonExt on AppNetworkExceptionReason {
   }
 }
 
-class AppNetworkException<OriginalException extends Exception>
-    extends ServerException<OriginalException> {
+class AppNetworkException<OriginalException extends Exception> extends ServerException<OriginalException> {
   /// Create a network exception.
   AppNetworkException({
     required this.reason,
@@ -136,17 +123,12 @@ class AppNetworkException<OriginalException extends Exception>
   final AppNetworkExceptionReason reason;
 
   @override
-  AppNetworkException copyWith(
-      {OriginalException? exception, String? message}) {
-    return AppNetworkException._(
-        reason: reason,
-        exception: exception ?? this.exception,
-        message: message ?? this.message);
+  AppNetworkException copyWith({OriginalException? exception, String? message}) {
+    return AppNetworkException._(reason: reason, exception: exception ?? this.exception, message: message ?? this.message);
   }
 }
 
-class AppNetworkResponseException<OriginalException extends Exception, DataType>
-    extends AppNetworkException<OriginalException> {
+class AppNetworkResponseException<OriginalException extends Exception, DataType> extends AppNetworkException<OriginalException> {
   AppNetworkResponseException({
     required OriginalException exception,
     this.statusCode,

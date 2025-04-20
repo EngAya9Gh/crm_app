@@ -22,8 +22,25 @@ class SectionsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return 
+    
+    
+    Column(
+
+
       children: [
+ Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 45),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryMain,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      ),
+                    ),),
+
+       
         Expanded(
           child: AppPaginatedList(
             items: sections,
@@ -32,8 +49,8 @@ class SectionsListView extends StatelessWidget {
                 return SizedBox.shrink();
               }
               return SectionsCardForList(
+                
                 page: sections[index],
-                hasNumberOnCard: sections[index].path == AppRoutesPaths.homeSections.taskManagement ? Provider.of<UserProvider>(context, listen: true).currentUser.noOfOpenTasks : null,
               );
             },
           ),

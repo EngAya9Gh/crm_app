@@ -45,6 +45,7 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
                           ))));
                 },
                 child: CardRow(
+                  
                     title: 'الرقم المرجعي',
                     value: client.serialNumber.toString())),
             CardRow(

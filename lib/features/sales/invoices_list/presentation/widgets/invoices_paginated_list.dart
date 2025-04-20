@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/widgets/modern_invoice_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,13 +40,15 @@ class InvoicesPaginatedList extends StatelessWidget {
               _invoicesSectionCubit.getInvoicesByPrivileges(isNewFilter: false);
             },
             itemBuilder: (context, index) {
-              return CardInvoiceClient(
+              return ModernInvoiceCard(
                 type: 'profile',
+                routeName: 'client_profile',
                 invoice: _invoicesSectionCubit.invoicesList[index],
-
               );
             },
-            separatorBuilder: (_, __) => const SizedBox.shrink(),
+            separatorBuilder: (_, __) => SizedBox(
+              height: 10,
+            ),
           ),
         );
       },

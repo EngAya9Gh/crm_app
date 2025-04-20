@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +19,7 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
     required this.onChange,
     this.onSaved,
     this.itemBuilder,
+    this.itemBuilderSelected,
     this.onTap,
     this.validator,
     this.hint,
@@ -28,6 +30,7 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
     this.value,
     this.title,
     this.textStyle,
+    this.selectedTextStyle,
     this.fillColor,
     this.borderColor,
     this.iconColor,
@@ -41,6 +44,7 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
   final V? value;
   final DropdownSearchItemAsString<T?>? itemAsString;
   final DropdownBuilder<T>? itemBuilder;
+  final DropdownBuilder<T>? itemBuilderSelected;
   final DropdownSearchItemAsValue<T?, V?> itemAsValue;
   final ValueChanged<V?>? onChange;
   final FormFieldSetter? onSaved;
@@ -52,6 +56,7 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
   final FocusNode? focusNode;
   final String? title;
   final TextStyle? textStyle;
+  final TextStyle? selectedTextStyle;
   final Color? fillColor;
   final Color? borderColor;
   final Color? iconColor;
@@ -126,9 +131,10 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
                                 (isDisabled
                                     ? context.textTheme.titleSmall
                                         ?.copyWith(color: Colors.grey)
-                                    : context.textTheme.titleSmall),
+                                    : context.textTheme.titleSmall
+                                        ?.copyWith(color: Colors.black)),
                           )
-                        : itemBuilder!(item),
+                        : itemBuilderSelected?.call(item) ?? itemBuilder!(item),
                   ),
                 )
                 .toList();
@@ -181,11 +187,13 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
             contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
             suffixIcon: icon ??
                 Icon(Icons.arrow_drop_down_rounded,
-                    color: (isDisabled
-                        ? context.colorScheme.primary.withOpacity(0.3)
-                        : (items.isEmpty
+                    color: (isFilledColor ?? false)
+                        ? AppColors.white
+                        : (isDisabled
                             ? context.colorScheme.primary.withOpacity(0.3)
-                            : context.colorScheme.primary))),
+                            : (items.isEmpty
+                                ? context.colorScheme.primary.withOpacity(0.3)
+                                : context.colorScheme.primary))),
           ),
         ),
       ],

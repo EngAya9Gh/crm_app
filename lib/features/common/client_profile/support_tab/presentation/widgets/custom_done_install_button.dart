@@ -46,102 +46,111 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
   }
 
   @override
+  void dispose() {
+    nameUserClient.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final supportTabCubit = context.read<SupportTabCubit>();
     return PopScope(
-      onPopInvoked: (didPop) {
-        if (didPop) {
-          nameUserClient.dispose();
-        }
-      },
-      child: AppElevatedButton(
-        isDisabled: widget.invoiceModel!.ready_install == '0',
-        text: 'تم التركيب للعميل',
-        onPressed: () async {
-          if (widget.invoiceModel!.ready_install == '0') {
-            AppSnackbar.showSnakeBar(
-              'العميل غير جاهز للتركيب',
-              color: ToastColorsEnum.warning,
-            );
-            return;
-          }
-          await showDialog(
-            context: context,
-            builder: (context) {
-              return Directionality(
-                textDirection: TextDirection.rtl,
-                child: AlertDialog(
-                  title: AppText('التأكيد'),
-                  content: AppText('هل تريد تأكيد عملية التركيب'),
-                  actions: <Widget>[
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width * 0.8,
-                      ),
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              width: 600,
-                            ),
-                            AppTextField(
-                              hintText: ' يوزر العميل',
-                              controller: nameUserClient,
-                              contentPadding: EdgeInsets.all(10),
-                              maxLines: 3,
-                              validator: InputValidator.requiredFiled,
-                            ),
-                            SizedBox(height: 10),
-                            // CustomLocationField(
-                            //   isEdit: false,
-                            //   locationController: addressClientController,
-                            // ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  child: AppElevatedButton(
-                                    text: 'لا',
-                                    onPressed: () => AppNavigator.pop(),
-                                  ),
-                                ),
-                                10.horizontalSpace,
-                                Expanded(
-                                  child: BlocBuilder<SupportTabCubit, SupportTabState>(
-                                    builder: (context, state) {
-                                      return AppElevatedButton(
-                                          text: 'نعم',
-                                          isLoading: state.setDateDoneStatus.isLoading,
-                                          onPressed: () async {
-                                            if (!formKey.currentState!.validate()) {
-                                              return;
-                                            }
-                                            await supportTabCubit.setDateDone(SetDateDoneParams(
-                                                id_invoice: widget.invoiceModel!.idInvoice!,
-                                                clientusername: nameUserClient.text,
-                                                // location: addressClientController.text
-                                            ));
-                                            nameUserClient.clear();
-                                            AppNavigator.pop();
-                                          });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: AlertDialog(
+          title: AppText('التأكيد'),
+          content: AppText('هل تريد تأكيد عملية التركيب'),
+          actions: <Widget>[
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: MediaQuery.of(context).size.width * 0.8,
+              ),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 600,
+                    ),
+                    AppTextField(
+                      hintText: ' يوزر العميل',
+                      controller: nameUserClient,
+                      contentPadding: EdgeInsets.all(10),
+                      maxLines: 3,
+                      validator: InputValidator.requiredFiled,
+                    ),
+                    SizedBox(height: 10),
+                    // CustomLocationField(
+                    //   isEdit: false,
+                    //   locationController: addressClientController,
+                    // ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: AppElevatedButton(
+                            text: 'لا',
+                            onPressed: () => AppNavigator.pop(),
+                          ),
                         ),
-                      ),
+                        10.horizontalSpace,
+                        Expanded(
+                          child: BlocBuilder<SupportTabCubit, SupportTabState>(
+                            builder: (context, state) {
+                              return AppElevatedButton(
+                                  text: 'نعم',
+                                  isLoading: state.setDateDoneStatus.isLoading,
+                                  onPressed: () async {
+                                    if (!formKey.currentState!.validate()) {
+                                      return;
+                                    }
+                                    await supportTabCubit.setDateDone(SetDateDoneParams(
+                                      id_invoice: widget.invoiceModel!.idInvoice!,
+                                      clientusername: nameUserClient.text,
+                                      // location: addressClientController.text
+                                    ));
+                                    nameUserClient.clear();
+                                    AppSnackbar.showSnakeBar(
+                                      "تم النجاح",
+                                      color: ToastColorsEnum.success,
+                                    );
+                                    AppNavigator.pop();
+                                  });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              );
-            },
-          );
-        },
+              ),
+            ),
+          ],
+        ),
       ),
+      // child: SizedBox(
+      //   height: 30,
+      //   width: 30,
+      //   child: AppElevatedButton(
+      //     isDisabled: widget.invoiceModel!.ready_install == '0',
+      //     text: 'تم التركيب للعميل',
+      //     onPressed: () async {
+      //       if (widget.invoiceModel!.ready_install == '0') {
+      //         AppSnackbar.showSnakeBar(
+      //           'العميل غير جاهز للتركيب',
+      //           color: ToastColorsEnum.warning,
+      //         );
+      //         return;
+      //       }
+      //       await showDialog(
+      //         context: context,
+      //         builder: (context) {
+      //           return  },
+      //       );
+      //     },
+      //   ),
+      // ),
     );
   }
 }

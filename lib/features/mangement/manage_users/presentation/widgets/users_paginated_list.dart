@@ -13,17 +13,22 @@ class UsersPaginatedList extends StatelessWidget {
     final _usersCubit = context.read<UsersCubit>();
     return BlocBuilder<UsersCubit, UsersState>(
       builder: (context, state) {
-        return AppPaginatedList(
-          items: _usersCubit.pageVariables.usersList,
-          onLoadMore: () => _usersCubit.getUsers(isNewFilter: false),
-          itemBuilder: (context, index) {
-            return CustomUserCard(
-              user: _usersCubit.pageVariables.usersList[index],
-            );
-          },
-          isLoading: state.getUsersStatus.isLoading(),
-          hasReachedEnd: _usersCubit.pageVariables.hasReachedEnd,
-          scrollController: ScrollController(),
+        return Container(
+          color: Colors.white,
+          child: AppPaginatedList(
+            items: _usersCubit.pageVariables.usersList,
+            onLoadMore: () => _usersCubit.getUsers(isNewFilter: false),
+            itemBuilder: (context, index) {
+              return CustomUserCard(
+                user: _usersCubit.pageVariables.usersList[index],
+              );
+            },
+            isLoading: state.getUsersStatus.isLoading(),
+            hasReachedEnd: _usersCubit.pageVariables.hasReachedEnd,
+            scrollController: ScrollController(),
+            listMargin: EdgeInsets.zero,
+            separatorBuilder: (context, index) => const SizedBox.shrink(),
+          ),
         );
       },
     );

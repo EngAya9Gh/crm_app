@@ -1,15 +1,18 @@
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
+import 'package:crm_smart/core/services/api/api_utils.dart';
 import 'package:crm_smart/core/services/api/result.dart';
-import 'package:crm_smart/features/notifications/domain/use_cases/get_unread_notifications_count_usecase.dart';
-import 'package:crm_smart/features/notifications/domain/use_cases/mark_notifications_as_read_usecase.dart';
+import 'package:crm_smart/features/versions/data/models/demand_model.dart';
+import 'package:crm_smart/features/versions/data/models/incomming_update.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/add_demand_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/change_demand_status_usecase.dart';
+import 'package:crm_smart/features/versions/domain/use_cases/get_demands_usecase.dart';
+import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/model/versionModel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
-import '../../../../core/services/api/api_utils.dart';
-import '../../../../model/notificationModel.dart';
 import '../../domain/repositories/versions_repo.dart';
 import '../../domain/use_cases/add_version_usecase.dart';
 import '../../domain/use_cases/get_versions_usecase.dart';
@@ -52,7 +55,7 @@ class NotificationsRepoImpl implements versionsRepo {
   }
 
   @override
-  Future<Either<String, ResponseWrapper<VersionModel>>> updateVersion(AddVersionPramas params)async {
+  Future<Either<String, ResponseWrapper<VersionModel>>> updateVersion(AddVersionPramas params) async {
     try {
       final data = await _dataSource.updateVersion(params);
       return Right(data);
@@ -60,5 +63,41 @@ class NotificationsRepoImpl implements versionsRepo {
       debugPrint("error in getNotifications in repo => $e");
       return Left(e.toString());
     }
+  }
+
+  @override
+  Future<Either<String, ResponseWrapper<IconmmingUpdateInfo>>> getIncommingUpdateInfo() async {
+    try {
+      final data = await _dataSource.getIncommingUpdateInfo();
+      return Right(data);
+    } catch (e) {
+      debugPrint("error in get incomming update info in repo => $e");
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Result<ResponseWrapper<DemandModel>>> addDemand(AddOrUpdateDemandParams params) {
+    return toApiResult(() => _dataSource.addDemand(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<DemandModel>>>> getDemands(GetDemandParams params) {
+    return toApiResult(() => _dataSource.getDemands(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<CommentModel>>> addDemandComment(DemandChangeStatusOrCommentParams params) {
+    return toApiResult(() => _dataSource.addDemandComment(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<DemandModel>>> changeDemandStatus(DemandChangeStatusOrCommentParams params) {
+    return toApiResult(() => _dataSource.changeDemandStatus(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<CommentModel>>>> getDemandComments(DemandChangeStatusOrCommentParams params) {
+    return toApiResult(() => _dataSource.getDemandComments(params));
   }
 }

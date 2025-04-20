@@ -1,12 +1,35 @@
-import 'dart:math';
-
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/helpers/scroll_to_find_item.dart';
+import 'package:crm_smart/core/common/models/location/branch_model.dart';
+import 'package:crm_smart/core/common/widgets/app_elevated_button.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/common/client_profile/client_dates_tab/presentation/widgets/task_card_new.dart';
+import 'package:crm_smart/features/mangement/manage_users/presentation/manager/users_cubit.dart';
+import 'package:crm_smart/features/task_management/data/models/task_model.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/change_task_assign_usecase.dart';
+import 'package:crm_smart/features/task_management/domain/use_cases/get_task_by_id_usecase.dart';
+import 'package:crm_smart/features/task_management/presentation/pages/add_task_page.dart';
+import 'package:crm_smart/features/task_management/presentation/widgets/task_web_widgets/task_card_web.dart';
+import 'package:crm_smart/model/managmodel.dart';
+import 'package:crm_smart/model/usermodel.dart';
+import 'package:crm_smart/provider/manage_provider.dart';
+import 'package:crm_smart/ui/screen/client/client_profile.dart';
+import 'package:crm_smart/view_model/regoin_vm.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
+import 'package:provider/provider.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 import '../../../../core/common/extensions/build_context.dart';
 import '../../../../core/common/widgets/app_icon.dart';
@@ -17,12 +40,21 @@ import '../../../mangement/manage_privileges/privileges/presentation/manager/lev
 import '../manager/task_cubit.dart';
 import 'dialog_task_detail.dart';
 
-class TasksPaginatedList extends StatefulWidget {
-  const TasksPaginatedList({super.key});
 
+class TasksPaginatedList extends StatefulWidget {
+  const TasksPaginatedList({
+    super.key,
+    this.idTask,
+    this.idStatus,
+  });
+  final String? idTask;
+  final String? idStatus;
   @override
   State<TasksPaginatedList> createState() => _TasksPaginatedListState();
 }
+
+ValueNotifier<AssignedTypeNew?> selectedTypeAssign = ValueNotifier(null);
+ValueNotifier assign = ValueNotifier(null);
 
 class _TasksPaginatedListState extends State<TasksPaginatedList> {
   late final TaskCubit _cubit;
@@ -35,20 +67,177 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     AppColors.secondaryAltDark,
     AppColors.green,
   ];
+  final GlobalKey _targetKey = GlobalKey();
+  final ScrollController _scrollController = ScrollController();
 
+  late final AutoScrollController controller;
   @override
   void initState() {
     _cubit = context.read<TaskCubit>();
+    controller = AutoScrollController(
+        //add this for advanced viewport boundary. e.g. SafeArea
+        viewportBoundaryGetter: () =>
+            Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+
+        //choose vertical/horizontal
+        axis: Axis.vertical,
+
+        //this given value will bring the scroll offset to the nearest position in fixed row height case.
+        //for variable row height case, you can still set the average height, it will try to get to the relatively closer offset
+        //and then start searching.
+        suggestedRowHeight: 200);
+    if (widget.idTask != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _findAndScrollToItem(widget.idTask!);
+      });
+    }
+    ;
     super.initState();
   }
 
+  Future<void> _findAndScrollToItem(String targetId) async {
+    // Keep loading pages and scrolling until we find the item
+    try {
+      print('Starting scroll to item: $targetId');
+
+      // Wait for initial data load with timeout
+      int attempts = 0;
+      while (_cubit.pageVariables.allList.isEmpty && attempts < 20) {
+        await Future.delayed(Duration(milliseconds: 100));
+        attempts++;
+      }
+
+      if (_cubit.pageVariables.allList.isEmpty) {
+        print('Failed to load initial data after $attempts attempts');
+        return;
+      }
+
+      // Keep loading pages and scrolling until we find the item
+      bool found = false;
+      int pageLoadAttempts = 0;
+
+      while (!found &&
+          !(_cubit.pageVariables.hasReachedEnd &&
+              _cubit.pageVariables.allList.length > 15) &&
+          pageLoadAttempts < 10) {
+        found = _cubit.pageVariables.allList.any(
+          (element) => element.id.toString() == widget.idTask,
+        );
+
+        print('Searching for item. Found: $found, Page: $pageLoadAttempts');
+
+        if (!found) {
+          try {
+            if (controller.hasClients) {
+              final currentPosition = controller.position.maxScrollExtent;
+              await controller.animateTo(
+                currentPosition,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            } else {
+              print('ScrollController has no clients');
+              await Future.delayed(Duration(milliseconds: 200));
+              continue;
+            }
+
+            // Load next page
+            _cubit.getTasks(isNewFilter: false);
+            //     // Wait for load to complete
+            await Future.delayed(Duration(milliseconds: 500));
+            //
+            await Future.delayed(Duration(milliseconds: 800));
+            pageLoadAttempts++;
+          } catch (scrollError) {
+            print('Error during scroll: $scrollError');
+            await Future.delayed(Duration(milliseconds: 200));
+          }
+        }
+      }
+
+      if (found) {
+        print('Item found, attempting to scroll to position');
+
+        final index = _cubit.pageVariables.allList.indexWhere(
+          (element) => element.id.toString() == widget.idTask,
+        );
+
+        if (index != -1 && controller.hasClients) {
+          for (int i = 0; i < 3; i++) {
+            try {
+              // final itemPosition = index * itemHeight;
+              // await scrollController.animateTo(
+              // itemPosition,
+              // duration: Duration(milliseconds: 500),
+              // curve: Curves.easeInOut,
+              // );
+              print(
+                  'Successfully scrolled to position ${controller.isIndexStateInLayoutRange(index)}');
+              await controller
+                  .scrollToIndex(index,
+                      preferPosition: AutoScrollPosition.begin)
+                  .then(
+                (value) {
+                  _isHighlighted.value = true;
+                  Future.delayed(Duration(seconds: 2)).then(
+                    (value) {
+                      _isHighlighted.value = false;
+                    },
+                  );
+                },
+              );
+              break;
+            } catch (scrollError) {
+              print('Scroll attempt $i failed: $scrollError');
+              await Future.delayed(Duration(milliseconds: 200));
+            }
+          }
+        } else {
+          print('Invalid index ($index) or scroll controller not ready');
+        }
+      } else {
+        print('Item not found after $pageLoadAttempts page loads');
+      }
+    } catch (e, stackTrace) {
+      print('Error in scrollToItem: $e');
+      print('Stack trace: $stackTrace');
+    }
+    // await ScrollHelper.scrollToItem(
+    //   scrollController: _scrollController,
+    //   targetId: targetId,
+
+    //   itemHeight: 150.h, // Your item height
+    //   items: _cubit.pageVariables.allList,
+    //   hasReachedMax: _cubit.pageVariables.hasReachedEnd,
+    //   loadNextPage: () async {
+    //     _cubit.getTasks(isNewFilter: false);
+    //     // Wait for load to complete
+    //     await Future.delayed(Duration(milliseconds: 500));
+    //   },
+    //   findItem: (task) => task.id.toString() == targetId,
+    // );
+  }
+
+  ValueNotifier<bool> _isHighlighted = ValueNotifier(false);
+
+  GlobalKey<FormState> _formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
         return AppPaginatedList(
+          scrollController: controller,
           items: _cubit.pageVariables.allList,
-          itemBuilder: (context, index) => _buildCard(index, context),
+          itemBuilder: (context, index) {
+            final task = _cubit.pageVariables.allList[index];
+            return ValueListenableBuilder(
+                valueListenable: _isHighlighted,
+                builder: (context, value, child) => AutoScrollTag(
+                    key: ValueKey(index),
+                    controller: controller,
+                    index: index,
+                    child: _buildCard(task, value, context)));
+          },
           isLoading: state.getTasksStatus.isLoading(),
           hasReachedEnd: _cubit.pageVariables.hasReachedEnd,
           onLoadMore: () => _cubit.getTasks(isNewFilter: false),
@@ -57,13 +246,14 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
     );
   }
 
-  Widget _buildCard(int index, BuildContext context) {
-    final task = _cubit.pageVariables.allList[index];
+  Widget _buildCard(TaskModel task, bool isSame, BuildContext context) {
     final assignToUserName = task.assignTo!.nameUser;
     final firstList = assignToUserName?.split(' ').firstOrNull;
     final secondList = assignToUserName?.split(' ').lastOrNull;
-    String? firstChar = (firstList?.isNotEmpty ?? false) ? firstList?.substring(0, 1) : '';
-    String? secondChar = (secondList?.isNotEmpty ?? false) ? secondList?.substring(0, 1) : '';
+    String? firstChar =
+        (firstList?.isNotEmpty ?? false) ? firstList?.substring(0, 1) : '';
+    String? secondChar =
+        (secondList?.isNotEmpty ?? false) ? secondList?.substring(0, 1) : '';
     StringBuffer buffer = StringBuffer();
 
     if (firstChar == null) {
@@ -75,37 +265,60 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
 
     buffer.writeAll([firstChar, secondChar], '.');
 
-    final status = TaskStatusType.values.firstWhereOrNull((element) => element.name == task.status?.name);
+    final status = TaskStatusType.values
+        .firstWhereOrNull((element) => element.name == task.status?.name);
     return Container(
-      decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadiusDirectional.circular(8)),
+      decoration: BoxDecoration(
+          color: (isSame && task.id.toString() == widget.idTask)
+              ? AppColors.primaryAltLight
+              : AppColors.white,
+          borderRadius: BorderRadiusDirectional.circular(8)),
       child: InkWell(
-        onTap: status != null && context.read<PrivilegesCubit>().checkPrivilege('165')
+        onTap: status != null &&
+                context.read<PrivilegesCubit>().checkPrivilege('165')
             ? () {
-                _cubit.onGetTaskComments(task.id!);
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  barrierLabel: task.id.toString(),
-                  builder: (context) => DialogTaskDetail(task: task, status: status, cubit: _cubit), // builder: (context) => BlocProvider.value(
-                  //   value: _cubit,
-                  //   child: ChangeStatusTaskDialog(
-                  //     status: status,
-                  //     taskModel: task,
-                  //     tasksCubit: _cubit,
-                  //   ),
-                  // ),
-                );
+                Dialogs.showLoadingDialog(context);
+                _cubit
+                  ..onGetTaskComments(task.id!)
+                  ..getTaskById(
+                      onFaild: () {
+                        Navigator.pop(context);
+                      },
+                      onSuccess: (value) {
+                        Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          barrierLabel: task.id.toString(),
+                          builder: (context) => DialogTaskDetail(
+                              task: value, status: status, cubit: _cubit),
+                          // builder: (context) => BlocProvider.value(
+                          // value: _cubit,
+                          // child: ChangeStatusTaskDialog(
+                          // status: status,
+                          // taskModel: task,
+                          // tasksCubit: _cubit,
+                          // ),
+                          // ),
+                        );
+                      },
+                      params: GetTaskByIdParams(idTask: task.id!));
               }
             : null,
         child: IntrinsicHeight(
           child: Stack(
             children: [
-              if (task.status?.name == TaskStatusType.Open.name || task.status?.name == TaskStatusType.receive.name)
+              if (task.status?.name == TaskStatusType.Open.name ||
+                  task.status?.name == TaskStatusType.receive.name)
                 PositionedDirectional(
                   child: Icon(
-                    task.overDeadline == 0 ? Icons.arrow_upward : Icons.arrow_downward,
+                    task.overDeadline == 0
+                        ? Icons.timer_outlined
+                        : Icons.timer_off_outlined,
                     size: 35,
-                    color: task.overDeadline == 0 ? AppColors.green : AppColors.statusErrorActive,
+                    color: task.overDeadline == 0
+                        ? AppColors.green
+                        : AppColors.statusErrorActive,
                   ),
                   bottom: 0,
                   end: 5,
@@ -128,103 +341,143 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                         children: [
                           10.height,
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                decoration: (status?.color != null)
-                                    ? BoxDecoration(shape: BoxShape.circle, border: Border.all(width: 2, color: status!.color))
-                                    : null,
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      task.assignTo?.image != null ? NetworkImage(EndPoints.baseUrls.laravelFilesUrl + task.assignTo!.image!) : null,
-                                  child: task.assignTo?.image == null
-                                      ? Center(
-                                          child: AppText(
-                                            buffer.toString(),
-                                            color: context.colorScheme.white,
-                                          ),
-                                        )
+                              PopupMenuButton(
+                                offset: Offset(0, 10),
+                                constraints: BoxConstraints(
+                                    // Set the width to match screen width
+                                    minWidth: 420.scaleWidth,
+                                    maxWidth: 520.scaleWidth,
+                                    maxHeight: 600.scaleHeight),
+                                position: PopupMenuPosition.under,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                      enabled: false,
+                                      padding: EdgeInsets.all(10),
+                                      child: AssignTOAnotherWidget(
+                                        task: task,
+                                        taskCubit: _cubit,
+                                      )),
+                                ],
+                                child: Container(
+                                  decoration: (status?.color != null)
+                                      ? BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              width: 2, color: status!.color))
                                       : null,
-                                  radius: 22.scaleIconsSize,
+                                  child: CircleAvatar(
+                                    backgroundImage: task.assignTo?.image !=
+                                            null
+                                        ? NetworkImage(
+                                            EndPoints.baseUrls.laravelFilesUrl +
+                                                task.assignTo!.image!)
+                                        : null,
+                                    child: task.assignTo?.image == null
+                                        ? Center(
+                                            child: AppText(
+                                              buffer.toString(),
+                                              color: context.colorScheme.white,
+                                            ),
+                                          )
+                                        : null,
+                                    radius: 22.scaleIconsSize,
+                                  ),
                                 ),
                               ),
-                              10.width,
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AppText(
-                                    task.title,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  if (((task.assignFrom?.nameRegion?.isEmpty ?? true) &&
-                                          (task.assignFrom?.nameMange?.isEmpty ?? true) &&
-                                          (task.assignFrom?.nameUser?.isEmpty ?? true)) &&
-                                      ((task.assignTo?.nameRegion?.isEmpty ?? true) &&
-                                          (task.assignTo?.nameMange?.isEmpty ?? true) &&
-                                          (task.assignTo?.nameUser?.isEmpty ?? true)))
-                                    Row(
-                                      children: [
-                                        AppText(
-                                          (task.assignFromModel == 'region')
-                                              ? 'فرع'
-                                              : (task.assignFromModel == 'managements')
-                                                  ? "قسم"
-                                                  : "مستخدم",
-                                          color: context.colorScheme.grey500,
-                                        ),
-                                        AppText(' --> '),
-                                        // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
-                                        AppText(
-                                          (task.assignFromModel == 'region')
-                                              ? 'فرع'
-                                              : (task.assignFromModel == 'managements')
-                                                  ? "قسم"
-                                                  : "مستخدم",
-                                          color: AppColors.primaryMain,
-                                        ),
-                                      ],
-                                    ),
-                                ],
-                              ),
+                              if (context
+                                      .read<PrivilegesCubit>()
+                                      .checkPrivilege('339') &&
+                                  ([
+                                        task.assignFrom?.idUser.toString(),
+                                        task.assignFrom?.idRegion.toString(),
+                                        task.assignFrom?.idMange.toString()
+                                      ].contains(context
+                                          .read<UserProvider>()
+                                          .currentUser
+                                          .idUser) &&
+                                      (task.status?.name ==
+                                              TaskStatusType.Open.name ||
+                                          task.status?.name ==
+                                              TaskStatusType.receive.name)))
+                                IconButton(
+                                    onPressed: () {
+                                      Dialogs.showLoadingDialog(context);
+                                      context.read<TaskCubit>().getTaskById(
+                                          onFaild: () {
+                                            Navigator.pop(context);
+                                          },
+                                          onSuccess: (value) {
+                                            Navigator.pop(context);
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddTaskPage(
+                                                  task: value,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          params: GetTaskByIdParams(
+                                              idTask: task.id!));
+                                    },
+                                    icon: Icon(
+                                      Icons.edit_square,
+                                      color: AppColors.primaryMain,
+                                    )),
                             ],
                           ),
-                          // Wrap(
-                          //   children: [
-                          //     ((task.assignFrom?.nameRegion == null && task.assignFrom?.nameMange == null && task.assignFrom?.nameUser == null))
-                          //         ? SizedBox.shrink()
-                          //         : Row(
-                          //       children: [
-                          //         AppText(
-                          //           (task.assignFromModel == 'region')
-                          //               ? 'من فرع : '
-                          //               : (task.assignFromModel == 'managements')
-                          //               ? "من قسم : "
-                          //               : "من مستخدم : ",
-                          //           color: context.colorScheme.grey500,
-                          //         ),
-                          //         AppText(
-                          //           '${task.assignFrom?.nameRegion ?? task.assignFrom?.nameMange ?? task.assignFrom?.nameUser}',
-                          //           color: context.colorScheme.grey800,
-                          //         ),
-                          //       ],
-                          //     ),
-                          //     Row(
-                          //       children: [
-                          //         AppText(
-                          //           (task.assignToModel == 'region')
-                          //               ? 'إلى فرع : '
-                          //               : (task.assignToModel == 'managements')
-                          //               ? "إلى قسم : "
-                          //               : "إلى الموظف : ",
-                          //           color: context.colorScheme.grey500,
-                          //         ),
-                          //         AppText(
-                          //           '${task.assignTo?.nameRegion ?? task.assignTo?.nameMange ?? task.assignTo?.nameUser}',
-                          //           color: context.colorScheme.grey800,
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ],
-                          // ),
+                          10.width,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(
+                                task.title,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              if (((task
+                                              .assignFrom?.nameRegion?.isEmpty ??
+                                          true) &&
+                                      (task.assignFrom?.nameMange?.isEmpty ??
+                                          true) &&
+                                      (task.assignFrom?.nameUser?.isEmpty ??
+                                          true)) &&
+                                  ((task.assignTo?.nameRegion?.isEmpty ??
+                                          true) &&
+                                      (task.assignTo?.nameMange?.isEmpty ??
+                                          true) &&
+                                      (task.assignTo?.nameUser?.isEmpty ??
+                                          true)))
+                                Row(
+                                  children: [
+                                    AppText(
+                                      (task.assignFromModel == 'region')
+                                          ? 'فرع'
+                                          : (task.assignFromModel ==
+                                                  'managements')
+                                              ? "قسم"
+                                              : "مستخدم",
+                                      color: context.colorScheme.grey500,
+                                    ),
+                                    AppText(' --> '),
+                                    // if ((task.assignFrom?.nameUser?.isNotEmpty ?? false) && (task.assignTo?.nameUser?.isNotEmpty ?? false))
+                                    AppText(
+                                      (task.assignFromModel == 'region')
+                                          ? 'فرع'
+                                          : (task.assignFromModel ==
+                                                  'managements')
+                                              ? "قسم"
+                                              : "مستخدم",
+                                      color: AppColors.primaryMain,
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
                           Row(
                             children: [
                               AppText(
@@ -255,13 +508,26 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                               ],
                             ),
                           if (task.client != null) ...{
-                            AppText(
-                              task.client?.nameEnterprise ?? '',
-                              color: AppColors.primaryMain,
+                            InkWell(
+                              onTap: () {
+                                AppNavigator.go(
+                                  ClientProfile(
+                                      idClient: task.client!.idClients),
+                                  name: AppRoutesNames
+                                      .clientProfile.inClientsList,
+                                  pathParameters: {
+                                    'idClient':
+                                        task.client!.idClients.toString()
+                                  },
+                                );
+                              },
+                              child: AppText(
+                                task.client?.nameEnterprise ?? '',
+                                color: AppColors.primaryMain,
+                              ),
                             ),
                             10.height,
                           },
-
                           if (task.description?.isNotEmpty ?? false) ...{
                             Expanded(
                               child: AppText(
@@ -280,20 +546,25 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                                         message: e.nameUser,
                                         child: CircleAvatar(
                                             radius: 20,
-                                            backgroundColor: AppColors.primaryAltLight,
-                                            child: AppText(e.nameUser?.substring(0, 2).toUpperCase())),
+                                            backgroundColor:
+                                                AppColors.primaryAltLight,
+                                            child: AppText(e.nameUser
+                                                ?.substring(0, 2)
+                                                .toUpperCase())),
                                       ))
                                   .toList()),
                           10.height,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              AppIcon(Icons.date_range_rounded, color: context.colorScheme.grey600),
+                              AppIcon(Icons.date_range_rounded,
+                                  color: context.colorScheme.grey600),
                               5.width,
                               Directionality(
                                 textDirection: TextDirection.ltr,
                                 child: AppText(
-                                  Intl.DateFormat('dd MMM hh:mm a').format(task.startDate ?? DateTime.now()),
+                                  Intl.DateFormat('dd MMM hh:mm a')
+                                      .format(task.startDate ?? DateTime.now()),
                                   color: context.colorScheme.grey600,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -301,7 +572,25 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
                               ),
                             ],
                           ),
-                          10.height,
+                          15.height,
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              CircularProgressIndicator(
+                                strokeAlign: 1.5,
+                                value: (task.completionPercentage ?? 0) / 100,
+                                backgroundColor: Colors.grey[300],
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppColors.green),
+                                strokeWidth: 5,
+                              ),
+                              AppText(
+                                '${(task.completionPercentage ?? 0).toInt()}%',
+                                color: AppColors.green,
+                              ),
+                            ],
+                          ),
+                          15.height,
                         ],
                       ),
                     ),
@@ -314,4 +603,197 @@ class _TasksPaginatedListState extends State<TasksPaginatedList> {
       ),
     );
   }
+}
+
+Widget assignToEmployeeWidget(AssignedTypeNew? type, ValueNotifier assigned) {
+  if (type == AssignedTypeNew.users)
+    return BlocBuilder<UsersCubit, UsersState>(
+      builder: (context, state) {
+        return ValueListenableBuilder(
+          valueListenable: assigned,
+          builder: (context, value, child) =>
+              CustomSearchableDropDown<UserModel>(
+            hint: 'الموظف',
+            items: state.getUserSelected.data ?? [],
+            itemAsString: (u) => u!.nameUser!,
+            onChanged: (p0) {
+              assigned.value = p0;
+            },
+            selectedItem: value,
+            compareFn: (item, selectedItem) => item.id == selectedItem.id,
+            filterFn: (user, filter) => user.nameUser!.contains(filter),
+            validator: (value) {
+              if (selectedTypeAssign.value != AssignedTypeNew.users) {
+                return null;
+              }
+              if (value == null) {
+                return 'هذا الحقل مطلوب.';
+              }
+              return null;
+            },
+          ),
+        );
+      },
+    );
+  return SizedBox.shrink();
+}
+
+Widget assignToDepartmentWidget(AssignedTypeNew? type, ValueNotifier assigned) {
+  if (type == AssignedTypeNew.managements)
+    return Consumer<manage_provider>(
+      builder: (context, manageList, child) {
+        final userDepartment =
+            context.read<UserProvider>().currentUser.typeAdministration;
+        final list = getIt<PrivilegesCubit>().checkPrivilege('169')
+            ? manageList.listMangTask
+            : getIt<PrivilegesCubit>().checkPrivilege('168') ||
+                    getIt<PrivilegesCubit>().checkPrivilege('174')
+                ? manageList.listMangTask
+                    .where((element) => element.idMange == userDepartment)
+                    .toList()
+                : manageList.listMangTask;
+
+        return ValueListenableBuilder(
+          valueListenable: assigned,
+          builder: (context, value, child) => CustomDropDown<ManageModel>(
+            hint: 'القسم',
+            items: list,
+            compareFn: (item, selectedItem) =>
+                item.idMange == selectedItem.idMange,
+            itemAsString: (item) => item!.name_mange,
+            selectedItem: value,
+            onChanged: (data) {
+              assigned.value = data;
+            },
+            validator: (value) {
+              if (selectedTypeAssign.value != AssignedTypeNew.managements) {
+                return null;
+              }
+              if (value == null) {
+                return 'هذا الحقل مطلوب.';
+              }
+              return null;
+            },
+          ),
+        );
+      },
+    );
+  return SizedBox.shrink();
+}
+
+Widget assignToRegionWidget(AssignedTypeNew? type, ValueNotifier assigned) {
+  if (type == AssignedTypeNew.regoin)
+    return Consumer<RegionProvider>(
+      builder: (context, cart, child) {
+        final user = context.read<UserProvider>().currentUser;
+        final list = context.read<PrivilegesCubit>().checkPrivilege('169')
+            ? cart.listRegionTaskFilter
+            : context.read<PrivilegesCubit>().checkPrivilege('167')
+                ? cart.listRegionTaskFilter
+                    .where((element) => element.branchId == user.fkRegoin)
+                    .toList()
+                : cart.listRegionTaskFilter;
+        return ValueListenableBuilder(
+          valueListenable: assigned,
+          builder: (context, value, child) => CustomDropDown<BranchModel>(
+            hint: 'الفرع',
+            items: list,
+            compareFn: (item, selectedItem) =>
+                item.branchId == selectedItem.branchId,
+            itemAsString: (branch) => branch!.branchName,
+            selectedItem: value,
+            onChanged: (data) {
+              assigned.value = data as BranchModel;
+            },
+            validator: (value) {
+              if (selectedTypeAssign.value != AssignedTypeNew.regoin) {
+                return null;
+              }
+              if (value == null) {
+                return 'هذا الحقل مطلوب.';
+              }
+              return null;
+            },
+          ),
+        );
+      },
+    );
+  return SizedBox.shrink();
+}
+
+Widget AssignTOAnotherWidget(
+    {required TaskModel task, required TaskCubit taskCubit}) {
+  ValueNotifier<AssignedTypeNew?> selectedTypeAssign = ValueNotifier(null);
+  ValueNotifier assign = ValueNotifier(null);
+  GlobalKey<FormState> _formKey = GlobalKey();
+
+  return Directionality(
+    textDirection: TextDirection.rtl,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AppText('اسناد إلى'),
+        5.height,
+        ValueListenableBuilder(
+          valueListenable: selectedTypeAssign,
+          builder: (context, typeAssinged, child) => Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                CustomDropDown<AssignedTypeNew>(
+                  hint: 'موظف / قسم/ فرع',
+                  items: AssignedTypeNew.values,
+                  itemAsString: (item) => item!.text,
+                  selectedItem: typeAssinged,
+                  compareFn: (item, selectedItem) =>
+                      item.index == selectedItem.index,
+                  onChanged: (value) {
+                    assign.value = null;
+                    selectedTypeAssign.value = value;
+                  },
+                  height: (135.0).scaleHeight,
+                ),
+                10.height,
+                assignToEmployeeWidget(typeAssinged, assign),
+                assignToRegionWidget(typeAssinged, assign),
+                assignToDepartmentWidget(typeAssinged, assign),
+              ],
+            ),
+          ),
+        ),
+        40.height,
+        SizedBox(
+            width: double.infinity,
+            child: BlocBuilder<TaskCubit, TaskState>(
+              builder: (context, state) {
+                return AppElevatedButton(
+                  isLoading: state.changeTaskAssignStatus.isLoading(),
+                  text: 'تاكيد العملية',
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      var id = selectedTypeAssign.value == AssignedTypeNew.users
+                          ? ((assign.value as UserModel).id)
+                          : selectedTypeAssign.value ==
+                                  AssignedTypeNew.managements
+                              ? ((assign.value as ManageModel).idMange)
+                              : ((assign.value as BranchModel).branchId);
+                      taskCubit.changeTaskAssign(
+                          onSuccess: () {
+                            Navigator.pop(context);
+                          },
+                          changeTaskAssignParams: ChangeTaskAssignParams(
+                            taskId: task.id!,
+                            assignTo: selectedTypeAssign.value!.name.toString(),
+                            assignToId: id,
+                          ));
+                    }
+                  },
+                );
+              },
+            )),
+      ],
+    ),
+  );
+
 }
