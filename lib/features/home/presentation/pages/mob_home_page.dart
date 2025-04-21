@@ -31,113 +31,6 @@ var formatter = intl.NumberFormat("#,##0.00", "ar_SA");
 //
 //     final homeStatisticsModel = homeStatisticsModelFromJson(jsonString);
 
-class HomeStatisticsModel {
-  final int? dailyClients;
-  final int? notDoneVisits;
-  final int? dailyNotDoneVisits;
-  final int? tasks;
-  final num? dailySales;
-  final num? monthlySales;
-  final num? monthlyWithdrawLosses;
-  final int? monthlyNoWithdraw;
-  final num? openTasksProgress;
-  final num? openTicketsProgress;
-  final num? notDoneVisitsProgress;
-  final String? notDoneVisitsLabel;
-  final String? openTasksLabel;
-  final String? openTicketsLabel;
-  final num? approveCount;
-
-  HomeStatisticsModel({
-    this.dailyClients,
-    this.notDoneVisits,
-    this.dailyNotDoneVisits,
-    this.tasks,
-    this.dailySales,
-    this.monthlySales,
-    this.monthlyWithdrawLosses,
-    this.monthlyNoWithdraw,
-    this.openTasksProgress,
-    this.openTicketsProgress,
-    this.notDoneVisitsProgress,
-    this.notDoneVisitsLabel,
-    this.openTasksLabel,
-    this.openTicketsLabel,
-    this.approveCount,
-  });
-
-  HomeStatisticsModel copyWith({
-    int? dailyClients,
-    int? notDoneVisits,
-    int? dailyNotDoneVisits,
-    int? tasks,
-    num? dailySales,
-    num? monthlySales,
-    num? monthlyWithdrawLosses,
-    int? monthlyNoWithdraw,
-    num? openTasksProgress,
-    num? openTicketsProgress,
-    num? notDoneVisitsProgress,
-    String? notDoneVisitsLabel,
-    String? openTasksLabel,
-    String? openTicketsLabel,
-    num? approveCount,
-  }) =>
-      HomeStatisticsModel(
-        dailyClients: dailyClients ?? this.dailyClients,
-        notDoneVisits: notDoneVisits ?? this.notDoneVisits,
-        dailyNotDoneVisits: dailyNotDoneVisits ?? this.dailyNotDoneVisits,
-        tasks: tasks ?? this.tasks,
-        dailySales: dailySales ?? this.dailySales,
-        monthlySales: monthlySales ?? this.monthlySales,
-        monthlyWithdrawLosses: monthlyWithdrawLosses ?? this.monthlyWithdrawLosses,
-        monthlyNoWithdraw: monthlyNoWithdraw ?? this.monthlyNoWithdraw,
-        openTasksProgress: openTasksProgress ?? this.openTasksProgress,
-        openTicketsProgress: openTicketsProgress ?? this.openTicketsProgress,
-        notDoneVisitsProgress: notDoneVisitsProgress ?? this.notDoneVisitsProgress,
-        notDoneVisitsLabel: notDoneVisitsLabel ?? this.notDoneVisitsLabel,
-        openTasksLabel: openTasksLabel ?? this.openTasksLabel,
-        openTicketsLabel: openTicketsLabel ?? this.openTicketsLabel,
-        approveCount: approveCount ?? this.approveCount,
-      );
-
-  factory HomeStatisticsModel.fromJson(Map<String, dynamic> json) => HomeStatisticsModel(
-        dailyClients: json["daily_clients"],
-        notDoneVisits: json["not_done_visits"],
-        dailyNotDoneVisits: json["daily_not_done_visits"],
-        tasks: json["tasks"].toInt(),
-        dailySales: json["daily_sales"],
-        monthlySales: json["monthly_sales"]?.toDouble(),
-        monthlyWithdrawLosses: json["monthly_withdraw_losses"],
-        monthlyNoWithdraw: json["monthly_no_withdraw"],
-        openTasksProgress: json["open_tasks_progress"]?.toDouble(),
-        openTicketsProgress: json["open_tickets_progress"]?.toDouble(),
-        notDoneVisitsProgress: json["not_done_visits_progress"],
-        notDoneVisitsLabel: json["not_done_visits_label"],
-        openTasksLabel: json["open_tasks_label"],
-        openTicketsLabel: json["open_tickets_label"],
-        approveCount: json["approve_count"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "daily_clients": dailyClients,
-        "not_done_visits": notDoneVisits,
-        "daily_not_done_visits": dailyNotDoneVisits,
-        "tasks": tasks,
-        "daily_sales": dailySales,
-        "monthly_sales": monthlySales,
-        "monthly_withdraw_losses": monthlyWithdrawLosses,
-        "monthly_no_withdraw": monthlyNoWithdraw,
-        "open_tasks_progress": openTasksProgress,
-        "open_tickets_progress": openTicketsProgress,
-        "not_done_visits_progress": notDoneVisitsProgress,
-        "not_done_visits_label": notDoneVisitsLabel,
-        "open_tasks_label": openTasksLabel,
-        "open_tickets_label": openTicketsLabel,
-        "approve_count": approveCount,
-      };
-}
-
 class MobHomePage extends StatefulWidget {
   MobHomePage({Key? key}) : super(key: key);
 
@@ -509,20 +402,22 @@ class _MobHomePageState extends State<MobHomePage> {
                   ],
                 ),
                 12.height,
-                AppText('العناية بالعملاء :'),
+                AppText('Customer care :'),
                 Row(
                   children: [
-                    Expanded(child: _buildStatItem('بانتظار التواصل الدوري', '0.0', Icons.repeat)),
+                    Expanded(child: _buildStatItem('Waiting for periodic communication', formatter.format(data?.waitingFrequent), Icons.repeat)),
                     16.width,
-                    Expanded(child: _buildStatItem('بانتظار الجودة الاول', '0.0', Icons.high_quality)),
+                    Expanded(child: _buildStatItem('Waiting for the first quality', formatter.format(data?.waitingInstall1), Icons.high_quality)),
                   ],
                 ),
                 5.height,
                 Row(
                   children: [
-                    Expanded(child: _buildStatItem('بانتظار الجودة الثاني', '0.0', Icons.high_quality_outlined)),
+                    Expanded(
+                        child:
+                            _buildStatItem('Waiting for the second quality', formatter.format(data?.waitingInstall2), Icons.high_quality_outlined)),
                     16.width,
-                    Expanded(child: _buildStatItem('بانتظار الترحيب', '0.0', Icons.waving_hand)),
+                    Expanded(child: _buildStatItem('Waiting for welcome', data?.waitingWelcome.toString(), Icons.waving_hand)),
                   ],
                 ),
                 // 8.height,
@@ -550,7 +445,7 @@ class _MobHomePageState extends State<MobHomePage> {
   Widget _buildStatItem(String title, dynamic value, IconData icon) {
     final displayValue = value ?? 0;
     return Container(
-      height: 120.scaleHeight,
+      height: 130.scaleHeight,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,

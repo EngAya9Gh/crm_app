@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:elegant_notification/elegant_notification.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/config/app_dynamic_links.dart';
 import '../core/config/navigator/app_navigator.dart';
@@ -72,18 +74,13 @@ class NotificationService {
             message.notification?.body,
             NotificationDetails(
               iOS: DarwinNotificationDetails(
-                presentAlert: true,
-                presentBadge: true,
-                presentSound: true,
-              ),
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channelDescription: channel.description,
-                playSound: true,
-                icon: '@mipmap/launcher_icon',
-                importance: Importance.max,
-              ),
+                  presentAlert: true, presentBadge: true, presentSound: true, badgeNumber: getIt<SharedPreferences>().getInt('badgeCount')),
+              android: AndroidNotificationDetails(channel.id, channel.name,
+                  channelDescription: channel.description,
+                  playSound: true,
+                  icon: '@mipmap/launcher_icon',
+                  importance: Importance.max,
+                  number: getIt<SharedPreferences>().getInt('badgeCount')),
             ));
         String? typeNotify = message.data['type_notify'];
         AppDynamicLinks.routeNotifyTo(typeNotify, AppNavigator.navigatorKey.currentContext, message.data, null);
@@ -115,13 +112,14 @@ class NotificationService {
         log('$message.contentAvailable');
         log(message.data.toString());
         log('${message.notification?.title}');
-        AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>().init();
+        AppNavigator.navigatorKey.currentContext?.read<NotificationsCubit>().init();
         var currentUser = AppNavigator.navigatorKey.currentContext?.read<UserProvider>().currentUser;
         AppNavigator.navigatorKey.currentContext?.read<UserProvider>().currentUser = currentUser!.copyWith(
           notificationNotRead: (currentUser.notificationNotRead ?? 0) + 1,
           noOfMentions: typeNotify == 'commentMention' ? (currentUser.noOfMentions ?? 0) + 1 : null,
         );
         AppNavigator.navigatorKey.currentContext!.read<NotificationsCubit>().increaseNotificationCount();
+        HelperFunctions().incrementBadge();
         log('///////////////////////////');
         if (kIsWeb) {
           ElegantNotification(
@@ -149,6 +147,7 @@ class NotificationService {
                 presentAlert: true,
                 presentBadge: true,
                 presentSound: true,
+                                badgeNumber: getIt<SharedPreferences>().getInt('badgeCount')
               ),
               android: AndroidNotificationDetails(
                 channel.id,
@@ -158,6 +157,7 @@ class NotificationService {
                 playSound: true,
                 icon: '@mipmap/launcher_icon',
                 importance: Importance.max,
+                number: getIt<SharedPreferences>().getInt('badgeCount')
               ),
             ),
           );
