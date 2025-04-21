@@ -1,6 +1,10 @@
+import 'package:app_badge_plus/app_badge_plus.dart';
+import 'package:crm_smart/core/services/cache_services/prefs_consumer.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/app_constants.dart';
@@ -121,5 +125,25 @@ class HelperFunctions {
 
   static String getNameShort(String name) {
     return name.length > 15 ? '..' + name.substring(0, 15).toString() : name.toString();
+  }
+
+  Future<void> incrementBadge() async {
+    if (await AppBadgePlus.isSupported()) {
+      SharedPreferences preferences = getIt<SharedPreferences>();
+
+      int count = await preferences.getInt('badgeCount') ?? 0;
+      count += 1;
+      await preferences.setInt('badgeCount', count);
+      AppBadgePlus.updateBadge(count);
+    }
+  }
+
+  Future<void> resetBadge() async {
+    if (await AppBadgePlus.isSupported()) {
+      SharedPreferences preferences = getIt<SharedPreferences>();
+
+      await preferences.setInt('badgeCount', 0);
+      AppBadgePlus.updateBadge(0);
+    }
   }
 }

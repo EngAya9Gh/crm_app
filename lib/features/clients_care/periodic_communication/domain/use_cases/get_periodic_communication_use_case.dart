@@ -35,6 +35,7 @@ class GetPeriodicCommunicationParams {
   final double? rate;
   final int clientWhoNotRate;
   final bool showAllRates;
+  final String? typeClient;
 
   const GetPeriodicCommunicationParams(
       {this.skip = 0,
@@ -48,7 +49,9 @@ class GetPeriodicCommunicationParams {
       this.rate,
       this.type,
       this.clientWhoNotRate = 0,
-      required this.showAllRates});
+      required this.showAllRates,
+      this.typeClient,
+      });
 
   Map<String, dynamic> toParams() {
     final Map<String, dynamic> params = {
@@ -62,6 +65,7 @@ class GetPeriodicCommunicationParams {
     if (periodicCommunicationType.isEvaluated) {
       params.addAll({
         'type': "datedays",
+        if (typeClient!=null) 'type_client': typeClient,
         if (!showAllRates) 'rate': rate?.toInt(),
         'from': dateFrom,
         'to': dateTo,

@@ -381,6 +381,10 @@ class _CardcommentState extends State<Cardcomment> {
 
 String _getTimeAgo(String dateString) {
   try {
+    var difference = DateTime.now().difference(DateTime.parse(dateString));
+    if (difference.inDays > 1) {
+      return dateString;
+    }
     final date = DateTime.parse(dateString);
     var t = timeago.format(date, locale: 'ar');
     return t;

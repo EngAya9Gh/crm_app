@@ -152,7 +152,7 @@ Widget _buildCard(String title, IconData icon, VoidCallback onTap) {
                 size: 30,
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 12),
             AppText(
               title,
               textAlign: TextAlign.center,
@@ -160,7 +160,7 @@ Widget _buildCard(String title, IconData icon, VoidCallback onTap) {
               softWrap: true,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: Colors.grey.shade800,
               ),

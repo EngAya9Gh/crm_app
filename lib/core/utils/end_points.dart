@@ -41,6 +41,7 @@ abstract class EndPoints {
   static const statistics = 'home/statistics';
 }
 
+
 class _BaseUrls {
   _BaseUrls() {
     init();

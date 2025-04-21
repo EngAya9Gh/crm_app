@@ -35,12 +35,10 @@ class CommunicationExpandedWidget extends StatefulWidget {
   final bool initiallyExpanded;
 
   @override
-  State<CommunicationExpandedWidget> createState() =>
-      _CommunicationExpandedWidgetState();
+  State<CommunicationExpandedWidget> createState() => _CommunicationExpandedWidgetState();
 }
 
-class _CommunicationExpandedWidgetState
-    extends State<CommunicationExpandedWidget> {
+class _CommunicationExpandedWidgetState extends State<CommunicationExpandedWidget> {
   bool typepayController = false;
   bool numberwrong = false;
   bool repeat = false;
@@ -54,10 +52,8 @@ class _CommunicationExpandedWidgetState
   double rateSalesValue = 0.0;
   double rateSupportValue = 0.0;
   double rateProductValue = 0.0;
-  ValueNotifier<PeriodicCommunicationClientTypeEnum?> clientTypeNotifier =
-      ValueNotifier<PeriodicCommunicationClientTypeEnum?>(null);
-  ValueNotifier<CommunicationWithdrawalReasonModel?> withdrawalReasonNotifier =
-      ValueNotifier<CommunicationWithdrawalReasonModel?>(null);
+  ValueNotifier<PeriodicCommunicationClientTypeEnum?> clientTypeNotifier = ValueNotifier<PeriodicCommunicationClientTypeEnum?>(null);
+  ValueNotifier<CommunicationWithdrawalReasonModel?> withdrawalReasonNotifier = ValueNotifier<CommunicationWithdrawalReasonModel?>(null);
 
   @override
   void initState() {
@@ -89,12 +85,10 @@ class _CommunicationExpandedWidgetState
       rateSalesValue = double.tryParse(widget.communicationModel.rate!) ?? 0.0;
     }
     if (widget.communicationModel.rateProductValue != null) {
-      rateProductValue =
-          double.tryParse(widget.communicationModel.rateProductValue!) ?? 0.0;
+      rateProductValue = double.tryParse(widget.communicationModel.rateProductValue!) ?? 0.0;
     }
     if (widget.communicationModel.rateSupportValue != null) {
-      rateSupportValue =
-          double.tryParse(widget.communicationModel.rateSupportValue!) ?? 0.0;
+      rateSupportValue = double.tryParse(widget.communicationModel.rateSupportValue!) ?? 0.0;
     }
 
     super.initState();
@@ -110,18 +104,17 @@ class _CommunicationExpandedWidgetState
     return Column(
       children: [
         // نموذج التقييم - يظهر للتواصل الدوري قبل الضغط على تم التواصل
-        if (widget.communicationModel.typeCommuncation == 'دوري' &&
-            widget.communicationModel.dateCommunication == null) ...[
+        if (widget.communicationModel.typeCommuncation == 'دوري' && widget.communicationModel.dateCommunication == null) ...[
           // تقييم عام للخدمة
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            children: [
               AppText(
                 'تقييم عام للخدمة',
                 style: titleStyle,
                 fontSize: 14,
               ),
-                    AppRateWidget(
+              AppRateWidget(
                 rateValue: rateSalesValue,
                 onRatingUpdate: (value) {
                   setState(() {
@@ -140,8 +133,8 @@ class _CommunicationExpandedWidgetState
                 'تقييم المنتج',
                 style: titleStyle,
                 fontSize: 14,
-                    ),
-                    AppRateWidget(
+              ),
+              AppRateWidget(
                 rateValue: rateProductValue,
                 onRatingUpdate: (value) {
                   setState(() {
@@ -155,7 +148,7 @@ class _CommunicationExpandedWidgetState
           // تقييم الدعم الفني
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+            children: [
               AppText(
                 'تقييم الدعم الفني',
                 style: titleStyle,
@@ -183,10 +176,10 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: typepayController,
                   onChanged: (val) {
-                                  setState(() {
+                    setState(() {
                       typepayController = val ?? false;
-                                  });
-                                },
+                    });
+                  },
                 ),
               ),
               Expanded(
@@ -197,10 +190,10 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: numberwrong,
                   onChanged: (val) {
-                                  setState(() {
+                    setState(() {
                       numberwrong = val ?? false;
-                                  });
-                                },
+                    });
+                  },
                 ),
               ),
             ],
@@ -215,10 +208,10 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: repeat,
                   onChanged: (val) {
-                                  setState(() {
+                    setState(() {
                       repeat = val ?? false;
-                                  });
-                                },
+                    });
+                  },
                 ),
               ),
               Expanded(
@@ -229,10 +222,10 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: isRecommendation,
                   onChanged: (val) {
-                                  setState(() {
+                    setState(() {
                       isRecommendation = val ?? false;
-                                  });
-                                },
+                    });
+                  },
                 ),
               ),
             ],
@@ -247,10 +240,10 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: isVisit,
                   onChanged: (val) {
-                                  setState(() {
+                    setState(() {
                       isVisit = val ?? false;
-                                  });
-                                },
+                    });
+                  },
                 ),
               ),
               Expanded(
@@ -261,15 +254,15 @@ class _CommunicationExpandedWidgetState
                   ),
                   value: isSuspend,
                   onChanged: (val) {
-                                  setState(() {
+                    setState(() {
                       isSuspend = val ?? false;
                       // if (isSuspend) {
                       //   rateSalesValue = 0.0;
                       //   rateProductValue = 0.0;
                       //   rateSupportValue = 0.0;
                       // }
-                                  });
-                                },
+                    });
+                  },
                 ),
               ),
             ],
@@ -277,8 +270,7 @@ class _CommunicationExpandedWidgetState
           20.height,
         ],
         // تقييم عام للتركيب
-        if (widget.communicationModel.typeCommuncation == 'تركيب' &&
-            widget.communicationModel.dateCommunication == null) ...[
+        if (widget.communicationModel.typeCommuncation == 'تركيب' && widget.communicationModel.dateCommunication == null) ...[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -287,25 +279,53 @@ class _CommunicationExpandedWidgetState
                 style: titleStyle,
                 fontSize: 14,
               ),
-                          AppRateWidget(
-                              rateValue: rateSalesValue,
-                              onRatingUpdate: (value) {
-                                setState(() {
-                                  rateSalesValue = value;
-                                });
+              AppRateWidget(
+                rateValue: rateSalesValue,
+                onRatingUpdate: (value) {
+                  setState(() {
+                    rateSalesValue = value;
+                  });
                 },
               ),
             ],
-                        ),
-                        20.height,
+          ),
+          20.height,
         ],
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+        if (widget.communicationModel.typeCommuncation == 'دوري' && widget.communicationModel.dateCommunication == null) ...[
+          CustomDropDown<PeriodicCommunicationClientTypeEnum>(
+            hint: "نوع العميل",
+            compareFn: (item, selectedItem) => item.index == selectedItem.index,
+            items: PeriodicCommunicationClientTypeEnum.values,
+            itemAsString: (item) => item!.value,
+            selectedItem: clientTypeNotifier.value,
+            onChanged: (value) => clientTypeNotifier.value = value,
+            height: 105.h,
+          ),
+          10.height,
+        ],
+        ListenableBuilder(
+          listenable: clientTypeNotifier,
+          builder: (context, child) {
+            if (clientTypeNotifier.value?.isWithdrawn ?? false) {
+              return Padding(
+                  padding: EdgeInsetsDirectional.only(bottom: 10),
+                  child: CommunicationWithdrawalReasonsDropDown(
+                    withdrawalReason: withdrawalReasonNotifier.value,
+                    onChanged: (value) {
+                      withdrawalReasonNotifier.value = value;
+                    },
+                  ));
+            }
+            return SizedBox.shrink();
+          },
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
             // زر تم التواصل - يظهر فقط إذا لم يكن هناك تاريخ تواصل
             if (widget.communicationModel.dateCommunication == null)
-                            AppElevatedButton(
-                              text: 'تم التواصل',
+              AppElevatedButton(
+                text: 'تم التواصل',
                 onPressed: () => _onDoneCommunication(context),
               ),
             // زر التعديل - يظهر فقط إذا كان هناك تاريخ تواصل
@@ -327,16 +347,16 @@ class _CommunicationExpandedWidgetState
             //     },
             //   ),
             // زر إضافة موعد زيارة - يظهر فقط في حالة الترحيب
-                            if (widget.communicationModel.typeCommuncation == 'ترحيب') ...[
-                              10.width,
-                              AppElevatedButton(
-                                text: 'إضافة موعد زيارة',
-                                onPressed: () => _addDateInstall(context),
-                                appButtonStyle: AppButtonStyle.secondary,
-                              ),
-                            ],
-                          ],
-                        ),
+            if (widget.communicationModel.typeCommuncation == 'ترحيب') ...[
+              10.width,
+              AppElevatedButton(
+                text: 'إضافة موعد زيارة',
+                onPressed: () => _addDateInstall(context),
+                appButtonStyle: AppButtonStyle.secondary,
+              ),
+            ],
+          ],
+        ),
       ],
     );
   }
@@ -346,16 +366,14 @@ class _CommunicationExpandedWidgetState
 
     if (widget.communicationModel.typeCommuncation == 'ترحيب') {
       details.add('تم الترحيب من قبل: ${widget.communicationModel.nameUser}');
-      details
-          .add('تاريخ الترحيب: ${widget.communicationModel.dateCommunication}');
+      details.add('تاريخ الترحيب: ${widget.communicationModel.dateCommunication}');
     }
 
     if (widget.communicationModel.typeCommuncation == 'دوري') {
       // إضافة معلومات الموظف والتاريخ إذا تم التواصل
       if (widget.communicationModel.dateCommunication != null) {
         details.add('موظف التقييم: ${widget.communicationModel.nameUser}');
-        details.add(
-            'تاريخ التقييم: ${widget.communicationModel.dateCommunication}');
+        details.add('تاريخ التقييم: ${widget.communicationModel.dateCommunication}');
 
         // إضافة نتيجة التواصل
         if (widget.communicationModel.result == 'true') {
@@ -403,9 +421,10 @@ class _CommunicationExpandedWidgetState
         }
 
         // إضافة موعد المتابعة القادم إذا وجد
-        if (widget.communicationModel.dateNext?.isNotEmpty == true) {
-          details.add(
-              'موعد المتابعة القادم: ${widget.communicationModel.dateNext}');
+        if (widget.communicationModel.dateNext?.isNotEmpty == true &&
+            widget.communicationModel.dateCommunication != null &&
+            widget.communicationModel.typeCommuncation != 'دوري') {
+          details.add('موعد المتابعة القادم: ${widget.communicationModel.dateNext}');
         }
       } else {
         // إذا لم يتم التواصل بعد، نعرض معلومات الفرع
@@ -416,15 +435,12 @@ class _CommunicationExpandedWidgetState
     if (widget.communicationModel.typeCommuncation == 'تركيب') {
       if (widget.communicationModel.dateCommunication != null) {
         details.add('موظف التقييم: ${widget.communicationModel.nameUser}');
-        details.add(
-            'تاريخ التقييم: ${widget.communicationModel.dateCommunication}');
+        details.add('تاريخ التقييم: ${widget.communicationModel.dateCommunication}');
       }
 
-      details.add(
-          'نوع التركيب: ${widget.communicationModel.type_install == '1' ? 'جودة أول' : 'جودة ثاني'}');
+      details.add('نوع التركيب: ${widget.communicationModel.type_install == '1' ? 'جودة أول' : 'جودة ثاني'}');
 
-      if (widget.communicationModel.rate != null &&
-          widget.communicationModel.rate!.isNotEmpty) {
+      if (widget.communicationModel.rate != null && widget.communicationModel.rate!.isNotEmpty) {
         details.add('تقييم عام: ${widget.communicationModel.rate}');
       }
     }
@@ -435,17 +451,15 @@ class _CommunicationExpandedWidgetState
   @override
   Widget build(BuildContext context) {
     if (widget.communicationModel.idCommunication == '') {
-    return SizedBox.shrink();
+      return SizedBox.shrink();
     }
 
     String? dateinvoice = widget.communicationModel.date_approve;
     String val = dateinvoice != null ? '(فاتورة ${dateinvoice})' : '';
-    String title =
-        get_title_care(widget.communicationModel.typeCommuncation.toString()) +
-            val;
+    String title = get_title_care(widget.communicationModel.typeCommuncation.toString()) + val;
 
     // عرض مؤشر التحميل عندما يكون هناك تحميل
-    if (watchCommunicationVm.isload) {
+    if (watchCommunicationVm.isload && watchCommunicationVm.id == widget.communicationModel.idCommunication) {
       return Center(child: CircularProgressIndicator());
     }
 
@@ -454,21 +468,12 @@ class _CommunicationExpandedWidgetState
       description: _buildDescription(),
       type: widget.communicationModel.typeCommuncation,
       status: widget.communicationModel.result,
-      date:
-          DateTime.tryParse(widget.communicationModel.dateCommunication ?? ''),
+      date: DateTime.tryParse(widget.communicationModel.dateCommunication ?? ''),
       userName: widget.communicationModel.nameUser,
       userRole: widget.communicationModel.name_regoin ?? 'فرع المدينة',
-      rate: widget.communicationModel.rate?.isNotEmpty == true
-          ? widget.communicationModel.rate
-          : null,
-      rateProduct:
-          widget.communicationModel.rateProductValue?.isNotEmpty == true
-              ? widget.communicationModel.rateProductValue
-              : null,
-      rateSupport:
-          widget.communicationModel.rateSupportValue?.isNotEmpty == true
-              ? widget.communicationModel.rateSupportValue
-              : null,
+      rate: widget.communicationModel.rate?.isNotEmpty == true ? widget.communicationModel.rate : null,
+      rateProduct: widget.communicationModel.rateProductValue?.isNotEmpty == true ? widget.communicationModel.rateProductValue : null,
+      rateSupport: widget.communicationModel.rateSupportValue?.isNotEmpty == true ? widget.communicationModel.rateSupportValue : null,
       onEdit: () async {
         if (widget.communicationModel.dateCommunication != null) {
           showModalBottomSheet(
@@ -503,56 +508,47 @@ class _CommunicationExpandedWidgetState
   }
 
   Future<void> _onDoneCommunication(BuildContext context) async {
-    Provider.of<CommunicationVm>(context, listen: false).isloadval(true);
+    Provider.of<CommunicationVm>(context, listen: false).isloadval(true, id: widget.communicationModel.idCommunication);
 
     try {
-    if (widget.communicationModel.typeCommuncation != 'دوري') {
+      if (widget.communicationModel.typeCommuncation != 'دوري') {
         // التعامل مع التركيب والترحيب
-        await Provider.of<CommunicationVm>(context, listen: false)
-            .addCommunication(
+        await Provider.of<CommunicationVm>(context, listen: false).addCommunication(
           {
             'rate': rateSalesValue.toString(),
             'rate_product': rateProductValue.toString(),
             'rate_chat': rateSupportValue.toString(),
             'result': '0',
-            'type_install':
-                widget.communicationModel.type_install?.toString() ?? '1',
+            'type_install': widget.communicationModel.type_install?.toString() ?? '1',
             'id_invoice': widget.communicationModel.id_invoice.toString(),
-            if (clientTypeNotifier.value != null)
-              'state': clientTypeNotifier.value!.value,
-            if (withdrawalReasonNotifier.value != null)
-              'reason_id': withdrawalReasonNotifier.value!.idReason,
+            if (clientTypeNotifier.value != null) 'state': clientTypeNotifier.value!.value,
+            if (withdrawalReasonNotifier.value != null) 'reason_id': withdrawalReasonNotifier.value!.idReason,
           },
           widget.communicationModel.idCommunication,
-          widget.communicationModel.type_install == null
-              ? 1
-              : int.parse(widget.communicationModel.type_install.toString()),
+          widget.communicationModel.type_install == null ? 1 : int.parse(widget.communicationModel.type_install.toString()),
         ).then((value) => clear(value));
-    } else {
+      } else {
         // التعامل مع التواصل الدوري
-      if (widget.communicationModel.dateCommunication == null) {
+        if (widget.communicationModel.dateCommunication == null) {
           if (isSuspend) rateSalesValue = 0.0;
 
-          await Provider.of<CommunicationVm>(context, listen: false)
-              .updateCareCommunication(
-          body: {
-            'rate': rateSalesValue.toString(),
-            'rate_product': rateProductValue.toString(),
-            'rate_chat': rateSupportValue.toString(),
-            'number_wrong': numberwrong.toString(),
-            'client_repeat': repeat.toString(),
-            'type': 'دوري',
+          await Provider.of<CommunicationVm>(context, listen: false).updateCareCommunication(
+            body: {
+              'rate': rateSalesValue.toString(),
+              'rate_product': rateProductValue.toString(),
+              'rate_chat': rateSupportValue.toString(),
+              'number_wrong': numberwrong.toString(),
+              'client_repeat': repeat.toString(),
+              'type': 'دوري',
               'result': typepayController.toString(),
-            'isRecommendation': isRecommendation.toString(),
-            'is_visit': isVisit.toString(),
-            'is_suspend': isSuspend.toString(),
-              if (clientTypeNotifier.value != null)
-                'state': clientTypeNotifier.value!.value,
-              if (withdrawalReasonNotifier.value != null)
-                'reason_id': withdrawalReasonNotifier.value!.idReason,
-          },
-          id_communication: widget.communicationModel.idCommunication,
-        );
+              'isRecommendation': isRecommendation.toString(),
+              'is_visit': isVisit.toString(),
+              'is_suspend': isSuspend.toString(),
+              if (clientTypeNotifier.value != null) 'state': clientTypeNotifier.value!.value,
+              if (withdrawalReasonNotifier.value != null) 'reason_id': withdrawalReasonNotifier.value!.idReason,
+            },
+            id_communication: widget.communicationModel.idCommunication,
+          );
         }
       }
     } finally {

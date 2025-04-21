@@ -91,6 +91,17 @@ class _FilterPeriodicCommunicationSheetState extends State<FilterPeriodicCommuni
             ),
             if (_cubit.pageVariables.periodicCommunicationType.isEvaluated) ...[
               10.height,
+              ValueListenableBuilder(
+                valueListenable: _cubit.filterEntity.clientIsUseOffline,
+                builder: (context, value, child) => SwitchListTile(
+                  value: value,
+                  onChanged: (value) {
+                    _cubit.filterEntity.clientIsUseOffline.value = value;
+                  },
+                  title: AppText("يستخدم offline "),
+                ),
+              ),
+              10.height,
               Padding(
                 padding: const EdgeInsets.only(right: 5, bottom: 2),
                 child: Align(

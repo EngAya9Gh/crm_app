@@ -1,6 +1,8 @@
+import 'package:crm_smart/core/services/cache_services/prefs_consumer.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:app_badge_plus/app_badge_plus.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../core/common/widgets/count_paginated_list.dart';
@@ -28,7 +30,9 @@ class _NotificationsState extends State<NotificationsPage> {
     _cubit = context.read<NotificationsCubit>()..init();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _cubit..getNotifications()..getNotificationsTypesFilter();
+      await _cubit
+        ..getNotifications()
+        ..getNotificationsTypesFilter();
     });
 
     super.initState();
@@ -37,7 +41,7 @@ class _NotificationsState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'الإشعارات',showBackButton: true),
+      appBar: CustomAppBar(title: 'الإشعارات', showBackButton: true),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
@@ -79,9 +83,7 @@ class _NotificationsState extends State<NotificationsPage> {
             Expanded(
               child: BlocBuilder<NotificationsCubit, NotificationsState>(
                 buildWhen: (previous, current) {
-                  return previous.getNotificationsStatus !=
-                          current.getNotificationsStatus &&
-                      _cubit.pageVariables.isNewFilter;
+                  return previous.getNotificationsStatus != current.getNotificationsStatus && _cubit.pageVariables.isNewFilter;
                 },
                 builder: (context, state) {
                   return state.getNotificationsStatus.when(
@@ -101,4 +103,6 @@ class _NotificationsState extends State<NotificationsPage> {
       ),
     );
   }
+
+
 }
