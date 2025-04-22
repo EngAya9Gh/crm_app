@@ -23,12 +23,12 @@ class ElevationAcrossSystemRepoImpl implements ElevationAcrossSystemRepo {
   }
 
   @override
-  Future<Result<ResponseWrapper<List<TicketModel>>>> getSystemRatingTickets(GetSystemRatingTicktesParams params) {
+  Future<Result<ResponseWrapper<List<TicketModel>>>> getSystemRatingTickets(GetOrAddSystemRatingTicktesParams params) {
     return toApiResult(() async => _dataSource.systemRatingTickets(params));
   }
 
   @override
-  Future<Result<ResponseWrapper<TicketModel>>> addSystemRatingTicket(GetSystemRatingTicktesParams params) {
+  Future<Result<ResponseWrapper<TicketModel>>> addSystemRatingTicket(GetOrAddSystemRatingTicktesParams params) {
     return toApiResult(() async => _dataSource.addSystemRatingTicket(params));
   }
 }

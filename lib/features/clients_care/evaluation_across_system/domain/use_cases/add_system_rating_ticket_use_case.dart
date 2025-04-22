@@ -9,14 +9,14 @@ import '../../data/models/elevation_model.dart';
 import '../repositories/sys_support_rating_repo.dart';
 
 @lazySingleton
-class AddSystemRatingTicketsUseCase extends BaseUsecase<Result<ResponseWrapper<TicketModel>>, GetSystemRatingTicktesParams> {
+class AddSystemRatingTicketsUseCase extends BaseUsecase<Result<ResponseWrapper<TicketModel>>, GetOrAddSystemRatingTicktesParams> {
   AddSystemRatingTicketsUseCase(this._repository);
 
   final ElevationAcrossSystemRepo _repository;
 
   @override
   Future<Result<ResponseWrapper<TicketModel>>> call(
-    GetSystemRatingTicktesParams params,
+    GetOrAddSystemRatingTicktesParams params,
   ) async {
     return await _repository.addSystemRatingTicket(params);
   }

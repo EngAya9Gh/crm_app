@@ -16,9 +16,12 @@ import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/
 import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/manager/sys_support_rating_bloc.dart';
 import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/widgets/switch_communication_type.dart';
 import 'package:crm_smart/features/common/client_profile/client_dates_tab/presentation/widgets/ticket_card.dart';
+import 'package:crm_smart/features/finance/clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
+import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class ElevationSysSupportView extends StatefulWidget {
   ElevationSysSupportView({
@@ -35,7 +38,15 @@ class ElevationSysSupportView extends StatefulWidget {
 class _ElevationSysSupportViewState extends State<ElevationSysSupportView> {
   @override
   void initState() {
-    context.read<SysSupportRatingBloc>().add(GetSystemRatingTicketsEvent(params: GetSystemRatingTicktesParams(ratingId: widget.elevationModel!.id!)));
+    context
+        .read<SysSupportRatingBloc>()
+        .add(GetSystemRatingTicketsEvent(params: GetOrAddSystemRatingTicktesParams(ratingId: widget.elevationModel!.id!)));
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        context.read<ClientAttachmentsBloc>().add(GetAllClientEvent());
+        Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket');
+      },
+    );
     super.initState();
   }
 
@@ -61,54 +72,50 @@ class _ElevationSysSupportViewState extends State<ElevationSysSupportView> {
                     onAddPressed: () async {
                       AppNavigator.go(
                         AddTicketPage(
-                          fkClient: widget.elevationModel!.clientId!.toString(),
+                          ratingId: widget.elevationModel!.id!,
                         ),
                       );
                     },
                     child: SizedBox.shrink(), // سيتم إضافة قائمة المهام هنا
                   ),
-                  Column(
-                    children: [
-                      SectionHeader(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          // Color_label: AppColors.grey.shade100,
-                          textColor: AppColors.grey,
-                          title: ' الرقم التسلسلي      ' + (widget.elevationModel?.serialNumber ?? 'لايوجد')),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CardRow(title: 'اسم العميل', value: widget.elevationModel?.nameEnterprise ?? 'لايوجد'),
-                      CardRow(
-                          title: 'نوع التقييم',
-                          value: ElevationSysSupportEnum.values
-                              .firstWhere((element) => element.index + 1 == (widget.elevationModel?.rateType ?? 1))
-                              .text),
-                      CardRow(title: 'تاريخ التقييم', value: widget.elevationModel?.rateDate ?? 'لايوجد'),
-                      CardRow(title: 'تاريخ الانشاء', value: widget.elevationModel?.createdAt ?? 'لايوجد'),
-                      CardRow(title: 'تاريخ التعديل', value: widget.elevationModel?.updatedAt ?? 'لايوجد'),
-                      CardRow(title: 'السؤال', value: widget.elevationModel?.question ?? 'لايوجد'),
-                      CardRow(title: 'سبب التقييم', value: widget.elevationModel?.ratingReason ?? 'لايوجد'),
-                      CardRow(title: 'ملاحظات العميل', value: widget.elevationModel?.message ?? 'لايوجد'),
-                      10.height,
-                      BlocBuilder<SysSupportRatingBloc, SysSupportRatingState>(
-                        builder: (context, state) => state.ratingSystemTickets.when(
-                          success: (data) => ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: data?.length ?? 0,
-                            itemBuilder: (context, index) => TicketCardNew(
-                              showEnterpriseName: true,
-                              ticket: data![index],
-                            ),
-                          ),
-                          failure: (error, data) => AppErrorWidget(
-                            message: error,
-                          ),
+                  SectionHeader(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      // Color_label: AppColors.grey.shade100,
+                      textColor: AppColors.grey,
+                      title: ' الرقم التسلسلي      ' + (widget.elevationModel?.serialNumber ?? 'لايوجد')),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CardRow(title: 'اسم العميل', value: widget.elevationModel?.nameEnterprise ?? 'لايوجد'),
+                  CardRow(
+                      title: 'نوع التقييم',
+                      value:
+                          ElevationSysSupportEnum.values.firstWhere((element) => element.index + 1 == (widget.elevationModel?.rateType ?? 1)).text),
+                  CardRow(title: 'تاريخ التقييم', value: widget.elevationModel?.rateDate ?? 'لايوجد'),
+                  CardRow(title: 'تاريخ الانشاء', value: widget.elevationModel?.createdAt ?? 'لايوجد'),
+                  CardRow(title: 'تاريخ التعديل', value: widget.elevationModel?.updatedAt ?? 'لايوجد'),
+                  CardRow(title: 'السؤال', value: widget.elevationModel?.question ?? 'لايوجد'),
+                  CardRow(title: 'سبب التقييم', value: widget.elevationModel?.ratingReason ?? 'لايوجد'),
+                  CardRow(title: 'ملاحظات العميل', value: widget.elevationModel?.message ?? 'لايوجد'),
+                  10.height,
+                  BlocBuilder<SysSupportRatingBloc, SysSupportRatingState>(
+                    builder: (context, state) => state.ratingSystemTickets.when(
+                      success: (data) => ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: data?.length ?? 0,
+                        itemBuilder: (context, index) => TicketCardNew(
+                          showEnterpriseName: true,
+                          ticket: data![index],
                         ),
                       ),
-                      10.height,
-                    ],
+                      failure: (error, data) => AppErrorWidget(
+                        message: error,
+                      ),
+                    ),
                   ),
+                  10.height,
                 ],
               ),
             ),

@@ -12,8 +12,8 @@ import '../models/elevation_model.dart';
 
 abstract class ElevationAcrossSystemDatasource {
   Future<ResponseWrapper<List<ElevationModel>>> getRating(GetRatingParams params);
-  Future<ResponseWrapper<List<TicketModel>>> systemRatingTickets(GetSystemRatingTicktesParams params);
-  Future<ResponseWrapper<TicketModel>> addSystemRatingTicket(GetSystemRatingTicktesParams params);
+  Future<ResponseWrapper<List<TicketModel>>> systemRatingTickets(GetOrAddSystemRatingTicktesParams params);
+  Future<ResponseWrapper<TicketModel>> addSystemRatingTicket(GetOrAddSystemRatingTicktesParams params);
 }
 
 @LazySingleton(as: ElevationAcrossSystemDatasource)
@@ -34,10 +34,10 @@ class ElevationAcrossSystemDatasourceImpl implements ElevationAcrossSystemDataso
 
     return throwAppException(fun);
   }
-  
+
   @override
-  Future<ResponseWrapper<List<TicketModel>>> systemRatingTickets(GetSystemRatingTicktesParams params)async {
-     fun() async {
+  Future<ResponseWrapper<List<TicketModel>>> systemRatingTickets(GetOrAddSystemRatingTicktesParams params) async {
+    fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(endPoint: EndPoints.care.systemRatingTickets(params.ratingId!));
 
@@ -47,14 +47,14 @@ class ElevationAcrossSystemDatasourceImpl implements ElevationAcrossSystemDataso
 
     return throwAppException(fun);
   }
-   @override
-  Future<ResponseWrapper<TicketModel>> addSystemRatingTicket(GetSystemRatingTicktesParams params)async {
-     fun() async {
-      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.get(endPoint: EndPoints.care.systemRatingsAddTicket(params.ratingId));
 
-      return ResponseWrapper<TicketModel>.fromJson(
-          response, (json) => TicketModel.fromMap(json['message']));
+  @override
+  Future<ResponseWrapper<TicketModel>> addSystemRatingTicket(GetOrAddSystemRatingTicktesParams params) async {
+    fun() async {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.post(endPoint: EndPoints.care.systemRatingsAddTicket(params.ratingId), data: params.toMapAdd());
+
+      return ResponseWrapper<TicketModel>.fromJson(response, (json) => TicketModel.fromMap(json));
     }
 
     return throwAppException(fun);

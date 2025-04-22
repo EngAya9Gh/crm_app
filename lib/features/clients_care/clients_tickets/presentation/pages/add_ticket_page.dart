@@ -4,6 +4,8 @@ import 'package:crm_smart/core/common/widgets/app_card_container.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/use_cases/get_system_rating_tickets_use_case.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/manager/sys_support_rating_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -31,9 +33,11 @@ import '../../../../../core/common/widgets/info_item.dart';
 class AddTicketPage extends StatefulWidget {
   const AddTicketPage({
     this.fkClient,
+    this.ratingId,
     Key? key,
   }) : super(key: key);
   final String? fkClient;
+  final int? ratingId;
 
   @override
   _AddTicketPageState createState() => _AddTicketPageState();
@@ -54,10 +58,8 @@ class _AddTicketPageState extends State<AddTicketPage> {
   @override
   void initState() {
     addTicketCubit = context.read<AddTicketCubit>();
-    context.read<ClientAttachmentsBloc>().add(GetAllClientEvent());
     // fkClientNotifier.value = widget.fkClient;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-    Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket');
       await Provider.of<ClientProvider>(context, listen: false).getclient_Accept();
       Provider.of<ClientProvider>(context, listen: false).changevalueclient(null);
     });
@@ -177,46 +179,70 @@ class _AddTicketPageState extends State<AddTicketPage> {
                         ),
                       ),
                       20.height,
-                      BlocConsumer<AddTicketCubit, AddTicketState>(
-                        listener: (context, state) {
-                          if (state is AddTicketSuccess) {
-                            context.read<TicketsCubit>().getTickets();
-                          } else if (state is AddTicketError) {
+                      BlocConsumer<SysSupportRatingBloc, SysSupportRatingState>(
+                        listenWhen: (previous, current) => previous.addRatingSystemTicket != current.addRatingSystemTicket,
+                        buildWhen: (previous, current) => previous.addRatingSystemTicket != current.addRatingSystemTicket,
+                        listener: (context, stateRat) {
+                          if (stateRat.addRatingSystemTicket.isSuccess()) {
+                            AppNavigator.pop();
+                          } else if (stateRat.addRatingSystemTicket.isFailed()) {
                             AppSnackbar.showSnakeBar(
-                              state.message,
+                              stateRat.addRatingSystemTicket.error,
                               color: ToastColorsEnum.error,
                             );
                           }
                         },
-                        builder: (context, state) {
-                          return SizedBox(
-                            width: double.infinity,
-                            child: AppElevatedButton(
-                              text: 'حفظ',
-                              isLoading: state is AddTicketLoading,
-                              onPressed: () async {
-                                _globalKey.currentState!.save();
-                                if (_globalKey.currentState!.validate()) {
-                                  if (fkClientNotifier.value == null) {
-                                    AppSnackbar.showSnakeBar(
-                                      'من فضلك اختر عميل',
-                                    );
-                                    return;
-                                  }
-                                  await addTicketCubit.addTicket(
-                                    AddTicketParams(
-                                      fkClient: fkClientNotifier.value!.id.toString(),
-                                      typeProblem: Provider.of<ClientTypeProvider>(context, listen: false).selectedValueOut.toString(),
-                                      detailsProblem: problem_desc.text,
-                                      ticketSource: ticketSource?.value ?? '',
-                                      clientType: '0',
-                                      notes: '',
-                                    ),
-                                  );
-                                  AppNavigator.pop();
-                                }
-                              },
-                            ),
+                        builder: (context, stateRat) {
+                          return BlocConsumer<AddTicketCubit, AddTicketState>(
+                            listener: (context, state) {
+                              if (state is AddTicketSuccess) {
+                                context.read<TicketsCubit>().getTickets();
+                              } else if (state is AddTicketError) {
+                                AppSnackbar.showSnakeBar(
+                                  state.message,
+                                  color: ToastColorsEnum.error,
+                                );
+                              }
+                            },
+                            builder: (context, state) {
+                              return SizedBox(
+                                width: double.infinity,
+                                child: AppElevatedButton(
+                                  text: 'حفظ',
+                                  isLoading: ((state is AddTicketLoading) || stateRat.addRatingSystemTicket.isLoading()),
+                                  onPressed: () async {
+                                    _globalKey.currentState!.save();
+                                    if (_globalKey.currentState!.validate()) {
+                                      if (fkClientNotifier.value == null) {
+                                        AppSnackbar.showSnakeBar(
+                                          'من فضلك اختر عميل',
+                                        );
+                                        return;
+                                      }
+                                      if (widget.ratingId != null) {
+                                        context.read<SysSupportRatingBloc>().add(AddSystemRatingTicketEvent(
+                                            params: GetOrAddSystemRatingTicktesParams(
+                                                ratingId: widget.ratingId!,
+                                                detailsProblem: problem_desc.text,
+                                                typeProblem: Provider.of<ClientTypeProvider>(context, listen: false).selectedValueOut.toString())));
+                                        return;
+                                      }
+                                      await addTicketCubit.addTicket(
+                                        AddTicketParams(
+                                          fkClient: fkClientNotifier.value!.id.toString(),
+                                          typeProblem: Provider.of<ClientTypeProvider>(context, listen: false).selectedValueOut.toString(),
+                                          detailsProblem: problem_desc.text,
+                                          ticketSource: ticketSource?.value ?? '',
+                                          clientType: '0',
+                                          notes: '',
+                                        ),
+                                      );
+                                      AppNavigator.pop();
+                                    }
+                                  },
+                                ),
+                              );
+                            },
                           );
                         },
                       ),
