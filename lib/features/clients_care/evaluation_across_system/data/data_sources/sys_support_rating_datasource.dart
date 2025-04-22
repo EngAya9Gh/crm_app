@@ -1,0 +1,37 @@
+import 'package:injectable/injectable.dart';
+
+import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../../core/services/api/api_services.dart';
+import '../../../../../core/services/api/api_utils.dart';
+import '../../../../../core/utils/end_points.dart';
+import '../../../../../model/communication_modle.dart';
+import '../../domain/use_cases/get_elevation_sys_support_use_case.dart';
+import '../models/elevation_model.dart';
+
+abstract class ElevationAcrossSystemDatasource {
+
+  Future<ResponseWrapper<List<ElevationModel>>>getRating(GetRatingParams params);
+}
+
+@LazySingleton(as: ElevationAcrossSystemDatasource)
+class ElevationAcrossSystemDatasourceImpl implements ElevationAcrossSystemDatasource {
+  final ApiServices _api;
+
+  const ElevationAcrossSystemDatasourceImpl(this._api);
+
+  @override
+  Future<ResponseWrapper<List<ElevationModel>>> getRating(GetRatingParams params) async{
+    fun() async {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(endPoint: EndPoints.care.systemRatings);
+
+      return ResponseWrapper<List<ElevationModel>>.fromJson(
+          response,
+              (json) => List.from((json as List<dynamic>)
+              .map((e) => ElevationModel.fromJson(e as Map<String, dynamic>))));
+    }
+
+    return throwAppException(fun);
+
+  }
+}

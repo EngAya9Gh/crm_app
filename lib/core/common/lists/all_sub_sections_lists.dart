@@ -8,6 +8,7 @@ import '../../../features/clients_care/clients_not_using_system/presentation/pag
 import '../../../features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
 import '../../../features/clients_care/clients_wrong_numbers/presentation/pages/wrong_numbers_page.dart';
 import '../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
+import '../../../features/clients_care/evaluation_across_system/presentation/pages/elevation_sys_support_page.dart';
 import '../../../features/clients_care/evaluation_level_report/presentation/pages/evaluation_level_report_page.dart';
 import '../../../features/clients_care/greeting_communication/presentation/pages/greeting_communication_page.dart';
 import '../../../features/clients_care/install_quality/presentation/pages/install_quality_page.dart';
@@ -157,6 +158,11 @@ abstract class AllSubSectionsLists {
       path: AppRoutesPaths.careSubSections.periodicCommunication,
     ),
     SectionModel(
+      title: 'التقييمات عبر النظام',
+      page: SysSupportRatingPage(),
+      path: AppRoutesPaths.careSubSections.sysSupportRating,
+    ),
+    SectionModel(
       title: 'مخالفات العناية',
       page: ViolationsPage(),
       privilegeId: '303',
@@ -169,10 +175,7 @@ abstract class AllSubSectionsLists {
       path: AppRoutesPaths.careSubSections.tickets,
     ),
     SectionModel(
-      page: SubSectionsListView(
-        title: 'التقارير',
-        subSections: careReports
-      ),
+      page: SubSectionsListView(title: 'التقارير', subSections: careReports),
       title: ' التقارير',
       path: AppRoutesPaths.careSubSections.reports,
       subSections: careReports,
@@ -316,6 +319,7 @@ abstract class AllSubSectionsLists {
       subSections: [],
     ),
   ];
+
 //endregion
 
 //region care-reports

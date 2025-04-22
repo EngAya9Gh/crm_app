@@ -5,7 +5,7 @@ import '../common/enums/enums.dart';
 abstract class EndPoints {
   EndPoints._();
 
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   static final baseUrls = _BaseUrls();
   static const auth = _Auth();
@@ -202,6 +202,7 @@ class _Care {
 
   String updateViolation(String violationId) => "violations/$violationId/edit";
   final String violations = "violations";
+  final String systemRatings='system-ratings';
 }
 
 class _Privilege {

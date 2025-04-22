@@ -10,6 +10,7 @@ import '../../../../features/clients_care/clients_tickets/presentation/pages/add
 import '../../../../features/clients_care/clients_tickets/presentation/pages/tickets_page.dart';
 import '../../../../features/clients_care/clients_wrong_numbers/presentation/pages/wrong_numbers_page.dart';
 import '../../../../features/clients_care/crud_activites/presentation/pages/crud_activities_page.dart';
+import '../../../../features/clients_care/evaluation_across_system/presentation/pages/elevation_sys_support_page.dart';
 import '../../../../features/clients_care/evaluation_level_report/presentation/pages/evaluation_level_report_page.dart';
 import '../../../../features/clients_care/greeting_communication/presentation/pages/greeting_communication_page.dart';
 import '../../../../features/clients_care/install_quality/presentation/pages/install_quality_page.dart';
@@ -48,45 +49,34 @@ abstract class CareRoutes {
         ),
         routes: [
           GoRoute(
-            name:
-                AppRoutesPaths.careSubSections.previousRatings.split('/').last,
+            name: AppRoutesPaths.careSubSections.previousRatings.split('/').last,
             path: AppRoutesPaths.careSubSections.previousRatings,
             builder: (context, state) => PreviousRatingsPage(),
           ),
           GoRoute(
-            name: AppRoutesPaths.careSubSections.clientsCareReports
-                .split('/')
-                .last,
+            name: AppRoutesPaths.careSubSections.clientsCareReports.split('/').last,
             path: AppRoutesPaths.careSubSections.clientsCareReports,
             builder: (context, state) => ClientsCareReportsPage(),
           ),
           GoRoute(
-            name: AppRoutesPaths.careSubSections.clientsRecommendedReports
-                .split('/')
-                .last,
+            name: AppRoutesPaths.careSubSections.clientsRecommendedReports.split('/').last,
             path: AppRoutesPaths.careSubSections.clientsRecommendedReports,
             builder: (context, state) => RecommendedClientsReportPage(),
           ),
           GoRoute(
-            name: AppRoutesPaths.careSubSections.evaluationLevelReport
-                .split('/')
-                .last,
+            name: AppRoutesPaths.careSubSections.evaluationLevelReport.split('/').last,
             path: AppRoutesPaths.careSubSections.evaluationLevelReport,
             builder: (context, state) => EvaluationLevelReportPage(),
             routes: [
-              SharedRoutes.clientProfileRoute(
-                  AppRoutesNames.clientProfile.inCareEvaluationLevelReport),
+              SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCareEvaluationLevelReport),
             ],
           ),
           GoRoute(
-            name: AppRoutesPaths.careSubSections.periodicCommunicationReports
-                .split('/')
-                .last,
+            name: AppRoutesPaths.careSubSections.periodicCommunicationReports.split('/').last,
             path: AppRoutesPaths.careSubSections.periodicCommunicationReports,
             builder: (context, state) => PeriodicCommunicationReportsPage(),
             routes: [
-              SharedRoutes.clientProfileRoute(AppRoutesNames
-                  .clientProfile.inCarePeriodicCommunicationReports),
+              SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCarePeriodicCommunicationReports),
             ],
           ),
           GoRoute(
@@ -94,8 +84,7 @@ abstract class CareRoutes {
             path: AppRoutesPaths.careSubSections.notUsingSystem,
             builder: (context, state) => NotUsingSystemPage(),
             routes: [
-              SharedRoutes.clientProfileRoute(
-                  AppRoutesNames.clientProfile.inCareNotUsingSystem),
+              SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCareNotUsingSystem),
             ],
           ),
           GoRoute(
@@ -103,8 +92,7 @@ abstract class CareRoutes {
             path: AppRoutesPaths.careSubSections.wrongNumbers,
             builder: (context, state) => WrongNumbersPage(),
             routes: [
-              SharedRoutes.clientProfileRoute(
-                  AppRoutesNames.clientProfile.inCareWrongNumbers),
+              SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCareWrongNumbers),
             ],
           ),
         ],
@@ -114,8 +102,7 @@ abstract class CareRoutes {
         path: AppRoutesPaths.careSubSections.clientsAccept,
         builder: (context, state) => ClientsAcceptPage(),
         routes: [
-          SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.inCareAcceptClients),
+          SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCareAcceptClients),
         ],
       ),
       GoRoute(
@@ -123,19 +110,15 @@ abstract class CareRoutes {
         path: AppRoutesPaths.careSubSections.specialClients,
         builder: (context, state) => SpecialClientsPage(),
         routes: [
-          SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.inCareSpecialClients),
+          SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCareSpecialClients),
         ],
       ),
       GoRoute(
-        name: AppRoutesPaths.careSubSections.greetingCommunication
-            .split('/')
-            .last,
+        name: AppRoutesPaths.careSubSections.greetingCommunication.split('/').last,
         path: AppRoutesPaths.careSubSections.greetingCommunication,
         builder: (context, state) => GreetingCommunicationPage(),
         routes: [
-          SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.inCareGreetingCommunication),
+          SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCareGreetingCommunication),
         ],
       ),
       GoRoute(
@@ -143,28 +126,28 @@ abstract class CareRoutes {
         path: AppRoutesPaths.careSubSections.installQuality,
         builder: (context, state) => InstallQualityPage(),
         routes: [
-          SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.inCareInstallQuality),
+          SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCareInstallQuality),
         ],
       ),
       GoRoute(
-        name: AppRoutesPaths.careSubSections.periodicCommunication
-            .split('/')
-            .last,
+        name: AppRoutesPaths.careSubSections.periodicCommunication.split('/').last,
         path: AppRoutesPaths.careSubSections.periodicCommunication,
         builder: (context, state) => PeriodicCommunicationPage(),
         routes: [
-          SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.inCarePeriodicCommunication),
+          SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCarePeriodicCommunication),
         ],
+      ),
+      GoRoute(
+        name: AppRoutesPaths.careSubSections.sysSupportRating.split('/').last,
+        path: AppRoutesPaths.careSubSections.sysSupportRating,
+        builder: (context, state) => SysSupportRatingPage(),
       ),
       GoRoute(
         name: AppRoutesPaths.careSubSections.violations.split('/').last,
         path: AppRoutesPaths.careSubSections.violations,
         builder: (context, state) => ViolationsPage(),
         routes: [
-          SharedRoutes.clientProfileRoute(
-              AppRoutesNames.clientProfile.inCareViolations),
+          SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCareViolations),
         ],
       ),
       GoRoute(
@@ -177,8 +160,7 @@ abstract class CareRoutes {
             path: AppRoutesPaths.careInternalRoutes.addTicket,
             builder: (context, state) => AddTicketPage(),
             routes: [
-              SharedRoutes.clientProfileRoute(
-                  AppRoutesNames.clientProfile.inAddTicket),
+              SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inAddTicket),
             ],
           ),
         ],

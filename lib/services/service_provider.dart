@@ -20,6 +20,7 @@ import '../features/clients_care/clients_tickets/presentation/manager/edit_ticke
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../features/clients_care/clients_wrong_numbers/presentation/manager/wrong_numbers_cubit.dart';
 import '../features/clients_care/crud_activites/presentation/manager/crud_activities_bloc.dart';
+import '../features/clients_care/evaluation_across_system/presentation/manager/sys_support_rating_bloc.dart';
 import '../features/clients_care/evaluation_level_report/presentation/manager/evaluation_level_report_cubit.dart';
 import '../features/clients_care/greeting_communication/presentation/manager/greeting_communication_cubit.dart';
 import '../features/clients_care/install_quality/presentation/manager/install_quality_cubit.dart';
@@ -196,6 +197,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(
             create: (context) => getIt<RecommendedClientReportsBloc>()),
         BlocProvider(create: (context) => getIt<SearchCubit>()),
+        BlocProvider(create: (context) => getIt<SysSupportRatingBloc>()),
       ],
       /* Providers */
       child: MultiProvider(
