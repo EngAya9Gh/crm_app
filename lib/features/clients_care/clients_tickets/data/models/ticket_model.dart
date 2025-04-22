@@ -35,6 +35,7 @@ class TicketModel {
     this.nameClient,
     this.nameEnterprise,
     this.status,
+    this.systemRatingId,
   });
 
   String? fkClient;
@@ -68,6 +69,7 @@ class TicketModel {
   String? nameClient;
   String? nameEnterprise;
   List<StatusModel>? status;
+  int? systemRatingId;
 
   TicketModel.fromMap(dynamic json) {
     fkClient = json['fk_client'].toString();
@@ -86,6 +88,7 @@ class TicketModel {
     reciveId = json['recive_id'];
     openId = json['open_id'];
     iDcustomer = json['IDcustomer'];
+    systemRatingId = json['system_rating_id'];
     idTicket = json['id_ticket'].toString();
     nameEnterprisetc = json['name_enterprisetc'];
     notesRate = json['notes_rate'];
@@ -136,6 +139,7 @@ class TicketModel {
       map['open_id'] = openId;
       map['IDcustomer'] = iDcustomer;
       map['id_ticket'] = idTicket;
+      map['system_rating_id'] = systemRatingId;
       map['name_enterprisetc'] = nameEnterprisetc;
       map['notes_rate'] = notesRate;
       map['rate'] = rate;
@@ -145,12 +149,10 @@ class TicketModel {
       map['suspend_id'] = suspendId;
       map['suspend_date'] = suspendDate;
       if (categoriesTicketFk != null) {
-        map['categories_ticket_fk'] =
-            categoriesTicketFk?.map((v) => v.toMap()).toList();
+        map['categories_ticket_fk'] = categoriesTicketFk?.map((v) => v.toMap()).toList();
       }
       if (subcategoriesTicketFk != null) {
-        map['subcategories_ticket_fk'] =
-            subcategoriesTicketFk?.map((v) => v.toMap()).toList();
+        map['subcategories_ticket_fk'] = subcategoriesTicketFk?.map((v) => v.toMap()).toList();
       }
       map['ticket_source'] = ticketSource;
       map['name_client'] = nameClient;
@@ -193,6 +195,7 @@ class TicketModel {
       String? nameClient,
       String? nameEnterprise,
       List<StatusModel>? status,
+      int? systemRatingId,
     }) {
       return TicketModel(
         fkClient: fkClient ?? this.fkClient,
@@ -221,12 +224,12 @@ class TicketModel {
         suspendId: suspendId ?? this.suspendId,
         suspendDate: suspendDate ?? this.suspendDate,
         categoriesTicketFk: categoriesTicketFk ?? this.categoriesTicketFk,
-        subcategoriesTicketFk:
-            subcategoriesTicketFk ?? this.subcategoriesTicketFk,
+        subcategoriesTicketFk: subcategoriesTicketFk ?? this.subcategoriesTicketFk,
         ticketSource: ticketSource ?? this.ticketSource,
         nameClient: nameClient ?? this.nameClient,
         nameEnterprise: nameEnterprise ?? this.nameEnterprise,
         status: status ?? this.status,
+        systemRatingId: systemRatingId ?? this.systemRatingId,
       );
     }
   }

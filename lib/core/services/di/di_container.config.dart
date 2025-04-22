@@ -141,13 +141,17 @@ import '../../../features/clients_care/crud_activites/domain/use_cases/update_ac
 import '../../../features/clients_care/crud_activites/presentation/manager/crud_activities_bloc.dart'
     as _i943;
 import '../../../features/clients_care/evaluation_across_system/data/data_sources/sys_support_rating_datasource.dart'
-    as _i275;
+    as _i646;
 import '../../../features/clients_care/evaluation_across_system/data/repositories/sys_support_rating_repo_impl.dart'
-    as _i54;
+    as _i1069;
 import '../../../features/clients_care/evaluation_across_system/domain/repositories/sys_support_rating_repo.dart'
-    as _i429;
+    as _i831;
+import '../../../features/clients_care/evaluation_across_system/domain/use_cases/add_system_rating_ticket_use_case.dart'
+    as _i1032;
 import '../../../features/clients_care/evaluation_across_system/domain/use_cases/get_elevation_sys_support_use_case.dart'
     as _i574;
+import '../../../features/clients_care/evaluation_across_system/domain/use_cases/get_system_rating_tickets_use_case.dart'
+    as _i317;
 import '../../../features/clients_care/evaluation_across_system/presentation/manager/sys_support_rating_bloc.dart'
     as _i77;
 import '../../../features/clients_care/evaluation_level_report/data/data_sources/evaluation_level_report_datasource.dart'
@@ -1097,6 +1101,8 @@ _i174.GetIt $initGetIt(
       () => _i1006.SupportClientsAcceptDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i946.EvaluationLevelReportDatasource>(
       () => _i946.EvaluationLevelReportDatasourceImpl(gh<_i124.ApiServices>()));
+  gh.lazySingleton<_i646.ElevationAcrossSystemDatasource>(
+      () => _i646.ElevationAcrossSystemDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i79.DelayAfterInstallDatasource>(
       () => _i79.DelayAfterInstallDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i1057.PendingInvoicesDatasource>(
@@ -1183,8 +1189,6 @@ _i174.GetIt $initGetIt(
       () => _i943.InstallQualityDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i1013.LevelsRepo>(
       () => _i180.LevelsRepoImpl(gh<_i425.LevelsDatasource>()));
-  gh.lazySingleton<_i275.ElevationAcrossSystemDatasource>(
-      () => _i275.ElevationAcrossSystemDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i56.TicketsDataSource>(
       () => _i56.TicketsDataSourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i880.SupportClientsInvoicesDatasource>(
@@ -1243,6 +1247,9 @@ _i174.GetIt $initGetIt(
       () => _i330.UsersDatasourceImpl(gh<_i124.ApiServices>()));
   gh.factory<_i513.HomeStatisticsRepository>(
       () => _i796.HomeStatisticsRepositoryImpl(gh<_i124.ApiServices>()));
+  gh.lazySingleton<_i831.ElevationAcrossSystemRepo>(() =>
+      _i1069.ElevationAcrossSystemRepoImpl(
+          gh<_i646.ElevationAcrossSystemDatasource>()));
   gh.lazySingleton<_i453.CitiesDatasource>(
       () => _i453.CitiesDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i929.AdvancedConfigsDatasource>(
@@ -1392,6 +1399,15 @@ _i174.GetIt $initGetIt(
       () => _i649.LatestClientsUpdatesDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i701.ManageWithdrawnInvoicesDataSource>(() =>
       _i701.ManageWithdrawnInvoicesDataSourceImpl(gh<_i124.ApiServices>()));
+  gh.lazySingleton<_i574.GetElevationSysSupportUseCase>(() =>
+      _i574.GetElevationSysSupportUseCase(
+          gh<_i831.ElevationAcrossSystemRepo>()));
+  gh.lazySingleton<_i317.GetSystemRatingTicketsUseCase>(() =>
+      _i317.GetSystemRatingTicketsUseCase(
+          gh<_i831.ElevationAcrossSystemRepo>()));
+  gh.lazySingleton<_i1032.AddSystemRatingTicketsUseCase>(() =>
+      _i1032.AddSystemRatingTicketsUseCase(
+          gh<_i831.ElevationAcrossSystemRepo>()));
   gh.lazySingleton<_i235.WithdrawnInvoicesDataSource>(
       () => _i235.WithdrawnInvoicesDataSourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i887.InvoicesSectionRepo>(
@@ -1443,9 +1459,6 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i264.ManageWithdrawnInvoicesRepo>(() =>
       _i38.ManageWithdrawnInvoicesRepoImpl(
           gh<_i701.ManageWithdrawnInvoicesDataSource>()));
-  gh.lazySingleton<_i429.ElevationAcrossSystemRepo>(() =>
-      _i54.ElevationAcrossSystemRepoImpl(
-          gh<_i275.ElevationAcrossSystemDatasource>()));
   gh.lazySingleton<_i454.InstallQualityRepo>(
       () => _i159.InstallQualityRepoImpl(gh<_i943.InstallQualityDatasource>()));
   gh.lazySingleton<_i805.PrivilegesRepo>(
@@ -1619,9 +1632,6 @@ _i174.GetIt $initGetIt(
       () => _i18.GetUsersUsecase(gh<_i586.UsersRepository>()));
   gh.factory<_i653.GetUserByIdUsecase>(
       () => _i653.GetUserByIdUsecase(gh<_i586.UsersRepository>()));
-  gh.lazySingleton<_i574.GetElevationSysSupportUseCase>(() =>
-      _i574.GetElevationSysSupportUseCase(
-          gh<_i429.ElevationAcrossSystemRepo>()));
   gh.lazySingleton<_i992.GetSupportClientsInvoicesUseCase>(() =>
       _i992.GetSupportClientsInvoicesUseCase(
           gh<_i794.SupportClientsInvoicesRepo>()));
@@ -1902,6 +1912,11 @@ _i174.GetIt $initGetIt(
       _i245.UpdateActivityCrudUseCase(gh<_i592.CrudActivitiesRepository>()));
   gh.lazySingleton<_i746.WithdrawnInvoicesRepo>(() =>
       _i238.WithdrawnInvoicesRepoImpl(gh<_i235.WithdrawnInvoicesDataSource>()));
+  gh.factory<_i77.SysSupportRatingBloc>(() => _i77.SysSupportRatingBloc(
+        gh<_i574.GetElevationSysSupportUseCase>(),
+        gh<_i317.GetSystemRatingTicketsUseCase>(),
+        gh<_i1032.AddSystemRatingTicketsUseCase>(),
+      ));
   gh.lazySingleton<_i1041.RegionsRepository>(
       () => _i138.RegionsRepositoryImpl(gh<_i134.RegionsDatasource>()));
   gh.factory<_i697.ClientLogsTabCubit>(
@@ -1946,8 +1961,6 @@ _i174.GetIt $initGetIt(
       () => _i149.ClientTaskBloc(gh<_i613.GetClientTasksUsecase>()));
   gh.factory<_i593.DatesTimelineBloc>(
       () => _i593.DatesTimelineBloc(gh<_i512.GetTimelineByEmployeeUseCase>()));
-  gh.factory<_i77.SysSupportRatingBloc>(() =>
-      _i77.SysSupportRatingBloc(gh<_i574.GetElevationSysSupportUseCase>()));
   gh.factory<_i692.GreetingCommunicationCubit>(() =>
       _i692.GreetingCommunicationCubit(
           gh<_i478.GetGreetingCommunicationUseCase>()));

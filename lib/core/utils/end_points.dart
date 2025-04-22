@@ -203,6 +203,8 @@ class _Care {
   String updateViolation(String violationId) => "violations/$violationId/edit";
   final String violations = "violations";
   final String systemRatings='system-ratings';
+  String systemRatingTickets(int ratingId)=>'system-ratings/$ratingId/tickets';
+  String systemRatingsAddTicket(int ratingId)=>'system-ratings/$ratingId/add-ticket';
 }
 
 class _Privilege {

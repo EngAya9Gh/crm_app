@@ -54,12 +54,12 @@ class _AddTicketPageState extends State<AddTicketPage> {
   @override
   void initState() {
     addTicketCubit = context.read<AddTicketCubit>();
+    context.read<ClientAttachmentsBloc>().add(GetAllClientEvent());
     // fkClientNotifier.value = widget.fkClient;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ClientProvider>(context, listen: false)
-          .getclient_Accept();
-      Provider.of<ClientProvider>(context, listen: false)
-          .changevalueclient(null);
+    Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket');
+      await Provider.of<ClientProvider>(context, listen: false).getclient_Accept();
+      Provider.of<ClientProvider>(context, listen: false).changevalueclient(null);
     });
     super.initState();
   }
@@ -85,14 +85,11 @@ class _AddTicketPageState extends State<AddTicketPage> {
                       InfoItem(
                         title: 'اسم العميل*',
                         isRequired: true,
-                        customWidget: BlocBuilder<ClientAttachmentsBloc,
-                            ClientAttachmentsState>(
+                        customWidget: BlocBuilder<ClientAttachmentsBloc, ClientAttachmentsState>(
                           builder: (context, state) {
                             return ValueListenableBuilder(
                               valueListenable: fkClientNotifier,
-                              builder: (context, value, child) =>
-                                  CustomSearchableDropDown<
-                                      SubscribedClientsModel>(
+                              builder: (context, value, child) => CustomSearchableDropDown<SubscribedClientsModel>(
                                 hint: 'العميل',
                                 items: state.getAllClients.data ?? [],
                                 itemAsString: (u) => u?.nameEnterprise ?? '',
@@ -101,12 +98,9 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                   fkClientNotifier.value = data;
                                 },
                                 filterFn: (user, filter) {
-                                  return user.nameEnterprise!
-                                      .toLowerCase()
-                                      .contains(filter.toLowerCase());
+                                  return user.nameEnterprise!.toLowerCase().contains(filter.toLowerCase());
                                 },
-                                compareFn: (item, selectedItem) =>
-                                    item.id == selectedItem.id,
+                                compareFn: (item, selectedItem) => item.id == selectedItem.id,
                               ),
                             );
                           },
@@ -120,13 +114,11 @@ class _AddTicketPageState extends State<AddTicketPage> {
                             onPressed: () {
                               AppNavigator.go(
                                 ClientProfile(
-                                  idClient:
-                                      fkClientNotifier.value!.id.toString(),
+                                  idClient: fkClientNotifier.value!.id.toString(),
                                 ),
                                 name: AppRoutesNames.clientProfile.inAddTicket,
                                 pathParameters: {
-                                  'idClient':
-                                      fkClientNotifier.value!.id.toString(),
+                                  'idClient': fkClientNotifier.value!.id.toString(),
                                 },
                               );
                             },
@@ -146,8 +138,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                               items: cart.type_of_out.map((e) {
                                 return e.nameReason;
                               }).toList(),
-                              compareFn: (item, selectedItem) =>
-                                  item == selectedItem,
+                              compareFn: (item, selectedItem) => item == selectedItem,
                               itemAsString: (nameReason) => nameReason!,
                               selectedItem: cart.selectedValueOut,
                               onChanged: (value) {
@@ -162,14 +153,10 @@ class _AddTicketPageState extends State<AddTicketPage> {
                         title: 'مصدر التذكرة',
                         customWidget: CustomDropDown<String>(
                           hint: 'مصدر التذكرة',
-                          items: TicketSourceEnum.values
-                              .where((e) => e != TicketSourceEnum.location)
-                              .map((e) => e.value)
-                              .toList(),
+                          items: TicketSourceEnum.values.where((e) => e != TicketSourceEnum.location).map((e) => e.value).toList(),
                           itemAsString: (nameReason) => nameReason!,
                           selectedItem: ticketSource?.value,
-                          compareFn: (item, selectedItem) =>
-                              item == selectedItem,
+                          compareFn: (item, selectedItem) => item == selectedItem,
                           onChanged: (value) {
                             ticketSource = TicketSourceEnum.fromString(
                               value.toString(),
@@ -218,14 +205,8 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                   }
                                   await addTicketCubit.addTicket(
                                     AddTicketParams(
-                                      fkClient:
-                                          fkClientNotifier.value!.id.toString(),
-                                      typeProblem:
-                                          Provider.of<ClientTypeProvider>(
-                                                  context,
-                                                  listen: false)
-                                              .selectedValueOut
-                                              .toString(),
+                                      fkClient: fkClientNotifier.value!.id.toString(),
+                                      typeProblem: Provider.of<ClientTypeProvider>(context, listen: false).selectedValueOut.toString(),
                                       detailsProblem: problem_desc.text,
                                       ticketSource: ticketSource?.value ?? '',
                                       clientType: '0',

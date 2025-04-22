@@ -1,6 +1,9 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/core/config/navigator/app_routes_paths.dart';
 import 'package:crm_smart/features/clients_care/evaluation_across_system/data/models/elevation_model.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/widgets/elevation_sys_support_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -21,21 +24,11 @@ class ElevationSysOrSupportCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppCardContainer(
       onTap: () {
-        // AppNavigator.go(
-        //   ClientProfile(
-        //     idClient: elevationModel.fkClient,
-        //     tabIndex: 4,
-        //     tabCareIndex: tabCareIndex,
-        //     idCommunication: elevationModel.idCommunication,
-        //   ),
-        //   name: AppRoutesNames.clientProfile.inCarePeriodicCommunication,
-        //   pathParameters: {'idClient': elevationModel.fkClient.toString()},
-        //   extra: {
-        //     'tabIndex': 4,
-        //     'tabCareIndex': tabCareIndex,
-        //     'idCommunication': elevationModel.idCommunication,
-        //   },
-        // );
+        AppNavigator.go(
+        ElevationSysSupportView(elevationModel: elevationModel,),
+        name: AppRoutesPaths.careSubSections.sysSupportRatingView,
+        extra: elevationModel
+      );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

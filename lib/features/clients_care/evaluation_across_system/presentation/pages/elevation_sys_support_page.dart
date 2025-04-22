@@ -131,7 +131,9 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
                     ),
                     failure: (error, data) => AppErrorWidget(
                       message: error,
-                      onPressed: () {},
+                      onPressed: () {
+                        _bloc.add(GetListSysOrSupportRatingEvent());
+                      },
                     ),
                   );
                 },

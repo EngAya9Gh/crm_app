@@ -1,3 +1,5 @@
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_model.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/use_cases/get_system_rating_tickets_use_case.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
@@ -10,6 +12,8 @@ import '../models/elevation_model.dart';
 
 abstract class ElevationAcrossSystemDatasource {
   Future<ResponseWrapper<List<ElevationModel>>> getRating(GetRatingParams params);
+  Future<ResponseWrapper<List<TicketModel>>> systemRatingTickets(GetSystemRatingTicktesParams params);
+  Future<ResponseWrapper<TicketModel>> addSystemRatingTicket(GetSystemRatingTicktesParams params);
 }
 
 @LazySingleton(as: ElevationAcrossSystemDatasource)
@@ -26,6 +30,31 @@ class ElevationAcrossSystemDatasourceImpl implements ElevationAcrossSystemDataso
 
       return ResponseWrapper<List<ElevationModel>>.fromJson(
           response, (json) => List.from((json as List<dynamic>).map((e) => ElevationModel.fromJson(e as Map<String, dynamic>))));
+    }
+
+    return throwAppException(fun);
+  }
+  
+  @override
+  Future<ResponseWrapper<List<TicketModel>>> systemRatingTickets(GetSystemRatingTicktesParams params)async {
+     fun() async {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(endPoint: EndPoints.care.systemRatingTickets(params.ratingId!));
+
+      return ResponseWrapper<List<TicketModel>>.fromJson(
+          response, (json) => List.from((json as List<dynamic>).map((e) => TicketModel.fromMap(e as Map<String, dynamic>))));
+    }
+
+    return throwAppException(fun);
+  }
+   @override
+  Future<ResponseWrapper<TicketModel>> addSystemRatingTicket(GetSystemRatingTicktesParams params)async {
+     fun() async {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.get(endPoint: EndPoints.care.systemRatingsAddTicket(params.ratingId));
+
+      return ResponseWrapper<TicketModel>.fromJson(
+          response, (json) => TicketModel.fromMap(json['message']));
     }
 
     return throwAppException(fun);

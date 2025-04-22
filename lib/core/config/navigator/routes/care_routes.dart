@@ -1,3 +1,5 @@
+import 'package:crm_smart/features/clients_care/evaluation_across_system/data/models/elevation_model.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/widgets/elevation_sys_support_view.dart';
 import 'package:crm_smart/features/clients_care/recommended_client/presentation/manager/recommended_client_bloc.dart';
 import 'package:crm_smart/features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
 import 'package:go_router/go_router.dart';
@@ -141,6 +143,17 @@ abstract class CareRoutes {
         name: AppRoutesPaths.careSubSections.sysSupportRating.split('/').last,
         path: AppRoutesPaths.careSubSections.sysSupportRating,
         builder: (context, state) => SysSupportRatingPage(),
+        routes: [
+          GoRoute(
+                name: AppRoutesPaths.careSubSections.sysSupportRatingView,
+                path: AppRoutesPaths.careSubSections.sysSupportRatingView,
+                builder: (context, state) {
+                  return ElevationSysSupportView(
+                    elevationModel: state.extra as ElevationModel,
+                  );
+                },
+              ),
+        ]
       ),
       GoRoute(
         name: AppRoutesPaths.careSubSections.violations.split('/').last,
