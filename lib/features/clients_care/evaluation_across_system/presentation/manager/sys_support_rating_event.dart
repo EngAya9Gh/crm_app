@@ -5,6 +5,6 @@ sealed class SysSupportRatingEvent {}
 
 class GetListSysOrSupportRatingEvent extends SysSupportRatingEvent{
   final String? clientId;
-
-  GetListSysOrSupportRatingEvent({this.clientId});
+  final int page;
+  GetListSysOrSupportRatingEvent({this.clientId,this.page=1});
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FilterElevationSysSupportEntity extends ChangeNotifier{
+class FilterElevationSysSupportEntity extends ChangeNotifier {
   FilterElevationSysSupportEntity();
-
-  ValueNotifier<int?> rateTypeNotifier = ValueNotifier<int?>(1);
+  int page = 1;
+  ValueNotifier<int> rateTypeNotifier = ValueNotifier<int>(1);
   ValueNotifier<double?> rateNotifier = ValueNotifier<double?>(null);
   TextEditingController searchController = TextEditingController();
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
-    rateTypeNotifier.value = null;
+    rateTypeNotifier.value = 1;
     rateNotifier.value = null;
     searchController = TextEditingController();
     dateFromController = TextEditingController();
@@ -51,6 +51,6 @@ class FilterElevationSysSupportEntity extends ChangeNotifier{
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return rateTypeNotifier.value != null || rateNotifier.value != null || dateFromController.text.isNotEmpty || dateToController.text.isNotEmpty||searchController.text.isNotEmpty;
+    return rateNotifier.value != null || dateFromController.text.isNotEmpty || dateToController.text.isNotEmpty || searchController.text.isNotEmpty;
   }
 }

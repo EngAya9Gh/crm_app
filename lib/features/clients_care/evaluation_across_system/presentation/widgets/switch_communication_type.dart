@@ -31,11 +31,7 @@ class SwitchElevationType extends StatelessWidget {
       ),
       onSelected: (value, index, isSelected) {
         _bloc.filterEntity.rateTypeNotifier.value = index + 1;
-        // if (index == 0 && _cubit.pageVariables.switchValue) return;
-        // if (index == 1 && !_cubit.pageVariables.switchValue) return;
-        //
-        // _cubit.pageVariables.changePeriodicCommunicationType();
-        // _cubit.getPeriodicCommunication();
+        _bloc.add(GetListSysOrSupportRatingEvent());
       },
       isRadio: true,
       options: GroupButtonOptions(

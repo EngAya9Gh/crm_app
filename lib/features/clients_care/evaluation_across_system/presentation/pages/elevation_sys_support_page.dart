@@ -1,4 +1,8 @@
+import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
+import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/use_cases/get_elevation_sys_support_use_case.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/widgets/elevation_sys_support_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,8 +21,7 @@ class SysSupportRatingPage extends StatefulWidget {
   const SysSupportRatingPage({super.key});
 
   @override
-  State<SysSupportRatingPage> createState() =>
-      _PeriodicCommunicationState();
+  State<SysSupportRatingPage> createState() => _PeriodicCommunicationState();
 }
 
 class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
@@ -26,9 +29,7 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
 
   @override
   void initState() {
-    _bloc = context.read<SysSupportRatingBloc>()
-      ..add(GetListSysOrSupportRatingEvent());
-
+    _bloc = context.read<SysSupportRatingBloc>()..add(GetListSysOrSupportRatingEvent());
     super.initState();
   }
 
@@ -45,20 +46,50 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
               children: [
                 Expanded(
                   child: CustomSearchWidget(
-                    searchController: TextEditingController(),
-                    onChanged: (value) {},
+                    searchController: _bloc.filterEntity.searchController,
+                    onChanged: (value) {
+                      _bloc.add(GetListSysOrSupportRatingEvent());
+                    },
                   ),
                 ),
-                CustomFilterIcon(
-                  onTap: () async {
-                    final value = await AppBottomSheet.show(
-                      context: context,
-                      child: FilterElevationSysSupportSheet(),
-                    );
-                    // if (value != true) {
-                    //   _cubit.returnToPreviousState();
-                    // }
-                  },
+                StatefulBuilder(
+                  builder: (context, setState) => Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      CustomFilterIcon(
+                        onTap: () async {
+                          await AppBottomSheet.show(
+                            context: context,
+                            child: FilterElevationSysSupportSheet(),
+                          ).then(
+                            (value) {
+                              if (value != true) {
+                                _bloc.filterEntity.returnToPreviousState;
+                              }
+                              setState(() {});
+                            },
+                          );
+                        },
+                      ),
+                      ListenableBuilder(
+                        listenable: Listenable.merge(
+                          _bloc.filterEntity.listenables(),
+                        ),
+                        builder: (context, child) {
+                          return _bloc.filterEntity.checkIfFilterIsNotEmpty()
+                              ? Positioned(
+                                  right: -5,
+                                  top: -2,
+                                  child: CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: AppColors.statusErrorActive,
+                                  ),
+                                )
+                              : SizedBox.shrink();
+                        },
+                      )
+                    ],
+                  ),
                 ),
                 8.width,
               ],
@@ -66,35 +97,42 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
             15.height,
             SwitchElevationType(),
             15.height,
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 15),
-            //   child: CountPaginatedList<SysSupportRatingBloc,
-            //       SysSupportRatingState>(
-            //     countSelector: (state) {
-            //       return _cubit.pageVariables.allList.length;
-            //     },
-            //     totalCount: (state) {
-            //       return _cubit.pageVariables.totalCount;
-            //     },
-            //   ),
-            // ),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText('عدد العناصر: '),
+                    BlocBuilder<SysSupportRatingBloc, SysSupportRatingState>(
+                      builder: (context, state) {
+                        return ((state.listRating.data ?? []).isEmpty)
+                            ? SizedBox.shrink()
+                            : AppText('${state.listRating.data?.length ?? ''}/${state.totalCount}');
+                      },
+                    ),
+                  ],
+                )),
             Expanded(
-              child: BlocBuilder<SysSupportRatingBloc,
-                  SysSupportRatingState>(
+              child: BlocBuilder<SysSupportRatingBloc, SysSupportRatingState>(
                 buildWhen: (previous, current) {
-                  return previous.listRating != current.listRating;
+                  return ((previous.listRating != current.listRating) || (previous.statusListRating != current.statusListRating));
                 },
                 builder: (context, state) {
                   return state.listRating.when(
-                    success: (data) =>
-                        ListView.builder(
-                          itemBuilder: (context, index) => ElevationSysOrSupportCard(elevationModel: data![index], tabElevationIndex: 1),
-                          itemCount: data?.length ?? 0,),
-                    failure: (error, data) =>
-                        AppErrorWidget(
-                          message: error,
-                          onPressed: () {},
-                        ),
+                    success: (data) => AppPaginatedList(
+                      hasReachedEnd: state.hasReachedEnd,
+                      isLoading: state.statusListRating.isLoading(),
+                      onLoadMore: () {
+                        _bloc.add(GetListSysOrSupportRatingEvent(page: _bloc.filterEntity.page + 1));
+                      },
+                      items: data ?? [],
+                      itemBuilder: (context, index) =>
+                          ElevationSysOrSupportCard(elevationModel: data![index], tabElevationIndex: _bloc.filterEntity.rateTypeNotifier.value),
+                    ),
+                    failure: (error, data) => AppErrorWidget(
+                      message: error,
+                      onPressed: () {},
+                    ),
                   );
                 },
               ),
