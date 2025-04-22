@@ -8,6 +8,7 @@ class TicketsState extends Equatable {
   final BlocStatus subCategoriesStatus;
   final BlocStatus getClientsTicketsStatus;
   final TicketTypesEnum? selectedTicketType;
+  final BlocStatus<List<TicketSubCategoryModel>> SubCategoriesSystem;
 
   const TicketsState({
     this.getTicketsStatus = const BlocStatus.initial(),
@@ -15,8 +16,8 @@ class TicketsState extends Equatable {
     this.categoriesStatus = const BlocStatus.initial(),
     this.subCategoriesStatus = const BlocStatus.initial(),
     this.getClientsTicketsStatus = const BlocStatus.initial(),
-    this.selectedTicketType ,
-
+    this.SubCategoriesSystem = const BlocStatus.initial(),
+    this.selectedTicketType,
   });
 
   TicketsState copyWith({
@@ -26,6 +27,7 @@ class TicketsState extends Equatable {
     BlocStatus? subCategoriesStatus,
     BlocStatus? getClientsTicketsStatus,
     TicketTypesEnum? selectedTicketType,
+    final BlocStatus<List<TicketSubCategoryModel>>? SubCategoriesSystem,
   }) {
     return TicketsState(
       getTicketsStatus: getTicketsStatus ?? this.getTicketsStatus,
@@ -33,8 +35,8 @@ class TicketsState extends Equatable {
       categoriesStatus: categoriesStatus ?? this.categoriesStatus,
       subCategoriesStatus: subCategoriesStatus ?? this.subCategoriesStatus,
       selectedTicketType: selectedTicketType ?? this.selectedTicketType,
-      getClientsTicketsStatus:
-          getClientsTicketsStatus ?? this.getClientsTicketsStatus,
+      getClientsTicketsStatus: getClientsTicketsStatus ?? this.getClientsTicketsStatus,
+      SubCategoriesSystem: SubCategoriesSystem ?? this.SubCategoriesSystem,
     );
   }
 
@@ -45,5 +47,6 @@ class TicketsState extends Equatable {
         categoriesStatus,
         subCategoriesStatus,
         getClientsTicketsStatus,
+        SubCategoriesSystem,
       ];
 }

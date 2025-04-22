@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -178,7 +179,10 @@ class TicketsCubit extends Cubit<TicketsState> {
       final data = apiDataHandler(response);
 
       pageVariables.allSubCategoriesList = data.map<TicketSubCategoryModel>((e) => TicketSubCategoryModel.fromMap(e)).toList();
-
+      emit(state.copyWith(
+          SubCategoriesSystem: pageVariables.allSubCategoriesList.isEmpty
+              ? BlocStatus.empty()
+              : BlocStatus.success(data: pageVariables.allSubCategoriesList.where((element) => element.classification == 'النظام').toList())));
       filterSubCategories();
     } catch (e) {
       emit(state.copyWith(subCategoriesStatus: BlocStatus.fail(error: e.toString())));

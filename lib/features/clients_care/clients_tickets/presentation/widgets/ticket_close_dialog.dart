@@ -36,10 +36,15 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
   final closeTicketFormKey = GlobalKey<FormState>();
   final notesController = TextEditingController();
   late final bool isClosedBefore;
-
+  late bool isfromSystem;
   @override
   void initState() {
     ticketsCubit = context.read<TicketsCubit>();
+    isfromSystem =
+        ((widget.ticketModel.ticketSource == 'تقييم عبر النظام / المنتج') || (widget.ticketModel.ticketSource == 'تقييم عبر النظام / خدمة الدعم'));
+    if (isfromSystem) {
+      ticketsCubit.getSubCategories();
+    }
     isClosedBefore = widget.ticketModel.status?.any((element) {
           return element.stateName == TicketTypesEnum.close.nameEn;
         }) ??
@@ -82,26 +87,40 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                       return category.id == value.id;
                     },
                   ),
+                  10.height,
                   BlocBuilder<TicketsCubit, TicketsState>(
                     buildWhen: (previous, current) {
-                      return previous.subCategoriesStatus !=
-                          current.subCategoriesStatus;
+                      return previous.subCategoriesStatus != current.subCategoriesStatus;
                     },
                     builder: (context, state) {
-                      if (ticketsCubit.pageVariables
-                          .filteredSubCategoriesByCategories.isEmpty) {
+                      if (isfromSystem) {
+                        return state.SubCategoriesSystem.when(
+                          success: (data) => CustomMultiSelectionDropdown<TicketSubCategoryModel>(
+                            items: data ?? [],
+                            selectedItems: ticketsCubit.pageVariables.selectedSubCategoriesList,
+                            hint: 'التصنيف الفرعي',
+                            isRequired: true,
+                            onSave: (data) {
+                              ticketsCubit.pageVariables.selectedSubCategoriesList = data;
+                            },
+                            itemAsString: (item) => item!.subCategoryAr,
+                            compareFn: (category, value) {
+                              return category.id == value.id;
+                            },
+                          ),
+                          failure: (error, data) => SizedBox.shrink(),
+                        );
+                      }
+                      if (ticketsCubit.pageVariables.filteredSubCategoriesByCategories.isEmpty) {
                         return SizedBox.shrink();
                       }
-                      return CustomMultiSelectionDropdown<
-                          TicketSubCategoryModel>(
-                        items: ticketsCubit
-                            .pageVariables.filteredSubCategoriesByCategories,
+                      return CustomMultiSelectionDropdown<TicketSubCategoryModel>(
+                        items: ticketsCubit.pageVariables.filteredSubCategoriesByCategories,
                         selectedItems: [],
                         hint: 'التصنيف الفرعي',
                         isRequired: true,
                         onSave: (data) {
-                          ticketsCubit.pageVariables.selectedSubCategoriesList =
-                              data;
+                          ticketsCubit.pageVariables.selectedSubCategoriesList = data;
                         },
                         itemAsString: (item) => item!.subCategoryAr,
                         compareFn: (category, value) {
@@ -139,8 +158,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
     );
   }
 
-  Future<void> _onCloseDialog(
-      TicketsCubit ticketCubit, BuildContext context) async {
+  Future<void> _onCloseDialog(TicketsCubit ticketCubit, BuildContext context) async {
     if (closeTicketFormKey.currentState!.validate()) {
       closeTicketFormKey.currentState!.save();
 
@@ -149,10 +167,8 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
             notesTicket: notesController.text,
             notes: notesController.text,
             typeTicket: TicketTypesEnum.close.nameEn,
-            categoriesTicketFk:
-                "[${ticketsCubit.pageVariables.selectedCategoriesList.map((e) => e.id).toList().join(',')}]",
-            subcategoriesTicket:
-                "[${ticketsCubit.pageVariables.selectedSubCategoriesList.map((e) => e.id).toList().join(',')}]",
+            categoriesTicketFk: "[${ticketsCubit.pageVariables.selectedCategoriesList.map((e) => e.id).toList().join(',')}]",
+            subcategoriesTicket: "[${ticketsCubit.pageVariables.selectedSubCategoriesList.map((e) => e.id).toList().join(',')}]",
           ));
       AppNavigator.pop();
     }
