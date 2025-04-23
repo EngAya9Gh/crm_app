@@ -1,5 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/core/common/widgets/custom_filter_icon.dart';
+import 'package:crm_smart/core/common/widgets/custom_reset_icon.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
+import 'package:crm_smart/features/clients_care/periodic_communication_reports/presentation/widgets/filter_periodic_communication_reports_sheet.dart';
+import 'package:crm_smart/features/clients_care/recommended_client/presentation/widgets/filter_recommended_clients_reports_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,9 +39,33 @@ class _RecommendedClientsReportState extends State<RecommendedClientsReportPage>
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBar: CustomAppBar(
-        title: 'تقرير عملاء التوصية',
-      ),
+      appBar: CustomAppBar(title: 'تقرير عملاء التوصية', actions: [
+        ListenableBuilder(
+          listenable: Listenable.merge(_bloc.filterEntity.listenables()),
+          builder: (context, child) {
+            return CustomResetIcon(
+              onTap: _bloc.filterEntity.checkIfFilterIsNotEmpty()
+                  ? () {
+                      _bloc.filterEntity.clearFilters();
+                      _bloc.add(GetRecommendedClientReportsEvent());
+                    }
+                  : null,
+            );
+          },
+        ),
+        5.width,
+        CustomFilterIcon(
+          onTap: () async {
+            await AppBottomSheet.show(
+              context: context,
+              child: FilterRecommendedClientReportsSheet(),
+            ).then((value) {
+            if (value != true) _bloc.filterEntity.returnToPreviousState;
+              
+            },);
+          },
+        ),
+      ]),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
@@ -90,7 +119,7 @@ class _RecommendedClientsReportState extends State<RecommendedClientsReportPage>
                                 return DataRow(
                                   cells: <DataCell>[
                                     AppDataTableCell(
-                                      value: (index+1).toString(),
+                                      value: (index + 1).toString(),
                                       width: MediaQuery.of(context).size.width * 0.1,
                                     ),
                                     AppDataTableCell(
@@ -101,11 +130,7 @@ class _RecommendedClientsReportState extends State<RecommendedClientsReportPage>
                                     //   value: item.nameClient,
                                     //   width: MediaQuery.of(context).size.width * 0.35,
                                     // ),
-                                    AppDataTableCell(
-                                      value: "${item.numberOfClientsRecommended ?? 0}",
-                                      alignment: Alignment.center,
-                                      width: .1
-                                    ),
+                                    AppDataTableCell(value: "${item.numberOfClientsRecommended ?? 0}", alignment: Alignment.center, width: .1),
                                   ],
                                 );
                               }).toList(),

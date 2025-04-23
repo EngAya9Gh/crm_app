@@ -7,5 +7,5 @@ import '../../data/models/recommended_client_model.dart';
 import '../use_cases/get_recommended_client_reports_usecase.dart';
 
 abstract class RecommendedClientsReportsRepo {
-  Future<Result<ResponseWrapper<List<RecommendClientsReports>>>> getRecommendClientsReports();
+  Future<Result<ResponseWrapper<List<RecommendClientsReports>>>> getRecommendClientsReports(GetRecommendedClientsReportsParams params);
 }

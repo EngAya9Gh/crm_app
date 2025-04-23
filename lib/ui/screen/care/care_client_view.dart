@@ -58,17 +58,11 @@ class _CareClientViewState extends State<CareClientView> {
                   SliverToBoxAdapter(
                     child: SectionWithAction(
                       title: 'Tasks',
-                      onAddPressed: () async{
+                      onAddPressed: () async {
                         final result = await showDialog(
-              context: context,
-              builder: (context) => 
-              AddManualTaskPage(
-                list: PublicType.values, 
-                clientId: widget.fk_client
-              ),
-            );
-
-            
+                          context: context,
+                          builder: (context) => AddManualTaskPage(list: PublicType.values, clientId: widget.fk_client),
+                        );
                       },
                       child: Container(),
                     ),
@@ -78,8 +72,7 @@ class _CareClientViewState extends State<CareClientView> {
                     final title = entry.key;
                     final list = entry.value;
 
-                    if (title == 'تقييم النظام' &&
-                        list.first.lastRateDate != null) {
+                    if (title == 'تقييم النظام' && list.first.lastRateDate != null) {
                       return SliverToBoxAdapter(
                         child: SectionWithAction(
                           title: title,
@@ -98,8 +91,7 @@ class _CareClientViewState extends State<CareClientView> {
                                 ),
                                 10.width,
                                 AppText(
-                                  DateFormat('yyyy-MM-dd')
-                                      .format(list.first.lastRateDate!),
+                                  DateFormat('yyyy-MM-dd').format(list.first.lastRateDate!),
                                   color: AppColors.primaryMain,
                                   fontSize: 16,
                                 ),
@@ -131,9 +123,7 @@ class _CareClientViewState extends State<CareClientView> {
                                     children: list.map((item) {
                                       return CommunicationExpandedWidget(
                                         communicationModel: item,
-                                        initiallyExpanded:
-                                            item.idCommunication ==
-                                                widget.idCommunication,
+                                        initiallyExpanded: item.idCommunication == widget.idCommunication,
                                       );
                                     }).toList(),
                                   ),

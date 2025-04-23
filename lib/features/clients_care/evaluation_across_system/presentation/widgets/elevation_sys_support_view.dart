@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
@@ -9,7 +8,6 @@ import 'package:crm_smart/core/common/widgets/section_header.dart';
 import 'package:crm_smart/core/common/widgets/section_with_action.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_model.dart';
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/add_ticket_page.dart';
 import 'package:crm_smart/features/clients_care/evaluation_across_system/data/models/elevation_model.dart';
 import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/use_cases/get_system_rating_tickets_use_case.dart';

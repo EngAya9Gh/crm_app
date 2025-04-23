@@ -1,11 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/services/api/result.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/common/enums/ticket_types_enum.dart';
-import '../../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../../core/common/models/page_state/bloc_status.dart';

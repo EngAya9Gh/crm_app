@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/features/clients_care/recommended_client/domain/entity/filter_recommended_clients_reports_entity.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
@@ -16,6 +17,8 @@ part 'recommended_client_state.dart';
 class RecommendedClientReportsBloc extends Bloc<RecommendedClientReportsEvent, RecommendedClientReportsState> {
   final GetRecommendClientsReportsUsecase _getRecommendClientsReportsUsecase;
 
+  final RecommendedClientsReportsEntity filterEntity = RecommendedClientsReportsEntity();
+
   RecommendedClientReportsBloc(
     this._getRecommendClientsReportsUsecase,
   ) : super(RecommendedClientReportsState()) {
@@ -24,19 +27,22 @@ class RecommendedClientReportsBloc extends Bloc<RecommendedClientReportsEvent, R
 
   FutureOr<void> _onGetRecommendedClientReportsEvent(GetRecommendedClientReportsEvent event, Emitter<RecommendedClientReportsState> emit) async {
     emit(state.copyWith(recommendedClientList: BlocStatus.loading()));
-    final result = await _getRecommendClientsReportsUsecase();
+    final result = await _getRecommendClientsReportsUsecase(GetRecommendedClientsReportsParams(
+      from: filterEntity.dateFromController.text,
+      to: filterEntity.dateToController.text,
+    ));
     result.extract(
       (exception, message) => emit(
         state.copyWith(recommendedClientList: BlocStatus.fail(error: message)),
       ),
       (value) {
-        if(value.message?.isEmpty??true){
+        if (value.message?.isEmpty ?? true) {
           emit(state.copyWith(recommendedClientList: BlocStatus.empty()));
           return;
         }
         emit(
-        state.copyWith(recommendedClientList: BlocStatus.success(data: value.message),totalDataCount: value.count),
-      );
+          state.copyWith(recommendedClientList: BlocStatus.success(data: value.message), totalDataCount: value.count),
+        );
       },
     );
   }

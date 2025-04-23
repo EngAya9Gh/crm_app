@@ -19,7 +19,7 @@ class RecommendedClientsReportsRepoImpl implements RecommendedClientsReportsRepo
   const RecommendedClientsReportsRepoImpl(this._dataSource);
 
   @override
-  Future<Result<ResponseWrapper<List<RecommendClientsReports>>>> getRecommendClientsReports() async {
-    return toApiResult(() => _dataSource.getRecommendedClientReports());
+  Future<Result<ResponseWrapper<List<RecommendClientsReports>>>> getRecommendClientsReports(GetRecommendedClientsReportsParams params) async {
+    return toApiResult(() => _dataSource.getRecommendedClientReports(params));
   }
 }

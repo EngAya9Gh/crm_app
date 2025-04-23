@@ -25,10 +25,11 @@ class ElevationSysOrSupportCard extends StatelessWidget {
     return AppCardContainer(
       onTap: () {
         AppNavigator.go(
-        ElevationSysSupportView(elevationModel: elevationModel,),
-        name: AppRoutesPaths.careSubSections.sysSupportRatingView,
-        extra: elevationModel
-      );
+            ElevationSysSupportView(
+              elevationModel: elevationModel,
+            ),
+            name: AppRoutesPaths.careSubSections.sysSupportRatingView,
+            extra: elevationModel);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,31 +101,21 @@ class ElevationSysOrSupportCard extends StatelessWidget {
             ],
           ),
           8.height,
-          // if (elevationModel.rateDate?.isNotEmpty??false)
-          //   Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       AppText('تاريخ التقييم : ',fontWeight: FontWeight.bold,),
-          //       AppText(elevationModel.rateDate??'April 20, 2025 2:37:08 pm',color: AppColors.primaryMain,
-          //         fontSize: 16,),
-          //     ],
-          //   ),
-          // 8.height,
-          // if (elevationModel.ratingReason?.isNotEmpty??false)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppText(
-                'سبب التقييم : ',
-                fontWeight: FontWeight.bold,
-              ),
-              Expanded(
-                  child: AppText(
-                elevationModel.message ?? elevationModel.ratingReason ?? 'لايوجد',
-                fontSize: 16,
-              )),
-            ],
-          ),
+          if ((elevationModel.ratingReason?.isNotEmpty ?? false) || (elevationModel.message?.isNotEmpty ?? false))
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(
+                  'سبب التقييم : ',
+                  fontWeight: FontWeight.bold,
+                ),
+                Expanded(
+                    child: AppText(
+                  elevationModel.message ?? elevationModel.ratingReason ?? 'لايوجد',
+                  fontSize: 16,
+                )),
+              ],
+            ),  
         ],
       ),
     );

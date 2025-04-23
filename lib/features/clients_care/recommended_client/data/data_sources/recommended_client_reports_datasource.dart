@@ -10,7 +10,7 @@ import '../../domain/use_cases/get_recommended_client_reports_usecase.dart';
 import '../models/recommended_client_model.dart';
 
 abstract class RecommendedClientReportsDatasource {
-  Future<ResponseWrapper<List<RecommendClientsReports>>> getRecommendedClientReports();
+  Future<ResponseWrapper<List<RecommendClientsReports>>> getRecommendedClientReports(GetRecommendedClientsReportsParams params);
 }
 
 @LazySingleton(as: RecommendedClientReportsDatasource)
@@ -20,10 +20,10 @@ class RecommendedClientReportsDatasourceImpl implements RecommendedClientReports
   const RecommendedClientReportsDatasourceImpl(this._api);
 
   @override
-  Future<ResponseWrapper<List<RecommendClientsReports>>> getRecommendedClientReports() async {
+  Future<ResponseWrapper<List<RecommendClientsReports>>> getRecommendedClientReports(GetRecommendedClientsReportsParams params) async {
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.get(endPoint: EndPoints.reports.getRecommendedClientReports);
+      final response = await _api.get(endPoint: EndPoints.reports.getRecommendedClientReports,queryParameters: params.toMap());
 
       return ResponseWrapper<List<RecommendClientsReports>>.fromJson(
         response,

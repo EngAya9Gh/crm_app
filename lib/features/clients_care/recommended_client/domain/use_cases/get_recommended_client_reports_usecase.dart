@@ -11,13 +11,40 @@ import '../../../../../core/common/usecases/base_usecase.dart';
 import '../repositories/recommended_client_reports_repo.dart';
 
 @lazySingleton
-class GetRecommendClientsReportsUsecase extends UseCaseNoParam<Result<ResponseWrapper<List<RecommendClientsReports>>>> {
+class GetRecommendClientsReportsUsecase
+    extends BaseUsecase<Result<ResponseWrapper<List<RecommendClientsReports>>>, GetRecommendedClientsReportsParams> {
   GetRecommendClientsReportsUsecase(this._repository);
 
   final RecommendedClientsReportsRepo _repository;
 
   @override
-  Future<Result<ResponseWrapper<List<RecommendClientsReports>>>> call() async {
-    return await _repository.getRecommendClientsReports();
+  Future<Result<ResponseWrapper<List<RecommendClientsReports>>>> call(GetRecommendedClientsReportsParams params) async {
+    return await _repository.getRecommendClientsReports(params);
+  }
+}
+
+class GetRecommendedClientsReportsParams {
+  final String? from;
+  final String? to;
+
+  GetRecommendedClientsReportsParams({
+    this.from,
+    this.to,
+  });
+  Map<String, dynamic> toMap() {
+    return {
+      'from': from,
+      'to': to,
+    }..removeWhere((key, value) => value == null || value == '');
+  }
+
+  GetRecommendedClientsReportsParams copyWith({
+    String? from,
+    String? to,
+  }) {
+    return GetRecommendedClientsReportsParams(
+      from: from ?? this.from,
+      to: to ?? this.to,
+    );
   }
 }

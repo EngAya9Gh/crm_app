@@ -3,26 +3,19 @@ import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/model/communication_withdrawal_reason_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/common/enums/installation_type_enum.dart';
 import '../../../core/common/enums/periodic_communication_client_type_enum.dart';
 import '../../../core/common/models/config_model.dart';
 import '../../../core/common/widgets/app_elevated_button.dart';
-import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/app_styles.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../features/common/client_profile/support_tab/presentation/widgets/add_date_dialog.dart';
 import '../../../model/communication_modle.dart';
 import '../../../view_model/communication_vm.dart';
-import '../../widgets/custom_widget/card_expansion.dart';
-import '../../widgets/custom_widget/card_row.dart';
 import 'app_rate_widget.dart';
 import 'communication_withdrawal_reasons_drop_down.dart';
 import 'edit_care_communication_sheet.dart';
 import 'package:crm_smart/features/care/presentation/widgets/care_card_new.dart';
-import 'package:crm_smart/features/care/presentation/widgets/care_card_adapter.dart';
 
 class CommunicationExpandedWidget extends StatefulWidget {
   CommunicationExpandedWidget({

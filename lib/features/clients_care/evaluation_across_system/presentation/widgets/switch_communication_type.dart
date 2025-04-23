@@ -1,10 +1,8 @@
 import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/manager/sys_support_rating_bloc.dart';
-import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/manager/sys_support_rating_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_button/group_button.dart';
 
-import '../../../../../core/common/enums/periodic_communication_type_enum.dart';
 import '../../../../../core/utils/app_colors.dart';
 
 enum ElevationSysSupportEnum {
