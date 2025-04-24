@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:crm_smart/core/common/widgets/app_loader.dart';
+import 'package:crm_smart/core/common/widgets/app_status_chip.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/features/mangement/manage_withdrawals/presentation/widgets/cancel_withdrawal_dialog.dart';
 import 'package:flutter/material.dart';
@@ -37,8 +38,7 @@ import '../manager/manage_withdrawals_cubit.dart';
 import 'withdrawal_actions_page.dart';
 
 class WithdrawnDetailsPage extends StatefulWidget {
-  const WithdrawnDetailsPage({Key? key, required this.invoice})
-      : super(key: key);
+  const WithdrawnDetailsPage({Key? key, required this.invoice}) : super(key: key);
 
   final InvoiceModel invoice;
 
@@ -121,9 +121,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
   }
 
   bool _showCancelWithdrawal() {
-    return context.read<PrivilegesCubit>().checkPrivilege('281') &&
-        (widget.invoice.approveBackDone == '1' ||
-            widget.invoice.approveBackDone == '0');
+    return context.read<PrivilegesCubit>().checkPrivilege('281') && (widget.invoice.approveBackDone == '1' || widget.invoice.approveBackDone == '0');
   }
 
   @override
@@ -134,9 +132,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
         showBackButton: true,
         actions: [
           PopupMenuButton(
-            onSelected: (value) => popupMenuItem
-                .firstWhere((element) => element.value == value)
-                .onSelected(value),
+            onSelected: (value) => popupMenuItem.firstWhere((element) => element.value == value).onSelected(value),
             itemBuilder: (context) => [
               for (var item in popupMenuItem) ...[
                 PopupMenuItem(
@@ -146,7 +142,10 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                     textDirection: TextDirection.rtl,
                     children: [
                       AppIcon(item.icon, color: AppColors.primaryMain),
-                      AppText(item.title, fontSize: 14.scaleFontSize,),
+                      AppText(
+                        item.title,
+                        fontSize: 14.scaleFontSize,
+                      ),
                     ],
                   ),
                 )
@@ -169,23 +168,17 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                       child: Container(
                         height: 180.scaleHeight,
                         width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15)),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
-                          child: data.fileReject?.mimeType?.contains("image") ==
-                                  true
+                          child: data.fileReject?.mimeType?.contains("image") == true
                               ? InkWell(
                                   onTap: () => AppFileViewer(
                                     imageSource: ImageSourceViewer.network,
-                                    urls: [
-                                      EndPoints.baseUrls.laravelFilesUrl +
-                                          data.fileReject!
-                                    ],
+                                    urls: [EndPoints.baseUrls.laravelFilesUrl + data.fileReject!],
                                   ).show(context),
                                   child: FancyImageShimmerViewer(
-                                    imageUrl: EndPoints.baseUrls.laravelFilesUrl +
-                                        data.fileReject!,
+                                    imageUrl: EndPoints.baseUrls.laravelFilesUrl + data.fileReject!,
                                     fit: BoxFit.cover,
                                   ),
                                 )
@@ -193,37 +186,56 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                   onTap: () => openFile(data.fileReject!),
                                   child: Container(
                                       width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: AppColors.primaryMain
-                                              .withOpacity(0.1)),
-                                      child: AppIcon(
-                                          Icons.picture_as_pdf_rounded,
-                                          color: Colors.grey,
-                                          size: 30)),
+                                      decoration: BoxDecoration(color: AppColors.primaryMain.withOpacity(0.1)),
+                                      child: AppIcon(Icons.picture_as_pdf_rounded, color: Colors.grey, size: 30)),
                                 ),
                         ),
                       ),
                     ),
                     SliverToBoxAdapter(child: 20.verticalSpacingRadius),
                     SliverToBoxAdapter(
-                      child: CardRow(
-                          title: 'اسم الموظف الذي قام بالانسحاب',
-                          value: data.nameUser.toString()),
+                      child: CardRow(title: 'اسم الموظف الذي قام بالانسحاب', value: data.nameUser.toString()),
                     ),
                     SliverToBoxAdapter(
                       child: CardRow(
-                          title: 'سبب الإنسحاب',
-                          value: data.reasonBack.toString()),
+                        title: 'سبب الإنسحاب الرئيسي',
+                        anotherWidget: Wrap(
+                          children: (data.reasonBackPrimary ?? [])
+                              .map(
+                                (e) => AppStatusChip(
+                                  status: e,
+                                  margin: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                                  fontSize: 16,
+                                  color: AppColors.primaryAltLight,
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
                     ),
                     SliverToBoxAdapter(
                       child: CardRow(
-                          title: 'وصف سبب الإنسحاب',
-                          value: data.descReasonBack.toString()),
+                          title: 'سبب الإنسحاب الفرعي',
+                          anotherWidget: Wrap(
+                            children: (data.reasonBackSecondary ?? [])
+                                .map(
+                                  (e) => AppStatusChip(
+                                    status: e,
+                                    margin: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                                    fontSize: 16,
+                                    color: AppColors.primaryAltLight,
+                                  ),
+                                )
+                                .toList(),
+                          )),
                     ),
                     SliverToBoxAdapter(
-                      child: CardRow(
-                          title: 'المبلغ المسترجع',
-                          value: data.valueBack.toString()),
+                      child: CardRow(title: 'وصف سبب الإنسحاب', value: data.descReasonBack.toString()),
+                    ),
+                    SliverToBoxAdapter(
+                      child: CardRow(title: 'المبلغ المسترجع', value: data.valueBack.toString()),
                     ),
                     if (data.dateChangeBack != null) ...[
                       SliverToBoxAdapter(
@@ -240,48 +252,33 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                           title: 'الحالة',
                           value: data.approveBackDone == null
                               ? WithdrawalStatus.cancelled.text
-                              : WithdrawalStatus
-                                  .values[int.parse(data.approveBackDone!)]
-                                  .text),
+                              : WithdrawalStatus.values[int.parse(data.approveBackDone!)].text),
                     ),
                     SliverToBoxAdapter(
-                      child: CardRow(
-                          title: 'تاريخ طلب انسحاب العميل',
-                          value: data.dateBackNow,
-                          withDivider: false),
+                      child: CardRow(title: 'تاريخ طلب انسحاب العميل', value: data.dateBackNow, withDivider: false),
                     ),
                     SliverToBoxAdapter(
-                      child: CardRow(
-                          title: 'جودة المنتج', value: "${data.rateProduct}"),
+                      child: CardRow(title: 'جودة المنتج', value: "${data.rateProduct}"),
                     ),
                     SliverToBoxAdapter(
-                      child: CardRow(
-                          title: 'جودة الخدمة المقدمة من المبيعات',
-                          value: "${data.rateSales}"),
+                      child: CardRow(title: 'جودة الخدمة المقدمة من المبيعات', value: "${data.rateSales}"),
                     ),
                     SliverToBoxAdapter(
-                      child: CardRow(
-                          title: 'جودة الخدمة المقدمة من الدعم الفني (الشات)',
-                          value: "${data.rateSupport}"),
+                      child: CardRow(title: 'جودة الخدمة المقدمة من الدعم الفني (الشات)', value: "${data.rateSupport}"),
                     ),
                     SliverFillRemaining(
                       hasScrollBody: false,
                       child: Column(
                         children: [
-                          if (context
-                                  .read<PrivilegesCubit>()
-                                  .checkPrivilege('145') &&
-                              state.currentInvoice?.approveBackDone == '0') ...{
+                          if (context.read<PrivilegesCubit>().checkPrivilege('145') && state.currentInvoice?.approveBackDone == '0') ...{
                             if (state.deleteWithdrawnRequestStatus.isLoading())
-                              Center(
-                                  child: CircularProgressIndicator.adaptive())
+                              Center(child: CircularProgressIndicator.adaptive())
                             else
                               AppElevatedButton(
                                 text: 'حذف الطلب',
                                 backgroundColor: Colors.red,
                                 onPressed: () async {
-                                  _manageWithdrawalsCubit
-                                      .deleteWithdrawalRequest(
+                                  _manageWithdrawalsCubit.deleteWithdrawalRequest(
                                     widget.invoice.idInvoice!,
                                     data.fileReject!,
                                     idRequest: data.idRequest,
@@ -304,16 +301,14 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
             loading: Center(child: CircularProgressIndicator()),
             error: (error) => Center(
               child: IconButton(
-                onPressed: () => _manageWithdrawalsCubit
-                    .getWithdrawnDetails(widget.invoice.idInvoice!),
+                onPressed: () => _manageWithdrawalsCubit.getWithdrawnDetails(widget.invoice.idInvoice!),
                 icon: AppIcon(Icons.refresh_rounded),
               ),
             ),
             result: state.withdrawnDetailsState,
             empty: AppErrorWidget(
               message: 'لا يوجد بيانات',
-              onPressed: () => _manageWithdrawalsCubit
-                  .getWithdrawnDetails(widget.invoice.idInvoice!),
+              onPressed: () => _manageWithdrawalsCubit.getWithdrawnDetails(widget.invoice.idInvoice!),
             ),
           );
         },
@@ -336,8 +331,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
         }
 
         File file;
-        file = await Api().downloadFile(
-            EndPoints.baseUrls.urlFile + attachFile, pp.basename(attachFile));
+        file = await Api().downloadFile(EndPoints.baseUrls.urlFile + attachFile, pp.basename(attachFile));
         if (file.existsSync()) {
           final result = await OpenFilex.open(file.path);
 

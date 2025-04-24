@@ -7,16 +7,19 @@ class AppStatusChip extends StatelessWidget {
   const AppStatusChip({
     super.key,
     required this.status,
-    this.color, this.fontSize,
+    this.color, this.fontSize,this.padding,this.margin,
   });
 
   final String status;
   final Color? color;
 final double? fontSize;
+final EdgeInsetsGeometry? padding;
+final EdgeInsetsGeometry? margin;
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      padding:padding?? EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      margin:margin,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(10),
