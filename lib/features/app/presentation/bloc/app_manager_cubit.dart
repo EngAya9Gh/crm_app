@@ -55,7 +55,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
         emit(state.copyWith(
           updateState: PageState.loaded(data: value.message ?? []),
           hasUpdate: check?.item1,
-          isUpdateMandatory: true ?? check?.item2,
+          isUpdateMandatory: check?.item2,
         ));
         if (state.isUpdateMandatory ?? false) {
           const appStoreUrl = 'https://apps.apple.com/app/id6451082072';
