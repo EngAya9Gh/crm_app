@@ -1,13 +1,18 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/enums/toast_colors_enum.dart';
+import 'package:crm_smart/core/common/helpers/app_snackbar.dart';
 import 'package:crm_smart/features/auth/login/presentation/pages/login/login_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart';
 import 'package:tuple/tuple.dart';
+import 'package:store_redirect/store_redirect.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../api/api.dart';
 import '../../../../core/common/models/page_state/page_state.dart';
@@ -28,10 +33,7 @@ part 'app_manager_state.dart';
 
 @singleton
 class AppManagerCubit extends Cubit<AppManagerState> {
-  AppManagerCubit(this._getVersionUseCase)
-      : super(AppManagerState(
-            lightThemeData: ThemeData.light(),
-            darkThemeData: ThemeData.dark()));
+  AppManagerCubit(this._getVersionUseCase) : super(AppManagerState(lightThemeData: ThemeData.light(), darkThemeData: ThemeData.dark()));
 
   final GetVersionUseCase _getVersionUseCase;
 
@@ -53,17 +55,23 @@ class AppManagerCubit extends Cubit<AppManagerState> {
         emit(state.copyWith(
           updateState: PageState.loaded(data: value.message ?? []),
           hasUpdate: check?.item1,
-          isUpdateMandatory: check?.item2,
+          isUpdateMandatory: true ?? check?.item2,
         ));
+        if (state.isUpdateMandatory ?? false) {
+          const appStoreUrl = 'https://apps.apple.com/app/id6451082072';
+          const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.mpluse.crmsmart';
+          final url = Theme.of(AppNavigator.navigatorKey.currentContext!).platform == TargetPlatform.iOS ? appStoreUrl : playStoreUrl;
+          if (await canLaunchUrl(Uri.parse(url))) {
+            await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+          }
+        }
       },
     );
   }
 
-  static Future<Tuple2<bool, bool>?> checkUpdate(
-      List<UpdateConfig> versions) async {
+  static Future<Tuple2<bool, bool>?> checkUpdate(List<UpdateConfig> versions) async {
     try {
-      final result = versions.firstWhereOrNull(
-          (element) => element.typeVersion?.name == Platform.operatingSystem);
+      final result = versions.firstWhereOrNull((element) => element.typeVersion?.name == Platform.operatingSystem);
 
       if (result == null) {
         return null;
@@ -75,14 +83,11 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
       final remoteAppVersion = result.nameVersion!.replaceAll('V', '').trim();
 
-      final remoteAppBuildNumber = remoteAppVersion.split('+').length > 1
-          ? int.parse(remoteAppVersion.split('+').last)
-          : 1;
+      final remoteAppBuildNumber = remoteAppVersion.split('+').length > 1 ? int.parse(remoteAppVersion.split('+').last) : 1;
 
       bool updateMandatory = result.isRequired ?? false;
 
-      final Tuple3<int, int, int> remoteAppVersionRecord =
-          convertVersionToNum(remoteAppVersion);
+      final Tuple3<int, int, int> remoteAppVersionRecord = convertVersionToNum(remoteAppVersion);
 
       final appVersion = packageInfo.version;
       final appBuildNumber = int.parse(packageInfo.buildNumber);
@@ -92,8 +97,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
       debugPrint(appVersion);
       debugPrint('appBuildNumber');
       debugPrint(appBuildNumber.toString());
-      final Tuple3<int, int, int> appVersionRecord =
-          convertVersionToNum(appVersion);
+      final Tuple3<int, int, int> appVersionRecord = convertVersionToNum(appVersion);
 
       if (appVersionRecord.item1 < remoteAppVersionRecord.item1) {
         hasUpdate = true;
@@ -167,8 +171,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
         );
       }
 
-      emit(state.copyWith(
-          checkRedirectionsState: const PageState.loaded(data: null)));
+      emit(state.copyWith(checkRedirectionsState: const PageState.loaded(data: null)));
     } catch (e) {
       emit(state.copyWith(checkRedirectionsState: const PageState.error()));
     }
