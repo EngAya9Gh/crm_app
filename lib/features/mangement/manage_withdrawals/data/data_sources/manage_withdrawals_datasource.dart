@@ -124,7 +124,7 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<WithdrawnDetailsModel>> getWithdrawnDetails(Map<String, dynamic> params) async {
     fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.get(endPoint: EndPoints.series.getWithdrawnDetails('1'));
+      final response = await _api.get(endPoint: EndPoints.series.getWithdrawnDetails(params['fk_invoice']));
       return ResponseWrapper<WithdrawnDetailsModel>.fromJson(
         response,
         (json) => WithdrawnDetailsModel.fromJson(json),
