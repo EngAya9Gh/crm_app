@@ -10,7 +10,9 @@ enum TicketSourceEnum {
   youtube,
   instagram,
   tiktok,
-  location;
+  location,
+  productSystem,
+  supportSystem;
 
   static TicketSourceEnum? fromString(String? value) {
     if (value == TicketSourceEnum.periodicCall.value) {
@@ -37,6 +39,10 @@ enum TicketSourceEnum {
       return TicketSourceEnum.tiktok;
     } else if (value == TicketSourceEnum.location.value) {
       return TicketSourceEnum.location;
+    } else if (value == TicketSourceEnum.productSystem.value) {
+      return TicketSourceEnum.productSystem;
+    } else if (value == TicketSourceEnum.supportSystem.value) {
+      return TicketSourceEnum.supportSystem;
     }
     return null;
   }
@@ -69,6 +75,10 @@ extension TicketSourceEnumsExtension on TicketSourceEnum {
         return 'تيك توك';
       case TicketSourceEnum.location:
         return 'الموقع';
+      case TicketSourceEnum.productSystem:
+        return 'تقييم عبر النظام / المنتج';
+      case TicketSourceEnum.supportSystem:
+        return 'تقييم عبر النظام / خدمة الدعم';
     }
   }
 }

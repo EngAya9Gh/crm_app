@@ -81,53 +81,55 @@ class _AddTicketPageState extends State<AddTicketPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      10.height,
-                      const SectionHeader(title: 'معلومات العميل'),
-                      10.height,
-                      InfoItem(
-                        title: 'اسم العميل*',
-                        isRequired: true,
-                        customWidget: BlocBuilder<ClientAttachmentsBloc, ClientAttachmentsState>(
-                          builder: (context, state) {
-                            return ValueListenableBuilder(
-                              valueListenable: fkClientNotifier,
-                              builder: (context, value, child) => CustomSearchableDropDown<SubscribedClientsModel>(
-                                hint: 'العميل',
-                                items: state.getAllClients.data ?? [],
-                                itemAsString: (u) => u?.nameEnterprise ?? '',
-                                selectedItem: value,
-                                onChanged: (data) {
-                                  fkClientNotifier.value = data;
-                                },
-                                filterFn: (user, filter) {
-                                  return user.nameEnterprise!.toLowerCase().contains(filter.toLowerCase());
-                                },
-                                compareFn: (item, selectedItem) => item.id == selectedItem.id,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      if (fkClientNotifier.value != null) ...[
+                      if (widget.ratingId == null) ...{
                         10.height,
-                        Center(
-                          child: AppElevatedButton(
-                            text: 'ملف العميل',
-                            onPressed: () {
-                              AppNavigator.go(
-                                ClientProfile(
-                                  idClient: fkClientNotifier.value!.id.toString(),
+                        const SectionHeader(title: 'معلومات العميل'),
+                        10.height,
+                        InfoItem(
+                          title: 'اسم العميل*',
+                          isRequired: true,
+                          customWidget: BlocBuilder<ClientAttachmentsBloc, ClientAttachmentsState>(
+                            builder: (context, state) {
+                              return ValueListenableBuilder(
+                                valueListenable: fkClientNotifier,
+                                builder: (context, value, child) => CustomSearchableDropDown<SubscribedClientsModel>(
+                                  hint: 'العميل',
+                                  items: state.getAllClients.data ?? [],
+                                  itemAsString: (u) => u?.nameEnterprise ?? '',
+                                  selectedItem: value,
+                                  onChanged: (data) {
+                                    fkClientNotifier.value = data;
+                                  },
+                                  filterFn: (user, filter) {
+                                    return user.nameEnterprise!.toLowerCase().contains(filter.toLowerCase());
+                                  },
+                                  compareFn: (item, selectedItem) => item.id == selectedItem.id,
                                 ),
-                                name: AppRoutesNames.clientProfile.inAddTicket,
-                                pathParameters: {
-                                  'idClient': fkClientNotifier.value!.id.toString(),
-                                },
                               );
                             },
                           ),
                         ),
-                      ],
-                      20.height,
+                        if (fkClientNotifier.value != null) ...[
+                          10.height,
+                          Center(
+                            child: AppElevatedButton(
+                              text: 'ملف العميل',
+                              onPressed: () {
+                                AppNavigator.go(
+                                  ClientProfile(
+                                    idClient: fkClientNotifier.value!.id.toString(),
+                                  ),
+                                  name: AppRoutesNames.clientProfile.inAddTicket,
+                                  pathParameters: {
+                                    'idClient': fkClientNotifier.value!.id.toString(),
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                        20.height,
+                      },
                       const SectionHeader(title: 'تفاصيل التذكرة'),
                       10.height,
                       InfoItem(
@@ -150,22 +152,24 @@ class _AddTicketPageState extends State<AddTicketPage> {
                           },
                         ),
                       ),
-                      10.height,
-                      InfoItem(
-                        title: 'مصدر التذكرة',
-                        customWidget: CustomDropDown<String>(
-                          hint: 'مصدر التذكرة',
-                          items: TicketSourceEnum.values.where((e) => e != TicketSourceEnum.location).map((e) => e.value).toList(),
-                          itemAsString: (nameReason) => nameReason!,
-                          selectedItem: ticketSource?.value,
-                          compareFn: (item, selectedItem) => item == selectedItem,
-                          onChanged: (value) {
-                            ticketSource = TicketSourceEnum.fromString(
-                              value.toString(),
-                            );
-                          },
+                      if (widget.ratingId == null) ...{
+                        10.height,
+                        InfoItem(
+                          title: 'مصدر التذكرة',
+                          customWidget: CustomDropDown<String>(
+                            hint: 'مصدر التذكرة',
+                            items: TicketSourceEnum.values.where((e) => e != TicketSourceEnum.location).map((e) => e.value).toList(),
+                            itemAsString: (nameReason) => nameReason!,
+                            selectedItem: ticketSource?.value,
+                            compareFn: (item, selectedItem) => item == selectedItem,
+                            onChanged: (value) {
+                              ticketSource = TicketSourceEnum.fromString(
+                                value.toString(),
+                              );
+                            },
+                          ),
                         ),
-                      ),
+                      },
                       10.height,
                       InfoItem(
                         title: 'وصف المشكلة',
@@ -213,7 +217,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                   onPressed: () async {
                                     _globalKey.currentState!.save();
                                     if (_globalKey.currentState!.validate()) {
-                                      if (fkClientNotifier.value == null) {
+                                      if (fkClientNotifier.value == null && widget.ratingId == null) {
                                         AppSnackbar.showSnakeBar(
                                           'من فضلك اختر عميل',
                                         );

@@ -51,6 +51,6 @@ class FilterElevationSysSupportEntity extends ChangeNotifier {
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return rateNotifier.value != null || dateFromController.text.isNotEmpty || dateToController.text.isNotEmpty || searchController.text.isNotEmpty;
+    return rateNotifier.value != null || dateFromController.text.isNotEmpty || dateToController.text.isNotEmpty;
   }
 }

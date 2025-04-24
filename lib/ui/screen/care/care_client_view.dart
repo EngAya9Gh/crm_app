@@ -5,7 +5,10 @@ import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:crm_smart/core/common/widgets/app_scaffold.dart';
 import 'package:crm_smart/core/common/widgets/section_with_action.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/data/models/elevation_model.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/widgets/card_elevation_sys_support.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/add_manual_task_page.dart';
+import 'package:crm_smart/model/communication_modle.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:provider/provider.dart';
@@ -35,8 +38,7 @@ class _CareClientViewState extends State<CareClientView> {
   Map tabsToIndex = {
     0: "ترحيب",
     1: "تركيب",
-    2: "دورى",
-    3: "تقييم النظام",
+    2: "دوري",
   };
 
   @override
@@ -71,42 +73,13 @@ class _CareClientViewState extends State<CareClientView> {
                   ...carteClientState.entries.map((entry) {
                     final title = entry.key;
                     final list = entry.value;
-
-                    if (title == 'تقييم النظام' && list.first.lastRateDate != null) {
-                      return SliverToBoxAdapter(
-                        child: SectionWithAction(
-                          title: title,
-                          onAddPressed: () {
-                            // TODO: Implement add action
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                AppText(
-                                  "تاريخ اخر تقييم عبر النظام",
-                                  fontSize: 16,
-                                ),
-                                10.width,
-                                AppText(
-                                  DateFormat('yyyy-MM-dd').format(list.first.lastRateDate!),
-                                  color: AppColors.primaryMain,
-                                  fontSize: 16,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-
                     return SliverToBoxAdapter(
                       child: Column(
                         children: [
                           SectionWithAction(
                             title: title,
+                            hasPlus: tabsToIndex.values.contains(title),
+                            addButtonText: '',
                             onAddPressed: () {
                               // TODO: Implement add action based on section
                             },
@@ -121,14 +94,17 @@ class _CareClientViewState extends State<CareClientView> {
                                   )
                                 : Column(
                                     children: list.map((item) {
-                                      return CommunicationExpandedWidget(
-                                        communicationModel: item,
-                                        initiallyExpanded: item.idCommunication == widget.idCommunication,
-                                      );
+                                      return (tabsToIndex.values.contains(title))
+                                          ? CommunicationExpandedWidget(
+                                              communicationModel: item,
+                                              initiallyExpanded: item.idCommunication == widget.idCommunication,
+                                            )
+                                          : ElevationSysOrSupportCard(
+                                              elevationModel: (item as ElevationModel), tabElevationIndex: item.rateType ?? 1);
                                     }).toList(),
                                   ),
                           ),
-                          20.height,
+                          50.height,
                         ],
                       ),
                     );

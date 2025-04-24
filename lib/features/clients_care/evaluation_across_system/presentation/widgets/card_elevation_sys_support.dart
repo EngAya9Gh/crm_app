@@ -51,13 +51,13 @@ class ElevationSysOrSupportCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Flexible(
+            if(elevationModel.rateDate?.isNotEmpty??false)  Flexible(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     AppText(
-                      elevationModel.createdAt,
+                      elevationModel.rateDate,
                       color: AppColors.primaryMain,
                       fontSize: 16,
                     ),

@@ -1,4 +1,8 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/data/models/elevation_model.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/use_cases/get_elevation_sys_support_use_case.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/use_cases/get_system_rating_tickets_use_case.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/widgets/switch_communication_type.dart';
 import 'package:crm_smart/model/communication_withdrawal_reason_model.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -19,6 +23,7 @@ class CommunicationVm extends ChangeNotifier {
   List<CommunicationModel> listCommunicationInstall = [];
   List<CommunicationModel> listCommunicationWelcome = [];
   List<CommunicationModel> listCommunicationClient = [];
+  List<ElevationModel> listRatingClient = [];
 
   List<CommunicationModel> listCommunicationFilterSearch = [];
   List<CommunicationModel> listCommunicationrepeatTemp = [];
@@ -47,7 +52,7 @@ class CommunicationVm extends ChangeNotifier {
 
   bool isloading = false;
 
-  Map<String, List<CommunicationModel>> careClientState = Map();
+  Map<String, List<dynamic>> careClientState = Map();
   bool isLoadingCareClient = false;
 
   void getCommunicationclient(String fk_client, String idCommunication) async {
@@ -61,6 +66,7 @@ class CommunicationVm extends ChangeNotifier {
       var response = await api.get(endPoint: EndPoints.care.communicationsByClient(fk_client), queryParameters: {
         'id_communication': idCommunication,
       });
+      await getProfileRatingSystem(GetRatingParams(client_id: fk_client, page: 1));
       data = response['message'];
 
       if (data.length.toString().isNotEmpty) {
@@ -71,7 +77,9 @@ class CommunicationVm extends ChangeNotifier {
       final listWelcome = listCommunicationClient.where((element) => element.typeCommuncation == "ترحيب").toList();
       final listInstallation = listCommunicationClient.where((element) => element.typeCommuncation == "تركيب").toList();
       final listRepeat = listCommunicationClient.where((element) => element.typeCommuncation == "دوري").toList();
-      final listRateSys = listCommunicationClient.where((element) => element.lastRateDate != null).toList();
+      final listSystemRating = listRatingClient.where((element) => element.rateType == ElevationSysSupportEnum.system.value).toList();
+      final listSupportRating = listRatingClient.where((element) => element.rateType == ElevationSysSupportEnum.support.value).toList();
+      // final listRateSys = listCommunicationClient.where((element) => element.lastRateDate != null).toList();
 
       CommunicationModel? communicationSelected = listWelcome.firstWhereOrNull((element) => element.idCommunication == idCommunication);
 
@@ -96,7 +104,8 @@ class CommunicationVm extends ChangeNotifier {
       careClientState['ترحيب'] = listWelcome;
       careClientState['تركيب'] = listInstallation;
       careClientState['دوري'] = listRepeat;
-      careClientState['تقييم النظام'] = listRateSys;
+      careClientState['تقييم النظام'] = listSystemRating;
+      careClientState['تقييم الدعم الفني'] = listSupportRating;
 
       careClientState.removeWhere((key, value) => value.isEmpty);
 
@@ -111,6 +120,20 @@ class CommunicationVm extends ChangeNotifier {
       debugPrint("error in getCommunicationclient => $e");
       isLoadingCareClient = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> getProfileRatingSystem(GetRatingParams params) async {
+    listRatingClient = [];
+    List<dynamic> data = [];
+
+    var _api = getIt<ApiServices>()..changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await _api.get(endPoint: EndPoints.care.systemRatings, queryParameters: params.toMapClientProfile());
+    data = response['message'];
+    if (data.length != 0) {
+      for (int i = 0; i < data.length; i++) {
+        listRatingClient.add(ElevationModel.fromJson(data[i]));
+      }
     }
   }
 

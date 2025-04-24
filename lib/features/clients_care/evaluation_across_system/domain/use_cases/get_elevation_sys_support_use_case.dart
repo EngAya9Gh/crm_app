@@ -32,7 +32,7 @@ class GetRatingParams {
 
   const GetRatingParams({
     required this.page,
-    this.limit=10,
+    this.limit = 10,
     this.rate,
     this.client_id,
     this.rate_type,
@@ -54,25 +54,32 @@ class GetRatingParams {
     }..removeWhere((key, value) => value == null || value == 'null' || value == '');
   }
 
-GetRatingParams copyWith({
-  int? page,
-  int? limit,
-  double? rate,
-  String? client_id,
-  int? rate_type,
-  String? search,
-  String? from,
-  String? to,
-}) {
-  return GetRatingParams(
-    page: page ?? this.page,
-    limit: limit ?? this.limit,
-    rate: rate ?? this.rate,
-    client_id: client_id ?? this.client_id,
-    rate_type: rate_type ?? this.rate_type,
-    search: search ?? this.search,
-    from: from ?? this.from,
-    to: to ?? this.to,
-  );
-}
+  Map<String, dynamic> toMapClientProfile() {
+    return {
+      'client_id': this.client_id,
+      "no_pagination": 1,
+    }..removeWhere((key, value) => value == null || value == 'null' || value == '');
+  }
+
+  GetRatingParams copyWith({
+    int? page,
+    int? limit,
+    double? rate,
+    String? client_id,
+    int? rate_type,
+    String? search,
+    String? from,
+    String? to,
+  }) {
+    return GetRatingParams(
+      page: page ?? this.page,
+      limit: limit ?? this.limit,
+      rate: rate ?? this.rate,
+      client_id: client_id ?? this.client_id,
+      rate_type: rate_type ?? this.rate_type,
+      search: search ?? this.search,
+      from: from ?? this.from,
+      to: to ?? this.to,
+    );
+  }
 }

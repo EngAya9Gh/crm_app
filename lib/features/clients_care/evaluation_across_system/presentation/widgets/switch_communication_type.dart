@@ -6,12 +6,13 @@ import 'package:group_button/group_button.dart';
 import '../../../../../core/utils/app_colors.dart';
 
 enum ElevationSysSupportEnum {
-  system(text: 'تقييمات النظام'),
-  support(text: 'تقييمات الدعم الفني');
+  system(text: 'تقييمات النظام', value: 1),
+  support(text: 'تقييمات الدعم الفني', value: 2);
 
   final String text;
+  final int value;
 
-  const ElevationSysSupportEnum({required this.text});
+  const ElevationSysSupportEnum({required this.text, required this.value});
 }
 
 class SwitchElevationType extends StatelessWidget {
@@ -25,7 +26,7 @@ class SwitchElevationType extends StatelessWidget {
         return e.text;
       }).toList(),
       controller: GroupButtonController(
-        selectedIndex: _bloc.filterEntity.rateTypeNotifier == 1 ? 1 : 0,
+        selectedIndex: _bloc.filterEntity.rateTypeNotifier.value - 1,
       ),
       onSelected: (value, index, isSelected) {
         _bloc.filterEntity.rateTypeNotifier.value = index + 1;

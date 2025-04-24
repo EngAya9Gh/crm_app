@@ -89,7 +89,7 @@ class _ElevationSysSupportViewState extends State<ElevationSysSupportView> {
                   CardRow(
                       title: 'نوع التقييم',
                       value:
-                          ElevationSysSupportEnum.values.firstWhere((element) => element.index + 1 == (widget.elevationModel?.rateType ?? 1)).text),
+                          ElevationSysSupportEnum.values.firstWhere((element) => element.value == (widget.elevationModel?.rateType ?? 1)).text),
                   CardRow(title: 'تاريخ التقييم', value: widget.elevationModel?.rateDate ?? 'لايوجد'),
                   CardRow(title: 'تاريخ الانشاء', value: widget.elevationModel?.createdAt ?? 'لايوجد'),
                   CardRow(title: 'تاريخ التعديل', value: widget.elevationModel?.updatedAt ?? 'لايوجد'),

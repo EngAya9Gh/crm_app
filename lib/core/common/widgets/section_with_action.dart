@@ -13,6 +13,7 @@ class SectionWithAction extends StatelessWidget {
     this.backgroundColor = const Color(0x00000000), // transparent
     this.textColor,
     this.iconColor,
+    this.hasPlus=true,
   });
 
   final String title;
@@ -22,7 +23,7 @@ class SectionWithAction extends StatelessWidget {
   final Color backgroundColor;
   final Color? textColor;
   final Color? iconColor;
-
+  final bool hasPlus;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,7 +39,7 @@ class SectionWithAction extends StatelessWidget {
             ),
             TextButton.icon(
               onPressed: onAddPressed,
-              icon: Icon(Icons.add, color: iconColor ?? AppColors.primaryMain),
+              icon:(hasPlus)? Icon(Icons.add, color: iconColor ?? AppColors.primaryMain):null,
               label: AppText(
                 fontSize: 14.scaleFontSize,
                 addButtonText ??

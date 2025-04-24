@@ -26,6 +26,7 @@ import '../../../../features/ai_chat/presentation/pages/ai_chat_page.dart';
 import 'package:intl/intl.dart' as intl;
 
 var formatter = intl.NumberFormat("#,##0.00", "ar_SA");
+var formatterWithOutFraction = intl.NumberFormat("#,###", "ar_SA");
 
 /// Modelo para estadísticas de la página de inicio// To parse this JSON data, do
 //
@@ -405,19 +406,23 @@ class _MobHomePageState extends State<MobHomePage> {
                 AppText('Customer care :'),
                 Row(
                   children: [
-                    Expanded(child: _buildStatItem('Waiting for periodic communication', formatter.format(data?.waitingFrequent), Icons.repeat)),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Waiting for periodic communication', formatterWithOutFraction.format(data?.waitingFrequent), Icons.repeat)),
                     16.width,
-                    Expanded(child: _buildStatItem('Waiting for the first quality', formatter.format(data?.waitingInstall1), Icons.high_quality)),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Waiting for the first quality', formatterWithOutFraction.format(data?.waitingInstall1), Icons.high_quality)),
                   ],
                 ),
                 5.height,
                 Row(
                   children: [
                     Expanded(
-                        child:
-                            _buildStatItem('Waiting for the second quality', formatter.format(data?.waitingInstall2), Icons.high_quality_outlined)),
+                        child: _buildStatItem(
+                            'Waiting for the second quality', formatterWithOutFraction.format(data?.waitingInstall2), Icons.high_quality_outlined)),
                     16.width,
-                    Expanded(child: _buildStatItem('Waiting for welcome', data?.waitingWelcome.toString(), Icons.waving_hand)),
+                    Expanded(child: _buildStatItem('Waiting for welcome', formatterWithOutFraction.format(data?.waitingWelcome), Icons.waving_hand)),
                   ],
                 ),
                 // 8.height,
