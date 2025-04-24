@@ -1,4 +1,6 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_card_container.dart';
+import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/app_paginated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,16 +28,14 @@ class _ResoanViewState extends State<ResoanView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ClientTypeProvider>(context, listen: false)
-          .getreasons(widget.type);
+      await Provider.of<ClientTypeProvider>(context, listen: false).getreasons(widget.type);
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<ReasonModel> _listlevel =
-        Provider.of<ClientTypeProvider>(context, listen: true).type_of_out;
+    List<ReasonModel> _listlevel = Provider.of<ClientTypeProvider>(context, listen: true).type_of_out;
     return AppScaffold(
       appBar: CustomAppBar(
         title: widget.type == 'client' ? 'أسباب الانسحاب' : 'أنواع التذاكر',
@@ -77,28 +77,60 @@ class _ResoanViewState extends State<ResoanView> {
           ? Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(10.0),
-              child: AppPaginatedList(
-                items: _listlevel,
-                itemBuilder: (BuildContext context, int index) {
-                  return AppCardContainer(
-                    onTap: () {
-                      AppNavigator.go(
-                        AddReason(
-                          nameReason: _listlevel[index].nameReason,
-                          idReason: _listlevel[index].idReason,
-                          type: widget.type,
-                        ),
-                        isNew: false,
-                      );
-                    },
-                    child: Center(
-                      child: AppText(
-                        _listlevel[index].nameReason,
-                        fontSize: 18,
-                      ),
-                    ),
-                  );
-                },
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: AppPaginatedList(
+                  items: _listlevel,
+                  itemBuilder: (BuildContext context, int index) {
+                    return AppCardContainer(
+                      onTap: () {
+                        AppNavigator.go(
+                          AddReason(
+                            nameReason: _listlevel[index].nameReason,
+                            idReason: _listlevel[index].idReason,
+                            type: widget.type,
+                          ),
+                          isNew: false,
+                        );
+                      },
+                      child: context.read<PrivilegesCubit>().checkPrivilege('342')
+                          ? Row(
+                              children: [
+                                Expanded(
+                                  child: AppText(
+                                    textAlign: TextAlign.start,
+                                    _listlevel[index].nameReason,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 40.scaleIconsSize,
+                                  width: 40.scaleIconsSize,
+                                  child: Consumer<ClientTypeProvider>(
+                                    builder: (context, value, child) => (value.isloading && value.deletedId == _listlevel[index].idReason)
+                                        ? AppLoader()
+                                        : IconButton(
+                                            onPressed: () async {
+                                              await value.delte_resoan(_listlevel[index].idReason!);
+                                            },
+                                            icon: Icon(
+                                              Icons.delete_forever_outlined,
+                                              color: AppColors.statusErrorActive,
+                                            )),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Center(
+                              child: AppText(
+                                textAlign: TextAlign.start,
+                                _listlevel[index].nameReason,
+                                fontSize: 18,
+                              ),
+                            ),
+                    );
+                  },
+                ),
               ),
             ),
     );

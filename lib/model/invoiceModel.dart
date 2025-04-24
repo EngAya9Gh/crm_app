@@ -53,6 +53,8 @@ class InvoiceModel {
   String? fkuser_back;
   String? date_change_back;
   String? nameuserback;
+  List<String>? reasonBackPrimary;
+  List<String>? reasonBackSecondary;
   String? nameuserreplay;
   String? nameusertask;
   String? daterepaly;
@@ -179,6 +181,8 @@ class InvoiceModel {
     this.value_back,
     this.desc_reason_back,
     this.reason_back,
+    this.reasonBackPrimary,
+    this.reasonBackSecondary,
     this.fkuser_back,
     this.date_change_back,
     this.nameuserback,
@@ -326,6 +330,10 @@ class InvoiceModel {
         stateclient: ApiHelper.handleString(jsondata['stateclient']),
         value_back: ApiHelper.handleString(jsondata['value_back']),
         desc_reason_back: ApiHelper.handleString(jsondata['desc_reason_back']),
+        reasonBackPrimary:
+            jsondata['reason_back_primary'] == null ? [] : List.of(jsondata['reason_back_primary']).map((e) => e.toString()).toList(),
+        reasonBackSecondary:
+            jsondata['reason_back_secondary'] == null ? [] : List.of(jsondata['reason_back_secondary']).map((e) => e.toString()).toList(),
         reason_back: ApiHelper.handleString(jsondata['reason_back']),
         fkuser_back: ApiHelper.handleString(jsondata['fkuser_back']),
         date_change_back: ApiHelper.handleString(jsondata['date_change_back']),
@@ -366,7 +374,9 @@ class InvoiceModel {
         Date_FApprove: ApiHelper.handleString(jsondata['Date_FApprove']),
         renew2year: ApiHelper.handleString(jsondata['renew2year']),
         rate_participate: ApiHelper.handleString(jsondata['rate_participate']),
-        participateInfo: jsondata['participal_info'] == null ? null : (jsondata['participal_info'] as List<dynamic>).map((e)=>ParticipateInfo.fromJson(e)).toList(),
+        participateInfo: jsondata['participal_info'] == null
+            ? null
+            : (jsondata['participal_info'] as List<dynamic>).map((e) => ParticipateInfo.fromJson(e)).toList(),
         participate_fk: ApiHelper.handleString(jsondata['participate_fk']),
         fk_agent: ApiHelper.handleString(jsondata['fk_agent']),
         type_seller: ApiHelper.handleString(jsondata['type_seller']),
