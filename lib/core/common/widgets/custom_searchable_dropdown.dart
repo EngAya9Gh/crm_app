@@ -15,7 +15,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
     this.onChanged,
     this.selectedItem,
     required this.filterFn,
-    this.compareFn,
+    required this.compareFn,
     this.validator,
     this.buttonDecoration,
     this.itemBuilder,

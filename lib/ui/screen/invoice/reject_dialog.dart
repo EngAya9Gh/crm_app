@@ -5,6 +5,8 @@ import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_multi_selection_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
 import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -74,9 +76,26 @@ class _RejectDialogState extends State<RejectDialog> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       typeclient_provider = Provider.of<ClientTypeProvider>(context, listen: false);
-      typeclient_provider.getreasons('client');
-
-      typeclient_provider.selectedValueOut = _invoice.reason_back == null ? null : _invoice.reason_back.toString();
+      typeclient_provider.getreasons('client').then(
+        (value) {
+          if (typeclient_provider.type_of_out.isNotEmpty) {
+            var iterat = typeclient_provider.type_of_out.where((e) => _invoice.reasonBackSecondary?.contains(e.nameReason) ?? false);
+            if (iterat != -1 && iterat.toList().isNotEmpty) {
+              typeclient_provider.selectedValueOutSecondary = iterat.toList();
+            }
+          }
+        },
+      );
+      typeclient_provider.getreasonsPrimary().then(
+        (value) {
+          if (typeclient_provider.type_of_outPrimary.isNotEmpty) {
+            var iterat = typeclient_provider.type_of_outPrimary.where((e) => _invoice.reasonBackPrimary?.contains(e.nameReason) ?? false);
+            if (iterat != -1 && iterat.toList().isNotEmpty) {
+              typeclient_provider.selectedValueOutPrimary = iterat.toList();
+            }
+          }
+        },
+      );
       // typeclient_provider.changevalueOut(typeclient_provider.selectedValueOut.toString());
       String val = (_invoice.date_change_back?.isNotEmpty ?? false) ? _invoice.date_change_back.toString() : formatter.format(DateTime.now());
       _currentDate = DateTime.parse(val);
@@ -144,21 +163,38 @@ class _RejectDialogState extends State<RejectDialog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppText("اسباب الإنسحاب*"),
+                    AppText("اسباب الإنسحاب الرئيسية*"),
                     5.height,
                     Consumer<ClientTypeProvider>(
                       builder: (context, cart, child) {
-                        return CustomDropDown<ReasonModel>(
+                        return CustomMultiSelectionDropdown<ReasonModel>(
+                          hint: "",
+                          items: cart.type_of_outPrimary,
+                          compareFn: (item, selectedItem) => item.idReason == selectedItem.idReason,
+                          itemAsString: (item) => item!.nameReason,
+                          selectedItems: cart.selectedValueOutPrimary ?? [],
+                          onSave: (value) {
+                            cart.changevalueOutPrimary(value);
+                          },
+                          filterFn: (item, searchedItemName) => item.nameReason.toLowerCase().contains(searchedItemName.toLowerCase()),
+                        );
+                      },
+                    ),
+                    10.height,
+                    AppText("اسباب الإنسحاب الفرعية*"),
+                    5.height,
+                    Consumer<ClientTypeProvider>(
+                      builder: (context, cart, child) {
+                        return CustomMultiSelectionDropdown<ReasonModel>(
                           hint: "",
                           items: cart.type_of_out,
                           compareFn: (item, selectedItem) => item.idReason == selectedItem.idReason,
-                          itemAsString: (item) => item!.nameReason,
-                          selectedItem: cart.type_of_out.firstWhereOrNull(
-                            (element) => element.idReason == (cart.selectedValueOut ?? 0),
-                          ),
-                          onChanged: (value) {
-                            cart.changevalueOut(value!.idReason.toString());
+                          itemAsString: (item) => item?.nameReason ?? '',
+                          onSave: (value) {
+                            cart.changevalueOutSecondary(value);
                           },
+                          filterFn: (item, searchedItemName) => item.nameReason.toLowerCase().contains(searchedItemName.toLowerCase()),
+                          selectedItems: cart.selectedValueOutSecondary ?? [],
                         );
                       },
                     ),
@@ -412,7 +448,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                     text: 'انسحاب',
                                     onPressed: () async {
                                       if ((selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) ||
-                                          typeclient_provider.selectedValueOut == null) {
+                                          (typeclient_provider.selectedValueOutPrimary?.isEmpty ?? true) ||
+                                          (typeclient_provider.selectedValueOutSecondary?.isEmpty ?? true)) {
                                         AppSnackbar.showSnakeBar(
                                           "من فضلك قم بملىء الخيارات",
                                           color: ToastColorsEnum.warning,
@@ -421,11 +458,20 @@ class _RejectDialogState extends State<RejectDialog> {
                                       }
                                       if (_globalKey.currentState!.validate()) {
                                         _globalKey.currentState!.save();
-
+                                        final Map<String, dynamic> reasonBackSecondary = {};
+                                        final Map<String, dynamic> reasonBackPrimary = {};
+                                        typeclient_provider.selectedValueOutPrimary?.forEachIndexed((i, element) {
+                                          reasonBackPrimary.addAll({'main_reason_back[$i]': element.idReason});
+                                        });
+                                        typeclient_provider.selectedValueOutSecondary?.forEachIndexed((i, element) {
+                                          reasonBackSecondary.addAll({'reason_back[$i]': element.idReason});
+                                        });
                                         await Provider.of<InvoiceVm>(context, listen: false).set_state_back(
                                           {
                                             'type_back': 'back',
-                                            "reason_back": typeclient_provider.selectedValueOut.toString(),
+                                            ...reasonBackSecondary,
+                                            ...reasonBackPrimary,
+                                            // "reason_back": typeclient_provider.selectedValueOut.toString(),
                                             "desc_reason_back": descresaonController.text.toString(),
                                             "date_change_back": _currentDate.toString(),
                                             "value_back": valueBackController.text.toString(),

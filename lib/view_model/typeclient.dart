@@ -29,6 +29,7 @@ class ClientTypeProvider extends ChangeNotifier {
   ];
 
   // List<String> type_of_client=['تفاوض','عرض سعر','مستبعد','منسحب'];
+  List<ReasonModel> type_of_outPrimary = []; // أسباب الانسحاب الرئيسية
   List<ReasonModel> type_of_out = []; //أسباب الانسحاب
   List<String> listtype_install = ['الكل', 'بالإنتظار', 'تم التركيب', 'معلق'];
   List<String> listtype_care = ['تم التواصل', 'بالإنتظار'];
@@ -55,23 +56,45 @@ class ClientTypeProvider extends ChangeNotifier {
 
   ///////////////////////////////////////////////
 
-  late String? selectedValueOut = null;
+  String? selectedValueOut = null;
+  List<ReasonModel>? selectedValueOutSecondary = [];
+  List<ReasonModel>? selectedValueOutPrimary = [];
 
   void changevalueOut(String s) {
     selectedValueOut = s;
     notifyListeners();
   }
 
+  void changevalueOutPrimary(List<ReasonModel> s) {
+    selectedValueOutPrimary = s;
+    notifyListeners();
+  }
+
+  void changevalueOutSecondary(List<ReasonModel> s) {
+    selectedValueOutSecondary = s;
+    notifyListeners();
+  }
+
   //
   Future<void> getreasons(String type) async {
     selectedValueOut = null;
+    selectedValueOutSecondary = [];
     notifyListeners();
     //if(type_of_out.isEmpty)
     type_of_out = await config_service().getreason(type);
     notifyListeners();
   }
 
+  Future<void> getreasonsPrimary() async {
+    selectedValueOutPrimary = [];
+    notifyListeners();
+    //if(type_of_out.isEmpty)
+    type_of_outPrimary = await config_service().getreason('primary');
+    notifyListeners();
+  }
+
   bool isloading = false;
+  String? deletedId;
 
   Future<String> addReson_vm(Map<String, dynamic> body) async {
     isloading = true;
@@ -79,7 +102,7 @@ class ClientTypeProvider extends ChangeNotifier {
     final ApiServices apiServices = getIt<ApiServices>();
     apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     //name_mange
-    var res = await  apiServices.post(endPoint: EndPoints.reason.addReason, data: body);
+    var res = await apiServices.post(endPoint: EndPoints.reason.addReason, data: body);
     if (res['result'] == "success") {
       body.addAll({
         'id_reason': res['message']['id_reason'],
@@ -87,6 +110,28 @@ class ClientTypeProvider extends ChangeNotifier {
       type_of_out.insert(0, ReasonModel.fromJson(body));
       isloading = false;
       notifyListeners();
+    }
+    return res['result'];
+  }
+
+  Future<String> delte_resoan(String idReason) async {
+    //name_mange
+    var res;
+    try {
+      deletedId = idReason;
+      isloading = true;
+
+      notifyListeners();
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      //name_mange
+      res = await apiServices.post(endPoint: EndPoints.reason.deleteReason(int.parse(idReason)));
+      type_of_out = List.of(type_of_out)..removeWhere((element) => element.idReason == idReason);
+      isloading = false;
+      deletedId = null;
+      notifyListeners();
+    } catch (e) {
+      return e.toString();
     }
     return res['result'];
   }
@@ -100,7 +145,7 @@ class ClientTypeProvider extends ChangeNotifier {
       final ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       //name_mange
-      res = await  apiServices.post(endPoint: EndPoints.reason.updateReason(int.parse(idmanag)), data: body);
+      res = await apiServices.post(endPoint: EndPoints.reason.updateReason(int.parse(idmanag)), data: body);
       body.addAll({
         'id_reason': int.parse(idmanag),
       });

@@ -154,7 +154,7 @@ class _Series {
   final getSeriesInvoiceAll = 'getSeriesInvoiceAll';
   final getWithdrawalInvoiceDetails = 'series/view_series_invoice.php';
   final setApproveSeries = 'series/set_approve_series.php';
-  final getWithdrawnDetails = 'series/view_detail_demand.php';
+  String getWithdrawnDetails(String id) => 'withdrawDetail/$id';
   final deleteDemandOut = 'series/delete_demand_out.php';
 
   String cancelWithdrawal(String idInvoice) =>
@@ -555,6 +555,7 @@ class _Reason {
   final String addReason = 'reasons-out';
 
   String updateReason(int id) => 'reasons-out/$id/edit';
+  String deleteReason(int id) => 'reasons-out/$id/delete';
 }
 
 class _RegionAndCities {
