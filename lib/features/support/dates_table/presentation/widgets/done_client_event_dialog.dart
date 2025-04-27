@@ -130,6 +130,15 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                             comment: _commentController.text,
                           );
                           if (_formKey.currentState!.validate()) {
+
+                            if(location ==null){
+                              AppSnackbar.showSnakeBar(
+                                "جاري الحصول على الموقع",
+                                color: ToastColorsEnum.success,
+                              );
+                              await getLocation();
+                            }
+                            else {
                             if (widget.isReschedule) {
                               AppNavigator.pop(result: true);
                               AppConstants.showAppDialog(
@@ -138,8 +147,9 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                                     idClient: editedEvent.fkIdClient!,
                                     datesInstallation: null,
                               )).then(
-                                (value) {
-                                  if (value) {
+                                (value)   {
+                                  if (value)  {
+
                                     datesTableCubit.changeDateToDone(
                                       ChangeDateToDoneParams(
                                         timeTaken: takenTimeController.text,
@@ -180,7 +190,11 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                                 );
                               },
                             );
+                            location=null;
                           }
+                          }
+
+
                         },
                       );
                     },

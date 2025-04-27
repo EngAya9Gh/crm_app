@@ -106,12 +106,21 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
               return _CustomTextButton(
                 text: "بدء الزيارة",
                 onTap: () async {
-                  await datesTableCubit.startDateVisit(
-                      ConfirmVisitDateParams(
-                          idVisit: widget.eventModel.idClientsDate!,
-                          location: location),
-                      widget.eventModel.idClientsDate!);
-                },
+                  if(location ==null){
+                    AppSnackbar.showSnakeBar(
+                      "جاري الحصول على الموقع",
+                      color: ToastColorsEnum.success,
+                    );
+                    await getLocation();
+                  } else {
+                    await datesTableCubit.startDateVisit(
+                        ConfirmVisitDateParams(
+                            idVisit: widget.eventModel.idClientsDate!,
+                            location: location),
+                        widget.eventModel.idClientsDate!);
+                    location=null;
+                  }
+                  },
               );
             },
           ),

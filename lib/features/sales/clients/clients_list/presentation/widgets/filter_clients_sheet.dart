@@ -102,7 +102,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                   itemAsString: (item) => item!,
                   onSave: (selectedItems) {
                     _bloc.filterEntity.statusNotifier.value =
-                        TypeClientEnum.values.where((value) => selectedItems.contains(value.text)).map((e) => e.value).toList();
+                        TypeClientEnum.values.where((value) =>
+                            selectedItems.contains(value.text)).map((e) => e.value).toList();
                   },
                   compareFn: (a, b) => a == b,
                 );

@@ -32,6 +32,8 @@ enum TypeOfInvoice {
 
   const TypeOfInvoice({required this.text, required this.value});
 }
+
+
 enum StatusOfInvoice {
   cancelApprovement(text: "الفواتير المعادة للمشرف", value: 1),
   cancelWithdraw(text: "الفواتير المعادة من الانسحاب", value: 2);
