@@ -6,8 +6,10 @@ import 'package:group_button/group_button.dart';
 import '../../../../../core/utils/app_colors.dart';
 
 enum ElevationSysSupportEnum {
-  system(text: 'تقييمات النظام', value: 1),
-  support(text: 'تقييمات الدعم الفني', value: 2);
+
+  support(text: ' تقييم الدعم الفني', value: 2),
+  system(text: 'تقييم النظام', value: 1),
+  recommand(text: 'توصية العميل', value: 3);
 
   final String text;
   final int value;
@@ -22,6 +24,7 @@ class SwitchElevationType extends StatelessWidget {
   Widget build(BuildContext context) {
     final SysSupportRatingBloc _bloc = context.read<SysSupportRatingBloc>();
     return GroupButton(
+
       buttons: ElevationSysSupportEnum.values.map((e) {
         return e.text;
       }).toList(),

@@ -215,6 +215,8 @@ class _Privilege {
   final getLevels = "levels";
 }
 
+
+
 class _ChatAi {
   const _ChatAi();
 

@@ -47,9 +47,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   void initState() {
-    shorebirdCodePush.readCurrentPatch().then((value) {
-      debugPrint('current patch number is $value');
-    });
+    // shorebirdCodePush.readCurrentPatch().then((value) {
+    //   debugPrint('current patch number is $value');
+    // });
     super.initState();
   }
 

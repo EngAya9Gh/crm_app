@@ -51,6 +51,7 @@ class ClientsDebtsCubit extends Cubit<ClientsDebtsState> {
             invoiceState: filterEntity.invoiceStateNotifier.value?.toParam,
             dateFrom: filterEntity.dateFromController.text,
             dateTo: filterEntity.dateToController.text,
+            invoiceType:  filterEntity.filterInvoiceType.value,
           ),
         );
         result.fold(

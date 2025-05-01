@@ -67,7 +67,7 @@ class ElevationSysOrSupportCard extends StatelessWidget {
             ],
           ),
           8.height,
-          if (tabElevationIndex == 1)
+          // if (tabElevationIndex == 1)
             AppText(
               elevationModel.question,
               fontWeight: FontWeight.bold,

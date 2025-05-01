@@ -84,7 +84,7 @@ class _ClientsDebtsSheetState extends State<ClientsDebtsSheet> {
               height: 135.h,
             ),
             10.height,
-            CustomMultiSelectionDropdown<TypeOfInvoice?>(
+            CustomMultiSelectionDropdown<TypeOfInvoice>(
               hint: 'نوع الفاتورة',
               items: TypeOfInvoice.values,
               itemAsString: (item) => item!.text,

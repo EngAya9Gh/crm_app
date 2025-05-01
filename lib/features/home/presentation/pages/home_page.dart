@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
       textDirection: TextDirection.rtl,
       child: AppLayoutBuilder(
         smallBuilder: (context) => MobHomePage(),
-        mediumBuilder: (context) => WebHomePage(child: widget.child,),
+        mediumBuilder: (context) => MobHomePage(),// (child: widget.child,),
       ),
     );
   }

@@ -11,8 +11,8 @@ class FilterClientsDebtsEntity {
       ValueNotifier<BranchModel?>(null);
   ValueNotifier<InvoiceStatusEnum?> invoiceStateNotifier =
       ValueNotifier<InvoiceStatusEnum?>(null);
-  ValueNotifier<List<TypeOfInvoice?>> filterInvoiceType =
-  ValueNotifier<List<TypeOfInvoice?>>([]);
+  ValueNotifier<List<TypeOfInvoice>> filterInvoiceType =
+  ValueNotifier<List<TypeOfInvoice>>([]);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 

@@ -57,7 +57,7 @@ class GetTicketsParams {
       'limit': limit,
       'fk_state': ticketType.toParam,
       'fk_user': user?.id,
-      'ticket_source': ticketSource?.value,
+      'ticket_source': ticketSource?.name,
       if ((rate ?? 0) > 0) 'rate': rate,
       'from': dateFrom,
       'to': dateTo,

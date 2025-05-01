@@ -18,11 +18,14 @@ class ClientsDebtsPaginatedList extends StatelessWidget {
         return AppPaginatedList(
           items: cubit.pageVariables.filteredList,
           itemBuilder: (context, index) {
-            return ModernInvoiceCard(
-              type: 'profile',
-              invoice: cubit.pageVariables.filteredList[index],
-              routeName: AppRoutesNames.clientProfile.inClientsDebts,
+            return Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: ModernInvoiceCard(
+                type: 'profile',
+                invoice: cubit.pageVariables.filteredList[index],
+                routeName: AppRoutesNames.clientProfile.inClientsDebts,
 
+              ),
             );
           },
         );

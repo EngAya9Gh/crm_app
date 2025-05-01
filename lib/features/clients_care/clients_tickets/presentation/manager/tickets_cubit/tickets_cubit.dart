@@ -188,7 +188,8 @@ class TicketsCubit extends Cubit<TicketsState> {
 
   void filterSubCategories() {
     pageVariables.filteredSubCategoriesByCategories = pageVariables.allSubCategoriesList
-        .where((sub) => pageVariables.selectedCategoriesList.any((category) => sub.classification == category.categoryAr))
+        .where((sub) => pageVariables.selectedCategoriesList.any((category) =>
+        sub.classification == category.categoryAr))
         .toList();
 
     emit(state.copyWith(subCategoriesStatus: BlocStatus.success()));

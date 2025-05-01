@@ -1,4 +1,8 @@
 enum TicketSourceEnum {
+ 
+  productSystem,
+  recommandSystem,
+  supportSystem,
   periodicCall,
   qualityFirst,
   qualitySecond,
@@ -10,9 +14,7 @@ enum TicketSourceEnum {
   youtube,
   instagram,
   tiktok,
-  location,
-  productSystem,
-  supportSystem;
+  location;
 
   static TicketSourceEnum? fromString(String? value) {
     if (value == TicketSourceEnum.periodicCall.value) {
@@ -43,6 +45,9 @@ enum TicketSourceEnum {
       return TicketSourceEnum.productSystem;
     } else if (value == TicketSourceEnum.supportSystem.value) {
       return TicketSourceEnum.supportSystem;
+    }
+    else if (value == TicketSourceEnum.recommandSystem.value) {
+      return TicketSourceEnum.recommandSystem;
     }
     return null;
   }
@@ -79,6 +84,8 @@ extension TicketSourceEnumsExtension on TicketSourceEnum {
         return 'تقييم عبر النظام / المنتج';
       case TicketSourceEnum.supportSystem:
         return 'تقييم عبر النظام / خدمة الدعم';
+        case TicketSourceEnum.recommandSystem:
+        return 'تقييم عبر النظام / توصية عميل';
     }
   }
 }
