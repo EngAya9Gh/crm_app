@@ -36,6 +36,7 @@ class TicketModel {
     this.nameEnterprise,
     this.status,
     this.systemRatingId,
+    this.destination,
   });
 
   String? fkClient;
@@ -68,6 +69,7 @@ class TicketModel {
   dynamic ticketSource;
   String? nameClient;
   String? nameEnterprise;
+  int? destination;
   List<StatusModel>? status;
   int? systemRatingId;
 
@@ -113,6 +115,7 @@ class TicketModel {
     ticketSource = json['ticket_source'];
     nameClient = json['name_client'];
     nameEnterprise = json['name_enterprise'];
+    destination = json['destination'];
     if (json['status'] != null) {
       status = [];
       for (final element in json['status']) {
@@ -148,6 +151,7 @@ class TicketModel {
       map['department'] = department;
       map['suspend_id'] = suspendId;
       map['suspend_date'] = suspendDate;
+      map['destination'] = destination;
       if (categoriesTicketFk != null) {
         map['categories_ticket_fk'] = categoriesTicketFk?.map((v) => v.toMap()).toList();
       }
@@ -194,6 +198,7 @@ class TicketModel {
       dynamic ticketSource,
       String? nameClient,
       String? nameEnterprise,
+      int? destination,
       List<StatusModel>? status,
       int? systemRatingId,
     }) {
@@ -229,6 +234,7 @@ class TicketModel {
         nameClient: nameClient ?? this.nameClient,
         nameEnterprise: nameEnterprise ?? this.nameEnterprise,
         status: status ?? this.status,
+        destination: destination ?? this.destination,
         systemRatingId: systemRatingId ?? this.systemRatingId,
       );
     }

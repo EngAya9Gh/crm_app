@@ -45,38 +45,48 @@ class TicketDetailsButtons extends StatelessWidget {
           );
         }
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
         children: [
-          // receive ticket button
-          if (isAllowedToReceive(currentTicketType, context)) ...[
-            Expanded(child: ReceiveTicketButton(ticketModel: ticketModel)),
-            5.width,
-          ],
-          // transfer ticket button
-          if (_isAllowedToTransfer(currentTicketType, context)) ...[
-            Expanded(child: TransferTicketButton(ticketModel: ticketModel)),
-            5.width,
-          ],
-          // close ticket button
-          if (_isAllowedToClose(currentTicketType, context)) ...[
-            Expanded(child: CloseTicketButton(ticketModel: ticketModel)),
-            5.width,
-          ],
-          // reopen ticket button
-          if (currentTicketType == TicketTypesEnum.close) ...[
-            Expanded(child: ReopenTicketButton(ticketModel: ticketModel)),
-            5.width,
-            Expanded(child: RateAfterClosingButton(ticketModel: ticketModel)),
-            5.width,
-          ],
-          // client file button
-          if (ticketModel.fkClient != null &&
-              ticketModel.fkClient != "null") ...[
-            Expanded(child: ClientProfileButton(ticketModel: ticketModel)),
-            5.width,
-          ],
-          // rate ticket button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // receive ticket button
+              if (isAllowedToReceive(currentTicketType, context)) ...[
+                Expanded(child: ReceiveTicketButton(ticketModel: ticketModel)),
+                5.width,
+              ],
+              // transfer ticket button
+              if (_isAllowedToTransfer(currentTicketType, context)) ...[
+                Expanded(child: TransferTicketButton(ticketModel: ticketModel)),
+                5.width,
+              ],
+              // close ticket button
+              if (_isAllowedToClose(currentTicketType, context)) ...[
+                Expanded(child: CloseTicketButton(ticketModel: ticketModel)),
+                5.width,
+              ],
+              // reopen ticket button
+              if (currentTicketType == TicketTypesEnum.close) ...[
+                Expanded(child: ReopenTicketButton(ticketModel: ticketModel)),
+                5.width,
+                Expanded(child: RateAfterClosingButton(ticketModel: ticketModel)),
+                5.width,
+              ],
+
+              // rate ticket button
+            ],
+          ),
+          10.vertical,
+          Row(
+            children: [
+              // client file button
+              if (ticketModel.fkClient != null &&
+                  ticketModel.fkClient != "null") ...[
+                Expanded(child: ClientProfileButton(ticketModel: ticketModel)),
+                5.width,
+              ],
+            ],
+          )
         ],
       ),
     );
@@ -90,7 +100,7 @@ class TicketDetailsButtons extends StatelessWidget {
 
   bool _isAllowedToTransfer(
       TicketTypesEnum currentTicketType, BuildContext context) {
-    return currentTicketType == TicketTypesEnum.receive &&
+    return (currentTicketType == TicketTypesEnum.receive || currentTicketType==TicketTypesEnum.open) &&
         context.read<PrivilegesCubit>().checkPrivilege('75');
   }
 

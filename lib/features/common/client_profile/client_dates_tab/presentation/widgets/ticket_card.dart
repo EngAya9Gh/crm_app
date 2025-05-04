@@ -1,6 +1,9 @@
+import 'package:crm_smart/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
+import '../../../../../../core/common/enums/ticket_source_enum.dart';
+import '../../../../../../core/common/widgets/app_status_chip.dart';
 import '../../../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 import '../../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../../core/config/navigator/app_navigator.dart';
@@ -101,8 +104,35 @@ class TicketCardNew extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                     Row(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+
+                       if(ticket.destination !=null)
+                         Align(
+                           alignment: Alignment.topRight,
+                           child: AppStatusChip(
+                             fontSize: 12,
+                             status:TicketSourceEnum.fromSystemRate(ticket.ticketSource.toString()),
+                             color: ticket.destination==3? AppColors.secondaryAltLight:AppColors.primaryAltLight ,
+                           ),
+                         ),
+                       if(ticket.destination !=null)
+                         Align(
+                           alignment: Alignment.topLeft,
+                           child: AppStatusChip(
+                             fontSize: 12,
+                             status:ticket.destination==3? 'تذكرة دعم(تقييم عبر النظام)' :'تذكرة عناية(تقييم عبر النظام)',
+                             color:ticket.destination==3?AppColors.secondaryAltLight:AppColors.primaryAltLight ,
+                           ),
+                         ),
+
+                     ],),
+                     3.vertical,
                       Row(
                         children: [
+
                           AppText(
                             '#${ticket.idTicket}',
                             fontSize: 14,
@@ -128,6 +158,7 @@ class TicketCardNew extends StatelessWidget {
                           color: Colors.grey[600],
                         ),
                       ],
+
                     ],
                   ),
                 ),

@@ -25,6 +25,7 @@ class ReceiveTicketButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final EditTicketCubit editTicketCubit = context.read<EditTicketCubit>();
     return AppElevatedButton(
+
       text: 'استلام التذكرة',
       onPressed: () async {
         AppConstants.showAppDialog(

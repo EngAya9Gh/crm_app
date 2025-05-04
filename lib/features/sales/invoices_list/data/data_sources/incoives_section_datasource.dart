@@ -43,7 +43,7 @@ class InvoicesTabDataSourceImpl implements InvoicesTabDataSource {
         endPoint: EndPoints.invoice.getInvoicesByPrivileges,
         queryParameters: params.toMap(),
       );
-      print("fsdfsafjdkslfjasfkajldsf     ${params.toMap()}");
+      print("paraams     ${params.toMap()}");
       final int count = response['count'];
 
       final data = apiDataHandler(response);

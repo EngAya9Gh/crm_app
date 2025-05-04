@@ -75,6 +75,7 @@ class TicketsCubit extends Cubit<TicketsState> {
           rate: filterEntity.rateNotifier.value,
           dateFrom: filterEntity.dateFromController.text,
           dateTo: filterEntity.dateToController.text,
+          ticketTypeDist: filterEntity.ticketDestinationNotifier.value,
         ));
         result.fold(
           (error) {

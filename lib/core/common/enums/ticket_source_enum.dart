@@ -51,6 +51,18 @@ enum TicketSourceEnum {
     }
     return null;
   }
+  static String fromSystemRate(String? value) {
+    if (value == TicketSourceEnum.productSystem.value) {
+      return 'المنتج';
+    } else if (value == TicketSourceEnum.supportSystem.value) {
+      return 'خدمة الدعم';
+    } else if (value == TicketSourceEnum.recommandSystem.value) {
+      return 'توصية عميل';
+
+    }
+    return '';
+  }
+
 }
 
 extension TicketSourceEnumsExtension on TicketSourceEnum {

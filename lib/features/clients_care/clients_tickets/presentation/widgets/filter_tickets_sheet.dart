@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/enums/ticket_destination_enum.dart';
 import '../../../../../core/common/enums/ticket_source_enum.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/enums/users/user_type_enum.dart';
@@ -32,7 +33,6 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
   @override
   void initState() {
     _cubit = context.read<TicketsCubit>();
-
     super.initState();
   }
 
@@ -64,16 +64,18 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
                 },
               ),
             ),
-            // CustomDropDown<TicketTypesEnum>(
-            //   hint: "حالة التذكرة",
-            //   items: TicketTypesEnum.values,
-            //   itemAsString: (e) => e!.nameAr,
-            //   selectedItem: _cubit.filterEntity.ticketTypeNotifier.value,
-            //   onChanged: (value) {
-            //     _cubit.filterEntity.ticketTypeNotifier.value = value!;
-            //   },
-            //   height: (265.0).scaleHeight,
-            // ),
+            10.height,
+            CustomDropDown<TicketDestinationEnum>(
+              hint: "نوع اسناد التذكرة",
+              items: TicketDestinationEnum.values,
+              itemAsString: (e) => e!.value,
+              selectedItem: _cubit.filterEntity.ticketDestinationNotifier.value,
+              onChanged: (value) {
+                _cubit.filterEntity.ticketDestinationNotifier.value = value!;
+              },
+              compareFn: (item, selectedItem) => item == selectedItem,
+              height: (265.0).scaleHeight,
+            ),
             10.height,
             UsersSearchableDropDown(
               hint: "اختر الموظف",
@@ -84,13 +86,14 @@ class _FilterTicketsSheetState extends State<FilterTicketsSheet> {
               },
             ),
             10.height,
-            CustomDropDown<TicketSourceEnum>(
+            CustomMultiSelectionDropdown<TicketSourceEnum>(
               hint: 'مصدر التذكرة',
               items: TicketSourceEnum.values,
               itemAsString: (e) => e!.value,
-              compareFn:  (item, selectedItem) => item.index == selectedItem.index,
-              selectedItem: _cubit.filterEntity.ticketSourceListNotifier.value,
-              onChanged: (value) {
+              compareFn: (item, selectedItem) =>
+                  item.index == selectedItem.index,
+              selectedItems: _cubit.filterEntity.ticketSourceListNotifier.value,
+              onSave: (value) {
                 _cubit.filterEntity.ticketSourceListNotifier.value = value!;
               },
             ),
