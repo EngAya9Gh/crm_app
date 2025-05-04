@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/features/sales/clients/clients_list/presentation/pages/client_card_settings_page.dart';
 import 'package:crm_smart/features/sales/clients/clients_list/presentation/widgets/assign_clients_to_employee_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -109,9 +110,11 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                         } else if (value == 'marketing_report') {
                           AppNavigator.go(ClientMarketingReportPage(),
                               isNew: false);
-                        } else if (value == 'add_client') {
-                          AppNavigator.go(ClientAddEditPage(), isNew: false);
-                        }
+                          } else if (value == 'add_client') {
+                            AppNavigator.go(ClientAddEditPage(), isNew: false);
+                          } else if (value == 'settings') {
+                            AppNavigator.go(ClientCardSettingsPage(), isNew: false);
+                          }
                       },
                       itemBuilder: (context) => [
 
@@ -149,7 +152,16 @@ class _MobClientsListPageState extends State<MobClientsListPage> {
                               ),
                             ),
                           ),
-                     
+                     PopupMenuItem(
+                            value: 'settings',
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: AppText(
+                                "settings",
+                                fontSize: 14.scaleFontSize,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   );

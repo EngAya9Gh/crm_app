@@ -52,6 +52,7 @@ import '../features/notifications/presentation/manager/notifications_cubit.dart'
 import '../features/sales/clients/add_client_contact/presentation/manager/add_client_contact_bloc.dart';
 import '../features/sales/clients/clients_debts/presentation/manager/clients_debts_cubit.dart';
 import '../features/sales/clients/clients_list/presentation/manager/clients_list_bloc.dart';
+import '../features/sales/clients/clients_list/presentation/providers/client_card_preferences_provider.dart';
 import '../features/sales/clients/clients_transfer_approvals/presentation/manager/clients_transfer_approvals_cubit.dart';
 import '../features/sales/clients/finance_pending/presentation/manager/finance_pending_cubit.dart';
 import '../features/sales/clients/latest_clients_updates/presentation/manager/latest_clients_updates_cubit.dart';
@@ -203,6 +204,7 @@ class ServiceProvider extends StatelessWidget {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+          ChangeNotifierProvider<ClientCardPreferencesProvider>(create: (_) => ClientCardPreferencesProvider()),
           ChangeNotifierProvider<switch_provider>(
               create: (_) => switch_provider()),
           ChangeNotifierProvider<selected_button_provider>(
