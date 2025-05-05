@@ -57,11 +57,13 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
 
   Future<void> getLocation() async {
     final LocationData locationData = await locationService.getLocation();
-    final LatLng myLocation = LatLng(
-      locationData.latitude!,
-      locationData.longitude!,
-    );
-    location = '${myLocation.latitude},${myLocation.longitude}';
+    setState(() {
+       final LatLng myLocation = LatLng(
+        locationData.latitude!,
+        locationData.longitude!,
+      );
+      location = '${myLocation.latitude},${myLocation.longitude}';
+    });
   }
 
   @override

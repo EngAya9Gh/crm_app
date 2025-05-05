@@ -208,7 +208,7 @@ class _ClientProfileState extends State<ClientProfile>
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 5),
+                padding: const EdgeInsets.only(bottom: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -262,6 +262,7 @@ class _ClientProfileState extends State<ClientProfile>
                         // color: AppColors.white,
                       ),
                     ),
+
                   ],
                 ),
               ),
@@ -285,6 +286,7 @@ class _ClientProfileState extends State<ClientProfile>
                         color: AppColors.secondaryMain,
                       ),
                   },
+
                   Expanded(
                     child: TabBarView(
                       controller: _tabController,

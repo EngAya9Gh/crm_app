@@ -96,6 +96,22 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
                         value: widget.ticketModel.ticketSource ?? '',
                         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
+
+                      10.height,
+                      if(widget.ticketModel.systemRatingId !=null)
+                        CardRow(
+                        title: 'السؤال',
+                        value: widget.ticketModel.notesTicket ?? '',
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ),
+                      10.height,
+                   if(widget.ticketModel.systemRatingId !=null)
+                     CardRow(
+                        title: 'تقييم عبر النظام',
+                        value: widget.ticketModel.system_rating ?? '',
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ),
+
                       10.height,
                       CardRow(
                         title: 'تفاصيل التذكرة',

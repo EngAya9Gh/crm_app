@@ -93,11 +93,11 @@ extension TicketSourceEnumsExtension on TicketSourceEnum {
       case TicketSourceEnum.location:
         return 'الموقع';
       case TicketSourceEnum.productSystem:
-        return 'تقييم عبر النظام / المنتج';
+        return 'تقييم النظام';
       case TicketSourceEnum.supportSystem:
-        return 'تقييم عبر النظام / خدمة الدعم';
+        return 'تقييم خدمة الدعم الفني';
         case TicketSourceEnum.recommandSystem:
-        return 'تقييم عبر النظام / توصية عميل';
+        return 'توصية العميل';
     }
   }
 }

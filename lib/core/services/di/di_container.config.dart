@@ -56,8 +56,6 @@ import '../../../features/client_care/care_usage_efficiency/domain/usecases/get_
     as _i648;
 import '../../../features/client_care/care_usage_efficiency/presentation/manager/care_usage_cubit/care_usage_cubit.dart'
     as _i872;
-import '../../../features/client_care/care_usage_efficiency/presentation/manager/filter_care_usage_cubit/filter_care_usage_cubit.dart'
-    as _i732;
 import '../../../features/clients_care/accept_clients/data/data_sources/clients_accept_datasource.dart'
     as _i406;
 import '../../../features/clients_care/accept_clients/data/repositories/clients_accept_repository_impl.dart'
@@ -1159,8 +1157,6 @@ _i174.GetIt $initGetIt(
       () => _i119.NotificationsRepoImpl(gh<_i530.NotificationsDatasource>()));
   gh.lazySingleton<_i406.ClientsAcceptDatasource>(
       () => _i406.ClientsAcceptDatasourceImpl(gh<_i124.ApiServices>()));
-  gh.lazySingleton<_i197.CareUsageRemoteDataSource>(
-      () => _i197.CareUsageRemoteDataSourceImpl(gh<_i361.Dio>()));
   gh.lazySingleton<_i729.ClientsStatusReportsDatasource>(
       () => _i729.ClientsStatusReportsDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i181.PeriodicCommunicationReportsDatasource>(() =>
@@ -1196,6 +1192,8 @@ _i174.GetIt $initGetIt(
       () => _i785.ClientsDebtsDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i694.FinancePendingDatasource>(
       () => _i694.FinancePendingDatasourceImpl(gh<_i124.ApiServices>()));
+  gh.lazySingleton<_i197.CareUsageRemoteDataSource>(
+      () => _i197.CareUsageRemoteDataSourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i1035.EvaluationLevelReportRepo>(() =>
       _i412.EvaluationLevelReportRepoImpl(
           gh<_i946.EvaluationLevelReportDatasource>()));
@@ -1848,6 +1846,8 @@ _i174.GetIt $initGetIt(
       _i608.EditGeneralConfigsUsecase(gh<_i5.GeneralConfigsRepository>()));
   gh.lazySingleton<_i4.GetGeneralConfigsUsecase>(
       () => _i4.GetGeneralConfigsUsecase(gh<_i5.GeneralConfigsRepository>()));
+  gh.factory<_i872.CareUsageCubit>(
+      () => _i872.CareUsageCubit(gh<_i648.GetCareUsageListUseCase>()));
   gh.factory<_i565.SupportTabCubit>(() => _i565.SupportTabCubit(
         gh<_i801.GetInvoiceByClientUsecase>(),
         gh<_i888.AddDateInstallUsecase>(),
@@ -1942,10 +1942,6 @@ _i174.GetIt $initGetIt(
   gh.factory<_i851.RegionsSalesReportsCubit>(() =>
       _i851.RegionsSalesReportsCubit(
           gh<_i910.GetRegionsSalesReportsUsecase>()));
-  gh.factory<_i872.CareUsageCubit>(() => _i872.CareUsageCubit(
-        gh<_i648.GetCareUsageListUseCase>(),
-        gh<_i732.FilterCareUsageCubit>(),
-      ));
   gh.factory<_i476.ClientAttachmentsBloc>(() => _i476.ClientAttachmentsBloc(
         gh<_i559.GetAttachmentsUseCase>(),
         gh<_i1065.GetAllClientUseCase>(),

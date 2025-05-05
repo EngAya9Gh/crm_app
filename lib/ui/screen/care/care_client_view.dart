@@ -39,6 +39,7 @@ class _CareClientViewState extends State<CareClientView> {
     0: "ترحيب",
     1: "تركيب",
     2: "دوري",
+    3: "كفاءة",
   };
 
   @override
@@ -63,7 +64,9 @@ class _CareClientViewState extends State<CareClientView> {
                       onAddPressed: () async {
                         final result = await showDialog(
                           context: context,
-                          builder: (context) => AddManualTaskPage(list: PublicType.values, clientId: widget.fk_client),
+                          builder: (context) => AddManualTaskPage(
+                              list: PublicType.values,
+                              clientId: widget.fk_client),
                         );
                       },
                       child: Container(),
@@ -94,13 +97,19 @@ class _CareClientViewState extends State<CareClientView> {
                                   )
                                 : Column(
                                     children: list.map((item) {
-                                      return (tabsToIndex.values.contains(title))
+                                      return (tabsToIndex.values
+                                              .contains(title))
                                           ? CommunicationExpandedWidget(
                                               communicationModel: item,
-                                              initiallyExpanded: item.idCommunication == widget.idCommunication,
+                                              initiallyExpanded:
+                                                  item.idCommunication ==
+                                                      widget.idCommunication,
                                             )
                                           : ElevationSysOrSupportCard(
-                                              elevationModel: (item as ElevationModel), tabElevationIndex: item.rateType ?? 1);
+                                              elevationModel:
+                                                  (item as ElevationModel),
+                                              tabElevationIndex:
+                                                  item.rateType ?? 1);
                                     }).toList(),
                                   ),
                           ),

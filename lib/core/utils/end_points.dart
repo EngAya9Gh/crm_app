@@ -192,6 +192,7 @@ class _Care {
   final String getManagement = "admin-for-user";
   final String getViolationTypes = "violations/types";
   final String getActivitiesTypes = "activities/types";
+  final String getclient_usages  = 'client-usages';
 
   String communicationsByClient(String id) => "communications/by-client/$id";
 

@@ -37,6 +37,7 @@ class TicketModel {
     this.status,
     this.systemRatingId,
     this.destination,
+    this.system_rating,
   });
 
   String? fkClient;
@@ -72,6 +73,7 @@ class TicketModel {
   int? destination;
   List<StatusModel>? status;
   int? systemRatingId;
+  int? system_rating;
 
   TicketModel.fromMap(dynamic json) {
     fkClient = json['fk_client'].toString();
@@ -100,6 +102,7 @@ class TicketModel {
     department = json['department'];
     suspendId = json['suspend_id'];
     suspendDate = json['suspend_date'];
+    system_rating = json['system_rating'];
     if (json['categories_ticket_fk'] != null) {
       categoriesTicketFk = [];
       json['categories_ticket_fk'].forEach((v) {
@@ -152,6 +155,7 @@ class TicketModel {
       map['suspend_id'] = suspendId;
       map['suspend_date'] = suspendDate;
       map['destination'] = destination;
+      map['system_rating'] = system_rating;
       if (categoriesTicketFk != null) {
         map['categories_ticket_fk'] = categoriesTicketFk?.map((v) => v.toMap()).toList();
       }

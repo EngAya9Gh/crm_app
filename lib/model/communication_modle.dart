@@ -37,6 +37,13 @@ class CommunicationModel {
   late final List<CommunicationDetails> details;
   late final List<RatingModel> ratings;
   late final DateTime? lastRateDate;
+  // كفاءة الاستخدام
+  String? lastActivity;
+  String? endSubscription;
+  String? package;
+  String? lastModuleActivity;
+  String? lastOperationActivity;
+  int? shouldCommunicate;
 
   CommunicationModel({
     required this.idCommunication,
@@ -73,6 +80,12 @@ class CommunicationModel {
     this.typeSeller,
     this.lastRateDate,
     this.details = const [],
+    this.lastActivity,
+    this.endSubscription,
+    this.package,
+    this.lastModuleActivity,
+    this.lastOperationActivity,
+    this.shouldCommunicate,
   });
 
   CommunicationModel.fromJson(Map<String, dynamic> json) {
@@ -99,9 +112,12 @@ class CommunicationModel {
     fk_regoin = ApiHelper.handleString(json['fk_regoin']);
     nameClient = ApiHelper.handleString(json['nameClient']);
     type_install = ApiHelper.handleString(json['type_install']);
-    date_last_com_install = ApiHelper.handleString(json['date_last_com_install']);
+    date_last_com_install =
+        ApiHelper.handleString(json['date_last_com_install']);
     isRecommendation = ApiHelper.handleString(json['isRecommendation']);
-    lastRateDate = json['last_rate_date'] == null ? null : DateTime.tryParse(json['last_rate_date'] ?? '');
+    lastRateDate = json['last_rate_date'] == null
+        ? null
+        : DateTime.tryParse(json['last_rate_date'] ?? '');
     is_visit = ApiHelper.handleString(json['is_visit']);
     is_suspend = ApiHelper.handleString(json['is_suspend']);
     fkUserInstall = ApiHelper.handleString(json['userinstall']);
@@ -112,7 +128,8 @@ class CommunicationModel {
     typeSeller = ApiHelper.handleString(json['type_seller']);
     details = json['communication_details'] == null
         ? []
-        : List<CommunicationDetails>.from(json['communication_details'].map((e) {
+        : List<CommunicationDetails>.from(
+            json['communication_details'].map((e) {
             return CommunicationDetails.fromJson(e);
           }));
     ratings = json['ratings'] == null
@@ -120,6 +137,14 @@ class CommunicationModel {
         : List<RatingModel>.from(json['ratings'].map((e) {
             return RatingModel.fromJson(e);
           }));
+    // كفاءة الاستخدام
+    lastActivity = ApiHelper.handleString(json['last_activity']);
+    endSubscription = ApiHelper.handleString(json['end_subscription']);
+    package = ApiHelper.handleString(json['package']);
+    lastModuleActivity = ApiHelper.handleString(json['last_module_activity']);
+    lastOperationActivity =
+        ApiHelper.handleString(json['last_operation_activity']);
+    shouldCommunicate = json['should_communicate'];
   }
 
   bool searchString(String query) {

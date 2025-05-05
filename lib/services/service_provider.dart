@@ -120,7 +120,8 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<SpecialClientsBloc>()),
         BlocProvider(create: (context) => getIt<ClientsListBloc>()),
         BlocProvider(create: (context) => getIt<CareUsageCubit>()),
-        BlocProvider(create: (context) => getIt<AppManagerCubit>()),
+       
+           BlocProvider(create: (context) => getIt<AppManagerCubit>()),
         BlocProvider(create: (context) => getIt<PrivilegesCubit>()),
         BlocProvider(create: (context) => getIt<TaskCubit>()),
         BlocProvider(create: (context) => getIt<ParticipateListBloc>()),

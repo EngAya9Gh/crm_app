@@ -36,7 +36,7 @@ class ClientCardSettingsPage extends StatelessWidget {
                 16.height,
                 _buildDisplayOption(
                   context,
-                  title: 'اسم المستخدم',
+                  title: 'اسم الموظف',
                   value: preferences.showNameUser,
                   color: preferences.nameUserColor,
                   onChanged: (value) =>
@@ -58,7 +58,7 @@ class ClientCardSettingsPage extends StatelessWidget {
                 8.height,
                 _buildDisplayOption(
                   context,
-                  title: 'نوع السجل',
+                  title: 'نوع التسجل',
                   value: preferences.showTypeRecord,
                   color: preferences.typeRecordColor,
                   onChanged: (value) =>
