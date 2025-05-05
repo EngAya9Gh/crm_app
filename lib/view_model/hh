@@ -1,0 +1,60 @@
+select `inv`.`date_approve` AS `date_approve`,`inv`.`id_invoice` AS `id_invoice`,`inv`.`stateclient`
+ AS `type_invoice`,`cl`.`name_enterprise` AS `name_enterprise`,`cl`.`SerialNumber` AS
+  `SerialNumber`,`cl`.`mobile` AS `mobile`,`rg`.`name_regoin` AS `name_regoin`,`cty`.`name_city` 
+  AS `name_city`,`minct`.`namemaincity` AS `namemaincity`,`cc`.`date_communication` AS `date_welcome`
+  ,case when `cc`.`date_communication` is null then 'انتظار الترحيب' when `cc`.`date_communication`
+   is not null then 'تم الترحيب' end AS `type_welcome`,`us1`.`nameUser` AS `user_welcome`,
+   `latest_state_id`.`ready_install` AS `ready_install`,`inv`.`dateinstall_done` AS `date_install`,
+   `us4`.`nameUser` AS `user_install`,(select count(`cd`.`idclients_date`) 
+   from `smartcrm_db`.`clients_date` `cd` where `cd`.`fk_invoice` = `inv`.`id_invoice`) AS 
+   `numOfvisit`,(select count(`cd`.`idclients_date`) from `smartcrm_db`.`clients_date` `cd` 
+   where `cd`.`fk_invoice` = `inv`.`id_invoice` and `cd`.`is_done` = 1) AS `numOfvisitDone`,
+   (select max(`cd`.`date_client_visit`) from `smartcrm_db`.`clients_date` `cd`
+    where `cd`.`fk_invoice` = `inv`.`id_invoice` and (`cd`.`is_done` = 0 or `cd`.`is_done` = 3))
+     AS `LastDate_Visit`,case when `inv`.`isdoneinstall` = '1' then 'تم التركيب' 
+     when `latest_state_id`.`ready_install` = '0' and `inv`.`isdoneinstall` is null
+      and `latest_state_id`.`state` = 'suspend' then 'معلق' when `latest_state_id`.`ready_install` = '0' 
+      and `inv`.`isdoneinstall` is null and `latest_state_id`.`state` = 'notReady' then 'غير جاهز'
+       when `inv`.`isdoneinstall` is null then 'بالانتظار'
+        end AS `type_install`,`inr_no_ready`.`date_state` AS `date_suspend`,`us2`.`nameUser` 
+        AS `user_suspend`,`ready_id`.`date_state` AS `date_Cancel_suspend`,`us3`.`nameUser`
+         AS `user_cancel_suspend` from  ((((((((((`smartcrm_db`.`client_invoice` `inv` join 
+         `smartcrm_db`.`clients` `cl` on(`cl`.`id_clients` = `inv`.`fk_idClient`)) 
+         left join `smartcrm_db`.`client_communication` `cc` 
+         on(`inv`.`id_invoice` = `cc`.`id_invoice`)) join `smartcrm_db`.`regoin` `rg` 
+         on(`rg`.`id_regoin` = `inv`.`fk_regoin_invoice`)) left join `smartcrm_db`.`city` `cty` 
+         
+         on(`cty`.`id_city` = `cl`.`city`)) join `smartcrm_db`.`maincity` `minct` 
+         on(`minct`.`id_maincity` = `cty`.`fk_maincity`)) left join `smartcrm_db`.`users` `us1` 
+         on(`cc`.`fk_user` = `us1`.`id_user`)) left join `smartcrm_db`.`users` `us4` 
+         on(`inv`.`userinstall` = `us4`.`id_user`))
+         
+         
+          left join `smartcrm_db`.`invoice_ready` `latest_state_id`
+          on(`latest_state_id`.`id` = (select max(`inrs`.`id`) from `smartcrm_db`.`invoice_ready` `inrs` 
+          where `inrs`.`fk_invoice` = `inv`.`id_invoice`))) 
+ 
+
+LEFT JOIN (
+    SELECT 
+        fk_invoice,
+        MAX(CASE WHEN state = 'ready' THEN id END) AS ready_id,
+ 
+        MAX(CASE WHEN state != 'ready' THEN id END) AS inr_no_ready,
+      
+    FROM invoice_ready
+    GROUP BY fk_invoice
+) AS ir ON ir.fk_invoice = inv.id_invoice
+
+
+
+
+
+
+             left join `smartcrm_db`.`users` `us3` on(`us3`.`id_user` = `ready_id`.`fk_user`)) 
+             left join `smartcrm_db`.`users` `us2` on(`inr_no_ready`.`fk_user` = `us2`.`id_user`))
+              where `cc`.`type_communcation` = 'ترحيب' and `inv`.`date_approve` 
+              is not null and `rg`.`fk_country` = 1 and `inv`.`isdelete` is null
+               and (`inv`.`approve_back_done` = 2 or `inv`.`approve_back_done` = 3 
+               or `inv`.`approve_back_done` is null) 
+and `inv`.`type_seller` <> 1

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="/"/>
+
+    <meta http-equiv="Content-Security-Policy" content="geolocation 'self' https:">
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta content="A new Flutter project." name="description">
+
+    <!-- iOS meta tags & icons -->
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="app_crm" name="apple-mobile-web-app-title">
+    <link href="icons/Icon-192.png" rel="apple-touch-icon">
+
+    <!-- Favicon -->
+    <link href="favicon.png" rel="icon" type="image/png"/>
+
+    <title>app_crm</title>
+    <link href="manifest.json" rel="manifest">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQVScJ2gMSCwAWh1zTnjtzOk2SGWSjStI&libraries=drawing"></script>
+</head>
+<body>
+<script async src="flutter_bootstrap.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+<script type="text/javascript">
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "http://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
+</script>
+<script src="flutter_bootstrap.js" async>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('firebase-messaging-sw.js', {
+          scope: '/firebase-cloud-messaging-push-scope',
+        });
+      });
+    }
+</script>
+</body>
+</html>

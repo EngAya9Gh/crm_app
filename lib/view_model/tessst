@@ -1,0 +1,102 @@
+ALTER
+ ALGORITHM = UNDEFINED
+DEFINER=`admin_aya`@`%` 
+ SQL SECURITY DEFINER
+ VIEW `view_client_invoice`
+ AS select `cl`.`SerialNumber` AS `SerialNumber`,`cl`.`reason_class` AS `reason_classification`,
+ `cl`.`type_record` AS `type_record`,`cl`.`date_received` AS `date_received`,
+ `cl`.`type_classification` AS `type_classification`,`cl`.`date_create` AS `date_create_client`,
+ `cl`.`id_clients` AS `IDcustomer`,`cl`.`name_enterprise` AS `name_enterprise_client`,
+ `cl`.`mobile` AS `mobile`,`cl`.`type_client` AS `type_client`,
+ `rsj`.`NameReason_reject` AS `NameReason_reject`,`cl`.`date_reject` AS `date_reject`,
+ `rgclient`.`name_regoin` AS `name_regoin`,`rgclient1`.`name_regoin` AS `name_regoinClient`,
+ `inv`.`fk_idUser` AS `fk_idUser`,`us`.`nameUser` AS `nameUser`,`cl`.`date_transfer` AS `date_transfer`,
+ `cl`.`offer_price` AS `offer_price`,`cl`.`date_price` AS
+  `date_price`,`usinv`.`nameUser` AS `nameUser_invoice`,`act`.`name_activity_type` AS
+   `name_activity_type`,`cl`.`sourcclient` AS `sourcclient`,`inv`.`stateclient` AS 
+   `type_invoice`,`wthd`.`value_back` AS `value_back`,`rsout`.`name_reason` AS 
+   `reason_back`,`wthd`.`date_back` AS `date_back`,`inv`.`invoice_source` AS 
+   `invoice_source`,`inv`.`date_create` AS `date_create_invoice`,`inv`.`date_approve` AS
+    `date_approve`,`inv`.`id_invoice` AS `num_invoice`,
+    case when `inv`.`type_seller` = '0' then 'موزع' when 
+    `inv`.`type_seller` = '1' then 'وكيل' when `inv`.`type_seller` = '2' then 'متعاون' 
+    when `inv`.`type_seller` = '3' then 'موظف' end AS `type_seller`,
+    case when `inv`.`currency_name` = '0' then 'USD' else 'SAR' end AS `currency`,
+    `agents`.`name_agent` AS `name_agent`,`part`.`name_participate` AS `name_participate`,
+    `part`.`mobile_participate` AS `mobile_participate`,`inv`.`rate_participate` AS
+     `rate_agent_participate`,`cty`.`name_city` AS `name_city`,`cop`.`name_company` AS
+      `prev_company`,(select sum(`invprod3`.`price`)
+       from ((`smartcrm_db`.`client_invoice` `inv3` left join
+        `smartcrm_db`.`invoice_product` `invprod3`
+         on(`invprod3`.`fk_id_invoice` = `inv3`.`id_invoice`)) 
+         left join `smartcrm_db`.`products` `prd3` on(`prd3`.`id_product` = `invprod3`.`fk_product`)) 
+         where `prd3`.`type` = '1' and `inv3`.`id_invoice` = `inv`.`id_invoice`
+          and `inv3`.`isdelete` is null and `inv3`.`isApprove` = 1 and
+           `cl`.`type_client` = 'مشترك' and `inv3`.`fk_regoin_invoice` <> 13) AS
+            `total_program`,(select sum(case when `inv1`.`currency_name` = '0' 
+            then `inv1`.`amount_paid` * 3.75 else `inv1`.`amount_paid` end) 
+            from `smartcrm_db`.`client_invoice` `inv1` 
+            where `inv1`.`id_invoice` = `inv`.`id_invoice` and `inv1`.`isdelete` is null 
+            and `inv1`.`isApprove` = 1 and `inv1`.`fk_regoin_invoice` <> 13) AS `amount_paid`,
+            (select sum(case when `inv2`.`currency_name` = '0' 
+            then `invprod2`.`price` * 3.75 else `invprod2`.`price` end) 
+            from ((`smartcrm_db`.`client_invoice` `inv2`
+             left join `smartcrm_db`.`invoice_product` `invprod2` 
+             on(`invprod2`.`fk_id_invoice` = `inv2`.`id_invoice`)) 
+             left join `smartcrm_db`.`products` `prd2` 
+             on(`prd2`.`id_product` = `invprod2`.`fk_product`)) 
+             where `prd2`.`type` = '0' and `inv2`.`id_invoice` = `inv`.`id_invoice` 
+             and `inv2`.`isdelete` is null and `inv2`.`isApprove` = 1 
+             and `inv2`.`fk_regoin_invoice` <> 13) AS `total_devices`,
+             (select count(`cinv`.`id_invoice`) from `smartcrm_db`.`client_invoice` `cinv` 
+             where `cinv`.`fk_idClient` = `inv`.`fk_idClient`) AS `count_invoices`,
+             (select sum(case when `inv1`.`currency_name` = '0' then `invprod`.`price` * 3.75
+              else `invprod`.`price` end) from ((`smartcrm_db`.`client_invoice` `inv1` 
+              left join `smartcrm_db`.`invoice_product` `invprod` 
+              on(`invprod`.`fk_id_invoice` = `inv1`.`id_invoice`))
+               left join `smartcrm_db`.`products` `prd` on(`prd`.`id_product` = `invprod`.`fk_product`))
+                where `prd`.`type` = '1' and `inv1`.`id_invoice` = `inv`.`id_invoice` 
+                and `inv1`.`isdelete` is null and `inv1`.`isApprove` = 1 
+                and `inv1`.`fk_regoin_invoice` <> 13) AS `totalconvertcurrency`,
+                (select sum(case when `inv1`.`total` = '0' then `inv1`.`total` * 3.75 
+                else `inv1`.`total` end) from `smartcrm_db`.`client_invoice` `inv1`
+                 where `inv1`.`id_invoice` = `inv`.`id_invoice`
+                  and `inv1`.`isdelete` is null and `inv1`.`isApprove` = 1 
+                  and `inv1`.`fk_regoin_invoice` <> 13) AS `total`,
+                  case when `inv`.`isdoneinstall` = '1' then 'تم التركيب'
+                   when `latest_state_id`.`ready_install` = '0' and `inv`.`isdoneinstall`
+                    is null and `latest_state_id`.`state` = 'suspend' then 'معلق'
+                     when `latest_state_id`.`ready_install` = '0' and `inv`.`isdoneinstall` is null and
+                      `latest_state_id`.`state` = 'notReady' then 'غير جاهز'
+                       when `inv`.`isdoneinstall` is null and `cl`.`type_client` = 'تفاوض' then 'تفاوض'
+                        when `inv`.`isdoneinstall` is null then 'بالانتظار' end AS `type_install`,`inv`.`dateinstall_done` AS `dateinstall_done`,`cde`.`state` AS `state_client_care`
+
+from  (((((((((((((((`smartcrm_db`.`clients` `cl` left join `smartcrm_db`.`client_invoice` `inv` 
+on(`cl`.`id_clients` = `inv`.`fk_idClient`)) left join `smartcrm_db`.`regoin` `rgclient`
+ on(`rgclient`.`id_regoin` = `inv`.`fk_regoin_invoice`)) 
+ left join `smartcrm_db`.`invoice_withdraws` `wthd` on(`wthd`.`id` = 
+ (select max(`wwd`.`id`) from `smartcrm_db`.`invoice_withdraws` `wwd` 
+ where `wwd`.`fk_invoice` = `inv`.`id_invoice`))) 
+ left join `smartcrm_db`.`reasonsOfOut` `rsout` on(`rsout`.`id_reason` = `wthd`.`reason`)) 
+ left join `smartcrm_db`.`communication_details` `cde` on(`cde`.`client_id` = `cl`.`id_clients`))
+  join `smartcrm_db`.`regoin` `rgclient1` on(`rgclient1`.`id_regoin` = `cl`.`fk_regoin`)) 
+  left join `smartcrm_db`.`users` `us` on(`us`.`id_user` = `cl`.`fk_user`)) 
+  left join `smartcrm_db`.`users` `usinv` on(`usinv`.`id_user` = `inv`.`fk_idUser`)) 
+  left join `smartcrm_db`.`activity_type` `act` on(`act`.`id_activity_type` = `cl`.`activity_type_fk`))
+   left join `smartcrm_db`.`reason_client_reject` `rsj` on(`rsj`.`id_rejectClient` = `cl`.`fk_rejectClient`)) 
+   left join `smartcrm_db`.`agent` `agents` on(`agents`.`id_agent` = `inv`.`fk_agent`))
+    left join `smartcrm_db`.`participate` `part` on(`part`.`id_participate` = `inv`.`participate_fk`)) 
+    left join `smartcrm_db`.`city` `cty` on(`cty`.`id_city` = `cl`.`city`)) 
+left join `smartcrm_db`.`company` `cop` on(`cop`.`id_Company` = `cl`.`presystem`)) 
+          
+          left join `smartcrm_db`.`invoice_ready` `latest_state_id` 
+          on(`latest_state_id`.`id` = (select max(`inrs`.`id`) from `smartcrm_db`.`invoice_ready` `inrs` 
+          where `inrs`.`fk_invoice` = `inv`.`id_invoice`))) 
+      
+      
+      
+      
+
+      
+
+where `cl`.`deleted_at` is null
