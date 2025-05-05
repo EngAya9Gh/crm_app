@@ -110,14 +110,6 @@ class _CommunicationExpandedWidgetState
             decoration: BoxDecoration(
               color: Colors.grey[50],
               borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(color: Colors.grey[200]!, width: 1),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
-                ),
-              ],
             ),
             child: Column(
               children: [
@@ -151,8 +143,7 @@ class _CommunicationExpandedWidgetState
               ],
             ),
           ),
-          if (widget.communicationModel.shouldCommunicate == 1 ||
-              widget.communicationModel.dateCommunication == null) ...[
+          if (widget.communicationModel.shouldCommunicate == 1) ...[
             16.verticalSpace,
             SizedBox(
               width: double.infinity,
@@ -452,29 +443,6 @@ class _CommunicationExpandedWidgetState
       details.add('تم الترحيب من قبل: ${widget.communicationModel.nameUser}');
       details
           .add('تاريخ الترحيب: ${widget.communicationModel.dateCommunication}');
-    }
-
-    if (widget.communicationModel.typeCommuncation == 'كفاءة') {
-      if (widget.communicationModel.dateCommunication != null) {
-        details.add('تم التواصل من قبل: ${widget.communicationModel.nameUser}');
-        details.add(
-            'تاريخ التواصل: ${widget.communicationModel.dateCommunication}');
-      }
-
-      // إضافة معلومات كفاءة الاستخدام الرئيسية
-      if (widget.communicationModel.lastActivity != null) {
-        details.add('آخر نشاط: ${widget.communicationModel.lastActivity}');
-      }
-
-      if (widget.communicationModel.package != null) {
-        details.add('الباقة: ${widget.communicationModel.package}');
-      }
-
-      if (widget.communicationModel.endSubscription != null) {
-        String endDate =
-            widget.communicationModel.endSubscription!.split(' ')[0];
-        details.add('نهاية الاشتراك: $endDate');
-      }
     }
 
     if (widget.communicationModel.typeCommuncation == 'دوري') {
