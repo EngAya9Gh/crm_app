@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../features/client_care/care_usage_efficiency/presentation/pages/care_usage_page.dart';
 import '../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../features/clients_care/client_communications/presentation/pages/care_activities_page.dart';
 import '../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
@@ -156,6 +157,12 @@ abstract class AllSubSectionsLists {
       page: PeriodicCommunicationPage(),
       privilegeId: '9',
       path: AppRoutesPaths.careSubSections.periodicCommunication,
+    ),
+    SectionModel(
+      title: 'كفاءة الاستخدام',
+      page: CareUsagePage(),
+      // privilegeId: '9',
+      path: AppRoutesPaths.careSubSections.CareUsagePage,
     ),
     SectionModel(
       title: 'التقييمات عبر النظام',

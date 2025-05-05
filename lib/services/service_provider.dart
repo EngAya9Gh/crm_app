@@ -11,6 +11,7 @@ import '../core/services/di/di_container.dart';
 import '../features/app/presentation/bloc/app_manager_cubit.dart';
 import '../features/app/presentation/pages/my_app.dart';
 import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
+import '../features/client_care/care_usage_efficiency/presentation/manager/care_usage_cubit/care_usage_cubit.dart';
 import '../features/clients_care/accept_clients/presentation/manager/clients_accept_cubit.dart';
 import '../features/clients_care/client_communications/presentation/manager/care_activities_bloc.dart';
 import '../features/clients_care/clients_care_reports/presentation/manager/clients_care_reports_cubit.dart';
@@ -118,6 +119,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<LoginCubit>()),
         BlocProvider(create: (context) => getIt<SpecialClientsBloc>()),
         BlocProvider(create: (context) => getIt<ClientsListBloc>()),
+        BlocProvider(create: (context) => getIt<CareUsageCubit>()),
         BlocProvider(create: (context) => getIt<AppManagerCubit>()),
         BlocProvider(create: (context) => getIt<PrivilegesCubit>()),
         BlocProvider(create: (context) => getIt<TaskCubit>()),

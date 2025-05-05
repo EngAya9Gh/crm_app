@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/common/models/client_model.dart';
 import '../../../core/common/models/event_model.dart';
@@ -16,6 +17,11 @@ import '../../../core/common/widgets/app_scaffold.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../features/ai_chat/presentation/pages/client_ai_chat_page.dart';
+import '../../../features/ai_chat/data/repositories/chat_repository_impl.dart';
+import '../../../features/ai_chat/presentation/manager/chat_cubit.dart';
+import '../../../features/ai_chat/presentation/manager/chat_state.dart';
+import '../../../features/ai_chat/presentation/widgets/chat_window.dart';
+import '../../../features/ai_chat/domain/models/chat_message_model.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/common/client_profile/client_activities_tab/presentation/pages/client_activities_page.dart';
 import '../../../features/common/client_profile/invoices_tab/presentation/pages/invoces_tab_page.dart';
@@ -65,7 +71,8 @@ class ClientProfile extends StatefulWidget {
   State<ClientProfile> createState() => _ClientProfileState();
 }
 
-class _ClientProfileState extends State<ClientProfile> with TickerProviderStateMixin {
+class _ClientProfileState extends State<ClientProfile>
+    with TickerProviderStateMixin {
   late final TicketsCubit ticketsCubit;
   late final SupportTabCubit supportTabCubit;
   late final InvoiceVm invoiceVm;
@@ -73,6 +80,11 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
   late TabController _tabController;
   late ValueNotifier<int> _currentTabIndex;
   int indexTab = 0;
+
+  // Chat state variables
+  bool _isChatExpanded = false;
+  late AnimationController _chatAnimationController;
+  late Animation<double> _chatAnimation;
 
   @override
   void initState() {
@@ -82,17 +94,31 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
     invoiceVm = context.read<InvoiceVm>();
     indexTab = widget.tabIndex ?? 0;
     _currentTabIndex = ValueNotifier(0);
+
+    // Initialize chat animation
+    _chatAnimationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 250),
+    );
+    _chatAnimation = CurvedAnimation(
+      parent: _chatAnimationController,
+      curve: Curves.easeInOut,
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _initializeData();
     });
 
-    _tabController = TabController(length: _tabs().length, vsync: this, initialIndex: indexTab);
+    _tabController = TabController(
+        length: _tabs().length, vsync: this, initialIndex: indexTab);
     _tabController.addListener(onChangeTab);
   }
 
   Future<void> _initializeData() async {
-    Provider.of<comment_vm>(context, listen: false).getComments(widget.idClient.toString());
-    await Provider.of<ClientProvider>(context, listen: false).getClientById(widget.idClient.toString());
+    Provider.of<comment_vm>(context, listen: false)
+        .getComments(widget.idClient.toString());
+    await Provider.of<ClientProvider>(context, listen: false)
+        .getClientById(widget.idClient.toString());
 
     supportTabCubit.getClientInvoice(
       getInvoiceByClientParams: GetInvoiceByClientParams(
@@ -103,7 +129,8 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
 
     invoiceVm.getInvoiceByClient(widget.idClient);
     if (!mounted) return;
-    Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(widget.idClient.toString(), widget.idCommunication);
+    Provider.of<CommunicationVm>(context, listen: false).getCommunicationclient(
+        widget.idClient.toString(), widget.idCommunication);
 
     await ticketsCubit.getClientTicket(widget.idClient!);
   }
@@ -113,6 +140,7 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
     _tabController
       ..removeListener(onChangeTab)
       ..dispose();
+    _chatAnimationController.dispose();
     super.dispose();
   }
 
@@ -122,11 +150,23 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
     }
   }
 
+  void _toggleChat() {
+    setState(() {
+      _isChatExpanded = !_isChatExpanded;
+      if (_isChatExpanded) {
+        _chatAnimationController.forward();
+      } else {
+        _chatAnimationController.reverse();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ClientProvider>(
       builder: (context, state, _) {
-        if (state.currentClientModel.isLoading || state.currentClientModel.isInit) {
+        if (state.currentClientModel.isLoading ||
+            state.currentClientModel.isInit) {
           return _buildLoading();
         } else if (state.currentClientModel.isFailure) {
           return _buildFailure();
@@ -148,7 +188,9 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
     return AppScaffold(
       body: Center(
         child: IconButton(
-          onPressed: () => context.read<ClientProvider>().getClientById(widget.idClient.toString()),
+          onPressed: () => context
+              .read<ClientProvider>()
+              .getClientById(widget.idClient.toString()),
           icon: AppIcon(Icons.refresh),
         ),
       ),
@@ -174,10 +216,12 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
                     TextButton(
                       onPressed: () async {
                         if (kIsWeb) {
-                          HelperFunctions.copyToClipboard(client.mobile.toString());
+                          HelperFunctions.copyToClipboard(
+                              client.mobile.toString());
                           return;
                         }
-                        await HelperFunctions.urlLauncherPhone(client.mobile.toString());
+                        await HelperFunctions.urlLauncherPhone(
+                            client.mobile.toString());
 
                         // await FlutterPhoneDirectCaller.callNumber(
                         //     clientModel.mobile.toString());
@@ -194,14 +238,18 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
                       height: 31.scaleIconsSize,
                       width: 31.scaleIconsSize,
                       //color: AppColors.kMainColor,
-                      decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.all(Radius.circular(9))),
+                      decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(9))),
                       child: IconButton(
                         onPressed: () async {
                           if (kIsWeb) {
-                            HelperFunctions.copyToClipboard(client.mobile.toString());
+                            HelperFunctions.copyToClipboard(
+                                client.mobile.toString());
                             return;
                           }
-                          await HelperFunctions.urlLauncherPhone(client.mobile.toString());
+                          await HelperFunctions.urlLauncherPhone(
+                              client.mobile.toString());
 
                           // await FlutterPhoneDirectCaller.callNumber(
                           //     clientModel.mobile.toString());
@@ -247,11 +295,109 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
               );
             },
           ),
-          // Add AI Chat for client profile
-          Padding(
-            padding: EdgeInsets.only(bottom: 14, left: 10),
-            child: ClientAIChatPage(clientId: widget.idClient ?? ''),
-          )
+
+          // Collapsible chat widget
+          Positioned(
+            bottom: 14,
+            right: 0,
+            child: GestureDetector(
+              onTap: _toggleChat,
+              child: AnimatedBuilder(
+                animation: _chatAnimation,
+                builder: (context, child) {
+                  // Calculate width based on animation value
+                  final width = Tween<double>(
+                    begin: 30, // Minimized width
+                    end: 200, // Expanded width - adjust as needed
+                  ).evaluate(_chatAnimation);
+
+                  return Container(
+                    width: width,
+                    height: 50, // Height for the chat button/container
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryMain.withOpacity(0.9),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        bottomLeft: Radius.circular(25),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: _isChatExpanded
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: AppText(
+                                  'الشات الذكي',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.close, color: Colors.white),
+                                onPressed: _toggleChat,
+                              ),
+                            ],
+                          )
+                        : Icon(Icons.chat, color: Colors.white),
+                  );
+                },
+              ),
+            ),
+          ),
+
+          // Full chat view (only visible when expanded)
+          if (_isChatExpanded)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 70,
+              child: Container(
+                alignment: Alignment.center,
+                child: Card(
+                  elevation: 8,
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: BlocProvider(
+                      create: (context) => ChatCubit(
+                        ChatRepositoryImpl(),
+                        clientId: widget.idClient ?? '',
+                      )..toggleChatWindow(), // Immediately show chat window
+                      child: BlocBuilder<ChatCubit, ChatState>(
+                        builder: (context, state) {
+                          return Stack(
+                            children: [
+                              // Always show the chat window (not conditionally)
+                              Positioned.fill(
+                                child: ChatWindow(
+                                  questions: clientProfileQuestions,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -275,7 +421,10 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
         indicatorColor: AppColors.white,
         indicatorWeight: 6,
         isScrollable: true,
-        unselectedLabelStyle: TextStyle(fontFamily: AppFonts.fontFamily2, fontSize: 14.scaleFontSize, fontWeight: FontWeight.w600),
+        unselectedLabelStyle: TextStyle(
+            fontFamily: AppFonts.fontFamily2,
+            fontSize: 14.scaleFontSize,
+            fontWeight: FontWeight.w600),
         unselectedLabelColor: AppColors.white,
         onTap: (value) => _currentTabIndex.value = value,
         tabAlignment: TabAlignment.center,
@@ -294,8 +443,8 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
       // AppText('التذاكر ', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       // AppText('الانشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       AppText('الأنشطة', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
-      if (context.read<PrivilegesCubit>().checkPrivilege('282')) 
-      AppText('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
+      if (context.read<PrivilegesCubit>().checkPrivilege('282'))
+        AppText('السجل', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
       // AppText('المهام', style: TextStyle(fontFamily: AppFonts.fontFamily1)),
     ];
   }
@@ -311,7 +460,8 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
       InvoicesTabPage(client: client),
       CommentView(
         client: client,
-        commentId: widget.commentId != null ? int.tryParse(widget.commentId!) : null,
+        commentId:
+            widget.commentId != null ? int.tryParse(widget.commentId!) : null,
       ),
       SupportViewInvoices(itemClient: client),
       CareClientView(
@@ -322,8 +472,8 @@ class _ClientProfileState extends State<ClientProfile> with TickerProviderStateM
       // TicketProfile(itemClient: client),
       // ClientActivitiesPage(client: client),
       ClientsDatesPage(client: client),
-      if (context.read<PrivilegesCubit>().checkPrivilege('282')) 
-      ClientLogsTabPage(client: client),
+      if (context.read<PrivilegesCubit>().checkPrivilege('282'))
+        ClientLogsTabPage(client: client),
       // ClientTasksTabPage(client: client),
     ];
   }

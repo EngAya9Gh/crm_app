@@ -34,7 +34,8 @@ class _IncommingVersionsPageState extends State<IncommingVersionsPage> {
       appBar: CustomAppBar(title: 'التحديثات القادمة', showBackButton: true),
       body: Directionality(
         textDirection: TextDirection.ltr,
-        child: BlocBuilder<VersionsBloc, VersionsState>(
+        child: 
+        BlocBuilder<VersionsBloc, VersionsState>(
           builder: (context, state) {
             return state.incommingUpdateInfo.when(
               success: (data) => Padding(

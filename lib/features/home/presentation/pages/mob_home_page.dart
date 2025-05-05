@@ -138,7 +138,8 @@ class _MobHomePageState extends State<MobHomePage> {
                     children: [
                       Container(
                         width: double.infinity,
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 45),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 45),
                         decoration: BoxDecoration(
                           color: AppColors.primaryMain,
                           borderRadius: BorderRadius.only(
@@ -152,13 +153,15 @@ class _MobHomePageState extends State<MobHomePage> {
                             typform.TypeAheadField<SearchClientModel>(
                               direction: VerticalDirection.down,
                               controller: _searchController,
-                              builder: (context, controller, focusNode) => TextField(
+                              builder: (context, controller, focusNode) =>
+                                  TextField(
                                 controller: controller,
                                 focusNode: focusNode,
                                 textDirection: TextDirection.rtl,
                                 decoration: InputDecoration(
                                   hintTextDirection: TextDirection.rtl,
-                                  hintText: 'ابحث عن اسم المؤسسة, رقم الجوال...',
+                                  hintText:
+                                      'ابحث عن اسم المؤسسة, رقم الجوال...',
                                   hintStyle: TextStyle(
                                     fontSize: 12.scaleFontSize,
                                     color: Colors.grey.shade500,
@@ -168,11 +171,13 @@ class _MobHomePageState extends State<MobHomePage> {
                                   filled: true,
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10).r,
-                                    borderSide: BorderSide(color: Colors.grey.shade300),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade300),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10).r,
-                                    borderSide: BorderSide(color: Colors.grey.shade300),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey.shade300),
                                   ),
                                 ),
                               ),
@@ -182,10 +187,12 @@ class _MobHomePageState extends State<MobHomePage> {
                                 borderRadius: BorderRadius.circular(8),
                                 child: child,
                               ),
-                              itemBuilder: (context, suggestion) => Directionality(
+                              itemBuilder: (context, suggestion) =>
+                                  Directionality(
                                 textDirection: TextDirection.rtl,
                                 child: ListTile(
-                                  title: AppText(suggestion.nameEnterprise ?? ''),
+                                  title:
+                                      AppText(suggestion.nameEnterprise ?? ''),
                                   subtitle: AppText(suggestion.phone ?? ''),
                                 ),
                               ),
@@ -199,21 +206,26 @@ class _MobHomePageState extends State<MobHomePage> {
                               hideOnLoading: false,
                               hideOnEmpty: false,
                               onSelected: (suggestion) {
-                                _searchController.text = suggestion.nameEnterprise ?? '';
+                                _searchController.text =
+                                    suggestion.nameEnterprise ?? '';
 
                                 AppNavigator.go(
                                   ClientProfile(
                                     idClient: suggestion.idClients,
                                     tabIndex: 0,
                                   ),
-                                  name: AppRoutesNames.clientProfile.inClientsList,
-                                  pathParameters: {'idClient': suggestion.idClients.toString()},
+                                  name: AppRoutesNames
+                                      .clientProfile.inClientsList,
+                                  pathParameters: {
+                                    'idClient': suggestion.idClients.toString()
+                                  },
                                 );
                                 FocusScope.of(context).unfocus();
                               },
                               suggestionsCallback: (pattern) async {
                                 if (pattern.isEmpty) return [];
-                                final results = await _searchCubit.searchClients(pattern);
+                                final results =
+                                    await _searchCubit.searchClients(pattern);
                                 return results;
                               },
                             ),
@@ -268,7 +280,10 @@ class _MobHomePageState extends State<MobHomePage> {
               children: [
                 AppText(
                   'Waiting for approval',
-                  style: TextStyle(fontSize: 16.scaleFontSize, fontWeight: FontWeight.w600, color: AppColors.primaryMain),
+                  style: TextStyle(
+                      fontSize: 16.scaleFontSize,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryMain),
                 ),
                 // AppText(
                 //   '${_pendingApprovals.length} users',
@@ -328,7 +343,8 @@ class _MobHomePageState extends State<MobHomePage> {
                           leading: CircleAvatar(
                             radius: 18,
                             backgroundColor: Colors.grey[300],
-                            child: Icon(Icons.person, color: Colors.grey[600], size: 18),
+                            child: Icon(Icons.person,
+                                color: Colors.grey[600], size: 18),
                           ),
                           title: AppText(
                             user['name'] ?? 'Unknown User',
@@ -370,36 +386,42 @@ class _MobHomePageState extends State<MobHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText('ToDo '),
-                // Divider(),
-                Row(
-                  children: [
-                    Expanded(child: _buildStatItem('visit', data?.notDoneVisits, Icons.work)),
-                    16.width,
-                    Expanded(child: _buildStatItem('task', data?.tasks, Icons.task)),
-                  ],
-                ),
-                12.height,
                 AppText(
                   'Daily :',
                 ),
                 //Divider(),
                 Row(
                   children: [
-                    Expanded(child: _buildStatItem("Client", data?.dailyClients, Icons.people)),
+                    Expanded(
+                        child: _buildStatItem(
+                            "Client", data?.dailyClients, Icons.people)),
                     16.width,
-                    Expanded(child: _buildStatItem('Income', formatter.format(data?.dailySales), Icons.account_balance)),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Income',
+                            formatter.format(data?.dailySales),
+                            Icons.account_balance)),
                   ],
                 ),
                 12.height,
                 AppText('Monthly :'),
                 Row(
                   children: [
-                    Expanded(child: _buildStatItem('Income', formatter.format(data?.monthlySales), Icons.trending_up)),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Income',
+                            formatter.format(data?.monthlySales),
+                            Icons.trending_up)),
                     16.width,
-                    Expanded(child: _buildStatItem('Loss', formatter.format(data?.monthlyWithdrawLosses), Icons.trending_down)),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Loss',
+                            formatter.format(data?.monthlyWithdrawLosses),
+                            Icons.trending_down)),
                     16.width,
-                    Expanded(child: _buildStatItem('No.Loss', data?.monthlyNoWithdraw, Icons.people_outline)),
+                    Expanded(
+                        child: _buildStatItem('No.Loss',
+                            data?.monthlyNoWithdraw, Icons.people_outline)),
                   ],
                 ),
                 12.height,
@@ -408,21 +430,50 @@ class _MobHomePageState extends State<MobHomePage> {
                   children: [
                     Expanded(
                         child: _buildStatItem(
-                            'Waiting for periodic communication', formatterWithOutFraction.format(data?.waitingFrequent), Icons.repeat)),
+                            'Waiting for periodic communication',
+                            formatterWithOutFraction
+                                .format(data?.waitingFrequent),
+                            Icons.repeat)),
                     16.width,
                     Expanded(
                         child: _buildStatItem(
-                            'Waiting for the first quality', formatterWithOutFraction.format(data?.waitingInstall1), Icons.high_quality)),
+                            'Waiting for the first quality',
+                            formatterWithOutFraction
+                                .format(data?.waitingInstall1),
+                            Icons.high_quality)),
                   ],
                 ),
+
                 5.height,
+
                 Row(
                   children: [
                     Expanded(
                         child: _buildStatItem(
-                            'Waiting for the second quality', formatterWithOutFraction.format(data?.waitingInstall2), Icons.high_quality_outlined)),
+                            'Waiting for the second quality',
+                            formatterWithOutFraction
+                                .format(data?.waitingInstall2),
+                            Icons.high_quality_outlined)),
                     16.width,
-                    Expanded(child: _buildStatItem('Waiting for welcome', formatterWithOutFraction.format(data?.waitingWelcome), Icons.waving_hand)),
+                    Expanded(
+                        child: _buildStatItem(
+                            'Waiting for welcome',
+                            formatterWithOutFraction
+                                .format(data?.waitingWelcome),
+                            Icons.waving_hand)),
+                  ],
+                ),
+                12.height,
+                AppText('ToDo '),
+                // Divider(),
+                Row(
+                  children: [
+                    Expanded(
+                        child: _buildStatItem(
+                            'visit', data?.notDoneVisits, Icons.work)),
+                    16.width,
+                    Expanded(
+                        child: _buildStatItem('task', data?.tasks, Icons.task)),
                   ],
                 ),
                 // 8.height,
@@ -450,8 +501,8 @@ class _MobHomePageState extends State<MobHomePage> {
   Widget _buildStatItem(String title, dynamic value, IconData icon) {
     final displayValue = value ?? 0;
     return Container(
-      height: 130.scaleHeight,
-      padding: EdgeInsets.all(8),
+      height: 120.scaleHeight,
+      padding: EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -467,17 +518,17 @@ class _MobHomePageState extends State<MobHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, size: 24, color: AppColors.primaryMain),
-          SizedBox(height: 8),
+          SizedBox(height: 3),
           AppText(
             textAlign: TextAlign.center,
             displayValue,
             // formatter.format(displayValue),
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.scaleFontSize,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 4),
+          SizedBox(height: 2),
           AppText(
             title,
             style: TextStyle(
@@ -507,7 +558,8 @@ class _MobHomePageState extends State<MobHomePage> {
               SizedBox(height: 12),
               _buildProgressBar(
                 'Open Ticket',
-                (state.homeStatistics.data?.openTicketsProgress ?? 0).toDouble(),
+                (state.homeStatistics.data?.openTicketsProgress ?? 0)
+                    .toDouble(),
                 Colors.green,
                 state.homeStatistics.data?.openTicketsLabel ?? '',
               ),
@@ -516,7 +568,8 @@ class _MobHomePageState extends State<MobHomePage> {
               ),
               _buildProgressBar(
                 'Open visit',
-                (state.homeStatistics.data?.notDoneVisitsProgress ?? 0).toDouble(),
+                (state.homeStatistics.data?.notDoneVisitsProgress ?? 0)
+                    .toDouble(),
                 Colors.green,
                 state.homeStatistics.data?.notDoneVisitsLabel ?? '',
               ),
@@ -528,7 +581,8 @@ class _MobHomePageState extends State<MobHomePage> {
     );
   }
 
-  Widget _buildProgressBar(String title, double value, Color color, String label) {
+  Widget _buildProgressBar(
+      String title, double value, Color color, String label) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
