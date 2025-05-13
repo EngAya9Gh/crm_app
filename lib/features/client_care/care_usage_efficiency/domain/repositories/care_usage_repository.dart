@@ -2,6 +2,9 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../entities/care_usage.dart';
+import '../../../../../core/errors/failures.dart';
+import '../../data/models/care_usage_model.dart';
+import '../usecases/get_care_usage_list.dart';
 
 abstract class CareUsageRepository {
   Future<Either<String, PaginationResponseWrapper>> getCareUsageList({
@@ -20,4 +23,7 @@ abstract class CareUsageRepository {
     int? activityTypeFk,
     int? shouldCommunicate,
   });
+
+  Future<Either<String, CareUsageModel>> doneCommunication(
+      int communicationId);
 }

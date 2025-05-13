@@ -43,7 +43,9 @@ class CommunicationModel {
   String? package;
   String? lastModuleActivity;
   String? lastOperationActivity;
+  String? namemaincity;
   int? shouldCommunicate;
+
 
   CommunicationModel({
     required this.idCommunication,
@@ -86,6 +88,7 @@ class CommunicationModel {
     this.lastModuleActivity,
     this.lastOperationActivity,
     this.shouldCommunicate,
+    this.namemaincity,
   });
 
   CommunicationModel.fromJson(Map<String, dynamic> json) {
@@ -145,6 +148,7 @@ class CommunicationModel {
     lastOperationActivity =
         ApiHelper.handleString(json['last_operation_activity']);
     shouldCommunicate = json['should_communicate'];
+    namemaincity = json['namemaincity'];
   }
 
   bool searchString(String query) {

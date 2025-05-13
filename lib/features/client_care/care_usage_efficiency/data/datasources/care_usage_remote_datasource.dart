@@ -53,7 +53,7 @@ class CareUsageRemoteDataSourceImpl implements CareUsageRemoteDataSource {
       if (package != null) 'package': package,
       if (fkRegoin != null) 'fk_regoin': fkRegoin,
       if (activityTypeFk != null) 'activity_type_fk': activityTypeFk,
-      'should_communicate': shouldCommunicate ?? 0,
+      // 'should_communicate': shouldCommunicate ?? 0,
     };
 
     try {

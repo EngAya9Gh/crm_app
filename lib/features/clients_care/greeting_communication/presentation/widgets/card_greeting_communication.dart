@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../core/common/helpers/helper_functions.dart';
+import '../../../../../core/common/widgets/app_status_chip.dart';
 import '../../../../../core/common/widgets/non_agent_client.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../core/config/navigator/app_routes_names.dart';
@@ -62,12 +63,14 @@ class CardGreetingCommunication extends StatelessWidget {
                     children: [
                       NonAgentClient(communication: communication),
                       if (communication.dateCommunication == null) ...[
-                        AppText(
-                          communication.name_regoin,
-                          color: AppColors.primaryMain,
-                          fontSize: 18,
+                        AppStatusChip(
+                          fontSize: 12,
+                          status:
+                          communication.namemaincity.toString(),//+'/'+communication.name_regoin.toString(),
+                          color:  AppColors.primaryMain,
                         ),
                       ],
+
                       AppText(communication.nameEnterprise),
                     ],
                   ),

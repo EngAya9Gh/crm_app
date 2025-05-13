@@ -1,4 +1,23 @@
 import '../../domain/entities/care_usage_entity.dart';
+import 'package:flutter/material.dart';
+
+enum WithdrawPossibility {
+  high('High', Colors.red),
+  medium('Medium', Colors.orange),
+  low('Low', Colors.green);
+
+  final String value;
+  final Color color;
+  const WithdrawPossibility(this.value, this.color);
+
+  static WithdrawPossibility? fromString(String? value) {
+    if (value == null) return null;
+    return WithdrawPossibility.values.firstWhere(
+      (element) => element.value.toLowerCase() == value.toLowerCase(),
+      orElse: () => WithdrawPossibility.low,
+    );
+  }
+}
 
 class CareUsageModel extends CareUsageEntity {
   const CareUsageModel({
@@ -17,8 +36,12 @@ class CareUsageModel extends CareUsageEntity {
     super.activityTypeFk,
     super.activityTypeName,
     super.shouldCommunicate,
-    super.idCommunication
+    super.idCommunication,
+    super.days_since_last_activity,
+    super.possibilityOfWithdraw,
   });
+
+
 
   factory CareUsageModel.fromJson(Map<String, dynamic> json) {
     return CareUsageModel(
@@ -38,7 +61,9 @@ class CareUsageModel extends CareUsageEntity {
       activityTypeName: json['activity_type_name'],
       shouldCommunicate: json['should_communicate'],
       idCommunication: json['id_communication'],
-      
+      days_since_last_activity: json['days_since_last_activity'],
+      possibilityOfWithdraw:
+      WithdrawPossibility.fromString(json['possibility_of_withdraw']) ,
     );
   }
 
@@ -59,7 +84,9 @@ class CareUsageModel extends CareUsageEntity {
       'activity_type_fk': activityTypeFk,
       'activity_type_name': activityTypeName,
       'should_communicate': shouldCommunicate,
-      'id_communication':idCommunication,
+      'id_communication': idCommunication,
+      'days_since_last_activity': days_since_last_activity,
+      'possibility_of_withdraw': possibilityOfWithdraw?.value,
     };
   }
 }

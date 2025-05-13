@@ -9,6 +9,6 @@ class CareUsagePageVariablesEntity {
   bool hasReachedEnd = false;
   int totalCount = 0;
   bool isNewFilter = true;
-  int shouldCommunicate = 0;
+  String type = 'online';
   TextEditingController searchController = TextEditingController();
 }

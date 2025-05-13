@@ -1192,8 +1192,6 @@ _i174.GetIt $initGetIt(
       () => _i785.ClientsDebtsDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i694.FinancePendingDatasource>(
       () => _i694.FinancePendingDatasourceImpl(gh<_i124.ApiServices>()));
-  gh.lazySingleton<_i197.CareUsageRemoteDataSource>(
-      () => _i197.CareUsageRemoteDataSourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i1035.EvaluationLevelReportRepo>(() =>
       _i412.EvaluationLevelReportRepoImpl(
           gh<_i946.EvaluationLevelReportDatasource>()));
@@ -1320,6 +1318,11 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i1070.ClientsInstallReportsRepo>(() =>
       _i867.ClientsInstallReportsRepoImpl(
           gh<_i45.ClientsInstallReportsDatasource>()));
+  gh.lazySingleton<_i197.CareUsageRemoteDataSource>(
+      () => _i197.CareUsageRemoteDataSourceImpl(
+            gh<_i124.ApiServices>(),
+            gh<_i361.Dio>(),
+          ));
   gh.lazySingleton<_i180.AgentsDistributorsDataSource>(
       () => _i180.AgentsDistributorsDataSourceImpl(gh<_i124.ApiServices>()));
   gh.factory<_i147.VerifiedClientRepository>(() =>
@@ -1846,8 +1849,6 @@ _i174.GetIt $initGetIt(
       _i608.EditGeneralConfigsUsecase(gh<_i5.GeneralConfigsRepository>()));
   gh.lazySingleton<_i4.GetGeneralConfigsUsecase>(
       () => _i4.GetGeneralConfigsUsecase(gh<_i5.GeneralConfigsRepository>()));
-  gh.factory<_i872.CareUsageCubit>(
-      () => _i872.CareUsageCubit(gh<_i648.GetCareUsageListUseCase>()));
   gh.factory<_i565.SupportTabCubit>(() => _i565.SupportTabCubit(
         gh<_i801.GetInvoiceByClientUsecase>(),
         gh<_i888.AddDateInstallUsecase>(),
@@ -1934,6 +1935,10 @@ _i174.GetIt $initGetIt(
         gh<_i574.GetElevationSysSupportUseCase>(),
         gh<_i317.GetSystemRatingTicketsUseCase>(),
         gh<_i1032.AddSystemRatingTicketsUseCase>(),
+      ));
+  gh.factory<_i872.CareUsageCubit>(() => _i872.CareUsageCubit(
+        gh<_i648.GetCareUsageListUseCase>(),
+        gh<_i721.CareUsageRepository>(),
       ));
   gh.lazySingleton<_i1041.RegionsRepository>(
       () => _i138.RegionsRepositoryImpl(gh<_i134.RegionsDatasource>()));

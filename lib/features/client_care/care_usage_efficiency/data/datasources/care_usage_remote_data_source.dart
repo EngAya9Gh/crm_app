@@ -2,21 +2,27 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/helpers/responseWrapper.dart';
+import '../../../../../core/errors/server_exceptions.dart';
 import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../domain/usecases/get_care_usage_list.dart';
+
+import '../models/care_usage_model.dart';
 
 abstract class CareUsageRemoteDataSource {
   Future<PaginationResponseWrapper> getCareUsageList(
     GetCareUsageListParams params,
   );
+
+  Future<CareUsageModel> doneCommunication(int communicationId);
 }
 
 @LazySingleton(as: CareUsageRemoteDataSource)
 class CareUsageRemoteDataSourceImpl implements CareUsageRemoteDataSource {
   final ApiServices _api;
+  final Dio _dio;
 
-  const CareUsageRemoteDataSourceImpl(this._api);
+  const CareUsageRemoteDataSourceImpl(this._api, this._dio);
 
   @override
   Future<PaginationResponseWrapper> getCareUsageList(
@@ -61,6 +67,29 @@ class CareUsageRemoteDataSourceImpl implements CareUsageRemoteDataSource {
       return x;
     } catch (e) {
       throw Exception('Failed to get care usage list: $e');
+    }
+  }
+
+  @override
+  Future<CareUsageModel> doneCommunication(int communicationId) async {
+    try {
+      final response = await _dio.post(
+        'communications/$communicationId/done-communication',
+      );
+
+      if (response.statusCode == 200) {
+        return CareUsageModel.fromJson(response.data['data']);
+      } else {
+        throw ServerException(
+          message: response.data['message'] ?? 'حدث خطأ ما',
+          exception: null,
+        );
+      }
+    } catch (e) {
+      throw ServerException(
+        message: e.toString(),
+        exception: null,
+      );
     }
   }
 }

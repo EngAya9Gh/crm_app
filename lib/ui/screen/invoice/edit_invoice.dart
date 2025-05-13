@@ -24,6 +24,7 @@ import '../../../core/common/widgets/custom_app_bar.dart';
 import '../../../core/common/widgets/custom_dropdown.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
+import '../../../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../../../features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
@@ -47,13 +48,15 @@ class EditInvoice extends StatefulWidget {
 
 class _EditInvoiceState extends State<EditInvoice> {
   String? iduser;
-
+ late final privilegeCubit ;
   String? regoin;
   String? regoininvoice;
   DateTime? _currentDateApprove;
   DateTime _currentDateCreate = DateTime.now();
+  DateTime? _currentDateFinance = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   TextEditingController approvingDateController = TextEditingController();
+  TextEditingController financeDateController = TextEditingController();
   TextEditingController createDateController = TextEditingController();
 
   Future<void> _handleApprovingInvoiceDate(BuildContext context, DateTime? pickedDate) async {
@@ -63,15 +66,29 @@ class _EditInvoiceState extends State<EditInvoice> {
         _currentDateApprove = pickedDate;
         approvingDateController.text = HelperFunctions.formatDate(pickedDate);
       });
-      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDateApprove!);
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalue1(_currentDateApprove!);
+    }
+  }  Future<void> _handleApprovingFinanceInvoiceDate(BuildContext context, DateTime? pickedDate) async {
+    if (pickedDate != null) //&& pickedDate != currentDate)
+    {
+      setState(() {
+        _currentDateFinance = pickedDate;
+        financeDateController.text = HelperFunctions.formatDate(pickedDate);
+      });
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalue1(_currentDateFinance!);
     }
   }
 
   void _handleCreatingInvoiceDate(BuildContext context, DateTime? pickedDate) {
     if (pickedDate != null) {
-      _currentDateCreate = pickedDate;
+
       if (mounted) {
-        // setState(() {});
+        setState(() {
+          _currentDateCreate = pickedDate;
+          createDateController.text = HelperFunctions.formatDate(pickedDate);
+        });
       }
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -84,7 +101,7 @@ class _EditInvoiceState extends State<EditInvoice> {
   @override
   void initState() {
     context.read<ClientsListBloc>()..add(GetUsersSales(type: ActiveStateEnum.active.name.toString()));
-
+    privilegeCubit = context.read<PrivilegesCubit>();
     iduser = widget.invoiceModel.fkIdUser.toString();
     regoin = widget.invoiceModel.fk_regoin.toString();
     regoininvoice = widget.invoiceModel.fk_regoin_invoice.toString();
@@ -92,6 +109,10 @@ class _EditInvoiceState extends State<EditInvoice> {
     if (widget.invoiceModel.date_approve != null) {
       _currentDateApprove = DateTime.parse(widget.invoiceModel.date_approve.toString());
       Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDateApprove!);
+    }
+    if (widget.invoiceModel.Date_FApprove != null) {
+      _currentDateFinance = DateTime.parse(widget.invoiceModel.Date_FApprove.toString());
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDateFinance!);
     }
     if (widget.invoiceModel.dateCreate != null) {
       _currentDateCreate = DateTime.parse(widget.invoiceModel.dateCreate.toString());
@@ -121,8 +142,7 @@ class _EditInvoiceState extends State<EditInvoice> {
             key: _globalKey,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
                 children: [
                   AppText('الموظف'),
                   5.height,
@@ -190,6 +210,20 @@ class _EditInvoiceState extends State<EditInvoice> {
                     style2: true,
                   ),
                   10.height,
+                  if (privilegeCubit
+                              .checkPrivilege('344')  ) ...[
+                  AppText('تاريخ اعتماد المالية'),
+                  5.height,
+                  CustomDateTimePicker(
+                    isRequired: false,
+                    dateTimeType: DateTimeEnum.date,
+                    dateTimeController: financeDateController,
+                    onDateChange: (dateTime, formattedDate) {
+                      _handleApprovingFinanceInvoiceDate(context, dateTime);
+                    },
+                    style2: true,
+                  ),],
+                  10.height,
                   AppSeparatorDotsLine(),
                   20.height,
                   Padding(
@@ -210,6 +244,16 @@ class _EditInvoiceState extends State<EditInvoice> {
                                   : DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.invoiceModel.date_approve!.toString()))),
                         )
                       : Container(),
+                  widget.invoiceModel.Date_FApprove != null
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: CardRow(
+                              title: 'تاريخ اعتماد المالية',
+                              value: widget.invoiceModel.Date_FApprove == null
+                                  ? ""
+                                  : DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.invoiceModel.Date_FApprove!.toString()))),
+                        )
+                      : Container(),
                   widget.invoiceModel.dateinstall_task != null
                       ? CardRow(title: 'تاريخ التركيب', value: widget.invoiceModel.dateinstall_task.toString())
                       : Container(),
@@ -223,9 +267,13 @@ class _EditInvoiceState extends State<EditInvoice> {
                           'date_create': _currentDateCreate.toString(),
                           'fk_idUser': iduser.toString(),
                           'fk_regoin_invoice': regoininvoice.toString(),
+
                         };
                         if (_currentDateApprove != null) {
                           invoiceData['date_approve'] = _currentDateApprove.toString();
+                        }
+                        if (_currentDateFinance != null) {
+                          invoiceData['Date_FApprove'] = _currentDateFinance.toString();
                         }
                         Provider.of<InvoiceVm>(context, listen: false).edit_invoice(invoiceData, widget.invoiceModel.idInvoice).then(
                           (value) {

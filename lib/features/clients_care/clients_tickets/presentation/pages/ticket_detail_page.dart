@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
+import 'package:crm_smart/ui/screen/care/app_rate_widget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/app_card_row.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
@@ -98,20 +99,21 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
                       ),
 
                       10.height,
-                      if(widget.ticketModel.systemRatingId !=null)
+                      if(widget.ticketModel.system_rating !=null)
                         CardRow(
                         title: 'السؤال',
                         value: widget.ticketModel.notesTicket ?? '',
                         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       ),
                       10.height,
-                   if(widget.ticketModel.systemRatingId !=null)
-                     CardRow(
-                        title: 'تقييم عبر النظام',
-                        value: widget.ticketModel.system_rating ?? '',
-                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      ),
-
+                   if(widget.ticketModel.system_rating !=null)
+                    AppRateWidget(
+                  title:'تقييم عبر النظام',
+                  initialRating: double.parse(widget.ticketModel.system_rating.toString() ?? '0'),
+                  rateValue: double.parse(widget.ticketModel.system_rating.toString() ?? '0'),
+                  isReadOnly: true,
+                ),
+                    
                       10.height,
                       CardRow(
                         title: 'تفاصيل التذكرة',

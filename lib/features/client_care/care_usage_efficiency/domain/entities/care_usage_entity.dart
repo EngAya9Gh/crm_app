@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../data/models/care_usage_model.dart';
+
 class CareUsageEntity extends Equatable {
   final int? idClients;
   final String? nameEnterprise;
@@ -17,6 +19,8 @@ class CareUsageEntity extends Equatable {
   final String? activityTypeName;
   final int? shouldCommunicate;
   final int? idCommunication;
+  final int? days_since_last_activity;
+  final WithdrawPossibility? possibilityOfWithdraw;
 
   const CareUsageEntity({
     this.idClients,
@@ -34,7 +38,9 @@ class CareUsageEntity extends Equatable {
     this.activityTypeFk,
     this.activityTypeName,
     this.shouldCommunicate,
-    this.idCommunication
+    this.idCommunication,
+    this.days_since_last_activity,
+    this.possibilityOfWithdraw,
   });
 
   @override
@@ -54,6 +60,8 @@ class CareUsageEntity extends Equatable {
         activityTypeFk,
         activityTypeName,
         shouldCommunicate,
-        idCommunication
+        idCommunication,
+        days_since_last_activity,
+        possibilityOfWithdraw,
       ];
 }

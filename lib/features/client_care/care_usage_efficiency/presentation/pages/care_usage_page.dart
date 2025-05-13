@@ -38,6 +38,7 @@ class _CareUsagePageState extends State<CareUsagePage>
     _tabController.addListener(_handleTabChange);
     _currentTabIndex = ValueNotifier(0);
     _cubit = getIt<CareUsageCubit>();
+    _cubit.getCareUsageList();
   }
 
   @override
@@ -60,7 +61,7 @@ class _CareUsagePageState extends State<CareUsagePage>
       value: _cubit,
       child: AppScaffold(
         appBar: CustomAppBar(
-          title: 'متابعة كفاءة الاستخدام',
+          title: ' كفاءة الاستخدام',
           showBackButton: true,
           leadingColor: Colors.white,
           bottom: PreferredSize(
@@ -91,8 +92,8 @@ class _CareUsagePageState extends State<CareUsagePage>
                 onTap: (value) => _currentTabIndex.value = value,
                 tabAlignment: TabAlignment.center,
                 tabs: const [
-                  Tab(text: 'متابعة العملاء'),
-                  Tab(text: 'تواصل الكفاءة'),
+                  Tab(text: 'عملاء الأونلاين'),
+                  Tab(text: ' نادري الإستخدام'),
                 ],
               ),
             ),

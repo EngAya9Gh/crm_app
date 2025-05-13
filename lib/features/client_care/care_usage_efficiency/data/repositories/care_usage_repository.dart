@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
@@ -13,6 +14,7 @@ class CareUsageRepositoryImpl implements CareUsageRepository {
   final CareUsageRemoteDataSource _dataSource;
 
   const CareUsageRepositoryImpl(this._dataSource);
+
 
   @override
   Future<Either<String, PaginationResponseWrapper>> getCareUsageList({
@@ -61,4 +63,16 @@ class CareUsageRepositoryImpl implements CareUsageRepository {
       return Left(e.toString());
     }
   }
+
+  @override
+  Future<Either<String, CareUsageModel>> doneCommunication(int communicationId) async {
+   try {
+      final result = await _dataSource.doneCommunication(communicationId);
+      return Right(result);
+    } catch (e) {
+      return Left(  e.toString() );
+    }
+  }
+
+
 }

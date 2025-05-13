@@ -8,6 +8,7 @@ import '../../../data/models/care_usage_model.dart';
 import '../../../domain/entities/care_usage.dart';
 import '../../../domain/entities/care_usage_page_variables_entity.dart';
 import '../../../domain/entities/filter_care_usage_entity.dart';
+import '../../../domain/repositories/care_usage_repository.dart';
 import '../../../domain/usecases/get_care_usage_list.dart';
 
 part 'care_usage_state.dart';
@@ -15,10 +16,12 @@ part 'care_usage_state.dart';
 @injectable
 class CareUsageCubit extends Cubit<CareUsageState> {
   final GetCareUsageListUseCase _getCareUsageListUseCase;
+  final CareUsageRepository _repository;
 
   CareUsageCubit(
     this._getCareUsageListUseCase,
-  ) : super(CareUsageState());
+    this._repository,
+  ) : super(const CareUsageState());
 
   CareUsagePageVariablesEntity pageVariables = CareUsagePageVariablesEntity();
 
@@ -65,13 +68,14 @@ class CareUsageCubit extends Cubit<CareUsageState> {
             startTo: filterEntity.startToNotifier.value,
             lastActivityFrom: filterEntity.lastActivityFromNotifier.value,
             lastActivityTo: filterEntity.lastActivityToNotifier.value,
-            state: filterEntity.stateNotifier.value,
+            state: pageVariables.type,
             premium: filterEntity.premiumNotifier.value,
             package: filterEntity.packageNotifier.value,
             fkRegoin: filterEntity.fkRegoinNotifier.value,
             activityTypeFk: filterEntity.activityTypeFkNotifier.value,
-            shouldCommunicate: shouldCommunicate ??
-                (pageVariables.shouldCommunicate == 1 ? 1 : 0),
+
+            // shouldCommunicate: shouldCommunicate ??
+            //     (pageVariables.shouldCommunicate == 1 ? 1 : 0),
           ),
         );
 
@@ -106,7 +110,7 @@ class CareUsageCubit extends Cubit<CareUsageState> {
   }
 
   void toggleCommunicationTab(int index) {
-    pageVariables.shouldCommunicate = index;
+    pageVariables.type = index == 0 ? 'online' : 'rare';
     getCareUsageList();
   }
 
@@ -117,5 +121,39 @@ class CareUsageCubit extends Cubit<CareUsageState> {
 
   void returnToPreviousState() {
     filterEntity = filterEntity.returnToPreviousState;
+  }
+
+  Future<void> doneCommunication(int communicationId) async {
+    emit(state.copyWith(
+      doneCommunicationStatus: const BlocStatus.loading(),
+    ));
+
+    try {
+      final result = await _repository.doneCommunication(communicationId);
+      result.fold(
+        (failure) => emit(state.copyWith(
+          doneCommunicationStatus: BlocStatus.fail(error: failure.toString()),
+        )),
+        (careUsage) {
+          final updatedList = pageVariables.allList.map((item) {
+            if (item.idCommunication == communicationId) {
+              return careUsage;
+            }
+            return item;
+          }).toList();
+
+          pageVariables.allList = updatedList;
+
+          emit(state.copyWith(
+            careUsageList: updatedList,
+            doneCommunicationStatus: const BlocStatus.success(),
+          ));
+        },
+      );
+    } catch (e) {
+      emit(state.copyWith(
+        doneCommunicationStatus: BlocStatus.fail(error: e.toString()),
+      ));
+    }
   }
 }
