@@ -28,7 +28,7 @@ class CareUsageRepositoryImpl implements CareUsageRepository {
     String? lastActivityTo,
     String? state,
     String? premium,
-    String? package,
+    List<String>  package=const[],
     int? fkRegoin,
     int? activityTypeFk,
     int? shouldCommunicate,

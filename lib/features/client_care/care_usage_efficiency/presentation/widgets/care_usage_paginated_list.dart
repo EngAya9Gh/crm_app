@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../core/common/widgets/app_paginated_list.dart';
 import '../../presentation/manager/care_usage_cubit/care_usage_cubit.dart';
 import 'care_usage_card.dart';
 
@@ -45,16 +46,22 @@ class _CareUsagePaginatedListState extends State<CareUsagePaginatedList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      controller: _scrollController,
-      padding: EdgeInsets.all(16.r),
-      itemCount: _cubit.pageVariables.allList.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: 12.r),
-          child: CareUsageCard(
-            careUsage: _cubit.pageVariables.allList[index],
-          ),
+    final cubit = context.read<CareUsageCubit>();
+    return BlocBuilder<CareUsageCubit, CareUsageState>(
+      builder: (context, state) {
+        return AppPaginatedList(
+          items: cubit.pageVariables.allList,
+          itemBuilder: (context, index) {
+            return CareUsageCard(
+              careUsage:   cubit.pageVariables.allList[index],
+
+            );
+          },
+          onLoadMore: () async {
+            await cubit.getCareUsageList(isNewFilter: false);
+          },
+          hasReachedEnd: cubit.pageVariables.hasReachedEnd,
+          isLoading: state.getCareUsageListStatus.isLoading(),
         );
       },
     );

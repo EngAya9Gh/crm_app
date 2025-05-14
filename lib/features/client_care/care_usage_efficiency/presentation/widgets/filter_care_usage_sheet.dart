@@ -8,6 +8,7 @@ import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
 import '../../../../../core/common/widgets/custom_dropdown.dart';
+import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../../features/app/presentation/widgets/app_text.dart';
@@ -232,12 +233,12 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                 ],
               ),
 
-              16.verticalSpace,
+              // 16.verticalSpace,
               // Client State Section
-              AppText(
-                'حالة العميل',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              // AppText(
+              //   'حالة العميل',
+              //   style: Theme.of(context).textTheme.titleMedium,
+              // ),
               // 16.verticalSpace,
               // ValueListenableBuilder<String?>(
               //   valueListenable: careUsageCubit.filterEntity.stateNotifier,
@@ -259,7 +260,7 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
               16.verticalSpace,
               // Premium Section
               AppText(
-                'النوع المميز',
+                'عميل تميز',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               16.verticalSpace,
@@ -287,16 +288,16 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               16.verticalSpace,
-              ValueListenableBuilder<String?>(
-                valueListenable: careUsageCubit.filterEntity.packageNotifier,
+              ValueListenableBuilder <List<String?>>(
+                valueListenable: careUsageCubit.filterEntity.packageNotifier ,
                 builder: (context, value, child) {
-                  return CustomDropDown<String>(
+                  return CustomMultiSelectionDropdown<String>(
                     hint: 'اختر الباقة',
-                    items: ['الباقة الأساسية', 'باقة متقدمة', 'باقة مخصصة'],
-                    selectedItem: value,
+                    items: ['الباقة الأساسية', 'باقة المتقدمة', 'الباقة الكاملة' ,'الباقة الأولى','الباقة المتقدمة -نظام المطاعم','الباقة الأساسية-نظام المطاعم','المتاجر الإلكترونية','ERP SLAS' ],
+                    selectedItems:  careUsageCubit.filterEntity.packageNotifier.value,
                     compareFn: (item, selectedItem) => item == selectedItem,
                     itemAsString: (item) => item ?? '',
-                    onChanged: (value) {
+                    onSave: (value) {
                       if (value == null) return;
                       careUsageCubit.filterEntity.packageNotifier.value = value;
                     },

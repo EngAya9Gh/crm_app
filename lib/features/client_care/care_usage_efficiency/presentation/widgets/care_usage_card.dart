@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/ui/screen/client/client_profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/common/widgets/app_card_container.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/app_icon.dart';
 import '../../../../../core/common/widgets/app_loader.dart';
 import '../../../../../view_model/communication_vm.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
@@ -27,145 +29,169 @@ class CareUsageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<CareUsageCubit>();
+
     return BlocBuilder<CareUsageCubit, CareUsageState>(
-      buildWhen: (previous, current) =>
-          previous.doneCommunicationStatus != current.doneCommunicationStatus,
       builder: (context, state) {
+        // Find the updated model in the state list if it exists
+        final updatedCareUsage = state.careUsageList.firstWhere(
+          (item) => item.idCommunication == careUsage.idCommunication,
+          orElse: () => careUsage,
+        );
+
         final isLoading = state.doneCommunicationStatus.isLoading();
 
-        return AppCardContainer(
-          onTap: () {
-            AppNavigator.go(
-              ClientProfile(
-                idClient: careUsage.idClients.toString(),
-                tabIndex: 4,
-                tabCareIndex: 3,
-                idCommunication: careUsage.idCommunication.toString(),
-              ),
-              name: AppRoutesNames.clientProfile.inCarePeriodicCommunication,
-              pathParameters: {'idClient': careUsage.idClients.toString()},
-              extra: {
-                'tabIndex': 4,
-                'tabCareIndex': 3,
-                'idCommunication': careUsage.idCommunication,
+    return AppCardContainer(
+      onTap: () {
+        AppNavigator.go(
+          ClientProfile(
+                idClient: updatedCareUsage.idClients.toString(),
+            tabIndex: 4,
+            tabCareIndex: 3,
+                idCommunication: updatedCareUsage.idCommunication.toString(),
+          ),
+          name: AppRoutesNames.clientProfile.inCarePeriodicCommunication,
+              pathParameters: {
+                'idClient': updatedCareUsage.idClients.toString()
               },
-            );
+          extra: {
+            'tabIndex': 4,
+            'tabCareIndex': 3,
+                'idCommunication': updatedCareUsage.idCommunication,
           },
-          child: Padding(
-            padding: EdgeInsets.all(16.r),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        );
+      },
+      child: Padding(
+        padding: EdgeInsets.all(16.r),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: AppText(
-                        careUsage.nameEnterprise ?? '',
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryMain,
-                      ),
-                    ),
-                    if (careUsage.possibilityOfWithdraw != null)
+                Expanded(
+                  child: AppText(
+                        updatedCareUsage.nameEnterprise ?? '',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primaryMain,
+                  ),
+                ),
+                    if (updatedCareUsage.possibilityOfWithdraw != null)
                       Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 12.r, vertical: 6.r),
                         decoration: BoxDecoration(
-                          color: careUsage.possibilityOfWithdraw!.color
+                          color: updatedCareUsage.possibilityOfWithdraw!.color
                               .withOpacity(0.1),
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                         child: AppText(
-                          careUsage.possibilityOfWithdraw!.value,
+                          updatedCareUsage.possibilityOfWithdraw!.value,
                           fontSize: 12.sp,
-                          color: careUsage.possibilityOfWithdraw!.color,
+                          color: updatedCareUsage.possibilityOfWithdraw!.color,
                         ),
                       ),
                     8.horizontalSpace,
-                    if (careUsage.shouldCommunicate == 1)
-                      Container(
+                    if (updatedCareUsage.shouldCommunicate == 1)
+                  Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 12.r, vertical: 6.r),
-                        decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        child: AppText(
-                          'يحتاج تواصل',
-                          fontSize: 12.sp,
-                          color: Colors.orange,
-                        ),
-                      ),
-                  ],
-                ),
-                20.verticalSpace,
-                Container(
-                  padding: EdgeInsets.all(12.r),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[50],
-                    borderRadius: BorderRadius.circular(12.r),
+                    decoration: BoxDecoration(
+                      color: Colors.orange.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: AppText(
+                      'يحتاج تواصل',
+                      fontSize: 12.sp,
+                      color: Colors.orange,
+                    ),
                   ),
-                  child: Column(
+              ],
+            ),
+            20.verticalSpace,
+            Container(
+              padding: EdgeInsets.all(12.r),
+              decoration: BoxDecoration(
+                color: Colors.grey[50],
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+                  child: Stack(
                     children: [
-                      _buildInfoRow(
-                        'آخر نشاط:',
-                        careUsage.lastActivity ?? 'غير متوفر',
-                      ),
-                      12.verticalSpace,
-                      _buildInfoRow(
-                        'عدد الأيام منذ آخر نشاط:',
-                        careUsage.days_since_last_activity != null
-                            ? careUsage.days_since_last_activity.toString()
-                            : 'غير متوفر',
-                      ),
-                      12.verticalSpace,
-                      _buildInfoRow(
-                        'نهاية الاشتراك:',
-                        careUsage.endSubscription != null
-                            ? careUsage.endSubscription!.split(' ')[0]
-                            : 'غير متوفر',
-                      ),
-                      12.verticalSpace,
-                      _buildInfoRow(
-                        'الباقة:',
-                        careUsage.package ?? 'غير متوفر',
-                      ),
-                      12.verticalSpace,
-                      _buildInfoRow(
-                        'آخر موديول:',
-                        careUsage.lastModuleActivity ?? 'غير متوفر',
-                      ),
-                      12.verticalSpace,
-                      _buildInfoRow(
-                        'آخر عملية:',
-                        careUsage.lastOperationActivity ?? 'غير متوفر',
-                      ),
-                    ],
+                      if (updatedCareUsage.tag ?? false) ...[
+                        Positioned(
+                          left: 100,
+                          child: AppIcon(
+                            CupertinoIcons.checkmark_seal_fill,
+                            color: AppColors.secondaryMain,
+                          ),
+                        ),
+                      ],
+                      Column(
+                children: [
+                  _buildInfoRow(
+                    'آخر نشاط:',
+                            updatedCareUsage.lastActivity ?? 'غير متوفر',
                   ),
-                ),
-                if (careUsage.shouldCommunicate == 1) ...[
-                  16.verticalSpace,
-                  SizedBox(
-                    width: double.infinity,
-                    child: AppElevatedButton(
-                      text: 'تم التواصل',
+                  12.verticalSpace,
+                  _buildInfoRow(
+                    'عدد الأيام منذ آخر نشاط:',
+                            updatedCareUsage.days_since_last_activity != null
+                                ? updatedCareUsage.days_since_last_activity
+                                    .toString()
+                        : 'غير متوفر',
+                  ),
+                  12.verticalSpace,
+                  _buildInfoRow(
+                    'نهاية الاشتراك:',
+                            updatedCareUsage.endSubscription != null
+                                ? updatedCareUsage.endSubscription!
+                                    .split(' ')[0]
+                        : 'غير متوفر',
+                  ),
+                  12.verticalSpace,
+                  _buildInfoRow(
+                    'الباقة:',
+                            updatedCareUsage.package ?? 'غير متوفر',
+                  ),
+                  12.verticalSpace,
+                  _buildInfoRow(
+                    'آخر موديول:',
+                            updatedCareUsage.lastModuleActivity ?? 'غير متوفر',
+                  ),
+                  12.verticalSpace,
+                  _buildInfoRow(
+                    'آخر عملية:',
+                            updatedCareUsage.lastOperationActivity ??
+                                'غير متوفر',
+                          ),
+                        ],
+                  ),
+                ],
+              ),
+            ),
+                if (updatedCareUsage.shouldCommunicate == 1) ...[
+              16.verticalSpace,
+              SizedBox(
+                width: double.infinity,
+                child: AppElevatedButton(
+                  text: 'تم التواصل',
                       onPressed: isLoading
                           ? null
                           : () {
-                              context.read<CareUsageCubit>().doneCommunication(
-                                    careUsage.idCommunication!,
-                                  );
+                              cubit.doneCommunication(
+                                updatedCareUsage.idCommunication!,
+                              );
                             },
-                      backgroundColor: AppColors.primaryMain,
+                  backgroundColor: AppColors.primaryMain,
                       child: isLoading
                           ? const AppLoader(color: Colors.white)
                           : null,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
         );
       },
     );

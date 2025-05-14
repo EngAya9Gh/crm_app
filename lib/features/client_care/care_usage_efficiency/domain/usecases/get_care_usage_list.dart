@@ -43,7 +43,7 @@ class GetCareUsageListParams extends Equatable {
   final String? lastActivityTo;
   final String? state;
   final String? premium;
-  final String? package;
+  final List< String>  package;
   final int? fkRegoin;
   final int? activityTypeFk;
   final int? shouldCommunicate;
@@ -59,7 +59,7 @@ class GetCareUsageListParams extends Equatable {
     this.lastActivityTo,
     this.state,
     this.premium,
-    this.package,
+    this.package= const [],
     this.fkRegoin,
     this.activityTypeFk,
     this.shouldCommunicate,

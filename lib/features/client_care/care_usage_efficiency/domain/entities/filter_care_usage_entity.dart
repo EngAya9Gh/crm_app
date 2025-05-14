@@ -12,7 +12,7 @@ class FilterCareUsageEntity {
   final lastActivityToNotifier = ValueNotifier<String?>(null);
   final stateNotifier = ValueNotifier<String?>(null);
   final premiumNotifier = ValueNotifier<String?>(null);
-  final packageNotifier = ValueNotifier<String?>(null);
+  final packageNotifier = ValueNotifier<List< String>>([]) ;
   final fkRegoinNotifier = ValueNotifier<int?>(null);
   final activityTypeFkNotifier = ValueNotifier<int?>(null);
   final shouldCommunicateNotifier = ValueNotifier<int?>(null);
@@ -26,7 +26,7 @@ class FilterCareUsageEntity {
     lastActivityToNotifier.value = null;
     stateNotifier.value = null;
     premiumNotifier.value = null;
-    packageNotifier.value = null;
+    packageNotifier.value = [];
     fkRegoinNotifier.value = null;
     activityTypeFkNotifier.value = null;
     shouldCommunicateNotifier.value = null;
@@ -46,8 +46,8 @@ class FilterCareUsageEntity {
       ..premiumNotifier.value = this.premiumNotifier.value
       ..packageNotifier.value = this.packageNotifier.value
       ..fkRegoinNotifier.value = this.fkRegoinNotifier.value
-      ..activityTypeFkNotifier.value = this.activityTypeFkNotifier.value
-      ..shouldCommunicateNotifier.value = this.shouldCommunicateNotifier.value;
+      ..activityTypeFkNotifier.value = this.activityTypeFkNotifier.value;
+      // ..shouldCommunicateNotifier.value = this.shouldCommunicateNotifier.value;
   }
 
   FilterCareUsageEntity get returnToPreviousState {
@@ -71,7 +71,7 @@ class FilterCareUsageEntity {
       packageNotifier,
       fkRegoinNotifier,
       activityTypeFkNotifier,
-      shouldCommunicateNotifier,
+      // shouldCommunicateNotifier,
     ];
   }
 
@@ -84,9 +84,10 @@ class FilterCareUsageEntity {
         lastActivityToNotifier.value != null ||
         stateNotifier.value != null ||
         premiumNotifier.value != null ||
-        packageNotifier.value != null ||
+        packageNotifier.value.isNotEmpty ||
         fkRegoinNotifier.value != null ||
-        activityTypeFkNotifier.value != null ||
-        shouldCommunicateNotifier.value != null;
+        activityTypeFkNotifier.value != null ;
+        // ||
+        // shouldCommunicateNotifier.value != null;
   }
 }

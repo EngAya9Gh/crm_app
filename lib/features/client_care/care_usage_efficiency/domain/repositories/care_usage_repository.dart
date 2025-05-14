@@ -18,7 +18,7 @@ abstract class CareUsageRepository {
     String? lastActivityTo,
     String? state,
     String? premium,
-    String? package,
+    List< String>  package,
     int? fkRegoin,
     int? activityTypeFk,
     int? shouldCommunicate,

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/errors/server_exceptions.dart';
 import '../../../../../core/services/api/api_services.dart';
@@ -49,15 +50,19 @@ class CareUsageRemoteDataSourceImpl implements CareUsageRemoteDataSource {
           'state': params.state,
         if (params.premium != null && params.premium!.isNotEmpty)
           'premium': params.premium,
-        if (params.package != null && params.package!.isNotEmpty)
-          'package': params.package,
+
         if (params.fkRegoin != null) 'fk_regoin': params.fkRegoin,
         if (params.activityTypeFk != null)
           'activity_type_fk': params.activityTypeFk,
         if (params.shouldCommunicate != null)
           'should_communicate': params.shouldCommunicate,
       };
-
+      if (params.package != null && params.package!.isNotEmpty)
+        queryParameters.addAll(
+         ApiHelper.prepareParamsList(
+    key: 'package',
+    values: params.package.map((e) => e).toList(),
+         ));
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
         endPoint: EndPoints.care.getclient_usages,

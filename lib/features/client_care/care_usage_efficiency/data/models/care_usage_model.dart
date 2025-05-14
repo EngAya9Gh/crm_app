@@ -1,3 +1,4 @@
+import '../../../../../core/common/helpers/api_helper.dart';
 import '../../domain/entities/care_usage_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +40,7 @@ class CareUsageModel extends CareUsageEntity {
     super.idCommunication,
     super.days_since_last_activity,
     super.possibilityOfWithdraw,
+    super.tag,
   });
 
 
@@ -62,6 +64,7 @@ class CareUsageModel extends CareUsageEntity {
       shouldCommunicate: json['should_communicate'],
       idCommunication: json['id_communication'],
       days_since_last_activity: json['days_since_last_activity'],
+      tag: ApiHelper.handleString(json['tag']) == "1",
       possibilityOfWithdraw:
       WithdrawPossibility.fromString(json['possibility_of_withdraw']) ,
     );
@@ -86,6 +89,7 @@ class CareUsageModel extends CareUsageEntity {
       'should_communicate': shouldCommunicate,
       'id_communication': idCommunication,
       'days_since_last_activity': days_since_last_activity,
+      'tag': tag,
       'possibility_of_withdraw': possibilityOfWithdraw?.value,
     };
   }

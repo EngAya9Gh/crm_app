@@ -51,7 +51,7 @@ class _EditInvoiceState extends State<EditInvoice> {
  late final privilegeCubit ;
   String? regoin;
   String? regoininvoice;
-  DateTime? _currentDateApprove;
+  DateTime? _currentDateApprove = DateTime.now();
   DateTime _currentDateCreate = DateTime.now();
   DateTime? _currentDateFinance = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');

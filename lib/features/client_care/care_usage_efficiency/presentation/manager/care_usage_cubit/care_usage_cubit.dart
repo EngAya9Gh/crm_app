@@ -48,16 +48,6 @@ class CareUsageCubit extends Cubit<CareUsageState> {
         // حفظ الحالة السابقة للفلاتر
         filterEntity.savePreviousState();
 
-        print('Filters being sent to API:');
-        print(
-            'lastActivityFrom: ${filterEntity.lastActivityFromNotifier.value}');
-        print('lastActivityTo: ${filterEntity.lastActivityToNotifier.value}');
-        print('activityTypeFk: ${filterEntity.activityTypeFkNotifier.value}');
-        print('fkRegoin: ${filterEntity.fkRegoinNotifier.value}');
-        print('state: ${filterEntity.stateNotifier.value}');
-        print('premium: ${filterEntity.premiumNotifier.value}');
-        print('package: ${filterEntity.packageNotifier.value}');
-
         final result = await _getCareUsageListUseCase(
           GetCareUsageListParams(
             skip: pageVariables.allList.length,
@@ -73,9 +63,6 @@ class CareUsageCubit extends Cubit<CareUsageState> {
             package: filterEntity.packageNotifier.value,
             fkRegoin: filterEntity.fkRegoinNotifier.value,
             activityTypeFk: filterEntity.activityTypeFkNotifier.value,
-
-            // shouldCommunicate: shouldCommunicate ??
-            //     (pageVariables.shouldCommunicate == 1 ? 1 : 0),
           ),
         );
 
@@ -100,6 +87,7 @@ class CareUsageCubit extends Cubit<CareUsageState> {
 
             emit(state.copyWith(
               getCareUsageListStatus: BlocStatus.success(),
+              careUsageList: List<CareUsageModel>.from(pageVariables.allList),
             ));
           },
         );
@@ -134,18 +122,28 @@ class CareUsageCubit extends Cubit<CareUsageState> {
         (failure) => emit(state.copyWith(
           doneCommunicationStatus: BlocStatus.fail(error: failure.toString()),
         )),
-        (careUsage) {
+        (updatedCareUsage) {
+          // تحديث عنصر في قائمة pageVariables
           final updatedList = pageVariables.allList.map((item) {
             if (item.idCommunication == communicationId) {
-              return careUsage;
+              return updatedCareUsage;
             }
             return item;
           }).toList();
 
           pageVariables.allList = updatedList;
 
+          // تحديث عنصر في حالة state
+          final updatedStateList = state.careUsageList.map((item) {
+            if (item.idCommunication == communicationId) {
+              return updatedCareUsage;
+            }
+            return item;
+          }).toList();
+
+          // تحديث الواجهة
           emit(state.copyWith(
-            careUsageList: updatedList,
+            careUsageList: updatedStateList,
             doneCommunicationStatus: const BlocStatus.success(),
           ));
         },

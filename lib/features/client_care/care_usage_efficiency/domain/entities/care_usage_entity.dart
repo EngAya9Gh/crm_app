@@ -20,6 +20,7 @@ class CareUsageEntity extends Equatable {
   final int? shouldCommunicate;
   final int? idCommunication;
   final int? days_since_last_activity;
+  final bool? tag;
   final WithdrawPossibility? possibilityOfWithdraw;
 
   const CareUsageEntity({
@@ -41,6 +42,7 @@ class CareUsageEntity extends Equatable {
     this.idCommunication,
     this.days_since_last_activity,
     this.possibilityOfWithdraw,
+    this.tag,
   });
 
   @override
@@ -63,5 +65,6 @@ class CareUsageEntity extends Equatable {
         idCommunication,
         days_since_last_activity,
         possibilityOfWithdraw,
+        tag,
       ];
 }
