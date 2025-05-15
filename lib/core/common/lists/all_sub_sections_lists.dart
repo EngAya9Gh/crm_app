@@ -161,12 +161,14 @@ abstract class AllSubSectionsLists {
     SectionModel(
       title: 'كفاءة الاستخدام',
       page: CareUsagePage(),
-      // privilegeId: '9',
+      privilegeId: '345',
       path: AppRoutesPaths.careSubSections.CareUsagePage,
     ),
     SectionModel(
       title: 'التقييمات عبر النظام',
+      privilegeId: '346',
       page: SysSupportRatingPage(),
+
       path: AppRoutesPaths.careSubSections.sysSupportRating,
     ),
     SectionModel(

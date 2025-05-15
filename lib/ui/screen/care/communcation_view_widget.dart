@@ -143,18 +143,19 @@ class _CommunicationExpandedWidgetState
               ],
             ),
           ),
-          if (widget.communicationModel.shouldCommunicate == 1) ...[
-            16.verticalSpace,
-            SizedBox(
-              width: double.infinity,
-              child: AppElevatedButton(
-                text: 'تم التواصل',
-                onPressed: () => _onDoneCommunication(context),
-                backgroundColor: AppColors.primaryMain,
-              ),
-            ),
-          ],
-        ] else if (widget.communicationModel.typeCommuncation == 'دوري' &&
+        //   if (widget.communicationModel.shouldCommunicate == 1) ...[
+        //     16.verticalSpace,
+        //     SizedBox(
+        //       width: double.infinity,
+        //       child: AppElevatedButton(
+        //         text: 'تم التواصل',
+        //         onPressed: () => _onDoneCommunication(context),
+        //         backgroundColor: AppColors.primaryMain,
+        //       ),
+        //     ),
+        //   ],
+        // ] else
+          if (widget.communicationModel.typeCommuncation == 'دوري' &&
             widget.communicationModel.dateCommunication == null) ...[
           // تقييم عام للخدمة
           Column(
@@ -376,7 +377,7 @@ class _CommunicationExpandedWidgetState
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // زر تم التواصل - يظهر فقط إذا لم يكن هناك تاريخ تواصل
-            if (widget.communicationModel.dateCommunication == null)
+            if (widget.communicationModel.dateCommunication == null &&widget.communicationModel.typeCommuncation != 'كفاءة')
               AppElevatedButton(
                 text: 'تم التواصل',
                 onPressed: () => _onDoneCommunication(context),
@@ -410,7 +411,7 @@ class _CommunicationExpandedWidgetState
             ],
           ],
         ),
-      ],
+      ],]
     );
   }
 

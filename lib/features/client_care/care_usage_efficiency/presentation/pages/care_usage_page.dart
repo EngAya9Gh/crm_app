@@ -59,7 +59,8 @@ class _CareUsagePageState extends State<CareUsagePage>
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _cubit,
-      child: AppScaffold(
+      child: 
+      AppScaffold(
         appBar: CustomAppBar(
           title: ' كفاءة الاستخدام',
           showBackButton: true,
