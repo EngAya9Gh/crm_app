@@ -2,7 +2,7 @@ part of 'care_usage_cubit.dart';
 
 class CareUsageState extends Equatable {
   final BlocStatus getCareUsageListStatus;
-  final BlocStatus doneCommunicationStatus;
+  final BlocStatus<int> doneCommunicationStatus;
   final List<CareUsageModel> careUsageList;
 
   const CareUsageState({
@@ -13,7 +13,7 @@ class CareUsageState extends Equatable {
 
   CareUsageState copyWith({
     BlocStatus? getCareUsageListStatus,
-    BlocStatus? doneCommunicationStatus,
+    BlocStatus<int>? doneCommunicationStatus,
     List<CareUsageModel>? careUsageList,
   }) {
     return CareUsageState(

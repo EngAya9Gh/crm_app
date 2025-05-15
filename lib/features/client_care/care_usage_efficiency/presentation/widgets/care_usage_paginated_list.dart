@@ -46,21 +46,20 @@ class _CareUsagePaginatedListState extends State<CareUsagePaginatedList> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<CareUsageCubit>();
     return BlocBuilder<CareUsageCubit, CareUsageState>(
       builder: (context, state) {
         return AppPaginatedList(
-          items: cubit.pageVariables.allList,
+          items: _cubit.pageVariables.allList,
           itemBuilder: (context, index) {
             return CareUsageCard(
-              careUsage:   cubit.pageVariables.allList[index],
+              careUsage:   _cubit.pageVariables.allList[index],
 
             );
           },
           onLoadMore: () async {
-            await cubit.getCareUsageList(isNewFilter: false);
+            await _cubit.getCareUsageList(isNewFilter: false);
           },
-          hasReachedEnd: cubit.pageVariables.hasReachedEnd,
+          hasReachedEnd: _cubit.pageVariables.hasReachedEnd,
           isLoading: state.getCareUsageListStatus.isLoading(),
         );
       },

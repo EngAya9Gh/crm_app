@@ -113,7 +113,7 @@ class CareUsageCubit extends Cubit<CareUsageState> {
 
   Future<void> doneCommunication(int communicationId) async {
     emit(state.copyWith(
-      doneCommunicationStatus: const BlocStatus.loading(),
+      doneCommunicationStatus: BlocStatus.loading(data: communicationId),
     ));
 
     try {
@@ -142,9 +142,10 @@ class CareUsageCubit extends Cubit<CareUsageState> {
           }).toList();
 
           // تحديث الواجهة
+          pageVariables.allList=List.of(updatedStateList);
           emit(state.copyWith(
             careUsageList: updatedStateList,
-            doneCommunicationStatus: const BlocStatus.success(),
+            doneCommunicationStatus: BlocStatus.success(data: communicationId),
           ));
         },
       );
