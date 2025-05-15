@@ -83,7 +83,7 @@ class CareUsageRemoteDataSourceImpl implements CareUsageRemoteDataSource {
       );
 
       if (response.statusCode == 200) {
-        return CareUsageModel.fromJson(response.data['data']);
+        return CareUsageModel.fromJson(response.data['message']);
       } else {
         throw ServerException(
           message: response.data['message'] ?? 'حدث خطأ ما',

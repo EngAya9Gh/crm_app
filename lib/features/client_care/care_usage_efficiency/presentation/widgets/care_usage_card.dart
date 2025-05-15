@@ -183,7 +183,7 @@ class CareUsageCard extends StatelessWidget {
                               );
                             },
                   backgroundColor: AppColors.primaryMain,
-                      child: isLoading
+                      child: isLoading&&(state.doneCommunicationStatus.data==careUsage.idCommunication)
                           ? const AppLoader(color: Colors.white)
                           : null,
                 ),

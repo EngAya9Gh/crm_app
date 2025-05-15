@@ -37,7 +37,7 @@ class _CareUsagePageState extends State<CareUsagePage>
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
     _currentTabIndex = ValueNotifier(0);
-    _cubit = getIt<CareUsageCubit>();
+    _cubit = context.read<CareUsageCubit>();
     _cubit.getCareUsageList();
   }
 
