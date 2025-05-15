@@ -35,130 +35,202 @@ class _UpdateAppPageState extends State<UpdateAppPage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.background,
       body: BlocBuilder<AppManagerCubit, AppManagerState>(
-        builder: (context, state) {
+        builder: (context, managerState) {
           return SafeArea(
-            child: Column(
-              children: [
-                40.height,
-                AppText('لديك اصدار جديد من التطبيق'),
-                Spacer(),
-                BlocBuilder<VersionsBloc, VersionsState>(
-                  builder: (context, state) {
-                    return state.incommingUpdateInfo.when(
-                      success: (data) => Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(
-                                  left: 10, right: 10, top: 10, bottom: 20),
-                              decoration: BoxDecoration(
-                                  color: AppColors.background,
-                                  borderRadius:
-                                      BorderRadiusDirectional.circular(12)),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 100,
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                        color: AppColors.white,
-                                        borderRadius:
-                                            BorderRadiusDirectional.circular(
-                                                5)),
-                                    child: AppAssetImage(
-                                      imagePath: Assets.imagesLogoCrmLong,
-                                      // height: 30.37,
-                                      // width: 137.59,
-                                    ),
-                                  ),
-                                  10.width,
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        if (data?.title != null)
-                                          AppText(
-                                            data?.title ?? '',
-                                            fontSize: (25.0).scaleFontSize,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        8.height,
-                                        AppText(
-                                          data?.management ?? 'عام',
-                                          fontSize: (20.0).scaleFontSize,
-                                        ),
-                                        8.height,
-                                        if (data?.versionNo != null)
-                                          AppText(
-                                            data?.versionNo ?? '',
-                                            fontSize: (18.0).scaleFontSize,
-                                          ),
-                                        16.height,
-                                        AppText(
-                                          (data?.description ?? ''),
-                                          maxLines: 4,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      failure: (error, data) {
-                        return AppErrorWidget(message: error);
-                      },
-                    );
-                  },
-                ),
-                //IncommingVersionsPage(),
-                //Image.asset('assest/images/update_app.jpg'),
-                Spacer(),
-               
-                AppElevatedButton(
-                  width: 165.w,
-                  isLoading: state.checkRedirectionsState.isLoading,
-                  text: "تحديث الآن",
-                  onPressed: () async {
-                    await StoreRedirect.redirect(
-                      androidAppId: "com.mpluse.crmsmart",
-                      iOSAppId: "id6451082072",
-                    );
-                  },
-                ),
-                5.height,
-                if (state.isUpdateMandatory != true    ) ...[
-                  BlocBuilder<AppManagerCubit, AppManagerState>(
-                    builder: (context, state) {
-                      if (state.updateState.isError) {
-                        return AppErrorWidget(
-                          message:
-                              "Please check your connection and try again.",
-                        );
-                      }
-                      return AppElevatedButton(
-                        isLoading: state.checkRedirectionsState.isLoading,
-                        text: "تخطي",
-                        width: 165.w,
-                        backgroundColor: AppColors.grey,
-                        onPressed: () => context
-                            .read<AppManagerCubit>()
-                            .checkRedirections(context),
-                      );
-                    },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.r),
+              child: Column(
+                children: [
+                  SizedBox(height: 40.h),
+                  AppText(
+                    'لديك إصدار جديد من التطبيق',
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primaryMain,
                   ),
+                  SizedBox(height: 20.h),
+                  Expanded(
+                    child: BlocBuilder<VersionsBloc, VersionsState>(
+                      builder: (context, state) {
+                        return state.incommingUpdateInfo.when(
+                          success: (data) => Column(
+                            children: [
+                              // Update image
+                              Container(
+                                width: double.infinity,
+                                height: 150.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.05),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 5),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  child: AppAssetImage(
+                                    imagePath: Assets.imagesLogoCrmLong,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 18.h),
+                              // Update info card
+                              Expanded(
+                                  child: Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(24.r),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.05),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Version header
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              if (data?.title != null)
+                                                AppText(
+                                                  data?.title ?? '',
+                                                  fontSize: 22.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColors.primaryMain,
+                                                ),
+                                              SizedBox(height: 4.h),
+                                              AppText(
+                                                data?.management ?? 'عام',
+                                                fontSize: 16.sp,
+                                                color: Colors.grey[700],
+                                              ),
+                                            ],
+                                          ),
+                                          if (data?.versionNo != null)
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 12.r,
+                                                vertical: 6.r,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primaryMain
+                                                    .withOpacity(0.1),
+                                                borderRadius:
+                                                    BorderRadius.circular(16.r),
+                                              ),
+                                              child: AppText(
+                                                data?.versionNo ?? '',
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppColors.primaryMain,
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 24.h),
+                                      // Section title
+                                      AppText(
+                                        'الميزات الجديدة',
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                      SizedBox(height: 12.h),
+                                      // Description with scroll
+                                      Expanded(
+                                        child: SingleChildScrollView(
+                                          child: AppText(
+                                            data?.description ?? '',
+                                            fontSize: 16.sp,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 24.h),
+                                      // Buttons
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: AppElevatedButton(
+                                              height: 50.h,
+                                              isLoading: managerState
+                                                  .checkRedirectionsState
+                                                  .isLoading,
+                                              text: "تحديث الآن",
+                                              textStyle: TextStyle(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              onPressed: () async {
+                                                await StoreRedirect.redirect(
+                                                  androidAppId:
+                                                      "com.mpluse.crmsmart",
+                                                  iOSAppId: "id6451082072",
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          if (managerState.isUpdateMandatory !=
+                                              true) ...[
+                                            SizedBox(width: 16.w),
+                                            Expanded(
+                                              child: AppElevatedButton(
+                                                height: 50.h,
+                                                isLoading: managerState
+                                                    .checkRedirectionsState
+                                                    .isLoading,
+                                                text: "تخطي",
+                                                textStyle: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                backgroundColor:
+                                                    Colors.grey[300],
+                                                textColor: Colors.black87,
+                                                onPressed: () => context
+                                                    .read<AppManagerCubit>()
+                                                    .checkRedirections(context),
+                                              ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )),
+                            ],
+                          ),
+                          failure: (error, data) {
+                            return AppErrorWidget(message: error);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
                 ],
-                20.height,
-              ],
+              ),
             ),
           );
         },

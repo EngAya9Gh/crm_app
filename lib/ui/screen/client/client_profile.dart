@@ -300,8 +300,8 @@ class _ClientProfileState extends State<ClientProfile>
 
           // Collapsible chat widget
           Positioned(
-            bottom: 14,
-            right: 0,
+            bottom: 38,
+            right: -10,
             child: GestureDetector(
               onTap: _toggleChat,
               child: AnimatedBuilder(
@@ -363,7 +363,7 @@ class _ClientProfileState extends State<ClientProfile>
             Positioned(
               left: 0,
               right: 0,
-              bottom: 70,
+              bottom: 90,
               child: Container(
                 alignment: Alignment.center,
                 child: Card(

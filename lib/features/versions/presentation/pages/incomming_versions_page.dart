@@ -32,8 +32,9 @@ class _IncommingVersionsPageState extends State<IncommingVersionsPage> {
     return AppScaffold(
       backgroundColor: AppColors.outlineBorder,
       appBar: CustomAppBar(title: 'التحديثات القادمة', showBackButton: true),
-      body: Directionality(
-        textDirection: TextDirection.ltr,
+      body: 
+      Expanded(child: Directionality(
+        textDirection: TextDirection.rtl,
         child: 
         BlocBuilder<VersionsBloc, VersionsState>(
           builder: (context, state) {
@@ -81,11 +82,15 @@ class _IncommingVersionsPageState extends State<IncommingVersionsPage> {
                                     fontSize: (18.0).scaleFontSize,
                                   ),
                                 8.height,
-                                AppText(
-                                  (data?.description ?? ''),
-                                  maxLines: 4,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                               SingleChildScrollView(
+                                          child: AppText(
+                                            data?.description ?? '',
+                                            fontSize: 16.scaleFontSize,
+                                            color: Colors.black87,
+                                          
+                                          ),
+                                        ),
+                                       
                               ],
                             ),
                           )
@@ -101,7 +106,8 @@ class _IncommingVersionsPageState extends State<IncommingVersionsPage> {
             );
           },
         ),
-      ),
-    );
-  }
-}
+      ),    
+    )) 
+          ;
+      } 
+    }
