@@ -1,5 +1,6 @@
 import 'package:crm_smart/features/clients_care/violations_clienta_care/presentation/manager/violations_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/client_activities_tab/presentation/manager/client_activities_bloc.dart';
+import 'package:crm_smart/features/home/presentation/manager/favorite_screens_cubit.dart';
 import 'package:crm_smart/features/sales/clients/clients_contacts/presentation/manager/clients_contacts_bloc.dart';
 import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.dart';
 import 'package:flutter/material.dart';
@@ -117,6 +118,8 @@ class ServiceProvider extends StatelessWidget {
       /* Blocs and Cubits */
       providers: [
         BlocProvider(create: (context) => getIt<LoginCubit>()),
+        BlocProvider(create: (context) => getIt<FavoriteScreensCubit>()),
+        BlocProvider(create: (context) => getIt<LevelsCubit>()),
         BlocProvider(create: (context) => getIt<SpecialClientsBloc>()),
         BlocProvider(create: (context) => getIt<ClientsListBloc>()),
         BlocProvider(create: (context) => getIt<CareUsageCubit>()),

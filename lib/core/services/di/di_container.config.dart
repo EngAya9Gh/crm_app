@@ -430,12 +430,18 @@ import '../../../features/home/data/repositories/home_statistics_repository_impl
     as _i796;
 import '../../../features/home/data/repositories/pending_approvals_repository_impl.dart'
     as _i1070;
+import '../../../features/home/domain/repositories/available_screens_repository.dart'
+    as _i221;
+import '../../../features/home/domain/repositories/favorite_screens_repository.dart'
+    as _i199;
 import '../../../features/home/domain/repositories/home_statistics_repository.dart'
     as _i513;
 import '../../../features/home/domain/repositories/pending_approvals_repository.dart'
     as _i869;
 import '../../../features/home/domain/use_cases/get_home_statistic_usecase.dart'
     as _i447;
+import '../../../features/home/presentation/manager/favorite_screens_cubit.dart'
+    as _i972;
 import '../../../features/home/presentation/manager/search_cubit.dart'
     as _i1066;
 import '../../../features/home/presentation/manager/web_home_page_cubit.dart'
@@ -1129,6 +1135,8 @@ _i174.GetIt $initGetIt(
       () => _i425.LevelsDataSourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i52.GreetingCommunicationDatasource>(
       () => _i52.GreetingCommunicationDatasourceImpl(gh<_i124.ApiServices>()));
+  gh.lazySingleton<_i221.AvailableScreensRepository>(
+      () => _i221.AvailableScreensRepositoryImpl());
   gh.lazySingleton<_i113.AgentsDistributorsActionsDataSource>(() =>
       _i113.AgentsDistributorsActionsDataSourceImpl(gh<_i124.ApiServices>()));
   gh.singletonAsync<_i460.SharedPreferences>(
@@ -1157,6 +1165,9 @@ _i174.GetIt $initGetIt(
       () => _i119.NotificationsRepoImpl(gh<_i530.NotificationsDatasource>()));
   gh.lazySingleton<_i406.ClientsAcceptDatasource>(
       () => _i406.ClientsAcceptDatasourceImpl(gh<_i124.ApiServices>()));
+  gh.lazySingletonAsync<_i199.FavoriteScreensRepository>(() async =>
+      _i199.FavoriteScreensRepositoryImpl(
+          await gh.getAsync<_i460.SharedPreferences>()));
   gh.lazySingleton<_i729.ClientsStatusReportsDatasource>(
       () => _i729.ClientsStatusReportsDatasourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i181.PeriodicCommunicationReportsDatasource>(() =>
@@ -1960,6 +1971,12 @@ _i174.GetIt $initGetIt(
             gh<_i153.GetCitiesUseCase>(),
             gh<_i19.AddAgentUseCase>(),
             gh<_i191.UpdateAgentUseCase>(),
+          ));
+  gh.factoryAsync<_i972.FavoriteScreensCubit>(
+      () async => _i972.FavoriteScreensCubit(
+            await gh.getAsync<_i199.FavoriteScreensRepository>(),
+            gh<_i221.AvailableScreensRepository>(),
+            gh<_i985.PrivilegesCubit>(),
           ));
   gh.lazySingleton<_i314.FetchPaginatedClientsUsecase>(() =>
       _i314.FetchPaginatedClientsUsecase(gh<_i952.ClientsListRepository>()));

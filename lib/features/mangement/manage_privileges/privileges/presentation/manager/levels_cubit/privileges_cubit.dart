@@ -145,4 +145,17 @@ class PrivilegesCubit extends Cubit<PrivilegesState> {
 
     return false;
   }
+
+  List<String> getAllPrivileges() {
+    final userPrivileges = <String>[];
+
+    for (final privilege in pageVariables.userPrivileges) {
+      if (checkPrivilege(privilege.fkPrivilege)) {
+        userPrivileges.add(privilege.fkPrivilege!);
+      }
+    }
+
+    print('userPrivileges: $userPrivileges');
+    return userPrivileges;
+  }
 }

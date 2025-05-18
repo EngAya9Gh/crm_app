@@ -1,6 +1,11 @@
 import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/features/home/domain/models/favorite_screen_model.dart';
+import 'package:crm_smart/features/home/domain/repositories/available_screens_repository.dart';
+import 'package:crm_smart/features/home/domain/repositories/favorite_screens_repository.dart';
 import 'package:crm_smart/features/home/domain/repositories/pending_approvals_repository.dart';
+import 'package:crm_smart/features/home/presentation/manager/favorite_screens_cubit.dart';
+import 'package:crm_smart/features/home/presentation/widgets/favorite_screens_section.dart';
 import 'package:crm_smart/features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import 'package:crm_smart/features/sales/clients/pending_invoices/presentation/pages/pending_invoices_page.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart' as typform;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../features/notifications/presentation/manager/notifications_cubit.dart';
 import '../../../../core/common/extensions/build_context.dart';
 
@@ -48,53 +54,60 @@ class _MobHomePageState extends State<MobHomePage> {
   bool _isLoadingApprovals = false;
   late final PendingApprovalsRepository _approvalsRepository;
 
-  // Añadir propiedades para estadísticas
+  // Favorite screens management
+  late FavoriteScreensCubit _favoriteScreensCubit;
+  bool _isFavoriteScreensInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _searchCubit = context.read<SearchCubit>();
-    // Inicializar el repositorio
-    // final ApiServices apiServices = context.read<ApiServices>();
-    // _approvalsRepository = PendingApprovalsRepositoryImpl(apiServices);
+    _initializeFavoriteScreens();
 
     context.read<NotificationsCubit>()..init();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.wait([
         _searchCubit.getHomeStatistics(),
-        // context.read<NotificationsCubit>().getUnreadNotificationsCount(),
-        // Provider.of<UserProvider>(context, listen: false).getAllUsers(),
-        // Provider.of<RegionProvider>(context, listen: false).getRegions(),
-        // Provider.of<product_vm>(context, listen: false).getproduct_vm(),
-        // Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket'),
       ]);
-      //_fetchPendingApprovals();
     });
   }
 
-  // Usar el repositorio para obtener los datos
-  Future<void> _fetchPendingApprovals() async {
-    if (mounted) {
-      setState(() {
-        _isLoadingApprovals = true;
-      });
+  /// Initializes the favorite screens feature properly
+  Future<void> _initializeFavoriteScreens() async {
+    try {
+      // Get SharedPreferences instance
+      final prefs = await SharedPreferences.getInstance();
 
-      try {
-        final approvals = await _approvalsRepository.getPendingApprovals();
+      // Create repositories
+      final favoriteRepo = FavoriteScreensRepositoryImpl(prefs);
+      final availableRepo = AvailableScreensRepositoryImpl();
 
-        if (mounted) {
-          setState(() {
-            _pendingApprovals = approvals;
-            _isLoadingApprovals = false;
-          });
-        }
-      } catch (e) {
-        print('Error in _fetchPendingApprovals: $e');
-        if (mounted) {
-          setState(() {
-            _isLoadingApprovals = false;
-          });
-        }
+      // Get privileges cubit from context
+      final privilegesCubit = context.read<PrivilegesCubit>();
+
+      // Create FavoriteScreensCubit with proper dependencies
+      _favoriteScreensCubit = FavoriteScreensCubit(
+        favoriteRepo,
+        availableRepo,
+        privilegesCubit,
+      );
+
+      // Load data
+      await _favoriteScreensCubit.loadFavoriteScreens();
+
+      // Update UI if widget is still mounted
+      if (mounted) {
+        setState(() {
+          _isFavoriteScreensInitialized = true;
+        });
+      }
+    } catch (e) {
+      print('Error initializing favorite screens: $e');
+      // Handle errors gracefully
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('حدث خطأ أثناء تحميل الواجهات المفضلة')),
+        );
       }
     }
   }
@@ -107,8 +120,12 @@ class _MobHomePageState extends State<MobHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _searchCubit,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _searchCubit),
+        if (_isFavoriteScreensInitialized)
+          BlocProvider.value(value: _favoriteScreensCubit),
+      ],
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: AppScaffold(
@@ -136,6 +153,7 @@ class _MobHomePageState extends State<MobHomePage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      // Search bar container
                       Container(
                         width: double.infinity,
                         padding:
@@ -233,7 +251,16 @@ class _MobHomePageState extends State<MobHomePage> {
                           ],
                         ),
                       ),
-                      //  if (context.read<PrivilegesCubit>().checkPrivilege("40"))
+
+                      // Favorite Screens Section
+                      if (_isFavoriteScreensInitialized)
+                        FavoriteScreensSection(),
+
+                      // Loading state if not initialized
+                      if (!_isFavoriteScreensInitialized)
+                        _buildLoadingFavoriteScreens(),
+
+                      // Other sections
                       _buildApprovalSection(),
                       _buildStatisticsSection(),
                       _buildProgressSection(),
@@ -245,6 +272,50 @@ class _MobHomePageState extends State<MobHomePage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  // Loading indicator for favorite screens
+  Widget _buildLoadingFavoriteScreens() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.r, vertical: 16.r),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppText(
+            'الواجهات المفضلة',
+            style: TextStyle(
+              fontSize: 18.scaleFontSize,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryMain,
+            ),
+          ),
+          SizedBox(height: 16),
+          Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: AppColors.primaryMain,
+                  ),
+                ),
+                SizedBox(height: 8),
+                AppText(
+                  'جاري تحميل الواجهات المفضلة...',
+                  style: TextStyle(
+                    fontSize: 14.scaleFontSize,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 8),
+        ],
       ),
     );
   }

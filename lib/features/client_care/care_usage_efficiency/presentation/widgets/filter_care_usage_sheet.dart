@@ -233,29 +233,28 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                 ],
               ),
 
-              // 16.verticalSpace,
-              // Client State Section
-              // AppText(
-              //   'حالة العميل',
-              //   style: Theme.of(context).textTheme.titleMedium,
-              // ),
-              // 16.verticalSpace,
-              // ValueListenableBuilder<String?>(
-              //   valueListenable: careUsageCubit.filterEntity.stateNotifier,
-              //   builder: (context, value, child) {
-              //     return CustomDropDown<String>(
-              //       hint: 'حالة العميل',
-              //       items: ['online', 'rare', 'not'],
-              //       selectedItem: value,
-              //       compareFn: (item, selectedItem) => item == selectedItem,
-              //       itemAsString: (item) => item ?? '',
-              //       onChanged: (value) {
-              //         if (value == null) return;
-              //         careUsageCubit.filterEntity.stateNotifier.value = value;
-              //       },
-              //     );
-              //   },
-              // ),
+              16.verticalSpace, 
+              AppText(
+                'حالة العميل',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              16.verticalSpace,
+              ValueListenableBuilder<String?>(
+                valueListenable: careUsageCubit.filterEntity.stateNotifier,
+                builder: (context, value, child) {
+                  return CustomDropDown<String>(
+                    hint: 'حالة العميل',
+                    items: ['online', 'rare', 'not'],
+                    selectedItem: value,
+                    compareFn: (item, selectedItem) => item == selectedItem,
+                    itemAsString: (item) => item ?? '',
+                    onChanged: (value) {
+                      if (value == null) return;
+                      careUsageCubit.filterEntity.stateNotifier.value = value;
+                    },
+                  );
+                },
+                ),
 
               16.verticalSpace,
               // Premium Section
