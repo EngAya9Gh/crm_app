@@ -162,6 +162,8 @@ import '../../../features/clients_care/evaluation_across_system/domain/use_cases
     as _i574;
 import '../../../features/clients_care/evaluation_across_system/domain/use_cases/get_system_rating_tickets_use_case.dart'
     as _i317;
+import '../../../features/clients_care/evaluation_across_system/domain/use_cases/process_system_rating_use_case.dart'
+    as _i760;
 import '../../../features/clients_care/evaluation_across_system/presentation/manager/sys_support_rating_bloc.dart'
     as _i77;
 import '../../../features/clients_care/evaluation_level_report/data/data_sources/evaluation_level_report_datasource.dart'
@@ -1434,6 +1436,8 @@ _i174.GetIt $initGetIt(
   gh.lazySingleton<_i317.GetSystemRatingTicketsUseCase>(() =>
       _i317.GetSystemRatingTicketsUseCase(
           gh<_i831.ElevationAcrossSystemRepo>()));
+  gh.lazySingleton<_i760.ProcessSystemRatingUseCase>(() =>
+      _i760.ProcessSystemRatingUseCase(gh<_i831.ElevationAcrossSystemRepo>()));
   gh.lazySingleton<_i235.WithdrawnInvoicesDataSource>(
       () => _i235.WithdrawnInvoicesDataSourceImpl(gh<_i124.ApiServices>()));
   gh.lazySingleton<_i887.InvoicesSectionRepo>(
@@ -1487,6 +1491,12 @@ _i174.GetIt $initGetIt(
           gh<_i701.ManageWithdrawnInvoicesDataSource>()));
   gh.lazySingleton<_i454.InstallQualityRepo>(
       () => _i159.InstallQualityRepoImpl(gh<_i943.InstallQualityDatasource>()));
+  gh.factory<_i77.SysSupportRatingBloc>(() => _i77.SysSupportRatingBloc(
+        gh<_i574.GetElevationSysSupportUseCase>(),
+        gh<_i317.GetSystemRatingTicketsUseCase>(),
+        gh<_i1032.AddSystemRatingTicketsUseCase>(),
+        gh<_i760.ProcessSystemRatingUseCase>(),
+      ));
   gh.lazySingleton<_i805.PrivilegesRepo>(
       () => _i247.PrivilegesRepoImpl(gh<_i998.PrivilegesDatasource>()));
   gh.lazySingleton<_i503.DelayInstallReportsRepo>(() =>
@@ -1942,11 +1952,6 @@ _i174.GetIt $initGetIt(
       _i245.UpdateActivityCrudUseCase(gh<_i592.CrudActivitiesRepository>()));
   gh.lazySingleton<_i746.WithdrawnInvoicesRepo>(() =>
       _i238.WithdrawnInvoicesRepoImpl(gh<_i235.WithdrawnInvoicesDataSource>()));
-  gh.factory<_i77.SysSupportRatingBloc>(() => _i77.SysSupportRatingBloc(
-        gh<_i574.GetElevationSysSupportUseCase>(),
-        gh<_i317.GetSystemRatingTicketsUseCase>(),
-        gh<_i1032.AddSystemRatingTicketsUseCase>(),
-      ));
   gh.factory<_i872.CareUsageCubit>(() => _i872.CareUsageCubit(
         gh<_i648.GetCareUsageListUseCase>(),
         gh<_i721.CareUsageRepository>(),

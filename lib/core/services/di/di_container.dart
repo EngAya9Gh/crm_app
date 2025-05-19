@@ -65,23 +65,23 @@ abstract class AppModule {
   @lazySingleton
   Location get location => Location();
 
-  @preResolve
-  @singleton
-  Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
+  // @preResolve
+  // @singleton
+  // Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
 }
 
-@module
-abstract class HomeRepositoryModule {
-  @lazySingleton
-  FavoriteScreensRepository provideFavoriteScreensRepository(
-    SharedPreferences prefs,
-  ) =>
-      FavoriteScreensRepositoryImpl(prefs);
-
-  @lazySingleton
-  AvailableScreensRepository provideAvailableScreensRepository() =>
-      AvailableScreensRepositoryImpl();
-}
+// @module
+// abstract class HomeRepositoryModule {
+//   // @lazySingleton
+//   // FavoriteScreensRepository provideFavoriteScreensRepository(
+//   //   SharedPreferences prefs,
+//   // ) =>
+//   //     FavoriteScreensRepositoryImpl(prefs);
+//
+//   // @lazySingleton
+//   // AvailableScreensRepository provideAvailableScreensRepository() =>
+//   //     AvailableScreensRepositoryImpl();
+// }
 
 Future<void> initializeFavoriteScreensCubit(GetIt getIt) async {
   print('[DI] Starting initializeFavoriteScreensCubit');
@@ -103,25 +103,25 @@ Future<void> initializeFavoriteScreensCubit(GetIt getIt) async {
     print('[DI] SharedPreferences already registered');
   }
 
-  if (!getIt.isRegistered<FavoriteScreensRepository>()) {
-    print('[DI] Registering FavoriteScreensRepository');
-    getIt.registerLazySingleton<FavoriteScreensRepository>(
-      () => FavoriteScreensRepositoryImpl(getIt<SharedPreferences>()),
-    );
-    print('[DI] FavoriteScreensRepository registered successfully');
-  } else {
-    print('[DI] FavoriteScreensRepository already registered');
-  }
+  // if (!getIt.isRegistered<FavoriteScreensRepository>()) {
+  //   print('[DI] Registering FavoriteScreensRepository');
+  //   getIt.registerLazySingleton<FavoriteScreensRepository>(
+  //     () => FavoriteScreensRepositoryImpl(getIt<SharedPreferences>()),
+  //   );
+  //   print('[DI] FavoriteScreensRepository registered successfully');
+  // } else {
+  //   print('[DI] FavoriteScreensRepository already registered');
+  // }
 
-  if (!getIt.isRegistered<AvailableScreensRepository>()) {
-    print('[DI] Registering AvailableScreensRepository');
-    getIt.registerLazySingleton<AvailableScreensRepository>(
-      () => AvailableScreensRepositoryImpl(),
-    );
-    print('[DI] AvailableScreensRepository registered successfully');
-  } else {
-    print('[DI] AvailableScreensRepository already registered');
-  }
+  // if (!getIt.isRegistered<AvailableScreensRepository>()) {
+  //   print('[DI] Registering AvailableScreensRepository');
+  //   getIt.registerLazySingleton<AvailableScreensRepository>(
+  //     () => AvailableScreensRepositoryImpl(),
+  //   );
+  //   print('[DI] AvailableScreensRepository registered successfully');
+  // } else {
+  //   print('[DI] AvailableScreensRepository already registered');
+  // }
 
   if (!getIt.isRegistered<FavoriteScreensCubit>()) {
     print('[DI] Registering FavoriteScreensCubit');
