@@ -43,10 +43,16 @@ class AddPayement extends StatelessWidget {
                 CardRow(
                     title: 'المبلغ المدفوع ',
                     value: invoiceModel.amountPaid.toString()),
-                CardRow(
-                    title: 'المبلغ المتبقي ',
-                    value: (double.parse(invoiceModel.total.toString()) -
-                            double.parse(invoiceModel.amountPaid.toString()))
+                if (invoiceModel.amountPaid == null ||
+                    invoiceModel.amountPaid == '')...[
+                  CardRow(
+                      title: 'المبلغ المتبقي ',
+                      value: '0'.toString()),
+                ] else
+                  CardRow(
+                      title: 'المبلغ المتبقي ',
+                      value: (double.parse(invoiceModel.total.toString()) -
+                              double.parse(invoiceModel.amountPaid.toString()))
                         .toStringAsFixed(2)
                         .toString()),
                 10.height,

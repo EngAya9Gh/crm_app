@@ -18,12 +18,12 @@ abstract class CareUsageRepository {
     String? lastActivityTo,
     String? state,
     String? premium,
-    List< String>  package,
+    List<String> package,
+    List<String> possibilityOfWithdraw,
     int? fkRegoin,
     int? activityTypeFk,
     int? shouldCommunicate,
   });
 
-  Future<Either<String, CareUsageModel>> doneCommunication(
-      int communicationId);
+  Future<Either<String, CareUsageModel>> doneCommunication(int communicationId);
 }

@@ -8,11 +8,13 @@ class SysSupportRatingState {
   final bool hasReachedEnd;
   final BlocStatus<List<TicketModel>> ratingSystemTickets;
   final BlocStatus<TicketModel> addRatingSystemTicket;
+  final BlocStatus<ElevationModel> processedRating;
   const SysSupportRatingState({
     this.listRating = const BlocStatus.initial(),
     this.statusListRating = const BlocStatus.initial(),
     this.ratingSystemTickets = const BlocStatus.initial(),
     this.addRatingSystemTicket = const BlocStatus.initial(),
+    this.processedRating = const BlocStatus.initial(),
     this.totalCount = 0,
     this.hasReachedEnd = false,
   });
@@ -22,6 +24,7 @@ class SysSupportRatingState {
     final BlocStatus? statusListRating,
     final BlocStatus<List<TicketModel>>? ratingSystemTickets,
     final BlocStatus<TicketModel>? addRatingSystemTicket,
+    final BlocStatus<ElevationModel>? processedRating,
     final int? totalCount,
     final bool? hasReachedEnd,
   }) {
@@ -31,7 +34,9 @@ class SysSupportRatingState {
       totalCount: totalCount ?? this.totalCount,
       hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
       ratingSystemTickets: ratingSystemTickets ?? this.ratingSystemTickets,
-      addRatingSystemTicket: addRatingSystemTicket ?? this.addRatingSystemTicket,
+      addRatingSystemTicket:
+          addRatingSystemTicket ?? this.addRatingSystemTicket,
+      processedRating: processedRating ?? this.processedRating,
     );
   }
 }

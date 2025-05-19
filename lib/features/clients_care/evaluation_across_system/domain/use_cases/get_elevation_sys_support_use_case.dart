@@ -7,7 +7,8 @@ import '../../data/models/elevation_model.dart';
 import '../repositories/sys_support_rating_repo.dart';
 
 @lazySingleton
-class GetElevationSysSupportUseCase extends BaseUsecase<Result<ResponseWrapper<List<ElevationModel>>>, GetRatingParams> {
+class GetElevationSysSupportUseCase extends BaseUsecase<
+    Result<ResponseWrapper<List<ElevationModel>>>, GetRatingParams> {
   GetElevationSysSupportUseCase(this._repository);
 
   final ElevationAcrossSystemRepo _repository;
@@ -23,7 +24,7 @@ class GetElevationSysSupportUseCase extends BaseUsecase<Result<ResponseWrapper<L
 class GetRatingParams {
   final int page;
   final int limit;
-  final double? rate;
+  final List<double> rates;
   final String? client_id;
   final int? rate_type;
   final String? search;
@@ -33,7 +34,7 @@ class GetRatingParams {
   const GetRatingParams({
     required this.page,
     this.limit = 10,
-    this.rate,
+    this.rates = const [],
     this.client_id,
     this.rate_type,
     this.search,
@@ -42,29 +43,40 @@ class GetRatingParams {
   });
 
   Map<String, dynamic> toMap() {
-    return {
+    Map<String, dynamic> map = {
       'page': this.page,
       'limit': this.limit,
-      'rate': this.rate,
       'client_id': this.client_id,
       'rate_type': this.rate_type,
       'search': this.search,
       'from': this.from,
       'to': this.to,
-    }..removeWhere((key, value) => value == null || value == 'null' || value == '');
+    };
+
+    // إضافة التقييمات كمعاملات متعددة
+    if (rates.isNotEmpty) {
+      for (int i = 0; i < rates.length; i++) {
+        map['rate[$i]'] = rates[i];
+      }
+    }
+
+    return map
+      ..removeWhere(
+          (key, value) => value == null || value == 'null' || value == '');
   }
 
   Map<String, dynamic> toMapClientProfile() {
     return {
       'client_id': this.client_id,
       "no_pagination": 1,
-    }..removeWhere((key, value) => value == null || value == 'null' || value == '');
+    }..removeWhere(
+        (key, value) => value == null || value == 'null' || value == '');
   }
 
   GetRatingParams copyWith({
     int? page,
     int? limit,
-    double? rate,
+    List<double>? rates,
     String? client_id,
     int? rate_type,
     String? search,
@@ -74,7 +86,7 @@ class GetRatingParams {
     return GetRatingParams(
       page: page ?? this.page,
       limit: limit ?? this.limit,
-      rate: rate ?? this.rate,
+      rates: rates ?? this.rates,
       client_id: client_id ?? this.client_id,
       rate_type: rate_type ?? this.rate_type,
       search: search ?? this.search,

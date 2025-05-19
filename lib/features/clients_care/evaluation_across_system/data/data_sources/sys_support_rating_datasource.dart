@@ -1,5 +1,6 @@
 import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_model.dart';
 import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/use_cases/get_system_rating_tickets_use_case.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/use_cases/process_system_rating_use_case.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../core/common/models/response_wrapper/response_wrapper.dart';
@@ -11,50 +12,85 @@ import '../../domain/use_cases/get_elevation_sys_support_use_case.dart';
 import '../models/elevation_model.dart';
 
 abstract class ElevationAcrossSystemDatasource {
-  Future<ResponseWrapper<List<ElevationModel>>> getRating(GetRatingParams params);
-  Future<ResponseWrapper<List<TicketModel>>> systemRatingTickets(GetOrAddSystemRatingTicktesParams params);
-  Future<ResponseWrapper<TicketModel>> addSystemRatingTicket(GetOrAddSystemRatingTicktesParams params);
+  Future<ResponseWrapper<List<ElevationModel>>> getRating(
+      GetRatingParams params);
+  Future<ResponseWrapper<List<TicketModel>>> systemRatingTickets(
+      GetOrAddSystemRatingTicktesParams params);
+  Future<ResponseWrapper<TicketModel>> addSystemRatingTicket(
+      GetOrAddSystemRatingTicktesParams params);
+  Future<ResponseWrapper<ElevationModel>> processSystemRating(
+      ProcessSystemRatingParams params);
 }
 
 @LazySingleton(as: ElevationAcrossSystemDatasource)
-class ElevationAcrossSystemDatasourceImpl implements ElevationAcrossSystemDatasource {
+class ElevationAcrossSystemDatasourceImpl
+    implements ElevationAcrossSystemDatasource {
   final ApiServices _api;
 
   const ElevationAcrossSystemDatasourceImpl(this._api);
 
   @override
-  Future<ResponseWrapper<List<ElevationModel>>> getRating(GetRatingParams params) async {
+  Future<ResponseWrapper<List<ElevationModel>>> getRating(
+      GetRatingParams params) async {
     fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.get(endPoint: EndPoints.care.systemRatings, queryParameters: params.toMap());
+      final response = await _api.get(
+          endPoint: EndPoints.care.systemRatings,
+          queryParameters: params.toMap());
 
       return ResponseWrapper<List<ElevationModel>>.fromJson(
-          response, (json) => List.from((json as List<dynamic>).map((e) => ElevationModel.fromJson(e as Map<String, dynamic>))));
+          response,
+          (json) => List.from((json as List<dynamic>)
+              .map((e) => ElevationModel.fromJson(e as Map<String, dynamic>))));
     }
 
     return throwAppException(fun);
   }
 
   @override
-  Future<ResponseWrapper<List<TicketModel>>> systemRatingTickets(GetOrAddSystemRatingTicktesParams params) async {
+  Future<ResponseWrapper<List<TicketModel>>> systemRatingTickets(
+      GetOrAddSystemRatingTicktesParams params) async {
     fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.get(endPoint: EndPoints.care.systemRatingTickets(params.ratingId!));
+      final response = await _api.get(
+          endPoint: EndPoints.care.systemRatingTickets(params.ratingId!));
 
       return ResponseWrapper<List<TicketModel>>.fromJson(
-          response, (json) => List.from((json as List<dynamic>).map((e) => TicketModel.fromMap(e as Map<String, dynamic>))));
+          response,
+          (json) => List.from((json as List<dynamic>)
+              .map((e) => TicketModel.fromMap(e as Map<String, dynamic>))));
     }
 
     return throwAppException(fun);
   }
 
   @override
-  Future<ResponseWrapper<TicketModel>> addSystemRatingTicket(GetOrAddSystemRatingTicktesParams params) async {
+  Future<ResponseWrapper<TicketModel>> addSystemRatingTicket(
+      GetOrAddSystemRatingTicktesParams params) async {
     fun() async {
       _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _api.post(endPoint: EndPoints.care.systemRatingsAddTicket(params.ratingId), data: params.toMapAdd());
+      final response = await _api.post(
+          endPoint: EndPoints.care.systemRatingsAddTicket(params.ratingId),
+          data: params.toMapAdd());
 
-      return ResponseWrapper<TicketModel>.fromJson(response, (json) => TicketModel.fromMap(json));
+      return ResponseWrapper<TicketModel>.fromJson(
+          response, (json) => TicketModel.fromMap(json));
+    }
+
+    return throwAppException(fun);
+  }
+
+  @override
+  Future<ResponseWrapper<ElevationModel>> processSystemRating(
+      ProcessSystemRatingParams params) async {
+    fun() async {
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _api.post(
+          endPoint: EndPoints.care.processSystemRating(params.ratingId),
+          data: params.toMap());
+
+      return ResponseWrapper<ElevationModel>.fromJson(
+          response, (json) => ElevationModel.fromJson(json));
     }
 
     return throwAppException(fun);

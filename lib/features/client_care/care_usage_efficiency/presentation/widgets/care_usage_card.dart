@@ -45,10 +45,10 @@ class CareUsageCard extends StatelessWidget {
       onTap: () {
         AppNavigator.go(
           ClientProfile(
-                idClient: updatedCareUsage.idClients.toString(),
+            idClient: updatedCareUsage.idClients.toString(),
             tabIndex: 4,
             tabCareIndex: 3,
-                idCommunication: updatedCareUsage.idCommunication.toString(),
+            idCommunication: updatedCareUsage.idCommunication.toString(),
           ),
           name: AppRoutesNames.clientProfile.inCarePeriodicCommunication,
               pathParameters: {
@@ -57,7 +57,7 @@ class CareUsageCard extends StatelessWidget {
           extra: {
             'tabIndex': 4,
             'tabCareIndex': 3,
-                'idCommunication': updatedCareUsage.idCommunication,
+            'idCommunication': updatedCareUsage.idCommunication,
           },
         );
       },

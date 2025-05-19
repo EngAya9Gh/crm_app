@@ -5,14 +5,14 @@ class FilterElevationSysSupportEntity extends ChangeNotifier {
   FilterElevationSysSupportEntity();
   int page = 1;
   ValueNotifier<int> rateTypeNotifier = ValueNotifier<int>(1);
-  ValueNotifier<double?> rateNotifier = ValueNotifier<double?>(null);
+  ValueNotifier<List<double>> rateNotifier = ValueNotifier<List<double>>([]);
   TextEditingController searchController = TextEditingController();
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
     rateTypeNotifier.value = 1;
-    rateNotifier.value = null;
+    rateNotifier.value = [];
     searchController = TextEditingController();
     dateFromController = TextEditingController();
     dateToController = TextEditingController();
@@ -24,7 +24,7 @@ class FilterElevationSysSupportEntity extends ChangeNotifier {
   void savePreviousState() {
     _previousState = FilterElevationSysSupportEntity()
       ..rateTypeNotifier.value = this.rateTypeNotifier.value
-      ..rateNotifier.value = this.rateNotifier.value
+      ..rateNotifier.value = List.from(this.rateNotifier.value)
       ..searchController.text = this.searchController.text
       ..dateFromController.text = this.dateFromController.text
       ..dateToController.text = this.dateToController.text;
@@ -51,6 +51,8 @@ class FilterElevationSysSupportEntity extends ChangeNotifier {
   }
 
   bool checkIfFilterIsNotEmpty() {
-    return rateNotifier.value != null || dateFromController.text.isNotEmpty || dateToController.text.isNotEmpty;
+    return rateNotifier.value.isNotEmpty ||
+        dateFromController.text.isNotEmpty ||
+        dateToController.text.isNotEmpty;
   }
 }

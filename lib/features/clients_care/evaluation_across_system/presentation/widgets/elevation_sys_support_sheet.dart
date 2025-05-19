@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/extensions/num_extensions.dart';
 import '../../../../../core/common/widgets/app_elevated_button.dart';
+import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/config/navigator/app_navigator.dart';
 import '../../../../app/presentation/widgets/app_text_button.dart';
 import '../../../../sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
@@ -15,10 +16,12 @@ class FilterElevationSysSupportSheet extends StatefulWidget {
   const FilterElevationSysSupportSheet({super.key});
 
   @override
-  State<FilterElevationSysSupportSheet> createState() => _FilterElevationSysSupportSheet();
+  State<FilterElevationSysSupportSheet> createState() =>
+      _FilterElevationSysSupportSheet();
 }
 
-class _FilterElevationSysSupportSheet extends State<FilterElevationSysSupportSheet> {
+class _FilterElevationSysSupportSheet
+    extends State<FilterElevationSysSupportSheet> {
   late final SysSupportRatingBloc _bloc;
 
   @override
@@ -85,20 +88,113 @@ class _FilterElevationSysSupportSheet extends State<FilterElevationSysSupportShe
               ],
             ),
             10.height,
-            ValueListenableBuilder(
-              valueListenable: _bloc.filterEntity.rateNotifier,
-              builder: (context, rateNoti, child) => Align(
+            Padding(
+              padding: const EdgeInsets.only(right: 5, bottom: 2),
+              child: Align(
                 alignment: Alignment.centerRight,
-                child: AppRateWidget(
-                  title: 'التقييم',
-                  rateValue: rateNoti ?? 0,
-                  initialRating: rateNoti ?? 0,
-                  isReadOnly: false,
-                  onRatingUpdate: (value) {
-                    _bloc.filterEntity.rateNotifier.value = value;
-                  },
-                ),
+                child: AppText('التقييم'),
               ),
+            ),
+            10.height,
+            ValueListenableBuilder<List<double>>(
+              valueListenable: _bloc.filterEntity.rateNotifier,
+              builder: (context, rates, child) {
+                return InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (dialogContext) {
+                        List<double> tempRates = List.from(rates);
+                        return StatefulBuilder(builder: (context, setState) {
+                          return AlertDialog(
+                            title: AppText('اختر التقييم'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(5, (index) {
+                                final rate = (index + 1).toDouble();
+                                final isSelected = tempRates.contains(rate);
+                                return InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      if (isSelected) {
+                                        tempRates.remove(rate);
+                                      } else {
+                                        tempRates.add(rate);
+                                      }
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        AppRateWidget(
+                                          rateValue: rate,
+                                          initialRating: rate,
+                                          isReadOnly: true,
+                                          iconSize: 24,
+                                        ),
+                                        if (isSelected)
+                                          Icon(
+                                            Icons.check,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            size: 20,
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: AppText('إلغاء'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  _bloc.filterEntity.rateNotifier.value =
+                                      tempRates;
+                                  Navigator.of(context).pop();
+                                },
+                                child: AppText('تم'),
+                              ),
+                            ],
+                          );
+                        });
+                      },
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 12),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          rates.isEmpty
+                              ? 'اختر التقييم'
+                              : '${rates.length} تقييم محدد',
+                          style: TextStyle(
+                            color: rates.isEmpty ? Colors.grey : Colors.black,
+                          ),
+                        ),
+                        Icon(Icons.arrow_drop_down),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
             20.height,
             AppElevatedButton(

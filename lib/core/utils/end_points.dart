@@ -41,7 +41,6 @@ abstract class EndPoints {
   static const statistics = 'home/statistics';
 }
 
-
 class _BaseUrls {
   _BaseUrls() {
     init();
@@ -192,7 +191,7 @@ class _Care {
   final String getManagement = "admin-for-user";
   final String getViolationTypes = "violations/types";
   final String getActivitiesTypes = "activities/types";
-  final String getclient_usages  = 'client-usages';
+  final String getclient_usages = 'client-usages';
 
   String communicationsByClient(String id) => "communications/by-client/$id";
 
@@ -203,9 +202,13 @@ class _Care {
 
   String updateViolation(String violationId) => "violations/$violationId/edit";
   final String violations = "violations";
-  final String systemRatings='system-ratings';
-  String systemRatingTickets(int ratingId)=>'system-ratings/$ratingId/tickets';
-  String systemRatingsAddTicket(int ratingId)=>'system-ratings/$ratingId/add-ticket';
+  final String systemRatings = 'system-ratings';
+  String systemRatingTickets(int ratingId) =>
+      'system-ratings/$ratingId/tickets';
+  String systemRatingsAddTicket(int ratingId) =>
+      'system-ratings/$ratingId/add-ticket';
+  String processSystemRating(int ratingId) =>
+      'system-ratings/$ratingId/processed';
 }
 
 class _Privilege {
@@ -215,8 +218,6 @@ class _Privilege {
   final updatePrivileges = "updatePermissions";
   final getLevels = "levels";
 }
-
-
 
 class _ChatAi {
   const _ChatAi();

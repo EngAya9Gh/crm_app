@@ -50,20 +50,22 @@ class CareUsageCubit extends Cubit<CareUsageState> {
 
         final result = await _getCareUsageListUseCase(
           GetCareUsageListParams(
-            skip: pageVariables.allList.length,
-            filter: pageVariables.searchController.text,
-            endFrom: filterEntity.endFromNotifier.value,
-            endTo: filterEntity.endToNotifier.value,
-            startFrom: filterEntity.startFromNotifier.value,
-            startTo: filterEntity.startToNotifier.value,
-            lastActivityFrom: filterEntity.lastActivityFromNotifier.value,
-            lastActivityTo: filterEntity.lastActivityToNotifier.value,
-            state: pageVariables.type,
-            premium: filterEntity.premiumNotifier.value,
-            package: filterEntity.packageNotifier.value,
-            fkRegoin: filterEntity.fkRegoinNotifier.value,
-            activityTypeFk: filterEntity.activityTypeFkNotifier.value,
-          ),
+              skip: pageVariables.allList.length,
+              filter: pageVariables.searchController.text,
+              endFrom: filterEntity.endFromNotifier.value,
+              endTo: filterEntity.endToNotifier.value,
+              startFrom: filterEntity.startFromNotifier.value,
+              startTo: filterEntity.startToNotifier.value,
+              lastActivityFrom: filterEntity.lastActivityFromNotifier.value,
+              lastActivityTo: filterEntity.lastActivityToNotifier.value,
+              state: pageVariables.type,
+              premium: filterEntity.premiumNotifier.value,
+              package: filterEntity.packageNotifier.value,
+              possibilityOfWithdraw:
+                  filterEntity.possibilityOfWithdrawNotifier.value,
+              fkRegoin: filterEntity.fkRegoinNotifier.value,
+              activityTypeFk: filterEntity.activityTypeFkNotifier.value,
+              shouldCommunicate: pageVariables.shouldCommunicate),
         );
 
         result.fold(
@@ -142,7 +144,7 @@ class CareUsageCubit extends Cubit<CareUsageState> {
           }).toList();
 
           // تحديث الواجهة
-          pageVariables.allList=List.of(updatedStateList);
+          pageVariables.allList = List.of(updatedStateList);
           emit(state.copyWith(
             careUsageList: updatedStateList,
             doneCommunicationStatus: BlocStatus.success(data: communicationId),

@@ -14,6 +14,7 @@ class ElevationModel {
   final String? message;
   final String? createdAt;
   final String? updatedAt;
+  final bool? should_processed;
 
   ElevationModel({
     this.id,
@@ -28,6 +29,7 @@ class ElevationModel {
     this.message,
     this.createdAt,
     this.updatedAt,
+    this.should_processed,
   });
 
   ElevationModel copyWith({
@@ -43,6 +45,7 @@ class ElevationModel {
     String? message,
     String? createdAt,
     String? updatedAt,
+    bool? should_processed,
   }) =>
       ElevationModel(
         id: id ?? this.id,
@@ -57,6 +60,7 @@ class ElevationModel {
         message: message ?? this.message,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        should_processed: should_processed ?? this.should_processed,
       );
 
   factory ElevationModel.fromJson(Map<String, dynamic> json) => ElevationModel(
@@ -72,6 +76,7 @@ class ElevationModel {
     message: json["message"],
     createdAt: json["created_at"] == null ? null : DateFormat().format(DateTime.parse(json["created_at"])),
     updatedAt: json["updated_at"] == null ? null : DateFormat().format(DateTime.parse(json["updated_at"])),
+    should_processed: json["should_processed"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -82,10 +87,13 @@ class ElevationModel {
     "rate_date": rateDate,
     "rate_type": rateType,
     "rate": rate,
-    "question": question,
-    "rating_reason": ratingReason,
-    "message": message,
-    if(createdAt?.isNotEmpty??false)"created_at": DateTime.parse(createdAt!).toIso8601String(),
-    if(updatedAt?.isNotEmpty??false)"updated_at": DateTime.parse(updatedAt!).toIso8601String(),
-  };
+      "question": question,
+        "rating_reason": ratingReason,
+        "message": message,
+        if (createdAt?.isNotEmpty ?? false)
+          "created_at": DateTime.parse(createdAt!).toIso8601String(),
+        if (updatedAt?.isNotEmpty ?? false)
+          "updated_at": DateTime.parse(updatedAt!).toIso8601String(),
+        "should_processed": should_processed,
+      };
 }

@@ -12,7 +12,8 @@ class FilterCareUsageEntity {
   final lastActivityToNotifier = ValueNotifier<String?>(null);
   final stateNotifier = ValueNotifier<String?>(null);
   final premiumNotifier = ValueNotifier<String?>(null);
-  final packageNotifier = ValueNotifier<List< String>>([]) ;
+  final packageNotifier = ValueNotifier<List<String>>([]);
+  final possibilityOfWithdrawNotifier = ValueNotifier<List<String>>([]);
   final fkRegoinNotifier = ValueNotifier<int?>(null);
   final activityTypeFkNotifier = ValueNotifier<int?>(null);
   final shouldCommunicateNotifier = ValueNotifier<int?>(null);
@@ -27,6 +28,7 @@ class FilterCareUsageEntity {
     stateNotifier.value = null;
     premiumNotifier.value = null;
     packageNotifier.value = [];
+    possibilityOfWithdrawNotifier.value = [];
     fkRegoinNotifier.value = null;
     activityTypeFkNotifier.value = null;
     shouldCommunicateNotifier.value = null;
@@ -45,9 +47,11 @@ class FilterCareUsageEntity {
       ..stateNotifier.value = this.stateNotifier.value
       ..premiumNotifier.value = this.premiumNotifier.value
       ..packageNotifier.value = this.packageNotifier.value
+      ..possibilityOfWithdrawNotifier.value =
+          this.possibilityOfWithdrawNotifier.value
       ..fkRegoinNotifier.value = this.fkRegoinNotifier.value
-      ..activityTypeFkNotifier.value = this.activityTypeFkNotifier.value;
-      // ..shouldCommunicateNotifier.value = this.shouldCommunicateNotifier.value;
+      ..activityTypeFkNotifier.value = this.activityTypeFkNotifier.value
+      ..shouldCommunicateNotifier.value = this.shouldCommunicateNotifier.value;
   }
 
   FilterCareUsageEntity get returnToPreviousState {
@@ -69,9 +73,10 @@ class FilterCareUsageEntity {
       stateNotifier,
       premiumNotifier,
       packageNotifier,
+      possibilityOfWithdrawNotifier,
       fkRegoinNotifier,
       activityTypeFkNotifier,
-      // shouldCommunicateNotifier,
+      shouldCommunicateNotifier,
     ];
   }
 
@@ -85,9 +90,9 @@ class FilterCareUsageEntity {
         stateNotifier.value != null ||
         premiumNotifier.value != null ||
         packageNotifier.value.isNotEmpty ||
+        possibilityOfWithdrawNotifier.value.isNotEmpty ||
         fkRegoinNotifier.value != null ||
-        activityTypeFkNotifier.value != null ;
-        // ||
-        // shouldCommunicateNotifier.value != null;
+        activityTypeFkNotifier.value != null ||
+        shouldCommunicateNotifier.value != null;
   }
 }

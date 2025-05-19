@@ -20,3 +20,9 @@ class AddSystemRatingTicketEvent extends SysSupportRatingEvent {
 
   AddSystemRatingTicketEvent({required this.params});
 }
+
+class ProcessSystemRatingEvent extends SysSupportRatingEvent {
+  final ProcessSystemRatingParams params;
+
+  ProcessSystemRatingEvent({required this.params});
+}

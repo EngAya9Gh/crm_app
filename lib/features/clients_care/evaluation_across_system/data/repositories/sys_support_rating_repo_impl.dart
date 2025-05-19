@@ -3,6 +3,7 @@ import 'package:crm_smart/core/services/api/api_utils.dart';
 import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_model.dart';
 import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/use_cases/get_system_rating_tickets_use_case.dart';
+import 'package:crm_smart/features/clients_care/evaluation_across_system/domain/use_cases/process_system_rating_use_case.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../model/communication_modle.dart';
@@ -18,17 +19,26 @@ class ElevationAcrossSystemRepoImpl implements ElevationAcrossSystemRepo {
   const ElevationAcrossSystemRepoImpl(this._dataSource);
 
   @override
-  Future<Result<ResponseWrapper<List<ElevationModel>>>> getRating(GetRatingParams params) {
+  Future<Result<ResponseWrapper<List<ElevationModel>>>> getRating(
+      GetRatingParams params) {
     return toApiResult(() async => _dataSource.getRating(params));
   }
 
   @override
-  Future<Result<ResponseWrapper<List<TicketModel>>>> getSystemRatingTickets(GetOrAddSystemRatingTicktesParams params) {
+  Future<Result<ResponseWrapper<List<TicketModel>>>> getSystemRatingTickets(
+      GetOrAddSystemRatingTicktesParams params) {
     return toApiResult(() async => _dataSource.systemRatingTickets(params));
   }
 
   @override
-  Future<Result<ResponseWrapper<TicketModel>>> addSystemRatingTicket(GetOrAddSystemRatingTicktesParams params) {
+  Future<Result<ResponseWrapper<TicketModel>>> addSystemRatingTicket(
+      GetOrAddSystemRatingTicktesParams params) {
     return toApiResult(() async => _dataSource.addSystemRatingTicket(params));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<ElevationModel>>> processSystemRating(
+      ProcessSystemRatingParams params) {
+    return toApiResult(() async => _dataSource.processSystemRating(params));
   }
 }

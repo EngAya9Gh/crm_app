@@ -33,13 +33,11 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
   void initState() {
     super.initState();
     careUsageCubit = context.read<CareUsageCubit>();
-   WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
-       
     });
-
   }
 
   @override
@@ -77,7 +75,7 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
 
               // Subscription End Date section
               AppText(
-                'تاريخ التجديد',
+                'تاريخ نهاية الاشتراك',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               8.verticalSpace,
@@ -233,7 +231,7 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                 ],
               ),
 
-              16.verticalSpace, 
+              16.verticalSpace,
               AppText(
                 'حالة العميل',
                 style: Theme.of(context).textTheme.titleMedium,
@@ -254,7 +252,7 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                     },
                   );
                 },
-                ),
+              ),
 
               16.verticalSpace,
               // Premium Section
@@ -287,18 +285,55 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               16.verticalSpace,
-              ValueListenableBuilder <List<String?>>(
-                valueListenable: careUsageCubit.filterEntity.packageNotifier ,
+              ValueListenableBuilder<List<String?>>(
+                valueListenable: careUsageCubit.filterEntity.packageNotifier,
                 builder: (context, value, child) {
                   return CustomMultiSelectionDropdown<String>(
                     hint: 'اختر الباقة',
-                    items: ['الباقة الأساسية', 'باقة المتقدمة', 'الباقة الكاملة' ,'الباقة الأولى','الباقة المتقدمة -نظام المطاعم','الباقة الأساسية-نظام المطاعم','المتاجر الإلكترونية','ERP SLAS' ],
-                    selectedItems:  careUsageCubit.filterEntity.packageNotifier.value,
+                    items: [
+                      'الباقة الأساسية',
+                      'باقة المتقدمة',
+                      'الباقة الكاملة',
+                      'الباقة الأولى',
+                      'الباقة المتقدمة -نظام المطاعم',
+                      'الباقة الأساسية-نظام المطاعم',
+                      'المتاجر الإلكترونية',
+                      'ERP SLAS'
+                    ],
+                    selectedItems:
+                        careUsageCubit.filterEntity.packageNotifier.value,
                     compareFn: (item, selectedItem) => item == selectedItem,
                     itemAsString: (item) => item ?? '',
                     onSave: (value) {
                       if (value == null) return;
                       careUsageCubit.filterEntity.packageNotifier.value = value;
+                    },
+                  );
+                },
+              ),
+
+              16.verticalSpace,
+              // Possibility of Withdraw Section
+              AppText(
+                'احتمالية الانسحاب',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              16.verticalSpace,
+              ValueListenableBuilder<List<String?>>(
+                valueListenable:
+                    careUsageCubit.filterEntity.possibilityOfWithdrawNotifier,
+                builder: (context, value, child) {
+                  return CustomMultiSelectionDropdown<String>(
+                    hint: 'اختر احتمالية الانسحاب',
+                    items: ['عالية', 'متوسطة', 'منخفضة'],
+                    selectedItems: careUsageCubit
+                        .filterEntity.possibilityOfWithdrawNotifier.value,
+                    compareFn: (item, selectedItem) => item == selectedItem,
+                    itemAsString: (item) => item ?? '',
+                    onSave: (value) {
+                      if (value == null) return;
+                      careUsageCubit.filterEntity.possibilityOfWithdrawNotifier
+                          .value = value;
                     },
                   );
                 },

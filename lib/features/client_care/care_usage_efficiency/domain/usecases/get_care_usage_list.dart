@@ -25,6 +25,7 @@ class GetCareUsageListUseCase {
       state: params.state,
       premium: params.premium,
       package: params.package,
+      possibilityOfWithdraw: params.possibilityOfWithdraw,
       fkRegoin: params.fkRegoin,
       activityTypeFk: params.activityTypeFk,
       shouldCommunicate: params.shouldCommunicate,
@@ -43,7 +44,8 @@ class GetCareUsageListParams extends Equatable {
   final String? lastActivityTo;
   final String? state;
   final String? premium;
-  final List< String>  package;
+  final List<String> package;
+  final List<String> possibilityOfWithdraw;
   final int? fkRegoin;
   final int? activityTypeFk;
   final int? shouldCommunicate;
@@ -59,7 +61,8 @@ class GetCareUsageListParams extends Equatable {
     this.lastActivityTo,
     this.state,
     this.premium,
-    this.package= const [],
+    this.package = const [],
+    this.possibilityOfWithdraw = const [],
     this.fkRegoin,
     this.activityTypeFk,
     this.shouldCommunicate,
@@ -78,6 +81,7 @@ class GetCareUsageListParams extends Equatable {
         state,
         premium,
         package,
+        possibilityOfWithdraw,
         fkRegoin,
         activityTypeFk,
         shouldCommunicate,

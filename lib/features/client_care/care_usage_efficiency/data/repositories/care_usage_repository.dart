@@ -15,7 +15,6 @@ class CareUsageRepositoryImpl implements CareUsageRepository {
 
   const CareUsageRepositoryImpl(this._dataSource);
 
-
   @override
   Future<Either<String, PaginationResponseWrapper>> getCareUsageList({
     int? skip,
@@ -28,7 +27,8 @@ class CareUsageRepositoryImpl implements CareUsageRepository {
     String? lastActivityTo,
     String? state,
     String? premium,
-    List<String>  package=const[],
+    List<String> package = const [],
+    List<String> possibilityOfWithdraw = const [],
     int? fkRegoin,
     int? activityTypeFk,
     int? shouldCommunicate,
@@ -47,6 +47,7 @@ class CareUsageRepositoryImpl implements CareUsageRepository {
           state: state,
           premium: premium,
           package: package,
+          possibilityOfWithdraw: possibilityOfWithdraw,
           fkRegoin: fkRegoin,
           activityTypeFk: activityTypeFk,
           shouldCommunicate: shouldCommunicate,
@@ -65,14 +66,13 @@ class CareUsageRepositoryImpl implements CareUsageRepository {
   }
 
   @override
-  Future<Either<String, CareUsageModel>> doneCommunication(int communicationId) async {
-   try {
+  Future<Either<String, CareUsageModel>> doneCommunication(
+      int communicationId) async {
+    try {
       final result = await _dataSource.doneCommunication(communicationId);
       return Right(result);
     } catch (e) {
-      return Left(  e.toString() );
+      return Left(e.toString());
     }
   }
-
-
 }

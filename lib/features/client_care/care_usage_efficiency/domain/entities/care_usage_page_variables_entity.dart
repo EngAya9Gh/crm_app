@@ -10,5 +10,6 @@ class CareUsagePageVariablesEntity {
   int totalCount = 0;
   bool isNewFilter = true;
   String type = 'online';
+  int shouldCommunicate=1;
   TextEditingController searchController = TextEditingController();
 }
