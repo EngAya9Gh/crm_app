@@ -101,7 +101,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
         .map((section) => FavoriteScreenModel(
               id: section.path.split('/').last,
               title: section.title,
-              icon: section.icon ?? Icons.support_agent,
+              iconKey: 'support_agent',
               routeName: section.path,
               privilegeId: section.privilegeId,
               page: section.page,
@@ -113,7 +113,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
         .map((section) => FavoriteScreenModel(
               id: section.path.split('/').last,
               title: section.title,
-              icon: section.icon ?? Icons.support_agent,
+              iconKey: 'support_agent',
               routeName: section.path,
               privilegeId: section.privilegeId,
               page: section.page,
@@ -125,7 +125,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
         .map((section) => FavoriteScreenModel(
               id: section.path.split('/').last,
               title: section.title,
-              icon: section.icon ?? Icons.report,
+              iconKey: 'report',
               routeName: section.path,
               privilegeId: section.privilegeId,
               page: section.page,
@@ -137,7 +137,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
         .map((section) => FavoriteScreenModel(
               id: section.path.split('/').last,
               title: section.title,
-              icon: section.icon ?? Icons.settings,
+              iconKey: 'settings',
               routeName: section.path,
               privilegeId: section.privilegeId,
               page: section.page,
@@ -149,7 +149,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
         .map((section) => FavoriteScreenModel(
               id: section.path.split('/').last,
               title: section.title,
-              icon: section.icon ?? Icons.attach_money,
+              iconKey: 'attach_money',
               routeName: section.path,
               privilegeId: section.privilegeId,
               page: section.page,
@@ -162,7 +162,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'clients_list',
         title: 'قائمة العملاء',
-        icon: Icons.people,
+        iconKey: 'people',
         routeName: AppRoutesPaths.salesClientsSubSections.clientsList,
         privilegeId: '36',
         page: ClientsListPage(),
@@ -170,14 +170,14 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'lead_management',
         title: 'ادارة ال lead',
-        icon: Icons.trending_up,
+        iconKey: 'trending_up',
         routeName: 'leads',
         privilegeId: '314',
       ),
       FavoriteScreenModel(
         id: 'clients_transfer_approvals',
         title: 'موافقات تحويل العملاء',
-        icon: Icons.swap_horiz,
+        iconKey: 'swap_horiz',
         routeName:
             AppRoutesPaths.salesClientsSubSections.clientsTransferApprovals,
         page: ClientsTransferApprovalsPage(),
@@ -185,7 +185,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'pending_invoices',
         title: 'طلبات موافقة المشرفين',
-        icon: Icons.pending_actions,
+        iconKey: 'pending_actions',
         routeName: AppRoutesPaths.salesClientsSubSections.pendingInvoices,
         privilegeId: '40',
         page: PendingInvoicesPage(),
@@ -194,7 +194,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'clients_invoices',
         title: 'فواتير العملاء',
-        icon: Icons.receipt_long,
+        iconKey: 'receipt_long',
         routeName: AppRoutesPaths.salesInvoiceSubSections.clientsInvoices,
         privilegeId: '39',
         page: ClientsInvoicesPage(),
@@ -202,7 +202,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'deleted_invoices',
         title: 'الفواتير المحذوفة',
-        icon: Icons.delete_sweep,
+        iconKey: 'delete_sweep',
         routeName: AppRoutesPaths.salesInvoiceSubSections.deletedInvoices,
         privilegeId: '14',
         page: DeletedInvoicesPage(),
@@ -211,7 +211,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'participate_list',
         title: 'المتعاونين',
-        icon: Icons.group_work,
+        iconKey: 'group_work',
         routeName: AppRoutesPaths.salesRelationSubSections.participateList,
         privilegeId: '113',
         page: ParticipateListPage(),
@@ -219,7 +219,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'agents_distributors',
         title: 'الوكلاء والموزعين',
-        icon: Icons.admin_panel_settings,
+        iconKey: 'admin_panel_settings',
         routeName:
             AppRoutesPaths.salesRelationSubSections.agentsAndDistributors,
         privilegeId: '114',
@@ -229,7 +229,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'employees_sales_reports',
         title: 'تقارير مبيعات الموظفين',
-        icon: Icons.bar_chart,
+        iconKey: 'bar_chart',
         routeName: AppRoutesPaths.salesReportsSubSections.employeesSalesReports,
         privilegeId: '85',
         page: EmployeesSalesReportsPage(),
@@ -237,7 +237,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'regions_sales_reports',
         title: 'تقارير مبيعات الفروع',
-        icon: Icons.pie_chart,
+        iconKey: 'pie_chart',
         routeName: AppRoutesPaths.salesReportsSubSections.regionsSalesReports,
         privilegeId: '86',
         page: RegionsSalesReportsPage(),
@@ -246,7 +246,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'tasks',
         title: 'المهام',
-        icon: Icons.task_alt,
+        iconKey: 'task_alt',
         routeName: AppRoutesPaths.homeSections.taskManagement,
         privilegeId: '18',
         page: TaskManagementPage(),
@@ -255,7 +255,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'packages_offer',
         title: 'العروض والباقات',
-        icon: Icons.local_offer,
+        iconKey: 'local_offer',
         routeName: AppRoutesPaths.salesSections.packagesOffer,
         privilegeId: '224',
         page: PackagesOffersPage(),
@@ -264,14 +264,14 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'notifications',
         title: 'الإشعارات',
-        icon: Icons.notifications,
+        iconKey: 'notifications',
         routeName: AppRoutesPaths.notifications,
         page: NotificationsPage(),
       ),
       FavoriteScreenModel(
         id: 'versions',
         title: 'الإصدارات',
-        icon: Icons.update,
+        iconKey: 'update',
         routeName: AppRoutesPaths.versions,
         privilegeId: '225',
         page: VersionsPage(),
@@ -280,7 +280,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'clients_contacts',
         title: 'قائمة جهات الاتصال',
-        icon: Icons.contacts,
+        iconKey: 'contacts',
         routeName: AppRoutesPaths.salesClientsSubSections.clientsContacts,
         privilegeId: '301',
         page: ClientsContactsPage(),
@@ -288,7 +288,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'latest_clients_updates',
         title: 'آخر تحديثات العملاء',
-        icon: Icons.update,
+        iconKey: 'update',
         routeName: AppRoutesPaths.salesClientsSubSections.latestClientsUpdates,
         privilegeId: '119',
         page: LatestClientsUpdatesPage(),
@@ -296,7 +296,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'clients_debts',
         title: 'ديون العملاء',
-        icon: Icons.account_balance_wallet,
+        iconKey: 'account_balance_wallet',
         routeName: AppRoutesPaths.salesClientsSubSections.clientsDebts,
         privilegeId: '39',
         page: ClientsDebtsPage(),
@@ -304,7 +304,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'finance_pending',
         title: 'طلبات اعتماد المالية',
-        icon: Icons.attach_money,
+        iconKey: 'attach_money',
         routeName: AppRoutesPaths.salesClientsSubSections.financePending,
         privilegeId: '111',
         page: FinancePendingPage(),
@@ -312,7 +312,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'exceeded_clients',
         title: 'تحويلات عملاء التسويق لميداني',
-        icon: Icons.transfer_within_a_station,
+        iconKey: 'transfer_within_a_station',
         routeName: AppRoutesPaths.salesClientsSubSections.exceededClients,
         privilegeId: '233',
         page: ExceededClientsPage(),
@@ -320,7 +320,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'calender_client',
         title: 'جدول زيارات العميل',
-        icon: Icons.calendar_today,
+        iconKey: 'calendar_today',
         routeName: AppRoutesPaths.salesClientsSubSections.calenderClient,
         privilegeId: '120',
         page: calender_client(),
@@ -328,7 +328,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'manage_withdrawn_invoices',
         title: 'إدارة الفواتير المنسحبة',
-        icon: Icons.exit_to_app,
+        iconKey: 'exit_to_app',
         routeName:
             AppRoutesPaths.salesInvoiceSubSections.manageWithdrawnInvoices,
         privilegeId: '143',
@@ -337,7 +337,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'withdrawn_invoices',
         title: 'الفواتير المنسحبة',
-        icon: Icons.cancel,
+        iconKey: 'cancel',
         routeName: AppRoutesPaths.salesInvoiceSubSections.withdrawnInvoices,
         privilegeId: '35',
         page: WithdrawnInvoicesPage(),
@@ -345,7 +345,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'company_view',
         title: 'الشركات المنافسة',
-        icon: Icons.business,
+        iconKey: 'business',
         routeName: AppRoutesPaths.salesRelationSubSections.companyView,
         privilegeId: '115',
         page: company_view(type: 'ticket'),
@@ -353,21 +353,21 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'important_links',
         title: 'الروابط الهامة',
-        icon: Icons.link,
+        iconKey: 'link',
         routeName: AppRoutesPaths.salesRelationSubSections.importantLinks,
         page: ImportantLinksPage(),
       ),
       FavoriteScreenModel(
         id: 'demo_users',
         title: 'يوزرات تجريبية',
-        icon: Icons.person_outline,
+        iconKey: 'person_outline',
         routeName: AppRoutesPaths.salesRelationSubSections.usertestView,
         page: DemoUsersPage(),
       ),
       FavoriteScreenModel(
         id: 'products_sales_reports',
         title: 'تقارير مبيعات المنتجات',
-        icon: Icons.shopping_cart,
+        iconKey: 'shopping_cart',
         routeName: AppRoutesPaths.salesReportsSubSections.productsSalesReports,
         privilegeId: '88',
         page: ProductsSalesReportsPage(),
@@ -375,7 +375,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'clients_debts_reports',
         title: 'تقارير ديون العملاء',
-        icon: Icons.account_balance,
+        iconKey: 'account_balance',
         routeName: AppRoutesPaths.salesReportsSubSections.clientsDebtsReports,
         privilegeId: '91',
         page: ClientsDebtsReportsPage(),
@@ -383,7 +383,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'clients_status_reports',
         title: 'تقارير حالات العملاء',
-        icon: Icons.assessment,
+        iconKey: 'assessment',
         routeName: AppRoutesPaths.salesReportsSubSections.clientsStatusReports,
         privilegeId: '95',
         page: ClientsStatusReportsPage(),
@@ -391,7 +391,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'employee_race',
         title: 'سباق الموظفين',
-        icon: Icons.emoji_events,
+        iconKey: 'emoji_events',
         routeName: AppRoutesPaths.salesRaceSubSections.employeeRace,
         privilegeId: '118',
         page: EmployeeRacePage(),
@@ -399,7 +399,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'sales_branch_race',
         title: 'سباق الفروع',
-        icon: Icons.military_tech,
+        iconKey: 'military_tech',
         routeName: AppRoutesPaths.salesRaceSubSections.salesBranchRace,
         privilegeId: '117',
         page: BranchRaceView(),
@@ -407,14 +407,14 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
       FavoriteScreenModel(
         id: 'add_task',
         title: 'إضافة مهمة',
-        icon: Icons.add_task,
+        iconKey: 'add_task',
         routeName: 'add-task',
         privilegeId: '19',
       ),
       FavoriteScreenModel(
         id: 'task_reports',
         title: 'تقارير المهام',
-        icon: Icons.summarize,
+        iconKey: 'summarize',
         routeName: 'taskManagementreports',
         privilegeId: '223',
       ),
