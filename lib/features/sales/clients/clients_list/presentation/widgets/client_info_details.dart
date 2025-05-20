@@ -51,6 +51,11 @@ class _ClientInfoDetailsState extends State<ClientInfoDetails> {
             CardRow(
                 title: 'تاريخ الاضافة', value: client.dateCreate.toString()),
             CardRow(
+                title: 'حالة الحساب', value: client.account_state.toString()),
+            CardRow(
+                title: 'آخر نشاط', value: client.last_activity.toString()),
+
+            CardRow(
               title: 'المؤسسة',
               value: client.nameEnterprise.toString(),
               isExpanded: true,

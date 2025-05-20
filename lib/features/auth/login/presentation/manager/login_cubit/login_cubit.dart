@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/core/services/firebase_analytics_services.dart';
 import 'package:crm_smart/features/home/presentation/pages/home_page.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -20,7 +21,8 @@ import '../../../domain/use_cases/cache_token_usecase.dart';
 import '../../../domain/use_cases/get_token_usecase.dart';
 import '../../../domain/use_cases/login_usecase.dart';
 import '../../../domain/use_cases/validate_token_usecase.dart';
-import '../../../domain/use_cases/verify_otp_usecase.dart';
+import '../../../domain/use_cases/verify_otp_usecase.dart'; 
+import '../../../domain/use_cases/save_telegram_username_usecase.dart';
 
 part 'login_state.dart';
 
@@ -31,6 +33,7 @@ class LoginCubit extends Cubit<LoginState> {
   final CacheTokenUsecase _cacheTokenUsecase;
   final GetTokenUsecase _getTokenUsecase;
   final ValidateTokenUsecase _validateTokenUsecase;
+  final SaveTelegramUsernameUseCase _saveTelegramUsernameUseCase;
 
   LoginCubit(
     this._loginUsecase,
@@ -38,6 +41,7 @@ class LoginCubit extends Cubit<LoginState> {
     this._cacheTokenUsecase,
     this._getTokenUsecase,
     this._validateTokenUsecase,
+    this._saveTelegramUsernameUseCase,
   ) : super(LoginState());
 
   // final loginFormKey = GlobalKey<FormState>();
@@ -50,14 +54,14 @@ class LoginCubit extends Cubit<LoginState> {
     final result = await _loginUsecase(
       LoginParams(email: emailController.text),
     );
-    emit(state.copyWith(loginStatus: const BlocStatus.success()));
-    // result.fold(
-    //   (error) {
-    //     if (AppConstants.shouldReturnEarly(error)) return;
-    //     emit(state.copyWith(loginStatus: BlocStatus.fail(error: error)));
-    //   },
-    //   (_) => emit(state.copyWith(loginStatus: const BlocStatus.success())),
-    // );
+    //emit(state.copyWith(loginStatus: const BlocStatus.success()));
+    result.fold(
+      (error) {
+        if (AppConstants.shouldReturnEarly(error)) return;
+        emit(state.copyWith(loginStatus: BlocStatus.fail(error: error)));
+      },
+      (_) => emit(state.copyWith(loginStatus: const BlocStatus.success())),
+    );
   }
 
   Future<void> verifyOtp(BuildContext context) async {
@@ -68,7 +72,7 @@ class LoginCubit extends Cubit<LoginState> {
     if (kIsWeb) {
       WebBrowserInfo webInfo = await deviceInfoPlugin.webBrowserInfo;
       deviceDetails = "web ${webInfo.userAgent}";
-    } 
+    }
     // else if (Theme.of(context).platform == TargetPlatform.android) {
     //   AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
     //   deviceDetails = 'Android ${androidInfo.version.release} - ${androidInfo.model}';
@@ -91,12 +95,14 @@ class LoginCubit extends Cubit<LoginState> {
     result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
-        emit(state.copyWith(verifyOtpStatus: BlocStatus.fail(error: "Wrong OTP")));
+        emit(state.copyWith(
+            verifyOtpStatus: BlocStatus.fail(error: "Wrong OTP")));
       },
       (token) async {
         await cacheToken(token);
         await AnalyticsService().logLogIn(email: emailController.text);
-        await Provider.of<UserProvider>(context, listen: false).getCurrentUser();
+        await Provider.of<UserProvider>(context, listen: false)
+            .getCurrentUser();
         AppNavigator.go(HomePage(), name: AppRoutesNames.generalRoutes.home);
         emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));
         _clearControllers();
@@ -153,7 +159,8 @@ class LoginCubit extends Cubit<LoginState> {
     return result.fold(
       (error) {
         if (AppConstants.shouldReturnEarly(error)) return;
-        emit(state.copyWith(validateTokenStatus: BlocStatus.fail(error: error)));
+        emit(
+            state.copyWith(validateTokenStatus: BlocStatus.fail(error: error)));
         return null;
       },
       (data) {
@@ -161,5 +168,20 @@ class LoginCubit extends Cubit<LoginState> {
         return data.data;
       },
     );
+  }
+
+  Future<({bool success, String? message})> saveTelegramUsername(
+      String email, String telegramUsername) async {
+    try {
+      final response =
+          await _saveTelegramUsernameUseCase(email, telegramUsername);
+      if (response['success'] == true) {
+        return (success: true, message: response['message'] as String?);
+      } else {
+        return (success: false, message: response['message'] as String?);
+      }
+    } catch (e) {
+      return (success: false, message: 'خطأ في الاتصال بالخادم');
+    }
   }
 }

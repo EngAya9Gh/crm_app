@@ -21,4 +21,6 @@ abstract class LoginRepo {
   Future<Either<String, dynamic>> getToken(GetTokenParams getTokenParams);
 
   Future<Either<String, dynamic>> cacheToken(CacheTokenParams cacheTokenParams);
+
+  Future<Map<String, dynamic>> saveTelegramUsername(String email, String telegramUsername);
 }

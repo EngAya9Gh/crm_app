@@ -55,4 +55,9 @@ class LoginRepoImpl implements LoginRepo {
   ) {
     return _localDataSource.cacheToken(cacheTokenParams);
   }
+
+  @override
+  Future<Map<String, dynamic>> saveTelegramUsername(String email, String telegramUsername) {
+    return _remoteDatasource.saveTelegramUsername(email, telegramUsername);
+  }
 }

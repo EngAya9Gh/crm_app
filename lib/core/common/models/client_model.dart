@@ -83,6 +83,8 @@ class ClientModel extends Equatable {
   final String? name_user_reject;
   final String? date_reject;
      String? isParent='';
+     String? last_activity='';
+     String? account_state='';
   final String? referenceNo;
   final List<CommunicationDetailModel>? communicationDetails;
 
@@ -168,6 +170,8 @@ class ClientModel extends Equatable {
     this.date_reject,
     this.name_user_reject,
     this.communicationDetails,
+    this.last_activity,
+    this.account_state,
   });
 
   factory ClientModel.fromJson(Map<String, dynamic> json) {
@@ -253,6 +257,8 @@ class ClientModel extends Equatable {
       name_user_reject: ApiHelper.handleString(json['name_user_reject']),
       isParent: ApiHelper.handleString(json['is_parent']),
       referenceNo: ApiHelper.handleString(json['reference_no']),
+      last_activity: ApiHelper.handleString(json['last_activity']),
+      account_state: ApiHelper.handleString(json['account_state']),
       communicationDetails: json['communication_details'] != null
           ? (json['communication_details'] as List)
           .map((i) => CommunicationDetailModel.fromJson(i))

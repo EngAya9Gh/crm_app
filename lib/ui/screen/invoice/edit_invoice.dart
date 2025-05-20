@@ -112,7 +112,7 @@ class _EditInvoiceState extends State<EditInvoice> {
     }
     if (widget.invoiceModel.Date_FApprove != null) {
       _currentDateFinance = DateTime.parse(widget.invoiceModel.Date_FApprove.toString());
-      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDateFinance!);
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue3(_currentDateFinance!);
     }
     if (widget.invoiceModel.dateCreate != null) {
       _currentDateCreate = DateTime.parse(widget.invoiceModel.dateCreate.toString());
@@ -120,6 +120,7 @@ class _EditInvoiceState extends State<EditInvoice> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<datetime_vm>(context, listen: false).setdatetimevalue2(_currentDateCreate);
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue3(_currentDateFinance!);
       Provider.of<RegionProvider>(context, listen: false)
         ..getRegions()
         ..changeVal(regoin);
@@ -127,6 +128,8 @@ class _EditInvoiceState extends State<EditInvoice> {
     });
     approvingDateController.text = HelperFunctions.formatDate(widget.invoiceModel.date_approve);
     createDateController.text = HelperFunctions.formatDate(widget.invoiceModel.dateCreate);
+    approvingDateController.text = HelperFunctions.formatDate(_currentDateApprove!);
+    financeDateController.text = HelperFunctions.formatDate(_currentDateFinance!); 
     super.initState();
   }
 

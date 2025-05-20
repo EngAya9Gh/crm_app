@@ -221,9 +221,7 @@ class _CardClientState extends State<CardClient> {
                                   ),
                                 ),
                               if (preferences.showTypeRecord &&
-                                  widget.clientModel.ismarketing == '1' &&
-                                  (widget.clientModel.typeClient == 'عرض سعر' ||
-                                      widget.clientModel.typeClient == 'تفاوض'))
+                                  widget.clientModel.type_record != null)
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: AppStatusChip(
@@ -231,6 +229,17 @@ class _CardClientState extends State<CardClient> {
                                     status: widget.clientModel.type_record
                                         .toString(),
                                     color:preferences.typeRecordColor  //AppColors.secondaryAltLight,
+                                  ),
+                                ),
+                              if (preferences.showclassfication &&
+                                  widget.clientModel.type_classification != null)
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: AppStatusChip(
+                                    fontSize: 12,
+                                    status: widget.clientModel.type_classification
+                                        .toString(),
+                                    color:preferences.classficationColor  //AppColors.secondaryAltLight,
                                   ),
                                 ),
                             ],

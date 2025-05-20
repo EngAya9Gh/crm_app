@@ -77,6 +77,17 @@ class ClientCardSettingsPage extends StatelessWidget {
                   onColorChanged: (color) =>
                       provider.updatePreferences(mobileColor: color),
                 ),
+                8.height,
+                _buildDisplayOption(
+                  context,
+                  title: 'التصنيف الفرعي',
+                  value: preferences.showclassfication,
+                  color: preferences.classficationColor,
+                  onChanged: (value) =>
+                      provider.updatePreferences(showClassfication: value),
+                  onColorChanged: (color) =>
+                      provider.updatePreferences(classficationColor: color),
+                ),
               ],
             ),
           );

@@ -23,20 +23,24 @@ class ClientCardPreferencesProvider extends ChangeNotifier {
     bool? showTypeClient,
     bool? showTypeRecord,
     bool? showMobile,
+    bool? showClassfication,
     Color? nameUserColor,
     Color? typeClientColor,
     Color? typeRecordColor,
     Color? mobileColor,
+    Color? classficationColor,
   }) async {
     _preferences = ClientCardPreferences(
       showNameUser: showNameUser ?? _preferences.showNameUser,
       showTypeClient: showTypeClient ?? _preferences.showTypeClient,
       showTypeRecord: showTypeRecord ?? _preferences.showTypeRecord,
       showMobile: showMobile ?? _preferences.showMobile,
+      showclassfication: showClassfication ?? _preferences.showclassfication,
       nameUserColor: nameUserColor ?? _preferences.nameUserColor,
       typeClientColor: typeClientColor ?? _preferences.typeClientColor,
       typeRecordColor: typeRecordColor ?? _preferences.typeRecordColor,
       mobileColor: mobileColor ?? _preferences.mobileColor,
+      classficationColor: classficationColor ?? _preferences.classficationColor,
     );
     await _preferences.save();
     notifyListeners();

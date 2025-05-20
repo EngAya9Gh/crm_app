@@ -113,7 +113,9 @@ class _RecommendedClientsReportState extends State<RecommendedClientsReportPage>
                                 AppDataTableColumn('رقم العنصر'),
                                 AppDataTableColumn('اسم المؤسسة'),
                                 // AppDataTableColumn('اسم العميل'),
+                                AppDataTableColumn('عملاء المشتركين'),
                                 AppDataTableColumn('عملاء التوصية'),
+                               
                               ],
                               rows: (data ?? []).mapIndexed((index, item) {
                                 return DataRow(
@@ -130,7 +132,10 @@ class _RecommendedClientsReportState extends State<RecommendedClientsReportPage>
                                     //   value: item.nameClient,
                                     //   width: MediaQuery.of(context).size.width * 0.35,
                                     // ),
-                                    AppDataTableCell(value: "${item.numberOfClientsRecommended ?? 0}", alignment: Alignment.center, width: .1),
+                                    AppDataTableCell(value: "${item.number_of_clients_recommended_subscribed ?? 0}",
+                                        alignment: Alignment.center, width: .1),
+                                    AppDataTableCell(value: "${item.numberOfClientsRecommended ?? 0}",
+                                        alignment: Alignment.center, width: .1),
                                   ],
                                 );
                               }).toList(),

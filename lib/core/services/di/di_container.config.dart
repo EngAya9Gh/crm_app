@@ -40,6 +40,8 @@ import '../../../features/auth/login/domain/use_cases/get_token_usecase.dart'
     as _i882;
 import '../../../features/auth/login/domain/use_cases/login_usecase.dart'
     as _i772;
+import '../../../features/auth/login/domain/use_cases/save_telegram_username_usecase.dart'
+    as _i1034;
 import '../../../features/auth/login/domain/use_cases/validate_token_usecase.dart'
     as _i518;
 import '../../../features/auth/login/domain/use_cases/verify_otp_usecase.dart'
@@ -2246,6 +2248,8 @@ _i174.GetIt $initGetIt(
         gh<_i327.GetActivityTypesUseCase>(),
         gh<_i947.GetSubscribedClientsUseCase>(),
       ));
+  gh.lazySingleton<_i1034.SaveTelegramUsernameUseCase>(
+      () => _i1034.SaveTelegramUsernameUseCase(gh<_i325.LoginRepo>()));
   gh.factory<_i815.CompanyCubit>(() => _i815.CompanyCubit(
         gh<_i521.GetCommentUsecase>(),
         gh<_i520.AddCommentUsecase>(),
@@ -2268,13 +2272,6 @@ _i174.GetIt $initGetIt(
   gh.factory<_i412.PeriodicCommunicationCubit>(() =>
       _i412.PeriodicCommunicationCubit(
           gh<_i313.GetPeriodicCommunicationUseCase>()));
-  gh.factory<_i953.LoginCubit>(() => _i953.LoginCubit(
-        gh<_i772.LoginUsecase>(),
-        gh<_i959.VerifyOtpUsecase>(),
-        gh<_i220.CacheTokenUsecase>(),
-        gh<_i882.GetTokenUsecase>(),
-        gh<_i518.ValidateTokenUsecase>(),
-      ));
   gh.factory<_i1049.AgentsDistributorsProfileBloc>(
       () => _i1049.AgentsDistributorsProfileBloc(
             gh<_i854.GetAgentByIdUsecase>(),
@@ -2328,6 +2325,14 @@ _i174.GetIt $initGetIt(
         gh<_i625.GetTaskByIdUsecase>(),
         gh<_i305.GetTaskLogUsecase>(),
         gh<_i818.CrudTaskFilesUsecase>(),
+      ));
+  gh.factory<_i953.LoginCubit>(() => _i953.LoginCubit(
+        gh<_i772.LoginUsecase>(),
+        gh<_i959.VerifyOtpUsecase>(),
+        gh<_i220.CacheTokenUsecase>(),
+        gh<_i882.GetTokenUsecase>(),
+        gh<_i518.ValidateTokenUsecase>(),
+        gh<_i1034.SaveTelegramUsernameUseCase>(),
       ));
   return getIt;
 }

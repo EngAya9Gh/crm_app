@@ -19,6 +19,8 @@ abstract class LoginRemoteDataSource {
   Future<PaginationResponseWrapper> validateToken(
     ValidateTokenParams validateTokenParams,
   );
+
+  Future<Map<String, dynamic>> saveTelegramUsername(String email, String telegramUsername);
 }
 
 @LazySingleton(as: LoginRemoteDataSource)
@@ -80,5 +82,18 @@ class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
       debugPrintStack(stackTrace: s);
       return Left("error in verifyOtp");
     }
+  }
+
+  @override
+  Future<Map<String, dynamic>> saveTelegramUsername(String email, String telegramUsername) async {
+    _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await _apiServices.post(
+      endPoint:  EndPoints.auth.saveTelegramUsername,
+      data: {
+        'email': email,
+        'telegram_username': telegramUsername,
+      },
+    );
+    return response;
   }
 }

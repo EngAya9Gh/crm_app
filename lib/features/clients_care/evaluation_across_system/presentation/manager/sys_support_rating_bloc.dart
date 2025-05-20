@@ -137,12 +137,12 @@ class SysSupportRatingBloc
               state.copyWith(
                 processedRating: BlocStatus.success(data: value.message),
                 listRating: BlocStatus.success(
-                    data: List.of(state.listRating.data ?? []).map((e) {
+                    data: (state.listRating.data ?? []).map((e) {
                   if (e.id == event.params.ratingId) {
                     return e.copyWith(should_processed: false);
                   }
                   return e;
-                }).toList() as List<ElevationModel>),
+                }).toList()),
               ),
             ));
   }

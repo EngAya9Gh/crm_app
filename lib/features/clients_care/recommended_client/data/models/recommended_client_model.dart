@@ -4,12 +4,14 @@ class RecommendClientsReports {
   final String? nameEnterprise;
   final String? nameClient;
   final int? numberOfClientsRecommended;
+  final int? number_of_clients_recommended_subscribed;
 
   RecommendClientsReports({
     this.idClients,
     this.nameEnterprise,
     this.nameClient,
     this.numberOfClientsRecommended,
+    this.number_of_clients_recommended_subscribed,
   });
 
   RecommendClientsReports copyWith({
@@ -17,12 +19,14 @@ class RecommendClientsReports {
     String? nameEnterprise,
     String? nameClient,
     int? numberOfClientsRecommended,
+    int? number_of_clients_recommended_subscribed,
   }) =>
       RecommendClientsReports(
         idClients: idClients ?? this.idClients,
         nameEnterprise: nameEnterprise ?? this.nameEnterprise,
         nameClient: nameClient ?? this.nameClient,
         numberOfClientsRecommended: numberOfClientsRecommended ?? this.numberOfClientsRecommended,
+        number_of_clients_recommended_subscribed: number_of_clients_recommended_subscribed ?? this.number_of_clients_recommended_subscribed,
       );
 
   factory RecommendClientsReports.fromJson(Map<String, dynamic> json) => RecommendClientsReports(
@@ -30,6 +34,7 @@ class RecommendClientsReports {
     nameEnterprise: json["name_enterprise"],
     nameClient: json["name_client"],
     numberOfClientsRecommended: json["number_of_clients_recommended"],
+    number_of_clients_recommended_subscribed: json["number_of_clients_recommended_subscribed"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -37,5 +42,6 @@ class RecommendClientsReports {
     "name_enterprise": nameEnterprise,
     "name_client": nameClient,
     "number_of_clients_recommended": numberOfClientsRecommended,
+    "number_of_clients_recommended_subscribed": number_of_clients_recommended_subscribed,
   };
 }
