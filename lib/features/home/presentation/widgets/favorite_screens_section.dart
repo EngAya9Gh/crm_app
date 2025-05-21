@@ -115,28 +115,44 @@ class FavoriteScreensSection extends StatelessWidget {
           if (screen.routeName.isNotEmpty) {
             try {
               print('Navigating to: ${screen.routeName}');
+                    // استخدام الصفحة الفعلية إذا كانت متوفرة
+                // Try to get a page widget from available screens if it's null here
+                Widget? pageWidget = screen.page;
+                
+                if (pageWidget == null) {
+                  // Try to find this screen in the available screens list
+                  final availableScreens = context.read<FavoriteScreensCubit>().state.availableScreens;
+                  final matchingScreen = availableScreens.firstWhere(
+                    (s) => s.id == screen.id,
+                    orElse: () => screen,
+                  );
+                  
+                  if (matchingScreen.page != null) {
+                    print('Found page widget in available screens for: ${screen.title}');
+                    pageWidget = matchingScreen.page;
+                  }
+                }
+                
+                if (pageWidget != null) {
+                  print('Using actual page widget for navigation: ${screen.title}');
+                  AppNavigator.go(
+                    pageWidget,
+                    name: screen.routeName,
+                    extra: screen.extraParams,
+                  );
+                } else {
+                  // استخدام طريقة التنقل البديلة إذا لم تكن الصفحة متوفرة
+                  print(
+                      'WARNING: No page widget found for ${screen.title}, using route-only navigation');
 
-              // استخدام الصفحة الفعلية إذا كانت متوفرة
-              if (screen.page != null) {
-                print(
-                    'Using actual page widget for navigation: ${screen.title}');
-                AppNavigator.go(
-                  screen.page!,
-                  name: screen.routeName,
-                  extra: screen.extraParams,
-                );
-              } else {
-                // استخدام طريقة التنقل البديلة إذا لم تكن الصفحة متوفرة
-                print(
-                    'WARNING: No page widget found for ${screen.title}, using route-only navigation');
-
-                // Try to navigate using an empty container
-                AppNavigator.go(
-                  Container(), // Empty container as fallback
-                  name: screen.routeName,
-                  extra: screen.extraParams,
-                );
-              }
+                  // Try to navigate using an empty container
+                  AppNavigator.go(
+                    Container(), // Empty container as fallback
+                    name: screen.routeName,
+                    extra: screen.extraParams,
+                  );
+                }
+              // استخدام الصفحة الفعلية إذا كانت متوفرة                // Try to get a page widget from available screens if it's null here                Widget? pageWidget = screen.page;                                if (pageWidget == null) {                  // Try to find this screen in the available screens list                  final availableScreens = context.read<FavoriteScreensCubit>().state.availableScreens;                  final matchingScreen = availableScreens.firstWhere(                    (s) => s.id == screen.id,                    orElse: () => screen,                  );                                    if (matchingScreen.page != null) {                    print('Found page widget in available screens for: ${screen.title}');                    pageWidget = matchingScreen.page;                  }                }                                if (pageWidget != null) {                  print('Using actual page widget for navigation: ${screen.title}');                  AppNavigator.go(                    pageWidget,                    name: screen.routeName,                    extra: screen.extraParams,                  );                } else {                  // استخدام طريقة التنقل البديلة إذا لم تكن الصفحة متوفرة                  print(                      'WARNING: No page widget found for ${screen.title}, using route-only navigation');                  // Try to navigate using an empty container                  AppNavigator.go(                    Container(), // Empty container as fallback                    name: screen.routeName,                    extra: screen.extraParams,                  );                }
             } catch (e) {
               print('Error navigating to ${screen.routeName}: $e');
               ScaffoldMessenger.of(context).showSnackBar(

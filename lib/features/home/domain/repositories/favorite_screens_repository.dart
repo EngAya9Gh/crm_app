@@ -28,7 +28,7 @@ class FavoriteScreensRepositoryImpl implements FavoriteScreensRepository {
     }
 
     try {
-      final jsonList = jsonDecode(jsonString) as List;
+      final  jsonList = jsonDecode(jsonString) as List;
       return jsonList
           .map((item) =>
               FavoriteScreenModel.fromJson(item as Map<String, dynamic>))
