@@ -73,11 +73,12 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         return InkWell(
-                          onTap: (){
+                          onTap: () {
                             WidgetsBinding.instance.addPostFrameCallback((_) {
-                              AppNavigator.go(HomePage(), name: AppRoutesNames.generalRoutes.home);
+                              AppNavigator.go(HomePage(),
+                                  name: AppRoutesNames.generalRoutes.home);
                             });
-                            },
+                          },
                           child: CustomLogo(
                             logoNumber: 0,
                             height: 100.scaleHeight,
@@ -102,7 +103,6 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                           controller: _cubit.sideBarEntity
                               .expandedTileControllers[currentIndex],
                           onTap: () {
-
                             _cubit.sideBarEntity.currentSectionIndex =
                                 currentIndex;
                             _cubit.sideBarEntity.expandedTileControllers
@@ -116,9 +116,11 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                               },
                             );
                             _cubit.setSelectedSubSections();
-                            if(currentIndex==5)
-                             AppNavigator.go(SectionsLists.homeSections[currentIndex].page, name: SectionsLists.homeSections[currentIndex].path);
-
+                            if (currentIndex == 5)
+                              AppNavigator.go(
+                                  SectionsLists.homeSections[currentIndex].page,
+                                  name: SectionsLists
+                                      .homeSections[currentIndex].path);
                           },
                           title: AppText(
                             e.title,
@@ -170,12 +172,12 @@ class _AppWebSideBarState extends State<_AppWebSideBar> {
                   SliverToBoxAdapter(
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.only( top: 10),
+                        padding: const EdgeInsets.only(top: 10),
                         child: AppTextButton(
                           text: 'الحملات الإعلانية',
                           textStyle: AppStyles.regular18.copyWith(
-                            color: AppColors.primaryMain,fontWeight: FontWeight.w600
-                          ),
+                              color: AppColors.primaryMain,
+                              fontWeight: FontWeight.w600),
                           onPressed: () async {
                             await HelperFunctions.urlLauncher(
                               'https://test.smartcrm.ws/campaigns',

@@ -33,10 +33,58 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
   late final LoginCubit loginCubit;
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
+  // متغيرات التلغرام
+  bool showTelegramField = false;
+  bool isSavingTelegram = false;
+  TextEditingController telegramController = TextEditingController();
+  String? telegramError;
+
   @override
   void initState() {
     loginCubit = context.read<LoginCubit>();
     super.initState();
+  }
+
+  // دالة لحفظ اسم التلغرام
+  Future<void> saveTelegramUsername() async {
+    setState(() {
+      isSavingTelegram = true;
+      telegramError = null;
+    });
+    final email = loginCubit.emailController.text;
+    final telegramUsername = telegramController.text.trim();
+    if (telegramUsername.isEmpty) {
+      setState(() {
+        telegramError = 'يرجى إدخال اسم مستخدم التلغرام';
+        isSavingTelegram = false;
+      });
+      return;
+    }
+    try {
+      final response =
+          await loginCubit.saveTelegramUsername(email, telegramUsername);
+      if (response.success == true) {
+        setState(() {
+          showTelegramField = false;
+        });
+        AppSnackbar.showSnakeBar(
+          'تم حفظ اسم مستخدم التلغرام بنجاح',
+          color: ToastColorsEnum.success,
+        );
+      } else {
+        setState(() {
+          telegramError = response.message ?? 'حدث خطأ ما';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        telegramError = 'حدث خطأ أثناء الحفظ';
+      });
+    } finally {
+      setState(() {
+        isSavingTelegram = false;
+      });
+    }
   }
 
   // @override
@@ -51,13 +99,23 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
       listenWhen: (previous, current) =>
           previous.loginStatus != current.loginStatus,
       listener: (context, state) {
-        // if (state.loginStatus.isFailed()) {
-        //   AppSnackbar.showSnakeBar(
-        //     AppStrings.emailError,
-        //     color: ToastColorsEnum.error,
-        //   );
-        // } else
-          if (state.loginStatus.isSuccess()) {
+        if (state.loginStatus.isFailed()) {
+          // تحقق من رسالة الخطأ للتلغرام
+          if (state.loginStatus.error == 'add telegram username' ||
+              (state.loginStatus.error
+                      ?.toString()
+                      .contains('add telegram username') ??
+                  false)) {
+            setState(() {
+              showTelegramField = true;
+            });
+          } else {
+            AppSnackbar.showSnakeBar(
+              AppStrings.emailError,
+              color: ToastColorsEnum.error,
+            );
+          }
+        } else if (state.loginStatus.isSuccess()) {
           AppNavigator.go(
             VerifyOtpPage(),
             name: AppRoutesNames.generalRoutes.otp,
@@ -103,26 +161,49 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
                     validator: InputValidator.validateEmail,
                   ),
                   32.vertical,
-                  BlocBuilder<LoginCubit, LoginState>(
-                    buildWhen: (previous, current) =>
-                        previous.loginStatus != current.loginStatus,
-                    builder: (context, state) {
-                      return SizedBox(
-                        width: double.infinity,
-                        child: WebElevatedButton(
-                          text: "ارسال",
-                          isLoading: state.loginStatus.isLoading(),
-                          onPressed: () async {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                            if (loginFormKey.currentState!
-                                .validate()) {
-                              await loginCubit.login();
-                            }
-                          },
-                        ),
-                      );
-                    },
-                  ),
+                  // حقل التلغرام وزر الحفظ
+                  if (showTelegramField) ...[
+                    WebTextField(
+                      title: 'اسم مستخدم التلغرام',
+                      prefixIcon: AppIcon(
+                        Icons.telegram,
+                        color: AppColors.iconColor,
+                      ),
+                      hintText: "اسم مستخدم التلغرام",
+                      controller: telegramController,
+                      textDirection: TextDirection.ltr,
+                      validator: (_) => telegramError,
+                    ),
+                    32.vertical,
+                    SizedBox(
+                      width: double.infinity,
+                      child: WebElevatedButton(
+                        text: "حفظ اسم التلغرام",
+                        isLoading: isSavingTelegram,
+                        onPressed:
+                            isSavingTelegram ? null : saveTelegramUsername,
+                      ),
+                    ),
+                  ] else
+                    BlocBuilder<LoginCubit, LoginState>(
+                      buildWhen: (previous, current) =>
+                          previous.loginStatus != current.loginStatus,
+                      builder: (context, state) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: WebElevatedButton(
+                            text: "ارسال",
+                            isLoading: state.loginStatus.isLoading(),
+                            onPressed: () async {
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              if (loginFormKey.currentState!.validate()) {
+                                await loginCubit.login();
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   Spacer(),
                   AppCopyrightsWidget(),
                   27.vertical

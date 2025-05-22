@@ -1,4 +1,5 @@
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/widgets/ticket_card/web_ticket_card.dart';
+import 'package:crm_smart/features/common/client_profile/client_dates_tab/presentation/widgets/ticket_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,7 +36,7 @@ class WebTicketsPaginatedList extends StatelessWidget {
             await _cubit.getTickets(isNewFilter: false);
           },
           itemBuilder: (context, index) =>
-              WebTicketCard(ticket: _cubit.pageVariables.allList[index]),
+              TicketCardNew(ticket: _cubit.pageVariables.allList[index]),
         );
       },
     );

@@ -39,7 +39,7 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  final shorebirdCodePush = ShorebirdUpdater();
+  // final shorebirdCodePush = ShorebirdUpdater();
   bool checkingForUpdate = false;
   bool _showProfileSection = false;
   Map<int, bool> _expandedSections = {};
@@ -340,7 +340,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           isLoading: checkingForUpdate,
                           onPressed: () async {
                             _changeUpdateStateLoading(refresh);
-                            await _downloadUpdateIfAvailable();
+                           // await _downloadUpdateIfAvailable();
                             _changeUpdateStateLoading(refresh);
                           },
                           child: AppText(
@@ -367,29 +367,29 @@ class _CustomDrawerState extends State<CustomDrawer> {
     refresh(() {});
   }
 
-  Future<void> _downloadUpdateIfAvailable() async {
-    try {
-      final isUpdateAvailable =
-          await shorebirdCodePush.checkForUpdate() == UpdateStatus.outdated;
+  // Future<void> _downloadUpdateIfAvailable() async {
+  //   try {
+  //     final isUpdateAvailable =
+  //         await shorebirdCodePush.checkForUpdate() == UpdateStatus.outdated;
 
-      if (isUpdateAvailable) {
-        await shorebirdCodePush.update();
-        await Future.delayed(const Duration(milliseconds: 500));
-        AppSnackbar.showListOfSnackBars(
-          snackbarsMessages: [
-            'جاري التحقق من وجود تحديثات',
-            'جاري تحميل التحديث',
-          ],
-          onCompletion: () async {
-            await SystemChannels.platform
-                .invokeMethod('SystemNavigator.pop', true);
-          },
-        );
-        return;
-      }
-      AppSnackbar.showSnakeBar('لا يوجد تحديثات جديدة');
-    } catch (e) {
-      debugPrint('Error while checking for updates: $e');
-    }
-  }
+  //     if (isUpdateAvailable) {
+  //       await shorebirdCodePush.update();
+  //       await Future.delayed(const Duration(milliseconds: 500));
+  //       AppSnackbar.showListOfSnackBars(
+  //         snackbarsMessages: [
+  //           'جاري التحقق من وجود تحديثات',
+  //           'جاري تحميل التحديث',
+  //         ],
+  //         onCompletion: () async {
+  //           await SystemChannels.platform
+  //               .invokeMethod('SystemNavigator.pop', true);
+  //         },
+  //       );
+  //       return;
+  //     }
+  //     AppSnackbar.showSnakeBar('لا يوجد تحديثات جديدة');
+  //   } catch (e) {
+  //     debugPrint('Error while checking for updates: $e');
+  //   }
+  // }
 }

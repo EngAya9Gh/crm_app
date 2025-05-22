@@ -1,13 +1,15 @@
 import 'package:crm_smart/core/common/widgets/app_adaptive_builder.dart';
+import 'package:crm_smart/features/home/presentation/manager/web_home_page_cubit.dart';
 import 'package:crm_smart/features/notifications/presentation/manager/notifications_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'mob_home_page.dart';
 import 'web_home_page.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({ this.child, super.key});
+  HomePage({this.child, super.key});
   final Widget? child;
 
   @override
@@ -44,7 +46,10 @@ class _HomePageState extends State<HomePage> {
       textDirection: TextDirection.rtl,
       child: AppLayoutBuilder(
         smallBuilder: (context) => MobHomePage(),
-        mediumBuilder: (context) => MobHomePage(),// (child: widget.child,),
+        mediumBuilder: (context) => BlocProvider(
+          create: (context) => WebHomePageCubit(),
+          child: WebHomePage(child: widget.child),
+        ),
       ),
     );
   }

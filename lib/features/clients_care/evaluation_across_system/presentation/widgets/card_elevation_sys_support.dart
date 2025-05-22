@@ -109,8 +109,7 @@ class ElevationSysOrSupportCard extends StatelessWidget {
             ],
           ),
           8.height,
-          if ((elevationModel.ratingReason?.isNotEmpty ?? false) ||
-              (elevationModel.message?.isNotEmpty ?? false))
+          if ((elevationModel.ratingReason?.isNotEmpty ?? false)  )
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -119,9 +118,28 @@ class ElevationSysOrSupportCard extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
                 Expanded(
+                    child: AppText( 
+                      elevationModel.ratingReason ??
+                      'لايوجد',
+                  fontSize: 16,
+                )),
+              ],
+            ),
+
+          8.height,
+          if ((elevationModel.ratingReason?.isEmpty ?? false) &&
+              (elevationModel.message?.isNotEmpty ?? false))
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(
+                 'ملاحظات العميل',
+                  fontWeight: FontWeight.bold,
+                ),
+                Expanded(
                     child: AppText(
                   elevationModel.message ??
-                      elevationModel.ratingReason ??
+                      
                       'لايوجد',
                   fontSize: 16,
                 )),
