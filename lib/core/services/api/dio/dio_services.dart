@@ -105,6 +105,7 @@ class DioServices extends ApiServices {
           );
         }
       }
+      print('......before encrypt......');
      if(data!=null) print("---------"+data.toString() + "---------");
      if(queryParameters!=null) print("---------"+queryParameters.toString() + "---------");
       final res = await dio.get(
@@ -156,7 +157,7 @@ class DioServices extends ApiServices {
           );
         }
       }
-
+      print('......before encrypt......');
       final formData = data==null?null:FormData.fromMap(isPhpUrl(endPoint)?data:encryptedData);
       if(data!=null) print("---------"+data.toString() + "---------");
       if(queryParameters!=null) print("---------"+queryParameters.toString()  + "---------");

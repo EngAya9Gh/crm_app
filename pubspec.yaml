@@ -1,7 +1,7 @@
 name: crm_smart
 description: A new Flutter project.
 publish_to: 'none'
-version: 3.3.1+86
+version: 3.3.3+88
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -60,7 +60,7 @@ dependencies:
 
   # State management
   equatable: ^2.0.5
-  flutter_bloc: ^9.1.0
+  flutter_bloc: ^9.0.0
 
   #client
   dio: ^5.7.0

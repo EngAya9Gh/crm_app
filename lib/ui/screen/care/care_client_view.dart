@@ -101,6 +101,7 @@ class _CareClientViewState extends State<CareClientView> {
                                               .contains(title))
                                           ? CommunicationExpandedWidget(
                                               communicationModel: item,
+
                                               initiallyExpanded:
                                                   item.idCommunication ==
                                                       widget.idCommunication,

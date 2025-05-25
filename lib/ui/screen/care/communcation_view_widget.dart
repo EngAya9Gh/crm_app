@@ -57,7 +57,7 @@ class _CommunicationExpandedWidgetState
   void initState() {
     listenCommunicationVm = context.read<CommunicationVm>();
     watchCommunicationVm = context.read<CommunicationVm>();
-
+    print('id_comm'+ widget.communicationModel.idCommunication.toString());
     // تهيئة القيم من النموذج إذا كانت موجودة
     if (widget.communicationModel.result == 'true') {
       typepayController = true;
@@ -155,6 +155,7 @@ class _CommunicationExpandedWidgetState
         //     ),
         //   ],
         // ] else
+        ],
           if (widget.communicationModel.typeCommuncation == 'دوري' &&
             widget.communicationModel.dateCommunication == null) ...[
           // تقييم عام للخدمة
@@ -377,29 +378,32 @@ class _CommunicationExpandedWidgetState
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // زر تم التواصل - يظهر فقط إذا لم يكن هناك تاريخ تواصل
-            if (widget.communicationModel.dateCommunication == null &&widget.communicationModel.typeCommuncation != 'كفاءة')
+            if (
+                 (widget.communicationModel.dateCommunication  == null)
+               && (widget.communicationModel.typeCommuncation != 'كفاءة')
+               )
               AppElevatedButton(
                 text: 'تم التواصل',
                 onPressed: () => _onDoneCommunication(context),
               ),
             // زر التعديل - يظهر فقط إذا كان هناك تاريخ تواصل
-            // if (widget.communicationModel.dateCommunication != null)
-            //   AppElevatedButton(
-            //     text: 'تعديل',
-            //     onPressed: () async {
-            //       showModalBottomSheet(
-            //         context: context,
-            //         builder: (context) => EditCareCommunicationSheet(
-            //           communicationModel: widget.communicationModel,
-            //         ),
-            //         shape: RoundedRectangleBorder(
-            //           borderRadius:
-            //               BorderRadius.vertical(top: Radius.circular(15)),
-            //         ),
-            //         isScrollControlled: true,
-            //       );
-            //     },
-            //   ),
+            if (widget.communicationModel.dateCommunication != null && (widget.communicationModel.typeCommuncation != 'كفاءة'))
+              AppElevatedButton(
+                text: 'تعديل',
+                onPressed: () async {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => EditCareCommunicationSheet(
+                      communicationModel: widget.communicationModel,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(15)),
+                    ),
+                    isScrollControlled: true,
+                  );
+                },
+              ),
             // زر إضافة موعد زيارة - يظهر فقط في حالة الترحيب
             if (widget.communicationModel.typeCommuncation == 'ترحيب') ...[
               10.width,
@@ -411,7 +415,7 @@ class _CommunicationExpandedWidgetState
             ],
           ],
         ),
-      ],]
+     ]
     );
   }
 
@@ -442,7 +446,9 @@ class _CommunicationExpandedWidgetState
 
     if (widget.communicationModel.typeCommuncation == 'ترحيب') {
       details.add('تم الترحيب من قبل: ${widget.communicationModel.nameUser}');
-      details
+      if (widget.communicationModel.dateCommunication != null)
+
+        details
           .add('تاريخ الترحيب: ${widget.communicationModel.dateCommunication}');
     }
 

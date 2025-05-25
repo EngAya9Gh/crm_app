@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class datetime_vm extends ChangeNotifier {
   late DateTime valuedateTime = DateTime(1, 1, 1);
   late DateTime valuedateTime2 = DateTime(1, 1, 1);
-  late DateTime valuedateTime3 = DateTime(1, 1, 1);
+  late DateTime? valuedateTime3 = null;
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
 
@@ -30,7 +30,7 @@ class datetime_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setdatetimevalue3(DateTime val) {
+  void setdatetimevalue3(DateTime?  val) {
     valuedateTime3 = val;
     notifyListeners();
   }

@@ -157,7 +157,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                                         timeTaken: takenTimeController.text,
                                         nextDate: datesTableCubit.pageVariables.selectedDay,
                                         event: editedEvent,
-                                        location: (widget.event.typeDate == InstallationTypeEnum.online) ? location! : null,
+                                        location: (widget.event.typeDate != InstallationTypeEnum.online) ? location! : null,
                                       ),
                                       onSuccess: (value) {
                                         datesTableCubit.handleEventsMap(
@@ -178,7 +178,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                             await datesTableCubit.changeDateToDone(
                               ChangeDateToDoneParams(
                                 event: editedEvent,
-                                location: (widget.event.typeDate == InstallationTypeEnum.online) ? location! : null,
+                                location: (widget.event.typeDate != InstallationTypeEnum.online) ? location! : null,
                               ),
                               onSuccess: (value) {
                                 datesTableCubit.handleEventsMap(

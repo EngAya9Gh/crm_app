@@ -51,9 +51,9 @@ class _EditInvoiceState extends State<EditInvoice> {
  late final privilegeCubit ;
   String? regoin;
   String? regoininvoice;
-  DateTime? _currentDateApprove = DateTime.now();
+  DateTime? _currentDateApprove = null;
   DateTime _currentDateCreate = DateTime.now();
-  DateTime? _currentDateFinance = DateTime.now();
+  DateTime? _currentDateFinance = null;
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   TextEditingController approvingDateController = TextEditingController();
   TextEditingController financeDateController = TextEditingController();
@@ -106,6 +106,7 @@ class _EditInvoiceState extends State<EditInvoice> {
     regoin = widget.invoiceModel.fk_regoin.toString();
     regoininvoice = widget.invoiceModel.fk_regoin_invoice.toString();
 
+     print(widget.invoiceModel.date_approve.toString());
     if (widget.invoiceModel.date_approve != null) {
       _currentDateApprove = DateTime.parse(widget.invoiceModel.date_approve.toString());
       Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDateApprove!);
@@ -120,16 +121,25 @@ class _EditInvoiceState extends State<EditInvoice> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<datetime_vm>(context, listen: false).setdatetimevalue2(_currentDateCreate);
-      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue3(_currentDateFinance!);
+      createDateController.text = HelperFunctions.formatDate(_currentDateCreate);
+
+      if (widget.invoiceModel.Date_FApprove != null)
+        Provider.of<datetime_vm>(context, listen: false).setdatetimevalue2(_currentDateFinance!);
+      financeDateController.text = HelperFunctions.formatDate(_currentDateFinance!);
+
+      if (widget.invoiceModel.date_approve != null)
+        Provider.of<datetime_vm>(context, listen: false).setdatetimevalue3(_currentDateApprove!);
+      approvingDateController.text = HelperFunctions.formatDate(_currentDateApprove!);
+
       Provider.of<RegionProvider>(context, listen: false)
         ..getRegions()
         ..changeVal(regoin);
       Provider.of<UserProvider>(context, listen: false).changeValUserID(iduser);
     });
-    approvingDateController.text = HelperFunctions.formatDate(widget.invoiceModel.date_approve);
-    createDateController.text = HelperFunctions.formatDate(widget.invoiceModel.dateCreate);
-    approvingDateController.text = HelperFunctions.formatDate(_currentDateApprove!);
-    financeDateController.text = HelperFunctions.formatDate(_currentDateFinance!); 
+    // approvingDateController.text = HelperFunctions.formatDate(widget.invoiceModel.date_approve);
+
+
+
     super.initState();
   }
 
@@ -201,7 +211,9 @@ class _EditInvoiceState extends State<EditInvoice> {
                     style2: true,
                   ),
                   10.height,
+                  if (widget.invoiceModel.date_approve != null)...[
                   AppText('تاريخ اعتماد الفاتورة'),
+
                   5.height,
                   CustomDateTimePicker(
                     isRequired: false,
@@ -212,9 +224,10 @@ class _EditInvoiceState extends State<EditInvoice> {
                     },
                     style2: true,
                   ),
+                  ],
                   10.height,
                   if (privilegeCubit
-                              .checkPrivilege('344')  ) ...[
+                              .checkPrivilege('344') && widget.invoiceModel.Date_FApprove != null) ...[
                   AppText('تاريخ اعتماد المالية'),
                   5.height,
                   CustomDateTimePicker(
