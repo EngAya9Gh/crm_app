@@ -118,7 +118,9 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                             idVisit: widget.eventModel.idClientsDate!,
                             location: location),
                         widget.eventModel.idClientsDate!);
+                    
                     location=null;
+              
                   }
                   },
               );

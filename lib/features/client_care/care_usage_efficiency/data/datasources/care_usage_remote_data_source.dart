@@ -5,6 +5,7 @@ import '../../../../../core/common/helpers/api_helper.dart';
 import '../../../../../core/common/helpers/responseWrapper.dart';
 import '../../../../../core/errors/server_exceptions.dart';
 import '../../../../../core/services/api/api_services.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../domain/usecases/get_care_usage_list.dart';
 
@@ -30,8 +31,13 @@ class CareUsageRemoteDataSourceImpl implements CareUsageRemoteDataSource {
     GetCareUsageListParams params,
   ) async {
     try {
+      int   skip=0;
+      if (params.skip != null)
+      skip= params.skip!;
+      int?  limit=AppConstants.kPerPage;
       Map<String, dynamic> queryParameters = {
-        if (params.skip != null) 'skip': params.skip,
+        'limit':  AppConstants.kPerPage,
+        'page': ApiHelper.calculatePage(skip:  skip, limit: limit),
         if (params.filter != null && params.filter!.isNotEmpty)
           'filter': params.filter,
         if (params.endFrom != null && params.endFrom!.isNotEmpty)

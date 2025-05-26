@@ -106,16 +106,15 @@ class DatesTableCubit extends Cubit<DatesTableState> {
         filterEntity.savePreviousState();
         final result = await _getDateInstallationUsecase(
           GetDateInstallationParams(
-            fkCountry: AppConstants.currentCountry,
-            fkUser: filterEntity.userNotifier.value?.idUser,
-            mainCityFks: filterEntity.isAllEventsNotifier.value
-                ? null
-                : filterEntity.mainCitiesNotifier.value
-                    ?.map((e) => e.id_maincity)
-                    .toList(),
-            date: pageVariables.focusedDay,
-            type: filterEntity.type.value
-          ),
+              fkCountry: AppConstants.currentCountry,
+              fkUser: filterEntity.userNotifier.value?.idUser,
+              mainCityFks: filterEntity.isAllEventsNotifier.value
+                  ? null
+                  : filterEntity.mainCitiesNotifier.value
+                      ?.map((e) => e.id_maincity)
+                      .toList(),
+              date: pageVariables.focusedDay,
+              type: filterEntity.type.value),
         );
         result.fold(
           (e) {
@@ -126,7 +125,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
           },
           (value) {
             if (isNewFilter) {
-              pageVariables.allList=[];
+              pageVariables.allList = [];
             }
             pageVariables.allList.addAll(value.data);
 
@@ -230,6 +229,7 @@ class DatesTableCubit extends Cubit<DatesTableState> {
   Future<void> changeDateToDone(
     ChangeDateToDoneParams changeDateToDoneParams, {
     void Function(String)? onSuccess,
+    void Function(String)? onFail,
   }) async {
     emit(state.copyWith(changeDateToDoneStatus: BlocStatus.loading()));
 
@@ -237,11 +237,13 @@ class DatesTableCubit extends Cubit<DatesTableState> {
     result.fold((l) {
       if (AppConstants.shouldReturnEarly(l)) return;
       emit(state.copyWith(changeDateToDoneStatus: BlocStatus.fail(error: l)));
+      onFail?.call(l);
     }, (r) {
       onSuccess?.call(r);
       emit(state.copyWith(changeDateToDoneStatus: BlocStatus.success()));
     });
   }
+
   Future<void> confirmVisitDate(
       ConfirmVisitDateParams confirmVisitDateParams) async {
     emit(state.copyWith(confirmVisitDateStatus: BlocStatus.loading()));
@@ -255,9 +257,11 @@ class DatesTableCubit extends Cubit<DatesTableState> {
       pageVariables.changeItemLocal(r.message!);
     });
   }
+
   Future<void> startDateVisit(
-      ConfirmVisitDateParams confirmVisitDateParams,String editItemId) async {
-    emit(state.copyWith(startDateVisitStatus: BlocStatus.loading(),editItemId: editItemId));
+      ConfirmVisitDateParams confirmVisitDateParams, String editItemId) async {
+    emit(state.copyWith(
+        startDateVisitStatus: BlocStatus.loading(), editItemId: editItemId));
 
     final result = await _startDateVisitStatusUsecase(confirmVisitDateParams);
     result.fold((l) {

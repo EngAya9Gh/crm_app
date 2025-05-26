@@ -528,8 +528,8 @@ class _Versions {
   final String addDemand = 'demands';
   String updateDemand(int idDemand) => 'demands/$idDemand/edit';
   String changeDemandStatus(int idDemand) => 'demands/$idDemand/change-status';
-  String addDemandComments(int idDemand) => 'demands/1/add-comment';
-  String getDemandComments(int idDemand) => 'demands/1/comments';
+  String addDemandComments(int idDemand) => 'demands/$idDemand/add-comment';
+  String getDemandComments(int idDemand) => 'demands/$idDemand/comments';
 }
 
 class _Products {

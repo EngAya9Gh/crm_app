@@ -58,7 +58,7 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
   Future<void> getLocation() async {
     final LocationData locationData = await locationService.getLocation();
     setState(() {
-       final LatLng myLocation = LatLng(
+      final LatLng myLocation = LatLng(
         locationData.latitude!,
         locationData.longitude!,
       );
@@ -84,7 +84,8 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                 children: [
                   CustomDropDown(
                     hint: "نوع التركيب",
-                    compareFn:  (item, selectedItem) => item.index == selectedItem.index,
+                    compareFn: (item, selectedItem) =>
+                        item.index == selectedItem.index,
                     items: InstallationTypeEnum.values,
                     itemAsString: (item) => item!.value,
                     selectedItem: _installationType,
@@ -132,71 +133,85 @@ class _DoneClientEventDialogState extends State<DoneClientEventDialog> {
                             comment: _commentController.text,
                           );
                           if (_formKey.currentState!.validate()) {
-
-                            if(location ==null){
+                            if (location == null) {
                               AppSnackbar.showSnakeBar(
                                 "جاري الحصول على الموقع",
                                 color: ToastColorsEnum.success,
                               );
                               await getLocation();
-                            }
-                            else {
-                            if (widget.isReschedule) {
-                              AppNavigator.pop(result: true);
-                              AppConstants.showAppDialog(
-                                  child: AddDateDialog(
-                                    invoiceId: editedEvent.fkInvoice,
-                                    idClient: editedEvent.fkIdClient!,
-                                    datesInstallation: null,
-                              )).then(
-                                (value)   {
-                                  if (value)  {
-
-                                    datesTableCubit.changeDateToDone(
-                                      ChangeDateToDoneParams(
-                                        timeTaken: takenTimeController.text,
-                                        nextDate: datesTableCubit.pageVariables.selectedDay,
-                                        event: editedEvent,
-                                        location: (widget.event.typeDate != InstallationTypeEnum.online) ? location! : null,
-                                      ),
-                                      onSuccess: (value) {
-                                        datesTableCubit.handleEventsMap(
-                                          updatedEvent: editedEvent,
-                                          oldEvent: widget.event,
-                                        );
-                                        AppSnackbar.showSnakeBar(
-                                          "تمت العملية بنجاح",
-                                          color: ToastColorsEnum.success,
-                                        );
-                                      },
-                                    );
-                                  }
+                            } else {
+                              if (widget.isReschedule) {
+                                AppNavigator.pop(result: true);
+                                AppConstants.showAppDialog(
+                                    child: AddDateDialog(
+                                  invoiceId: editedEvent.fkInvoice,
+                                  idClient: editedEvent.fkIdClient!,
+                                  datesInstallation: null,
+                                )).then(
+                                  (value) {
+                                    if (value) {
+                                      datesTableCubit.changeDateToDone(
+                                        ChangeDateToDoneParams(
+                                          timeTaken: takenTimeController.text,
+                                          nextDate: datesTableCubit
+                                              .pageVariables.selectedDay,
+                                          event: editedEvent,
+                                          location: (widget.event.typeDate !=
+                                                  InstallationTypeEnum.online)
+                                              ? location!
+                                              : null,
+                                        ),
+                                        onSuccess: (value) {
+                                          datesTableCubit.handleEventsMap(
+                                            updatedEvent: editedEvent,
+                                            oldEvent: widget.event,
+                                          );
+                                          AppSnackbar.showSnakeBar(
+                                            "تمت العملية بنجاح",
+                                            color: ToastColorsEnum.success,
+                                          );
+                                        },
+                                        onFail: (error) {
+                                          AppSnackbar.showSnakeBar(
+                                            error,
+                                            color: ToastColorsEnum.error,
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                );
+                                return;
+                              }
+                              await datesTableCubit.changeDateToDone(
+                                ChangeDateToDoneParams(
+                                  event: editedEvent,
+                                  location: (widget.event.typeDate !=
+                                          InstallationTypeEnum.online)
+                                      ? location!
+                                      : null,
+                                ),
+                                onSuccess: (value) {
+                                  datesTableCubit.handleEventsMap(
+                                    updatedEvent: editedEvent,
+                                    oldEvent: widget.event,
+                                  );
+                                  AppNavigator.pop(result: true);
+                                  AppSnackbar.showSnakeBar(
+                                    "تمت العملية بنجاح",
+                                    color: ToastColorsEnum.success,
+                                  );
+                                },
+                                onFail: (error) {
+                                  AppSnackbar.showSnakeBar(
+                                    error,
+                                    color: ToastColorsEnum.error,
+                                  );
                                 },
                               );
-                              return;
+                              location = null;
                             }
-                            await datesTableCubit.changeDateToDone(
-                              ChangeDateToDoneParams(
-                                event: editedEvent,
-                                location: (widget.event.typeDate != InstallationTypeEnum.online) ? location! : null,
-                              ),
-                              onSuccess: (value) {
-                                datesTableCubit.handleEventsMap(
-                                  updatedEvent: editedEvent,
-                                  oldEvent: widget.event,
-                                );
-                                AppNavigator.pop(result: true);
-                                AppSnackbar.showSnakeBar(
-                                  "تمت العملية بنجاح",
-                                  color: ToastColorsEnum.success,
-                                );
-                              },
-                            );
-                            location=null;
                           }
-                          }
-
-
                         },
                       );
                     },

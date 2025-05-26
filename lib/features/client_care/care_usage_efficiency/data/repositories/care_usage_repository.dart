@@ -54,11 +54,17 @@ class CareUsageRepositoryImpl implements CareUsageRepository {
         ),
       );
 
-      return Right(response.copyWith(
-        data: List<CareUsageModel>.from(
+ 
+      //  if( (response.data as List).isNotEmpty  )
+         return Right(response.copyWith(
+        data:  List<CareUsageModel>.from(
           (response.data as List).map((e) => CareUsageModel.fromJson(e)),
-        ),
+        )  ,
       ));
+      // else
+      //   return
+      //     Right(response.copyWith(
+      // data: [])) ;
     } catch (e) {
       debugPrint("error in getCareUsageList in repo $e");
       return Left(e.toString());

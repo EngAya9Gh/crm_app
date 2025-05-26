@@ -195,7 +195,7 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                           ),
-                          keyboardType: TextInputType.phone ,
+                          // keyboardType: TextInputType.phone ,
                           controller: TextEditingController(text: value),
                           onChanged: (value) {
                             careUsageCubit.filterEntity.lastActivityFromNotifier
@@ -325,7 +325,7 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                 builder: (context, value, child) {
                   return CustomMultiSelectionDropdown<String>(
                     hint: 'اختر احتمالية الانسحاب',
-                    items: ['عالية', 'متوسطة', 'منخفضة'],
+                    items: ['High', 'Medium', 'Low'],
                     selectedItems: careUsageCubit
                         .filterEntity.possibilityOfWithdrawNotifier.value,
                     compareFn: (item, selectedItem) => item == selectedItem,

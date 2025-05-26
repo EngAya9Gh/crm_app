@@ -76,6 +76,11 @@ class CareUsageCubit extends Cubit<CareUsageState> {
             ));
           },
           (response) {
+            if (response.data.isEmpty) {
+              return emit(state.copyWith(
+                getCareUsageListStatus: BlocStatus.empty(),
+              ));
+            }
             final careUsageList = response.data as List<CareUsageModel>;
             pageVariables.allList.addAll(careUsageList);
             pageVariables.totalCount = response.count ?? 0;

@@ -45,7 +45,8 @@ class demandCardWidget extends StatelessWidget {
           ),
           child: InkWell(
             onTap: () {
-              context.read<VersionsBloc>().add(GetDemandCommentsEvent(params: DemandChangeStatusOrCommentParams(idDemand: item.id!)));
+              context.read<VersionsBloc>().add(GetDemandCommentsEvent(
+                  params: DemandChangeStatusOrCommentParams(idDemand: item.id!)));
               showDialog(
                 context: context,
                 barrierDismissible: false,
