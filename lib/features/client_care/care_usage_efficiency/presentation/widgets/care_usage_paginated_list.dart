@@ -20,9 +20,9 @@ class _CareUsagePaginatedListState extends State<CareUsagePaginatedList> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+    // _scrollController = ScrollController();
     _cubit = context.read<CareUsageCubit>();
-    _scrollController.addListener(_onScroll);
+    // _scrollController.addListener(_onScroll);
   }
 
   @override

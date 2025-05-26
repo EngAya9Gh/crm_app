@@ -190,12 +190,12 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                       builder: (context, value, child) {
                         return TextField(
                           decoration: InputDecoration(
-                            hintText: 'من',
+                            hintText: 'اكبر من',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                           ),
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.phone ,
                           controller: TextEditingController(text: value),
                           onChanged: (value) {
                             careUsageCubit.filterEntity.lastActivityFromNotifier
@@ -205,29 +205,29 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                       },
                     ),
                   ),
-                  16.horizontalSpace,
-                  Expanded(
-                    child: ValueListenableBuilder<String?>(
-                      valueListenable:
-                          careUsageCubit.filterEntity.lastActivityToNotifier,
-                      builder: (context, value, child) {
-                        return TextField(
-                          decoration: InputDecoration(
-                            hintText: 'إلى',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                          ),
-                          keyboardType: TextInputType.number,
-                          controller: TextEditingController(text: value),
-                          onChanged: (value) {
-                            careUsageCubit.filterEntity.lastActivityToNotifier
-                                .value = value.isNotEmpty ? value : null;
-                          },
-                        );
-                      },
-                    ),
-                  ),
+                  // 16.horizontalSpace,
+                  // Expanded(
+                  //   child: ValueListenableBuilder<String?>(
+                  //     valueListenable:
+                  //         careUsageCubit.filterEntity.lastActivityToNotifier,
+                  //     builder: (context, value, child) {
+                  //       return TextField(
+                  //         decoration: InputDecoration(
+                  //           hintText: 'إلى',
+                  //           border: OutlineInputBorder(
+                  //             borderRadius: BorderRadius.circular(8.r),
+                  //           ),
+                  //         ),
+                  //         keyboardType: TextInputType.phone,
+                  //         controller: TextEditingController(text: value),
+                  //         onChanged: (value) {
+                  //           careUsageCubit.filterEntity.lastActivityToNotifier
+                  //               .value = value.isNotEmpty ? value : null;
+                  //         },
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
                 ],
               ),
 
@@ -242,7 +242,7 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                 builder: (context, value, child) {
                   return CustomDropDown<String>(
                     hint: 'حالة العميل',
-                    items: ['online', 'rare', 'not'],
+                    items: ['أونلاين', 'نادر الإستخدام', 'لا يستخدم النظام'],
                     selectedItem: value,
                     compareFn: (item, selectedItem) => item == selectedItem,
                     itemAsString: (item) => item ?? '',
