@@ -18,9 +18,9 @@ class FavoriteScreensSection extends StatelessWidget {
     return BlocBuilder<FavoriteScreensCubit, FavoriteScreensState>(
       builder: (context, state) {
         print(
-            'FavoriteScreensSection state: status=${state.status}, favoriteScreens=${state.favoriteScreens.length}, availableScreens=${state.availableScreens.length}');
+            'FavoriteScreensSection state: isLoading=${state.isLoading}, favoriteScreens=${state.favoriteScreens.length}, availableScreens=${state.availableScreens.length}');
 
-        if (state.status == FavoriteScreensStatus.loading) {
+        if (state.isLoading) {
           print('FavoriteScreensSection showing loading indicator');
           return Center(child: CircularProgressIndicator());
         }
@@ -198,7 +198,7 @@ class FavoriteScreensSection extends StatelessWidget {
                     onTap: () {
                       context
                           .read<FavoriteScreensCubit>()
-                          .removeFavoriteScreen(screen.id);
+                          .removeFromFavorites(screen.id);
                     },
                     child: Container(
                       padding: EdgeInsets.all(2.r),
@@ -343,7 +343,7 @@ class FavoriteScreensSection extends StatelessWidget {
                                     ),
                                   ),
                                   onTap: () {
-                                    cubit.addFavoriteScreen(screen);
+                                    cubit.addToFavorites(screen);
                                     Navigator.pop(context);
                                   },
                                 );

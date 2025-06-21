@@ -100,18 +100,28 @@ class _WebHomePageState extends State<WebHomePage> {
       final favoriteRepo = FavoriteScreensRepositoryImpl(prefs);
       final availableRepo = AvailableScreensRepositoryImpl();
 
-      // Get privileges cubit from context
-      final privilegesCubit = context.read<PrivilegesCubit>();
+      // Try to get privileges cubit from context, but handle if not available
+      PrivilegesCubit? privilegesCubit;
+      try {
+        if (mounted) {
+          privilegesCubit = context.read<PrivilegesCubit>();
+        }
+      } catch (e) {
+        print('PrivilegesCubit not available in context: $e');
+        // Continue without privileges - the cubit will handle this case
+      }
 
       // Create FavoriteScreensCubit with proper dependencies
       _favoriteScreensCubit = FavoriteScreensCubit(
         favoriteRepo,
         availableRepo,
-        privilegesCubit,
+        privilegesCubit, // Can be null, cubit handles this case
       );
 
-      // Load data
-      await _favoriteScreensCubit.loadFavoriteScreens();
+      // Load data if cubit was created successfully
+      if (_favoriteScreensCubit != null) {
+        await _favoriteScreensCubit!.loadFavoriteScreens();
+      }
 
       // Update UI if widget is still mounted
       if (mounted) {
@@ -121,11 +131,11 @@ class _WebHomePageState extends State<WebHomePage> {
       }
     } catch (e) {
       print('Error initializing favorite screens: $e');
-      // Handle errors gracefully
+      // Handle errors gracefully - set as initialized to avoid blocking UI
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('حدث خطأ أثناء تحميل الواجهات المفضلة')),
-        );
+        setState(() {
+          _isFavoriteScreensInitialized = true;
+        });
       }
     }
   }

@@ -1,34 +1,30 @@
 part of 'favorite_screens_cubit.dart';
 
-enum FavoriteScreensStatus {
-  initial,
-  loading,
-  updating,
-  success,
-  failure,
-}
-
 class FavoriteScreensState extends Equatable {
-  final FavoriteScreensStatus status;
+  final bool isLoading;
+  final bool hasError;
   final List<FavoriteScreenModel> favoriteScreens;
   final List<FavoriteScreenModel> availableScreens;
   final String? errorMessage;
 
   const FavoriteScreensState({
-    this.status = FavoriteScreensStatus.initial,
+    this.isLoading = false,
+    this.hasError = false,
     this.favoriteScreens = const [],
     this.availableScreens = const [],
     this.errorMessage,
   });
 
   FavoriteScreensState copyWith({
-    FavoriteScreensStatus? status,
+    bool? isLoading,
+    bool? hasError,
     List<FavoriteScreenModel>? favoriteScreens,
     List<FavoriteScreenModel>? availableScreens,
     String? errorMessage,
   }) {
     return FavoriteScreensState(
-      status: status ?? this.status,
+      isLoading: isLoading ?? this.isLoading,
+      hasError: hasError ?? this.hasError,
       favoriteScreens: favoriteScreens ?? this.favoriteScreens,
       availableScreens: availableScreens ?? this.availableScreens,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -37,5 +33,5 @@ class FavoriteScreensState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [status, favoriteScreens, availableScreens, errorMessage];
+      [isLoading, hasError, favoriteScreens, availableScreens, errorMessage];
 }
