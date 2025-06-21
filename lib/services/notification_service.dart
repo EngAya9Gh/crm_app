@@ -35,7 +35,7 @@ class NotificationService {
   );
 
   static Future<void> init() async {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, name: kIsWeb ? null : 'smart_crm');
+    // Firebase is already initialized in main.dart
     var tokenFcm = await getFcmToken(repeat: 3);
 
     log((tokenFcm).toString(), name: 'FCM Token');

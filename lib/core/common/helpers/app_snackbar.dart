@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../config/navigator/app_navigator.dart';
@@ -11,31 +10,25 @@ abstract class AppSnackbar {
     String? message, {
     ToastColorsEnum color = ToastColorsEnum.normal,
   }) {
-    final FToast fToast = FToast()
-      ..init(AppNavigator.navigatorKey.currentContext!);
-    fToast.showToast(
-      gravity: ToastGravity.SNACKBAR,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: color.color,
+    final context = AppNavigator.navigatorKey.currentContext;
+    if (context != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: AppText(
+            message ?? 'حدث خطأ ما',
+            textAlign: TextAlign.center,
+            color: Colors.white,
+          ),
+          backgroundColor: color.color,
+          duration: Duration(seconds: AppConstants.snackbarDuration),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: AppText(
-                message ?? 'حدث خطأ ما',
-                textAlign: TextAlign.center,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    }
   }
 
   static void showListOfSnackBars({

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/config/app_init.dart';
@@ -23,9 +24,20 @@ late var lastDuation;
 @pragma('vm:entry-point')
 Future<void> _firebaseOnBackgroundListener(RemoteMessage message) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform, name: kIsWeb ? null : 'smart_crm');
+  
+  // Check if Firebase is already initialized
+  try {
+    Firebase.app();
+  } catch (e) {
+    // Firebase not initialized, initialize it
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  }
+  
   await NotificationService.init();
-  // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  // Only enable Crashlytics on mobile platforms
+  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+    // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  }
   // NotificationService.requestPermission();
   NotificationService.listen();
 
@@ -40,9 +52,27 @@ void main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      //       await Firebase.initializeApp(
+      //   options: DefaultFirebaseOptions.currentPlatform,
+      //   name: kIsWeb ? null : 'smart_crm',
+      // );
+
+      // Check if Firebase is already initialized (for macOS/iOS native initialization)
+      try {
+        Firebase.app();
+      } catch (e) {
+        // Firebase not initialized, initialize it
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+      }
+      
       FirebaseMessaging.onBackgroundMessage(_firebaseOnBackgroundListener);
       await NotificationService.init();
-      // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+      // Only enable Crashlytics on mobile platforms
+      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+        // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+      }
       // NotificationService.requestPermission();
       NotificationService.listen();
 
@@ -54,10 +84,14 @@ void main() async {
       ));
     },
     (error, stack) async {
-      if (!kIsWeb) {
+      // Only use Crashlytics on supported platforms
+      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
         await FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
         FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-        FirebaseCrashlytics.instance.recordError;
+      } else {
+        // For other platforms, just print the error
+        debugPrint('Error: $error');
+        debugPrint('Stack: $stack');
       }
     },
   );

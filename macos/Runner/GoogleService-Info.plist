@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>102540138446-ttasu47lgst15l9eb1j6aqtnk1bvse6d.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.102540138446-ttasu47lgst15l9eb1j6aqtnk1bvse6d</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCWr7Gz4jO77Ra96XVV5ddw48VZeYytxAo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>102540138446</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mpluse.crmsmart</string>
+	<key>PROJECT_ID</key>
+	<string>crmapp-8f9de</string>
+	<key>STORAGE_BUCKET</key>
+	<string>crmapp-8f9de.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:102540138446:ios:ddc6c76ac52fbea1e5fd9f</string>
+</dict>
+</plist>

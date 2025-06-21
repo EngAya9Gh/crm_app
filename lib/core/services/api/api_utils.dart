@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../config/navigator/app_navigator.dart';
 import '../../errors/server_exceptions.dart';
 import 'result.dart';
 
@@ -38,14 +38,27 @@ Future<T> throwAppException<T>(FutureOr<T> Function() call) async {
 }
 
 void showMessage(String message, {bool isSuccess = false}) {
-  Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: isSuccess ? Colors.greenAccent : Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0);
+  final context = AppNavigator.navigatorKey.currentContext;
+  if (context != null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+        backgroundColor: isSuccess ? Colors.green : Colors.red,
+        duration: const Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    );
+  }
 }
 
 Future<Result<T>> toApiResult<T>(FutureOr<T> Function() call) async {

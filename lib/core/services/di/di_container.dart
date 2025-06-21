@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -43,16 +45,28 @@ abstract class AppModule {
 
   @Environment("dev")
   @singleton
-  FlutterSecureStorage get secureStorage => FlutterSecureStorage(
-        aOptions: const AndroidOptions(encryptedSharedPreferences: true),
+  FlutterSecureStorage get secureStorage {
+    if (!kIsWeb && Platform.isMacOS) {
+      // macOS-specific configuration
+      return const FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        iOptions: IOSOptions(
+          accessibility: KeychainAccessibility.first_unlock_this_device,
+        ),
       );
+    } else {
+      return const FlutterSecureStorage(
+        aOptions: AndroidOptions(encryptedSharedPreferences: true),
+      );
+    }
+  }
 
   @Environment("test")
   @singleton
   FlutterSecureStorage get secureStorageTest {
     FlutterSecureStorage.setMockInitialValues({});
-    return FlutterSecureStorage(
-      aOptions: const AndroidOptions(encryptedSharedPreferences: true),
+    return const FlutterSecureStorage(
+      aOptions: AndroidOptions(encryptedSharedPreferences: true),
     );
   }
 
