@@ -80,6 +80,7 @@ import '../../../../features/sales/reports/employees_sales_reports/presentation/
 import '../../../../features/sales/reports/regions_sales_reports/presentation/pages/regions_sales_reports_page.dart';
 import '../../../../features/task_management/presentation/pages/task_managment_page.dart';
 import '../../../../features/versions/presentation/pages/versions_page.dart';
+import '../../../task_management/presentation/pages/add_task_page.dart';
 import '../models/favorite_screen_model.dart';
 
 abstract class AvailableScreensRepository {
@@ -410,6 +411,7 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
         iconKey: 'add_task',
         routeName: 'add-task',
         privilegeId: '19',
+        page: AddTaskPage()
       ),
       FavoriteScreenModel(
         id: 'task_reports',
