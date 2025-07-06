@@ -4,6 +4,7 @@ import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 import '../api/api.dart';
 import '../core/common/enums/client/client_source_enum.dart';
@@ -16,6 +17,10 @@ import '../core/utils/end_points.dart';
 import '../features/mangement/manage_privileges/privileges/presentation/manager/levels_cubit/privileges_cubit.dart';
 import '../model/usermodel.dart';
 import '../services/UserService.dart';
+import '../core/services/cache_services/cache_services.dart';
+import '../core/services/cache_services/secure_storage_consumer.dart';
+import '../core/utils/app_strings.dart';
+import '../features/auth/login/domain/repositories/login_repository.dart';
 
 class UserProvider extends ChangeNotifier {
   List<UserModel> allUsers = [];
@@ -178,28 +183,75 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> getCurrentUser() async {
     try {
+      print('[UserProvider] getCurrentUser called');
+      
+      // First check if we have a valid token
+      final secureStorage = getIt<CacheServices>(
+        instanceName: SecureStorageConsumer.name,
+      );
+      final token = await secureStorage.getData(key: AppStrings.secureStorage.token);
+      
+      if (token == null || token.isEmpty) {
+        print('[UserProvider] No token found, user is not authenticated');
+        // Set to default unauthenticated user state
+        currentUser = UserModel(
+          idUser: '-1',
+          nameUser: '',
+          privilegesList: [],
+        );
+        notifyListeners();
+        return;
+      }
+      
+      print('[UserProvider] Token found, attempting to get current user');
       ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await apiServices.get(
         endPoint: EndPoints.users.getCurrentUser,
       );
       final data = apiDataHandler(response);
-      if (data == null) return null;
-
+      if (data == null) {
+        print('[UserProvider] No data returned from getCurrentUser');
+        // Set to unauthenticated state
+        currentUser = UserModel(
+          idUser: '-1',
+          nameUser: '',
+          privilegesList: [],
+        );
+        notifyListeners();
+        return;
+      }
+      
       currentUser = UserModel.fromJson(data);
-      debugPrint('currentUser Id => ${currentUser.idUser}');
+      debugPrint('[UserProvider] currentUser Id => ${currentUser.idUser}');
       AppConstants.currentUser = currentUser;
 
       getIt<PrivilegesCubit>()
           .setUserPrivileges(privilegeList: currentUser.privilegesList);
-
+      
       notifyListeners();
-    } on BaseAppException catch (e) {
-      debugPrint('Error in getCurrentUser: $e');
-      throw e.message;
     } catch (e) {
-      debugPrint('Error in getCurrentUser: $e');
-      throw e.toString();
+      print('[UserProvider] Exception in getCurrentUser: $e');
+      // Don't throw errors for authentication issues - just set unauthenticated state
+      if (e.toString().contains('401') || e.toString().contains('403') || e.toString().contains('Unauthorized') || e.toString().contains('token')) {
+        print('[UserProvider] Authentication related error, setting unauthenticated state');
+        currentUser = UserModel(
+          idUser: '-1',
+          nameUser: '',
+          privilegesList: [],
+        );
+        notifyListeners();
+      } else {
+        // For genuine network or other issues, we might want to handle differently
+        print('[UserProvider] Non-authentication error: $e');
+        // Still set unauthenticated state to avoid app crashes
+        currentUser = UserModel(
+          idUser: '-1',
+          nameUser: '',
+          privilegesList: [],
+        );
+        notifyListeners();
+      }
     }
   }
 

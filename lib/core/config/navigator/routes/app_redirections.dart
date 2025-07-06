@@ -19,27 +19,40 @@ class AppRedirections {
     BuildContext context,
     GoRouterState state,
   ) async {
-    if (!kIsWeb) return null;
+    print('[AppRedirections] handleRedirection called for path: ${state.fullPath}');
+    
+    if (!kIsWeb) {
+      print('[AppRedirections] Not web, returning null');
+      return null;
+    }
 
     String? loginRedirect = await _handleLoginRedirection(context, state);
     if (loginRedirect != null) {
+      print('[AppRedirections] Login redirect: $loginRedirect');
       return loginRedirect;
     }
 
     String? otpRedirect = _handleOtpRedirection(context, state);
     if (otpRedirect != null) {
+      print('[AppRedirections] OTP redirect: $otpRedirect');
       return otpRedirect;
     }
 
+    print('[AppRedirections] Current user ID: ${context.read<UserProvider>().currentUser.idUser}');
     if (context.read<UserProvider>().currentUser.idUser == '-1') {
       if (_shouldCheckForLogin(context, state)) {
+        print('[AppRedirections] Should check for login');
         String? loginRedirect = await _checkForLogin(context, state);
         if (loginRedirect != null) {
+          print('[AppRedirections] Check login redirect: $loginRedirect');
           return loginRedirect;
         }
+      } else {
+        print('[AppRedirections] Should not check for login');
       }
     }
 
+    print('[AppRedirections] No redirection needed');
     return null;
   }
 
@@ -48,6 +61,7 @@ class AppRedirections {
     BuildContext context,
     GoRouterState state,
   ) async {
+    print('[AppRedirections] _handleLoginRedirection called');
     if (!kIsWeb) return null;
     final path = state.fullPath;
     if (path ==
@@ -143,19 +157,32 @@ class AppRedirections {
 
   static Future<bool?> isTokenValid(BuildContext context) async {
     try {
-      return await context.read<LoginCubit>().validateToken();
+      print('[AppRedirections] isTokenValid called');
+      final result = await context.read<LoginCubit>().validateToken();
+      print('[AppRedirections] Token validation result: $result');
+      return result;
     } catch (e) {
+      print('[AppRedirections] Error validating token: $e');
       return false;
     }
   }
 
   static Future<UserModel?> _getUser(BuildContext context) async {
     try {
+      print('[AppRedirections] _getUser called');
       final UserProvider userProvider = context.read<UserProvider>();
       await userProvider.getCurrentUser();
 
+      // Check if user was successfully loaded
+      if (userProvider.currentUser.idUser != '-1') {
+        print('[AppRedirections] User loaded successfully: ${userProvider.currentUser.idUser}');
       return userProvider.currentUser;
+      } else {
+        print('[AppRedirections] User not authenticated, current user ID: ${userProvider.currentUser.idUser}');
+        return null;
+      }
     } catch (e) {
+      print('[AppRedirections] Error getting user: $e');
       return null;
     }
   }

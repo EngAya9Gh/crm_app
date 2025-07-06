@@ -76,8 +76,8 @@ class SecureStorageConsumer extends CacheServices {
       } else {
         final isKeyExist = await _secureStorage.containsKey(key: key);
         if (!isKeyExist) {
-          getIt<Logger>()
-              .i('The key ("$key") does not exist in secure storage');
+          // Don't log this as an error since it's expected for unauthenticated users
+          // getIt<Logger>().i('The key ("$key") does not exist in secure storage');
           return null;
         }
         return await _secureStorage.read(key: key);

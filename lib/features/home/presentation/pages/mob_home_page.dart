@@ -30,6 +30,8 @@ import '../../../../core/config/navigator/app_routes_names.dart';
 import '../../../../ui/screen/client/client_profile.dart';
 import '../../../../features/ai_chat/presentation/pages/ai_chat_page.dart';
 import 'package:intl/intl.dart' as intl;
+import '../../../../core/services/di/di_container.dart';
+import '../../../../view_model/user_vm_provider.dart';
 
 var formatter = intl.NumberFormat("#,##0.00", "ar_SA");
 var formatterWithOutFraction = intl.NumberFormat("#,###", "ar_SA");
@@ -75,12 +77,23 @@ class _MobHomePageState extends State<MobHomePage> {
   /// Initializes the favorite screens feature properly
   Future<void> _initializeFavoriteScreens() async {
     try {
-      // Get SharedPreferences instance
-      final prefs = await SharedPreferences.getInstance();
+      // Check if user is authenticated before initializing favorite screens
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      
+      // Only initialize favorite screens for authenticated users
+      if (userProvider.currentUser.idUser == '-1' || 
+          userProvider.currentUser.idUser == null ||
+          userProvider.currentUser.idUser?.isEmpty == true) {
+        print('User not authenticated, skipping favorite screens initialization');
+        setState(() {
+          _isFavoriteScreensInitialized = true; // Set as initialized to avoid blocking UI
+        });
+        return;
+      }
 
-      // Create repositories
-      final favoriteRepo = FavoriteScreensRepositoryImpl(prefs);
+      final prefs = getIt<SharedPreferences>();
       final availableRepo = AvailableScreensRepositoryImpl();
+      final favoriteRepo = FavoriteScreensRepositoryImpl(prefs);
 
       // Get privileges cubit from context
       final privilegesCubit = context.read<PrivilegesCubit>();
@@ -92,23 +105,18 @@ class _MobHomePageState extends State<MobHomePage> {
         privilegesCubit,
       );
 
-      // Load data
+      // Load favorite screens data
       await _favoriteScreensCubit.loadFavoriteScreens();
 
-      // Update UI if widget is still mounted
-      if (mounted) {
-        setState(() {
-          _isFavoriteScreensInitialized = true;
-        });
-      }
+      setState(() {
+        _isFavoriteScreensInitialized = true;
+      });
+      print('Favorite screens initialized successfully');
     } catch (e) {
       print('Error initializing favorite screens: $e');
-      // Handle errors gracefully
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('حدث خطأ أثناء تحميل الواجهات المفضلة')),
-        );
-      }
+      setState(() {
+        _isFavoriteScreensInitialized = true;
+      });
     }
   }
 

@@ -34,25 +34,34 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    print('[SplashScreen] initState started');
     appCubit = context.read<AppManagerCubit>();
     userProvider = context.read<UserProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (kIsWeb) {
-        AppNavigator.go(
-          HomePage(),
-          name: AppRoutesNames.generalRoutes.home,
-        );
-        return;
+      print('[SplashScreen] PostFrameCallback started');
+      try {
+        await appCubit.checkAppUpdate((hasUpdate) {
+          print('[SplashScreen] checkAppUpdate completed, hasUpdate: $hasUpdate');
+          if (hasUpdate) {
+            print('[SplashScreen] Navigating to update app page');
+            if (kIsWeb) {
+              AppRouter.goRouter.pushReplacementNamed(
+                AppRoutesNames.generalRoutes.updateApp,
+              );
+            } else {
+              AppRouter.goRouter.pushReplacementNamed(
+                AppRoutesNames.generalRoutes.updateApp,
+              );
+            }
+            return;
+          }
+          print('[SplashScreen] Checking redirections');
+          appCubit.checkRedirections(context);
+        });
+      } catch (e) {
+        print('[SplashScreen] Error in initialization: $e');
       }
-      await appCubit.checkAppUpdate((hasUpdate) {
-        if (hasUpdate) {
-          return AppRouter.goRouter.pushReplacementNamed(
-            AppRoutesNames.generalRoutes.updateApp,
-          );
-        }
-        appCubit.checkRedirections(context);
-      });
     });
   }
 

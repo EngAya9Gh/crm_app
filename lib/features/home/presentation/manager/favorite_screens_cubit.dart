@@ -24,21 +24,33 @@ class FavoriteScreensCubit extends Cubit<FavoriteScreensState> {
   Future<void> loadFavoriteScreens() async {
     try {
       emit(state.copyWith(isLoading: true));
+      print('[FavoriteScreensCubit] Starting loadFavoriteScreens');
 
-      // Load favorite screens
+      // Load favorite screens from local storage
       final favoriteScreens = await _favoriteScreensRepository.getFavoriteScreens();
+      print('[FavoriteScreensCubit] Loaded ${favoriteScreens.length} favorite screens from storage');
       
       // Load available screens
       final availableScreens = _availableScreensRepository.getAllAvailableScreens();
+      print('[FavoriteScreensCubit] Loaded ${availableScreens.length} available screens');
       
       // Filter available screens based on privileges if PrivilegesCubit is available
       List<FavoriteScreenModel> filteredScreens = availableScreens;
       
       if (_privilegesCubit != null) {
-        filteredScreens = availableScreens.where((screen) {
-          // Check if user has privilege for this screen
-          return _privilegesCubit!.checkPrivilege(screen.privilegeId);
-        }).toList();
+        try {
+          filteredScreens = availableScreens.where((screen) {
+            // Check if user has privilege for this screen
+            return _privilegesCubit!.checkPrivilege(screen.privilegeId);
+          }).toList();
+          print('[FavoriteScreensCubit] Filtered to ${filteredScreens.length} screens based on privileges');
+        } catch (e) {
+          print('[FavoriteScreensCubit] Error checking privileges, using all available screens: $e');
+          // If privilege checking fails, use all available screens
+          filteredScreens = availableScreens;
+        }
+      } else {
+        print('[FavoriteScreensCubit] No privileges cubit available, using all available screens');
       }
 
       emit(state.copyWith(
@@ -46,14 +58,33 @@ class FavoriteScreensCubit extends Cubit<FavoriteScreensState> {
         favoriteScreens: favoriteScreens,
         availableScreens: filteredScreens,
         hasError: false,
+        errorMessage: null,
       ));
+      
+      print('[FavoriteScreensCubit] Successfully loaded favorite screens');
     } catch (e) {
-      print('Error loading favorite screens: $e');
-      emit(state.copyWith(
-        isLoading: false,
-        hasError: true,
-        errorMessage: e.toString(),
-      ));
+      print('[FavoriteScreensCubit] Error loading favorite screens: $e');
+      
+      // Don't show error for authentication-related issues
+      if (e.toString().contains('401') || 
+          e.toString().contains('403') || 
+          e.toString().contains('Unauthorized') ||
+          e.toString().contains('token')) {
+        print('[FavoriteScreensCubit] Authentication error, not showing error state');
+        emit(state.copyWith(
+          isLoading: false,
+          favoriteScreens: [],
+          availableScreens: [],
+          hasError: false,
+          errorMessage: null,
+        ));
+      } else {
+        emit(state.copyWith(
+          isLoading: false,
+          hasError: true,
+          errorMessage: 'حدث خطأ في تحميل الواجهات المفضلة',
+        ));
+      }
     }
   }
 

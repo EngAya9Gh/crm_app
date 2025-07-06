@@ -39,6 +39,7 @@ class Api {
       instanceName: SecureStorageConsumer.name,
     );
     token = await secureStorage.getData(key: AppStrings.secureStorage.token);
+    print('[API] Token retrieved: ${token != null ? 'Token exists' : 'No token found'}');
   }
   bool isPhpUrl(String url) {
     return url.toLowerCase().contains('.php');
@@ -93,16 +94,23 @@ class Api {
     required String url,
     bool returnPureData = false,
   }) async {
+    // Get latest token before making request
+    await getToken();
 
-
-    http.Response response = await _client.get(Uri.parse(url), headers: {
-      'Authorization': 'Bearer $token',
-      'AuthToken': 'Bearer $token',
+    Map<String, String> headers = {
       'platform': 'mobile',
+    };
 
-    });
-    debugPrint('token in get');
-    debugPrint(token);
+    // Only add authorization headers if token exists
+    if (token != null && token!.isNotEmpty) {
+      headers['Authorization'] = 'Bearer $token';
+      headers['AuthToken'] = 'Bearer $token';
+      debugPrint('[API] GET request with token');
+    } else {
+      debugPrint('[API] GET request without token');
+    }
+
+    http.Response response = await _client.get(Uri.parse(url), headers: headers);
 
     if (returnPureData) {
       return response;

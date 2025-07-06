@@ -40,12 +40,20 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
   bool _showProfileSection = false;
   Map<int, bool> _expandedSections = {};
   late final WebHomePageCubit _webHomePageCubit;
-
+  late final userProvider ;
+  late final isAuthenticated;
   @override
   void initState() {
     super.initState();
+    print('object aaaaaaaaaaaaaaa');
     try {
-      _webHomePageCubit = context.read<WebHomePageCubit>();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        _webHomePageCubit = context.read<WebHomePageCubit>();
+        userProvider = Provider.of<UserProvider>(context, listen: true);
+        isAuthenticated = userProvider.currentUser.idUser != null &&
+            userProvider.currentUser.idUser != '-1' &&
+            userProvider.currentUser.idUser!.isNotEmpty;
+      });
     } catch (e) {
       print('Error initializing WebHomePageCubit: $e');
       // Intenta crearlo aquí si no está disponible en el contexto
@@ -55,6 +63,11 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
+
+    print('isAuthenticated');
+    print('isAuthenticated');
+    print('isAuthenticated');
+    print(isAuthenticated);
     return Container(
       width: 300.scaleWidth,
       color: AppColors.white,
@@ -63,167 +76,22 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
           SliverToBoxAdapter(
             child: Column(
               children: [
-                // Profile Header Section
+                // Profile Header Section or Login Section
                 Container(
                   padding: EdgeInsets.all(16),
                   color: AppColors.primaryMain,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 8.scaleHeight),
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundColor: AppColors.white,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(30),
-                              child: AppCachedNetworkImage(
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.cover,
-                                imageUrl: Provider.of<UserProvider>(context,
-                                        listen: true)
-                                    .currentUser
-                                    .img_image,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AppText(
-                                  Provider.of<UserProvider>(context,
-                                          listen: true)
-                                      .currentUser
-                                      .nameUser
-                                      .toString(),
-                                  style: TextStyle(
-                                    color: AppColors.white,
-                                    fontSize: 16.scaleFontSize,
-                                    fontFamily: AppFonts.fontFamily1,
-                                  ),
-                                ),
-                                AppText(
-                                  Provider.of<UserProvider>(context,
-                                          listen: true)
-                                      .currentUser
-                                      .email
-                                      .toString(),
-                                  style: TextStyle(
-                                    color: AppColors.white70,
-                                    fontSize: 14.scaleFontSize,
-                                    fontFamily: AppFonts.fontFamily1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              _showProfileSection
-                                  ? Icons.keyboard_arrow_up
-                                  : Icons.keyboard_arrow_down,
-                              color: AppColors.white,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _showProfileSection = !_showProfileSection;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      if (_showProfileSection) ...[
-                        Divider(color: AppColors.white24, height: 18),
-                        ListTile(
-                          leading: Icon(Icons.person_outline,
-                              color: AppColors.white),
-                          title: AppText(
-                            'الملف الشخصي',
-                            fontSize: 15.scaleFontSize,
-                            style: TextStyle(color: AppColors.white),
-                          ),
-                          onTap: () => AppNavigator.go(
-                            UserScreen(
-                              ismyprofile: 'yes',
-                              user: Provider.of<UserProvider>(context,
-                                      listen: false)
-                                  .currentUser,
-                            ),
-                            isNew: false,
-                          ),
-                        ),
-                        if (context
-                            .read<PrivilegesCubit>()
-                            .checkPrivilege('49'))
-                          ListTile(
-                            leading: Icon(Icons.add, color: AppColors.white),
-                            title: AppText(
-                              'اضافة حساب جديد',
-                              fontSize: 15.scaleFontSize,
-                              style: TextStyle(color: AppColors.white),
-                            ),
-                            onTap: () async {
-                              AppNavigator.go(
-                                ActionUserPage(),
-                                name: AppRoutesNames
-                                    .managementInternalRoutes.addUser,
-                              );
-                            },
-                          ),
-                        ListTile(
-                          leading: Icon(Icons.logout, color: AppColors.white),
-                          title: AppText(
-                            'تسجيل الخروج',
-                            fontSize: 15.scaleFontSize,
-                            style: TextStyle(color: AppColors.white),
-                          ),
-                          onTap: () async {
-                            Provider.of<UserProvider>(context, listen: false)
-                                .logout(
-                              onLogoutSuccess: () async {
-                                final secureStorage = getIt<CacheServices>(
-                                  instanceName: SecureStorageConsumer.name,
-                                );
-                                await secureStorage
-                                    .removeData(
-                                  key: AppStrings.secureStorage.token,
-                                )
-                                    .then(
-                                  (value) {
-                                    AppNavigator.goReplacement(LoginPage(),
-                                        name:
-                                            AppRoutesNames.generalRoutes.login);
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.delete_outline,
-                              color: AppColors.white),
-                          title: AppText(
-                            'حذف حسابي',
-                            fontSize: 15.scaleFontSize,
-                            style: TextStyle(color: AppColors.white),
-                          ),
-                          onTap: () {
-                            AppConstants.showAppDialog(
-                                child: DeleteAccountDialog());
-                          },
-                        ),
-                      ],
-                    ],
-                  ),
+                  child: isAuthenticated ? _buildAuthenticatedHeader() : _buildLoginSection(),
                 ),
 
                 // Main Sections from SectionsLists.homeSections
                 ...SectionsLists.homeSections.asMap().entries.map((entry) {
                   final int index = entry.key;
                   final section = entry.value;
+
+                  // Only show sections if user is authenticated
+                  if (!isAuthenticated) {
+                    return SizedBox.shrink();
+                  }
 
                   // Check if user has privilege to view this section
                   if (section.privilegeId != null &&
@@ -391,6 +259,188 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildAuthenticatedHeader() {
+    return Column(
+      children: [
+        SizedBox(height: 8.scaleHeight),
+        Row(
+          children: [
+            CircleAvatar(
+              radius: 30,
+              backgroundColor: AppColors.white,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: AppCachedNetworkImage(
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                  imageUrl: Provider.of<UserProvider>(context,
+                          listen: true)
+                      .currentUser
+                      .img_image,
+                ),
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppText(
+                    Provider.of<UserProvider>(context,
+                            listen: true)
+                        .currentUser
+                        .nameUser
+                        .toString(),
+                    style: TextStyle(
+                      color: AppColors.white,
+                      fontSize: 16.scaleFontSize,
+                      fontFamily: AppFonts.fontFamily1,
+                    ),
+                  ),
+                  AppText(
+                    Provider.of<UserProvider>(context,
+                            listen: true)
+                        .currentUser
+                        .email
+                        .toString(),
+                    style: TextStyle(
+                      color: AppColors.white70,
+                      fontSize: 14.scaleFontSize,
+                      fontFamily: AppFonts.fontFamily1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              icon: Icon(
+                _showProfileSection
+                    ? Icons.keyboard_arrow_up
+                    : Icons.keyboard_arrow_down,
+                color: AppColors.white,
+              ),
+              onPressed: () {
+                setState(() {
+                  _showProfileSection = !_showProfileSection;
+                });
+              },
+            ),
+          ],
+        ),
+        if (_showProfileSection) ...[
+          Divider(color: AppColors.white24, height: 18),
+          ListTile(
+            leading: Icon(Icons.person_outline,
+                color: AppColors.white),
+            title: AppText(
+              'الملف الشخصي',
+              fontSize: 15.scaleFontSize,
+              style: TextStyle(color: AppColors.white),
+            ),
+            onTap: () => AppNavigator.go(
+              UserScreen(
+                ismyprofile: 'yes',
+                user: Provider.of<UserProvider>(context,
+                        listen: false)
+                    .currentUser,
+              ),
+              isNew: false,
+            ),
+          ),
+          if (context
+              .read<PrivilegesCubit>()
+              .checkPrivilege('49'))
+            ListTile(
+              leading: Icon(Icons.add, color: AppColors.white),
+              title: AppText(
+                'اضافة حساب جديد',
+                fontSize: 15.scaleFontSize,
+                style: TextStyle(color: AppColors.white),
+              ),
+              onTap: () async {
+                AppNavigator.go(
+                  ActionUserPage(),
+                  name: AppRoutesNames
+                      .managementInternalRoutes.addUser,
+                );
+              },
+            ),
+          ListTile(
+            leading: Icon(Icons.logout, color: AppColors.white),
+            title: AppText(
+              'تسجيل الخروج',
+              fontSize: 15.scaleFontSize,
+              style: TextStyle(color: AppColors.white),
+            ),
+            onTap: () async {
+              Provider.of<UserProvider>(context, listen: false)
+                  .logout(
+                onLogoutSuccess: () async {
+                  final secureStorage = getIt<CacheServices>(
+                    instanceName: SecureStorageConsumer.name,
+                  );
+                  await secureStorage
+                      .removeData(
+                    key: AppStrings.secureStorage.token,
+                  )
+                      .then(
+                    (value) {
+                      AppNavigator.goReplacement(LoginPage(),
+                          name:
+                              AppRoutesNames.generalRoutes.login);
+                    },
+                  );
+                },
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.delete_outline,
+                color: AppColors.white),
+            title: AppText(
+              'حذف حسابي',
+              fontSize: 15.scaleFontSize,
+              style: TextStyle(color: AppColors.white),
+            ),
+            onTap: () {
+              AppConstants.showAppDialog(
+                  child: DeleteAccountDialog());
+            },
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildLoginSection() {
+    return Column(
+      children: [
+        SizedBox(height: 8.scaleHeight),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppText(
+              'يجب تسجيل الدخول للوصول إلى هذه الصفحة',
+              style: TextStyle(
+                color: AppColors.white,
+                fontSize: 16.scaleFontSize,
+                fontFamily: AppFonts.fontFamily1,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 16.scaleHeight),
+        AppElevatedButton(
+          onPressed: () {
+            AppNavigator.go(LoginPage(), name: AppRoutesNames.generalRoutes.login);
+          },
+          text: 'تسجيل الدخول',
+        ),
+      ],
     );
   }
 }

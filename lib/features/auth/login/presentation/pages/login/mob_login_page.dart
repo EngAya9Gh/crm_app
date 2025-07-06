@@ -100,7 +100,7 @@ class _MobLoginPageState extends State<MobLoginPage> {
             });
           } else {
             AppSnackbar.showSnakeBar(
-              AppStrings.emailError,
+              state.loginStatus.error,
               color: ToastColorsEnum.error,
             );
           }

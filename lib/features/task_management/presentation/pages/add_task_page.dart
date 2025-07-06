@@ -417,7 +417,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             hintText: 'تاريخ البداية',
                             isStartFromNow: true,
                             formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
-                            isRequired: true,
+                            // isRequired: true,
                             dateTimeController: _startDateController,
                             style2: true,
                             onDateChange: (p0, p1) {
@@ -449,7 +449,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               dateTimeType: DateTimeEnum.both,
                               hintText: 'تاريخ النهاية',
                               isStartFromNow: true,
-                              isRequired: true,
+                              // isRequired: true,
                               formatDate:
                                   Intl.DateFormat('dd MM yyyy HH:mm:ss'),
                               dateTimeController: _deadLineDateController,

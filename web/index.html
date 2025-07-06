@@ -3,7 +3,7 @@
 <head>
     <base href="/"/>
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; geolocation 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; style-src 'self' 'unsafe-inline' https:; img-src 'self' https: data: blob:; connect-src 'self' https: wss: data: blob:; worker-src 'self' blob:; child-src 'self' blob:; font-src 'self' https: data:;">
     
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -23,12 +23,12 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQVScJ2gMSCwAWh1zTnjtzOk2SGWSjStI&libraries=drawing"></script>
 </head>
 <body>
-<script async src="flutter_bootstrap.js"></script>
+<script src="flutter_bootstrap.js" async></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
 <script type="text/javascript">
     pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js";
 </script>
-<script src="flutter_bootstrap.js" async>
+<script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
         navigator.serviceWorker.register('firebase-messaging-sw.js', {

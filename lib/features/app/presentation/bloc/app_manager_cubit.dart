@@ -148,24 +148,49 @@ class AppManagerCubit extends Cubit<AppManagerState> {
   Future checkRedirections(BuildContext context) async {
     try {
       emit(state.copyWith(checkRedirectionsState: const PageState.loading()));
+      print('[AppManagerCubit] Starting checkRedirections');
 
-      final tokenState = await _validateToken(context);
-      if (!tokenState) {
-        _clearToken();
+      // First check if we have a token at all
+      final secureStorage = getIt<CacheServices>(
+        instanceName: SecureStorageConsumer.name,
+      );
+      final token = await secureStorage.getData(key: AppStrings.secureStorage.token);
+      
+      if (token == null || token.isEmpty) {
+        print('[AppManagerCubit] No token found, redirecting to login');
         _gotoLogin();
+        emit(state.copyWith(checkRedirectionsState: const PageState.loaded(data: null)));
         return;
       }
 
-      UserModel? user = await _getUser(context);
-      if (user == null) {
-        throw Exception();
+      print('[AppManagerCubit] Token found, validating...');
+      final tokenState = await _validateToken(context);
+      if (!tokenState) {
+        print('[AppManagerCubit] Token invalid, clearing and redirecting to login');
+        await _clearToken();
+        _gotoLogin();
+        emit(state.copyWith(checkRedirectionsState: const PageState.loaded(data: null)));
+        return;
       }
 
+      print('[AppManagerCubit] Token valid, getting user...');
+      UserModel? user = await _getUser(context);
+      if (user == null || user.idUser == '-1') {
+        print('[AppManagerCubit] User not found or unauthenticated, redirecting to login');
+        await _clearToken();
+        _gotoLogin();
+        emit(state.copyWith(checkRedirectionsState: const PageState.loaded(data: null)));
+        return;
+      }
+
+      print('[AppManagerCubit] User found: ${user.idUser}, checking status...');
       if (user.isActive == '0') {
+        print('[AppManagerCubit] User not active, redirecting to not allowed page');
         AppRouter.goRouter.pushReplacementNamed(
           AppRoutesNames.generalRoutes.notAllowed,
         );
       } else {
+        print('[AppManagerCubit] User active, redirecting to home');
         AppRouter.goRouter.pushReplacementNamed(
           AppRoutesNames.generalRoutes.home,
         );
@@ -173,22 +198,29 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
       emit(state.copyWith(checkRedirectionsState: const PageState.loaded(data: null)));
     } catch (e) {
-      emit(state.copyWith(checkRedirectionsState: const PageState.error()));
+      print('[AppManagerCubit] Error in checkRedirections: $e');
+      // On any error, redirect to login to be safe
+      await _clearToken();
+      _gotoLogin();
+      emit(state.copyWith(checkRedirectionsState: const PageState.loaded(data: null)));
     }
   }
 
   Future<bool> _validateToken(BuildContext context) async {
-    final bool? tokenState = await isTokenValid(context);
-    if (tokenState == true) return true;
-    if (tokenState == false) return false;
-    throw Exception();
+    try {
+      final bool? tokenState = await isTokenValid(context);
+      return tokenState ?? false;
+    } catch (e) {
+      print('[AppManagerCubit] Error validating token: $e');
+      return false;
+    }
   }
 
   Future<bool?> isTokenValid(BuildContext context) async {
     try {
       return await context.read<LoginCubit>().validateToken();
     } catch (e) {
-      emit(state.copyWith(checkRedirectionsState: const PageState.error()));
+      print('[AppManagerCubit] Error in isTokenValid: $e');
       return false;
     }
   }
@@ -197,10 +229,9 @@ class AppManagerCubit extends Cubit<AppManagerState> {
     try {
       final UserProvider userProvider = context.read<UserProvider>();
       await userProvider.getCurrentUser();
-
       return userProvider.currentUser;
     } catch (e) {
-      emit(state.copyWith(checkRedirectionsState: const PageState.error()));
+      print('[AppManagerCubit] Error getting user: $e');
       return null;
     }
   }

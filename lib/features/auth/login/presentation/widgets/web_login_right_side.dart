@@ -111,7 +111,7 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
             });
           } else {
             AppSnackbar.showSnakeBar(
-              AppStrings.emailError,
+              state.loginStatus.error,
               color: ToastColorsEnum.error,
             );
           }

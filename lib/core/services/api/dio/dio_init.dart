@@ -33,8 +33,17 @@ class _ApiInterceptors extends Interceptor {
     );
     var token = await secureStorage.getData(key: AppStrings.secureStorage.token);
 
-    options.headers['AuthToken'] = 'Bearer $token';
-    options.headers['Authorization'] = 'Bearer $token';
+    // Only add token headers if token exists and is not empty
+    if (token != null && token.isNotEmpty) {
+      options.headers['AuthToken'] = 'Bearer $token';
+      options.headers['Authorization'] = 'Bearer $token';
+      getIt<Logger>().i("Token added to request headers");
+    } else {
+      getIt<Logger>().i("No token found, request will be sent without authentication headers");
+      // Remove any existing auth headers
+      options.headers.remove('AuthToken');
+      options.headers.remove('Authorization');
+    }
 
     getIt<Logger>().i(
       "Request => ${options.method} ${options.uri}\n"

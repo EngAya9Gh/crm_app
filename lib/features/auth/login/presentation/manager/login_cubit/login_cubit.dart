@@ -103,7 +103,13 @@ class LoginCubit extends Cubit<LoginState> {
         await AnalyticsService().logLogIn(email: emailController.text);
         await Provider.of<UserProvider>(context, listen: false)
             .getCurrentUser();
-        AppNavigator.go(HomePage(), name: AppRoutesNames.generalRoutes.home);
+        
+        if (kIsWeb) {
+          AppRouter.goRouter.goNamed(AppRoutesNames.generalRoutes.home);
+        } else {
+          AppNavigator.go(HomePage(), name: AppRoutesNames.generalRoutes.home);
+        }
+        
         emit(state.copyWith(verifyOtpStatus: const BlocStatus.success()));
         _clearControllers();
       },

@@ -83,16 +83,41 @@ class _WebHomePageState extends State<WebHomePage> {
 
     context.read<NotificationsCubit>()..init();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Future.wait([
-        _searchCubit.getHomeStatistics(),
-        Provider.of<comment_vm>(context, listen: false).getCommentMentions(),
-      ]);
+      print('WebHomePage: Checking if user is authenticated before loading data');
+      
+      // Check if user is authenticated before loading data
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      if (userProvider.currentUser.idUser != null && userProvider.currentUser.idUser != '-1' && userProvider.currentUser.idUser!.isNotEmpty) {
+        print('WebHomePage: User is authenticated, loading data');
+        await Future.wait([
+          _searchCubit.getHomeStatistics(),
+          Provider.of<comment_vm>(context, listen: false).getCommentMentions(),
+        ]);
+      } else {
+        print('WebHomePage: User not authenticated, skipping data loading');
+      }
     });
   }
 
   /// Initializes the favorite screens feature properly
   Future<void> _initializeFavoriteScreens() async {
     try {
+      // Check if user is authenticated before initializing favorite screens
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final isAuthenticated = userProvider.currentUser.idUser != null && 
+          userProvider.currentUser.idUser != '-1' && 
+          userProvider.currentUser.idUser!.isNotEmpty;
+      
+      if (!isAuthenticated) {
+        print('User not authenticated, skipping favorite screens initialization');
+        if (mounted) {
+          setState(() {
+            _isFavoriteScreensInitialized = true; // Set as initialized to avoid blocking UI
+          });
+        }
+        return;
+      }
+
       // Get SharedPreferences instance
       final prefs = await SharedPreferences.getInstance();
 
@@ -188,30 +213,41 @@ class _WebHomePageState extends State<WebHomePage> {
                     child: Column(
                       children: [
                         // Cabecera con notificaciones y perfil
-                        _buildHeaderSection(),
+                        // _buildHeaderSection(),
 
                         // Barra de búsqueda adaptada de MobHomePage
-                        _buildSearchSection(),
+                        // _buildSearchSection(),
 
                         // Sección de pantallas favoritas
-                        if (_isFavoriteScreensInitialized)
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24),
-                            child: FavoriteScreensSection(),
-                          ),
-
-                        // Estado de carga si no está inicializado
-                        if (!_isFavoriteScreensInitialized)
-                          _buildLoadingFavoriteScreens(),
+                        // Consumer<UserProvider>(
+                        //   builder: (context, userProvider, child) {
+                        //     final isAuthenticated = userProvider.currentUser.idUser != null &&
+                        //         userProvider.currentUser.idUser != '-1' &&
+                        //         userProvider.currentUser.idUser!.isNotEmpty;
+                        //
+                        //     if (!isAuthenticated) {
+                        //       return SizedBox.shrink(); // Don't show favorite screens for unauthenticated users
+                        //     }
+                        //
+                        //     if (_isFavoriteScreensInitialized) {
+                        //       return Padding(
+                        //         padding: EdgeInsets.symmetric(horizontal: 24),
+                        //         child: FavoriteScreensSection(),
+                        //       );
+                        //     } else {
+                        //       return _buildLoadingFavoriteScreens();
+                        //     }
+                        //   },
+                        // ),
 
                         // Sección de aprobaciones pendientes
-                        _buildApprovalSection(),
+                        // _buildApprovalSection(),
 
                         // Sección de estadísticas
-                        _buildStatisticsSection(),
+                        // _buildStatisticsSection(),
 
                         // Sección de progreso
-                        _buildProgressSection(),
+                        // _buildProgressSection(),
 
                         // Espacio adicional al final
                         SizedBox(height: 50),
@@ -537,6 +573,12 @@ class _WebHomePageState extends State<WebHomePage> {
   }
 
   Widget _buildApprovalSection() {
+    // Check if user is authenticated before showing approvals
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    if (userProvider.currentUser.idUser == null || userProvider.currentUser.idUser == '-1' || userProvider.currentUser.idUser!.isEmpty) {
+      return SizedBox.shrink(); // Don't show approval section if not authenticated
+    }
+
     return GestureDetector(
       onTap: () {
         if (context.read<PrivilegesCubit>().checkPrivilege("40"))
@@ -651,6 +693,31 @@ class _WebHomePageState extends State<WebHomePage> {
   }
 
   Widget _buildStatisticsSection() {
+    // Check if user is authenticated before showing statistics
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    if (userProvider.currentUser.idUser == null || userProvider.currentUser.idUser == '-1' || userProvider.currentUser.idUser!.isEmpty) {
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        child: AppCardContainer(
+          child: Center(
+            child: Column(
+              children: [
+                Icon(Icons.login, size: 48, color: AppColors.primaryMain),
+                16.height,
+                AppText(
+                  'يرجى تسجيل الدخول لعرض الإحصائيات',
+                  style: TextStyle(
+                    fontSize: 16.scaleFontSize,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return BlocBuilder<SearchCubit, SearchState>(builder: (context, state) {
       return state.homeStatistics.when(
         success: (data) {
@@ -809,6 +876,12 @@ class _WebHomePageState extends State<WebHomePage> {
   }
 
   Widget _buildProgressSection() {
+    // Check if user is authenticated before showing progress
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    if (userProvider.currentUser.idUser == null || userProvider.currentUser.idUser == '-1' || userProvider.currentUser.idUser!.isEmpty) {
+      return SizedBox.shrink(); // Don't show progress section if not authenticated
+    }
+
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
         return Container(
