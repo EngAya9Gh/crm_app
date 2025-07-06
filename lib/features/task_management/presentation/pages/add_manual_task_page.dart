@@ -186,6 +186,29 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                             controller: _taskDescriptionController,
                           ),
                         ),
+
+                        10.height,
+                        SectionHeader(title: 'إسناد المهمة'),
+                        AppCardContainer(
+                          child: AppGroupButton(
+                            groupButtonController: GroupButtonController(
+
+                                selectedIndex:
+                                state.selectedAssignedToType?.index),
+                            buttons: assignedToList
+                                .map((e) => e.text)
+                                .toList(growable: false),
+                            onSelected: (value, index, isselected) {
+                              _taskCubit.onChangeSelectedAssignedToType(
+                                  assignedToList[index]);
+                            },
+                          ),
+                        ),
+                        10.height,
+                        assignToEmployeeWidget(state),
+                        assignToRegionWidget(state),
+                        assignToDepartmentWidget(state),
+
                         10.height,
                         if (privilegeBloc.checkPrivilege('171'))
                           InfoItem(
@@ -234,27 +257,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                               ),
                             ),
                           ),
-                        10.height,
-                        SectionHeader(title: 'إسناد المهمة'),
-                        AppCardContainer(
-                          child: AppGroupButton(
-                            groupButtonController: GroupButtonController(
-                                selectedIndex:
-                                    state.selectedAssignedToType?.index),
-                            buttons: assignedToList
-                                .map((e) => e.text)
-                                .toList(growable: false),
-                            onSelected: (value, index, isselected) {
-                              _taskCubit.onChangeSelectedAssignedToType(
-                                  assignedToList[index]);
-                            },
-                          ),
-                        ),
-                        10.height,
-                        assignToEmployeeWidget(state),
-                        assignToRegionWidget(state),
-                        assignToDepartmentWidget(state),
-                        20.height,
+
                         BlocBuilder<TaskCubit, TaskState>(
                           builder: (context, state) {
                             return Builder(builder: (context) {

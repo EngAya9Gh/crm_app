@@ -34,7 +34,7 @@ class InfoItem extends StatelessWidget {
         ),
       ),
       child:
-          customWidget != null ? _buildWithCustomWidget() : _buildWithValue(),
+      customWidget != null ? _buildWithCustomWidget() : _buildWithValue(),
     );
   }
 

@@ -11,6 +11,7 @@ import 'package:crm_smart/core/common/widgets/app_loader.dart';
 import 'package:crm_smart/core/common/widgets/custom_app_bar.dart';
 import 'package:crm_smart/core/common/widgets/custom_dropdown.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/common/widgets/item_info_extra.dart';
 import 'package:crm_smart/core/utils/app_dimensions.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
@@ -142,7 +143,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   String? regionId;
   String? departmentId;
   late UserModel currentUser;
-
+  bool isShowWidget=false;
   @override
   void deactivate() {
     _taskCubit.resetAddUpdate();
@@ -248,6 +249,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
             actions: [
               BlocBuilder<TaskCubit, TaskState>(
                 builder: (context, state) {
+                  print('state.selectedAssignedToType');
+                  print(state.selectedAssignedToType);
                   return Builder(builder: (context) {
                     return AppTextButton(
                       text: "حفظ",
@@ -330,26 +333,128 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       SectionHeader(title: 'معلومات المهمة'),
                       10.height,
                       InfoItem(
-                        title: 'المهمة*',
+                        title: 'المهمة',
                         customWidget: AppTextField(
                           maxLines: 1,
-                          validator: InputValidator.requiredFiled,
+                          // validator: InputValidator.requiredFiled,
                           controller: _taskNameController,
                         ),
                       ),
                       10.height,
                       InfoItem(
-                        title: 'وصف المهمة*',
+                        title: 'وصف المهمة',
                         customWidget: AppTextField(
-                          validator: InputValidator.requiredFiled,
+                          // validator: InputValidator.requiredFiled,
                           controller: _taskDescriptionController,
                           minLines: 5,
                           contentPadding: HWEdgeInsets.all(15),
                         ),
                       ),
+                      SectionHeader(title: 'مرفقات المهمة'),
                       10.height,
                       InfoItem(
-                        title: 'المشاركين*',
+                        title: 'المرفقات',
+                        customWidget: Column(
+                          children: [
+                            AppElevatedButton(
+                              text: 'إضافة مرفق',
+                              onPressed: () async {
+                                final files = await FilePicker.platform
+                                    .pickFiles(allowMultiple: true);
+                                if (files == null) return;
+                                _taskCubit.onChangeAttachmentFile(files.files
+                                    .map((e) => File(e.path!))
+                                    .toList());
+                              },
+                              icon: Icons.attach_file_rounded,
+                            ),
+                            10.height,
+                            ValueListenableBuilder(
+                              valueListenable: filesNotifier,
+                              builder: (context, value, child) =>
+                                  BlocBuilder<TaskCubit, TaskState>(
+                                    builder: (context, state) {
+                                      return AnimatedSwitcher(
+                                        duration: Duration(milliseconds: 500),
+                                        transitionBuilder: (widget, animation) =>
+                                            FadeTransition(
+                                              opacity: animation,
+                                              child: widget,
+                                            ),
+                                        child: (state.attachmentFile == null &&
+                                            (value?.isEmpty ?? true))
+                                            ? SizedBox.shrink()
+                                            : SizedBox(
+                                          height: 100.scaleHeight,
+                                          child: ListView(
+                                            scrollDirection: Axis.horizontal,
+                                            children: [
+                                              ...(value ?? [])
+                                                  .map((e) =>
+                                                  showImageOrFileFromRemote(
+                                                      e))
+                                                  .toList(),
+                                              ...(state.attachmentFile ?? [])
+                                                  .map((e) =>
+                                                  showImageOrFileFromLocale(
+                                                      e))
+                                                  .toList(),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      10.height,
+
+                      InfoItem(
+                        title: 'إسناد المهمة إلى',
+                        customWidget: Column(
+                          children: [
+                            assignToEmployeeWidget(taskState),
+                            assignToRegionWidget(taskState),
+                            assignToDepartmentWidget(taskState),
+                          ],
+                        )
+                      ),
+
+                      10.height,
+                      InfoItemExtra(
+                        isShowWidget: isShowWidget,
+                        isClickable: true,
+                        animationDuration: Duration(milliseconds: 500),
+                        onTap: () {
+                          setState(() {
+                            isShowWidget = !isShowWidget;
+                          });
+                        },
+                        title: 'تغيير نوع الإسناد',
+                        customWidget: AppCardContainer(
+                          child: AppGroupButton(
+                            width: AppDimensions.currentWidth() /
+                                (assignedToList.length + 1),
+                            groupButtonController: GroupButtonController(
+                              selectedIndex:
+                              taskState.selectedAssignedToType?.index,
+                            ),
+                            buttons: assignedToList.map((e) => e.text).toList(),
+                            onSelected: (_, index, isSelected) {
+                              print('assignedToList[index]');
+                              print(assignedToList[index]);
+                              _taskCubit.onChangeSelectedAssignedToType(
+                                  assignedToList[index]);
+                            },
+                          ),
+                        ),
+                      ),
+
+                      10.height,
+                      InfoItem(
+                        title: 'المشاركين',
                         customWidget: BlocBuilder<UsersCubit, UsersState>(
                           builder: (context, state) {
                             return CustomMultiSelectionDropdown<UserModel>(
@@ -396,7 +501,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       SectionHeader(title: 'تواريخ المهمة'),
                       10.height,
                       InfoItem(
-                        title: 'تاريخ البداية*',
+                         isRequired: false,
+                        title: 'تاريخ البداية',
                         customWidget: Theme(
                           data: context.theme.copyWith(
                             timePickerTheme: TimePickerThemeData(
@@ -417,7 +523,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             hintText: 'تاريخ البداية',
                             isStartFromNow: true,
                             formatDate: Intl.DateFormat('dd MM yyyy HH:mm:ss'),
-                            // isRequired: true,
+                             isRequired: false,
                             dateTimeController: _startDateController,
                             style2: true,
                             onDateChange: (p0, p1) {
@@ -429,7 +535,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       10.height,
                       if (true ?? privilegeBloc.checkPrivilege('171'))
                         InfoItem(
-                          title: 'تاريخ النهاية*',
+                          isRequired: false,
+                          title: 'تاريخ النهاية',
                           customWidget: Theme(
                             data: context.theme.copyWith(
                               timePickerTheme: TimePickerThemeData(
@@ -449,7 +556,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               dateTimeType: DateTimeEnum.both,
                               hintText: 'تاريخ النهاية',
                               isStartFromNow: true,
-                              // isRequired: true,
+                              isRequired: false,
                               formatDate:
                                   Intl.DateFormat('dd MM yyyy HH:mm:ss'),
                               dateTimeController: _deadLineDateController,
@@ -460,91 +567,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             ),
                           ),
                         ),
-                      10.height,
-                      SectionHeader(title: 'مرفقات المهمة'),
-                      10.height,
-                      InfoItem(
-                        title: 'المرفقات',
-                        customWidget: Column(
-                          children: [
-                            AppElevatedButton(
-                              text: 'إضافة مرفق',
-                              onPressed: () async {
-                                final files = await FilePicker.platform
-                                    .pickFiles(allowMultiple: true);
-                                if (files == null) return;
-                                _taskCubit.onChangeAttachmentFile(files.files
-                                    .map((e) => File(e.path!))
-                                    .toList());
-                              },
-                              icon: Icons.attach_file_rounded,
-                            ),
-                            10.height,
-                            ValueListenableBuilder(
-                              valueListenable: filesNotifier,
-                              builder: (context, value, child) =>
-                                  BlocBuilder<TaskCubit, TaskState>(
-                                builder: (context, state) {
-                                  return AnimatedSwitcher(
-                                    duration: Duration(milliseconds: 500),
-                                    transitionBuilder: (widget, animation) =>
-                                        FadeTransition(
-                                      opacity: animation,
-                                      child: widget,
-                                    ),
-                                    child: (state.attachmentFile == null &&
-                                            (value?.isEmpty ?? true))
-                                        ? SizedBox.shrink()
-                                        : SizedBox(
-                                            height: 100.scaleHeight,
-                                            child: ListView(
-                                              scrollDirection: Axis.horizontal,
-                                              children: [
-                                                ...(value ?? [])
-                                                    .map((e) =>
-                                                        showImageOrFileFromRemote(
-                                                            e))
-                                                    .toList(),
-                                                ...(state.attachmentFile ?? [])
-                                                    .map((e) =>
-                                                        showImageOrFileFromLocale(
-                                                            e))
-                                                    .toList(),
-                                              ],
-                                            ),
-                                          ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      10.height,
-                      SectionHeader(title: 'إسناد المهمة'),
-                      10.height,
-                      InfoItem(
-                        title: 'نوع الإسناد',
-                        customWidget: AppCardContainer(
-                          child: AppGroupButton(
-                            width: AppDimensions.currentWidth() /
-                                (assignedToList.length + 1),
-                            groupButtonController: GroupButtonController(
-                              selectedIndex:
-                                  taskState.selectedAssignedToType?.index,
-                            ),
-                            buttons: assignedToList.map((e) => e.text).toList(),
-                            onSelected: (_, index, isSelected) {
-                              _taskCubit.onChangeSelectedAssignedToType(
-                                  assignedToList[index]);
-                            },
-                          ),
-                        ),
-                      ),
-                      10.height,
-                      assignToEmployeeWidget(taskState),
-                      assignToRegionWidget(taskState),
-                      assignToDepartmentWidget(taskState),
+
                       40.height,
                     ],
                   ),

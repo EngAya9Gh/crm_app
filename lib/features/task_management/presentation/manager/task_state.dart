@@ -31,7 +31,7 @@ class TaskState {
     this.getUsersTaskReportsStatus = const BlocStatus.initial(),
     this.getListClients = const BlocStatus.initial(),
     this.getTaskLog = const BlocStatus.initial(),
-    this.selectedAssignedToType,
+    this.selectedAssignedToType=AssignedTypeNew.users,
     this.myBranch,
     this.myDepartment,
     this.myTasks,
@@ -120,7 +120,7 @@ class TaskState {
       selectedAssignTo: isResetAddTask ? null : selectedAssignTo ?? this.selectedAssignTo,
       selectedParticipant: isResetAddTask ? null : selectedParticipant ?? this.selectedParticipant,
       selectedAssignedToType: isResetAddTask
-          ? null
+          ? AssignedTypeNew.users
           : selectedAssignedToType?.value != null
               ? selectedAssignedToType?.value
               : this.selectedAssignedToType,

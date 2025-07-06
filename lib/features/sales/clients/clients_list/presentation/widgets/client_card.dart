@@ -221,7 +221,7 @@ class _CardClientState extends State<CardClient> {
                                   ),
                                 ),
                               if (preferences.showTypeRecord &&
-                                  widget.clientModel.type_record != null)
+                                  widget.clientModel.type_record != null && widget.clientModel.type_record!.isNotEmpty)
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: AppStatusChip(
