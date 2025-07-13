@@ -45,7 +45,7 @@ class AddTicketPage extends StatefulWidget {
 
 class _AddTicketPageState extends State<AddTicketPage> {
   late final AddTicketCubit addTicketCubit;
-  ValueNotifier<SubscribedClientsModel?> fkClientNotifier = ValueNotifier(null);
+  late final TicketsCubit _cubit;
 
   final TextEditingController problem_desc = TextEditingController();
 
@@ -58,11 +58,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
   @override
   void initState() {
     addTicketCubit = context.read<AddTicketCubit>();
-    // fkClientNotifier.value = widget.fkClient;
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ClientProvider>(context, listen: false).getclient_Accept();
-      Provider.of<ClientProvider>(context, listen: false).changevalueclient(null);
-    });
+    _cubit=context.read<TicketsCubit>();
     super.initState();
   }
 
@@ -90,45 +86,51 @@ class _AddTicketPageState extends State<AddTicketPage> {
                           isRequired: true,
                           customWidget: BlocBuilder<ClientAttachmentsBloc, ClientAttachmentsState>(
                             builder: (context, state) {
-                              return ValueListenableBuilder(
-                                valueListenable: fkClientNotifier,
-                                builder: (context, value, child) => CustomSearchableDropDown<SubscribedClientsModel>(
-                                  hint: 'العميل',
-                                  items: state.getAllClients.data ?? [],
-                                  itemAsString: (u) => u?.nameEnterprise ?? '',
-                                  selectedItem: value,
-                                  onChanged: (data) {
-                                    fkClientNotifier.value = data;
-                                  },
-                                  filterFn: (user, filter) {
-                                    return user.nameEnterprise!.toLowerCase().contains(filter.toLowerCase());
-                                  },
-                                  compareFn: (item, selectedItem) => item.id == selectedItem.id,
-                                ),
+                              return ValueListenableBuilder<SubscribedClientsModel?>(
+                                valueListenable: _cubit.filterEntity.fkClientNotifier,
+                                builder: (context, selectedClient, _) {
+                                  return Column(
+                                    children: [
+                                      CustomSearchableDropDown<SubscribedClientsModel>(
+                                        hint: 'العميل',
+                                        items: state.getAllClients.data ?? [],
+                                        itemAsString: (u) => u?.nameEnterprise ?? '',
+                                        selectedItem: selectedClient,
+                                        onChanged: (data) {
+                                          _cubit.filterEntity.fkClientNotifier.value = data;
+                                        },
+                                        filterFn: (user, filter) {
+                                          return user.nameEnterprise!.toLowerCase().contains(filter.toLowerCase());
+                                        },
+                                        compareFn: (item, selectedItem) => item.id == selectedItem.id,
+                                      ),
+                                      20.height,
+                                      if (selectedClient != null && selectedClient.id != null) ...[
+                                        10.height,
+                                        Center(
+                                          child: AppElevatedButton(
+                                            text: 'ملف العميل',
+                                            onPressed: () {
+                                              AppNavigator.go(
+                                                ClientProfile(
+                                                  idClient: selectedClient.id.toString(),
+                                                ),
+                                                name: AppRoutesNames.clientProfile.inAddTicket,
+                                                pathParameters: {
+                                                  'idClient': selectedClient.id.toString(),
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ],
+                                  );
+                                },
                               );
                             },
                           ),
                         ),
-                        if (fkClientNotifier.value != null) ...[
-                          10.height,
-                          Center(
-                            child: AppElevatedButton(
-                              text: 'ملف العميل',
-                              onPressed: () {
-                                AppNavigator.go(
-                                  ClientProfile(
-                                    idClient: fkClientNotifier.value!.id.toString(),
-                                  ),
-                                  name: AppRoutesNames.clientProfile.inAddTicket,
-                                  pathParameters: {
-                                    'idClient': fkClientNotifier.value!.id.toString(),
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                        20.height,
                       },
                       const SectionHeader(title: 'تفاصيل التذكرة'),
                       10.height,
@@ -217,7 +219,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                   onPressed: () async {
                                     _globalKey.currentState!.save();
                                     if (_globalKey.currentState!.validate()) {
-                                      if (fkClientNotifier.value == null && widget.ratingId == null) {
+                                      if (_cubit.filterEntity.fkClientNotifier.value == null && widget.ratingId == null) {
                                         AppSnackbar.showSnakeBar(
                                           'من فضلك اختر عميل',
                                         );
@@ -233,7 +235,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                       }
                                       await addTicketCubit.addTicket(
                                         AddTicketParams(
-                                          fkClient: fkClientNotifier.value!.id.toString(),
+                                          fkClient: _cubit.filterEntity.fkClientNotifier.value!.id.toString(),
                                           typeProblem: Provider.of<ClientTypeProvider>(context, listen: false).selectedValueOut.toString(),
                                           detailsProblem: problem_desc.text,
                                           ticketSource: ticketSource?.value ?? '',

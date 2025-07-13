@@ -82,7 +82,8 @@ class TicketDetailsButtons extends StatelessWidget {
               // client file button
               if (ticketModel.fkClient != null &&
                   ticketModel.fkClient != "null") ...[
-                Expanded(child: ClientProfileButton(ticketModel: ticketModel)),
+                Expanded(child:
+                ClientProfileButton(ticketModel: ticketModel)),
                 5.width,
               ],
             ],

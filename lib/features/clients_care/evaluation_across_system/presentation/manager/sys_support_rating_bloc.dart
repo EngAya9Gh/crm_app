@@ -10,6 +10,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/communication_modle.dart';
 import '../../data/models/elevation_model.dart';
 import '../../domain/entities/filter_periodic_communication_entity.dart';
@@ -45,6 +46,8 @@ class SysSupportRatingBloc
   FutureOr<void> _onGetListSysOrSupportRatingEvent(
       GetListSysOrSupportRatingEvent event,
       Emitter<SysSupportRatingState> emit) async {
+
+
     if (event.page > 1) {
       emit(state.copyWith(statusListRating: BlocStatus.loading()));
     } else if (event.page == 1) {
@@ -87,6 +90,7 @@ class SysSupportRatingBloc
         );
       },
     );
+
   }
 
   FutureOr<void> _onGetSystemRatingTicketsEvent(

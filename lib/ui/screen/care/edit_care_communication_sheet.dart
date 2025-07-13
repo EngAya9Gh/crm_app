@@ -71,6 +71,11 @@ class _EditCareCommunicationSheetState
 
   @override
   Widget build(BuildContext context) {
+    // print(communicationModel.details.first.reason);
+    // print('communicationModel.details.last.reason');
+
+    print('nbhnbjhbj');
+    print(clientTypeNotifier.value);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Directionality(
@@ -181,6 +186,7 @@ class _EditCareCommunicationSheetState
               ],
               10.height,
               if (communicationModel.typeCommuncation == 'دوري') ...[
+
                 CustomDropDown<PeriodicCommunicationClientTypeEnum>(
                   hint: "نوع العميل",
                   items: PeriodicCommunicationClientTypeEnum.values,
@@ -192,12 +198,14 @@ class _EditCareCommunicationSheetState
                 ),
                 10.height,
               ],
+
               ListenableBuilder(
                 listenable: clientTypeNotifier,
                 builder: (context, child) {
+
                   if (clientTypeNotifier.value?.isWithdrawn ?? false) {
                     return CommunicationWithdrawalReasonsDropDown(
-                      initialValue: communicationModel.details.last.reason,
+                      initialValue: communicationModel.details.isEmpty?'':communicationModel.details.last.reason,
                       withdrawalReason: withdrawalReasonNotifier.value,
                       onChanged: (value) {
                         withdrawalReasonNotifier.value = value;

@@ -12,6 +12,7 @@ import '../../../../../core/common/widgets/custom_app_bar.dart';
 import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_filter_icon.dart';
 import '../../../../../core/common/widgets/custom_search_widget.dart';
+import '../../../../../core/utils/app_constants.dart';
 import '../../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../manager/sys_support_rating_bloc.dart';
 import '../widgets/card_elevation_sys_support.dart';
@@ -29,7 +30,8 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
 
   @override
   void initState() {
-    _bloc = context.read<SysSupportRatingBloc>()..add(GetListSysOrSupportRatingEvent());
+    _bloc = context.read<SysSupportRatingBloc>()
+      ..add(GetListSysOrSupportRatingEvent());
     super.initState();
   }
 
@@ -48,7 +50,9 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
                   child: CustomSearchWidget(
                     searchController: _bloc.filterEntity.searchController,
                     onChanged: (value) {
-                      _bloc.add(GetListSysOrSupportRatingEvent());
+                      AppConstants.debounceFunction(() async {
+                        _bloc.add(GetListSysOrSupportRatingEvent());
+                      }, isDebounced: true, tag: 'search_get_sys');
                     },
                   ),
                 ),
@@ -63,10 +67,10 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
                             child: FilterElevationSysSupportSheet(),
                           ).then(
                             (value) {
-                              if (value != true) {
-                                _bloc.filterEntity.returnToPreviousState;
-                              }
-                              setState(() {});
+                              // if (value != true) {
+                              //  // _bloc.filterEntity.returnToPreviousState;
+                              // }
+                              // setState(() {});
                             },
                           );
                         },
@@ -82,7 +86,8 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
                                   top: -2,
                                   child: CircleAvatar(
                                     radius: 8,
-                                    backgroundColor: AppColors.statusErrorActive,
+                                    backgroundColor:
+                                        AppColors.statusErrorActive,
                                   ),
                                 )
                               : SizedBox.shrink();
@@ -107,7 +112,8 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
                       builder: (context, state) {
                         return ((state.listRating.data ?? []).isEmpty)
                             ? SizedBox.shrink()
-                            : AppText('${state.listRating.data?.length ?? ''}/${state.totalCount}');
+                            : AppText(
+                                '${state.listRating.data?.length ?? ''}/${state.totalCount}');
                       },
                     ),
                   ],
@@ -115,7 +121,8 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
             Expanded(
               child: BlocBuilder<SysSupportRatingBloc, SysSupportRatingState>(
                 buildWhen: (previous, current) {
-                  return ((previous.listRating != current.listRating) || (previous.statusListRating != current.statusListRating));
+                  return ((previous.listRating != current.listRating) ||
+                      (previous.statusListRating != current.statusListRating));
                 },
                 builder: (context, state) {
                   return state.listRating.when(
@@ -123,11 +130,15 @@ class _PeriodicCommunicationState extends State<SysSupportRatingPage> {
                       hasReachedEnd: state.hasReachedEnd,
                       isLoading: state.statusListRating.isLoading(),
                       onLoadMore: () {
-                        _bloc.add(GetListSysOrSupportRatingEvent(page: _bloc.filterEntity.page + 1));
+                        _bloc.add(GetListSysOrSupportRatingEvent(
+                            page: _bloc.filterEntity.page + 1));
                       },
                       items: data ?? [],
                       itemBuilder: (context, index) =>
-                          ElevationSysOrSupportCard(elevationModel: data![index], tabElevationIndex: _bloc.filterEntity.rateTypeNotifier.value),
+                          ElevationSysOrSupportCard(
+                              elevationModel: data![index],
+                              tabElevationIndex:
+                                  _bloc.filterEntity.rateTypeNotifier.value),
                     ),
                     failure: (error, data) => AppErrorWidget(
                       message: error,

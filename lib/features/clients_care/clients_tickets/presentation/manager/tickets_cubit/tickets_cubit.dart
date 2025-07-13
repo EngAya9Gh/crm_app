@@ -36,7 +36,6 @@ class TicketsCubit extends Cubit<TicketsState> {
   List<TicketModel> clientTicketsList = [];
   TicketsPageVariablesEntity pageVariables = TicketsPageVariablesEntity();
   FilterTicketsEntity filterEntity = FilterTicketsEntity();
-
   void init() {
     pageVariables = TicketsPageVariablesEntity();
     filterEntity = FilterTicketsEntity();

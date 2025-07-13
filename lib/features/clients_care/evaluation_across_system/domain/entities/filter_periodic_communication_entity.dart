@@ -11,9 +11,9 @@ class FilterElevationSysSupportEntity extends ChangeNotifier {
   TextEditingController dateToController = TextEditingController();
 
   void clearFilters() {
-    rateTypeNotifier.value = 1;
+    // rateTypeNotifier.value = 1;
     rateNotifier.value = [];
-    searchController = TextEditingController();
+    // searchController = TextEditingController();
     dateFromController = TextEditingController();
     dateToController = TextEditingController();
     notifyListeners();

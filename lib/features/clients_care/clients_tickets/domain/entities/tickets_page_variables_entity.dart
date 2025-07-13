@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../../../finance/clients_attachments/data/models/subscribed_clients_model.dart';
 import '../../data/models/ticket_category_model.dart';
 import '../../data/models/ticket_model.dart';
 import '../../data/models/ticket_sub_category_model.dart';
@@ -18,4 +19,5 @@ class TicketsPageVariablesEntity {
   List<TicketSubCategoryModel> allSubCategoriesList = [];
   List<TicketSubCategoryModel> filteredSubCategoriesByCategories = [];
   List<TicketSubCategoryModel> selectedSubCategoriesList = [];
+
 }

@@ -10,6 +10,7 @@ class ClientAttachmentsState {
   final String filterClientStateSearch;
   final int totalCountItem;
   final bool isRrefresh;
+
   const ClientAttachmentsState({
     this.getListAttachments = const BlocStatus.initial(),
     this.getAttachmentsParams = const GetAttachmentsParams(),
@@ -19,6 +20,7 @@ class ClientAttachmentsState {
     this.totalCountItem = 0,
     this.isRrefresh = false,
     this.filterClientStateSearch = '',
+
   });
 
   ClientAttachmentsState copyWith({

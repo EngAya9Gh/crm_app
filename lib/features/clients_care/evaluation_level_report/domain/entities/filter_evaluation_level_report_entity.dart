@@ -13,9 +13,10 @@ class FilterEvaluationLevelReportEntity {
   TextEditingController dateToController = TextEditingController(
     text: HelperFunctions.formatDate(_endOfTheMonth),
   );
-
+  TextEditingController searchController = TextEditingController();
   void clearFilters() {
     rateNotifier.value = null;
+    searchController = TextEditingController();
     dateFromController.text = HelperFunctions.formatDate(_startOfTheMonth);
     dateToController.text = HelperFunctions.formatDate(_endOfTheMonth);
   }
@@ -26,7 +27,9 @@ class FilterEvaluationLevelReportEntity {
     _previousState = FilterEvaluationLevelReportEntity()
       ..rateNotifier.value = this.rateNotifier.value
       ..dateFromController.text = this.dateFromController.text
+      ..searchController.text = this.searchController.text
       ..dateToController.text = this.dateToController.text;
+
   }
 
   FilterEvaluationLevelReportEntity get returnToPreviousState {
@@ -51,6 +54,7 @@ class FilterEvaluationLevelReportEntity {
       rateNotifier,
       dateFromController,
       dateToController,
+      searchController,
     ];
   }
 

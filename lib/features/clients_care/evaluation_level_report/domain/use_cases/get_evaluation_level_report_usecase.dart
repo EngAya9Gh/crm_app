@@ -27,6 +27,8 @@ class GetEvaluationLevelReportParams {
   final String? dateFrom;
   final String? dateTo;
   final double? rate;
+  final String? filter;
+
 
   const GetEvaluationLevelReportParams({
     required this.fkCountry,
@@ -34,6 +36,7 @@ class GetEvaluationLevelReportParams {
     this.dateFrom,
     this.dateTo,
     this.rate,
+    this.filter
   });
 
   Map<String, dynamic> toParams() {
@@ -42,6 +45,7 @@ class GetEvaluationLevelReportParams {
       'product': rate?.toInt(),
       'from': dateFrom,
       'to': dateTo,
+      'search':filter
     }..removeWhere((key, value) => value == null || value == '');
   }
 

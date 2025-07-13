@@ -55,7 +55,6 @@ class CustomSearchWidget extends StatelessWidget {
           errorBorder: InputBorder.none,
           focusedErrorBorder: InputBorder.none,
           fillColor: Colors.grey[100],
-
           // enabledBorder: OutlineInputBorder(
           //   borderRadius: BorderRadius
           //       .circular(10)

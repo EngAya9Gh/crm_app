@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/common/enums/ticket_source_enum.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/common/enums/ticket_destination_enum.dart';
+import '../../../../finance/clients_attachments/data/models/subscribed_clients_model.dart';
 import '../../data/models/ticket_category_model.dart';
 
 class FilterTicketsEntity {
@@ -21,6 +22,8 @@ class FilterTicketsEntity {
   ValueNotifier<double> rateNotifier = ValueNotifier<double>(0);
   TextEditingController dateFromController = TextEditingController();
   TextEditingController dateToController = TextEditingController();
+  final ValueNotifier<SubscribedClientsModel?>  fkClientNotifier = ValueNotifier(null) ;
+
 
   void clearFilters() {
     ticketTypeNotifier.value = TicketTypesEnum.open;
@@ -31,6 +34,7 @@ class FilterTicketsEntity {
     rateNotifier.value = 0;
     dateFromController.text = '';
     dateToController.text = '';
+    fkClientNotifier.value=null;
   }
 
   FilterTicketsEntity? _previousState;
@@ -39,6 +43,7 @@ class FilterTicketsEntity {
     _previousState = FilterTicketsEntity()
       ..ticketTypeNotifier.value = this.ticketTypeNotifier.value
       ..userNotifier.value = this.userNotifier.value
+      ..fkClientNotifier.value = this.fkClientNotifier.value
       ..ticketSourceListNotifier.value = this.ticketSourceListNotifier.value
       ..ticketCategoryNotifier.value = this.ticketCategoryNotifier.value
       ..ticketDestinationNotifier.value = this.ticketDestinationNotifier.value
@@ -65,12 +70,14 @@ class FilterTicketsEntity {
       rateNotifier,
       dateFromController,
       dateToController,
+      fkClientNotifier
     ];
   }
 
   bool checkIfFilterIsNotEmpty() {
     return ticketTypeNotifier.value != TicketTypesEnum.open ||
         userNotifier.value != null ||
+        fkClientNotifier.value != null ||
         ticketSourceListNotifier.value.isNotEmpty ||
         ticketCategoryNotifier.value.isNotEmpty ||
         ticketDestinationNotifier.value != null ||

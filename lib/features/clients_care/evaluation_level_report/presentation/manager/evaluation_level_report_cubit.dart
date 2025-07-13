@@ -52,6 +52,8 @@ class EvaluationLevelReportCubit extends Cubit<EvaluationLevelReportState> {
             dateFrom: filterEntity.dateFromController.text,
             dateTo: filterEntity.dateToController.text,
             rate: filterEntity.rateNotifier.value,
+            filter: pageVariables.searchController.text,
+
           ),
         );
         result.fold(
