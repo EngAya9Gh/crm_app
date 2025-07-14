@@ -39,225 +39,200 @@ class WebCustomDrawer extends StatefulWidget {
 class _WebCustomDrawerState extends State<WebCustomDrawer> {
   bool _showProfileSection = false;
   Map<int, bool> _expandedSections = {};
-  late final WebHomePageCubit _webHomePageCubit;
-  late final userProvider ;
-  late final isAuthenticated;
+  WebHomePageCubit? _webHomePageCubit;
+
+  bool get isAuthenticated {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    return userProvider.currentUser.idUser != null &&
+        userProvider.currentUser.idUser != '-1' &&
+        userProvider.currentUser.idUser!.isNotEmpty;
+  }
+
   @override
   void initState() {
-    super.initState();
     print('object aaaaaaaaaaaaaaa');
-    try {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        _webHomePageCubit = context.read<WebHomePageCubit>();
-        userProvider = Provider.of<UserProvider>(context, listen: true);
-        isAuthenticated = userProvider.currentUser.idUser != null &&
-            userProvider.currentUser.idUser != '-1' &&
-            userProvider.currentUser.idUser!.isNotEmpty;
-      });
-    } catch (e) {
-      print('Error initializing WebHomePageCubit: $e');
-      // Intenta crearlo aquí si no está disponible en el contexto
-      _webHomePageCubit = WebHomePageCubit();
-    }
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: _webHomePageCubit ?? WebHomePageCubit(),
+      child: BlocBuilder<WebHomePageCubit, WebHomePageState>(
+        builder: (context, state) {
+          // Initialize cubit if not already done
+          _webHomePageCubit ??= context.read<WebHomePageCubit>();
+          
+          print('isAuthenticated');
+          print('isAuthenticated');
+          print('isAuthenticated');
+          print(isAuthenticated);
+          return Container(
+            width: 300,
+            color: AppColors.white,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      // Profile Header Section or Login Section
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        color: AppColors.primaryMain,
+                        child: isAuthenticated ? _buildAuthenticatedHeader() : _buildLoginSection(),
+                      ),
 
-    print('isAuthenticated');
-    print('isAuthenticated');
-    print('isAuthenticated');
-    print(isAuthenticated);
-    return Container(
-      width: 300.scaleWidth,
-      color: AppColors.white,
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                // Profile Header Section or Login Section
-                Container(
-                  padding: EdgeInsets.all(16),
-                  color: AppColors.primaryMain,
-                  child: isAuthenticated ? _buildAuthenticatedHeader() : _buildLoginSection(),
+                      // Main Sections from SectionsLists.homeSections
+                      ...SectionsLists.homeSections.asMap().entries.map((entry) {
+                        final int index = entry.key;
+                        final section = entry.value;
+
+                        // Only show sections if user is authenticated
+                        if (!isAuthenticated) {
+                          return SizedBox.shrink();
+                        }
+
+                        // Check if user has privilege to view this section
+                        if (section.privilegeId != null &&
+                            !context.read<PrivilegesCubit>().checkPrivilege(section.privilegeId)) {
+                          return SizedBox.shrink();
+                        }
+
+                        // Use WebHomePageCubit to determine expanded state
+                        bool isExpanded = _webHomePageCubit?.sideBarEntity.currentSectionIndex == index;
+
+                        return Column(
+                          children: [
+                            ListTile(
+                              leading: Icon(
+                                section.icon ?? Icons.circle_outlined,
+                                color: AppColors.primaryMain,
+                                size: 20.scaleFontSize,
+                              ),
+                              title: AppText(
+                                section.title,
+                                style: TextStyle(
+                                  fontFamily: AppFonts.fontFamily1,
+                                  fontSize: 14.scaleFontSize,
+                                ),
+                              ),
+                              trailing: section.subSections.isNotEmpty
+                                  ? Icon(
+                                      isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                      color: AppColors.primaryMain,
+                                    )
+                                  : null,
+                              onTap: () {
+                                setState(() {
+                                  if (section.subSections.isEmpty) {
+                                    // Navigate to the section directly if it has no subsections
+                                    AppNavigator.go(section.page, name: section.path);
+                                  } else {
+                                    // Toggle expansion and handle WebHomePageCubit state
+                                    if (_webHomePageCubit?.sideBarEntity.currentSectionIndex == index) {
+                                      _webHomePageCubit?.sideBarEntity.currentSectionIndex = -1;
+                                    } else {
+                                      _webHomePageCubit?.sideBarEntity.currentSectionIndex = index;
+                                    }
+                                    _webHomePageCubit?.setSelectedSubSections();
+                                  }
+                                });
+                              },
+                            ),
+                            if (isExpanded && section.subSections.isNotEmpty)
+                              ...section.subSections.mapIndexed((subIndex, subSection) {
+                                // Check if user has privilege to view this subsection
+                                if (subSection.privilegeId != null &&
+                                    !context.read<PrivilegesCubit>().checkPrivilege(subSection.privilegeId)) {
+                                  return SizedBox.shrink();
+                                }
+
+                                // Determine if this subsection is selected
+                                bool isSelected = _webHomePageCubit?.sideBarEntity.selectedSubSectionIndex == subIndex &&
+                                    _webHomePageCubit?.sideBarEntity.selectedSectionIndex == index;
+
+                                return ListTile(
+                                  contentPadding: EdgeInsets.only(right: 32.0),
+                                  leading: Icon(
+                                    subSection.icon ?? Icons.circle,
+                                    color: isSelected ? AppColors.secondaryMain : AppColors.primaryMain,
+                                    size: 12.scaleFontSize,
+                                  ),
+                                  title: AppText(
+                                    subSection.title,
+                                    style: TextStyle(
+                                      fontFamily: AppFonts.fontFamily1,
+                                      fontSize: 12.scaleFontSize,
+                                      color: isSelected ? AppColors.secondaryMain : AppColors.black,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      _webHomePageCubit?.sideBarEntity.selectedSubSectionIndex = subIndex;
+                                      _webHomePageCubit?.sideBarEntity.selectedSectionIndex = index;
+                                      AppNavigator.go(subSection.page, name: subSection.path);
+                                    });
+                                  },
+                                );
+                              }).toList(),
+                          ],
+                        );
+                      }).toList(),
+
+                      if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
+                        Divider(height: 10, thickness: 1, color: AppColors.grey.shade200),
+                        ListTile(
+                          leading: Icon(
+                            Icons.campaign_outlined,
+                            color: AppColors.primaryMain,
+                            size: 20.scaleFontSize,
+                          ),
+                          title: AppText(
+                            'الحملات الإعلانية',
+                            style: TextStyle(
+                              fontFamily: AppFonts.fontFamily1,
+                              fontSize: 14.scaleFontSize,
+                            ),
+                          ),
+                          onTap: () async {
+                            await HelperFunctions.urlLauncher(
+                              'https://test.smartcrm.ws/campaigns',
+                              isNewTab: true,
+                            );
+                          },
+                        ),
+                      ],
+
+                      Divider(height: 10, thickness: 1, color: AppColors.grey.shade200),
+                    ],
+                  ),
                 ),
 
-                // Main Sections from SectionsLists.homeSections
-                ...SectionsLists.homeSections.asMap().entries.map((entry) {
-                  final int index = entry.key;
-                  final section = entry.value;
-
-                  // Only show sections if user is authenticated
-                  if (!isAuthenticated) {
-                    return SizedBox.shrink();
-                  }
-
-                  // Check if user has privilege to view this section
-                  if (section.privilegeId != null &&
-                      !context
-                          .read<PrivilegesCubit>()
-                          .checkPrivilege(section.privilegeId)) {
-                    return SizedBox.shrink();
-                  }
-
-                  // Use WebHomePageCubit to determine expanded state
-                  bool isExpanded =
-                      _webHomePageCubit.sideBarEntity.currentSectionIndex ==
-                          index;
-
-                  return Column(
-                    children: [
-                      ListTile(
-                        leading: Icon(
-                          section.icon ?? Icons.circle_outlined,
-                          color: AppColors.primaryMain,
-                          size: 20.scaleFontSize,
-                        ),
-                        title: AppText(
-                          section.title,
-                          style: TextStyle(
-                            fontFamily: AppFonts.fontFamily1,
-                            fontSize: 14.scaleFontSize,
+                // Bottom Section with update button
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Divider(height: 10, thickness: 1, color: AppColors.grey.shade200),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: AppElevatedButton(
+                            onPressed: () {},
+                            text: 'تحقق من وجود تحديثات',
                           ),
                         ),
-                        trailing: section.subSections.isNotEmpty
-                            ? Icon(
-                                isExpanded
-                                    ? Icons.keyboard_arrow_up
-                                    : Icons.keyboard_arrow_down,
-                                color: AppColors.primaryMain,
-                              )
-                            : null,
-                        onTap: () {
-                          setState(() {
-                            if (section.subSections.isEmpty) {
-                              // Navigate to the section directly if it has no subsections
-                              AppNavigator.go(section.page, name: section.path);
-                            } else {
-                              // Toggle expansion and handle WebHomePageCubit state
-                              if (_webHomePageCubit
-                                      .sideBarEntity.currentSectionIndex ==
-                                  index) {
-                                _webHomePageCubit
-                                    .sideBarEntity.currentSectionIndex = -1;
-                              } else {
-                                _webHomePageCubit
-                                    .sideBarEntity.currentSectionIndex = index;
-                              }
-                              _webHomePageCubit.setSelectedSubSections();
-                            }
-                          });
-                        },
-                      ),
-                      if (isExpanded && section.subSections.isNotEmpty)
-                        ...section.subSections
-                            .mapIndexed((subIndex, subSection) {
-                          // Check if user has privilege to view this subsection
-                          if (subSection.privilegeId != null &&
-                              !context
-                                  .read<PrivilegesCubit>()
-                                  .checkPrivilege(subSection.privilegeId)) {
-                            return SizedBox.shrink();
-                          }
-
-                          // Determine if this subsection is selected
-                          bool isSelected = _webHomePageCubit
-                                      .sideBarEntity.selectedSubSectionIndex ==
-                                  subIndex &&
-                              _webHomePageCubit
-                                      .sideBarEntity.selectedSectionIndex ==
-                                  index;
-
-                          return ListTile(
-                            contentPadding: EdgeInsets.only(right: 32.0),
-                            leading: Icon(
-                              subSection.icon ?? Icons.circle,
-                              color: isSelected
-                                  ? AppColors.secondaryMain
-                                  : AppColors.primaryMain,
-                              size: 12.scaleFontSize,
-                            ),
-                            title: AppText(
-                              subSection.title,
-                              style: TextStyle(
-                                fontFamily: AppFonts.fontFamily1,
-                                fontSize: 12.scaleFontSize,
-                                color: isSelected
-                                    ? AppColors.secondaryMain
-                                    : AppColors.black,
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                _webHomePageCubit.sideBarEntity
-                                    .selectedSubSectionIndex = subIndex;
-                                _webHomePageCubit
-                                    .sideBarEntity.selectedSectionIndex = index;
-                                AppNavigator.go(subSection.page,
-                                    name: subSection.path);
-                              });
-                            },
-                          );
-                        }).toList(),
-                    ],
-                  );
-                }).toList(),
-
-                if (context.read<PrivilegesCubit>().checkPrivilege('289')) ...[
-                  Divider(
-                      height: 10, thickness: 1, color: AppColors.grey.shade200),
-                  ListTile(
-                    leading: Icon(
-                      Icons.campaign_outlined,
-                      color: AppColors.primaryMain,
-                      size: 20.scaleFontSize,
+                        SizedBox(height: 8),
+                      ],
                     ),
-                    title: AppText(
-                      'الحملات الإعلانية',
-                      style: TextStyle(
-                        fontFamily: AppFonts.fontFamily1,
-                        fontSize: 14.scaleFontSize,
-                      ),
-                    ),
-                    onTap: () async {
-                      await HelperFunctions.urlLauncher(
-                        'https://test.smartcrm.ws/campaigns',
-                        isNewTab: true,
-                      );
-                    },
                   ),
-                ],
-
-                Divider(
-                    height: 10, thickness: 1, color: AppColors.grey.shade200),
+                ),
               ],
             ),
-          ),
-
-          // Bottom Section with update button
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Divider(
-                      height: 10, thickness: 1, color: AppColors.grey.shade200),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: AppElevatedButton(
-                      onPressed: () {},
-                      text: 'تحقق من وجود تحديثات',
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                ],
-              ),
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -277,10 +252,7 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
                   width: 60,
                   height: 60,
                   fit: BoxFit.cover,
-                  imageUrl: Provider.of<UserProvider>(context,
-                          listen: true)
-                      .currentUser
-                      .img_image,
+                  imageUrl: Provider.of<UserProvider>(context, listen: true).currentUser.img_image,
                 ),
               ),
             ),
@@ -290,11 +262,7 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppText(
-                    Provider.of<UserProvider>(context,
-                            listen: true)
-                        .currentUser
-                        .nameUser
-                        .toString(),
+                    Provider.of<UserProvider>(context, listen: true).currentUser.nameUser.toString(),
                     style: TextStyle(
                       color: AppColors.white,
                       fontSize: 16.scaleFontSize,
@@ -302,11 +270,7 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
                     ),
                   ),
                   AppText(
-                    Provider.of<UserProvider>(context,
-                            listen: true)
-                        .currentUser
-                        .email
-                        .toString(),
+                    Provider.of<UserProvider>(context, listen: true).currentUser.email.toString(),
                     style: TextStyle(
                       color: AppColors.white70,
                       fontSize: 14.scaleFontSize,
@@ -318,9 +282,7 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
             ),
             IconButton(
               icon: Icon(
-                _showProfileSection
-                    ? Icons.keyboard_arrow_up
-                    : Icons.keyboard_arrow_down,
+                _showProfileSection ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
                 color: AppColors.white,
               ),
               onPressed: () {
@@ -334,8 +296,7 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
         if (_showProfileSection) ...[
           Divider(color: AppColors.white24, height: 18),
           ListTile(
-            leading: Icon(Icons.person_outline,
-                color: AppColors.white),
+            leading: Icon(Icons.person_outline, color: AppColors.white),
             title: AppText(
               'الملف الشخصي',
               fontSize: 15.scaleFontSize,
@@ -344,16 +305,12 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
             onTap: () => AppNavigator.go(
               UserScreen(
                 ismyprofile: 'yes',
-                user: Provider.of<UserProvider>(context,
-                        listen: false)
-                    .currentUser,
+                user: Provider.of<UserProvider>(context, listen: false).currentUser,
               ),
               isNew: false,
             ),
           ),
-          if (context
-              .read<PrivilegesCubit>()
-              .checkPrivilege('49'))
+          if (context.read<PrivilegesCubit>().checkPrivilege('49'))
             ListTile(
               leading: Icon(Icons.add, color: AppColors.white),
               title: AppText(
@@ -364,8 +321,7 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
               onTap: () async {
                 AppNavigator.go(
                   ActionUserPage(),
-                  name: AppRoutesNames
-                      .managementInternalRoutes.addUser,
+                  name: AppRoutesNames.managementInternalRoutes.addUser,
                 );
               },
             ),
@@ -377,8 +333,7 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
               style: TextStyle(color: AppColors.white),
             ),
             onTap: () async {
-              Provider.of<UserProvider>(context, listen: false)
-                  .logout(
+              Provider.of<UserProvider>(context, listen: false).logout(
                 onLogoutSuccess: () async {
                   final secureStorage = getIt<CacheServices>(
                     instanceName: SecureStorageConsumer.name,
@@ -389,9 +344,7 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
                   )
                       .then(
                     (value) {
-                      AppNavigator.goReplacement(LoginPage(),
-                          name:
-                              AppRoutesNames.generalRoutes.login);
+                      AppNavigator.goReplacement(LoginPage(), name: AppRoutesNames.generalRoutes.login);
                     },
                   );
                 },
@@ -399,16 +352,14 @@ class _WebCustomDrawerState extends State<WebCustomDrawer> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.delete_outline,
-                color: AppColors.white),
+            leading: Icon(Icons.delete_outline, color: AppColors.white),
             title: AppText(
               'حذف حسابي',
               fontSize: 15.scaleFontSize,
               style: TextStyle(color: AppColors.white),
             ),
             onTap: () {
-              AppConstants.showAppDialog(
-                  child: DeleteAccountDialog());
+              AppConstants.showAppDialog(child: DeleteAccountDialog());
             },
           ),
         ],
