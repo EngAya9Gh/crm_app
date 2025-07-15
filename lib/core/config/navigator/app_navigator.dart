@@ -33,6 +33,7 @@ abstract class AppNavigator {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static DateTime? date;
   static String? lastPage;
+
   static Future<dynamic> go(
     Widget page, {
     String? name,
@@ -255,28 +256,38 @@ abstract class AppRouter {
               ),
         ],
       ),
-      GoRoute(name: AppRoutesNames.generalRoutes.home, path: AppRoutesPaths.home, builder: (context, state) => HomePage(), routes: [
-        GoRoute(
-          name: AppRoutesNames.generalRoutes.notifications,
-          path: AppRoutesPaths.notifications,
-          builder: (context, state) => NotificationsPage(),
-        ),
-        GoRoute(name: AppRoutesNames.generalRoutes.versions, path: AppRoutesPaths.versions, builder: (context, state) => VersionsPage(), routes: [
-          GoRoute(
-            name: AppRoutesNames.generalRoutes.addVersions,
-            path: AppRoutesPaths.addVersions,
-            builder: (context, state) => AddVersionPage(
-              versionModel: state.extra as VersionModel?,
+      GoRoute(
+          name: AppRoutesNames.generalRoutes.home,
+          path: AppRoutesPaths.home,
+          builder: (context, state) => HomePage(),
+          routes: [
+            GoRoute(
+              name: AppRoutesNames.generalRoutes.notifications,
+              path: AppRoutesPaths.notifications,
+              builder: (context, state) => NotificationsPage(),
             ),
-          ),
-          GoRoute(
-              name: AppRoutesNames.generalRoutes.showIncommingUpdate,
-              path: AppRoutesPaths.incommingUpdate,
-              builder: (context, state) => IncommingVersionsPage()),
-          GoRoute(
-              name: AppRoutesNames.generalRoutes.versionOrder, path: AppRoutesPaths.versionOrder, builder: (context, state) => VersionOrderPage()),
-        ]),
-      ]),
+            GoRoute(
+                name: AppRoutesNames.generalRoutes.versions,
+                path: AppRoutesPaths.versions,
+                builder: (context, state) => VersionsPage(),
+                routes: [
+                  GoRoute(
+                    name: AppRoutesNames.generalRoutes.addVersions,
+                    path: AppRoutesPaths.addVersions,
+                    builder: (context, state) => AddVersionPage(
+                      versionModel: state.extra as VersionModel?,
+                    ),
+                  ),
+                  GoRoute(
+                      name: AppRoutesNames.generalRoutes.showIncommingUpdate,
+                      path: AppRoutesPaths.incommingUpdate,
+                      builder: (context, state) => IncommingVersionsPage()),
+                  GoRoute(
+                      name: AppRoutesNames.generalRoutes.versionOrder,
+                      path: AppRoutesPaths.versionOrder,
+                      builder: (context, state) => VersionOrderPage()),
+                ]),
+          ]),
 
       // GoRoute(
       //   name: AppRoutesNames.generalRoutes.home,

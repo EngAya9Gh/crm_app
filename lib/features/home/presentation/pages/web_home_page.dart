@@ -62,7 +62,6 @@ class WebHomePage extends StatefulWidget {
 }
 
 class _WebHomePageState extends State<WebHomePage> {
-  late final WebHomePageCubit _webHomePageCubit;
   late final SearchCubit _searchCubit;
   final TextEditingController _searchController = TextEditingController();
   bool _isApprovalExpanded = false;
@@ -77,17 +76,18 @@ class _WebHomePageState extends State<WebHomePage> {
   @override
   void initState() {
     super.initState();
-    _webHomePageCubit = context.read<WebHomePageCubit>();
     _searchCubit = context.read<SearchCubit>();
     _initializeFavoriteScreens();
 
     context.read<NotificationsCubit>()..init();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       print('WebHomePage: Checking if user is authenticated before loading data');
-      
+
       // Check if user is authenticated before loading data
       final userProvider = Provider.of<UserProvider>(context, listen: false);
-      if (userProvider.currentUser.idUser != null && userProvider.currentUser.idUser != '-1' && userProvider.currentUser.idUser!.isNotEmpty) {
+      if (userProvider.currentUser.idUser != null &&
+          userProvider.currentUser.idUser != '-1' &&
+          userProvider.currentUser.idUser!.isNotEmpty) {
         print('WebHomePage: User is authenticated, loading data');
         await Future.wait([
           _searchCubit.getHomeStatistics(),
@@ -104,10 +104,10 @@ class _WebHomePageState extends State<WebHomePage> {
     try {
       // Check if user is authenticated before initializing favorite screens
       final userProvider = Provider.of<UserProvider>(context, listen: false);
-      final isAuthenticated = userProvider.currentUser.idUser != null && 
-          userProvider.currentUser.idUser != '-1' && 
+      final isAuthenticated = userProvider.currentUser.idUser != null &&
+          userProvider.currentUser.idUser != '-1' &&
           userProvider.currentUser.idUser!.isNotEmpty;
-      
+
       if (!isAuthenticated) {
         print('User not authenticated, skipping favorite screens initialization');
         if (mounted) {
@@ -176,8 +176,7 @@ class _WebHomePageState extends State<WebHomePage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: _searchCubit),
-        if (_isFavoriteScreensInitialized)
-          BlocProvider.value(value: _favoriteScreensCubit),
+        if (_isFavoriteScreensInitialized) BlocProvider.value(value: _favoriteScreensCubit),
       ],
       child: AppScaffold(
         body: Stack(
@@ -185,10 +184,14 @@ class _WebHomePageState extends State<WebHomePage> {
             Row(
               children: [
                 // Sidebar con el diseño de CustomDrawer pero navegación web
-                WebCustomDrawer(),
+                Expanded(
+                  flex: 0,
+                  child: WebCustomDrawer(),
+                ),
                 // Contenido principal adaptado de MobHomePage
                 Expanded(
-                  child: widget.child == null ? _buildBody() : widget.child!,
+                  flex: 1,
+                  child: widget.child ?? _buildBody(),
                 ),
               ],
             ),
@@ -324,13 +327,9 @@ class _WebHomePageState extends State<WebHomePage> {
                                 height: (22.0).scaleWidth,
                                 child: Center(
                                     child: AppText(
-                                  (value.currentUser.notificationNotRead ?? 0) >
-                                          99
+                                  (value.currentUser.notificationNotRead ?? 0) > 99
                                       ? '99'
-                                      : (value.currentUser
-                                                  .notificationNotRead ??
-                                              0)
-                                          .toString(),
+                                      : (value.currentUser.notificationNotRead ?? 0).toString(),
                                   color: Colors.white,
                                   fontSize: (14.0).scaleFontSize,
                                 )),
@@ -342,19 +341,13 @@ class _WebHomePageState extends State<WebHomePage> {
               ),
             ),
             12.horizontal,
-            if ((Provider.of<UserProvider>(context, listen: true)
-                        .currentUser
-                        .noOfMentions ??
-                    0) !=
-                0)
+            if ((Provider.of<UserProvider>(context, listen: true).currentUser.noOfMentions ?? 0) != 0)
               Stack(clipBehavior: Clip.none, children: [
                 Consumer<comment_vm>(
                   builder: (context, value, child) => PopupMenuButton(
                     offset: Offset(0, 10),
-                    constraints: BoxConstraints(
-                        minWidth: 420.scaleWidth,
-                        maxWidth: 520.scaleWidth,
-                        maxHeight: 600.scaleHeight),
+                    constraints:
+                        BoxConstraints(minWidth: 420.scaleWidth, maxWidth: 520.scaleWidth, maxHeight: 600.scaleHeight),
                     position: PopupMenuPosition.under,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -378,11 +371,8 @@ class _WebHomePageState extends State<WebHomePage> {
                                   CupertinoPageRoute(
                                       builder: (context) => ClientProfile(
                                             tabIndex: 2,
-                                            idClient: value
-                                                .commentMention[index].fkClient,
-                                            commentId: value
-                                                .commentMention[index]
-                                                .idComment,
+                                            idClient: value.commentMention[index].fkClient,
+                                            commentId: value.commentMention[index].idComment,
                                           )));
                             },
                             child: Directionality(
@@ -417,8 +407,7 @@ class _WebHomePageState extends State<WebHomePage> {
                 AppNavigator.go(
                   UserScreen(
                     ismyprofile: 'yes',
-                    user: Provider.of<UserProvider>(context, listen: false)
-                        .currentUser,
+                    user: Provider.of<UserProvider>(context, listen: false).currentUser,
                   ),
                   isNew: false,
                 );
@@ -575,7 +564,9 @@ class _WebHomePageState extends State<WebHomePage> {
   Widget _buildApprovalSection() {
     // Check if user is authenticated before showing approvals
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    if (userProvider.currentUser.idUser == null || userProvider.currentUser.idUser == '-1' || userProvider.currentUser.idUser!.isEmpty) {
+    if (userProvider.currentUser.idUser == null ||
+        userProvider.currentUser.idUser == '-1' ||
+        userProvider.currentUser.idUser!.isEmpty) {
       return SizedBox.shrink(); // Don't show approval section if not authenticated
     }
 
@@ -609,10 +600,8 @@ class _WebHomePageState extends State<WebHomePage> {
               children: [
                 AppText(
                   'Waiting for approval',
-                  style: TextStyle(
-                      fontSize: 16.scaleFontSize,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryMain),
+                  style:
+                      TextStyle(fontSize: 16.scaleFontSize, fontWeight: FontWeight.w600, color: AppColors.primaryMain),
                 ),
                 BlocBuilder<SearchCubit, SearchState>(
                   builder: (context, state) {
@@ -665,8 +654,7 @@ class _WebHomePageState extends State<WebHomePage> {
                           leading: CircleAvatar(
                             radius: 18,
                             backgroundColor: Colors.grey[300],
-                            child: Icon(Icons.person,
-                                color: Colors.grey[600], size: 18),
+                            child: Icon(Icons.person, color: Colors.grey[600], size: 18),
                           ),
                           title: AppText(
                             user['name'] ?? 'Unknown User',
@@ -695,7 +683,9 @@ class _WebHomePageState extends State<WebHomePage> {
   Widget _buildStatisticsSection() {
     // Check if user is authenticated before showing statistics
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    if (userProvider.currentUser.idUser == null || userProvider.currentUser.idUser == '-1' || userProvider.currentUser.idUser!.isEmpty) {
+    if (userProvider.currentUser.idUser == null ||
+        userProvider.currentUser.idUser == '-1' ||
+        userProvider.currentUser.idUser!.isEmpty) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 24),
         child: AppCardContainer(
@@ -731,36 +721,23 @@ class _WebHomePageState extends State<WebHomePage> {
                 ),
                 Row(
                   children: [
-                    Expanded(
-                        child: _buildStatItem(
-                            "Client", data?.dailyClients, Icons.people)),
+                    Expanded(child: _buildStatItem("Client", data?.dailyClients, Icons.people)),
                     16.width,
                     Expanded(
-                        child: _buildStatItem(
-                            'Income',
-                            formatter.format(data?.dailySales),
-                            Icons.account_balance)),
+                        child: _buildStatItem('Income', formatter.format(data?.dailySales), Icons.account_balance)),
                   ],
                 ),
                 12.height,
                 AppText('Monthly :'),
                 Row(
                   children: [
-                    Expanded(
-                        child: _buildStatItem(
-                            'Income',
-                            formatter.format(data?.monthlySales),
-                            Icons.trending_up)),
+                    Expanded(child: _buildStatItem('Income', formatter.format(data?.monthlySales), Icons.trending_up)),
                     16.width,
                     Expanded(
-                        child: _buildStatItem(
-                            'Loss',
-                            formatter.format(data?.monthlyWithdrawLosses),
-                            Icons.trending_down)),
+                        child:
+                            _buildStatItem('Loss', formatter.format(data?.monthlyWithdrawLosses), Icons.trending_down)),
                     16.width,
-                    Expanded(
-                        child: _buildStatItem('No.Loss',
-                            data?.monthlyNoWithdraw, Icons.people_outline)),
+                    Expanded(child: _buildStatItem('No.Loss', data?.monthlyNoWithdraw, Icons.people_outline)),
                   ],
                 ),
                 12.height,
@@ -768,48 +745,33 @@ class _WebHomePageState extends State<WebHomePage> {
                 Row(
                   children: [
                     Expanded(
-                        child: _buildStatItem(
-                            'Waiting for periodic communication',
-                            formatterWithOutFraction
-                                .format(data?.waitingFrequent),
-                            Icons.repeat)),
+                        child: _buildStatItem('Waiting for periodic communication',
+                            formatterWithOutFraction.format(data?.waitingFrequent), Icons.repeat)),
                     16.width,
                     Expanded(
-                        child: _buildStatItem(
-                            'Waiting for the first quality',
-                            formatterWithOutFraction
-                                .format(data?.waitingInstall1),
-                            Icons.high_quality)),
+                        child: _buildStatItem('Waiting for the first quality',
+                            formatterWithOutFraction.format(data?.waitingInstall1), Icons.high_quality)),
                   ],
                 ),
                 5.height,
                 Row(
                   children: [
                     Expanded(
-                        child: _buildStatItem(
-                            'Waiting for the second quality',
-                            formatterWithOutFraction
-                                .format(data?.waitingInstall2),
-                            Icons.high_quality_outlined)),
+                        child: _buildStatItem('Waiting for the second quality',
+                            formatterWithOutFraction.format(data?.waitingInstall2), Icons.high_quality_outlined)),
                     16.width,
                     Expanded(
-                        child: _buildStatItem(
-                            'Waiting for welcome',
-                            formatterWithOutFraction
-                                .format(data?.waitingWelcome),
-                            Icons.waving_hand)),
+                        child: _buildStatItem('Waiting for welcome',
+                            formatterWithOutFraction.format(data?.waitingWelcome), Icons.waving_hand)),
                   ],
                 ),
                 12.height,
                 AppText('ToDo '),
                 Row(
                   children: [
-                    Expanded(
-                        child: _buildStatItem(
-                            'visit', data?.notDoneVisits, Icons.work)),
+                    Expanded(child: _buildStatItem('visit', data?.notDoneVisits, Icons.work)),
                     16.width,
-                    Expanded(
-                        child: _buildStatItem('task', data?.tasks, Icons.task)),
+                    Expanded(child: _buildStatItem('task', data?.tasks, Icons.task)),
                   ],
                 ),
               ],
@@ -878,7 +840,9 @@ class _WebHomePageState extends State<WebHomePage> {
   Widget _buildProgressSection() {
     // Check if user is authenticated before showing progress
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    if (userProvider.currentUser.idUser == null || userProvider.currentUser.idUser == '-1' || userProvider.currentUser.idUser!.isEmpty) {
+    if (userProvider.currentUser.idUser == null ||
+        userProvider.currentUser.idUser == '-1' ||
+        userProvider.currentUser.idUser!.isEmpty) {
       return SizedBox.shrink(); // Don't show progress section if not authenticated
     }
 
@@ -897,8 +861,7 @@ class _WebHomePageState extends State<WebHomePage> {
               SizedBox(height: 12),
               _buildProgressBar(
                 'Open Ticket',
-                (state.homeStatistics.data?.openTicketsProgress ?? 0)
-                    .toDouble(),
+                (state.homeStatistics.data?.openTicketsProgress ?? 0).toDouble(),
                 Colors.green,
                 state.homeStatistics.data?.openTicketsLabel ?? '',
               ),
@@ -907,8 +870,7 @@ class _WebHomePageState extends State<WebHomePage> {
               ),
               _buildProgressBar(
                 'Open visit',
-                (state.homeStatistics.data?.notDoneVisitsProgress ?? 0)
-                    .toDouble(),
+                (state.homeStatistics.data?.notDoneVisitsProgress ?? 0).toDouble(),
                 Colors.green,
                 state.homeStatistics.data?.notDoneVisitsLabel ?? '',
               ),
@@ -919,8 +881,7 @@ class _WebHomePageState extends State<WebHomePage> {
     );
   }
 
-  Widget _buildProgressBar(
-      String title, double value, Color color, String label) {
+  Widget _buildProgressBar(String title, double value, Color color, String label) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
