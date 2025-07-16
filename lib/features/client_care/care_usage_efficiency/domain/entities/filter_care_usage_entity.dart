@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/client_care/care_usage_efficiency/domain/entities/type_client_usage_enum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class FilterCareUsageEntity {
   final startToNotifier = ValueNotifier<String?>(null);
   final lastActivityFromNotifier = ValueNotifier<String?>(null);
   final lastActivityToNotifier = ValueNotifier<String?>(null);
-  final stateNotifier = ValueNotifier<String?>(null);
+  final stateNotifier = ValueNotifier<UsageClientTypeEnum?>(null);
   final premiumNotifier = ValueNotifier<String?>(null);
   final packageNotifier = ValueNotifier<List<String>>([]);
   final possibilityOfWithdrawNotifier = ValueNotifier<List<String>>([]);
@@ -37,6 +38,7 @@ class FilterCareUsageEntity {
   FilterCareUsageEntity? _previousState;
 
   void savePreviousState() {
+
     _previousState = FilterCareUsageEntity()
       ..endFromNotifier.value = this.endFromNotifier.value
       ..endToNotifier.value = this.endToNotifier.value
@@ -87,7 +89,7 @@ class FilterCareUsageEntity {
         startToNotifier.value != null ||
         lastActivityFromNotifier.value != null ||
         lastActivityToNotifier.value != null ||
-        stateNotifier.value != null ||
+        stateNotifier.value !=null ||
         premiumNotifier.value != null ||
         packageNotifier.value.isNotEmpty ||
         possibilityOfWithdrawNotifier.value.isNotEmpty ||

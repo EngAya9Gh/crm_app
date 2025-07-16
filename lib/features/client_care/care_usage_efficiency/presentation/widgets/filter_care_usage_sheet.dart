@@ -17,6 +17,7 @@ import '../../../../../features/common/branches/presentation/pages/branch_search
 import '../../../../../features/sales/public_relations/agents_and_distributors/presentation/widgets/agent_support_page/custom_date_time_picker.dart';
 import '../../../../../model/ActivityModel.dart';
 import '../../../../../view_model/activity_vm.dart';
+import '../../domain/entities/type_client_usage_enum.dart';
 import '../manager/care_usage_cubit/care_usage_cubit.dart';
 
 class FilterCareUsageSheet extends StatefulWidget {
@@ -237,17 +238,18 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               16.verticalSpace,
-              ValueListenableBuilder<String?>(
+              ValueListenableBuilder<UsageClientTypeEnum?>(
                 valueListenable: careUsageCubit.filterEntity.stateNotifier,
                 builder: (context, value, child) {
-                  return CustomDropDown<String>(
+                  return CustomDropDown<UsageClientTypeEnum>(
                     hint: 'حالة العميل',
-                    items: ['أونلاين', 'نادر الإستخدام', 'لا يستخدم النظام'],
+                    items:UsageClientTypeEnum.values  ,
                     selectedItem: value,
                     compareFn: (item, selectedItem) => item == selectedItem,
-                    itemAsString: (item) => item ?? '',
+                    itemAsString: (item) => item?.value ?? '',
                     onChanged: (value) {
                       if (value == null) return;
+
                       careUsageCubit.filterEntity.stateNotifier.value = value;
                     },
                   );
@@ -292,7 +294,7 @@ class _FilterCareUsageSheetState extends State<FilterCareUsageSheet> {
                     hint: 'اختر الباقة',
                     items: [
                       'الباقة الأساسية',
-                      'باقة المتقدمة',
+                      'الباقة المتقدمة',
                       'الباقة الكاملة',
                       'الباقة الأولى',
                       'الباقة المتقدمة -نظام المطاعم',

@@ -71,11 +71,7 @@ class _EditCareCommunicationSheetState
 
   @override
   Widget build(BuildContext context) {
-    // print(communicationModel.details.first.reason);
-    // print('communicationModel.details.last.reason');
 
-    print('nbhnbjhbj');
-    print(clientTypeNotifier.value);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Directionality(

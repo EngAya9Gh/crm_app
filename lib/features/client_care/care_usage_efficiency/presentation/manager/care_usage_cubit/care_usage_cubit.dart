@@ -8,6 +8,7 @@ import '../../../data/models/care_usage_model.dart';
 import '../../../domain/entities/care_usage.dart';
 import '../../../domain/entities/care_usage_page_variables_entity.dart';
 import '../../../domain/entities/filter_care_usage_entity.dart';
+import '../../../domain/entities/type_client_usage_enum.dart';
 import '../../../domain/repositories/care_usage_repository.dart';
 import '../../../domain/usecases/get_care_usage_list.dart';
 
@@ -58,7 +59,9 @@ class CareUsageCubit extends Cubit<CareUsageState> {
               startTo: filterEntity.startToNotifier.value,
               lastActivityFrom: filterEntity.lastActivityFromNotifier.value,
               lastActivityTo: filterEntity.lastActivityToNotifier.value,
-              state: pageVariables.type,
+              state:  filterEntity.stateNotifier.value!=null?
+              filterEntity.stateNotifier.value?.name
+              : pageVariables.type ,
               premium: filterEntity.premiumNotifier.value,
               package: filterEntity.packageNotifier.value,
               possibilityOfWithdraw:
