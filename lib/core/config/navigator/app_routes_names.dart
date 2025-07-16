@@ -6,10 +6,8 @@ abstract class AppRoutesNames {
   static final _AgentProfile agentProfile = _AgentProfile();
   static final _UserProfile userProfile = _UserProfile();
   static final _Invoices invoices = _Invoices();
-  static final _SalesInternalRoutes salesInternalRoutes =
-      _SalesInternalRoutes();
-  static final _ManagementInternalRoutes managementInternalRoutes =
-      _ManagementInternalRoutes();
+  static final _SalesInternalRoutes salesInternalRoutes = _SalesInternalRoutes();
+  static final _ManagementInternalRoutes managementInternalRoutes = _ManagementInternalRoutes();
   static final _CareInternalRoutes careInternalRoutes = _CareInternalRoutes();
 }
 
@@ -29,32 +27,23 @@ class _GeneralRoutes {
 
 class _ClientProfile {
   final String inClientsList = 'client-profile-in-clients-list';
-  final String inLatestClientsUpdates =
-      'client-profile-in-latest-clients-updates';
+  final String inLatestClientsUpdates = 'client-profile-in-latest-clients-updates';
   final String inClientsDebts = 'client-profile-in-clients-debts';
-  final String inClientsTransferApprovals =
-      'client-profile-in-clients-transfer-approvals';
+  final String inClientsTransferApprovals = 'client-profile-in-clients-transfer-approvals';
 
   final String inExceededClients = 'client-profile-in-exceeded-clients';
 
-  final String inSupportAcceptClients =
-      'client-profile-in-support-accept-clients';
-  final String inSupportClientsInvoices =
-      'client-profile-in-support-clients-invoices';
+  final String inSupportAcceptClients = 'client-profile-in-support-accept-clients';
+  final String inSupportClientsInvoices = 'client-profile-in-support-clients-invoices';
 
   final String inCareAcceptClients = 'client-profile-in-care-accept-clients';
   final String inCareSpecialClients = 'client-profile-in-care-special-clients';
-  final String inCareGreetingCommunication =
-      'client-profile-in-care-greeting-communication';
+  final String inCareGreetingCommunication = 'client-profile-in-care-greeting-communication';
   final String inCareInstallQuality = 'client-profile-in-care-install-quality';
-  final String inCarePeriodicCommunication =
-      'client-profile-in-care-periodic-communication';
-  final String inCareViolations =
-      'client-profile-in-care-violations';
-  final String inCarePeriodicCommunicationReports =
-      'client-profile-in-care-periodic-communication-reports';
-  final String inCareEvaluationLevelReport =
-      'client-profile-in-care-evaluation-level-report';
+  final String inCarePeriodicCommunication = 'client-profile-in-care-periodic-communication';
+  final String inCareViolations = 'client-profile-in-care-violations';
+  final String inCarePeriodicCommunicationReports = 'client-profile-in-care-periodic-communication-reports';
+  final String inCareEvaluationLevelReport = 'client-profile-in-care-evaluation-level-report';
   final String inCareNotUsingSystem = 'client-profile-in-care-not-using-system';
   final String inCareWrongNumbers = 'client-profile-in-care-wrong-numbers';
   final String inTicketsDetails = 'client-profile-in-tickets-details';
@@ -72,8 +61,7 @@ class _ParticipateProfile {
 }
 
 class _AgentProfile {
-  final String inAgentsAndDistributors =
-      'agent-profile-in-agents-and-distributors';
+  final String inAgentsAndDistributors = 'agent-profile-in-agents-and-distributors';
   final String inWaitingAgents = 'agent-profile-in-waiting-agents';
   final String inDatesTable = 'agent-profile-in-dates-table';
 }

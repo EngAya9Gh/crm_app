@@ -24,7 +24,7 @@ late var lastDuation;
 @pragma('vm:entry-point')
 Future<void> _firebaseOnBackgroundListener(RemoteMessage message) async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Check if Firebase is already initialized
   try {
     Firebase.app();
@@ -32,7 +32,7 @@ Future<void> _firebaseOnBackgroundListener(RemoteMessage message) async {
     // Firebase not initialized, initialize it
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   }
-  
+
   await NotificationService.init();
   // Only enable Crashlytics on mobile platforms
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
@@ -66,7 +66,7 @@ void main() async {
           options: DefaultFirebaseOptions.currentPlatform,
         );
       }
-      
+
       FirebaseMessaging.onBackgroundMessage(_firebaseOnBackgroundListener);
       await NotificationService.init();
       // Only enable Crashlytics on mobile platforms
@@ -79,7 +79,7 @@ void main() async {
       await AppInit.initAll();
 
       runApp(DevicePreview(
-        enabled: !kReleaseMode,
+        enabled: false,
         builder: (context) => ServiceProvider(),
       ));
     },

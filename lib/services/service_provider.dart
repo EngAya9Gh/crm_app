@@ -6,6 +6,7 @@ import 'package:crm_smart/features/versions/presentation/manager/versions_bloc.d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+
 import '../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
 import '../core/common/widgets/restart_app_widget.dart';
 import '../core/services/di/di_container.dart';
@@ -43,6 +44,7 @@ import '../features/finance/client_dept/presentation/management/client_dept_bloc
 import '../features/finance/clients_attachments/presentation/manager/client_attachments_bloc.dart';
 import '../features/finance/commission_for_collaborators/presentation/management/commission_collaborators_bloc.dart';
 import '../features/finance/verified_client/presentation/manager/verified_client_bloc.dart';
+import '../features/home/presentation/manager/search_cubit.dart';
 import '../features/home/presentation/manager/web_home_page_cubit.dart';
 import '../features/mangement/advanced_configs/presentation/manager/advanced_cofigs_cubit.dart';
 import '../features/mangement/general_configs/presentation/manager/general_cofigs_cubit.dart';
@@ -107,7 +109,6 @@ import '../view_model/ticket_vm.dart';
 import '../view_model/typeclient.dart';
 import '../view_model/user_vm_provider.dart';
 import '../view_model/usertest_vm.dart';
-import '../features/home/presentation/manager/search_cubit.dart';
 
 class ServiceProvider extends StatelessWidget {
   const ServiceProvider({super.key});
@@ -123,8 +124,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<SpecialClientsBloc>()),
         BlocProvider(create: (context) => getIt<ClientsListBloc>()),
         BlocProvider(create: (context) => getIt<CareUsageCubit>()),
-       
-           BlocProvider(create: (context) => getIt<AppManagerCubit>()),
+        BlocProvider(create: (context) => getIt<AppManagerCubit>()),
         BlocProvider(create: (context) => getIt<PrivilegesCubit>()),
         BlocProvider(create: (context) => getIt<TaskCubit>()),
         BlocProvider(create: (context) => getIt<ParticipateListBloc>()),
@@ -138,10 +138,8 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<InvoicesSectionCubit>()),
         BlocProvider(create: (context) => getIt<DatesTableCubit>()),
         BlocProvider(create: (context) => getIt<AgentsDistributorsCubit>()),
-        BlocProvider(
-            create: (context) => getIt<AgentsDistributorsActionsCubit>()),
-        BlocProvider(
-            create: (context) => getIt<AgentsDistributorsProfileBloc>()),
+        BlocProvider(create: (context) => getIt<AgentsDistributorsActionsCubit>()),
+        BlocProvider(create: (context) => getIt<AgentsDistributorsProfileBloc>()),
         BlocProvider(create: (context) => getIt<WaitingAgentsCubit>()),
         BlocProvider(create: (context) => getIt<AdvancedCofigsCubit>()),
         BlocProvider(create: (context) => getIt<GeneralCofigsCubit>()),
@@ -157,8 +155,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<FinancePendingCubit>()),
         BlocProvider(create: (context) => getIt<PendingInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<ClientsDebtsCubit>()),
-        BlocProvider(
-            create: (context) => getIt<ClientsTransferApprovalsCubit>()),
+        BlocProvider(create: (context) => getIt<ClientsTransferApprovalsCubit>()),
         BlocProvider(create: (context) => getIt<InstallQualityCubit>()),
         BlocProvider(create: (context) => getIt<PreviousRatingsCubit>()),
         BlocProvider(create: (context) => getIt<UsersTypeCubit>()),
@@ -173,8 +170,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<PeriodicCommunicationCubit>()),
         BlocProvider(create: (context) => getIt<ClientsCareReportsCubit>()),
         BlocProvider(create: (context) => getIt<EvaluationLevelReportCubit>()),
-        BlocProvider(
-            create: (context) => getIt<PeriodicCommunicationReportsCubit>()),
+        BlocProvider(create: (context) => getIt<PeriodicCommunicationReportsCubit>()),
         BlocProvider(create: (context) => getIt<NotificationsCubit>()),
         BlocProvider(create: (context) => getIt<ClientDeptBloc>()),
         BlocProvider(create: (context) => getIt<VersionsBloc>()),
@@ -184,8 +180,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<WithdrawnInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<PackagesOffersBloc>()),
         BlocProvider(create: (context) => getIt<VerifiedClientBloc>()),
-        BlocProvider(
-            create: (context) => getIt<ManageWithdrawnInvoicesCubit>()),
+        BlocProvider(create: (context) => getIt<ManageWithdrawnInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<DeletedInvoicesCubit>()),
         BlocProvider(create: (context) => getIt<ClientLogsTabCubit>()),
         BlocProvider(create: (context) => getIt<WrongNumbersCubit>()),
@@ -201,8 +196,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<ClientActivitiesBloc>()),
         BlocProvider(create: (context) => getIt<ClientTaskBloc>()),
         BlocProvider(create: (context) => getIt<CommissionCollaboratorsBloc>()),
-        BlocProvider(
-            create: (context) => getIt<RecommendedClientReportsBloc>()),
+        BlocProvider(create: (context) => getIt<RecommendedClientReportsBloc>()),
         BlocProvider(create: (context) => getIt<SearchCubit>()),
         BlocProvider(create: (context) => getIt<SysSupportRatingBloc>()),
       ],
@@ -211,10 +205,8 @@ class ServiceProvider extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
           ChangeNotifierProvider<ClientCardPreferencesProvider>(create: (_) => ClientCardPreferencesProvider()),
-          ChangeNotifierProvider<switch_provider>(
-              create: (_) => switch_provider()),
-          ChangeNotifierProvider<selected_button_provider>(
-              create: (_) => selected_button_provider()),
+          ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
+          ChangeNotifierProvider<selected_button_provider>(create: (_) => selected_button_provider()),
           ChangeNotifierProvider<country_vm>(create: (_) => country_vm()),
           ChangeNotifierProxyProvider<UserProvider, config_vm>(
             create: (_) => config_vm(),
@@ -225,12 +217,10 @@ class ServiceProvider extends StatelessWidget {
             create: (_) => product_vm(),
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
-          ChangeNotifierProvider<manage_provider>(
-              create: (_) => manage_provider()),
+          ChangeNotifierProvider<manage_provider>(create: (_) => manage_provider()),
           ChangeNotifierProxyProvider<UserProvider, RegionProvider>(
             create: (_) => RegionProvider(),
-            update: (ctx, value, prev) =>
-                prev!..setCurrentUser(value.currentUser),
+            update: (ctx, value, prev) => prev!..setCurrentUser(value.currentUser),
           ),
           ChangeNotifierProxyProvider<UserProvider, ClientProvider>(
             create: (_) => ClientProvider(),
@@ -248,8 +238,7 @@ class ServiceProvider extends StatelessWidget {
             create: (_) => MainCityProvider(),
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
-          ChangeNotifierProvider<ClientTypeProvider>(
-              create: (_) => ClientTypeProvider()),
+          ChangeNotifierProvider<ClientTypeProvider>(create: (_) => ClientTypeProvider()),
           ChangeNotifierProvider<EventProvider>(
             create: (_) => EventProvider(),
           ),
@@ -263,16 +252,11 @@ class ServiceProvider extends StatelessWidget {
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
           ChangeNotifierProvider<datetime_vm>(create: (_) => datetime_vm()),
-          ChangeNotifierProvider<ActivityProvider>(
-              create: (_) => ActivityProvider()),
-          ChangeNotifierProvider<CompanyProvider>(
-              create: (_) => CompanyProvider()),
-          ChangeNotifierProvider<reason_suspend>(
-              create: (_) => reason_suspend()),
-          ChangeNotifierProvider<BranchRaceViewmodel>(
-              create: (_) => BranchRaceViewmodel()),
-          ChangeNotifierProvider<EmployeeRaceViewmodel>(
-              create: (_) => EmployeeRaceViewmodel()),
+          ChangeNotifierProvider<ActivityProvider>(create: (_) => ActivityProvider()),
+          ChangeNotifierProvider<CompanyProvider>(create: (_) => CompanyProvider()),
+          ChangeNotifierProvider<reason_suspend>(create: (_) => reason_suspend()),
+          ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
+          ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
         ],
         child: RestartAppWidget(child: MyApp()),
       ),
