@@ -216,41 +216,41 @@ class _WebHomePageState extends State<WebHomePage> {
                     child: Column(
                       children: [
                         // Cabecera con notificaciones y perfil
-                        // _buildHeaderSection(),
+                        _buildHeaderSection(),
 
                         // Barra de búsqueda adaptada de MobHomePage
-                        // _buildSearchSection(),
+                        _buildSearchSection(),
 
                         // Sección de pantallas favoritas
-                        // Consumer<UserProvider>(
-                        //   builder: (context, userProvider, child) {
-                        //     final isAuthenticated = userProvider.currentUser.idUser != null &&
-                        //         userProvider.currentUser.idUser != '-1' &&
-                        //         userProvider.currentUser.idUser!.isNotEmpty;
-                        //
-                        //     if (!isAuthenticated) {
-                        //       return SizedBox.shrink(); // Don't show favorite screens for unauthenticated users
-                        //     }
-                        //
-                        //     if (_isFavoriteScreensInitialized) {
-                        //       return Padding(
-                        //         padding: EdgeInsets.symmetric(horizontal: 24),
-                        //         child: FavoriteScreensSection(),
-                        //       );
-                        //     } else {
-                        //       return _buildLoadingFavoriteScreens();
-                        //     }
-                        //   },
-                        // ),
+                        Consumer<UserProvider>(
+                          builder: (context, userProvider, child) {
+                            final isAuthenticated = userProvider.currentUser.idUser != null &&
+                                userProvider.currentUser.idUser != '-1' &&
+                                userProvider.currentUser.idUser!.isNotEmpty;
+
+                            if (!isAuthenticated) {
+                              return SizedBox.shrink(); // Don't show favorite screens for unauthenticated users
+                            }
+
+                            if (_isFavoriteScreensInitialized) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 24),
+                                child: FavoriteScreensSection(),
+                              );
+                            } else {
+                              return _buildLoadingFavoriteScreens();
+                            }
+                          },
+                        ),
 
                         // Sección de aprobaciones pendientes
-                        // _buildApprovalSection(),
+                        _buildApprovalSection(),
 
                         // Sección de estadísticas
-                        // _buildStatisticsSection(),
+                        _buildStatisticsSection(),
 
                         // Sección de progreso
-                        // _buildProgressSection(),
+                        _buildProgressSection(),
 
                         // Espacio adicional al final
                         SizedBox(height: 50),
