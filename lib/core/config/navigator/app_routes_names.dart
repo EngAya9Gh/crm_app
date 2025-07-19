@@ -41,6 +41,7 @@ class _ClientProfile {
   final String inCareGreetingCommunication = 'client-profile-in-care-greeting-communication';
   final String inCareInstallQuality = 'client-profile-in-care-install-quality';
   final String inCarePeriodicCommunication = 'client-profile-in-care-periodic-communication';
+  final String inCareUsage = 'client-profile-in-care-usage';
   final String inCareViolations = 'client-profile-in-care-violations';
   final String inCarePeriodicCommunicationReports = 'client-profile-in-care-periodic-communication-reports';
   final String inCareEvaluationLevelReport = 'client-profile-in-care-evaluation-level-report';

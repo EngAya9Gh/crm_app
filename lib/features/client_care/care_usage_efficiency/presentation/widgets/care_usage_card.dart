@@ -50,7 +50,7 @@ class CareUsageCard extends StatelessWidget {
             tabCareIndex: 3,
             idCommunication: updatedCareUsage.idCommunication.toString(),
           ),
-          name: AppRoutesNames.clientProfile.inCarePeriodicCommunication,
+          name: AppRoutesNames.clientProfile.inCareUsage,
               pathParameters: {
                 'idClient': updatedCareUsage.idClients.toString()
               },

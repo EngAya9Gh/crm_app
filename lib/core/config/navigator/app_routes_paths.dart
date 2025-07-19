@@ -83,7 +83,7 @@ class _CareSubSections {
   final String greetingCommunication = 'greeting-communication';
   final String installQuality = 'install-quality';
   final String periodicCommunication = 'periodic-communication';
-  final String CareUsagePage = 'usage-communication';
+  final String careUsagePage = 'usage-communication';
   final String sysSupportRating = 'sys-support-rating';
   final String sysSupportRatingView = 'sys-support-rating-view';
   final String violations = 'violations-page';

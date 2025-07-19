@@ -127,8 +127,13 @@ class DioServices extends ApiServices {
       print(res.toString());
       return res.data;
     } catch (e,s) {
-      print(e.toString() + s.toString());
-      throw handleException(e);    }
+      print('DioServices GET Error:');
+      print('Error: ${e.toString()}');
+      print('Stack: ${s.toString()}');
+      print('Endpoint: $endPoint');
+      print('Full URL: ${dio.options.baseUrl}$endPoint');
+      throw handleException(e);
+    }
   }
 
   @override

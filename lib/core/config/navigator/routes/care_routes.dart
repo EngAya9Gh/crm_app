@@ -1,9 +1,9 @@
 import 'package:crm_smart/features/clients_care/evaluation_across_system/data/models/elevation_model.dart';
 import 'package:crm_smart/features/clients_care/evaluation_across_system/presentation/widgets/elevation_sys_support_view.dart';
-import 'package:crm_smart/features/clients_care/recommended_client/presentation/manager/recommended_client_bloc.dart';
 import 'package:crm_smart/features/clients_care/violations_clienta_care/presentation/pages/violations_page.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../features/client_care/care_usage_efficiency/presentation/pages/care_usage_page.dart';
 import '../../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
 import '../../../../features/clients_care/client_communications/presentation/pages/care_activities_page.dart';
 import '../../../../features/clients_care/clients_care_reports/presentation/pages/clients_care_reports_page.dart';
@@ -140,21 +140,28 @@ abstract class CareRoutes {
         ],
       ),
       GoRoute(
-        name: AppRoutesPaths.careSubSections.sysSupportRating.split('/').last,
-        path: AppRoutesPaths.careSubSections.sysSupportRating,
-        builder: (context, state) => SysSupportRatingPage(),
+        name: AppRoutesPaths.careSubSections.careUsagePage.split('/').last,
+        path: AppRoutesPaths.careSubSections.careUsagePage,
+        builder: (context, state) => CareUsagePage(),
         routes: [
-          GoRoute(
-                name: AppRoutesPaths.careSubSections.sysSupportRatingView,
-                path: AppRoutesPaths.careSubSections.sysSupportRatingView,
-                builder: (context, state) {
-                  return ElevationSysSupportView(
-                    elevationModel: state.extra as ElevationModel,
-                  );
-                },
-              ),
-        ]
+          SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inCareUsage),
+        ],
       ),
+      GoRoute(
+          name: AppRoutesPaths.careSubSections.sysSupportRating.split('/').last,
+          path: AppRoutesPaths.careSubSections.sysSupportRating,
+          builder: (context, state) => SysSupportRatingPage(),
+          routes: [
+            GoRoute(
+              name: AppRoutesPaths.careSubSections.sysSupportRatingView,
+              path: AppRoutesPaths.careSubSections.sysSupportRatingView,
+              builder: (context, state) {
+                return ElevationSysSupportView(
+                  elevationModel: state.extra as ElevationModel,
+                );
+              },
+            ),
+          ]),
       GoRoute(
         name: AppRoutesPaths.careSubSections.violations.split('/').last,
         path: AppRoutesPaths.careSubSections.violations,

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../features/client_care/care_usage_efficiency/presentation/pages/care_usage_page.dart';
 import '../../../features/clients_care/accept_clients/presentation/pages/clients_accept_page.dart';
@@ -162,13 +161,12 @@ abstract class AllSubSectionsLists {
       title: 'كفاءة الاستخدام',
       page: CareUsagePage(),
       privilegeId: '345',
-      path: AppRoutesPaths.careSubSections.CareUsagePage,
+      path: AppRoutesPaths.careSubSections.careUsagePage,
     ),
     SectionModel(
       title: 'التقييمات عبر النظام',
       privilegeId: '346',
       page: SysSupportRatingPage(),
-
       path: AppRoutesPaths.careSubSections.sysSupportRating,
     ),
     SectionModel(
