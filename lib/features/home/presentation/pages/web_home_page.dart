@@ -191,7 +191,7 @@ class _WebHomePageState extends State<WebHomePage> {
                 ),
                 // Contenido principal adaptado de MobHomePage
                 Expanded(
-                  flex: 1,
+                  // flex: 1,
                   child: widget.child ?? _buildBody(),
                 ),
               ],
@@ -536,6 +536,8 @@ class _WebHomePageState extends State<WebHomePage> {
                 ),
                 name: AppRoutesNames.clientProfile.inClientsList,
                 pathParameters: {'idClient': suggestion.idClients.toString()},
+
+
               );
               FocusScope.of(context).unfocus();
             },
@@ -608,6 +610,7 @@ class _WebHomePageState extends State<WebHomePage> {
           AppNavigator.go(
             PendingInvoicesPage(),
             name: AppRoutesNames.clientDashboard.inPendingInvoices,
+
           );
       },
       child: Container(

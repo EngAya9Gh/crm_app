@@ -32,7 +32,7 @@ import '../../../../../../view_model/invoice_vm.dart';
 class ModernInvoiceCard extends StatelessWidget {
   final InvoiceModel invoice;
   final String type;
-  final String routeName;
+   String routeName='';
   final Widget? transferWidget;
   final Widget? commissionWidget;
   final bool isFromWithdrawalsInvoicesList;
@@ -42,7 +42,7 @@ class ModernInvoiceCard extends StatelessWidget {
     Key? key,
     required this.invoice,
     required this.type,
-    required this.routeName,
+      required this.routeName,
     this.transferWidget,
     this.commissionWidget,
     this.isFromWithdrawalsInvoicesList = false,
@@ -662,9 +662,24 @@ class ModernInvoiceCard extends StatelessWidget {
     if (invoice.stateclient == StatusClient.withdrawn.text) {
       page = WithdrawnDetailsPage(invoice: invoice);
     } else if (type == 'profile') {
+
       page = ClientProfile(
         tabIndex: 1,
         idClient: invoice.fkIdClient.toString(),
+      );
+      AppNavigator.go(
+        page,
+        name:  AppRoutesNames
+            .clientProfile
+            .inClientsList,
+        pathParameters: {
+          'idClient': invoice.fkIdClient.toString(),
+
+        },
+        extra: {
+          'tabIndex': 1,
+          'invoice': invoice,
+        },
       );
     } else if (type == 'withdrawn') {
       page = WithdrawnDetailsPage(invoice: invoice);

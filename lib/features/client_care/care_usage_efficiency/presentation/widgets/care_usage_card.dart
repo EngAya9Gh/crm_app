@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/extensions/num_extensions.dart';
 import 'package:crm_smart/core/config/navigator/app_navigator.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/ui/screen/client/client_profile.dart';
@@ -71,7 +72,7 @@ class CareUsageCard extends StatelessWidget {
                 Expanded(
                   child: AppText(
                         updatedCareUsage.nameEnterprise ?? '',
-                    fontSize: 18.sp,
+                    fontSize: 16.scaleFontSize,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryMain,
                   ),
@@ -87,7 +88,7 @@ class CareUsageCard extends StatelessWidget {
                         ),
                         child: AppText(
                           updatedCareUsage.possibilityOfWithdraw!.value,
-                          fontSize: 12.sp,
+                          fontSize: 12.scaleFontSize,
                           color: updatedCareUsage.possibilityOfWithdraw!.color,
                         ),
                       ),
@@ -102,7 +103,7 @@ class CareUsageCard extends StatelessWidget {
                     ),
                     child: AppText(
                       'يحتاج تواصل',
-                      fontSize: 12.sp,
+                      fontSize: 12.scaleFontSize,
                       color: Colors.orange,
                     ),
                   ),
@@ -204,14 +205,14 @@ class CareUsageCard extends StatelessWidget {
         AppText(
           label,
           fontWeight: FontWeight.w600,
-          fontSize: 14.sp,
+          fontSize: 14.scaleFontSize,
           color: Colors.grey[700],
         ),
         8.horizontalSpace,
         Expanded(
           child: AppText(
             value,
-            fontSize: 14.sp,
+            fontSize: 14.scaleFontSize,
             color: Colors.black87,
           ),
         ),

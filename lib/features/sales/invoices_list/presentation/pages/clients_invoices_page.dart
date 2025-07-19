@@ -11,7 +11,7 @@ class ClientsInvoicesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppLayoutBuilder(
       smallBuilder: (context) => MobClientsInvoicesPage(),
-      mediumBuilder: (context) => WebClientsInvoicesPage(),
+      mediumBuilder: (context) => MobClientsInvoicesPage(),
     );
   }
 }
