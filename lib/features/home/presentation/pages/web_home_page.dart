@@ -21,6 +21,7 @@ import 'package:crm_smart/ui/screen/client/client_profile.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/home_app_bar.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart' as typform;
@@ -216,41 +217,41 @@ class _WebHomePageState extends State<WebHomePage> {
                     child: Column(
                       children: [
                         // Cabecera con notificaciones y perfil
-                        // _buildHeaderSection(),
+                        _buildHeaderSection(),
 
                         // Barra de búsqueda adaptada de MobHomePage
-                        // _buildSearchSection(),
+                        _buildSearchSection(),
 
                         // Sección de pantallas favoritas
-                        // Consumer<UserProvider>(
-                        //   builder: (context, userProvider, child) {
-                        //     final isAuthenticated = userProvider.currentUser.idUser != null &&
-                        //         userProvider.currentUser.idUser != '-1' &&
-                        //         userProvider.currentUser.idUser!.isNotEmpty;
-                        //
-                        //     if (!isAuthenticated) {
-                        //       return SizedBox.shrink(); // Don't show favorite screens for unauthenticated users
-                        //     }
-                        //
-                        //     if (_isFavoriteScreensInitialized) {
-                        //       return Padding(
-                        //         padding: EdgeInsets.symmetric(horizontal: 24),
-                        //         child: FavoriteScreensSection(),
-                        //       );
-                        //     } else {
-                        //       return _buildLoadingFavoriteScreens();
-                        //     }
-                        //   },
-                        // ),
+                        Consumer<UserProvider>(
+                          builder: (context, userProvider, child) {
+                            final isAuthenticated = userProvider.currentUser.idUser != null &&
+                                userProvider.currentUser.idUser != '-1' &&
+                                userProvider.currentUser.idUser!.isNotEmpty;
+
+                            if (!isAuthenticated) {
+                              return SizedBox.shrink(); // Don't show favorite screens for unauthenticated users
+                            }
+
+                            if (_isFavoriteScreensInitialized) {
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 24),
+                                child: FavoriteScreensSection(),
+                              );
+                            } else {
+                              return _buildLoadingFavoriteScreens();
+                            }
+                          },
+                        ),
 
                         // Sección de aprobaciones pendientes
-                        // _buildApprovalSection(),
+                        _buildApprovalSection(),
 
                         // Sección de estadísticas
-                        // _buildStatisticsSection(),
+                        _buildStatisticsSection(),
 
                         // Sección de progreso
-                        // _buildProgressSection(),
+                        _buildProgressSection(),
 
                         // Espacio adicional al final
                         SizedBox(height: 50),
@@ -416,11 +417,42 @@ class _WebHomePageState extends State<WebHomePage> {
                 backgroundColor: AppColors.primaryMain,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(45),
-                  child: AppCachedNetworkImage(
-                    width: 500,
-                    height: 500,
-                    fit: BoxFit.fill,
-                    imageUrl: AppConstants.currentUser.img_image,
+                  child: Builder(
+                    builder: (context) {
+                      // Debug: Print the image URL
+                      print('Profile Image URL: ${AppConstants.currentUser.img_image}');
+                      print('Is Web: ${kIsWeb}');
+                      
+                      // Check if image URL is valid
+                      final imageUrl = AppConstants.currentUser.img_image;
+                      if (imageUrl == null || imageUrl.isEmpty) {
+                        print('Image URL is null or empty');
+                        return Icon(
+                          Icons.person,
+                          size: 45,
+                          color: Colors.white,
+                        );
+                      }
+                      
+                      // Test the URL in web browser
+                      if (kIsWeb) {
+                        print('Testing image URL in browser...');
+                        // This will help us see what the server actually returns
+                        print('Try opening this URL in browser: $imageUrl');
+                      }
+                      
+                      return AppCachedNetworkImage(
+                        width: 90,
+                        height: 90,
+                        fit: BoxFit.cover,
+                        imageUrl: imageUrl,
+                        errorWidget: Icon(
+                          Icons.person,
+                          size: 45,
+                          color: Colors.white,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

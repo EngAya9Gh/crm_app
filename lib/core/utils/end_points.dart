@@ -157,8 +157,7 @@ class _Series {
   String getWithdrawnDetails(String id) => 'withdrawDetail/$id';
   final deleteDemandOut = 'series/delete_demand_out.php';
 
-  String cancelWithdrawal(String idInvoice) =>
-      "cancelWithdrawInvoice/$idInvoice";
+  String cancelWithdrawal(String idInvoice) => "cancelWithdrawInvoice/$idInvoice";
 
   String seriesApprove(String idInvoice) => "series/approve/$idInvoice";
 }
@@ -198,18 +197,14 @@ class _Care {
 
   String updateActivity(String activityId) => "activities/$activityId/edit";
 
-  String getActivityByClient(String clientId) =>
-      "activities/by-client/$clientId";
+  String getActivityByClient(String clientId) => "activities/by-client/$clientId";
 
   String updateViolation(String violationId) => "violations/$violationId/edit";
   final String violations = "violations";
   final String systemRatings = 'system-ratings';
-  String systemRatingTickets(int ratingId) =>
-      'system-ratings/$ratingId/tickets';
-  String systemRatingsAddTicket(int ratingId) =>
-      'system-ratings/$ratingId/add-ticket';
-  String processSystemRating(int ratingId) =>
-      'system-ratings/$ratingId/processed';
+  String systemRatingTickets(int ratingId) => 'system-ratings/$ratingId/tickets';
+  String systemRatingsAddTicket(int ratingId) => 'system-ratings/$ratingId/add-ticket';
+  String processSystemRating(int ratingId) => 'system-ratings/$ratingId/processed';
 }
 
 class _Privilege {
@@ -240,14 +235,12 @@ class _Client {
   final selectedClient = 'selectClient';
   final addClient = 'addClient'; //'''client/clientAdd.php';
   final updateClient = "updateClient/"; // "client/clientUpdate.php";
-  String editClientByTypeClient(String idClient) =>
-      "editClientByTypeClient/$idClient";
+  String editClientByTypeClient(String idClient) => "editClientByTypeClient/$idClient";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
   final transferMultiClient = "transferMultiClient";
   final storeClientCommunication = "communication-details";
 
-  String changeClientCommunication(String idClient) =>
-      "communication-details/$idClient/edit";
+  String changeClientCommunication(String idClient) => "communication-details/$idClient/edit";
   final getRejectReasons = "reasons-reject";
   final addRejectReasons = "reasons-reject";
 
@@ -255,8 +248,7 @@ class _Client {
   final distinctiveClient = "tagClients";
   final transferClient = "transferClient/";
   final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
-  final String getTransferClientsWithPrivileges =
-      "getTransferClientsWithPrivileges";
+  final String getTransferClientsWithPrivileges = "getTransferClientsWithPrivileges";
 
   final String getClientLastComment = "getClientLastComment";
 
@@ -306,8 +298,7 @@ class _Task {
   final filterTasksByAll = 'tasks';
 
   String changeStatusTask(String id) => 'tasks/$id/change-status';
-  final getUsersByTypeAdministrationAndRegion =
-      'getUsersByTypeAdministrationAndRegion';
+  final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
   final getUserSelect = 'tasks/employees';
   final getUsersTasksReports = 'tasks/report';
   String addTaskComment(int idTask) => 'tasks/$idTask/add-comment';
@@ -324,8 +315,7 @@ class _Participate {
   final allParticipates = 'agent/get_participate.php';
   final addParticipate = 'participates';
 
-  String updateParticipate(String participateId) =>
-      'participates/$participateId/edit';
+  String updateParticipate(String participateId) => 'participates/$participateId/edit';
 
   final allParticipateClients = 'getParticipateClints';
   final allParticipateInvoices = 'getParticipateInvoices';
@@ -382,8 +372,7 @@ class _Invoice {
 
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
 
-  final String crudFilesInvoice =
-      'FilesInvoice/crud_files_invoice.php?fk_invoice=';
+  final String crudFilesInvoice = 'FilesInvoice/crud_files_invoice.php?fk_invoice=';
 
   final String getClientSupportFiles = 'getFilesInvoices';
   final String crudClientSupportFiles = 'InvoiceFiles';
@@ -444,20 +433,16 @@ class _Tickets {
 class _Events {
   const _Events();
 
-  String updateStatusForVisit(String scheduleId) =>
-      'updateStatusForVisit/$scheduleId';
+  String updateStatusForVisit(String scheduleId) => 'updateStatusForVisit/$scheduleId';
 
   String verifyDateVisit(String scheduleId) => 'verifyDateVisit/$scheduleId';
 
-  String startDateVisitStatus(String scheduleId) =>
-      'startDateVisit/$scheduleId';
+  String startDateVisitStatus(String scheduleId) => 'startDateVisit/$scheduleId';
   final String addDateInstall = "addDateInstall";
 
-  String rescheduleOrCancelVisitClient(String scheduleId) =>
-      "rescheduleOrCancelVisitClient/$scheduleId";
+  String rescheduleOrCancelVisitClient(String scheduleId) => "rescheduleOrCancelVisitClient/$scheduleId";
 
-  String returnScheduleVisitToOpen(String scheduleId) =>
-      "returnScheduleVisitToOpen/$scheduleId";
+  String returnScheduleVisitToOpen(String scheduleId) => "returnScheduleVisitToOpen/$scheduleId";
 
   final String getInstallDate = "getInstallDate";
 
@@ -503,8 +488,7 @@ class _Reports {
   final String getClientsInstallReports = 'reports/support_report_install.php';
   final String getClientsCareReports = 'reports/care_report.php';
   final String getEvaluationLevelReport = 'reports/report_care_rate.php';
-  final String getPeriodicCommunicationReports =
-      "reports/care_communication_report.php";
+  final String getPeriodicCommunicationReports = "reports/care_communication_report.php";
   final String getRecommendedClientReports = "recommendClients";
 }
 
