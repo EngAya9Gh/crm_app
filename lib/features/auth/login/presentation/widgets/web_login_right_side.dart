@@ -101,34 +101,41 @@ class _WebLoginRightSideState extends State<WebLoginRightSide> {
           previous.loginStatus != current.loginStatus,
       listener: (context, state) {
         if (state.loginStatus.isFailed()) {
-          // تحقق من رسالة الخطأ للتلغرام
+          // تحقق من رسالة الخطأ
           if (
           (state.loginStatus.error
               ?.toString()
-        .contains('chat_id is empty') ??
-    false)||
+              .contains('chat_id is empty') ??
+              false)||
 
-    (state.loginStatus.error
-        ?.toString()
-        .contains('add telegram username') ??
-    false)) {
+              (state.loginStatus.error
+                  ?.toString()
+                  .contains('add telegram username') ??
+                  false)) {
 
-    // استخراج اسم المستخدم من رسالة الخطأ
-    final errorMessage = state.loginStatus.error?.toString() ?? '';
-    final extractedUsername = InputValidator.extractUsernameFromError(errorMessage);
+            // استخراج اسم المستخدم من رسالة الخطأ
+            final errorMessage = state.loginStatus.error?.toString() ?? '';
+            final extractedUsername = InputValidator.extractUsernameFromError(errorMessage);
 
-    setState(() {
-    showTelegramField = true;
-    // تعبئة الحقل باسم المستخدم المستخرج إذا وجد
-    if (extractedUsername != null) {
-    telegramController.text = extractedUsername;
-    }
-    });
+            setState(() {
+              showTelegramField = true;
+              // تعبئة الحقل باسم المستخدم المستخرج إذا وجد
+              if (extractedUsername != null) {
+                telegramController.text = extractedUsername;
+              }
+            });
 
-    AppSnackbar.showSnakeBar(
-    'تحقق من صحة اسم يوزر التلغرام وتحقق من تسجيلك بشكل صحيح على البوت',
-    color: ToastColorsEnum.error,
-    );
+            AppSnackbar.showSnakeBar(
+              'تحقق من صحة اسم يوزر التلغرام وتحقق من تسجيلك بشكل صحيح على البوت',
+              color: ToastColorsEnum.error,
+            );
+
+          } else {
+            AppSnackbar.showSnakeBar(
+              state.loginStatus.error,
+              color: ToastColorsEnum.error,
+            );
+          }
         } else if (state.loginStatus.isSuccess()) {
           AppNavigator.go(
             VerifyOtpPage(),
