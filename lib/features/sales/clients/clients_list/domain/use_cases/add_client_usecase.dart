@@ -76,6 +76,7 @@ class AddClientParams {
       'email': email,
       'size_activity': selectedActivitySizeType,
       'descActivController': descriptionActivity,
+      if(isMarketing!='1')
       "type_client": "تفاوض",
       "ismarketing": isMarketing,
       "reason_class": reason_class,

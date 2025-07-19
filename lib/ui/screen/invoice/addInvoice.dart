@@ -1136,7 +1136,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                       return SizedBox();
                   },
                 ),
-                20.height,
+                10.height,
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -1258,7 +1258,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                         ],
                       ),
                     ),
-                10.height,
+                30.height,
                   ],
                 ),
               ),

@@ -102,7 +102,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
     // );
 
     _clientsListBloc.currentClient = widget.client;
-    context.read<ManageWithdrawalsCubit>()..getReasonReject();
+    // context.read<ManageWithdrawalsCubit>()..getReasonReject();
 
     _clientTypeProvider = context.read<ClientTypeProvider>();
     disableWithdrawal = widget.client?.typeClient == "مستبعد";
@@ -357,6 +357,7 @@ class _ClientInfoSectionState extends State<ClientInfoSection> {
   }
 
   void _showActionMenu(BuildContext context) {
+    context.read<ManageWithdrawalsCubit>()..getReasonReject();
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(

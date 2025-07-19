@@ -59,7 +59,11 @@ class UserProvider extends ChangeNotifier {
     _selectedClientRegistrationType = selectedClientRegistrationType;
     notifyListeners();
   }
+  bool isNotFieldOrRecommended() {
 
+    return  selectedSourceClient?.value != ClientSourceEnum.field.value &&
+        selectedSourceClient?.value != ClientSourceEnum.recommendedClient.value;
+  }
   set selectedSourceClient(ClientSourceEnum? selectedSourceClient) {
     _selectedSourceClient = selectedSourceClient;
     notifyListeners();

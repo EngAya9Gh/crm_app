@@ -2,8 +2,10 @@ import 'package:crm_smart/core/common/helpers/input_validator.dart';
 import 'package:crm_smart/core/common/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/core/config/navigator/app_routes_names.dart';
 import 'package:crm_smart/core/utils/app_colors.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../../core/common/enums/toast_colors_enum.dart';
 import '../../../../../../core/common/helpers/app_snackbar.dart';
@@ -38,6 +40,8 @@ class _MobLoginPageState extends State<MobLoginPage> {
     loginCubit = context.read<LoginCubit>();
     super.initState();
   }
+
+
 
   // دالة لحفظ اسم التلغرام
   Future<void> saveTelegramUsername() async {
@@ -90,14 +94,34 @@ class _MobLoginPageState extends State<MobLoginPage> {
       listener: (context, state) {
         if (state.loginStatus.isFailed()) {
           // تحقق من رسالة الخطأ
-          if (state.loginStatus.error == 'add telegram username' ||
+          if (
+          (state.loginStatus.error
+              ?.toString()
+              .contains('chat_id is empty') ??
+              false)||
+
               (state.loginStatus.error
                       ?.toString()
                       .contains('add telegram username') ??
                   false)) {
+            
+            // استخراج اسم المستخدم من رسالة الخطأ
+            final errorMessage = state.loginStatus.error?.toString() ?? '';
+            final extractedUsername = InputValidator.extractUsernameFromError(errorMessage);
+            
             setState(() {
               showTelegramField = true;
+              // تعبئة الحقل باسم المستخدم المستخرج إذا وجد
+              if (extractedUsername != null) {
+                telegramController.text = extractedUsername;
+              }
             });
+            
+            AppSnackbar.showSnakeBar(
+              'تحقق من صحة اسم يوزر التلغرام وتحقق من تسجيلك بشكل صحيح على البوت',
+              color: ToastColorsEnum.error,
+            );
+
           } else {
             AppSnackbar.showSnakeBar(
               state.loginStatus.error,
@@ -161,12 +185,105 @@ class _MobLoginPageState extends State<MobLoginPage> {
                       Icons.telegram,
                       color: AppColors.primaryMain,
                     ),
-                    hintText: 'اسم مستخدم التلغرام',
+                    hintText: 'اسم مستخدم التلغرام@',
                     controller: telegramController,
                     textDirection: TextDirection.ltr,
                     validator: (_) => telegramError,
                   ),
                   SizedBox(height: 10),
+                  // رابط البوت التلغرام
+                  GestureDetector(
+                    onTap: () async {
+                      final telegramUrl = 'https://t.me/SMARTCRMABOT';
+                      final telegramAppUrl = 'tg://resolve?domain=SMARTCRMABOT';
+                      
+                      try {
+                        // محاولة فتح في تطبيق التلغرام أولاً
+                        bool launched = false;
+                        
+                        // جرب فتح في تطبيق التلغرام
+                        if (await canLaunchUrl(Uri.parse(telegramAppUrl))) {
+                          launched = await launchUrl(
+                            Uri.parse(telegramAppUrl),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
+                        
+                        // إذا فشل، جرب الرابط العادي
+                        if (!launched && await canLaunchUrl(Uri.parse(telegramUrl))) {
+                          launched = await launchUrl(
+                            Uri.parse(telegramUrl),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
+                        
+                        // إذا فشل كلاهما، جرب فتح في المتصفح
+                        if (!launched) {
+                          launched = await launchUrl(
+                            Uri.parse(telegramUrl),
+                            mode: LaunchMode.platformDefault,
+                          );
+                        }
+                        
+                        if (!launched) {
+                          AppSnackbar.showSnakeBar(
+                            'لا يمكن فتح الرابط. تأكد من تثبيت تطبيق التلغرام أو المتصفح',
+                            color: ToastColorsEnum.error,
+                          );
+                        }
+                      } catch (e) {
+                        print('Error launching URL: $e');
+                        AppSnackbar.showSnakeBar(
+                          'حدث خطأ أثناء فتح الرابط. حاول مرة أخرى',
+                          color: ToastColorsEnum.error,
+                        );
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryMain.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.primaryMain, width: 1.5),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppIcon(
+                            Icons.telegram,
+                            color: AppColors.primaryMain,
+                            size: 24,
+                          ),
+                          SizedBox(width: 12),
+                          AppText(
+                            '@SMARTCRMABOT',
+                            style: TextStyle(
+                              color: AppColors.primaryMain,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(
+                            Icons.open_in_new,
+                            color: AppColors.primaryMain,
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  AppText(
+                    'انقر على الرابط أعلاه للانتقال إلى بوت التلغرام',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 15),
                   AppElevatedButton(
                     isLoading: isSavingTelegram,
                     text: 'حفظ اسم التلغرام',

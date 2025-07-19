@@ -318,14 +318,14 @@ class AvailableScreensRepositoryImpl implements AvailableScreensRepository {
         privilegeId: '233',
         page: ExceededClientsPage(),
       ),
-      FavoriteScreenModel(
-        id: 'calender_client',
-        title: 'جدول زيارات العميل',
-        iconKey: 'calendar_today',
-        routeName: AppRoutesPaths.salesClientsSubSections.calenderClient,
-        privilegeId: '120',
-        page: calender_client(),
-      ),
+      // FavoriteScreenModel(
+      //   id: 'calender_client',
+      //   title: 'جدول زيارات العميل',
+      //   iconKey: 'calendar_today',
+      //   routeName: AppRoutesPaths.salesClientsSubSections.calenderClient,
+      //   privilegeId: '120',
+      //   page: calender_client(),
+      // ),
       FavoriteScreenModel(
         id: 'manage_withdrawn_invoices',
         title: 'إدارة الفواتير المنسحبة',

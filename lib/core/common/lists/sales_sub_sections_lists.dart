@@ -86,12 +86,12 @@ abstract class SalesSubSectionsLists {
       privilegeId: '233',
       path: AppRoutesPaths.salesClientsSubSections.exceededClients,
     ),
-    SectionModel(
-      title: 'جدول زيارات العميل',
-      page: calender_client(),
-      privilegeId: '120',
-      path: AppRoutesPaths.salesClientsSubSections.calenderClient,
-    ),
+    // SectionModel(
+    //   title: 'جدول زيارات العميل',
+    //   page: calender_client(),
+    //   privilegeId: '120',
+    //   path: AppRoutesPaths.salesClientsSubSections.calenderClient,
+    // ),
   ];
 
   /* Invoice Sub Sections */

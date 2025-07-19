@@ -275,6 +275,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                               Center(child: CircularProgressIndicator.adaptive())
                             else
                               AppElevatedButton(
+
                                 text: 'حذف الطلب',
                                 backgroundColor: Colors.red,
                                 onPressed: () async {
@@ -290,10 +291,14 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                   );
                                 },
                               ),
-                          }
+                          },
+                        20.height
                         ],
                       ),
                     ),
+
+
+
                   ],
                 ),
               );

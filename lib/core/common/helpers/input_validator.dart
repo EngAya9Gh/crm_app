@@ -10,7 +10,21 @@ class InputValidator {
     }
     return null;
   }
-
+  // دالة لاستخراج اسم المستخدم من رسالة الخطأ
+ static String? extractUsernameFromError(String errorMessage) {
+    try {
+      // البحث عن النمط "user:username Bad"
+      final regex = RegExp(r'user:([^\s]+)\s+Bad');
+      final match = regex.firstMatch(errorMessage);
+      if (match != null && match.groupCount >= 1) {
+        return match.group(1);
+      }
+      return null;
+    } catch (e) {
+      print('Error extracting username: $e');
+      return null;
+    }
+  }
   static String? validateEmail(String? value) {
     value = value?.trim();
     bool isValid() {

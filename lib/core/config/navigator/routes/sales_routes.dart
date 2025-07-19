@@ -148,11 +148,11 @@ abstract class SalesRoutes {
           SharedRoutes.clientProfileRoute(AppRoutesNames.clientProfile.inClientsDebts),
         ],
       ),
-      GoRoute(
-        name: AppRoutesPaths.salesClientsSubSections.calenderClient.split('/').last,
-        path: AppRoutesPaths.salesClientsSubSections.calenderClient,
-        builder: (context, state) => calender_client(),
-      ),
+      // GoRoute(
+      //   name: AppRoutesPaths.salesClientsSubSections.calenderClient.split('/').last,
+      //   path: AppRoutesPaths.salesClientsSubSections.calenderClient,
+      //   builder: (context, state) => calender_client(),
+      // ),
       GoRoute(
         name: AppRoutesPaths.salesClientsSubSections.clientsTransferApprovals.split('/').last,
         path: AppRoutesPaths.salesClientsSubSections.clientsTransferApprovals,

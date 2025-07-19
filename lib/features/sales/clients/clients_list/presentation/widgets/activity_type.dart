@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../../core/common/enums/client/client_registration_type_enum.dart';
+import '../../../../../../core/common/helpers/input_validator.dart';
 import '../../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../../model/ActivityModel.dart';
 import '../../../../../../view_model/activity_vm.dart';
 import '../../../../../../view_model/user_vm_provider.dart';
 
 class ActivityType extends StatelessWidget {
+  final bool isEdit=false;
   const ActivityType({
+    isEdit,
     super.key,
   });
 
@@ -29,10 +32,11 @@ class ActivityType extends StatelessWidget {
               },
               filterFn: (activity, filter) =>
                   activity.getFilterActivityType(filter),
-              validator: (val) {
-                if (_isRequiredActivity(value) && val == null) {
-                  return "هذا الحقل مطلوب";
-                }
+              validator: (vald) {
+
+                if( value.isNotFieldOrRecommended() && _isRequiredActivity(value)
+                || !(value.isNotFieldOrRecommended()  ))
+                return InputValidator.requiredFiled(vald);
                 return null;
               },
             );
@@ -43,7 +47,13 @@ class ActivityType extends StatelessWidget {
   }
 
   bool _isRequiredActivity(UserProvider userProvider) {
-    return !ClientRegistrationType.isWrongFromString(
-        userProvider.selectedClientRegistrationType);
+
+    if(userProvider.selectedClientRegistrationType.isEmpty)
+      return false;
+    else
+      return
+   !ClientRegistrationType.isWrongFromString(
+        userProvider.selectedClientRegistrationType)  ;
+
   }
 }

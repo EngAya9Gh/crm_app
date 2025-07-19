@@ -232,7 +232,7 @@ class _CardClientState extends State<CardClient> {
                                   ),
                                 ),
                               if (preferences.showclassfication &&
-                                  widget.clientModel.type_classification != null)
+                                  widget.clientModel.type_classification != null&& widget.clientModel.type_classification!.isNotEmpty)
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: AppStatusChip(
